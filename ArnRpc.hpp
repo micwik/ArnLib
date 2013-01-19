@@ -84,7 +84,9 @@ public:
             AutoDestroy   = 0x02,
             UuidPipe      = 0x04,
             NoDefaultArgs = 0x08,
-            Debug         = 0x10
+            Debug         = 0x10,
+            // Convenience
+            UuidAutoDestroy = UuidPipe | AutoDestroy
         };
         MQ_DECLARE_FLAGS( Mode)
     };
