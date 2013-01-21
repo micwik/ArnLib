@@ -51,7 +51,7 @@ class ARNLIBSHARED_EXPORT ArnClient : public QObject
 Q_OBJECT
 public:
     explicit ArnClient(QObject *parent = 0);
-    void  connectToArn( const QString& arnHost, quint16 port = 2022);
+    void  connectToArn( const QString& arnHost, quint16 port = 0);
     bool  setMountPoint( const QString& path);
     void  setAutoConnect( bool isAuto, int retryTime = 2);
     void  commandGet( const QString& path);

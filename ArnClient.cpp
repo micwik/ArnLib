@@ -43,7 +43,8 @@ ArnClient::ArnClient(QObject *parent) :
 {
     _arnMountPoint = 0;
     _isAutoConnect = false;
-    _retryTime = 2;
+    _retryTime     = 2;
+    _port          = 0;
 
     _socket = new QTcpSocket( this);
     _arnNetSync = new ArnSync( _socket, true, this);
@@ -67,9 +68,9 @@ ArnClient::ArnClient(QObject *parent) :
 void  ArnClient::connectToArn( const QString& arnHost, quint16 port)
 {
     _arnHost = arnHost;
-    _port = port;
+    _port = (port == 0) ? 2022 : port;
     _socket->abort();
-    _socket->connectToHost( arnHost, port);
+    _socket->connectToHost( _arnHost, _port);
 }
 
 
