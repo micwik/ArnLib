@@ -74,7 +74,8 @@ INSTALLS += target \
     headers
 
 OTHER_FILES += \
-    doc/description.txt
+    doc/description.txt \
+    doc/README
 
 
 
