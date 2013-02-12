@@ -792,7 +792,7 @@ QString  Arn::errorSysName()
 
 QByteArray  Arn::info()
 {
-    return QByteArray("Ver=A1a Date=" BUILDDATE " Time=" BUILDTIME);
+    return QByteArray("Name=ArnLib Ver=" LIBVER " Date=" BUILDDATE " Time=" BUILDTIME);
 }
 
 

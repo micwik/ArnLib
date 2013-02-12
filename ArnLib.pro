@@ -1,9 +1,13 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-08-10T13:51:16
 # -------------------------------------------------
-PROJECT = ArnLib
 
-!win32:VERSION = 1.0.0
+PROJECT = ArnLib
+ARNLIBVER = 1.0.0
+
+!win32:VERSION = $$ARNLIBVER
+
+DEFINES += LIBVER=\\\"$${ARNLIBVER}\\\"
 
 win32 {
 DEFINES += BUILDTIME=\\\"$$system('echo %time%')\\\"
@@ -64,9 +68,9 @@ HEADERS += ArnLib_global.hpp \
     ArnMonitor.hpp \
     ArnSync.hpp
 
-# ########
-# INSTALL#
-# ########
+
+### INSTALL ###
+
 headers.path = /usr/include/ArnLib
 headers.files += *.hpp
 target.path = /usr/lib64
