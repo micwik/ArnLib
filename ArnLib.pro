@@ -79,7 +79,7 @@ INSTALLS += target \
 
 OTHER_FILES += \
     doc/description.txt \
-    doc/README
+    README.md
 
 
 
