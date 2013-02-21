@@ -45,10 +45,13 @@ ServerMain::ServerMain( QObject* parent) :
 
     _arnTime.open("//Chat/Time/value");
 
+
+    //// Create common service-api, used for calling requesters by "broadcast"
     _commonSapi = new ChatSapi( this);
     _commonSapi->open("//Chat/Pipes/pipeCommon!", ArnSapi::Mode::Provider);
     _commonSapi->batchConnect( QRegExp("^pv_(.+)"), this, "chat\\1");
 
+    //// Monitor pipe folder for new connecting requesters
     ArnItem*  arnPipes = new ArnItem("//Chat/Pipes/", this);
     connect( arnPipes, SIGNAL(arnItemCreated(QString)), this, SLOT(doNewSession(QString)));
 }
@@ -73,6 +76,7 @@ void  ServerMain::doTimeUpdate()
 
 void  ServerMain::chatList()
 {
+    //// Get calling service-api, to give a private "answer" (the list)
     ChatSapi*  sapi = qobject_cast<ChatSapi*>( sender());
     Q_ASSERT(sapi);
     for (int i = 0; i < _chatNameList.size(); ++i) {
@@ -86,12 +90,15 @@ void  ServerMain::chatNewMsg( QString name, QString msg)
     _chatNameList += name;
     _chatMsgList  += msg;
     int  seq = _chatNameList.size() - 1;
+
+    //// Broadcast the new message to all requesters
     _commonSapi->rq_updateMsg( seq, name, msg);
 }
 
 
 void  ServerMain::chatInfoQ()
 {
+    //// Get calling service-api, to give a private "answer" (the info)
     ChatSapi*  sapi = qobject_cast<ChatSapi*>( sender());
     Q_ASSERT(sapi);
     sapi->rq_info("Arn Chat Demo", "1.0");

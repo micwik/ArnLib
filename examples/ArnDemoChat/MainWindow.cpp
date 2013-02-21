@@ -39,18 +39,23 @@ MainWindow::MainWindow( QWidget* parent) :
     _ui->userEdit->setFocus();
     connect( _ui->lineEdit, SIGNAL(returnPressed()), this, SLOT(doSendLine()));
 
+    //// Connect to Arn and select tree to sync (//)
     _arnClient.connectToArn("localhost");
     _arnClient.setMountPoint("//");
 
     _arnTime.open("//Chat/Time/value");
     connect( &_arnTime, SIGNAL(changed(QString)), this, SLOT(doTimeUpdate(QString)));
 
+    //// Setup common service-api, used for calling requesters by "broadcast"
     _commonSapi.open("//Chat/Pipes/pipeCommon");
     _commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");
 
+    //// Setup sole service-api, used for 2 point requester provider calls
+    //// Pipe is uniquely named (uuid) and auto destroyed when disconnected
     _soleSapi.open("//Chat/Pipes/pipe", ArnSapi::Mode::UuidAutoDestroy);
     _soleSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");
 
+    //// Request info and listing from provider
     _soleSapi.pv_infoQ();
     _soleSapi.pv_list();
 }
@@ -68,7 +73,7 @@ void  MainWindow::doTimeUpdate( QString timeStr)
 }
 
 
-void  MainWindow::doSendLine( )
+void  MainWindow::doSendLine()
 {
     QString  myName = _ui->userEdit->text();
     QString  line   = _ui->lineEdit->text();
