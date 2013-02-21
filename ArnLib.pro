@@ -30,43 +30,43 @@ TEMPLATE = lib
 DEFINES += ARNLIB_LIBRARY
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
-SOURCES += Arn.cpp \
-    ArnClient.cpp \
-    ArnItem.cpp \
-    ArnLink.cpp \
-    ArnServer.cpp \
-    XStringMap.cpp \
-    ArnItemNet.cpp \
-    ArnScript.cpp \
-    ArnScriptJobs.cpp \
-    ArnPersist.cpp \
-    ArnDepend.cpp \
-    ArnRpc.cpp \
-    ArnScriptJob.cpp \
-    ArnSapi.cpp \
-    ArnMonitor.cpp \
-    ArnSync.cpp
-HEADERS += ArnLib_global.hpp \
-    Arn.hpp \
-    ArnClient.hpp \
-    ArnItem.hpp \
-    ArnLink.hpp \
-    ArnServer.hpp \
-    XStringMap.hpp \
-    ArnError.hpp \
-    ArnItemNet.hpp \
-    ArnScript.hpp \
-    ArnScriptJobs.hpp \
-    ArnPersist.hpp \
-    ArnDepend.hpp \
-    MQFlags.hpp \
-    ArnLib.hpp \
-    ArnRpc.hpp \
-    ArnScriptJob.hpp \
-    ArnSapi.hpp \
-    ArnPersistSapi.hpp \
-    ArnMonitor.hpp \
-    ArnSync.hpp
+SOURCES += src/Arn.cpp \
+    src/ArnClient.cpp \
+    src/ArnItem.cpp \
+    src/ArnLink.cpp \
+    src/ArnServer.cpp \
+    src/XStringMap.cpp \
+    src/ArnItemNet.cpp \
+    src/ArnScript.cpp \
+    src/ArnScriptJobs.cpp \
+    src/ArnPersist.cpp \
+    src/ArnDepend.cpp \
+    src/ArnRpc.cpp \
+    src/ArnScriptJob.cpp \
+    src/ArnSapi.cpp \
+    src/ArnMonitor.cpp \
+    src/ArnSync.cpp
+HEADERS += src/ArnLib_global.hpp \
+    src/Arn.hpp \
+    src/ArnClient.hpp \
+    src/ArnItem.hpp \
+    src/ArnLink.hpp \
+    src/ArnServer.hpp \
+    src/XStringMap.hpp \
+    src/ArnError.hpp \
+    src/ArnItemNet.hpp \
+    src/ArnScript.hpp \
+    src/ArnScriptJobs.hpp \
+    src/ArnPersist.hpp \
+    src/ArnDepend.hpp \
+    src/MQFlags.hpp \
+    src/ArnLib.hpp \
+    src/ArnRpc.hpp \
+    src/ArnScriptJob.hpp \
+    src/ArnSapi.hpp \
+    src/ArnPersistSapi.hpp \
+    src/ArnMonitor.hpp \
+    src/ArnSync.hpp
 
 
 ### INSTALL ###
@@ -80,13 +80,3 @@ INSTALLS += target \
 OTHER_FILES += \
     doc/description.txt \
     README.md
-
-
-
-
-
-
-
-
-
-
