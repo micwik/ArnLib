@@ -25,7 +25,19 @@ This Qt based library makes it easy to distribute changing data objects. It also
 
 * Data objects can be: measures, settings, datastreams, documents, scripts (js), ...
 
+* Data objects are thread-safe. 
+
+* Data objects can be shared in a single program, among threads or between programs at different computers.
+This division of program modules can be changed and are transparent to ArnLib.
+
 * Native support for data validation and double direction pipes.
+
+* Support for temporary session data objects.
+Optional auto-delete of objects when tcp/ip close and unique uuid names.
+
+* Monitoring of newly created data objects and any mode change.
+
+* Dependency system with custom offered services and getting signals when all needed is available.
 
 * Optional persistent storage of object in SQLight or in a file.
 
@@ -36,7 +48,8 @@ cooperative script running.
 
 * Support for managing changed script restart in jobstack.
 
-* Service Api, for calling routines over tcp/ip. Just as remote signal slots.
+* Service Api, for calling routines anywhere in connected Arn.
+Remote procedure call made simple as "remote signal slots".
 
 * All data streams can easily be monitored and manual testdata can be inserted (see ArnBrowser).
 
