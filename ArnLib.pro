@@ -46,6 +46,7 @@ SOURCES += src/Arn.cpp \
     src/ArnSapi.cpp \
     src/ArnMonitor.cpp \
     src/ArnSync.cpp
+
 HEADERS += src/ArnLib_global.hpp \
     src/Arn.hpp \
     src/ArnClient.hpp \
@@ -67,6 +68,7 @@ HEADERS += src/ArnLib_global.hpp \
     src/ArnPersistSapi.hpp \
     src/ArnMonitor.hpp \
     src/ArnSync.hpp
+
 OTHER_FILES += \
     doc/description.txt \
     README.md
@@ -75,7 +77,7 @@ OTHER_FILES += \
 ### Install
 
 headers.path = /usr/include/ArnLib
-headers.files += *.hpp
+headers.files += src/*.hpp
 target.path = /usr/lib64
 INSTALLS += target \
     headers
