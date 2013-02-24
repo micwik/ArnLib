@@ -582,10 +582,10 @@ void  ArnPersist::doLoadMandatory()
         if (item->storeType() != st.DataBase)  continue;  // Not a database persist
 
         QByteArray  data;
-        int  storeId;
-        if (getDbValue( path, data, storeId)) {
+        int  storeId2;
+        if (getDbValue( path, data, storeId2)) {
             item->arnImport( data, false);
-            item->setStoreId( storeId);
+            item->setStoreId( storeId2);
         }
         else {
             item->setValue( QByteArray(), false);  // Do a null update, to signal update done
