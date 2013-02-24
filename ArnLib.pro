@@ -67,9 +67,12 @@ HEADERS += src/ArnLib_global.hpp \
     src/ArnPersistSapi.hpp \
     src/ArnMonitor.hpp \
     src/ArnSync.hpp
+OTHER_FILES += \
+    doc/description.txt \
+    README.md
 
 
-### INSTALL ###
+### Install
 
 headers.path = /usr/include/ArnLib
 headers.files += *.hpp
@@ -77,6 +80,10 @@ target.path = /usr/lib64
 INSTALLS += target \
     headers
 
-OTHER_FILES += \
-    doc/description.txt \
-    README.md
+
+### Custom target 'doc' in *.pro file
+
+doc.commands = doxygen doc/Doxyfile
+doc.depends = FORCE
+QMAKE_EXTRA_TARGETS += doc
+QMAKE_DISTCLEAN += doc/doxy_html/* doc/doxy_html/search/*
