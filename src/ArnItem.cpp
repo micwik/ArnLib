@@ -39,7 +39,7 @@
 #include <QDebug>
 
 
-QAtomicInt ArnItem::_idCount( 1);
+QAtomicInt ArnItem::_idCount(1);
 
 
 void  ArnItem::init()
@@ -47,6 +47,7 @@ void  ArnItem::init()
     _link       = 0;
     _reference  = 0;
     _delayTimer = 0;
+    _id         = _idCount.fetchAndAddRelaxed(1);
 
     _useForceKeep    = false;
     _blockEcho       = false;
@@ -100,7 +101,6 @@ ArnItem::ArnItem( const ArnItem& folder_template, const QString& itemName_path, 
 
 void  ArnItem::setupOpenItem( bool isFolder)
 {
-    _id = _idCount.fetchAndAddRelaxed( 1);
     addMode( _mode);  // Transfer modes to the link
     modeUpdate(true);
     connect( _link, SIGNAL(retired()), this, SLOT(doArnLinkDestroyed()));
