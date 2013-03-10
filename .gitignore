@@ -12,7 +12,7 @@
 *.exe
 *.dll
 # PROJECT (executable)
-
+doc/doxy_html/
 
 # Qt-es
 *.pro.user
