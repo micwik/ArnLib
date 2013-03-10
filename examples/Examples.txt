@@ -1,0 +1,62 @@
+/*!
+\example ChatSapi.hpp  Demo Chat Server 
+\example ServerMain.hpp  Demo Chat Server 
+\example ServerMain.cpp  Demo Chat Server 
+\example ArnDemoChatServer/main.cpp  Demo Chat Server 
+
+\example MainWindow.hpp  Demo Chat Client 
+\example MainWindow.cpp  Demo Chat Client
+\example ArnDemoChat/main.cpp  Demo Chat Client
+ */
+
+/*!
+\page exampleindex Example Collection
+
+    Here are some examples showing the use of the ArnLib
+    described in this documentation.
+
+    + \subpage chatdemo
+ */
+    
+/*!
+\page chatdemo Chat Demo
+
+    Demonstration with a simple chat program. It consists of a server and a client part.
+    After starting the server, any number of clients can be started.
+    
+    This demo is focused on the Service API (RPC) functionalty of ArnLib. Slots are remotely
+    called from clients to server and the other way back. All is done with standard function calls
+    without any visual serializing.
+    
+    **Chat Server**
+    \ref ChatSapi_hpp, \ref ServerMain_hpp, \ref ServerMain_cpp, \ref s_main_cpp
+
+    **Chat Client**
+    \ref MainWindow_hpp, \ref MainWindow_cpp, \ref c_main_cpp
+
+    \section chatserver Chat Server    
+        \subsection ChatSapi_hpp ChatSapi.hpp
+        \snippet ChatSapi.hpp code
+        
+        \subsection ServerMain_hpp ServerMain.hpp
+        \snippet ServerMain.hpp code
+        
+        \subsection ServerMain_cpp ServerMain.cpp
+        \snippet ServerMain.cpp code
+        
+        \subsection s_main_cpp main.cpp
+        \snippet ArnDemoChatServer/main.cpp code
+        
+    \section chatclient Chat Client
+        \subsection MainWindow_hpp MainWindow.hpp
+        \snippet MainWindow.hpp code
+        
+        \subsection MainWindow_cpp MainWindow.cpp
+        \snippet MainWindow.cpp code
+        
+        \subsection c_main_cpp main.cpp
+        \snippet ArnDemoChat/main.cpp code
+        
+    \section pic Pictures
+        \image html Arn_chat_demo_1.png
+ */

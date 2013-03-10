@@ -52,7 +52,7 @@ void  ArnItem::init()
     _useForceKeep    = false;
     _blockEcho       = false;
     _isTemplate      = false;
-    _ignoreSameValue = Arn::defaultIgnoreSameValue();
+    _ignoreSameValue = ArnM::defaultIgnoreSameValue();
     _isOnlyEcho      = true;  // Nothing else yet ...
 
     _syncMode = SyncMode();
@@ -125,7 +125,7 @@ bool  ArnItem::open( const QString &path, bool isFolder)
 {
     SyncMode  syncMode = _syncModeLinkShare ? _syncMode : SyncMode();
     ArnLink::Flags  flags;
-    _link = Arn::link( path, flags.flagIf( isFolder, flags.Folder) | flags.CreateAllowed, syncMode);
+    _link = ArnM::link( path, flags.flagIf( isFolder, flags.Folder) | flags.CreateAllowed, syncMode);
     if (!_link)  return false;
 
     setupOpenItem( isFolder);
@@ -162,7 +162,7 @@ bool  ArnItem::open( const ArnItem& folder, const QString& itemName, bool isFold
 
     SyncMode  syncMode = _syncModeLinkShare ? _syncMode : SyncMode();
     ArnLink::Flags  flags;
-    _link = Arn::link( parent, itemName,
+    _link = ArnM::link( parent, itemName,
                             flags.flagIf( isFolder, flags.Folder) | flags.CreateAllowed, syncMode);
     if (!_link)  return false;
 
@@ -191,7 +191,7 @@ void  ArnItem::close()
 
 void  ArnItem::destroyLink()
 {
-    Arn::destroyLink( _link);
+    ArnM::destroyLink( _link);
 }
 
 
@@ -293,7 +293,7 @@ ArnItem&  ArnItem::setBiDirMode()
     if (_link->isBiDirMode())  return *this;  // Already is bidirectional mode
 
     /// Bidirectional-mode is the pair of value & provider
-    ArnLink*  twinLink = Arn::addTwin( _link, syncMode());
+    ArnLink*  twinLink = ArnM::addTwin( _link, syncMode());
     twinLink->deref();
 
     return *this;
@@ -317,7 +317,7 @@ ArnItem&  ArnItem::setPipeMode()
 
     _ignoreSameValue = false;
     // Pipe-mode demands the pair of value & provider
-    ArnLink*  twinLink = Arn::addTwin( _link, syncMode());
+    ArnLink*  twinLink = ArnM::addTwin( _link, syncMode());
     _link->setPipeMode( true);
     twinLink->deref();
 
@@ -354,7 +354,7 @@ bool  ArnItem::isSaveMode()  const
 ArnItem&  ArnItem::setMaster()
 {
     if (_link) {
-        Arn::errorLog( QString(tr("Setting item/link as master")),
+        ArnM::errorLog( QString(tr("Setting item/link as master")),
                             ArnError::AlreadyOpen);
     }
     addSyncMode( SyncMode::Master, true);
@@ -371,7 +371,7 @@ bool  ArnItem::isMaster()  const
 ArnItem&  ArnItem::setAutoDestroy()
 {
     if (_link) {
-        Arn::errorLog( QString(tr("Setting item/link to autoDestroy")),
+        ArnM::errorLog( QString(tr("Setting item/link to autoDestroy")),
                             ArnError::AlreadyOpen);
     }
     addSyncMode( SyncMode::AutoDestroy, true);
@@ -852,7 +852,7 @@ void  ArnItem::disconnectNotify( const char *signal)
 QStringList  ArnItem::childItemsMain()  const
 {
     // This must be run in main thread as childs only can be deleted there
-    return Arn::itemsMain( _link);
+    return ArnM::itemsMain( _link);
 }
 
 
@@ -862,7 +862,7 @@ void  ArnItem::errorLog( QString errText, ArnError err, void* reference)
     if (_link) {
         itemText = " Item:" + _link->linkPath();
     }
-    Arn::errorLog( errText + itemText, err, reference);
+    ArnM::errorLog( errText + itemText, err, reference);
 }
 
 
@@ -961,7 +961,7 @@ void  ArnItem::arnLinkCreatedBelow( ArnLink* link)
 void  ArnItem::arnModeChangedBelow( QString path, uint linkId)
 {
     ArnLink::Flags  flags;
-    ArnLink*  link = Arn::link( path, flags.SilentError);
+    ArnLink*  link = ArnM::link( path, flags.SilentError);
     if (!link)  return;  // Item has been lost (deleted?)
 
     emit arnModeChanged( path, linkId, getMode( link));

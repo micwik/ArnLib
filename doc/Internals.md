@@ -1,15 +1,12 @@
-ArnLib
+ArnLib Internals
+================
+
+[TOC]
+
+This document describes internal processes that are relatively complex and by this needs some explanation.
 
 
-Application
------------
-* If any graphics is used, Gui must be included.
-
-* If only using QImage, Windowing system can be off like:
-  QApplication a(argc, argv, false);
-
-
-ScriptJobs
+ScriptJobs    {#int_scriptjobs}
 ----------
 * Each jobstack ScriptJobs is setup with a ScriptJobFactory wich makes custom interfaces etc.
 
@@ -24,42 +21,42 @@ ScriptJobs
   Error text from Script job is connected to ScriptJobControl.
 
 * Starting ScriptJobs in cooperative mode:
-  a) Every ScriptJob is created and setup by corresponding ScriptJobControl
-  b) Every ScriptJob is connected to Scheduler (yield etc).
-  c) Every ScriptJobControl is connected to ScriptJobs for signaling update of script.
-  d) Scheduler is started.
+    1. Every ScriptJob is created and setup by corresponding ScriptJobControl
+    2. Every ScriptJob is connected to Scheduler (yield etc).
+    3. Every ScriptJobControl is connected to ScriptJobs for signaling update of script.
+    4. Scheduler is started.
 
 * Setup ScriptJob by ScriptJobControl:
-  a) set ScriptJobFactory and Config
-  b) Make and add the jobs Interfaces
-  c) Evaluate the script (in js engine)
-  d) run script function jobInit()
+    1. set ScriptJobFactory and Config
+    2. Make and add the jobs Interfaces
+    3. Evaluate the script (in js engine)
+    4. run script function jobInit()
 
 * Updating Script in cooperative mode:
-  a) ScriptJobControl gets updated by Arn (or other).
-  b) ScriptJobControl sends signal to ScriptJobs, which sets an updated flag for the corresponding Script Job.
-  c) When scheduling, every updated script will get its sigQuit signal invoked and then reloaded.
-  d) Reloading includes creating a new ScriptJob and setting up with ScriptJobControl etc.
+    1. ScriptJobControl gets updated by Arn (or other).
+    2. ScriptJobControl sends signal to ScriptJobs, which sets an updated flag for the corresponding Script Job.
+    3. When scheduling, every updated script will get its sigQuit signal invoked and then reloaded.
+    4. Reloading includes creating a new ScriptJob and setting up with ScriptJobControl etc.
 
 * Starting ScriptJobs in preemtive mode:
-  a) Every ScriptJob gets its own thread which also is setup with ScriptJobControl and ScriptJobFactory.
-  b) Thread is started and it create a ScriptJobSingle where followning steps are done.
-  c) ScriptJob is created and setup by ScriptJobControl
-  d) ScriptJob is connected to Scheduler (yield etc).
-  e) ScriptJobControl is connected to ScriptJobSingle for signaling update of script.
-  f) Scheduler is started in ScriptJobSingle (just one job).
+    1. Every ScriptJob gets its own thread which also is setup with ScriptJobControl and ScriptJobFactory.
+    2. Thread is started and it create a ScriptJobSingle where followning steps are done.
+    3. ScriptJob is created and setup by ScriptJobControl
+    4. ScriptJob is connected to Scheduler (yield etc).
+    5. ScriptJobControl is connected to ScriptJobSingle for signaling update of script.
+    6. Scheduler is started in ScriptJobSingle (just one job).
 
 * Updating Script in preemtive mode:
-  a) ScriptJobControl gets updated by Arn (or other).
-  b) ScriptJobControl sends signal to ScriptJobSingle, which sets an updated flag
-     and both invokes sigQuit signal to script and calls quit in scriptJob. 
-  c) ScriptJob aborts its js script engine and posts a custom Quit event with high prio.
-  d) When ScriptJob get the Quit event, it will send a QuitRequest signal to ScriptJobSingle.
-  e) ScriptJobSingle will get the signal amd detect update flag, which means reloading.
-  f) Reloading includes creating a new ScriptJob and setting up with ScriptJobControl etc.
+    1. ScriptJobControl gets updated by Arn (or other).
+    2. ScriptJobControl sends signal to ScriptJobSingle, which sets an updated flag
+       and both invokes sigQuit signal to script and calls quit in scriptJob. 
+    3. ScriptJob aborts its js script engine and posts a custom Quit event with high prio.
+    4. When ScriptJob get the Quit event, it will send a QuitRequest signal to ScriptJobSingle.
+    5. ScriptJobSingle will get the signal amd detect update flag, which means reloading.
+    6. Reloading includes creating a new ScriptJob and setting up with ScriptJobControl etc.
 
 
-ArnMonitor
+ArnMonitor    {#int_arnmonitor}
 ----------
 * Monitor starts its actual connection job when monitorPath is set.
 
@@ -74,9 +71,9 @@ ArnMonitor
   This will resync ItemNet to a Monitor at any server restart.
 
 * Now 2 possibilities depending on threading:
-  A) The ItemNet was sent before syncMode Monitor was set. Then server will receive an ordinary Itemnet and
-     do standard setup.
-  B) The ItemNet was sent with syncMode Monitor set. The server will detect this and do MonitorSetup on the ItemNet.
+    1. The ItemNet was sent before syncMode Monitor was set. Then server will receive an ordinary Itemnet and
+       do standard setup.
+    2. The ItemNet was sent with syncMode Monitor set. The server will detect this and do MonitorSetup on the ItemNet.
 
 * When arn-event "monitorStart" is received on server-side, if SyncMode is not already set to "Monitor",
   server will do MonitorSetup on the ItemNet.
@@ -85,13 +82,13 @@ ArnMonitor
   and present childs are directly sent as arn-event.
 
 
-Destroy
+Destroy    {#int_destroy}
 -------
 * Command arives with a netId.
 
 * Corresponding ItemNet is disabled (set as defunct).
 
-* All link-leaves for the ItemNet:s tree is set as retired and each leave is emitting a retired signal.
+* All link-leaves for the ItemNet:s tree is set as retired and each leaf is emitting a retired signal.
 
 * The retired signal is handled by each connected Item. Each Item is sending a linkDestroyed signal to be handled by application code.
   The Items is finally closed and by this the link ref counter is decremented.

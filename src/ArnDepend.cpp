@@ -196,7 +196,7 @@ void  ArnDepend::startMonitor()
 
 void  ArnDepend::echoRefresh()
 {
-    Arn::errorLog( QString(tr("Lost echo, doing refresh for DependEchoCheck monitor=")) + _name,
+    ArnM::errorLog( QString(tr("Lost echo, doing refresh for DependEchoCheck monitor=")) + _name,
                         ArnError::Warning);
     foreach( DepSlot* slot, _depTab) {
         echoCheck("", slot);
@@ -213,7 +213,7 @@ void  ArnDepend::echoCheck( QString echo, DepSlot* slot)
         if (arnItem)  slot = static_cast<DepSlot*>( arnItem->reference());
     }
     if (slot == 0) {
-        Arn::errorLog( QString(tr("Can't get slot for DependEchoCheck monitor=")) + _name,
+        ArnM::errorLog( QString(tr("Can't get slot for DependEchoCheck monitor=")) + _name,
                             ArnError::Undef);
         return;
     }
@@ -248,7 +248,7 @@ void  ArnDepend::stateCheck( DepSlot* slot)
         if (arnItem)  slot = static_cast<DepSlot*>( arnItem->reference());
     }
     if (slot == 0) {
-        Arn::errorLog( QString(tr("Can't get slot for DependStateCheck monitor=")) + _name,
+        ArnM::errorLog( QString(tr("Can't get slot for DependStateCheck monitor=")) + _name,
                             ArnError::Undef);
         return;
     }
@@ -280,7 +280,7 @@ void  ArnDepend::deleteSlot( void* slot_)
     DepSlot*  slot = reinterpret_cast<DepSlot*>( slot_);
     // qDebug() << "deleteSlot monitorName=" << _name;
     if (!_depTab.removeOne( slot)) {
-        Arn::errorLog( QString(tr("Can't get slot for delete Depend monitor=")) + _name,
+        ArnM::errorLog( QString(tr("Can't get slot for delete Depend monitor=")) + _name,
                             ArnError::Undef);
         return;
     }

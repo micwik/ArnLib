@@ -278,7 +278,7 @@ void  ArnSync::doChildsToEvent(ArnItemNet *itemNet)
     QString  path = itemNet->path();
     QStringList  childList = itemNet->childItemsMain();
     foreach (QString childName, childList) {
-        doNewItemEvent( Arn::makePath( path, childName), true, itemNet);
+        doNewItemEvent( ArnM::makePath( path, childName), true, itemNet);
     }
 }
 
@@ -387,8 +387,8 @@ uint  ArnSync::doCommandLs()
     QByteArray  path = _commandMap.value("path");
     _replyMap.add(ARNRECNAME, "Rls").add("path", path);
 
-   if (Arn::isFolder( path)) {
-        QStringList  subitems = Arn::items( path);
+   if (ArnM::isFolder( path)) {
+        QStringList  subitems = ArnM::items( path);
         int  nItems = subitems.size();
 
         for (int i = 0; i < nItems; ++i) {
@@ -465,7 +465,7 @@ void  ArnSync::linkDestroyedHandle()
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
-        Arn::errorLog( QString(tr("Can't get ArnItemNet sender for itemRemove")),
+        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for itemRemove")),
                             ArnError::Undef);
         return;
     }
@@ -493,7 +493,7 @@ void  ArnSync::doArnEvent( QByteArray type, QByteArray data, bool isLocal)
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
-        Arn::errorLog( QString(tr("Can't get ArnItemNet sender for doArnEvent")),
+        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for doArnEvent")),
                             ArnError::Undef);
         return;
     }
@@ -529,7 +529,7 @@ void  ArnSync::addToFluxQue()
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
-        Arn::errorLog( QString(tr("Can't get ArnItemNet sender for itemChanged")),
+        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for itemChanged")),
                             ArnError::Undef);
         return;
     }
@@ -557,7 +557,7 @@ void  ArnSync::doNewItemEvent( QString path, bool isOld, ArnItemNet* itemNet_)
     ArnItemNet*  itemNet;
     itemNet = itemNet_ ? itemNet_ : qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
-        Arn::errorLog( QString(tr("Can't get ArnItemNet sender for newItemEvent")),
+        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for newItemEvent")),
                             ArnError::Undef);
         return;
     }
@@ -626,7 +626,7 @@ void  ArnSync::addToModeQue()
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
-        Arn::errorLog( QString(tr("Can't get ArnItemNet sender for itemModeChanged")),
+        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for itemModeChanged")),
                             ArnError::Undef);
         return;
     }

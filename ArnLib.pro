@@ -70,8 +70,10 @@ HEADERS += src/ArnLib_global.hpp \
     src/ArnSync.hpp
 
 OTHER_FILES += \
-    doc/description.txt \
-    README.md
+    doc/Internals.md \
+    README.md \
+    doc/Description.md \
+    examples/Examples.txt
 
 
 ### Install

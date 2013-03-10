@@ -47,7 +47,7 @@ class ArnLink : public QObject
 {
     Q_OBJECT
 
-    friend class Arn;
+    friend class ArnM;
 
 public:
     struct Type {
@@ -71,10 +71,14 @@ public:
         MQ_DECLARE_FLAGS( Flags)
     };
     struct NameF {
+        //! Selects a format for path or item name
         enum E {
-            NoFolderMark = 0x01,  /// Only on discrete names, no effect on path
+            //! Only on discrete names, no effect on path. "test/" ==> "test"
+            NoFolderMark = 0x01,
+            //! Path: "/@/test" ==> "//test", Item: "@" ==> ""
             EmptyOk      = 0x02,
-            Relative     = 0x04   /// Only on path, no effect on discrete names
+            //! Only on path, no effect on discrete names. "/test/value" ==> "test/value"
+            Relative     = 0x04
         };
         MQ_DECLARE_FLAGS( NameF)
     };

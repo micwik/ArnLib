@@ -160,7 +160,7 @@ void  ArnScript::errorLog( QString errText, ArnError err, void* reference)
 {
     QString  scriptText = " Script:" + _idName;
 
-    Arn::errorLog( errText + scriptText, err, reference);
+    ArnM::errorLog( errText + scriptText, err, reference);
     emit errorText( errText);
 }
 

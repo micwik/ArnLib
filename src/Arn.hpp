@@ -91,53 +91,213 @@ public:
 };
 
 
+//! Arn main class
+/*!
+[About Arn Data Object](\ref gen_arnobj)
 
-class ARNLIBSHARED_EXPORT Arn : public QObject
+This singleton class is the main reference to the Active Registry Network.
+ */
+class ARNLIBSHARED_EXPORT ArnM : public QObject
 {
 Q_OBJECT
     friend class ArnItem;
 
 public:
-    static Arn&  instance();
-    static Arn&  getInstance()  {return instance();}  // For compatibility ... (do not use)
+    static ArnM&  instance();
+
+    //! \deprecated
+    static ArnM&  getInstance()  {return instance();}  // For compatibility ... (do not use)
+
     static void  setConsoleError( bool isConsoleError);
+
+    //! Set system default skipping of equal value
+    /*! \param[in] isIgnore If true, assignment of equal value don't give a changed signal.
+     */
     static void  setDefaultIgnoreSameValue( bool isIgnore = true);
+
+    /*! \retval true if default skipping equal values
+     *  \see setDefaultIgnoreSameValue()
+     */
     static bool  defaultIgnoreSameValue();
+
+    /*! \retval true if this is the main thread in the application
+     */
     static bool  isMainThread();
+
+    /*! \retval true if this is a threaded application
+     */
     static bool  isThreadedApp();
+
+    //! Test if _path_ is a _provider path_
+    /*! [About Bidirectional Arn Data Objects](\ref gen_bidirArnobj)
+     *  \param[in] path.
+     *  \retval true if _path_ is a _provider path_, i.e. ends with a "!".
+     */
     static bool  isProviderPath( const QString& path);
+
+    /*! \return The itemName, i.e. the last part of the path after last "/"
+     */
     static QString  itemName( const QString& path);
+
+    //! Get substring for child from a path
+    /*! _parentPath_ don't have to end with a "/", if missing it's added.
+     *
+     *  If _posterityPath_ not starts with _parentPath_, QString() is returned.
+     *  Otherwise given the _posterityPath_ the child to _parentPath_ is returned.
+     *
+     *  Example 1: _posterityPath_ = "//Measure/depth/value",
+     *  _parentPath_ = "//Measure/" ==> return = "//Measure/depth/"
+     *
+     *  Example 2: _posterityPath_ = "//Measure/depth/value",
+     *  _parentPath_ = "//Measure/depth/" ==> return = //Measure/depth/value"
+     *  \param[in] parentPath
+     *  \param[in] posterityPath
+     *  \return The _child path_
+     */
     static QString  childPath( const QString& parentPath, const QString& posterityPath);
+
+    //! Make a path from a parent and an item name
+    /*! _parentPath_ don't have to end with a "/", if missing it's added.
+     *  Empty folder _itemName_ is allowed on returned path.
+     *
+     *  Example: _parentPath_ = "//Measure/depth/", _itemName_ = "value"
+     *  ==> return = "//Measure/depth/value"
+     *  \param[in] parentPath
+     *  \param[in] itemName
+     *  \return The _path_
+     */
     static QString  makePath( const QString& parentPath, const QString& itemName);
+
+    //! Make a path from a parent and an additional relative path
+    /*! _parentPath_ don't have to end with a "/", if missing it's added.
+     *
+     *  Example: _parentPath_ = "//Measure/", _childRelPath_ = "depth/value"
+     *  ==> return = "//Measure/depth/value"
+     *  \param[in] parentPath
+     *  \param[in] childRelPath
+     *  \param[in] nameF is the path naming format
+     *  \return The _path_
+     *  \see convertPath()
+     */
     static QString  addPath( const QString& parentPath, const QString& childRelPath,
                              ArnLink::NameF nameF = ArnLink::NameF::EmptyOk);
+
+    //! Convert a path to a specific format
+    /*! Example: _path_ = "//Measure/depth/value", nameF = Relative
+     *  ==> return = "@/Measure/depth/value"
+     *  \param[in] path
+     *  \param[in] nameF is the path naming format
+     *  \return The converted _path_
+     */
     static QString  convertPath( const QString& path,
                                  ArnLink::NameF nameF = ArnLink::NameF::EmptyOk);
+    //! Get the bidirectional twin to a given _path_
+    /*! Example: _path_ = "//Measure/depth/value!"
+     *  ==> return = "//Measure/depth/value"
+     *  \param[in] path
+     *  \return The twin _path_
+     *  \see \ref gen_bidirArnobj
+     */
     static QString  twinPath( const QString& path);
 
+    //! Get the value of _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \return The _Arn Data Object_ as an _integer_
+     */
     static int   valueInt( const QString& path);
+
+    //! Get the value of _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \return The _Arn Data Object_ as a _double_
+     */
     static double   valueDouble( const QString& path);
+
+    //! Get the value of _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \return The _Arn Data Object_ as a _QString_
+     */
     static QString  valueString( const QString& path);
+
+    //! Get the value of _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \return The _Arn Data Object_ as a _QByteArray_
+     */
     static QByteArray  valueByteArray( const QString& path);
+
+    //! Get the value of _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \return The _Arn Data Object_ as a _QVariant_
+     */
     static QVariant  valueVariant( const QString& path);
 
+    //! Get the childrens of the folder at _path_
+    /*! Example: return list = {"test"; "folder/"; "@/"; "value"}
+     *  \param[in] path
+     *  \return The items (children)
+     */
     static QStringList  items( const QString& path);
+
+    /*! \param[in] path
+     *  \retval true if _Arn Data Object_ exist at _path_
+     */
     static bool  exist(const QString& path);
+
+    /*! \param[in] path
+     *  \retval true if _Arn Data Object_ at _path_ is a folder
+     */
     static bool  isFolder( const QString& path);
+
+    /*! \param[in] path
+     *  \retval true if _Arn Data Object_ at _path_ is a leaf (non folder)
+     */
     static bool  isLeaf( const QString& path);
 
+    //! Assign an _integer_ to an _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \param[in] value to be assigned
+     */
     static void  setValue( const QString& path, int value);
+
+    //! Assign a _double_ to an _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \param[in] value to be assigned
+     */
     static void  setValue( const QString& path, double value);
+
+    //! Assign a _QString_ to an _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \param[in] value to be assigned
+     */
     static void  setValue( const QString& path, const QString& value);
+
+    //! Assign a _QByteArray_ to an _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \param[in] value to be assigned
+     */
     static void  setValue( const QString& path, const QByteArray& value);
+
+    //! Assign a _QVariant_ to an _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \param[in] value to be assigned
+     */
     static void  setValue( const QString& path, const QVariant& value);
 
     static void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
     static QString  errorSysName();
+
+    //! Give information about this library
+    /*! \return The info, e.g. "Name=ArnLib Ver=1.0.0 Date=12-12-30 Time=00:37"
+     */
     static QByteArray  info();
 
 public slots:
+    //! Destroy the _Arn Data Object_ at _path_
+    /*! The link (_Arn Data Object_) will be removed locally, from server and all
+     *  connected clients.
+     *  \param[in] path
+     */
     static void  destroyLink( const QString& path);
+
     static void  setupErrorlog( QObject* errLog);
 
 signals:
@@ -162,10 +322,10 @@ private slots:
 
 private:
     /// Private constructor/destructor to keep this class singleton
-    Arn();
-    Arn( const Arn&);
-    ~Arn();
-    Arn&  operator=( const Arn&);
+    ArnM();
+    ArnM( const ArnM&);
+    ~ArnM();
+    ArnM&  operator=( const ArnM&);
 
     static ArnLink*  linkMain( const QString& path, ArnLink::Flags flags,
                                ArnItem::SyncMode syncMode = ArnItem::SyncMode());

@@ -311,7 +311,7 @@ void  ArnPersist::doArnUpdate()
     ArnItemPersist*  item;
     item = qobject_cast<ArnItemPersist*>( sender());
     if (!item) {
-        Arn::errorLog( QString(tr("Can't get ArnItemPersist sender for doArnUpdate")),
+        ArnM::errorLog( QString(tr("Can't get ArnItemPersist sender for doArnUpdate")),
                             ArnError::Undef);
         return;
     }
@@ -324,7 +324,7 @@ void  ArnPersist::doArnUpdate()
             updateDbValue( storeId, item->arnExport());
         }
         else {
-            Arn::errorLog( QString(tr("Can't get persist storeId for doArnUpdate: path=")) +
+            ArnM::errorLog( QString(tr("Can't get persist storeId for doArnUpdate: path=")) +
                                            item->path(), ArnError::Undef);
         }
         break;
@@ -348,7 +348,7 @@ void  ArnPersist::doArnUpdate()
 bool  ArnPersist::setMountPoint( const QString& path)
 {
     if (!_db->isOpen()) {
-        Arn::errorLog( QString(tr("DataBase required before mountPoint")),
+        ArnM::errorLog( QString(tr("DataBase required before mountPoint")),
                             ArnError::NotOpen);
         return false;
     }
@@ -385,7 +385,7 @@ bool  ArnPersist::setupDataBase( QString dbName)
     //db.setUserName("acarlson");
     //db.setPassword("1uTbSbAs");
     if (!_db->open()) {
-        Arn::errorLog( QString(tr("DataBase open: ") + _db->lastError().text()),
+        ArnM::errorLog( QString(tr("DataBase open: ") + _db->lastError().text()),
                             ArnError::ConnectionError);
         return false;
     }
@@ -606,7 +606,7 @@ void  ArnPersist::doLoadFiles()
 
 void  ArnPersist::loadFile( QString relPath)
 {
-    QString  arnPath = Arn::convertPath( relPath, ArnLink::NameF::EmptyOk);
+    QString  arnPath = ArnM::convertPath( relPath, ArnLink::NameF::EmptyOk);
     qDebug() << "Persist loadFile: relPath=" << relPath;
 
     ArnItemPersist*  item;
@@ -670,7 +670,7 @@ void  ArnPersist::destroyRpc()
 void  ArnPersist::convertFileList( QStringList &files, ArnLink::NameF nameF)
 {
     for (int i = 0; i < files.size(); ++i) {
-        files[i] = Arn::convertPath( files.at(i), nameF);
+        files[i] = ArnM::convertPath( files.at(i), nameF);
     }
 }
 
@@ -714,7 +714,7 @@ void  ArnPersist::sapiLs( QString path)
 
 void  ArnPersist::sapiRm( QString path)
 {
-    QString  relPath = Arn::convertPath( path, ArnLink::NameF::Relative);
+    QString  relPath = ArnM::convertPath( path, ArnLink::NameF::Relative);
     bool  isOk = _persistDir->remove( relPath);
     if (isOk) {
         QString  filePath = _persistDir->absoluteFilePath( relPath);
@@ -730,7 +730,7 @@ void  ArnPersist::sapiTouch( QString path)
     if (path.endsWith('/'))  return;  // Don't touch a dir
 
     bool  isOk = true;
-    QString  relPath = Arn::convertPath( path, ArnLink::NameF::Relative);
+    QString  relPath = ArnM::convertPath( path, ArnLink::NameF::Relative);
     QString  filePath = _persistDir->absoluteFilePath( relPath);
     // Make any needed directories
     isOk &= _persistDir->mkpath( QFileInfo( filePath).dir().path());

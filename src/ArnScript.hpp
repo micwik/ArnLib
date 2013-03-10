@@ -144,32 +144,32 @@ class ARNLIBSHARED_EXPORT ArnInterface : public QObject
 public:
     explicit  ArnInterface( QObject* parent = 0) {Q_UNUSED(parent);}
 
-    QString  info()                             {return QString::fromUtf8( Arn::instance().info().constData());}
+    QString  info()                             {return QString::fromUtf8( ArnM::instance().info().constData());}
 
 signals:
 
 public slots:
-    QVariant  value( const QString& path)       {return Arn::instance().valueVariant( path);}
-    QString  string( const QString& path)       {return Arn::instance().valueString( path);}
-    double  num( const QString& path)           {return Arn::instance().valueDouble( path);}
-    QStringList  items( const QString& path)    {return Arn::instance().items( path);}
-    bool  exist(const QString& path)            {return Arn::instance().exist( path);}
+    QVariant  value( const QString& path)       {return ArnM::instance().valueVariant( path);}
+    QString  string( const QString& path)       {return ArnM::instance().valueString( path);}
+    double  num( const QString& path)           {return ArnM::instance().valueDouble( path);}
+    QStringList  items( const QString& path)    {return ArnM::instance().items( path);}
+    bool  exist(const QString& path)            {return ArnM::instance().exist( path);}
 
-    bool  isFolder( const QString& path)        {return Arn::instance().isFolder( path);}
-    bool  isLeaf( const QString& path)          {return Arn::instance().isLeaf( path);}
+    bool  isFolder( const QString& path)        {return ArnM::instance().isFolder( path);}
+    bool  isLeaf( const QString& path)          {return ArnM::instance().isLeaf( path);}
     void  setValue( const QString& path, const QVariant& value)
-                                                {Arn::instance().setValue( path, value);}
+                                                {ArnM::instance().setValue( path, value);}
     void  setString( const QString& path, const QString& value)
-                                                {Arn::instance().setValue( path, value);}
+                                                {ArnM::instance().setValue( path, value);}
     void  setNum( const QString& path, double value)
-                                                {Arn::instance().setValue( path, value);}
+                                                {ArnM::instance().setValue( path, value);}
     //// "static" help functions
-    QString  itemName( const QString& path)     {return Arn::instance().itemName( path);}
+    QString  itemName( const QString& path)     {return ArnM::instance().itemName( path);}
     QString  childPath( const QString &parentPath, const QString &posterityPath)
-                                                {return Arn::instance().childPath( parentPath, posterityPath);}
+                                                {return ArnM::instance().childPath( parentPath, posterityPath);}
 
     QString  makePath( const QString &parentPath, const QString &itemName)
-                                                {return Arn::instance().makePath( parentPath, itemName);}
+                                                {return ArnM::instance().makePath( parentPath, itemName);}
 private:
 };
 

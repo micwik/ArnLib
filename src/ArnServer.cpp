@@ -56,7 +56,7 @@ void  ArnServer::start(int port)
             port = 2022;
             break;
         default:
-            Arn::errorLog( QString(tr("Unknown Arn server Type:")) + QString::number( _serverType),
+            ArnM::errorLog( QString(tr("Unknown Arn server Type:")) + QString::number( _serverType),
                                 ArnError::Undef);
             return;
         }
@@ -68,7 +68,7 @@ void  ArnServer::start(int port)
                 SLOT(tcpConnection()));
     }
     else {
-        Arn::errorLog( QString(tr("Failed start Arn Server Port:")) + QString::number( port),
+        ArnM::errorLog( QString(tr("Failed start Arn Server Port:")) + QString::number( port),
                             ArnError::ConnectionError);
     }
 }

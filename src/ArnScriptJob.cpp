@@ -326,7 +326,7 @@ bool  ArnScriptJobB::isStopped()  const
 
 void  ArnScriptJobB::errorLog( QString txt)
 {
-    Arn::errorLog( txt + " name=" + name(), ArnError::ScriptError);
+    ArnM::errorLog( txt + " name=" + name(), ArnError::ScriptError);
     emit errorText( txt);
 }
 

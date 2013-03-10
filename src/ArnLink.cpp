@@ -36,7 +36,7 @@
 #include <limits>
 
 
-QAtomicInt ArnLink::_idCount( 1);
+QAtomicInt ArnLink::_idCount(1);
 
 
 void ArnLink::resetHave()

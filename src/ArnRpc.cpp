@@ -725,7 +725,7 @@ void  ArnRpc::errorLog( QString errText, ArnError err, void* reference)
     if (_pipe) {
         idText += " pipe:" + _pipe->path();
     }
-    Arn::errorLog( errText + idText, err, reference);
+    ArnM::errorLog( errText + idText, err, reference);
 }
 
 

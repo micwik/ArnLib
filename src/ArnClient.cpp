@@ -154,7 +154,7 @@ void  ArnClient::newNetItemProxy( ArnThreadCom *threadCom,
 
 ArnItemNet*  ArnClient::newNetItem( QString path, ArnItem::SyncMode syncMode, bool* isNewPtr)
 {
-    if (Arn::isMainThread()) {
+    if (ArnM::isMainThread()) {
         return _arnNetSync->newNetItem( path, syncMode, isNewPtr);
     }
     else {  // Threaded - must be threadsafe
@@ -188,7 +188,7 @@ void  ArnClient::createNewItem( QString path)
 void  ArnClient::tcpError(QAbstractSocket::SocketError socketError)
 {
     QString  errTextSum = QString(tr("TCP Client Msg:")) + _socket->errorString();
-    Arn::errorLog( errTextSum, ArnError::ConnectionError);
+    ArnM::errorLog( errTextSum, ArnError::ConnectionError);
     emit tcpError( _socket->errorString(), socketError);
 
     if (_isAutoConnect) {

@@ -26,7 +26,7 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 // THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+//! [code]
 #include "ServerMain.hpp"
 #include <ArnLib/ArnItem.hpp>
 #include <QTime>
@@ -59,7 +59,7 @@ ServerMain::ServerMain( QObject* parent) :
 
 void  ServerMain::doNewSession( QString path)
 {
-    if (!Arn::isProviderPath( path))  return;  // Only provider pipe is used
+    if (!ArnM::isProviderPath( path))  return;  // Only provider pipe is used
 
     ChatSapi*  soleSapi = new ChatSapi( this);
     soleSapi->open( path, ArnSapi::Mode::Provider);
@@ -103,3 +103,4 @@ void  ServerMain::chatInfoQ()
     Q_ASSERT(sapi);
     sapi->rq_info("Arn Chat Demo", "1.0");
 }
+//! [code]

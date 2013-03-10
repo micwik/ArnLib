@@ -26,7 +26,7 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 // THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+//! [code]
 #include "MainWindow.hpp"
 #include "tmp/ui_MainWindow.h"
 
@@ -105,3 +105,4 @@ void  MainWindow::chatInfo( QString name, QString ver)
     _ui->appNameLabel->setText( name);
     _ui->verLabel->setText( ver);
 }
+//! [code]
