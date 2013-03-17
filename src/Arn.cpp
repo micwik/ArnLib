@@ -52,8 +52,10 @@ const bool gDebugMonitor   = 0;
 
 /////////////// ArnThreadCom
 
+//! \cond ADV
 class ArnThreadComStorage : public QThreadStorage<ArnThreadCom*> {};
 ArnThreadComStorage*  ArnThreadCom::_threadStorage = new ArnThreadComStorage;
+//! \endcond
 
 
 ArnThreadCom*  ArnThreadCom::getThreadCom()
@@ -433,7 +435,8 @@ void  ArnM::setValue( const QString& path, const QVariant& value)
 }
 
 
-/// Must onlty be called fronm main thread (application)
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+// Must onlty be called fronm main thread (application)
 ArnLink*  ArnM::root()
 {
     return instance()._root;
@@ -618,6 +621,7 @@ ArnLink*  ArnM::addTwinMain( ArnLink* link, ArnItem::SyncMode syncMode, ArnLink:
 
     return link->twinLink();
 }
+#endif
 
 
 ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, ArnLink::Flags flags)

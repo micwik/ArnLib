@@ -42,6 +42,7 @@
 #include <QByteArray>
 #include <QObject>
 
+//! Similar to Q_ARG but with added argument label (parameter name)
 #define MQ_ARG(type, label, data) MQArgument<type >(#type, #label, data)
 
 class RpcReceiverStorage;
@@ -49,7 +50,7 @@ class DynamicSignals;
 class QMetaMethod;
 class QRegExp;
 
-
+//! Similar to QGenericArgument but with added argument label (parameter name)
 class ARNLIBSHARED_EXPORT MQGenericArgument : public QGenericArgument
 {
 public:
@@ -64,6 +65,7 @@ private:
 };
 
 
+//! Similar to QArgument but with added argument label (parameter name)
 template <class T>
 class MQArgument: public MQGenericArgument
 {
@@ -74,33 +76,96 @@ public:
 };
 
 
+//! Remote Procedure Call.
+/*!
+[About RPC and SAPI](\ref gen_rpc)
+
+This is the basic funtionality of RPC. It's recommended to use ArnSapi which uses
+a higher level model. For now the ArnRpc class is more sparsely documented.
+
+<b>Example usage</b> \n \code
+    // In class declare  (MyClass)
+    ArnRpc*  _rpcCommon;
+
+    // In class code  (MyClass)
+    _rpcCommon = new ArnRpc( this);
+    _rpcCommon->setIncludeSender( true);
+    _rpcCommon->setMethodPrefix("rpc_");
+    _rpcCommon->setReceiver( this);
+    _rpcCommon->setMode( ArnRpc::Mode::Provider);
+    _rpcCommon->open("//Pipes/pipeCommon");
+.
+.
+void  MyClass::rpc_test( ArnRpc* sender, QByteArray ba, QString str, int i)
+{
+    if (sender) qDebug() << "RPC sender=" << sender->pipePath();
+    qDebug() << "RPC-test ba=" << ba << " str=" << str << " int=" << i;
+}
+
+void  MyClass::rpc_ver( ArnRpc* sender)
+{
+    // Reply to requester the version text
+    sender->invoke("ver", MQ_ARG( QString, verText, "MySytem Version 1.0"));
+}
+\endcode
+*/
 class ARNLIBSHARED_EXPORT ArnRpc : public QObject
 {
     Q_OBJECT
 public:
     struct Mode{
         enum E {
+            //! Provider side (opposed to requester)
             Provider      = 0x01,
+            //! Use _AutoDestroy_ for the pipe, i.e. it is closed when tcp/ip is broken
             AutoDestroy   = 0x02,
+            //! Use an unique uuid in the pipe name
             UuidPipe      = 0x04,
+            //! If guarantied no default arguments, member name overload is ok
             NoDefaultArgs = 0x08,
+            //! Debug mode, dumping done batch connections
             Debug         = 0x10,
-            // Convenience
+            //! Convenience, combined _UuidPipe_ and _AutoDestroy_
             UuidAutoDestroy = UuidPipe | AutoDestroy
         };
         MQ_DECLARE_FLAGS( Mode)
     };
 
     explicit  ArnRpc( QObject* parent = 0);
+
+    //! Get the path for the used _pipe_
+    /*! \retval false if error
+     *  \see \ref gen_bidirArnobj
+     */
     QString  pipePath() const;
+
     bool  open( QString pipePath);
     void  setPipe( ArnItem* pipe);
     void  setReceiver( QObject* receiver);
     void  setMethodPrefix( QString prefix);
     void  setIncludeSender( bool v);
     void  setMode( Mode mode);
+
+    //! Get the mode
+    /*! \return current _mode_
+     */
     Mode  mode()  const;
     void  addSenderSignals( QObject* sender, QString prefix);
+
+    //! Calls a named remote procedure
+    /*! This is the low level way to call a remote procedure. It can freely call
+     *  anything without declaring it. For high level calls use ArnSapi.
+     *
+     *  This function works similar to QMetaObject::invokeMethod().
+     *  The called name is prefixed before the final call is made.
+     *  Using the label in MQ_ARG() makes dubugging easier, as the parameter is named.
+     *
+     *  Example: `rpc->invoke("myfunc", MQ_ARG( QString, mypar, "Test XYZ"));`
+     *
+     *  \param[in] funcName is the name of the called procedure.
+     *  \param[in] val0 first arg.
+     *  \param[in] val1 second arg.
+     */
     bool invoke( const QString& funcName,
                  MQGenericArgument val0 = MQGenericArgument(0),
                  MQGenericArgument val1 = MQGenericArgument(),
@@ -111,19 +176,55 @@ public:
                  MQGenericArgument val6 = MQGenericArgument(),
                  MQGenericArgument val7 = MQGenericArgument());
 
-    void  sendText( QString txt);
     ArnRpc*  rpcSender();
     static ArnRpc*  rpcSender( QObject* receiver);
+
+    //! Make batch connection from one senders signals to another receivers slots
+    /*! Used when there is a pattern in the naming of the signals and slots.
+     *  It's assumed that naming for slots are unique regardless of its case i.e.
+     *  using both test() and tesT() are not allowed.
+     *
+     *  Example: `batchConnect( _commonSapi, QRegExp("^rq_(.+)"), this, "chat\\1");`
+     *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
+     *
+     *  \param[in] sender is the sending QObject.
+     *  \param[in] rgx is the regular expression for selecting signals.
+     *  \param[in] receiver is the receiving QObject.
+     *  \param[in] replace is the conversion for naming the slots.
+     *  \param[in] mode Used modes: _Debug_, _NoDefaultArgs_
+     */
     static void  batchConnect( const QObject* sender, const QRegExp& rgx,
                                const QObject* receiver, const QString &replace,
                                Mode mode = Mode());
 
+    //! Make batch connection from this ArnRpc:s signals to another receivers slots
+    /*! Example: `_commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");`
+     *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
+     *
+     *  \param[in] rgx is the regular expression for selecting signals.
+     *  \param[in] receiver is the receiving QObject.
+     *  \param[in] replace is the conversion for naming the slots.
+     *  \param[in] mode
+     *  \see batchConnect(const QObject*, const QRegExp&, const QObject*,
+     *       const QString&, Mode)
+     */
     void  batchConnect( const QRegExp& rgx,
                         const QObject* receiver, const QString &replace,
                         Mode mode = Mode()) {
         batchConnect( this, rgx, receiver, replace, mode);
     }
 
+    //! Make batch connection from one senders signals to this ArnRpc:s slots
+    /*! Example: `_commonSapi.batchConnect( _commonSapi, QRegExp("^rq_(.+)"), "chat\\1");`
+     *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
+     *
+     *  \param[in] sender is the sending QObject.
+     *  \param[in] rgx is the regular expression for selecting signals.
+     *  \param[in] replace is the conversion for naming the slots.
+     *  \param[in] mode
+     *  \see batchConnect(const QObject*, const QRegExp&, const QObject*,
+     *       const QString&, Mode)
+     */
     void  batchConnect( const QObject* sender, const QRegExp& rgx,
                         const QString &replace,
                         Mode mode = Mode()) {
@@ -131,10 +232,26 @@ public:
     }
 
 signals:
+    //! Signal emitted when the used pipe is closed.
+    /*! The _pipe_ closes when its _Arn Data Object_ is destroyed, i.e. the session
+     *  is considered ended.
+     */
     void  pipeClosed();
+
+    //! Signal emitted when a general text message is received.
+    /*! The text message is received from the other end of the used _pipe_.
+     *  \param[in] text is the received text
+     *  \see sendText();
+     */
     void  textReceived( QString text);
 
 public slots:
+    //! Send a general text message to the other end of the used _pipe_
+    /*! Is used by ArnRpc to give errors and help messages, mostly for debugging.
+     *  \param[in] txt is the text to be sent
+     *  \see textReceived();
+     */
+    void  sendText( QString txt);
 
 private slots:
     void  pipeInput( QByteArray data);

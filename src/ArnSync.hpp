@@ -49,6 +49,7 @@ class QTcpSocket;
 // class ArnItemNet;
 
 
+//! \cond ADV
 class ArnSync : public QObject
 {
     Q_OBJECT
@@ -127,5 +128,6 @@ private:
     bool  _isSending;
     bool  _isClientSide;      // True if this is the client side of the connection
 };
+//! \endcond
 
 #endif // ARNSYNC_HPP

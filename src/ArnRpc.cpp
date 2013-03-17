@@ -40,6 +40,7 @@
 #define RPC_STORAGE_NAME "_ArnRpcStorage"
 
 
+//! \cond ADV
 class RpcReceiverStorage : public QObject
 {
 public:
@@ -127,6 +128,7 @@ bool  DynamicSignals::addSignal( QObject *sender, int signalId, QByteArray funcN
     ++_slotIdCount;
     return status;
 }
+//! \endcond
 
 
 ArnRpc::ArnRpc( QObject* parent) :

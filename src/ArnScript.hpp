@@ -45,6 +45,7 @@ class ArnClient;
 class ArnScript;
 
 
+//! \cond ADV
 class ARNLIBSHARED_EXPORT ArnItemProto : public QObject, public QScriptable
 {
     Q_OBJECT
@@ -172,6 +173,7 @@ public slots:
                                                 {return ArnM::instance().makePath( parentPath, itemName);}
 private:
 };
+//! \endcond
 
 
 class ARNLIBSHARED_EXPORT ArnScript : public QObject

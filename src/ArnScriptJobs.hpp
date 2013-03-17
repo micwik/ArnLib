@@ -40,6 +40,7 @@
 #include <QObject>
 
 
+//! \cond ADV
 class ArnScriptJobThread : public QThread
 {
 Q_OBJECT
@@ -80,6 +81,7 @@ private:
     int  _runningId;
     bool  _scriptChanged;
 };
+//! \endcond
 
 
 class ARNLIBSHARED_EXPORT ArnScriptJobs : public QObject

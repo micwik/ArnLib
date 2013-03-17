@@ -43,16 +43,52 @@
 class QTimer;
 struct ArnDependSlot;
 
+//! Class for advertising that a _service_ is available.
+/*!
+Additionally it's possible to indicate the _state_ of the _service_.
+The _state_ can either be indicated by a logic name or by an id number whichever
+is prefered.
 
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnDependOffer* _depOffer;
+
+    // In class code
+    _depOffer = new ArnDependOffer( this);
+    _depOffer->advertise("MyService");  // Service now available
+\endcode
+*/
 class ARNLIBSHARED_EXPORT ArnDependOffer : public QObject
 {
     Q_OBJECT
 public:
     explicit ArnDependOffer( QObject* parent = 0);
+
+    //! Advertise an available _service_
+    /*! \param[in] serviceName is the name of the _service_.
+     */
     void  advertise( QString serviceName);
+
+    //! Set the _state_ of the _service_ by a logic name.
+    /*! The _state_ starts of by "Start" as default.
+     *  \param[in] name is the _state_ name.
+     */
     void  setStateName( const QString& name);
+
+    /*! \return The logic _state_ name, e.g. the default "Start"
+     *  \see setStateName()
+     */
     QString  stateName() const;
+
+    //! Set the _state_ of the _service_ by an id number.
+    /*! The _state_ starts of by 0 as default.
+     *  \param[in] id is the _state_ id number.
+     */
     void  setStateId( int id);
+
+    /*! \return The _state_ id number.
+     *  \see setStateId()
+     */
     int  stateId() const;
 
 private slots:
@@ -66,6 +102,30 @@ private:
 };
 
 
+//! Class for setting up dependencis to needed services.
+/*!
+The services can be both system types available by internal Arn,
+and custom application types. The system types have a service name starting with "$".
+
+This is typically used when an application needs a service to continue. When using
+persistent values, a client will need to know when they have been synced from the
+server. Then it's convenient to setup a dependency for the system service "$Persist".
+
+When all dependent services are available, the completed() signal is emitted.
+
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnDepend*  _arnDepend;
+
+    // In class code
+    _arnDepend = new ArnDepend( this);
+    _arnDepend->setMonitorName("MyApp_Monitor");  // Optional for debug
+    _arnDepend->add("$Persist");
+    _arnDepend->add("MyService");
+    _arnDepend->startMonitor();
+    connect( _arnDepend, SIGNAL(completed()), this, SLOT(arnDependOk()));
+\endcode
+*/
 class ARNLIBSHARED_EXPORT ArnDepend : public QObject
 {
     Q_OBJECT
@@ -74,12 +134,29 @@ public:
 
     explicit ArnDepend( QObject* parent = 0);
     ~ArnDepend();
+
+    //! Add a dependency for a _service_
+    /*! \param[in] serviceName is the name of the needed _service_.
+     *  \param[in] stateId is the needed _state_ id number. -1 is don't care.
+     */
     void  add( QString serviceName, int stateId = -1);
+
+    //! Add a dependency for a _service_
+    /*! \param[in] serviceName is the name of the needed _service_.
+     *  \param[in] stateName is the needed _state_ name.
+     */
     void  add( QString serviceName, QString stateName);
+
+    //! Set an optional monitor name for debugging
+    /*! \param[in] name is the monitor name.
+     */
     void  setMonitorName( QString name);
+
+    //! Starting the dependency monitor
     void  startMonitor();
 
 signals:
+    //! Signal emitted when all dependent services are available.
     void  completed();
 
 private slots:

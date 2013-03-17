@@ -101,6 +101,7 @@ void  ArnDependOffer::requestReceived( QString req)
 
 ///////////// Depend
 
+//! \cond ADV
 struct ArnDependSlot
 {
     QString  serviceName;
@@ -119,6 +120,7 @@ struct ArnDependSlot
         isStateOk     = false;
     }
 };
+//! \endcond
 
 
 ArnDepend::ArnDepend( QObject* parent) :

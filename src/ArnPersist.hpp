@@ -48,6 +48,7 @@ class QDir;
 class QStringList;
 
 
+//! \cond ADV
 class ArnItemPersist : public ArnItem
 {
     Q_OBJECT
@@ -122,8 +123,29 @@ private slots:
 
 private:
 };
+//! \endcond
 
 
+//! Class for handling persistent _Arn Data object_.
+/*!
+[About Persistent Arn Data Object](\ref gen_persistArnobj)
+
+This class is used at an _ArnServer_ to implemennt persistent objects.
+
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnPersist  *_persist;
+    VcsGit  *_git;
+
+    // In class code
+    _persist = new ArnPersist( this);
+    _persist->setupDataBase("persist.db");
+    _persist->setArchiveDir("archive");  // Use this directory for backup
+    _persist->setPersistDir("persist");  // use this directory for VCS persist files
+    _persist->setMountPoint("/");
+    _persist->setVcs( _git);
+\endcode
+*/
 class ARNLIBSHARED_EXPORT ArnPersist : public QObject
 {
     Q_OBJECT
@@ -132,11 +154,52 @@ class ARNLIBSHARED_EXPORT ArnPersist : public QObject
 public:
     explicit ArnPersist( QObject* parent = 0);
     ~ArnPersist();
+    //! Set the persistent enabled tree path
+    /*! Mountpoint is a folder. When an _Arn Data Object_ change to _Save_ mode in this
+     *  folder or anywhere below in the tree, it will be treated as a persistent object.
+     *  \param[in] path is the persistent enabled tree.
+     *  \retval false if error.
+     *  \see \ref gen_persistArnobj
+     */
     bool  setMountPoint( const QString& path);
+
+    //! Set the VCS persistent file directory _root_
+    /*! In this directory and below, all VCS persistent files are stored.
+     *  The _path_ correspond to the _root_ in Arn.
+     *
+     *  Example: _path_ is set to "/usr/local/arn_persist". There is a file stored at
+     *  "/usr/local/arn_persist/@/doc/help.html". This file will be mapped to Arn at
+     *  "//doc/help.html".
+     *  \param[in] path is the persistent file directory _root_.
+     *  \see setVcs()
+     *  \see \ref gen_persistArnobj
+     */
     void  setPersistDir( const QString& path);
+
+    //! Set the persistent database backup directory
+    /*! In this directory, all backup files are stored.
+     *  \param[in] path is the persistent file directory _root_.
+     *  \see doArchive()
+     *  \see \ref gen_persistArnobj
+     */
     void  setArchiveDir( const QString& path);
+
+    //! Set the _Version Control System_ to be used
+    /*! The VCS is implemented in a class derived from ArnVcs.
+     *  \param[in] vcs is the class implementing the VCS.
+     *  \see setPersistDir()
+     *  \see \ref gen_persistArnobj
+     */
     void  setVcs( ArnVcs* vcs);
+
+    //! Setup the persistent database
+    /*! Starting a SQLite database to store persistent _Arn Data Object_ in.
+     *  \param[in] dbName is the name (and path) of the SQLite database file.
+     *  \see \ref gen_persistArnobj
+     */
     bool  setupDataBase( QString dbName = "persist.db");
+
+    //! \cond ADV
     bool  getDbId( QString path, int& storeId);
     bool  getDbValue( int storeId, QString& path, QByteArray& value);
     bool  getDbValue( QString path, QByteArray& value, int& storeId);
@@ -146,8 +209,15 @@ public:
     bool  updateDbValue( int storeId, QByteArray value);
     bool  updateDbUsed( int storeId, int isUsed);
     bool  updateDbMandatory( int storeId, int isMandatory);
+    //! \endcond
 
 public slots:
+    //! Do a persistent database backup
+    /*! By default the backup file will be marked by date and clock. Optionally a
+     *  custom name can be set for the backup file.
+     *  \param[in] name is the file name of the backup. QString() is default name.
+     *  \see setArchiveDir()
+     */
     bool  doArchive( QString name = QString());
 
 private slots:

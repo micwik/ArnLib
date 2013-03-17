@@ -51,8 +51,11 @@ class QTimer;
 /*!
 [About Arn Data Object](\ref gen_arnobj)
 
-To get a handle to a folder give a path ending with "/", e.g "//Measure/Water/".
-This class is not thread-safe, but the *Arn Data object* is, so each thread should
+When opening an ArnItem to an _Arn Data object_, the ArnItem act as a handle (pointer)
+to the object. There can be any amount of ArnItem:s opened (pointing) to the same
+_Arn Data object_. Deleting the ArnItem won't effect the _Arn Data object_.
+
+This class is not thread-safe, but the _Arn Data object_ is, so each thread should
 have it's own handles i.e ArnItem instances.
 
 <b>Example usage</b> \n \code
@@ -189,9 +192,10 @@ public:
     bool  isIgnoreSameValue();
 
     //! Set an associated external reference
-    /*! This is typically used when having many ArnItems changed signal connected to a
-     *  common slot. The slot can then discover the signalling ArnItem:s associated
-     *  structure for further processing.
+    /*! This is typically used when having many _ArnItems_ changed signal connected
+     *  to a common slot.
+     *  The slot can then discover the signalling ArnItem:s associated structure
+     *  for further processing.
      *  \param[in] reference Any external structure or id.
      *  \see reference()
      */
@@ -501,6 +505,7 @@ signals:
      */
     void  arnLinkDestroyed();
 
+    //! \cond ADV
 protected slots:
     virtual void  modeUpdate( bool isSetup = false);
 
@@ -516,6 +521,7 @@ protected:
     void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
 
     ArnLink*  _link;
+    //! \endcond
 
 private slots:
     void  linkValueUpdated( uint sendId);

@@ -36,6 +36,8 @@
 #include "ArnSapi.hpp"
 
 
+//! \cond ADV
+
 /// Persist Service API
 class ArnPersistSapi : public ArnSapi
 {
@@ -43,7 +45,7 @@ class ArnPersistSapi : public ArnSapi
 public:
     explicit ArnPersistSapi( QObject* parent = 0) : ArnSapi( parent)  {}
 
-Q_SIGNALS:
+signals:
 MQ_PUBLIC_ACCESS
     //// Provider API
     void  pv_vcsLog( int numLog = 100);
@@ -92,6 +94,7 @@ MQ_PUBLIC_ACCESS
     void  rq_vcsLogRecordR( QString txt);
     void  rq_vcsLogR( QStringList refs, QStringList msgs);
 };
+//! \endcond
 
 
 #endif // ARNPERSISTSAPI_HPP

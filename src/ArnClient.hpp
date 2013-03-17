@@ -46,14 +46,50 @@ class QTcpSocket;
 class QTimer;
 
 
+//! Class for connecting to an _Arn Server_.
+/*!
+[About Sharing Arn Data Objects](\ref gen_shareArnobj)
+
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnClient  _arnClient;
+
+    // In class code
+    _arnClient.connectToArn("localhost");
+    _arnClient.setMountPoint("//");
+    _arnClient.setAutoConnect( true);
+\endcode
+*/
 class ARNLIBSHARED_EXPORT ArnClient : public QObject
 {
 Q_OBJECT
 public:
     explicit ArnClient(QObject *parent = 0);
+
+    //! Connect to an _Arn Server_
+    /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
+     *  \param[in] port is the port number (default 2022).
+     */
     void  connectToArn( const QString& arnHost, quint16 port = 0);
+
+    //! Set the sharing tree path
+    /*! Mountpoint is an association to the similarity of mounting a "remote filesystem".
+     *  In Arn the remote "file system" is at the same sub path as the mountpoint,
+     *  e.g. a client having mountpoint "/a/b/" and opening an _Arn Data Object_ at
+     *  "/a/b/c" will have the object _c_ shared with the server at its path "/a/b/c".
+     *  \param[in] path is the sharing tree.
+     *  \retval false if error.
+     *  \see \ref gen_shareArnobj
+     */
     bool  setMountPoint( const QString& path);
+
+    //! Set automatic reconnect
+    /*! \param[in] isAuto true if using auto reconnect
+     *  \param[in] retryTime is the time between reconnection attempts in seconds
+     */
     void  setAutoConnect( bool isAuto, int retryTime = 2);
+
+    //! \cond ADV
     void  commandGet( const QString& path);
     void  commandSet( const QString& path, const QString& data);
     void  commandLs( const QString& path);
@@ -61,18 +97,29 @@ public:
     void  commandExit();
     ArnItemNet*  newNetItem( QString path,
                              ArnItem::SyncMode syncMode = ArnItem::SyncMode::Normal, bool* isNewPtr = 0);
-
     void  setId( QString id)  {_id = id;}
     QString  id()  const {return _id;}
+    //! \endcond
 
 signals:
+    //! Signal emitted when a connection tcp error occur.
+    /*! \param[in] errorText is the human readable description of the error.
+     *  \param[in] socketError is the error from tcp socket, see Qt doc.
+     */
+    void  tcpError( QString errorText, QAbstractSocket::SocketError socketError);
+
+    //! Signal emitted when the tcp connection is successfull.
+    void  tcpConnected();
+
+    //! Signal emitted when the tcp connection is broken (has been successfull).
+    void  tcpDisConnected();
+
+    //! \cond ADV
     void  replyRecord( XStringMap& replyMap);
     void  replyGet( QString data, QString path);
     void  replyLs( QStringList subItems, QString path);
     void  replyVer( QString version);
-    void  tcpError( QString errorText, QAbstractSocket::SocketError socketError);
-    void  tcpConnected();
-    void  tcpDisConnected();
+    //! \endcond
 
 private slots:
     void  newNetItemProxy( ArnThreadCom* threadCom,

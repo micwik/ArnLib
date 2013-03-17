@@ -40,11 +40,22 @@
 
 class QTcpServer;
 
+//! Class for making an _Arn Server_.
+/*!
+[About Sharing Arn Data Objects](\ref gen_shareArnobj)
 
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnServer*  _server;
+
+    // In class code
+    _server = new ArnServer( ArnServer::Type::NetSync, this);
+    _server->start();
+\endcode
+*/
 class ARNLIBSHARED_EXPORT ArnServer : public QObject
 {
     Q_OBJECT
-
 public:
     struct Type {
         enum E {
@@ -53,7 +64,14 @@ public:
         MQ_DECLARE_ENUM( Type)
     };
 
+    //! Create an Arn _server_ object
+    /*! \param[in] serverType For now only _NetSync_ is available.
+     */
     ArnServer( Type serverType, QObject *parent = 0);
+
+    //! Start the Arn _server_
+    /*! \param[in] port is the port number (default 2022).
+     */
     void start( int port = 0);
 
 private:

@@ -41,7 +41,9 @@
 
 class ArnLink;
 
-/// Must only be used in main thread
+
+//! \cond ADV
+// Must only be used in main thread
 class ArnItemNet : public ArnItem
 {
 Q_OBJECT
@@ -91,6 +93,6 @@ private:
 
 private slots:
 };
-
+//! \endcond
 
 #endif // ARNITEMNET_HPP

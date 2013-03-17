@@ -83,6 +83,7 @@ public:
         MQ_DECLARE_FLAGS( NameF)
     };
 
+    //! \cond ADV
     void  setValue( int value, int sendId = 0, bool forceKeep = 0);
     void  setValue( double value, int sendId = 0, bool forceKeep = 0);
     void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0);
@@ -143,6 +144,7 @@ protected:
     int  refCount();
     void  setRefCount( int count);
     void  setRetired();
+    //! \endcond
 
 private:
     void  resetHave();

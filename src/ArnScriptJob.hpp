@@ -48,6 +48,7 @@ class QTimer;
 class QEvent;
 
 
+//! \cond ADV
 class ArnScriptJ : public ArnScript
 {
 Q_OBJECT
@@ -126,6 +127,7 @@ private:
     bool  _quitInProgress;
     ArnScriptJobFactory*  _jobFactory;
 };
+//! \endcond
 
 
 /// Interface class to be normally used, is also Script Job interface

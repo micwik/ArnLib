@@ -44,8 +44,8 @@
 #include <QMutex>
 #include <QWaitCondition>
 
+//! \cond ADV
 class ArnThreadComStorage;
-
 
 class ArnThreadCom
 {
@@ -89,6 +89,7 @@ public:
     ArnThreadComProxyLock( ArnThreadCom* threadCom);
     ~ArnThreadComProxyLock();
 };
+//! \endcond
 
 
 //! Arn main class
@@ -304,6 +305,7 @@ signals:
     void  errorLogSig( QString errText, uint errCode, void* reference);
 
 protected:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     static ArnLink*  root();
     static ArnLink*  link( const QString& path, ArnLink::Flags flags,
                            ArnItem::SyncMode syncMode = ArnItem::SyncMode());
@@ -313,6 +315,7 @@ protected:
                               ArnLink::Flags flags = ArnLink::Flags());
     static void  destroyLink( ArnLink* link);
     static void  destroyLinkMain( ArnLink* link);
+#endif
 
 private slots:
     static void  linkProxy( ArnThreadCom* threadCom, const QString& path,

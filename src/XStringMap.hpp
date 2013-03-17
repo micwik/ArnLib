@@ -40,6 +40,27 @@
 #include <QByteArray>
 #include <QStringList>
 
+
+//! Container class with string representation.
+/*!
+This class can store data with a key like QMaps. There is a guarantied order of
+storing, i.e. its not sorted like QMaps.
+
+The stored data can be ascii as well as binary. When converted to a XString,
+it's optimized for giving an easy readable representation.
+
+The XString can be imported to the XStringMap. To get back stored values,
+XStringMap is Queried with the keys.
+
+\code
+    XStringMap xsm;
+    xsm.add("", "put");
+    xsm.add("id", "level");
+    xsm.add("val", QByteArray::number(12));
+    qDebug() << "XString: " << xsm.toXString();
+\endcode
+This will print "XString: put id=level val=12"
+*/
 class ARNLIBSHARED_EXPORT XStringMap : public QObject
 {
 Q_OBJECT
