@@ -28,7 +28,7 @@ exchange, debugging, etc.
 
 * Hierarchical storage of "hot" changing data objects.
 
-* _Arn Data objects_ can be: integers, floats, strings, bytearrays and variants
+* _Arn Data objects_ can be: integers, floats, strings, byte arrays and variants
 (most QT data types, e.g. QImage).
 
 * Data objects can typically be: measures, settings, datastreams, documents, scripts (js), ...
@@ -44,7 +44,7 @@ different computers. This division of program modules can be changed and are tra
 to usage of ArnLib.
 
 * Support for temporary session data objects.
-Optional auto-delete of objects when tcp/ip close and unique uuid names.
+Optional auto-delete of objects when tcp/ip closes and unique uuid names.
 
 * Dependency system with custom offered services and getting signals when all needed services
 are available.
@@ -62,17 +62,17 @@ are available.
 * Native support in JavaScript for: _Arn Data Objects_, Dependency system and
 Monitoring of changed objects.
 
-* Java Script jobstack with preemtive and cooperative scripts running at different priorities.
+* Java Script jobstack with preemptive and cooperative scripts running at different priorities.
 
 * Hot swap of changed Java Script in jobstack.
 
 #### Data streams and _Remote Procedure Call_
 
-* All data streams (pipes) can easily be monitored and manual testdata can be inserted
+* All data streams (pipes) can easily be monitored and manual test data can be inserted
 (see ArnBrowser).
 
 * Service Api, for calling routines anywhere in connected Arn.
 _Remote Procedure call_ (RPC) made simple as "remote signal slots".
 
-* Service Api has an automaticly generated help for giving syntax when doing debug manual
+* Service Api has an automatically generated help for giving syntax when doing debug manual
 typed calls to a RPC service.
