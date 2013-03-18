@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -112,6 +112,9 @@ $(document).ready(function(){initNavTree('class_arn_monitor.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>A client remote monitor to detect changes at server.  
+ <a href="class_arn_monitor.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>&gt;</code></p>
 
 <p><a href="class_arn_monitor-members.html">List of all members.</a></p>
@@ -119,24 +122,36 @@ $(document).ready(function(){initNavTree('class_arn_monitor.html','');});
 <tr class="heading"><td colspan="2"><h2><a name="pub-slots"></a>
 Public Slots</h2></td></tr>
 <tr class="memitem:af17594221c0a2f111a0613c90dc4b976"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#af17594221c0a2f111a0613c90dc4b976">foundChildDeleted</a> (QString path)</td></tr>
+<tr class="memdesc:af17594221c0a2f111a0613c90dc4b976"><td class="mdescLeft">&#160;</td><td class="mdescRight">Help telling the monitor about deletion of a previous found child.  <a href="#af17594221c0a2f111a0613c90dc4b976"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="signals"></a>
 Signals</h2></td></tr>
 <tr class="memitem:aee1c84df3076e319f3faed532d1a780d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#aee1c84df3076e319f3faed532d1a780d">arnItemCreated</a> (QString path)</td></tr>
+<tr class="memdesc:aee1c84df3076e319f3faed532d1a780d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when an <em>Arn Data Object</em> is created in the tree below.  <a href="#aee1c84df3076e319f3faed532d1a780d"></a><br/></td></tr>
 <tr class="memitem:a783c8066daafd9a266c27662e47106c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#a783c8066daafd9a266c27662e47106c8">arnChildFound</a> (QString path)</td></tr>
+<tr class="memdesc:a783c8066daafd9a266c27662e47106c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted for present and newly created childs in the monitor folder.  <a href="#a783c8066daafd9a266c27662e47106c8"></a><br/></td></tr>
 <tr class="memitem:ae067b765e213049c7a2ac5dcf0cc6d67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#ae067b765e213049c7a2ac5dcf0cc6d67">arnChildFoundFolder</a> (QString path)</td></tr>
+<tr class="memdesc:ae067b765e213049c7a2ac5dcf0cc6d67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted for present and newly created folder childs in the monitor folder.  <a href="#ae067b765e213049c7a2ac5dcf0cc6d67"></a><br/></td></tr>
 <tr class="memitem:a9458cfceef585c85e824b622d0afeb97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#a9458cfceef585c85e824b622d0afeb97">arnChildFoundLeaf</a> (QString path)</td></tr>
+<tr class="memdesc:a9458cfceef585c85e824b622d0afeb97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted for present and newly created leaf childs in the monitor folder.  <a href="#a9458cfceef585c85e824b622d0afeb97"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5b183d3eb917f16eea2fdcd73a7765bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#a5b183d3eb917f16eea2fdcd73a7765bb">ArnMonitor</a> (QObject *parent=0)</td></tr>
 <tr class="memitem:a188d2b01824fa28631736dce391b0ae1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#a188d2b01824fa28631736dce391b0ae1">setClient</a> (<a class="el" href="class_arn_client.html">ArnClient</a> *client, QString id=QString())</td></tr>
+<tr class="memdesc:a188d2b01824fa28631736dce391b0ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <em>client</em> to be used.  <a href="#a188d2b01824fa28631736dce391b0ae1"></a><br/></td></tr>
 <tr class="memitem:a2b1604f4fa457f8800534bcf3d8fbba5"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#a2b1604f4fa457f8800534bcf3d8fbba5">clientId</a> () const </td></tr>
+<tr class="memdesc:a2b1604f4fa457f8800534bcf3d8fbba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the id name of the used <em>client</em>  <a href="#a2b1604f4fa457f8800534bcf3d8fbba5"></a><br/></td></tr>
 <tr class="memitem:a1ea9f8e76d3715cd6aa98ddc86742fae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae">setMonitorPath</a> (QString path, <a class="el" href="class_arn_client.html">ArnClient</a> *client=0)</td></tr>
+<tr class="memdesc:a1ea9f8e76d3715cd6aa98ddc86742fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <em>path</em> to be monitored.  <a href="#a1ea9f8e76d3715cd6aa98ddc86742fae"></a><br/></td></tr>
 <tr class="memitem:a204697cdbefdc68c6cdadf563df83810"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#a204697cdbefdc68c6cdadf563df83810">monitorPath</a> () const </td></tr>
+<tr class="memdesc:a204697cdbefdc68c6cdadf563df83810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the monitored <em>path</em>  <a href="#a204697cdbefdc68c6cdadf563df83810"></a><br/></td></tr>
 <tr class="memitem:a740f070fa55cbfcbc57f43d877956d9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#a740f070fa55cbfcbc57f43d877956d9a">reStart</a> ()</td></tr>
+<tr class="memdesc:a740f070fa55cbfcbc57f43d877956d9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The monitor is restarted.  <a href="#a740f070fa55cbfcbc57f43d877956d9a"></a><br/></td></tr>
 <tr class="memitem:a96ff8e729c7436ba906d8e19a136cf69"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#a96ff8e729c7436ba906d8e19a136cf69">setReference</a> (void *<a class="el" href="class_arn_monitor.html#aec8712e63229d4bb18e2e179c4da9d3c">reference</a>)</td></tr>
+<tr class="memdesc:a96ff8e729c7436ba906d8e19a136cf69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an associated external reference.  <a href="#a96ff8e729c7436ba906d8e19a136cf69"></a><br/></td></tr>
 <tr class="memitem:aec8712e63229d4bb18e2e179c4da9d3c"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#aec8712e63229d4bb18e2e179c4da9d3c">reference</a> () const </td></tr>
+<tr class="memdesc:aec8712e63229d4bb18e2e179c4da9d3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the stored external reference.  <a href="#aec8712e63229d4bb18e2e179c4da9d3c"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -144,8 +159,21 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a3f0f5a1239cbc1fbc44df2bff4e188c4"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00045">45</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
+<div class="textblock"><p>A client remote monitor to detect changes at server. </p>
+<p>The monitor must be set at a <a class="el" href="md__description.html#gen_shareArnobj">shared</a> path.</p>
+<p>When the monitor is started, all the <em>arnChildFound</em> signals are emmited for present childs. Later the signals are emmited for newly created childs.</p>
+<p><b>Example usage</b> <br/>
+ </p>
+<div class="fragment"><div class="line">    <span class="comment">// In class declare</span></div>
+<div class="line">    <a class="code" href="class_arn_monitor.html" title="A client remote monitor to detect changes at server.">ArnMonitor</a>*  _arnMon;</div>
+<div class="line">    <a class="code" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a>*  _client;</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// In class code</span></div>
+<div class="line">    _arnMon = <span class="keyword">new</span> <a class="code" href="class_arn_monitor.html#a5b183d3eb917f16eea2fdcd73a7765bb">ArnMonitor</a>( <span class="keyword">this</span>);</div>
+<div class="line">    _arnMon-&gt;<a class="code" href="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae" title="Set the path to be monitored.">setMonitorPath</a>(<span class="stringliteral">&quot;//Pipes/&quot;</span>, _client);</div>
+<div class="line">    connect( _arnMon, SIGNAL(<a class="code" href="class_arn_monitor.html#a783c8066daafd9a266c27662e47106c8" title="Signal emitted for present and newly created childs in the monitor folder.">arnChildFound</a>(QString)), <span class="keyword">this</span>, SLOT(netChildFound(QString)));</div>
+</div><!-- fragment --> 
+<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00063">63</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a5b183d3eb917f16eea2fdcd73a7765bb"></a>
 <div class="memitem">
@@ -196,6 +224,17 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Signal emitted for present and newly created childs in the monitor folder. </p>
+<p>The <a class="el" href="class_arn_monitor.html" title="A client remote monitor to detect changes at server.">ArnMonitor</a> monitors a folder. Present and newly created objects in this folder will give this signal. For newly created childs, the origin comes from the <a class="el" href="class_arn_monitor.html#aee1c84df3076e319f3faed532d1a780d" title="Signal emitted when an Arn Data Object is created in the tree below.">arnItemCreated()</a> signal, so only non folder objects will then give this signal.</p>
+<p>Example: monitorPath = "//Sensors/", created object = "//Sensors/Temp1/value" ==&gt; path to child = "//Sensors/Temp1/" </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>to the child </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_monitor.html#aee1c84df3076e319f3faed532d1a780d" title="Signal emitted when an Arn Data Object is created in the tree below.">arnItemCreated()</a> </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="ae067b765e213049c7a2ac5dcf0cc6d67"></a>
@@ -219,6 +258,19 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Signal emitted for present and newly created folder childs in the monitor folder. </p>
+<p>The <a class="el" href="class_arn_monitor.html" title="A client remote monitor to detect changes at server.">ArnMonitor</a> monitors a folder. Present and newly created folder objects in this folder will give this signal. For newly created childs, the origin comes from the <a class="el" href="class_arn_monitor.html#aee1c84df3076e319f3faed532d1a780d" title="Signal emitted when an Arn Data Object is created in the tree below.">arnItemCreated()</a> signal, so only non folder objects will then give this signal.</p>
+<p>Example: monitorPath = "//Sensors/", created object = "//Sensors/Temp1/value" ==&gt; path to child = "//Sensors/Temp1/" </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>to the child </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_monitor.html#aee1c84df3076e319f3faed532d1a780d" title="Signal emitted when an Arn Data Object is created in the tree below.">arnItemCreated()</a> </dd>
+<dd>
+<a class="el" href="class_arn_monitor.html#a783c8066daafd9a266c27662e47106c8" title="Signal emitted for present and newly created childs in the monitor folder.">arnChildFound()</a> </dd></dl>
 
 </div>
 </div>
@@ -244,6 +296,17 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Signal emitted for present and newly created leaf childs in the monitor folder. </p>
+<p>The <a class="el" href="class_arn_monitor.html" title="A client remote monitor to detect changes at server.">ArnMonitor</a> monitors a folder. Present and newly created leaf objects in this folder will give this signal.</p>
+<p>Example: monitorPath = "//Sensors/", created object = "//Sensors/count" ==&gt; path to child = "//Sensors/count" </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>to the child </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_monitor.html#a783c8066daafd9a266c27662e47106c8" title="Signal emitted for present and newly created childs in the monitor folder.">arnChildFound()</a> </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="aee1c84df3076e319f3faed532d1a780d"></a>
@@ -268,6 +331,15 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Signal emitted when an <em>Arn Data Object</em> is created in the tree below. </p>
+<p>The <a class="el" href="class_arn_monitor.html" title="A client remote monitor to detect changes at server.">ArnMonitor</a> monitors a folder. Created objects in this folder or its children below will give this signal. Only created non folder objects will give this signal. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>to the created <em>Arn Data Object</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a class="anchor" id="a2b1604f4fa457f8800534bcf3d8fbba5"></a>
@@ -282,6 +354,10 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Get the id name of the used <em>client</em> </p>
+<dl class="section return"><dt>Returns:</dt><dd>The <em>client</em> id name </dd></dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_monitor.html#a188d2b01824fa28631736dce391b0ae1" title="Set the client to be used.">setClient()</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="_arn_monitor_8cpp_source.html#l00055">55</a> of file <a class="el" href="_arn_monitor_8cpp_source.html">ArnMonitor.cpp</a>.</p>
 
@@ -309,6 +385,15 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Help telling the monitor about deletion of a previous found child. </p>
+<p>The monitor remembers every child it has signalled. If a deleted child reappears later it will not give a signal unless this function is used. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>to the deleted child </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Definition at line <a class="el" href="_arn_monitor_8cpp_source.html#l00147">147</a> of file <a class="el" href="_arn_monitor_8cpp_source.html">ArnMonitor.cpp</a>.</p>
 
 </div>
@@ -334,7 +419,11 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00055">55</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
+<p>Get the monitored <em>path</em> </p>
+<dl class="section return"><dt>Returns:</dt><dd>The <em>path</em> </dd></dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae" title="Set the path to be monitored.">setMonitorPath()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00094">94</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
 
 </div>
 </div>
@@ -359,7 +448,11 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00059">59</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
+<p>Get the stored external reference. </p>
+<dl class="section return"><dt>Returns:</dt><dd>The associated external reference </dd></dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_monitor.html#a96ff8e729c7436ba906d8e19a136cf69" title="Set an associated external reference.">setReference()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00115">115</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
 
 </div>
 </div>
@@ -375,6 +468,9 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>The monitor is restarted. </p>
+<p>This makes the monitor forget the signals sent for present children and the <em>arnChildFound</em> signals are emmited again for present childs. </p>
 
 <p>Definition at line <a class="el" href="_arn_monitor_8cpp_source.html#l00102">102</a> of file <a class="el" href="_arn_monitor_8cpp_source.html">ArnMonitor.cpp</a>.</p>
 
@@ -404,6 +500,15 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Set the <em>client</em> to be used. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">client</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>is an optional name to assign to the client. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Definition at line <a class="el" href="_arn_monitor_8cpp_source.html#l00047">47</a> of file <a class="el" href="_arn_monitor_8cpp_source.html">ArnMonitor.cpp</a>.</p>
 
 </div>
@@ -432,6 +537,16 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Set the <em>path</em> to be monitored. </p>
+<p>The monitor must be set at a <a class="el" href="md__description.html#gen_shareArnobj">shared</a> <em>path</em>. This function also starts the monitoring. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">client</td><td>to be used. If 0, keep previous set client. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Definition at line <a class="el" href="_arn_monitor_8cpp_source.html#l00062">62</a> of file <a class="el" href="_arn_monitor_8cpp_source.html">ArnMonitor.cpp</a>.</p>
 
 </div>
@@ -458,7 +573,17 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00058">58</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
+<p>Set an associated external reference. </p>
+<p>This is typically used when having many <em>ArnMonitors</em> signal connected to a common slot. The slot can then discover the signalling <a class="el" href="class_arn_monitor.html" title="A client remote monitor to detect changes at server.">ArnMonitor</a>:s associated structure for further processing. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">reference</td><td>Any external structure or id. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_monitor.html#aec8712e63229d4bb18e2e179c4da9d3c" title="Get the stored external reference.">reference()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00109">109</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
 
 </div>
 </div>
@@ -481,7 +606,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00071">71</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00173">173</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
 
 </div>
 </div>
@@ -503,13 +628,13 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00072">72</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_monitor_8hpp_source.html#l00174">174</a> of file <a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp</a></li>
-<li>src/<a class="el" href="_arn_monitor_8cpp_source.html">ArnMonitor.cpp</a></li>
+<li>src/<a class="el" href="_arn_monitor_8hpp_source.html">ArnMonitor.hpp (1.0.0-9-g2ded014)</a></li>
+<li>src/<a class="el" href="_arn_monitor_8cpp_source.html">ArnMonitor.cpp (1.0.0-9-g2ded014)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -517,7 +642,7 @@ Protected Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:20 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:21 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

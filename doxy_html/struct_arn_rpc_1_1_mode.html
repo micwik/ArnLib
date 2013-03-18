@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -128,7 +128,7 @@ Public Types</h2></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00081">81</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00116">116</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 </div><hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="ae20fe345c26e14c3805658cc52793c57"></a>
 <div class="memitem">
@@ -141,27 +141,33 @@ Public Types</h2></td></tr>
 </div><div class="memdoc">
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57a90ec424cb525bbcce0c60a666bb1c4d4"></a>Provider</em>&nbsp;</td><td>
+<p>Provider side (opposed to requester) </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57ae2aa40ac645abc73df7c893bbde3f37f"></a>AutoDestroy</em>&nbsp;</td><td>
+<p>Use <em>AutoDestroy</em> for the pipe, i.e. it is closed when tcp/ip is broken. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57a30f9cd3cab247dc33931e4eeda08df92"></a>UuidPipe</em>&nbsp;</td><td>
+<p>Use an unique uuid in the pipe name. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57aee954e4308c5635281eb32d43b8af990"></a>NoDefaultArgs</em>&nbsp;</td><td>
+<p>If guarantied no default arguments, member name overload is ok. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57a0450d7b70eaf255864e138ddf558c507"></a>Debug</em>&nbsp;</td><td>
+<p>Debug mode, dumping done batch connections. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57acf07d732ddd9af3b3ae07bb277c4aca0"></a>UuidAutoDestroy</em>&nbsp;</td><td>
+<p>Convenience, combined <em>UuidPipe</em> and <em>AutoDestroy</em> </p>
 </td></tr>
 </table>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00082">82</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00117">117</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a></li>
+<li>src/<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp (1.0.0-9-g2ded014)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -169,7 +175,7 @@ Public Types</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_rpc.html">ArnRpc</a></li><li class="navelem"><a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:20 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:21 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

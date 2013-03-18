@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -111,66 +111,76 @@ Contact: arnlib@wiklunden.se
 <li><b>Windows Registry:</b> Centralized configuration data. All in one place easily shared.</li>
 </ul>
 <ul>
-<li><b>ArnLib:</b> Hot changing data from different systems. Enables easy cross system data exchange, debugging etc.</li>
+<li><b>ArnLib:</b> Hot changing data from different systems. Enables easy cross system data exchange, debugging, etc. <br/>
+<br/>
+</li>
 </ul>
-<h3>Main features</h3>
+<h2>Main features</h2>
 <ul>
-<li>Based on QT, multiple plattform and OS support.</li>
+<li>Based on QT, multiple platform and OS support.</li>
 </ul>
+<h4>Arn Data Objects</h4>
 <ul>
-<li>Hierchical storage of "hot" changing data objects.</li>
-</ul>
-<ul>
-<li>Data objects can be: integers, floats, strings, bytearrays and variants (most QT types, ex picture).</li>
-</ul>
-<ul>
-<li>Data objects can be: measures, settings, datastreams, documents, scripts (js), ...</li>
+<li>Hierarchical storage of "hot" changing data objects.</li>
 </ul>
 <ul>
-<li>Data objects are thread-safe.</li>
+<li><em>Arn Data objects</em> can be: integers, floats, strings, byte arrays and variants (most QT data types, e.g. QImage).</li>
 </ul>
 <ul>
-<li>Data objects can be shared in a single program, among threads or between programs at different computers. This division of program modules can be changed and are transparent to ArnLib.</li>
+<li>Data objects can typically be: measures, settings, datastreams, documents, scripts (js), ...</li>
+</ul>
+<ul>
+<li><em>Arn Data objects</em> are thread-safe.</li>
 </ul>
 <ul>
 <li>Native support for data validation and double direction pipes.</li>
 </ul>
+<h4>Sharing</h4>
 <ul>
-<li>Support for temporary session data objects. Optional auto-delete of objects when tcp/ip close and unique uuid names.</li>
+<li>Data objects can be shared in a single program, among threads or between programs at different computers. This division of program modules can be changed and are transparent to usage of ArnLib.</li>
+</ul>
+<ul>
+<li>Support for temporary session data objects. Optional auto-delete of objects when tcp/ip closes and unique uuid names.</li>
+</ul>
+<ul>
+<li>Dependency system with custom offered services and getting signals when all needed services are available.</li>
 </ul>
 <ul>
 <li>Monitoring of newly created data objects and any mode change.</li>
 </ul>
-<ul>
-<li>Dependency system with custom offered services and getting signals when all needed is available.</li>
-</ul>
+<h4>Persistent storage</h4>
 <ul>
 <li>Optional persistent storage of object in SQLight or in a file.</li>
 </ul>
 <ul>
-<li>Support for version control of objects stored in files.</li>
+<li>Support for version control (VCS) of objects stored in files.</li>
+</ul>
+<h4>Java Script</h4>
+<ul>
+<li>Native support in JavaScript for: <em>Arn Data Objects</em>, Dependency system and Monitoring of changed objects.</li>
 </ul>
 <ul>
-<li>Native support for JavaScript, jobstack of JS with preemtive and cooperative script running.</li>
+<li>Java Script jobstack with preemptive and cooperative scripts running at different priorities.</li>
 </ul>
 <ul>
-<li>Support for managing changed script restart in jobstack.</li>
+<li>Hot swap of changed Java Script in jobstack.</li>
+</ul>
+<h4>Data streams and <em>Remote Procedure Call</em></h4>
+<ul>
+<li>All data streams (pipes) can easily be monitored and manual test data can be inserted (see ArnBrowser).</li>
 </ul>
 <ul>
-<li>Service Api, for calling routines anywhere in connected <a class="el" href="class_arn.html">Arn</a>. Remote procedure call made simple as "remote signal slots".</li>
+<li>Service Api, for calling routines anywhere in connected Arn. <em>Remote Procedure call</em> (RPC) made simple as "remote signal slots".</li>
 </ul>
 <ul>
-<li>All data streams can easily be monitored and manual testdata can be inserted (see ArnBrowser).</li>
-</ul>
-<ul>
-<li>... To be Continued </li>
+<li>Service Api has an automatically generated help for giving syntax when doing debug manual typed calls to a RPC service. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:20 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

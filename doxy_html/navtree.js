@@ -2,6 +2,30 @@ var NAVTREE =
 [
   [ "ArnLib", "index.html", [
     [ "README", "md__r_e_a_d_m_e.html", null ],
+    [ "General Description", "md__description.html", [
+      [ "Arn Data Objects    ", "md__description.html#gen_arnobj", [
+        [ "Modes", "md__description.html#gen_arnobjModes", null ],
+        [ "Naming conventions", "md__description.html#gen_naming", null ]
+      ] ],
+      [ "Bidirectional Arn Data Objects    ", "md__description.html#gen_bidirArnobj", [
+        [ "Pipes", "md__description.html#gen_pipeArnobj", null ]
+      ] ],
+      [ "Persistent Arn Data Objects    ", "md__description.html#gen_persistArnobj", [
+        [ "Saving objects in files", "md__description.html#gen_fileArnobj", null ]
+      ] ],
+      [ "Sharing Arn Data Objects    ", "md__description.html#gen_shareArnobj", null ],
+      [ "RPC and SAPI    ", "md__description.html#gen_rpc", [
+        [ "RPC and SAPI communication format", "md__description.html#gen_rpcformat", null ]
+      ] ],
+      [ "Application notations    ", "md__description.html#gen_appnote", null ]
+    ] ],
+    [ "ArnLib Internals", "md__internals.html", [
+      [ "ScriptJobs    ", "md__internals.html#int_scriptjobs", null ],
+      [ "ArnMonitor    ", "md__internals.html#int_arnmonitor", null ],
+      [ "Destroy    ", "md__internals.html#int_destroy", null ]
+    ] ],
+    [ "Example Collection", "exampleindex.html", "exampleindex" ],
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Index", "classes.html", "classes" ],
@@ -25,7 +49,8 @@ var NAVTREE =
         [ "Variables", "globals_vars.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
-    ] ]
+    ] ],
+    [ "Examples", "examples.html", "examples" ]
   ] ]
 ];
 

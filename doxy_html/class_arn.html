@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -113,6 +113,9 @@ $(document).ready(function(){initNavTree('class_arn.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p><a class="el" href="class_arn.html" title="Arn main class.">Arn</a> main class.  
+ <a href="class_arn.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_arn_8hpp_source.html">Arn.hpp</a>&gt;</code></p>
 
 <p><a href="class_arn-members.html">List of all members.</a></p>
@@ -132,10 +135,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a46c074ea224a1273f0b3373b299b6f5e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_arn.html">Arn</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#a46c074ea224a1273f0b3373b299b6f5e">getInstance</a> ()</td></tr>
 <tr class="memitem:afe5e42fa3dda97d14fa75039bcb2124f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#afe5e42fa3dda97d14fa75039bcb2124f">setConsoleError</a> (bool isConsoleError)</td></tr>
 <tr class="memitem:a8a19323977b8a9e1b7502313374486bd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#a8a19323977b8a9e1b7502313374486bd">setDefaultIgnoreSameValue</a> (bool isIgnore=true)</td></tr>
+<tr class="memdesc:a8a19323977b8a9e1b7502313374486bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set system default skipping of equal value.  <a href="#a8a19323977b8a9e1b7502313374486bd"></a><br/></td></tr>
 <tr class="memitem:a8361efa46f8e6782426b28caa7fcd0c0"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#a8361efa46f8e6782426b28caa7fcd0c0">defaultIgnoreSameValue</a> ()</td></tr>
 <tr class="memitem:a66771f3b8400f356af58b2ef0b536226"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#a66771f3b8400f356af58b2ef0b536226">isMainThread</a> ()</td></tr>
 <tr class="memitem:a0bbc858e912a00c9589c2a10e6840762"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#a0bbc858e912a00c9589c2a10e6840762">isThreadedApp</a> ()</td></tr>
 <tr class="memitem:a9a27c8dda4cc88176c941cc53f6c2426"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#a9a27c8dda4cc88176c941cc53f6c2426">isProviderPath</a> (const QString &amp;path)</td></tr>
+<tr class="memdesc:a9a27c8dda4cc88176c941cc53f6c2426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test if path is.  <a href="#a9a27c8dda4cc88176c941cc53f6c2426"></a><br/></td></tr>
 <tr class="memitem:a0edc95f31e49e60899a7be23888c556c"><td class="memItemLeft" align="right" valign="top">static QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#a0edc95f31e49e60899a7be23888c556c">itemName</a> (const QString &amp;path)</td></tr>
 <tr class="memitem:af01d6dbc5fac8a0b66830c0fff375bdf"><td class="memItemLeft" align="right" valign="top">static QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf">childPath</a> (const QString &amp;parentPath, const QString &amp;posterityPath)</td></tr>
 <tr class="memitem:af7033a4ea5ac45c0bbc136000fd2ccca"><td class="memItemLeft" align="right" valign="top">static QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#af7033a4ea5ac45c0bbc136000fd2ccca">makePath</a> (const QString &amp;parentPath, const QString &amp;<a class="el" href="class_arn.html#a0edc95f31e49e60899a7be23888c556c">itemName</a>)</td></tr>
@@ -176,8 +181,12 @@ Friends</h2></td></tr>
 <tr class="memitem:a3186b09a0a1c8b12a5c8866dc8a7de5b"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn.html#a3186b09a0a1c8b12a5c8866dc8a7de5b">ArnItem</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_arn_8hpp_source.html#l00095">95</a> of file <a class="el" href="_arn_8hpp_source.html">Arn.hpp</a>.</p>
+<div class="textblock"><p><a class="el" href="class_arn.html" title="Arn main class.">Arn</a> main class. </p>
+<p><a class="el" href="md__internals.html#int_destroy">About Destroy</a></p>
+<p>This singleton class is the main reference to the Active Registry Network. All <em>objects</em> are stored in a tree hierarchy and the naming is similar to typical filesystems e.g. "//Measure/Water/Temperature/value". Each part in the given <em>path</em> is dynamically added as needed.</p>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="md__internals.html#int_destroy">Destroy </a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_8hpp_source.html#l00105">105</a> of file <a class="el" href="_arn_8hpp_source.html">Arn.hpp</a>.</p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="af1341037a1268e38d5bd9f7e0784ea5f"></a>
 <div class="memitem">
@@ -357,6 +366,13 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="retval"><dt>Return values:</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">True</td><td>if default skipping equal values </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn.html#a8a19323977b8a9e1b7502313374486bd" title="Set system default skipping of equal value.">setDefaultIgnoreSameValue()</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00910">910</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
@@ -600,7 +616,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_8hpp_source.html#l00102">102</a> of file <a class="el" href="_arn_8hpp_source.html">Arn.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_8hpp_source.html#l00112">112</a> of file <a class="el" href="_arn_8hpp_source.html">Arn.hpp</a>.</p>
 
 </div>
 </div>
@@ -726,6 +742,12 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="retval"><dt>Return values:</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">True</td><td>if this is the main thread in the application </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00233">233</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
@@ -753,6 +775,22 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Test if path is. </p>
+<p>A bidirectional <a class="el" href="class_arn.html" title="Arn main class.">Arn</a> Data Object is actually a double object, a twin. Each part has it's own path but there life span is depending on each other. One part is the normal "official" and the other part is provider. The provider has an added "!" to the normal path e.g. "//Measure/Depth!" Data written to one part ends up in the other. When a provider is connected to the provider part, it will receive data to process and it will write the result to the same provider part. This way the result will end up in the normal part. This functionality can be used for data validation and limiting. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path.</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values:</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">True</td><td>if <em>path</em> is a <em>providerPath</em>, i.e ends with a "!" </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="_server_main_8cpp-example.html#a4">ServerMain.cpp</a>.</dd>
+</dl>
 <p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00343">343</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
 </div>
@@ -777,6 +815,12 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="retval"><dt>Return values:</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">True</td><td>if this is a threaded application </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00249">249</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
@@ -803,6 +847,12 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="retval"><dt>Return values:</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">The</td><td>itemName, i.e. the last part of the path after last "/" </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00255">255</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
@@ -1034,6 +1084,14 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Set system default skipping of equal value. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">isIgnore</td><td>If true, assignment of equal value don't give a changed signal. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00904">904</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
@@ -1420,13 +1478,13 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_8hpp_source.html#l00098">98</a> of file <a class="el" href="_arn_8hpp_source.html">Arn.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_8hpp_source.html#l00108">108</a> of file <a class="el" href="_arn_8hpp_source.html">Arn.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_arn_8hpp_source.html">Arn.hpp</a></li>
-<li>src/<a class="el" href="_arn_8cpp_source.html">Arn.cpp</a></li>
+<li>src/<a class="el" href="_arn_8hpp_source.html">Arn.hpp (1.0.0-6-gb284daa)</a></li>
+<li>src/<a class="el" href="_arn_8cpp_source.html">Arn.cpp (1.0.0-6-gb284daa)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -1434,7 +1492,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn.html">Arn</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:20 for ArnLib by
+    <li class="footer">Generated on Sat Mar 9 2013 08:55:06 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

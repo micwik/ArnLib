@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnItemNet.hpp Source File</title>
+<title>ArnLib: src/ArnItemNet.hpp (1.0.0-9-g2ded014) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -147,65 +147,66 @@ $(document).ready(function(){initNavTree('_arn_item_net_8hpp.html','');});
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">class </span><a class="code" href="class_arn_link.html">ArnLink</a>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="code" href="class_arn_item_net.html">   45</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_arn_item_net.html" title="Must only be used in main thread.">ArnItemNet</a> : <span class="keyword">public</span> <a class="code" href="class_arn_item.html">ArnItem</a></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;Q_OBJECT</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_arn_item_net.html#abe118a60de34bcd87cdd2508bbf243b8">ArnItemNet</a>( QObject *parent = 0);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_arn_item_net.html#abe118a60de34bcd87cdd2508bbf243b8">ArnItemNet</a>( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903">path</a>, QObject *parent = 0);</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="class_arn_item_net.html#ae8c7279e714acfd7465d9e7112ea668c">   51</a></span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#ae8c7279e714acfd7465d9e7112ea668c">setNetId</a>( uint <a class="code" href="class_arn_item_net.html#abddca503a863b761e0ef9fb0fd442baa">netId</a>)  { _netId = <a class="code" href="class_arn_item_net.html#abddca503a863b761e0ef9fb0fd442baa">netId</a>;}</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="code" href="class_arn_item_net.html#abddca503a863b761e0ef9fb0fd442baa">   52</a></span>&#160;    uint  <a class="code" href="class_arn_item_net.html#abddca503a863b761e0ef9fb0fd442baa">netId</a>()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _netId;}</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#af2487dc67068a9aa92c63277596b07c0">addSyncModeString</a>( <span class="keyword">const</span> QByteArray&amp; smode, <span class="keywordtype">bool</span> linkShare);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    QByteArray  <a class="code" href="class_arn_item_net.html#a05449e46056f6bb2c136c43618aabde8">getSyncModeString</a>()  <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#a53952b97accd5ebc0c60ac417af4656a">setModeString</a>( <span class="keyword">const</span> QByteArray&amp; mode);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    QByteArray  <a class="code" href="class_arn_item_net.html#a9702fef46fec9ce34f60ac940965a8ca">getModeString</a>()  <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="code" href="class_arn_item_net.html#af06245dba74a698c77445aa4bec7a18d">   58</a></span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#af06245dba74a698c77445aa4bec7a18d">setDisable</a>( <span class="keywordtype">bool</span> disable = <span class="keyword">true</span>)  { _disable = disable;}</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="code" href="class_arn_item_net.html#a9cf7121ec65ed1a76c2c58435036a4ed">   59</a></span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_item_net.html#a9cf7121ec65ed1a76c2c58435036a4ed">isDisable</a>()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _disable;}</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="code" href="class_arn_item_net.html#aae46f281ab33d781c7134b87353a3f64">   61</a></span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#aae46f281ab33d781c7134b87353a3f64">setQueueNum</a>( <span class="keywordtype">int</span> num)  {_queueNum = num;}</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="code" href="class_arn_item_net.html#a6661e7c1762ee4fda6c8307ca88b7099">   62</a></span>&#160;    <span class="keywordtype">int</span>  <a class="code" href="class_arn_item_net.html#a6661e7c1762ee4fda6c8307ca88b7099">queueNum</a>()<span class="keyword">  const </span>{<span class="keywordflow">return</span> _queueNum;}</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#ae39e24dd20a3ffd745d5f321919c4fc1">submitted</a>();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#adddb15aec422ee7d9f1b0a0652d792e5">submittedMode</a>();</div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="code" href="class_arn_item_net.html#a160c383f168faec6363f40883183c1e0">   65</a></span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_item_net.html#a160c383f168faec6363f40883183c1e0">isDirtyMode</a>()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _dirtyMode;}</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#a77a00c1cbdcc6ed203c845666eb9c7c0">itemUpdateStart</a>();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#a5742635c9274e77dfd408b2601a5d1d3">itemUpdateEnd</a>();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#aba69ecfbf40114c3dd915c0c2ed35470">modeUpdate</a>( <span class="keywordtype">bool</span> isSetup = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="code" href="class_arn_item_net.html#ac47d8f0eb8eda206adcb69ae2b3eddd7">   70</a></span>&#160;    QStringList  <a class="code" href="class_arn_item_net.html#ac47d8f0eb8eda206adcb69ae2b3eddd7">childItemsMain</a>()<span class="keyword">  const </span>{<span class="keywordflow">return</span> <a class="code" href="class_arn_item_net.html#ac47d8f0eb8eda206adcb69ae2b3eddd7">ArnItem::childItemsMain</a>();}</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">// Must only be used in main thread</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">class </span>ArnItemNet : <span class="keyword">public</span> <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;Q_OBJECT</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">explicit</span> ArnItemNet( QObject *parent = 0);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">explicit</span> ArnItemNet( <span class="keyword">const</span> QString&amp; path, QObject *parent = 0);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span>  setNetId( uint netId)  { _netId = netId;}</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    uint  netId()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _netId;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span>  addSyncModeString( <span class="keyword">const</span> QByteArray&amp; smode, <span class="keywordtype">bool</span> linkShare);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    QByteArray  getSyncModeString()  <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span>  setModeString( <span class="keyword">const</span> QByteArray&amp; mode);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    QByteArray  getModeString()  <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span>  setDisable( <span class="keywordtype">bool</span> disable = <span class="keyword">true</span>)  { _disable = disable;}</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">bool</span>  isDisable()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _disable;}</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span>  setQueueNum( <span class="keywordtype">int</span> num)  {_queueNum = num;}</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">int</span>  queueNum()<span class="keyword">  const </span>{<span class="keywordflow">return</span> _queueNum;}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span>  submitted();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">void</span>  submittedMode();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">bool</span>  isDirtyMode()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _dirtyMode;}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span>  itemUpdateStart();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span>  itemUpdateEnd();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span>  modeUpdate( <span class="keywordtype">bool</span> isSetup = <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;signals:</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#aee0a663ac1e2eac3a81e24c40e147945">arnEvent</a>( QByteArray <a class="code" href="class_arn_item.html#aed6a2864650d6385bcda8c331abfdbe3">type</a>, QByteArray data, <span class="keywordtype">bool</span> isLocal);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#a211365b0178636f5e03bae60bc619c6a">goneDirty</a>();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#a3e3f115080d0081a16a3b6a52c47ac03">goneDirtyMode</a>();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_net.html#a7e3489eadc32310a4c6f8ebb9931eb52">emitArnEvent</a>( QByteArray <a class="code" href="class_arn_item.html#aed6a2864650d6385bcda8c331abfdbe3">type</a>, QByteArray data = QByteArray(), <span class="keywordtype">bool</span> isLocal = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    QStringList  childItemsMain()<span class="keyword">  const </span>{<span class="keywordflow">return</span> ArnItem::childItemsMain();}</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;signals:</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span>  arnEvent( QByteArray type, QByteArray data, <span class="keywordtype">bool</span> isLocal);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span>  goneDirty();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span>  goneDirtyMode();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span>  emitArnEvent( QByteArray type, QByteArray data = QByteArray(), <span class="keywordtype">bool</span> isLocal = <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span>  init();</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">//Type  _type;</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    uint  _netId;      <span class="comment">// id used during sync over net</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">int</span>  _queueNum;    <span class="comment">// number used in itemQueue</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">bool</span>  _dirty;      <span class="comment">// item has been updated but not yet sent</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">bool</span>  _dirtyMode;  <span class="comment">// item Mode has been updated but not yet sent</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">bool</span>  _disable;    <span class="comment">// item is defunct and should not send (destroy command)</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;};</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif // ARNITEMNET_HPP</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span>  init();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">//Type  _type;</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    uint  _netId;      <span class="comment">// id used during sync over net</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">int</span>  _queueNum;    <span class="comment">// number used in itemQueue</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">bool</span>  _dirty;      <span class="comment">// item has been updated but not yet sent</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">bool</span>  _dirtyMode;  <span class="comment">// item Mode has been updated but not yet sent</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">bool</span>  _disable;    <span class="comment">// item is defunct and should not send (destroy command)</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;};</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif // ARNITEMNET_HPP</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_item_net_8hpp.html">ArnItemNet.hpp</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:19 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

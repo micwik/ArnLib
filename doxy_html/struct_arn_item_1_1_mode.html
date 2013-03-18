@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -109,6 +109,9 @@ $(document).ready(function(){initNavTree('struct_arn_item_1_1_mode.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>General global mode of an <em>Arn Data Object</em>  
+ <a href="struct_arn_item_1_1_mode.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_arn_item_8hpp_source.html">ArnItem.hpp</a>&gt;</code></p>
 
 <p><a href="struct_arn_item_1_1_mode-members.html">List of all members.</a></p>
@@ -121,8 +124,9 @@ Public Types</h2></td></tr>
  }</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_arn_item_8hpp_source.html#l00057">57</a> of file <a class="el" href="_arn_item_8hpp_source.html">ArnItem.hpp</a>.</p>
+<div class="textblock"><p>General global mode of an <em>Arn Data Object</em> </p>
+
+<p>Definition at line <a class="el" href="_arn_item_8hpp_source.html#l00079">79</a> of file <a class="el" href="_arn_item_8hpp_source.html">ArnItem.hpp</a>.</p>
 </div><hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="abd82ba851c2618469a5a0269da528569"></a>
 <div class="memitem">
@@ -135,21 +139,24 @@ Public Types</h2></td></tr>
 </div><div class="memdoc">
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="abd82ba851c2618469a5a0269da528569a93e44f1ae7d272c131ff1809f20ae0b9"></a>BiDir</em>&nbsp;</td><td>
+<p>A two way object, typically for validation or pipe. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="abd82ba851c2618469a5a0269da528569a583ff73025088ed12d4f33e2b3857227"></a>Pipe</em>&nbsp;</td><td>
+<p>Implies <em>BiDir</em> and all data is preserved as a stream. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="abd82ba851c2618469a5a0269da528569a47c0f66f3367757cc743afc63a45e3be"></a>Save</em>&nbsp;</td><td>
+<p>Data is persistent and will be saved. </p>
 </td></tr>
 </table>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_item_8hpp_source.html#l00058">58</a> of file <a class="el" href="_arn_item_8hpp_source.html">ArnItem.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_item_8hpp_source.html#l00080">80</a> of file <a class="el" href="_arn_item_8hpp_source.html">ArnItem.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/<a class="el" href="_arn_item_8hpp_source.html">ArnItem.hpp</a></li>
+<li>src/<a class="el" href="_arn_item_8hpp_source.html">ArnItem.hpp (1.0.0-9-g2ded014)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -157,7 +164,7 @@ Public Types</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_item.html">ArnItem</a></li><li class="navelem"><a class="el" href="struct_arn_item_1_1_mode.html">Mode</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:20 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

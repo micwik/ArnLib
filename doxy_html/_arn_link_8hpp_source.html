@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnLink.hpp Source File</title>
+<title>ArnLib: src/ArnLink.hpp (1.0.0-9-g2ded014) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -153,7 +153,7 @@ $(document).ready(function(){initNavTree('_arn_link_8hpp.html','');});
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    Q_OBJECT</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="class_arn_link.html#a81d1dcead6b2489f378bb5c3afb96b21">   50</a></span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_arn.html">Arn</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="class_arn_link.html#a707c7f0170adcb7159b64e64a199367d">   50</a></span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_arn_m.html">ArnM</a>;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="struct_arn_link_1_1_type.html">   53</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_arn_link_1_1_type.html">Type</a> {</div>
@@ -177,122 +177,122 @@ $(document).ready(function(){initNavTree('_arn_link_8hpp.html','');});
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="_m_q_flags_8hpp.html#aa2cee9d1cb3c0c9f88905783dcb498cb" title="Flags.">MQ_DECLARE_FLAGS</a>( <a class="code" href="struct_arn_link_1_1_flags.html">Flags</a>)</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    };</div>
 <div class="line"><a name="l00073"></a><span class="lineno"><a class="code" href="struct_arn_link_1_1_name_f.html">   73</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_arn_link_1_1_name_f.html">NameF</a> {</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6">   74</a></span>&#160;        <span class="keyword">enum</span> <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6">E</a> {</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6aa3502b223526b7cd04cd46b2abd3daf2">   75</a></span>&#160;            <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6aa3502b223526b7cd04cd46b2abd3daf2">NoFolderMark</a> = 0x01,  </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8">   76</a></span>&#160;            <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8" title="Only on discrete names, no effect on path.">EmptyOk</a>      = 0x02,</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8a9facf711e80fc72bb2e8e6fde1b282">   77</a></span>&#160;            <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8a9facf711e80fc72bb2e8e6fde1b282">Relative</a>     = 0x04   </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        };</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="_m_q_flags_8hpp.html#aa2cee9d1cb3c0c9f88905783dcb498cb" title="Flags.">MQ_DECLARE_FLAGS</a>( <a class="code" href="struct_arn_link_1_1_name_f.html">NameF</a>)</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    };</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a7e67b265c970d3cb68970be080c0548a">setValue</a>( <span class="keywordtype">int</span> value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a7e67b265c970d3cb68970be080c0548a">setValue</a>( <span class="keywordtype">double</span> value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a7e67b265c970d3cb68970be080c0548a">setValue</a>( <span class="keyword">const</span> QString&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a7e67b265c970d3cb68970be080c0548a">setValue</a>( <span class="keyword">const</span> QByteArray&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a7e67b265c970d3cb68970be080c0548a">setValue</a>( <span class="keyword">const</span> QVariant&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">int</span>  <a class="code" href="class_arn_link.html#a70119c71a9a68a300fd99a17fc7de615">toInt</a>();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">double</span>  <a class="code" href="class_arn_link.html#aacfd63713e811f71c7bb9fb9db2497d4">toDouble</a>();</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    QString  <a class="code" href="class_arn_link.html#aa3e70ee1cbdabd41936fba2bef07f3b2">toString</a>();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    QByteArray  <a class="code" href="class_arn_link.html#a39f6bff7c30d0a3e235145d4d53c589a">toByteArray</a>();</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    QVariant  <a class="code" href="class_arn_link.html#a1c5c4ee599aa8d51d892769b95d0d206">toVariant</a>();</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    Type  <a class="code" href="class_arn_link.html#a5da864c5eae34f8507ff87fb90c835de">type</a>();</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    QString  <a class="code" href="class_arn_link.html#a089d48cf30dd05be233ba3ea083d9587">linkPath</a>( <a class="code" href="struct_arn_link_1_1_name_f.html">ArnLink::NameF</a> nameF = <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8" title="Only on discrete names, no effect on path.">ArnLink::NameF::EmptyOk</a>);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    QString  <a class="code" href="class_arn_link.html#ae494050b20d3ac928c7ee143318a9792">linkName</a>( NameF nameF = NameF());</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="code" href="class_arn_link.html#ad64cc66a7fd618c90511be648754dc58">   98</a></span>&#160;    uint  <a class="code" href="class_arn_link.html#ad64cc66a7fd618c90511be648754dc58">linkId</a>()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _id;}</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_link.html#a46504465b43bc8bde382e92bdc5d62b8">isFolder</a>();</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6">   75</a></span>&#160;        <span class="keyword">enum</span> <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6" title="Selects a format for path or item name.">E</a> {</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6aa3502b223526b7cd04cd46b2abd3daf2">   77</a></span>&#160;            <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6aa3502b223526b7cd04cd46b2abd3daf2" title="Only on discrete names, no effect on path. &quot;test/&quot; ==&gt; &quot;test&quot;.">NoFolderMark</a> = 0x01,</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8">   79</a></span>&#160;            <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">EmptyOk</a>      = 0x02,</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8a9facf711e80fc72bb2e8e6fde1b282">   81</a></span>&#160;            <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8a9facf711e80fc72bb2e8e6fde1b282" title="Only on path, no effect on discrete names. &quot;/test/value&quot; ==&gt; &quot;test/value&quot;.">Relative</a>     = 0x04</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        };</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <a class="code" href="_m_q_flags_8hpp.html#aa2cee9d1cb3c0c9f88905783dcb498cb" title="Flags.">MQ_DECLARE_FLAGS</a>( <a class="code" href="struct_arn_link_1_1_name_f.html">NameF</a>)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    };</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span>  setValue( <span class="keywordtype">int</span> value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">void</span>  setValue( <span class="keywordtype">double</span> value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span>  setValue( <span class="keyword">const</span> QString&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span>  setValue( <span class="keyword">const</span> QByteArray&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span>  setValue( <span class="keyword">const</span> QVariant&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">int</span>  toInt();</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">double</span>  toDouble();</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    QString  toString();</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    QByteArray  toByteArray();</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    QVariant  toVariant();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    Type  type();</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#aac02cbd18d91fd488be3fd4b47248448">addSyncMode</a>( <span class="keywordtype">int</span> <a class="code" href="class_arn_link.html#a11586bdeae3a3ff974e0e7aee9e50009">syncMode</a>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">int</span>   <a class="code" href="class_arn_link.html#a11586bdeae3a3ff974e0e7aee9e50009">syncMode</a>();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_link.html#a9c926c2226cbef912a95c1b578b491d2">isBiDirMode</a>();</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a88471f5b318b66260b8daff489c73f83">setPipeMode</a>( <span class="keywordtype">bool</span> <a class="code" href="class_arn_link.html#a68c2db08be62e50abdca55c6236cfe5e">isPipeMode</a>, <span class="keywordtype">bool</span> alsoSetTwin = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_link.html#a68c2db08be62e50abdca55c6236cfe5e">isPipeMode</a>();</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a056db124486c9dbcd120177aa1562568">setSaveMode</a>( <span class="keywordtype">bool</span> <a class="code" href="class_arn_link.html#af046bcee2d98c0808c0b46db1303c9c0">isSaveMode</a>);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_link.html#af046bcee2d98c0808c0b46db1303c9c0">isSaveMode</a>();</div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="code" href="class_arn_link.html#a8afc9daadb7abc4a1ae220a0165e0590">  108</a></span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_link.html#a8afc9daadb7abc4a1ae220a0165e0590">isProvider</a>()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _isProvider;}</div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="code" href="class_arn_link.html#a7913c6d5317522de11e773b0d4fb2336">  109</a></span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_link.html#a7913c6d5317522de11e773b0d4fb2336">isThreaded</a>()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _isThreaded;}</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_link.html#a9e53883c4bf727a67feffc450e5d4cec">isRetired</a>();</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  <a class="code" href="class_arn_link.html#a187c76e456f5b3d7276866aafdbf88a9">twinLink</a>();</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  <a class="code" href="class_arn_link.html#ae933631b884dbbb591c5b03314242a2f">valueLink</a>();</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  <a class="code" href="class_arn_link.html#a0b4f2c864dfee632f35b6149c7f500da">providerLink</a>();</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  <a class="code" href="class_arn_link.html#aba2fc5bfc6217f3cee7decef8ba0bbed">holderLink</a>( <span class="keywordtype">bool</span> forceKeep);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    QString  <a class="code" href="class_arn_link.html#a0e595831b6560cbfd605354945cfba3b">twinName</a>();</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#af2ac7ed757abc09666ac3b00f8b149df" title="Can be called from any thread any time.">deref</a>();</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <a class="code" href="class_arn_link.html#a4bbe987d789c527f185a02f278a61e5a">~ArnLink</a>();</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">static</span> QString  <a class="code" href="class_arn_link.html#a3a4c480cf2c3f5d8c889685f18a60493">convertName</a>( <span class="keyword">const</span> QString&amp; name, NameF nameF = NameF());</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">static</span> QString  <a class="code" href="class_arn_link.html#a7d04b26c0fbbb0e3569c1cdd8cd0b337">convertBaseName</a>( <span class="keyword">const</span> QString&amp; name, NameF nameF);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a21337b636b6c21060fcefbe05aeeca77">trfValue</a>( QByteArray value, <span class="keywordtype">int</span> sendId, <span class="keywordtype">bool</span> forceKeep);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;signals:</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a87fdce89aef7c696de741e792d59d53a">changed</a>( uint sendId);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a87fdce89aef7c696de741e792d59d53a">changed</a>( uint sendId, QByteArray value);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#afe07c956541264812cf699653f9c88e1">modeChanged</a>( QString path, uint <a class="code" href="class_arn_link.html#ad64cc66a7fd618c90511be648754dc58">linkId</a>);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a793ec8543898ab8d4bc63f8ac596de62">modeChangedBelow</a>( QString path, uint <a class="code" href="class_arn_link.html#ad64cc66a7fd618c90511be648754dc58">linkId</a>);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a631092d455ff190de04dea771c446134">linkCreatedBelow</a>( <a class="code" href="class_arn_link.html">ArnLink</a>* link);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a74141115097e14197b65a0851359232b">zeroRef</a>();</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a95bec7f18dbfd3b794a6f8b6ca37fc26">retired</a>();</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <a class="code" href="class_arn_link.html#a8bf6650b7d4f85990a3f3389ecdf8acc">ArnLink</a>( <a class="code" href="class_arn_link.html">ArnLink</a> *parent, <span class="keyword">const</span> QString&amp; name, Flags flags);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a72d975193839404b50699b0f98b669ec">setupEnd</a>( <span class="keywordtype">int</span> <a class="code" href="class_arn_link.html#a11586bdeae3a3ff974e0e7aee9e50009">syncMode</a>);</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  <a class="code" href="class_arn_link.html#a88f683f70d788ab2595a9799f004b193">findLink</a>(<span class="keyword">const</span> QString&amp; name);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#ac694852c374e7521d18e1b001589390d" title="Can only be called from main-thread.">ref</a>();</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordtype">int</span>  <a class="code" href="class_arn_link.html#ad981fccc2880d635b0fefc0b4ceb4c46">refCount</a>();</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#af916aab877dbb9d29215f500b924bb8c" title="Can only be called from main-thread.">setRefCount</a>( <span class="keywordtype">int</span> count);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_link.html#a64a40568f8d3aefd9c4cb9195f2928a7">setRetired</a>();</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordtype">void</span>  resetHave();</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordtype">void</span>  emitChanged( <span class="keywordtype">int</span> sendId);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keyword">static</span> QAtomicInt  _idCount;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    uint  _id;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordtype">bool</span>  _isFolder;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordtype">bool</span>  _isProvider;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordtype">bool</span>  _isThreaded;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    QMutex  _mutex;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    QAtomicInt  _refCount;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isRetired;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">int</span>  _valueInt;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">double</span>  _valueDouble;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    QString  _valueString;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    QByteArray  _valueByteArray;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    QVariant  _valueVariant;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    QString  linkPath( <a class="code" href="struct_arn_link_1_1_name_f.html">ArnLink::NameF</a> nameF = <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">ArnLink::NameF::EmptyOk</a>);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    QString  linkName( NameF nameF = NameF());</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    uint  linkId()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _id;}</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordtype">bool</span>  isFolder();</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordtype">void</span>  addSyncMode( <span class="keywordtype">int</span> syncMode);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordtype">int</span>   syncMode();</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordtype">bool</span>  isBiDirMode();</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordtype">void</span>  setPipeMode( <span class="keywordtype">bool</span> isPipeMode, <span class="keywordtype">bool</span> alsoSetTwin = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">bool</span>  isPipeMode();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">void</span>  setSaveMode( <span class="keywordtype">bool</span> isSaveMode);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">bool</span>  isSaveMode();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordtype">bool</span>  isProvider()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _isProvider;}</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordtype">bool</span>  isThreaded()<span class="keyword">  const </span>{ <span class="keywordflow">return</span> _isThreaded;}</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordtype">bool</span>  isRetired();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  twinLink();</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  valueLink();</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  providerLink();</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  holderLink( <span class="keywordtype">bool</span> forceKeep);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    QString  twinName();</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordtype">void</span>  deref();</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    ~<a class="code" href="class_arn_link.html">ArnLink</a>();</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">static</span> QString  convertName( <span class="keyword">const</span> QString&amp; name, NameF nameF = NameF());</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keyword">static</span> QString  convertBaseName( <span class="keyword">const</span> QString&amp; name, NameF nameF);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">void</span>  trfValue( QByteArray value, <span class="keywordtype">int</span> sendId, <span class="keywordtype">bool</span> forceKeep);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;signals:</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordtype">void</span>  changed( uint sendId);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">void</span>  changed( uint sendId, QByteArray value);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">void</span>  modeChanged( QString path, uint linkId);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordtype">void</span>  modeChangedBelow( QString path, uint linkId);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordtype">void</span>  linkCreatedBelow( <a class="code" href="class_arn_link.html">ArnLink</a>* link);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">void</span>  zeroRef();</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordtype">void</span>  retired();</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>( <a class="code" href="class_arn_link.html">ArnLink</a> *parent, <span class="keyword">const</span> QString&amp; name, Flags flags);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">void</span>  setupEnd( <span class="keywordtype">int</span> syncMode);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  findLink(<span class="keyword">const</span> QString&amp; name);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordtype">void</span>  ref();</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordtype">int</span>  refCount();</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordtype">void</span>  setRefCount( <span class="keywordtype">int</span> count);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordtype">void</span>  setRetired();</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordtype">void</span>  resetHave();</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordtype">void</span>  emitChanged( <span class="keywordtype">int</span> sendId);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">static</span> QAtomicInt  _idCount;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    uint  _id;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordtype">bool</span>  _isFolder;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordtype">bool</span>  _isProvider;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordtype">bool</span>  _isThreaded;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    QMutex  _mutex;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    QAtomicInt  _refCount;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isRetired;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveInt;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveDouble;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveString;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveByteArray;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveVariant;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">int</span>  _valueInt;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">double</span>  _valueDouble;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    QString  _valueString;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    QByteArray  _valueByteArray;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    QVariant  _valueVariant;</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">volatile</span> Type  _type;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  _twin;   <span class="comment">// Used for bidirectional functionality</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">int</span>   _syncMode;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isPipeMode;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isSaveMode;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordtype">bool</span>  _hasBeenSetup;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;};</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a>)</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( <a class="code" href="class_arn_link.html">ArnLink</a>::NameF)</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">#endif // ARNLINK_HPP</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveInt;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveDouble;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveString;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveByteArray;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveVariant;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keyword">volatile</span> Type  _type;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  _twin;   <span class="comment">// Used for bidirectional functionality</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">int</span>   _syncMode;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isPipeMode;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isSaveMode;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordtype">bool</span>  _hasBeenSetup;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;};</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a>)</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( <a class="code" href="class_arn_link.html">ArnLink</a>::NameF)</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">#endif // ARNLINK_HPP</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_link_8hpp.html">ArnLink.hpp</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:19 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

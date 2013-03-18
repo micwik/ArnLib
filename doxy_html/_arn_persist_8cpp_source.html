@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnPersist.cpp Source File</title>
+<title>ArnLib: src/ArnPersist.cpp (1.0.0-9-g2ded014) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -154,43 +154,43 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &lt;QMetaMethod&gt;</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="class_arn_item_persist.html#a69d5f919bf1c5d2f0b15d7ed7e05af2f">   51</a></span>&#160;<a class="code" href="class_arn_item_persist.html#a69d5f919bf1c5d2f0b15d7ed7e05af2f">ArnItemPersist::ArnItemPersist</a>( <a class="code" href="class_arn_persist.html">ArnPersist</a>* arnPersist) :</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="class_arn_item.html">ArnItem</a>( arnPersist)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;ArnItemPersist::ArnItemPersist( <a class="code" href="class_arn_persist.html">ArnPersist</a>* arnPersist) :</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>( arnPersist)</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="class_arn_item.html#ad06aa8df2831fb1d147cc675dd1f7620">setForceKeep</a>();  <span class="comment">// Only normal value will be used for Load/Save</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="class_arn_item.html#a126613f11bed2a55074352853bc14d52">setBlockEcho</a>( <span class="keyword">true</span>);  <span class="comment">// Don&#39;t save own updates</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="class_arn_item.html#ae52fa4597f43fe38ccc36d7f3bbd32d3">setIgnoreSameValue</a>( <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    setForceKeep();  <span class="comment">// Only normal value will be used for Load/Save</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    setBlockEcho( <span class="keyword">true</span>);  <span class="comment">// Don&#39;t save own updates</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    setIgnoreSameValue( <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    _arnPersist  = arnPersist;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    _storeId     = 0;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    _isMandatory = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    _storeType   = <a class="code" href="struct_arn_item_persist_1_1_store_type.html#a175377900a036b3fd5740b38d5d4a1bda2e2d7f0de736d2e5aa6c4ce69b16b9c0">StoreType::DataBase</a>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    _storeType   = StoreType::DataBase;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#aa46cfd7505dd5d12be199810b5e9ed25">   64</a></span>&#160;<a class="code" href="class_arn_vcs.html#aa46cfd7505dd5d12be199810b5e9ed25">ArnVcs::ArnVcs</a>( QObject* parent) :</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;ArnVcs::ArnVcs( QObject* parent) :</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    QObject( parent)</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#a8971e41dcf1d4a6f0a97fa8aa21804c8">   70</a></span>&#160;<a class="code" href="class_arn_vcs.html#a8971e41dcf1d4a6f0a97fa8aa21804c8">ArnVcs::~ArnVcs</a>()</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;ArnVcs::~ArnVcs()</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;{</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#a6534bf564079ec9d3f4a85d23b15b023">   75</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#a6534bf564079ec9d3f4a85d23b15b023">ArnVcs::log</a>( <span class="keywordtype">int</span> numLog)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordtype">void</span>  ArnVcs::log( <span class="keywordtype">int</span> numLog)</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;{</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    Q_UNUSED(numLog)</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#a426f87a5a7a38ba1ee209ef1af1f971e">   81</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#a426f87a5a7a38ba1ee209ef1af1f971e">ArnVcs::files</a>( QString ref)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordtype">void</span>  ArnVcs::files( QString ref)</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    Q_UNUSED(ref)</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#ad7e0c96c21adb4ee8f4444ca97e0f759">   87</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#ad7e0c96c21adb4ee8f4444ca97e0f759">ArnVcs::commit</a>( QString commitMsg, QStringList files, QString name, QString email)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keywordtype">void</span>  ArnVcs::commit( QString commitMsg, QStringList files, QString name, QString email)</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;{</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    Q_UNUSED(commitMsg)</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    Q_UNUSED(files)</div>
@@ -199,61 +199,61 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#ad40aa9d2db8606e9718508381cbc2723">   96</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#ad40aa9d2db8606e9718508381cbc2723">ArnVcs::tag</a>( QString name, QString ref)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keywordtype">void</span>  ArnVcs::tag( QString name, QString ref)</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;{</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    Q_UNUSED(name)</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    Q_UNUSED(ref)</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#a3e954a79e951ab6a674447767b374f52">  103</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#a3e954a79e951ab6a674447767b374f52">ArnVcs::diff</a>( QString ref, QStringList files)</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keywordtype">void</span>  ArnVcs::diff( QString ref, QStringList files)</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;{</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    Q_UNUSED(ref)</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    Q_UNUSED(files)</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#a0b56c0d5c41df318723cf562168a330f">  110</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#a0b56c0d5c41df318723cf562168a330f">ArnVcs::logRecord</a>( QString ref)</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keywordtype">void</span>  ArnVcs::logRecord( QString ref)</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;{</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    Q_UNUSED(ref)</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#a52898c73e888e3e6111cf1c97185af89">  116</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#a52898c73e888e3e6111cf1c97185af89">ArnVcs::tags</a>()</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keywordtype">void</span>  ArnVcs::tags()</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;{</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#aaef7d34278efd16a2d36fd84b099b490">  121</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#aaef7d34278efd16a2d36fd84b099b490">ArnVcs::branches</a>()</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="keywordtype">void</span>  ArnVcs::branches()</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;{</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#a0aed00373defef75b1e0cd3e6a29935e">  126</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#a0aed00373defef75b1e0cd3e6a29935e">ArnVcs::status</a>()</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keywordtype">void</span>  ArnVcs::status()</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;{</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;}</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#ac1021e8f26d2d1668d69118a794f632e">  131</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#ac1021e8f26d2d1668d69118a794f632e">ArnVcs::userSettings</a>()</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="keywordtype">void</span>  ArnVcs::userSettings()</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;{</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#a3d8f9e944e3d9dd67ae65485b78d25cc">  136</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#a3d8f9e944e3d9dd67ae65485b78d25cc">ArnVcs::setUserSettings</a>( QString userName, QString userEmail)</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="keywordtype">void</span>  ArnVcs::setUserSettings( QString userName, QString userEmail)</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;{</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    Q_UNUSED(userName)</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    Q_UNUSED(userEmail)</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;}</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="code" href="class_arn_vcs.html#a557d2dad403cc7c2e1487929becfcbb1">  143</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_vcs.html#a557d2dad403cc7c2e1487929becfcbb1">ArnVcs::checkout</a>( QString ref, QStringList files)</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="keywordtype">void</span>  ArnVcs::checkout( QString ref, QStringList files)</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;{</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    Q_UNUSED(ref)</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    Q_UNUSED(files)</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
-<div class="line"><a name="l00150"></a><span class="lineno"><a class="code" href="class_arn_persist.html#af7df7bed23a44aa13d4d6906d9955257">  150</a></span>&#160;<a class="code" href="class_arn_persist.html#af7df7bed23a44aa13d4d6906d9955257">ArnPersist::ArnPersist</a>( QObject* parent) :</div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="code" href="class_arn_persist.html#af7df7bed23a44aa13d4d6906d9955257">  150</a></span>&#160;<a class="code" href="class_arn_persist.html">ArnPersist</a>::<a class="code" href="class_arn_persist.html">ArnPersist</a>( QObject* parent) :</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    QObject( parent)</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;{</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    _arnMountPoint = 0;</div>
@@ -262,8 +262,8 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    _persistDir = <span class="keyword">new</span> QDir(<span class="stringliteral">&quot;persist&quot;</span>);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    _query      = 0;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    _depOffer   = 0;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    _sapiCommon = <span class="keyword">new</span> <a class="code" href="class_arn_persist_sapi.html" title="Persist Service API.">ArnPersistSapi</a>( <span class="keyword">this</span>);</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    _vcs        = <span class="keyword">new</span> <a class="code" href="class_arn_vcs.html">ArnVcs</a>( <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    _sapiCommon = <span class="keyword">new</span> ArnPersistSapi( <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    _vcs        = <span class="keyword">new</span> ArnVcs( <span class="keyword">this</span>);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    setupSapi( _sapiCommon, <span class="stringliteral">&quot;//.sys/Persist/Pipes/CommonPipe!&quot;</span>);</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;}</div>
@@ -276,19 +276,19 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;}</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
-<div class="line"><a name="l00173"></a><span class="lineno"><a class="code" href="class_arn_persist.html#a34de416764dae40d9d3b6ab962ed2a8a">  173</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_persist.html#a34de416764dae40d9d3b6ab962ed2a8a">ArnPersist::setPersistDir</a>(<span class="keyword">const</span> QString &amp;path)</div>
+<div class="line"><a name="l00173"></a><span class="lineno"><a class="code" href="class_arn_persist.html#a34de416764dae40d9d3b6ab962ed2a8a">  173</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_persist.html#a34de416764dae40d9d3b6ab962ed2a8a" title="Set the VCS persistent file directory root">ArnPersist::setPersistDir</a>(<span class="keyword">const</span> QString &amp;path)</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;{</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    _persistDir-&gt;setPath( path);</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;}</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
-<div class="line"><a name="l00179"></a><span class="lineno"><a class="code" href="class_arn_persist.html#adb8096f25f52df71d910bfd8206caf8d">  179</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_persist.html#adb8096f25f52df71d910bfd8206caf8d">ArnPersist::setArchiveDir</a>(<span class="keyword">const</span> QString &amp;path)</div>
+<div class="line"><a name="l00179"></a><span class="lineno"><a class="code" href="class_arn_persist.html#adb8096f25f52df71d910bfd8206caf8d">  179</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_persist.html#adb8096f25f52df71d910bfd8206caf8d" title="Set the persistent database backup directory.">ArnPersist::setArchiveDir</a>(<span class="keyword">const</span> QString &amp;path)</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;{</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    _archiveDir-&gt;setPath( path);</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;}</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
-<div class="line"><a name="l00185"></a><span class="lineno"><a class="code" href="class_arn_persist.html#a91359d742060af64cd3853806cdb9b8e">  185</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_persist.html#a91359d742060af64cd3853806cdb9b8e">ArnPersist::setVcs</a>( <a class="code" href="class_arn_vcs.html">ArnVcs</a>* vcs)</div>
+<div class="line"><a name="l00185"></a><span class="lineno"><a class="code" href="class_arn_persist.html#a91359d742060af64cd3853806cdb9b8e">  185</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_persist.html#a91359d742060af64cd3853806cdb9b8e" title="Set the Version Control System to be used.">ArnPersist::setVcs</a>( ArnVcs* vcs)</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;{</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">if</span> (_vcs)</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="keyword">delete</span> _vcs;</div>
@@ -297,16 +297,16 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    connect( _vcs, SIGNAL(checkoutR()), <span class="keyword">this</span>, SLOT(vcsCheckoutR()));</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <a class="code" href="struct_arn_rpc_1_1_mode.html">ArnRpc::Mode</a>  mode;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    _sapiCommon-&gt;<a class="code" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de">batchConnect</a>( _vcs, QRegExp(<span class="stringliteral">&quot;(.+)&quot;</span>), <span class="stringliteral">&quot;rq_vcs\\1&quot;</span>);</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    _sapiCommon-&gt;<a class="code" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de">batchConnect</a>( QRegExp(<span class="stringliteral">&quot;^pv_vcs(.+)&quot;</span>), _vcs, <span class="stringliteral">&quot;\\1&quot;</span>);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    _sapiCommon-&gt;batchConnect( _vcs, QRegExp(<span class="stringliteral">&quot;(.+)&quot;</span>), <span class="stringliteral">&quot;rq_vcs\\1&quot;</span>);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    _sapiCommon-&gt;batchConnect( QRegExp(<span class="stringliteral">&quot;^pv_vcs(.+)&quot;</span>), _vcs, <span class="stringliteral">&quot;\\1&quot;</span>);</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;}</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*  ArnPersist::getPersistItem( QString path)</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;ArnItemPersist*  ArnPersist::getPersistItem( QString path)</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;{</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*  item = <span class="keyword">new</span> <a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>( <span class="keyword">this</span>);</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    item-&gt;<a class="code" href="class_arn_item.html#aad7d66fe3be087dd393328349812a369">open</a>( path);</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    uint  linkId = item-&gt;<a class="code" href="class_arn_item.html#ae836b1016375c40372d8c6d5bee68291">linkId</a>();</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    ArnItemPersist*  item = <span class="keyword">new</span> ArnItemPersist( <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    item-&gt;open( path);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    uint  linkId = item-&gt;linkId();</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">if</span> (_itemPersistMap.contains( linkId)) { <span class="comment">// Already as persist</span></div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        qDebug() &lt;&lt; <span class="stringliteral">&quot;getPersistItem already persist: path=&quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot; link=&quot;</span> &lt;&lt; linkId;</div>
@@ -316,8 +316,8 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <span class="keywordflow">return</span> item;</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    }</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    item-&gt;<a class="code" href="class_arn_item.html#ae52fa4597f43fe38ccc36d7f3bbd32d3">setIgnoreSameValue</a>( <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    item-&gt;<a class="code" href="class_arn_item.html#a2487337c3924ea323ec6462b8b0aee08">setDelay</a>( 5000);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    item-&gt;setIgnoreSameValue( <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    item-&gt;setDelay( 5000);</div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    connect( item, SIGNAL(changed()), <span class="keyword">this</span>, SLOT(doArnUpdate()));</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    connect( item, SIGNAL(arnLinkDestroyed()), <span class="keyword">this</span>, SLOT(doArnDestroy()));</div>
@@ -327,17 +327,17 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;}</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*  ArnPersist::setupMandatory( QString path, <span class="keywordtype">bool</span> isMandatory)</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;ArnItemPersist*  ArnPersist::setupMandatory( QString path, <span class="keywordtype">bool</span> isMandatory)</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;{</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <a class="code" href="struct_arn_item_persist_1_1_store_type.html">ArnItemPersist::StoreType</a>  st;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*  item = 0;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    ArnItemPersist::StoreType  st;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    ArnItemPersist*  item = 0;</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keywordflow">if</span> (isMandatory) {</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        item = getPersistItem( path);</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        item-&gt;<a class="code" href="class_arn_item_persist.html#a8a41ba97bed47095d7f8f617e6875049">setMandatory</a>(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="keywordflow">if</span> ((item-&gt;<a class="code" href="class_arn_item_persist.html#af4b67f7c565d86bab379103bcc36a2ea">storeType</a>() == st.<a class="code" href="struct_arn_item_persist_1_1_store_type.html#a175377900a036b3fd5740b38d5d4a1bda2e2d7f0de736d2e5aa6c4ce69b16b9c0">DataBase</a>) &amp;&amp; !_pathPersistMap.contains( path)) {</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            _pathPersistMap.insert( path, item-&gt;<a class="code" href="class_arn_item.html#ae836b1016375c40372d8c6d5bee68291">linkId</a>());</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            item-&gt;<a class="code" href="class_arn_item.html#a2a6dbdb8ccc20629acb7e85b8da5caf4">addMode</a>( <a class="code" href="struct_arn_item_1_1_mode.html#abd82ba851c2618469a5a0269da528569a47c0f66f3367757cc743afc63a45e3be">ArnItem::Mode::Save</a>);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        item-&gt;setMandatory(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="keywordflow">if</span> ((item-&gt;storeType() == st.DataBase) &amp;&amp; !_pathPersistMap.contains( path)) {</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            _pathPersistMap.insert( path, item-&gt;linkId());</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            item-&gt;addMode( <a class="code" href="struct_arn_item_1_1_mode.html#abd82ba851c2618469a5a0269da528569a47c0f66f3367757cc743afc63a45e3be" title="Data is persistent and will be saved.">ArnItem::Mode::Save</a>);</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    }</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordflow">else</span> {</div>
@@ -346,10 +346,10 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        item = _itemPersistMap.value( linkId);</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        Q_ASSERT(item);</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        item-&gt;<a class="code" href="class_arn_item_persist.html#a8a41ba97bed47095d7f8f617e6875049">setMandatory</a>(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keywordflow">if</span> (item-&gt;<a class="code" href="class_arn_item_persist.html#af4b67f7c565d86bab379103bcc36a2ea">storeType</a>() != st.<a class="code" href="struct_arn_item_persist_1_1_store_type.html#a175377900a036b3fd5740b38d5d4a1bda31deb4f0088df25cdd21420777425f9c">File</a>) {  <span class="comment">// Not persist file</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        item-&gt;setMandatory(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keywordflow">if</span> (item-&gt;storeType() != st.File) {  <span class="comment">// Not persist file</span></div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            _pathPersistMap.remove( path);  <span class="comment">// Map only needed for mandatory &amp; file</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            <span class="keywordflow">if</span> (!item-&gt;<a class="code" href="class_arn_item.html#a71094b74ad2a58a7283b771cb68505f3">getMode</a>().is( <a class="code" href="struct_arn_item_1_1_mode.html#abd82ba851c2618469a5a0269da528569a47c0f66f3367757cc743afc63a45e3be">ArnItem::Mode::Save</a>)) {</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            <span class="keywordflow">if</span> (!item-&gt;getMode().is( <a class="code" href="struct_arn_item_1_1_mode.html#abd82ba851c2618469a5a0269da528569a47c0f66f3367757cc743afc63a45e3be" title="Data is persistent and will be saved.">ArnItem::Mode::Save</a>)) {</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                _itemPersistMap.remove( linkId);</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                <span class="keyword">delete</span> item;</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            }</div>
@@ -364,84 +364,84 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    uint  linkId = _pathPersistMap.value( path);</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keywordflow">if</span> (!linkId)  <span class="keywordflow">return</span>;  <span class="comment">// path not found</span></div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*  item = _itemPersistMap.value( linkId);</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    ArnItemPersist*  item = _itemPersistMap.value( linkId);</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    Q_ASSERT(item);</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <a class="code" href="struct_arn_item_persist_1_1_store_type.html">ArnItemPersist::StoreType</a>  st;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="keywordflow">if</span> (item-&gt;<a class="code" href="class_arn_item_persist.html#af4b67f7c565d86bab379103bcc36a2ea">storeType</a>() != st.<a class="code" href="struct_arn_item_persist_1_1_store_type.html#a175377900a036b3fd5740b38d5d4a1bda31deb4f0088df25cdd21420777425f9c">File</a>)  <span class="keywordflow">return</span>;  <span class="comment">// Not persist file</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    ArnItemPersist::StoreType  st;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="keywordflow">if</span> (item-&gt;storeType() != st.File)  <span class="keywordflow">return</span>;  <span class="comment">// Not persist file</span></div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    item-&gt;<a class="code" href="class_arn_item_persist.html#a8a651c8422193a31f61630384683767c">setStoreType</a>( st.<a class="code" href="struct_arn_item_persist_1_1_store_type.html#a175377900a036b3fd5740b38d5d4a1bda2e2d7f0de736d2e5aa6c4ce69b16b9c0">DataBase</a>);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    setupMandatory( path, item-&gt;<a class="code" href="class_arn_item_persist.html#a5590b2d24097396671922edf800b1fb4">isMandatory</a>());</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    item-&gt;setStoreType( st.DataBase);</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    setupMandatory( path, item-&gt;isMandatory());</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;}</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="keywordtype">void</span>  ArnPersist::doArnDestroy()</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;{</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*  item = qobject_cast&lt;<a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*&gt;( sender());</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    ArnItemPersist*  item = qobject_cast&lt;ArnItemPersist*&gt;( sender());</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keywordflow">if</span> (!item)  <span class="keywordflow">return</span>;  <span class="comment">// No valid sender</span></div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    qDebug() &lt;&lt; <span class="stringliteral">&quot;Persist destroyArn: path=&quot;</span> &lt;&lt; item-&gt;<a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903">path</a>();</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    _itemPersistMap.remove( item-&gt;<a class="code" href="class_arn_item.html#ae836b1016375c40372d8c6d5bee68291">linkId</a>());</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    _pathPersistMap.remove( item-&gt;<a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903">path</a>());</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    qDebug() &lt;&lt; <span class="stringliteral">&quot;Persist destroyArn: path=&quot;</span> &lt;&lt; item-&gt;path();</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    _itemPersistMap.remove( item-&gt;linkId());</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    _pathPersistMap.remove( item-&gt;path());</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    item-&gt;deleteLater();</div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;}</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keywordtype">void</span>  ArnPersist::doArnModeChanged( QString path, uint linkId, <a class="code" href="struct_arn_item_1_1_mode.html">ArnItem::Mode</a> mode)</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keywordtype">void</span>  ArnPersist::doArnModeChanged( QString path, uint linkId, <a class="code" href="struct_arn_item_1_1_mode.html" title="General global mode of an Arn Data Object">ArnItem::Mode</a> mode)</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;{</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    qDebug() &lt;&lt; <span class="stringliteral">&quot;Persist modeChanged: path=&quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot; mode=&quot;</span> &lt;&lt; mode.f;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordflow">if</span> (!mode.is( mode.<a class="code" href="struct_arn_item_1_1_mode.html#abd82ba851c2618469a5a0269da528569a47c0f66f3367757cc743afc63a45e3be">Save</a>))  <span class="keywordflow">return</span>;  <span class="comment">// Not save-mode</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordflow">if</span> (!mode.is( mode.<a class="code" href="struct_arn_item_1_1_mode.html#abd82ba851c2618469a5a0269da528569a47c0f66f3367757cc743afc63a45e3be" title="Data is persistent and will be saved.">Save</a>))  <span class="keywordflow">return</span>;  <span class="comment">// Not save-mode</span></div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keywordflow">if</span> (_itemPersistMap.contains( linkId))  <span class="keywordflow">return</span>;  <span class="comment">// Already in map</span></div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    qDebug() &lt;&lt; <span class="stringliteral">&quot;Persist modeChanged New: path=&quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot; mode=&quot;</span> &lt;&lt; mode.f;</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*  item = getPersistItem( path);</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    ArnItemPersist*  item = getPersistItem( path);</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    QByteArray  data;</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keywordtype">int</span>  storeId;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="class_arn_persist.html#adff1ffa0f1e4f228972e32b8bffb6320">getDbValue</a>( path, data, storeId)) {  <span class="comment">// path exist in db, load data</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keywordflow">if</span> (getDbValue( path, data, storeId)) {  <span class="comment">// path exist in db, load data</span></div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        qDebug() &lt;&lt; <span class="stringliteral">&quot;Persist modeChanged dbRead: path=&quot;</span> &lt;&lt; path;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        item-&gt;<a class="code" href="class_arn_item.html#a08c9f2a007c2331aa9f3d879a08453a6">arnImport</a>( data, <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        item-&gt;<a class="code" href="class_arn_item_persist.html#a3781c3503e33a8d97dd768c4d15c3775">setStoreId</a>( storeId);</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        item-&gt;arnImport( data, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        item-&gt;setStoreId( storeId);</div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    }</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <span class="keywordflow">else</span> {  <span class="comment">// path is new in db, create it with null data</span></div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        qDebug() &lt;&lt; <span class="stringliteral">&quot;Persist modeChanged dbInsert: path=&quot;</span> &lt;&lt; path;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <a class="code" href="class_arn_persist.html#afae6d17ab1c0e1e863ebf78a8441284d">insertDbValue</a>( path, QByteArray());</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="class_arn_persist.html#a0f3c00cf52d200c8f0cd866408be10ca">getDbId</a>( path, storeId)) {</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            item-&gt;<a class="code" href="class_arn_item_persist.html#a3781c3503e33a8d97dd768c4d15c3775">setStoreId</a>( storeId);</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        insertDbValue( path, QByteArray());</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keywordflow">if</span> (getDbId( path, storeId)) {</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            item-&gt;setStoreId( storeId);</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        }</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        item-&gt;<a class="code" href="class_arn_item.html#a41836f035c0a35b062a75a477c396a52">setValue</a>( QByteArray(), <span class="keyword">false</span>);  <span class="comment">// Do a null update, to signal update done</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        item-&gt;setValue( QByteArray(), <span class="keyword">false</span>);  <span class="comment">// Do a null update, to signal update done</span></div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    }</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;}</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="keywordtype">void</span>  ArnPersist::doArnUpdate()</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;{</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*  item;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    item = qobject_cast&lt;<a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*&gt;( sender());</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    ArnItemPersist*  item;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    item = qobject_cast&lt;ArnItemPersist*&gt;( sender());</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordflow">if</span> (!item) {</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        <a class="code" href="class_arn.html#aaa774efb85e25fc668b99c60d8bc7d87">Arn::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Can&#39;t get ArnItemPersist sender for doArnUpdate&quot;</span>)),</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Can&#39;t get ArnItemPersist sender for doArnUpdate&quot;</span>)),</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                            <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afaef7eeb5d30b5dd20d6d37cf6b9954484">ArnError::Undef</a>);</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    }</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keywordflow">switch</span> (item-&gt;<a class="code" href="class_arn_item_persist.html#af4b67f7c565d86bab379103bcc36a2ea">storeType</a>()) {</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="struct_arn_item_persist_1_1_store_type.html#a175377900a036b3fd5740b38d5d4a1bda2e2d7f0de736d2e5aa6c4ce69b16b9c0">ArnItemPersist::StoreType::DataBase</a>:</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keywordflow">switch</span> (item-&gt;storeType()) {</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="keywordflow">case</span> ArnItemPersist::StoreType::DataBase:</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    {</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <span class="keywordtype">int</span> storeId = item-&gt;<a class="code" href="class_arn_item_persist.html#a58274f7b2ba80cdd7f3d2859c5c78dcb">storeId</a>();</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <span class="keywordtype">int</span> storeId = item-&gt;storeId();</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        <span class="keywordflow">if</span> (storeId) {</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            <a class="code" href="class_arn_persist.html#ad347bc667d7f0866cc9ba709ec41de84">updateDbValue</a>( storeId, item-&gt;<a class="code" href="class_arn_item.html#a067e26af9053171edd296a00c460c3e5">arnExport</a>());</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            updateDbValue( storeId, item-&gt;arnExport());</div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        }</div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;            <a class="code" href="class_arn.html#aaa774efb85e25fc668b99c60d8bc7d87">Arn::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Can&#39;t get persist storeId for doArnUpdate: path=&quot;</span>)) +</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                                           item-&gt;<a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903">path</a>(), <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afaef7eeb5d30b5dd20d6d37cf6b9954484">ArnError::Undef</a>);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;            <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Can&#39;t get persist storeId for doArnUpdate: path=&quot;</span>)) +</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                                           item-&gt;path(), <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afaef7eeb5d30b5dd20d6d37cf6b9954484">ArnError::Undef</a>);</div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        }</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    }</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="struct_arn_item_persist_1_1_store_type.html#a175377900a036b3fd5740b38d5d4a1bda31deb4f0088df25cdd21420777425f9c">ArnItemPersist::StoreType::File</a>:</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordflow">case</span> ArnItemPersist::StoreType::File:</div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    {</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        QString  relPath = item-&gt;<a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903">path</a>( <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8a9facf711e80fc72bb2e8e6fde1b282">ArnLink::NameF::Relative</a>);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        QString  relPath = item-&gt;path( <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8a9facf711e80fc72bb2e8e6fde1b282" title="Only on path, no effect on discrete names. &quot;/test/value&quot; ==&gt; &quot;test/value&quot;.">ArnLink::NameF::Relative</a>);</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        qDebug() &lt;&lt; <span class="stringliteral">&quot;Persist arnUpdate: Save to relPath=&quot;</span> &lt;&lt; relPath;</div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        QFile  file( _persistDir-&gt;absoluteFilePath( relPath));</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        file.open( QIODevice::WriteOnly);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        QByteArray  data = item-&gt;<a class="code" href="class_arn_item.html#a4c55dddb082391debbe8929b1d4e7865">toByteArray</a>();</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        QByteArray  data = item-&gt;toByteArray();</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        file.write( data);</div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="comment">// qDebug() &lt;&lt; &quot;Persist arnUpdate: Save to file=&quot; &lt;&lt; file.fileName();</span></div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <span class="keywordflow">break</span>;</div>
@@ -451,21 +451,21 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;}</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
-<div class="line"><a name="l00348"></a><span class="lineno"><a class="code" href="class_arn_persist.html#a5a5df6121afbf16f1980093001aafdd4">  348</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#a5a5df6121afbf16f1980093001aafdd4">ArnPersist::setMountPoint</a>( <span class="keyword">const</span> QString&amp; path)</div>
+<div class="line"><a name="l00348"></a><span class="lineno"><a class="code" href="class_arn_persist.html#a5a5df6121afbf16f1980093001aafdd4">  348</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#a5a5df6121afbf16f1980093001aafdd4" title="Set the persistent enabled tree path.">ArnPersist::setMountPoint</a>( <span class="keyword">const</span> QString&amp; path)</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;{</div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keywordflow">if</span> (!_db-&gt;isOpen()) {</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <a class="code" href="class_arn.html#aaa774efb85e25fc668b99c60d8bc7d87">Arn::errorLog</a>( QString(tr(<span class="stringliteral">&quot;DataBase required before mountPoint&quot;</span>)),</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;DataBase required before mountPoint&quot;</span>)),</div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;                            <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afab922047914c4929a92ec9c216e541e2d">ArnError::NotOpen</a>);</div>
 <div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    }</div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <span class="keywordflow">if</span> (_arnMountPoint)  <span class="keyword">delete</span> _arnMountPoint;</div>
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    _arnMountPoint = <span class="keyword">new</span> <a class="code" href="class_arn_item.html">ArnItem</a>( <span class="keyword">this</span>);</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <span class="keywordtype">bool</span>  isOk = _arnMountPoint-&gt;<a class="code" href="class_arn_item.html#ab9460dee048f3a07102ac1c47c82a62f">openFolder</a>( path);</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    _arnMountPoint = <span class="keyword">new</span> <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>( <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <span class="keywordtype">bool</span>  isOk = _arnMountPoint-&gt;<a class="code" href="class_arn_item.html#ab9460dee048f3a07102ac1c47c82a62f" title="Open a handle to an Arn folder.">openFolder</a>( path);</div>
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keywordflow">if</span> (isOk) {</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        connect( _arnMountPoint, SIGNAL(arnModeChanged(QString,uint,<a class="code" href="struct_arn_item_1_1_mode.html">ArnItem::Mode</a>)),</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                 <span class="keyword">this</span>, SLOT(doArnModeChanged(QString,uint,<a class="code" href="struct_arn_item_1_1_mode.html">ArnItem::Mode</a>)));</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        connect( _arnMountPoint, SIGNAL(arnModeChanged(QString,uint,<a class="code" href="struct_arn_item_1_1_mode.html" title="General global mode of an Arn Data Object">ArnItem::Mode</a>)),</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;                 <span class="keyword">this</span>, SLOT(doArnModeChanged(QString,uint,<a class="code" href="struct_arn_item_1_1_mode.html" title="General global mode of an Arn Data Object">ArnItem::Mode</a>)));</div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        <span class="comment">// Load all persist files &amp; mandatory into arn</span></div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        doLoadFiles();</div>
@@ -473,15 +473,15 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;</div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keywordflow">if</span> (_depOffer)  <span class="keyword">delete</span> _depOffer;</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        <span class="comment">// Persist service is available</span></div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        _depOffer = <span class="keyword">new</span> <a class="code" href="class_arn_depend_offer.html">ArnDependOffer</a>( <span class="keyword">this</span>);</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        _depOffer-&gt;<a class="code" href="class_arn_depend_offer.html#ad6e77bc45148794730f7c32a40f03997">advertise</a>(<span class="stringliteral">&quot;$Persist&quot;</span>);</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        _depOffer = <span class="keyword">new</span> <a class="code" href="class_arn_depend_offer.html" title="Class for advertising that a service is available.">ArnDependOffer</a>( <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        _depOffer-&gt;<a class="code" href="class_arn_depend_offer.html#ad6e77bc45148794730f7c32a40f03997" title="Advertise an available service">advertise</a>(<span class="stringliteral">&quot;$Persist&quot;</span>);</div>
 <div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    }</div>
 <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="keywordflow">return</span> isOk;</div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;}</div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
-<div class="line"><a name="l00378"></a><span class="lineno"><a class="code" href="class_arn_persist.html#ac54a85a233d7f19cfb0622d448844462">  378</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#ac54a85a233d7f19cfb0622d448844462">ArnPersist::setupDataBase</a>( QString dbName)</div>
+<div class="line"><a name="l00378"></a><span class="lineno"><a class="code" href="class_arn_persist.html#ac54a85a233d7f19cfb0622d448844462">  378</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#ac54a85a233d7f19cfb0622d448844462" title="Setup the persistent database.">ArnPersist::setupDataBase</a>( QString dbName)</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;{</div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="keywordflow">if</span> (_query)  <span class="keyword">delete</span> _query;</div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;</div>
@@ -491,7 +491,7 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    <span class="comment">//db.setUserName(&quot;acarlson&quot;);</span></div>
 <div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <span class="comment">//db.setPassword(&quot;1uTbSbAs&quot;);</span></div>
 <div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <span class="keywordflow">if</span> (!_db-&gt;open()) {</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        <a class="code" href="class_arn.html#aaa774efb85e25fc668b99c60d8bc7d87">Arn::errorLog</a>( QString(tr(<span class="stringliteral">&quot;DataBase open: &quot;</span>) + _db-&gt;lastError().text()),</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;DataBase open: &quot;</span>) + _db-&gt;lastError().text()),</div>
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;                            <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afa3337614b1b5f5e3d4dedb286d0ca3073">ArnError::ConnectionError</a>);</div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    }</div>
@@ -500,7 +500,7 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;}</div>
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;</div>
-<div class="line"><a name="l00397"></a><span class="lineno"><a class="code" href="class_arn_persist.html#a0f3c00cf52d200c8f0cd866408be10ca">  397</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#a0f3c00cf52d200c8f0cd866408be10ca">ArnPersist::getDbId</a>( QString path, <span class="keywordtype">int</span>&amp; storeId)</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="keywordtype">bool</span>  ArnPersist::getDbId( QString path, <span class="keywordtype">int</span>&amp; storeId)</div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;{</div>
 <div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="keywordtype">bool</span>  retVal = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    <span class="keywordtype">int</span>   isUsed = 1;</div>
@@ -515,12 +515,12 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    }</div>
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    _query-&gt;finish();</div>
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <span class="keywordflow">if</span> (!isUsed)  <a class="code" href="class_arn_persist.html#ac44b6fe3f363526d415e31ccba161c8b">updateDbUsed</a>( storeId, 1);</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <span class="keywordflow">if</span> (!isUsed)  updateDbUsed( storeId, 1);</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <span class="keywordflow">return</span> retVal;</div>
 <div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;}</div>
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;</div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;</div>
-<div class="line"><a name="l00417"></a><span class="lineno"><a class="code" href="class_arn_persist.html#adff1ffa0f1e4f228972e32b8bffb6320">  417</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#adff1ffa0f1e4f228972e32b8bffb6320">ArnPersist::getDbValue</a>(<span class="keywordtype">int</span> storeId, QString &amp;path, QByteArray &amp;value)</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="keywordtype">bool</span>  ArnPersist::getDbValue(<span class="keywordtype">int</span> storeId, QString &amp;path, QByteArray &amp;value)</div>
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;{</div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    <span class="keywordtype">bool</span>  retVal = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    <span class="keywordtype">int</span>   isUsed = 1;</div>
@@ -535,12 +535,12 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    }</div>
 <div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    _query-&gt;finish();</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    <span class="keywordflow">if</span> (!isUsed)  <a class="code" href="class_arn_persist.html#ac44b6fe3f363526d415e31ccba161c8b">updateDbUsed</a>( storeId, 1);</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    <span class="keywordflow">if</span> (!isUsed)  updateDbUsed( storeId, 1);</div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <span class="keywordflow">return</span> retVal;</div>
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;}</div>
 <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;</div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;</div>
-<div class="line"><a name="l00437"></a><span class="lineno"><a class="code" href="class_arn_persist.html#a85801915e3d2d5152a3e711f980ba94d">  437</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#adff1ffa0f1e4f228972e32b8bffb6320">ArnPersist::getDbValue</a>( QString path, QByteArray&amp; value, <span class="keywordtype">int</span>&amp; storeId)</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;<span class="keywordtype">bool</span>  ArnPersist::getDbValue( QString path, QByteArray&amp; value, <span class="keywordtype">int</span>&amp; storeId)</div>
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;{</div>
 <div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    <span class="keywordtype">bool</span>  retVal = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    <span class="keywordtype">int</span>   isUsed = 1;</div>
@@ -555,12 +555,12 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    }</div>
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    _query-&gt;finish();</div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    <span class="keywordflow">if</span> (!isUsed)  <a class="code" href="class_arn_persist.html#ac44b6fe3f363526d415e31ccba161c8b">updateDbUsed</a>( storeId, 1);</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    <span class="keywordflow">if</span> (!isUsed)  updateDbUsed( storeId, 1);</div>
 <div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keywordflow">return</span> retVal;</div>
 <div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;}</div>
 <div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;</div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;</div>
-<div class="line"><a name="l00457"></a><span class="lineno"><a class="code" href="class_arn_persist.html#a181fe86e4f2fbf15dc5b72d3a85ec69a">  457</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#a181fe86e4f2fbf15dc5b72d3a85ec69a">ArnPersist::getDbMandatoryList</a>( QList&lt;int&gt;&amp; storeIdList)</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;<span class="keywordtype">bool</span>  ArnPersist::getDbMandatoryList( QList&lt;int&gt;&amp; storeIdList)</div>
 <div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;{</div>
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    <span class="keywordtype">bool</span>  retVal = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    storeIdList.clear();</div>
@@ -576,7 +576,7 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;}</div>
 <div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;</div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;</div>
-<div class="line"><a name="l00473"></a><span class="lineno"><a class="code" href="class_arn_persist.html#ac45794ced42b7498ebbd3191102c1f0f">  473</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#ac45794ced42b7498ebbd3191102c1f0f">ArnPersist::getDbList</a>( <span class="keywordtype">bool</span> isUsed, QList&lt;int&gt; &amp;storeIdList)</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="keywordtype">bool</span>  ArnPersist::getDbList( <span class="keywordtype">bool</span> isUsed, QList&lt;int&gt; &amp;storeIdList)</div>
 <div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;{</div>
 <div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;    <span class="keywordtype">bool</span>  retVal = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;    storeIdList.clear();</div>
@@ -593,7 +593,7 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;}</div>
 <div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;</div>
 <div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;</div>
-<div class="line"><a name="l00490"></a><span class="lineno"><a class="code" href="class_arn_persist.html#afae6d17ab1c0e1e863ebf78a8441284d">  490</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#afae6d17ab1c0e1e863ebf78a8441284d">ArnPersist::insertDbValue</a>( QString path, QByteArray value)</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;<span class="keywordtype">bool</span>  ArnPersist::insertDbValue( QString path, QByteArray value)</div>
 <div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;{</div>
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;    <span class="keywordtype">bool</span>  retVal = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;</div>
@@ -608,7 +608,7 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;}</div>
 <div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;</div>
 <div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;</div>
-<div class="line"><a name="l00505"></a><span class="lineno"><a class="code" href="class_arn_persist.html#ad347bc667d7f0866cc9ba709ec41de84">  505</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#ad347bc667d7f0866cc9ba709ec41de84">ArnPersist::updateDbValue</a>( <span class="keywordtype">int</span> storeId, QByteArray value)</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;<span class="keywordtype">bool</span>  ArnPersist::updateDbValue( <span class="keywordtype">int</span> storeId, QByteArray value)</div>
 <div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;{</div>
 <div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;    <span class="comment">//qDebug() &lt;&lt; &quot;Persist updateDb: id=&quot; &lt;&lt; storeId &lt;&lt; &quot; value=&quot; &lt;&lt; value;</span></div>
 <div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;    <span class="keywordtype">bool</span>  retVal = <span class="keyword">false</span>;</div>
@@ -623,7 +623,7 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;}</div>
 <div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;</div>
 <div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;</div>
-<div class="line"><a name="l00520"></a><span class="lineno"><a class="code" href="class_arn_persist.html#ac44b6fe3f363526d415e31ccba161c8b">  520</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#ac44b6fe3f363526d415e31ccba161c8b">ArnPersist::updateDbUsed</a>( <span class="keywordtype">int</span> storeId, <span class="keywordtype">int</span> isUsed)</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;<span class="keywordtype">bool</span>  ArnPersist::updateDbUsed( <span class="keywordtype">int</span> storeId, <span class="keywordtype">int</span> isUsed)</div>
 <div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;{</div>
 <div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;    <span class="comment">// qDebug() &lt;&lt; &quot;UpdateDb: id=&quot; &lt;&lt; storeId &lt;&lt; &quot; isUsed=&quot; &lt;&lt; isUsed;</span></div>
 <div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;    <span class="keywordtype">bool</span>  retVal = <span class="keyword">false</span>;</div>
@@ -638,7 +638,7 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;}</div>
 <div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;</div>
 <div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;</div>
-<div class="line"><a name="l00535"></a><span class="lineno"><a class="code" href="class_arn_persist.html#ad483b97fe08c494f1106d24a13764edb">  535</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="class_arn_persist.html#ad483b97fe08c494f1106d24a13764edb">ArnPersist::updateDbMandatory</a>( <span class="keywordtype">int</span> storeId, <span class="keywordtype">int</span> isMandatory)</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;<span class="keywordtype">bool</span>  ArnPersist::updateDbMandatory( <span class="keywordtype">int</span> storeId, <span class="keywordtype">int</span> isMandatory)</div>
 <div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;{</div>
 <div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;    <span class="comment">//qDebug() &lt;&lt; &quot;UpdateDb: id=&quot; &lt;&lt; storeId &lt;&lt; &quot; isMandatory=&quot; &lt;&lt; isMandatory;</span></div>
 <div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    <span class="keywordtype">bool</span>  retVal = <span class="keyword">false</span>;</div>
@@ -675,26 +675,26 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;<span class="keywordtype">void</span>  ArnPersist::doLoadMandatory()</div>
 <div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;{</div>
 <div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;    QList&lt;int&gt;  mandatoryList;</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="class_arn_persist.html#a181fe86e4f2fbf15dc5b72d3a85ec69a">getDbMandatoryList</a>( mandatoryList))  <span class="keywordflow">return</span>;  <span class="comment">// Nothing to load</span></div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;    <span class="keywordflow">if</span> (!getDbMandatoryList( mandatoryList))  <span class="keywordflow">return</span>;  <span class="comment">// Nothing to load</span></div>
 <div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;</div>
 <div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    QString  path;</div>
 <div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    QByteArray  value;</div>
 <div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keywordtype">int</span> storeId, mandatoryList) {</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="class_arn_persist.html#adff1ffa0f1e4f228972e32b8bffb6320">getDbValue</a>( storeId, path, value))  <span class="keywordflow">continue</span>;  <span class="comment">// Not ok ...</span></div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        <span class="keywordflow">if</span> (!getDbValue( storeId, path, value))  <span class="keywordflow">continue</span>;  <span class="comment">// Not ok ...</span></div>
 <div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;</div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        <a class="code" href="struct_arn_item_persist_1_1_store_type.html">ArnItemPersist::StoreType</a>  st;</div>
-<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;        <a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*  item = setupMandatory( path, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;        ArnItemPersist::StoreType  st;</div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;        ArnItemPersist*  item = setupMandatory( path, <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;        Q_ASSERT(item);</div>
-<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;        <span class="keywordflow">if</span> (item-&gt;<a class="code" href="class_arn_item_persist.html#af4b67f7c565d86bab379103bcc36a2ea">storeType</a>() != st.<a class="code" href="struct_arn_item_persist_1_1_store_type.html#a175377900a036b3fd5740b38d5d4a1bda2e2d7f0de736d2e5aa6c4ce69b16b9c0">DataBase</a>)  <span class="keywordflow">continue</span>;  <span class="comment">// Not a database persist</span></div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;        <span class="keywordflow">if</span> (item-&gt;storeType() != st.DataBase)  <span class="keywordflow">continue</span>;  <span class="comment">// Not a database persist</span></div>
 <div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;</div>
 <div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;        QByteArray  data;</div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;        <span class="keywordtype">int</span>  storeId;</div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="class_arn_persist.html#adff1ffa0f1e4f228972e32b8bffb6320">getDbValue</a>( path, data, storeId)) {</div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;            item-&gt;<a class="code" href="class_arn_item.html#a08c9f2a007c2331aa9f3d879a08453a6">arnImport</a>( data, <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;            item-&gt;<a class="code" href="class_arn_item_persist.html#a3781c3503e33a8d97dd768c4d15c3775">setStoreId</a>( storeId);</div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;        <span class="keywordtype">int</span>  storeId2;</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;        <span class="keywordflow">if</span> (getDbValue( path, data, storeId2)) {</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;            item-&gt;arnImport( data, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;            item-&gt;setStoreId( storeId2);</div>
 <div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;        }</div>
 <div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;            item-&gt;<a class="code" href="class_arn_item.html#a41836f035c0a35b062a75a477c396a52">setValue</a>( QByteArray(), <span class="keyword">false</span>);  <span class="comment">// Do a null update, to signal update done</span></div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;            item-&gt;setValue( QByteArray(), <span class="keyword">false</span>);  <span class="comment">// Do a null update, to signal update done</span></div>
 <div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;        }</div>
 <div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;    }</div>
 <div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;}</div>
@@ -712,27 +712,27 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;</div>
 <div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;<span class="keywordtype">void</span>  ArnPersist::loadFile( QString relPath)</div>
 <div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;{</div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;    QString  arnPath = <a class="code" href="class_arn.html#a95cc065b926977f7b85b1bd0a57fab67">Arn::convertPath</a>( relPath, <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8" title="Only on discrete names, no effect on path.">ArnLink::NameF::EmptyOk</a>);</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;    QString  arnPath = <a class="code" href="class_arn_m.html#ad02abce125ffa17574bfee4fe30cab16" title="Convert a path to a specific format.">ArnM::convertPath</a>( relPath, <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">ArnLink::NameF::EmptyOk</a>);</div>
 <div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;    qDebug() &lt;&lt; <span class="stringliteral">&quot;Persist loadFile: relPath=&quot;</span> &lt;&lt; relPath;</div>
 <div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;</div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;    <a class="code" href="class_arn_item_persist.html">ArnItemPersist</a>*  item;</div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;    ArnItemPersist*  item;</div>
 <div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;    <span class="keywordflow">if</span> (!_pathPersistMap.contains( arnPath)) {  <span class="comment">// First time loaded</span></div>
 <div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        item = getPersistItem( arnPath);</div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        item-&gt;<a class="code" href="class_arn_item.html#a2487337c3924ea323ec6462b8b0aee08">setDelay</a>( 500);  <span class="comment">// MW: ok?</span></div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        _pathPersistMap.insert( arnPath, item-&gt;<a class="code" href="class_arn_item.html#ae836b1016375c40372d8c6d5bee68291">linkId</a>());</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        item-&gt;setDelay( 500);  <span class="comment">// MW: ok?</span></div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        _pathPersistMap.insert( arnPath, item-&gt;linkId());</div>
 <div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;    }</div>
 <div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;    <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;        uint  linkId = _pathPersistMap.value( arnPath);</div>
 <div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        item = _itemPersistMap.value( linkId);</div>
 <div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        Q_ASSERT(item);</div>
 <div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    }</div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;    item-&gt;<a class="code" href="class_arn_item_persist.html#a8a651c8422193a31f61630384683767c">setStoreType</a>( <a class="code" href="struct_arn_item_persist_1_1_store_type.html#a175377900a036b3fd5740b38d5d4a1bda31deb4f0088df25cdd21420777425f9c">ArnItemPersist::StoreType::File</a>);</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;    item-&gt;setStoreType( ArnItemPersist::StoreType::File);</div>
 <div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;</div>
 <div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;    QFile  file( _persistDir-&gt;absoluteFilePath( relPath));</div>
 <div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;    file.open( QIODevice::ReadOnly);</div>
 <div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;    QByteArray  data = file.readAll();</div>
 <div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;    <span class="comment">// qDebug() &lt;&lt; &quot;Persist loadFile: absPath=&quot; &lt;&lt; file.fileName();</span></div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;    item-&gt;<a class="code" href="class_arn_item.html#a41836f035c0a35b062a75a477c396a52">setValue</a>( data, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;    item-&gt;setValue( data, <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;}</div>
 <div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;</div>
 <div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;</div>
@@ -755,20 +755,20 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;}</div>
 <div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;</div>
 <div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;</div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;<span class="keywordtype">void</span>  ArnPersist::setupSapi( <a class="code" href="class_arn_persist_sapi.html" title="Persist Service API.">ArnPersistSapi</a>* sapi, QString pipePath)</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;<span class="keywordtype">void</span>  ArnPersist::setupSapi( ArnPersistSapi* sapi, QString pipePath)</div>
 <div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;{</div>
 <div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="struct_arn_rpc_1_1_mode.html">ArnRpc::Mode</a>  Mode;</div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;    sapi-&gt;<a class="code" href="class_arn_sapi.html#a626b0e6efc688f02a1feacc2bb503b4f">open</a>( pipePath, Mode::Provider);</div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;    sapi-&gt;<a class="code" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de">batchConnect</a>( QRegExp(<span class="stringliteral">&quot;^pv_(.+)&quot;</span>), <span class="keyword">this</span>, <span class="stringliteral">&quot;sapi\\1&quot;</span>, Mode());</div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;    sapi-&gt;open( pipePath, Mode::Provider);</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;    sapi-&gt;batchConnect( QRegExp(<span class="stringliteral">&quot;^pv_(.+)&quot;</span>), <span class="keyword">this</span>, <span class="stringliteral">&quot;sapi\\1&quot;</span>, Mode());</div>
 <div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;}</div>
 <div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;</div>
 <div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;</div>
 <div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;<span class="keywordtype">void</span>  ArnPersist::destroyRpc()</div>
 <div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;{</div>
-<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;    <a class="code" href="class_arn_rpc.html">ArnRpc</a>*  rpc = qobject_cast&lt;<a class="code" href="class_arn_rpc.html">ArnRpc</a>*&gt;( sender());</div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;    <a class="code" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>*  rpc = qobject_cast&lt;<a class="code" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>*&gt;( sender());</div>
 <div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;    <span class="keywordflow">if</span> (!rpc)  <span class="keywordflow">return</span>;  <span class="comment">// No valid sender</span></div>
 <div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;</div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;    qDebug() &lt;&lt; <span class="stringliteral">&quot;Persist destroyRpc: pipePath=&quot;</span> &lt;&lt; rpc-&gt;<a class="code" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b">pipePath</a>();</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;    qDebug() &lt;&lt; <span class="stringliteral">&quot;Persist destroyRpc: pipePath=&quot;</span> &lt;&lt; rpc-&gt;<a class="code" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b" title="Get the path for the used pipe">pipePath</a>();</div>
 <div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;    rpc-&gt;deleteLater();</div>
 <div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;}</div>
 <div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;</div>
@@ -776,7 +776,7 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;<span class="keywordtype">void</span>  ArnPersist::convertFileList( QStringList &amp;files, <a class="code" href="struct_arn_link_1_1_name_f.html">ArnLink::NameF</a> nameF)</div>
 <div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;{</div>
 <div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; files.size(); ++i) {</div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;        files[i] = <a class="code" href="class_arn.html#a95cc065b926977f7b85b1bd0a57fab67">Arn::convertPath</a>( files.at(i), nameF);</div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;        files[i] = <a class="code" href="class_arn_m.html#ad02abce125ffa17574bfee4fe30cab16" title="Convert a path to a specific format.">ArnM::convertPath</a>( files.at(i), nameF);</div>
 <div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;    }</div>
 <div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;}</div>
 <div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;</div>
@@ -790,10 +790,10 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;</div>
 <div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;<span class="keywordtype">void</span>  ArnPersist::sapiTest( QString str, <span class="keywordtype">int</span> i)</div>
 <div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;{</div>
-<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;    <a class="code" href="class_arn_persist_sapi.html" title="Persist Service API.">ArnPersistSapi</a>*  sapiSender = qobject_cast&lt;<a class="code" href="class_arn_persist_sapi.html" title="Persist Service API.">ArnPersistSapi</a>*&gt;( sender());</div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;    ArnPersistSapi*  sapiSender = qobject_cast&lt;ArnPersistSapi*&gt;( sender());</div>
 <div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;    <span class="keywordflow">if</span> (sapiSender) {</div>
-<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;        qDebug() &lt;&lt; <span class="stringliteral">&quot;sapiTest sender=&quot;</span> &lt;&lt; sapiSender-&gt;<a class="code" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b">pipePath</a>();</div>
-<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;        sapiSender-&gt;<a class="code" href="class_arn_rpc.html#a74f936af0f7718f1bdc58d2eebcaf3f1">sendText</a>(<span class="stringliteral">&quot;sapiTest: str=&quot;</span> + str + <span class="stringliteral">&quot; int=&quot;</span> + QString::number(i));</div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;        qDebug() &lt;&lt; <span class="stringliteral">&quot;sapiTest sender=&quot;</span> &lt;&lt; sapiSender-&gt;pipePath();</div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;        sapiSender-&gt;sendText(<span class="stringliteral">&quot;sapiTest: str=&quot;</span> + str + <span class="stringliteral">&quot; int=&quot;</span> + QString::number(i));</div>
 <div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;    }</div>
 <div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;    qDebug() &lt;&lt; <span class="stringliteral">&quot;----- sapiTest: str=&quot;</span> &lt;&lt; str &lt;&lt; <span class="stringliteral">&quot; int=&quot;</span> &lt;&lt; i;</div>
 <div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;}</div>
@@ -809,25 +809,25 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;{</div>
 <div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;    QStringList  flist;</div>
 <div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;    fileList( flist, *_persistDir);</div>
-<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;    convertFileList( flist, <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8" title="Only on discrete names, no effect on path.">ArnLink::NameF::EmptyOk</a>);</div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;    convertFileList( flist, <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">ArnLink::NameF::EmptyOk</a>);</div>
 <div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;</div>
 <div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;    <span class="keywordflow">if</span> (path.isEmpty())</div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;        emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#a0ea903fcf990a5dbaf54dfaa43c288e7">rq_lsR</a>( flist);</div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;        emit _sapiCommon-&gt;rq_lsR( flist);</div>
 <div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;    <span class="keywordflow">else</span>  <span class="comment">// Filter only files beginning with path</span></div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;        emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#a0ea903fcf990a5dbaf54dfaa43c288e7">rq_lsR</a>( flist.filter( QRegExp(<span class="stringliteral">&quot;^&quot;</span> + QRegExp::escape( path))));</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;        emit _sapiCommon-&gt;rq_lsR( flist.filter( QRegExp(<span class="stringliteral">&quot;^&quot;</span> + QRegExp::escape( path))));</div>
 <div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;}</div>
 <div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;</div>
 <div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;</div>
 <div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;<span class="keywordtype">void</span>  ArnPersist::sapiRm( QString path)</div>
 <div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;{</div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;    QString  relPath = <a class="code" href="class_arn.html#a95cc065b926977f7b85b1bd0a57fab67">Arn::convertPath</a>( path, <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8a9facf711e80fc72bb2e8e6fde1b282">ArnLink::NameF::Relative</a>);</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;    QString  relPath = <a class="code" href="class_arn_m.html#ad02abce125ffa17574bfee4fe30cab16" title="Convert a path to a specific format.">ArnM::convertPath</a>( path, <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8a9facf711e80fc72bb2e8e6fde1b282" title="Only on path, no effect on discrete names. &quot;/test/value&quot; ==&gt; &quot;test/value&quot;.">ArnLink::NameF::Relative</a>);</div>
 <div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    <span class="keywordtype">bool</span>  isOk = _persistDir-&gt;remove( relPath);</div>
 <div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;    <span class="keywordflow">if</span> (isOk) {</div>
 <div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;        QString  filePath = _persistDir-&gt;absoluteFilePath( relPath);</div>
 <div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;        _persistDir-&gt;rmpath( QFileInfo( filePath).dir().path());  <span class="comment">// Remove empty paths</span></div>
 <div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;        removeFilePersistItem( path);</div>
 <div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;    }</div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;    emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#a5b348db40e7fa681e252f7296618c21e">rq_rmR</a>( isOk);</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;    emit _sapiCommon-&gt;rq_rmR( isOk);</div>
 <div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;}</div>
 <div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;</div>
 <div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;</div>
@@ -836,7 +836,7 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;    <span class="keywordflow">if</span> (path.endsWith(<span class="charliteral">&#39;/&#39;</span>))  <span class="keywordflow">return</span>;  <span class="comment">// Don&#39;t touch a dir</span></div>
 <div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;</div>
 <div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;    <span class="keywordtype">bool</span>  isOk = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    QString  relPath = <a class="code" href="class_arn.html#a95cc065b926977f7b85b1bd0a57fab67">Arn::convertPath</a>( path, <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8a9facf711e80fc72bb2e8e6fde1b282">ArnLink::NameF::Relative</a>);</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    QString  relPath = <a class="code" href="class_arn_m.html#ad02abce125ffa17574bfee4fe30cab16" title="Convert a path to a specific format.">ArnM::convertPath</a>( path, <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8a9facf711e80fc72bb2e8e6fde1b282" title="Only on path, no effect on discrete names. &quot;/test/value&quot; ==&gt; &quot;test/value&quot;.">ArnLink::NameF::Relative</a>);</div>
 <div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    QString  filePath = _persistDir-&gt;absoluteFilePath( relPath);</div>
 <div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;    <span class="comment">// Make any needed directories</span></div>
 <div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;    isOk &amp;= _persistDir-&gt;mkpath( QFileInfo( filePath).dir().path());</div>
@@ -847,21 +847,21 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    <span class="keywordflow">if</span> (isOk)</div>
 <div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;        loadFile( relPath);</div>
 <div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;</div>
-<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#a5360a38eca1899a742c55e3e487b27ba">rq_touchR</a>( isOk);</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    emit _sapiCommon-&gt;rq_touchR( isOk);</div>
 <div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;}</div>
 <div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;</div>
 <div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;</div>
 <div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="keywordtype">void</span>  ArnPersist::sapiDbMandatory( QString path, <span class="keywordtype">bool</span> isMandatory)</div>
 <div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;{</div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    <a class="code" href="struct_arn_item_persist_1_1_store_type.html">ArnItemPersist::StoreType</a>  st;</div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    ArnItemPersist::StoreType  st;</div>
 <div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <span class="keywordtype">int</span> storeId;</div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="class_arn_persist.html#a0f3c00cf52d200c8f0cd866408be10ca">getDbId</a>( path, storeId)) {</div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="class_arn_persist.html#ad483b97fe08c494f1106d24a13764edb">updateDbMandatory</a>( storeId, isMandatory)) {</div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    <span class="keywordflow">if</span> (getDbId( path, storeId)) {</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        <span class="keywordflow">if</span> (updateDbMandatory( storeId, isMandatory)) {</div>
 <div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;            setupMandatory( path, isMandatory);</div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;            emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#a685114bdf53c7b564dde5f707ab73154">rq_dbMandatoryR</a>(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;            emit _sapiCommon-&gt;rq_dbMandatoryR(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;        }</div>
 <div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;    }</div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#a685114bdf53c7b564dde5f707ab73154">rq_dbMandatoryR</a>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    emit _sapiCommon-&gt;rq_dbMandatoryR(<span class="keyword">false</span>);</div>
 <div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;}</div>
 <div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;</div>
 <div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;</div>
@@ -869,21 +869,21 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;{</div>
 <div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    QStringList  retList;</div>
 <div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;    QList&lt;int&gt;  storeIdList;</div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="class_arn_persist.html#a181fe86e4f2fbf15dc5b72d3a85ec69a">getDbMandatoryList</a>( storeIdList)) {</div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;        emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#aa666fdb6ced18a44f73e1a65c875ed39">rq_dbMandatoryLsR</a>( retList);</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    <span class="keywordflow">if</span> (!getDbMandatoryList( storeIdList)) {</div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;        emit _sapiCommon-&gt;rq_dbMandatoryLsR( retList);</div>
 <div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    }</div>
 <div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;</div>
 <div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;    QString  pathDb;</div>
 <div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    QByteArray  value;</div>
 <div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keywordtype">int</span> storeId, storeIdList) {</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="class_arn_persist.html#adff1ffa0f1e4f228972e32b8bffb6320">getDbValue</a>( storeId, pathDb, value))  <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;        <span class="keywordflow">if</span> (!getDbValue( storeId, pathDb, value))  <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;        <span class="keywordflow">if</span> (!pathDb.startsWith( path))  <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;</div>
 <div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;        retList += pathDb;</div>
 <div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    }</div>
 <div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;</div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;    emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#aa666fdb6ced18a44f73e1a65c875ed39">rq_dbMandatoryLsR</a>( retList);</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;    emit _sapiCommon-&gt;rq_dbMandatoryLsR( retList);</div>
 <div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;}</div>
 <div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;</div>
 <div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;</div>
@@ -891,27 +891,27 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;{</div>
 <div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;    QStringList  retList;</div>
 <div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    QList&lt;int&gt;  storeIdList;</div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="class_arn_persist.html#ac45794ced42b7498ebbd3191102c1f0f">getDbList</a>( isUsed, storeIdList)) {</div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;        emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#a83212b968c213066c869e2d6db8b8e30">rq_dbLsR</a>( retList);</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;    <span class="keywordflow">if</span> (!getDbList( isUsed, storeIdList)) {</div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;        emit _sapiCommon-&gt;rq_dbLsR( retList);</div>
 <div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;        <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    }</div>
 <div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;</div>
 <div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;    QString  pathDb;</div>
 <div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;    QByteArray  value;</div>
 <div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;    <span class="keywordflow">foreach</span> (<span class="keywordtype">int</span> storeId, storeIdList) {</div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="class_arn_persist.html#adff1ffa0f1e4f228972e32b8bffb6320">getDbValue</a>( storeId, pathDb, value))  <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;        <span class="keywordflow">if</span> (!getDbValue( storeId, pathDb, value))  <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;        <span class="keywordflow">if</span> (!pathDb.startsWith( path))  <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;</div>
 <div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;        retList += pathDb;</div>
 <div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    }</div>
 <div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;</div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;    emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#a83212b968c213066c869e2d6db8b8e30">rq_dbLsR</a>( retList);</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;    emit _sapiCommon-&gt;rq_dbLsR( retList);</div>
 <div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;}</div>
 <div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;</div>
 <div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;</div>
 <div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;<span class="keywordtype">void</span>  ArnPersist::sapiInfo()</div>
 <div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;{</div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    emit _sapiCommon-&gt;<a class="code" href="class_arn_persist_sapi.html#ab2253b21903bd37e5549e1251e4fad61">rq_infoR</a>(<span class="stringliteral">&quot;Arn Persist&quot;</span>, <span class="stringliteral">&quot;1.0&quot;</span>);</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    emit _sapiCommon-&gt;rq_infoR(<span class="stringliteral">&quot;Arn Persist&quot;</span>, <span class="stringliteral">&quot;1.0&quot;</span>);</div>
 <div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -919,7 +919,7 @@ $(document).ready(function(){initNavTree('_arn_persist_8cpp.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_persist_8cpp.html">ArnPersist.cpp</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:19 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

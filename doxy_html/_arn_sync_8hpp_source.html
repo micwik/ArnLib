@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnSync.hpp Source File</title>
+<title>ArnLib: src/ArnSync.hpp (1.0.0-9-g2ded014) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -155,93 +155,93 @@ $(document).ready(function(){initNavTree('_arn_sync_8hpp.html','');});
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// class ArnItemNet;</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="code" href="class_arn_sync.html">   52</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_arn_sync.html">ArnSync</a> : <span class="keyword">public</span> QObject</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="class_arn_sync.html#a77318e96da58aac40e36ad2aa278573e">ArnSync</a>( QTcpSocket* socket, <span class="keywordtype">bool</span> clientSide = 0, QObject *parent = 0);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="class_arn_sync.html#ae6ea8941ddfcdc6d1a675aad936b19be">~ArnSync</a>();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="class_arn_item_net.html" title="Must only be used in main thread.">ArnItemNet</a>*  <a class="code" href="class_arn_sync.html#aace9e4727af13471c41b4248c768c784" title="Client ...">newNetItem</a>( <span class="keyword">const</span> QString&amp; path,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                  <a class="code" href="struct_arn_item_1_1_sync_mode.html">ArnItem::SyncMode</a> syncMode = <a class="code" href="struct_arn_item_1_1_sync_mode.html#aefe7627fb0db4f1c36f4676b184b257fa49c0924a630af5c3c4c79f4747c8c420">ArnItem::SyncMode::Normal</a>, <span class="keywordtype">bool</span>* isNewPtr = 0);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_sync.html#a2bb1d9b2fa4e0658cfb68b24425c07a4">sendXSMap</a>( <span class="keyword">const</span> <a class="code" href="class_x_string_map.html">XStringMap</a>&amp; xsMap);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_sync.html#aab8c95c34dd286cf94a5591f4ed1f12b">send</a>( <span class="keyword">const</span> QByteArray&amp; xString);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;signals:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_sync.html#ac3687f54d39ce66a0d805e8c5cc7e964">replyRecord</a>( <a class="code" href="class_x_string_map.html">XStringMap</a>&amp; replyMap);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span>  connected();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span>  disConnected();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span>  socketInput();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span>  addToFluxQue();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span>  addToModeQue();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span>  sendNext();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span>  linkDestroyedHandle();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span>  doArnEvent( QByteArray type, QByteArray data, <span class="keywordtype">bool</span> isLocal);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span>  doNewItemEvent( QString path, <span class="keywordtype">bool</span> isOld = 0, <a class="code" href="class_arn_item_net.html" title="Must only be used in main thread.">ArnItemNet</a>* itemNet_= 0);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">typedef</span> QPointer&lt;ArnItemNet&gt;  ArnItemNetQPtr;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">struct </span>FluxRec {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        QByteArray  xString;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordtype">int</span>  queueNum;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    };</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span>  setupItemNet( <a class="code" href="class_arn_item_net.html" title="Must only be used in main thread.">ArnItemNet</a>* itemNet, uint netId);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">void</span>  setupMonitorItem( <a class="code" href="class_arn_item_net.html" title="Must only be used in main thread.">ArnItemNet</a>* itemNet);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span>  doChildsToEvent( <a class="code" href="class_arn_item_net.html" title="Must only be used in main thread.">ArnItemNet</a>* itemNet);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    FluxRec*  getFreeFluxRec();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    QByteArray  makeFluxString( <span class="keyword">const</span> <a class="code" href="class_arn_item_net.html" title="Must only be used in main thread.">ArnItemNet</a>* itemNet);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span>  sendFluxItem( <span class="keyword">const</span> <a class="code" href="class_arn_item_net.html" title="Must only be used in main thread.">ArnItemNet</a>* itemNet);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span>  sendSyncItem( <a class="code" href="class_arn_item_net.html" title="Must only be used in main thread.">ArnItemNet</a>* itemNet);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">void</span>  sendModeItem( <a class="code" href="class_arn_item_net.html" title="Must only be used in main thread.">ArnItemNet</a>* itemNet);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">void</span>  eventToFluxQue( uint netId, QByteArray type, QByteArray data);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">void</span>  destroyToFluxQue( uint netId);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">void</span>  doCommand();</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    uint  doCommandSync();</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    uint  doCommandMode();</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    uint  doCommandDestroy();</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    uint  doCommandFlux();</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    uint  doCommandEvent();</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    uint  doCommandSet();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    uint  doCommandGet();</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    uint  doCommandLs();</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    QTcpSocket*  _socket;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    QByteArray  _dataReadBuf;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    QByteArray  _dataRemain;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <a class="code" href="class_x_string_map.html">XStringMap</a>  _commandMap;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <a class="code" href="class_x_string_map.html">XStringMap</a>  _replyMap;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="class_x_string_map.html">XStringMap</a>  _syncMap;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    QMap&lt;uint,ArnItemNet*&gt;  _itemNetMap;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    QList&lt;FluxRec*&gt;  _fluxRecPool;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    QQueue&lt;FluxRec*&gt;  _fluxPipeQueue;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    QQueue&lt;ArnItemNet*&gt;  _fluxItemQueue;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    QQueue&lt;ArnItemNet*&gt;  _syncQueue;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    QQueue&lt;ArnItemNet*&gt;  _modeQueue;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordtype">int</span>  _queueNumCount;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">int</span>  _queueNumDone;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">int</span>  _fluxQueueSwitch;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">bool</span>  _isConnected;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordtype">bool</span>  _isSending;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">bool</span>  _isClientSide;      <span class="comment">// True if this is the client side of the connection</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;};</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#endif // ARNSYNC_HPP</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">class </span>ArnSync : <span class="keyword">public</span> QObject</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    ArnSync( QTcpSocket* socket, <span class="keywordtype">bool</span> clientSide = 0, QObject *parent = 0);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    ~ArnSync();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    ArnItemNet*  newNetItem( <span class="keyword">const</span> QString&amp; path,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                  <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a> syncMode = <a class="code" href="struct_arn_item_1_1_sync_mode.html#aefe7627fb0db4f1c36f4676b184b257fa49c0924a630af5c3c4c79f4747c8c420" title="default">ArnItem::SyncMode::Normal</a>, <span class="keywordtype">bool</span>* isNewPtr = 0);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span>  sendXSMap( <span class="keyword">const</span> <a class="code" href="class_x_string_map.html" title="Container class with string representation.">XStringMap</a>&amp; xsMap);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span>  send( <span class="keyword">const</span> QByteArray&amp; xString);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;signals:</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">void</span>  replyRecord( <a class="code" href="class_x_string_map.html" title="Container class with string representation.">XStringMap</a>&amp; replyMap);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span>  connected();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span>  disConnected();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span>  socketInput();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span>  addToFluxQue();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span>  addToModeQue();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span>  sendNext();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span>  linkDestroyedHandle();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span>  doArnEvent( QByteArray type, QByteArray data, <span class="keywordtype">bool</span> isLocal);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span>  doNewItemEvent( QString path, <span class="keywordtype">bool</span> isOld = 0, ArnItemNet* itemNet_= 0);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">typedef</span> QPointer&lt;ArnItemNet&gt;  ArnItemNetQPtr;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">struct </span>FluxRec {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        QByteArray  xString;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">int</span>  queueNum;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    };</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">void</span>  setupItemNet( ArnItemNet* itemNet, uint netId);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span>  setupMonitorItem( ArnItemNet* itemNet);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">void</span>  doChildsToEvent( ArnItemNet* itemNet);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    FluxRec*  getFreeFluxRec();</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    QByteArray  makeFluxString( <span class="keyword">const</span> ArnItemNet* itemNet);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span>  sendFluxItem( <span class="keyword">const</span> ArnItemNet* itemNet);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">void</span>  sendSyncItem( ArnItemNet* itemNet);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">void</span>  sendModeItem( ArnItemNet* itemNet);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">void</span>  eventToFluxQue( uint netId, QByteArray type, QByteArray data);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">void</span>  destroyToFluxQue( uint netId);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">void</span>  doCommand();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    uint  doCommandSync();</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    uint  doCommandMode();</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    uint  doCommandDestroy();</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    uint  doCommandFlux();</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    uint  doCommandEvent();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    uint  doCommandSet();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    uint  doCommandGet();</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    uint  doCommandLs();</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    QTcpSocket*  _socket;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    QByteArray  _dataReadBuf;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    QByteArray  _dataRemain;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <a class="code" href="class_x_string_map.html" title="Container class with string representation.">XStringMap</a>  _commandMap;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="class_x_string_map.html" title="Container class with string representation.">XStringMap</a>  _replyMap;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <a class="code" href="class_x_string_map.html" title="Container class with string representation.">XStringMap</a>  _syncMap;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    QMap&lt;uint,ArnItemNet*&gt;  _itemNetMap;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    QList&lt;FluxRec*&gt;  _fluxRecPool;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    QQueue&lt;FluxRec*&gt;  _fluxPipeQueue;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    QQueue&lt;ArnItemNet*&gt;  _fluxItemQueue;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    QQueue&lt;ArnItemNet*&gt;  _syncQueue;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    QQueue&lt;ArnItemNet*&gt;  _modeQueue;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">int</span>  _queueNumCount;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">int</span>  _queueNumDone;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">int</span>  _fluxQueueSwitch;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordtype">bool</span>  _isConnected;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">bool</span>  _isSending;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">bool</span>  _isClientSide;      <span class="comment">// True if this is the client side of the connection</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;};</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#endif // ARNSYNC_HPP</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_sync_8hpp.html">ArnSync.hpp</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:20 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

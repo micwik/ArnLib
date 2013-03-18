@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnPersistSapi.hpp Source File</title>
+<title>ArnLib: src/ArnPersistSapi.hpp (1.0.0-9-g2ded014) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -142,69 +142,70 @@ $(document).ready(function(){initNavTree('_arn_persist_sapi_8hpp.html','');});
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_sapi_8hpp.html">ArnSapi.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="class_arn_persist_sapi.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_arn_persist_sapi.html" title="Persist Service API.">ArnPersistSapi</a> : <span class="keyword">public</span> <a class="code" href="class_arn_sapi.html">ArnSapi</a></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="code" href="class_arn_persist_sapi.html#a5d39def29e67fee971f88583239e496b">   44</a></span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_arn_persist_sapi.html#a5d39def29e67fee971f88583239e496b">ArnPersistSapi</a>( QObject* parent = 0) : <a class="code" href="class_arn_sapi.html">ArnSapi</a>( parent)  {}</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;Q_SIGNALS:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<a class="code" href="_arn_sapi_8hpp.html#a03570a0d36179506ffe4ce9fb442218a">MQ_PUBLIC_ACCESS</a></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a036da1df481e22eaad0eeea3c020f1b7">pv_vcsLog</a>( <span class="keywordtype">int</span> numLog = 100);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#aed2f9c55f4f1a3b874f98591a2c9b102">pv_vcsFiles</a>( QString ref = QString());</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#ad69c32b9d91aa9fc0d4d1960f071f082">pv_vcsCommit</a>( QString commitMsg,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                         QStringList files = QStringList(),</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                         QString name = QString(), QString email = QString());</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a276bd7579ae6ef5149b419fbeb9a8667">pv_vcsTag</a>( QString name, QString ref = QString());</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a5cef49cc1930a67be26ead7621fbd086">pv_vcsDiff</a>( QString ref = QString(), QStringList files = QStringList());</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#ac7693917f2d1758b6922800a794f3f95">pv_vcsLogRecord</a>( QString ref = QString());</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a1fd46254391b100dbe62b69754f448d9">pv_vcsTags</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a157b0450b2859f3a65b494ed9d0a1ad0">pv_vcsBranches</a>();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#afc30e524f719ee3679693fcefc0eee4a">pv_vcsStatus</a>();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#afd69cb060b122491258cdcc3836c88e4">pv_vcsUserSettings</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a30cdc0f67ca25af480376ff1b364ed10">pv_vcsSetUserSettings</a>( QString userName, QString userEmail);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a89dcda07e0d2c8325483b36b7f341efc">pv_vcsCheckout</a>( QString ref = QString(), QStringList files = QStringList());</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a551547ce893574ca6b541d2989f6c920">pv_test</a>( QString str = <span class="stringliteral">&quot;Hello&quot;</span>, <span class="keywordtype">int</span> i=10);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#ac8b758bbb634b56e985aecd6fabb090b">pv_ls</a>( QString path = QString());</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#af324faf890eb438dac20bd19badb6063">pv_load</a>();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a5804fec7ef53bee217ffbffdab0ed0d7">pv_rm</a>( QString path);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a4aa2f55e79a0c308c5ec90fa3f0a0305">pv_touch</a>( QString path);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a49782fad74813dfa14c395c55c56a8eb">pv_dbMandatory</a>( QString path, <span class="keywordtype">bool</span> isMandatory);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#acd73917ba8659ecfd6ff97187f122c2c">pv_dbMandatoryLs</a>( QString path);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#ab79a0e0696bb09d092b2e2161b438813">pv_dbLs</a>( QString path, <span class="keywordtype">bool</span> isUsed = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#ac99d919b873fad758f6d53924f59207b">pv_info</a>();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a0ea903fcf990a5dbaf54dfaa43c288e7">rq_lsR</a>( QStringList files);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a5b348db40e7fa681e252f7296618c21e">rq_rmR</a>( <span class="keywordtype">bool</span> isOk);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a5360a38eca1899a742c55e3e487b27ba">rq_touchR</a>( <span class="keywordtype">bool</span> isOk);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a685114bdf53c7b564dde5f707ab73154">rq_dbMandatoryR</a>( <span class="keywordtype">bool</span> isOk);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#aa666fdb6ced18a44f73e1a65c875ed39">rq_dbMandatoryLsR</a>( QStringList paths);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a83212b968c213066c869e2d6db8b8e30">rq_dbLsR</a>( QStringList paths);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#ab2253b21903bd37e5549e1251e4fad61">rq_infoR</a>( QString name, QString ver);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a308131f098759ffbb4a39795451673a8">rq_vcsNotify</a>( QString msg);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a307e8e9bce0c78811c68269a3528c88b">rq_vcsProgress</a>( <span class="keywordtype">int</span> percent, QString msg=QString());</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#ae94725b7a0d2a0d5b05be07cffe69d30">rq_vcsUserSettingsR</a>( QString name, QString eMail);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a59bf37f334cb164baffd86221919f753">rq_vcsFilesR</a>( QStringList files);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a87803c850d9c5165d88957b1c497fae9">rq_vcsTagR</a>();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a9a6e4bbe38647e7561894e26e0812561">rq_vcsCommitR</a>();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a03362fd0ad62fcee4ad8ce8b555715c0">rq_vcsCheckoutR</a>();</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a306e8f7be3ba17d2a632711e1128c411">rq_vcsBranchesR</a>( QStringList branches);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a0bd3a97073238ad08aa85f77a2884df0">rq_vcsTagsR</a>( QStringList tags);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a06140fe43ff4cbd68da8956cc1ce170f">rq_vcsStatusR</a>( QString status);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#acc37f84978e16735e59e7e76ed818587">rq_vcsDiffR</a>( QString txt);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#aa9468576aa4dbc5e7270e194a476e7a1">rq_vcsLogRecordR</a>( QString txt);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_persist_sapi.html#a20bd2d09e7e5db643695011d9a21dd0f">rq_vcsLogR</a>( QStringList refs, QStringList msgs);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#endif // ARNPERSISTSAPI_HPP</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">class </span>ArnPersistSapi : <span class="keyword">public</span> <a class="code" href="class_arn_sapi.html" title="Service API.">ArnSapi</a></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">explicit</span> ArnPersistSapi( QObject* parent = 0) : <a class="code" href="class_arn_sapi.html" title="Service API.">ArnSapi</a>( parent)  {}</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;signals:</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<a class="code" href="_arn_sapi_8hpp.html#a03570a0d36179506ffe4ce9fb442218a">MQ_PUBLIC_ACCESS</a></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span>  pv_vcsLog( <span class="keywordtype">int</span> numLog = 100);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span>  pv_vcsFiles( QString ref = QString());</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span>  pv_vcsCommit( QString commitMsg,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                         QStringList files = QStringList(),</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                         QString name = QString(), QString email = QString());</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span>  pv_vcsTag( QString name, QString ref = QString());</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span>  pv_vcsDiff( QString ref = QString(), QStringList files = QStringList());</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span>  pv_vcsLogRecord( QString ref = QString());</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span>  pv_vcsTags();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span>  pv_vcsBranches();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span>  pv_vcsStatus();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span>  pv_vcsUserSettings();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span>  pv_vcsSetUserSettings( QString userName, QString userEmail);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span>  pv_vcsCheckout( QString ref = QString(), QStringList files = QStringList());</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span>  pv_test( QString str = <span class="stringliteral">&quot;Hello&quot;</span>, <span class="keywordtype">int</span> i=10);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">void</span>  pv_ls( QString path = QString());</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span>  pv_load();</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span>  pv_rm( QString path);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span>  pv_touch( QString path);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span>  pv_dbMandatory( QString path, <span class="keywordtype">bool</span> isMandatory);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span>  pv_dbMandatoryLs( QString path);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span>  pv_dbLs( QString path, <span class="keywordtype">bool</span> isUsed = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span>  pv_info();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span>  rq_lsR( QStringList files);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span>  rq_rmR( <span class="keywordtype">bool</span> isOk);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span>  rq_touchR( <span class="keywordtype">bool</span> isOk);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span>  rq_dbMandatoryR( <span class="keywordtype">bool</span> isOk);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span>  rq_dbMandatoryLsR( QStringList paths);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span>  rq_dbLsR( QStringList paths);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span>  rq_infoR( QString name, QString ver);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span>  rq_vcsNotify( QString msg);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span>  rq_vcsProgress( <span class="keywordtype">int</span> percent, QString msg=QString());</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span>  rq_vcsUserSettingsR( QString name, QString eMail);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">void</span>  rq_vcsFilesR( QStringList files);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span>  rq_vcsTagR();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">void</span>  rq_vcsCommitR();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span>  rq_vcsCheckoutR();</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span>  rq_vcsBranchesR( QStringList branches);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span>  rq_vcsTagsR( QStringList tags);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">void</span>  rq_vcsStatusR( QString status);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">void</span>  rq_vcsDiffR( QString txt);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">void</span>  rq_vcsLogRecordR( QString txt);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">void</span>  rq_vcsLogR( QStringList refs, QStringList msgs);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif // ARNPERSISTSAPI_HPP</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_persist_sapi_8hpp.html">ArnPersistSapi.hpp</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:19 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

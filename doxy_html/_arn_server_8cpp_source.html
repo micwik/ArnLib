@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnServer.cpp Source File</title>
+<title>ArnLib: src/ArnServer.cpp (1.0.0-9-g2ded014) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp.html','');});
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_sync_8hpp.html">ArnSync.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="class_arn_server.html#a7af03d4175af01e18a72d07e39349c9f">   42</a></span>&#160;<a class="code" href="class_arn_server.html#a7af03d4175af01e18a72d07e39349c9f">ArnServer::ArnServer</a>( <a class="code" href="struct_arn_server_1_1_type.html">Type</a> serverType, QObject *parent)</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="class_arn_server.html#a7af03d4175af01e18a72d07e39349c9f">   42</a></span>&#160;<a class="code" href="class_arn_server.html#a7af03d4175af01e18a72d07e39349c9f" title="Create an Arn server object.">ArnServer::ArnServer</a>( <a class="code" href="struct_arn_server_1_1_type.html">Type</a> serverType, QObject *parent)</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    : QObject( parent)</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    _tcpServerActive = <span class="keyword">false</span>;</div>
@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp.html','');});
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="class_arn_server.html#a13417255db21d5eb2b24d73bb79d905e">   51</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_server.html#a13417255db21d5eb2b24d73bb79d905e">ArnServer::start</a>(<span class="keywordtype">int</span> port)</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="class_arn_server.html#a13417255db21d5eb2b24d73bb79d905e">   51</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_server.html#a13417255db21d5eb2b24d73bb79d905e" title="Start the Arn server">ArnServer::start</a>(<span class="keywordtype">int</span> port)</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span> (port == 0) {</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">switch</span> (_serverType) {</div>
@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp.html','');});
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            port = 2022;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <a class="code" href="class_arn.html#aaa774efb85e25fc668b99c60d8bc7d87">Arn::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Unknown Arn server Type:&quot;</span>)) + QString::number( _serverType),</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Unknown Arn server Type:&quot;</span>)) + QString::number( _serverType),</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afaef7eeb5d30b5dd20d6d37cf6b9954484">ArnError::Undef</a>);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp.html','');});
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                SLOT(tcpConnection()));</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="class_arn.html#aaa774efb85e25fc668b99c60d8bc7d87">Arn::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Failed start Arn Server Port:&quot;</span>)) + QString::number( port),</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Failed start Arn Server Port:&quot;</span>)) + QString::number( port),</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                            <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afa3337614b1b5f5e3d4dedb286d0ca3073">ArnError::ConnectionError</a>);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
@@ -186,7 +186,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp.html','');});
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">switch</span> (_serverType) {</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="struct_arn_server_1_1_type.html#ae4fba4a82a463c288561b107362dde41abe95db1db12eebabf0398f1eb47a69bb">Type::NetSync</a>:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keyword">new</span> <a class="code" href="class_arn_sync.html">ArnSync</a>( socket, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keyword">new</span> ArnSync( socket, <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
@@ -196,7 +196,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_server_8cpp.html">ArnServer.cpp</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:19 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

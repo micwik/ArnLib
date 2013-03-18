@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: README.md Source File</title>
+<title>ArnLib: README.md (1.0.0-9-g2ded014) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('_r_e_a_d_m_e_8md.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">README.md</div>  </div>
+<div class="title">README.md (1.0.0-9-g2ded014)</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="_r_e_a_d_m_e_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;    Copyright (C) 2010-2013 Michael Wiklund.</div>
@@ -110,64 +110,85 @@ $(document).ready(function(){initNavTree('_r_e_a_d_m_e_8md.html','');});
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor"># ArnLib - Active Registry Network.</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;This Qt based library makes it easy to distribute changing data objects. It also gives a central place to find all your systems current data. By <span class="keyword">using</span> the ArnBrowser, all data objects are real time presented in a tree view.</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;### Comparison to similar concepts</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;This Qt based library makes it easy to distribute changing data objects. It also gives a</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;central place to find all your systems current data. By <span class="keyword">using</span> the ArnBrowser, all data</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;objects are real time presented in a tree view.</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;* **Data mart:** Statistical data gathered from different systems. This makes it possible to run cross system analysis.</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;### Comparison to similar concepts</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;* **Windows Registry:** Centralized configuration data. All in one place easily shared.</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;* **ArnLib:** Hot changing data from different systems. Enables easy cross system data exchange, debugging etc.</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;* **Data mart:** Statistical data gathered from different systems. This makes it possible</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;to run cross system analysis.</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;* **Windows Registry:** Centralized configuration data. All in one place easily shared.</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;### Main features</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;* Based on QT, multiple plattform and OS support.</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;* **ArnLib:** Hot changing data from different systems. Enables easy cross system data</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;exchange, debugging, etc.</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;* Hierchical storage of <span class="stringliteral">&quot;hot&quot;</span> changing data objects.</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;* Data objects can be: integers, floats, strings, bytearrays and variants (most QT types, ex picture).</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;* Data objects can be: measures, settings, datastreams, documents, scripts (js), ...</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;* Data objects are thread-safe. </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;* Data objects can be shared in a single program, among threads or between programs at different computers.</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;This division of program modules can be changed and are transparent to ArnLib.</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;* Native support <span class="keywordflow">for</span> data validation and <span class="keywordtype">double</span> direction pipes.</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;* Support <span class="keywordflow">for</span> temporary session data objects.</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;Optional <span class="keyword">auto</span>-<span class="keyword">delete</span> of objects when tcp/ip close and unique uuid names.</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">## Main features</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;* Based on QT, multiple platform and OS support.</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;#### Arn Data Objects</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;* Hierarchical storage of <span class="stringliteral">&quot;hot&quot;</span> changing data objects.</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;* _Arn Data objects_ can be: integers, floats, strings, byte arrays and variants</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;(most QT data types, e.g. QImage).</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;* Data objects can typically be: measures, settings, datastreams, documents, scripts (js), ...</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;* _Arn Data objects_ are thread-safe.</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;* Monitoring of newly created data objects and any mode change.</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;* Native support <span class="keywordflow">for</span> data validation and <span class="keywordtype">double</span> direction pipes.</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;* Dependency system with custom offered services and getting signals when all needed is available.</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;#### Sharing</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;* Optional persistent storage of <span class="keywordtype">object</span> in SQLight or in a file.</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;* Support <span class="keywordflow">for</span> version control of objects stored in files.</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;* Data objects can be shared in a single program, among threads or between programs at</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;different computers. This division of program modules can be changed and are transparent</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;to usage of ArnLib.</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;* Native support <span class="keywordflow">for</span> JavaScript, jobstack of JS with preemtive and </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;cooperative script running.</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;* Support <span class="keywordflow">for</span> temporary session data objects.</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;Optional <span class="keyword">auto</span>-<span class="keyword">delete</span> of objects when tcp/ip closes and unique uuid names.</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;* Support <span class="keywordflow">for</span> managing changed script restart in jobstack.</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;* Service Api, <span class="keywordflow">for</span> calling routines anywhere in connected <a class="code" href="class_arn.html">Arn</a>.</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;Remote procedure call made simple as <span class="stringliteral">&quot;remote signal slots&quot;</span>.</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;* Dependency system with custom offered services and getting signals when all needed services</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;are available.</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;* Monitoring of newly created data objects and any mode change.</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;* All data streams can easily be monitored and manual testdata can be inserted (see ArnBrowser).</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;#### Persistent storage</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;* ...</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  To be Continued</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;* Optional persistent storage of <span class="keywordtype">object</span> in SQLight or in a file.</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;* Support <span class="keywordflow">for</span> version control (VCS) of objects stored in files.</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#### Java Script</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;* Native support in JavaScript <span class="keywordflow">for</span>: _Arn Data Objects_, Dependency system and</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;Monitoring of changed objects.</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;* Java Script jobstack with preemptive and cooperative scripts running at different priorities.</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;* Hot swap of changed Java Script in jobstack.</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;#### Data streams and _Remote Procedure Call_</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;* All data streams (pipes) can easily be monitored and manual test data can be inserted</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;(see ArnBrowser).</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;* Service Api, for calling routines anywhere in connected Arn.</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;_Remote Procedure call_ (RPC) made simple as &quot;remote signal slots&quot;.</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;* Service Api has an automatically generated help for giving syntax when doing debug manual</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;typed calls to a RPC service.</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="_r_e_a_d_m_e_8md.html">README.md</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:19 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

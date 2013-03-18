@@ -1,7 +1,7 @@
 var searchData=
 [
   ['ok',['Ok',['../struct_arn_error_1_1_std_code.html#aea37b0c27c3daa5ee66a133ed3af7366a4729aa2216ee0491ff133b4e4e1a5568',1,'ArnError::StdCode::Ok()'],['../struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afae843e04f35bbe3158d0f8772e9c688bd',1,'ArnError::Ok()']]],
-  ['open',['open',['../class_arn_item.html#aad7d66fe3be087dd393328349812a369',1,'ArnItem::open(const QString &amp;path)'],['../class_arn_item.html#a64f50a0219ff110dd3d7d17d5c3bc0ff',1,'ArnItem::open(const ArnItem &amp;folder, const QString &amp;itemName)'],['../class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea',1,'ArnRpc::open()'],['../class_arn_sapi.html#a626b0e6efc688f02a1feacc2bb503b4f',1,'ArnSapi::open()']]],
+  ['open',['open',['../class_arn_item.html#aad7d66fe3be087dd393328349812a369',1,'ArnItem::open()'],['../class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea',1,'ArnRpc::open()'],['../class_arn_sapi.html#a626b0e6efc688f02a1feacc2bb503b4f',1,'ArnSapi::open()']]],
   ['openfolder',['openFolder',['../class_arn_item.html#ab9460dee048f3a07102ac1c47c82a62f',1,'ArnItem']]],
   ['openuuidpipe',['openUuidPipe',['../class_arn_item.html#aa93648c2e921061e35ccbcf16db21a65',1,'ArnItem']]],
   ['operator_3c_3c',['operator&lt;&lt;',['../_arn_item_8cpp.html#a1189a1071766d28af6ea4441c7a65539',1,'operator&lt;&lt;(QTextStream &amp;out, const ArnItem &amp;item):&#160;ArnItem.cpp'],['../_arn_item_8hpp.html#a1189a1071766d28af6ea4441c7a65539',1,'operator&lt;&lt;(QTextStream &amp;out, const ArnItem &amp;item):&#160;ArnItem.cpp']]],

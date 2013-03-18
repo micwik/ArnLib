@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -111,42 +111,66 @@ $(document).ready(function(){initNavTree('class_arn_depend.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Class for setting up dependencis to needed services.  
+ <a href="class_arn_depend.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_arn_depend_8hpp_source.html">ArnDepend.hpp</a>&gt;</code></p>
 
 <p><a href="class_arn_depend-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a142b1eeb07e181cf4aebc187aadaa9e5"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="struct_arn_depend_slot.html">ArnDependSlot</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5">DepSlot</a></td></tr>
+<tr class="memitem:a142b1eeb07e181cf4aebc187aadaa9e5"><td class="memItemLeft" align="right" valign="top">typedef ArnDependSlot&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5">DepSlot</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="signals"></a>
 Signals</h2></td></tr>
 <tr class="memitem:a49dbcb4053f36d9205263729612a0440"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_depend.html#a49dbcb4053f36d9205263729612a0440">completed</a> ()</td></tr>
+<tr class="memdesc:a49dbcb4053f36d9205263729612a0440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when all dependent services are available.  <a href="#a49dbcb4053f36d9205263729612a0440"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6360dd776b4599bbf071043f89b5d035"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_depend.html#a6360dd776b4599bbf071043f89b5d035">ArnDepend</a> (QObject *parent=0)</td></tr>
 <tr class="memitem:a3a5579ff0c26b2043e0846c667bea2cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_depend.html#a3a5579ff0c26b2043e0846c667bea2cc">~ArnDepend</a> ()</td></tr>
 <tr class="memitem:a87a81882ea75a37c439625c08254efdf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_depend.html#a87a81882ea75a37c439625c08254efdf">add</a> (QString serviceName, int stateId=-1)</td></tr>
+<tr class="memdesc:a87a81882ea75a37c439625c08254efdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a dependency for a <em>service</em>  <a href="#a87a81882ea75a37c439625c08254efdf"></a><br/></td></tr>
 <tr class="memitem:ad34386e67d8d3a3d620c96a681993ded"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_depend.html#ad34386e67d8d3a3d620c96a681993ded">add</a> (QString serviceName, QString stateName)</td></tr>
+<tr class="memdesc:ad34386e67d8d3a3d620c96a681993ded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a dependency for a <em>service</em>  <a href="#ad34386e67d8d3a3d620c96a681993ded"></a><br/></td></tr>
 <tr class="memitem:a5a3bfb64ec7cb6bdd2eeb041dcf9bbc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_depend.html#a5a3bfb64ec7cb6bdd2eeb041dcf9bbc0">setMonitorName</a> (QString name)</td></tr>
+<tr class="memdesc:a5a3bfb64ec7cb6bdd2eeb041dcf9bbc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an optional monitor name for debugging.  <a href="#a5a3bfb64ec7cb6bdd2eeb041dcf9bbc0"></a><br/></td></tr>
 <tr class="memitem:abdec5d40a6ddf0fcd8c10bde2add96b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_depend.html#abdec5d40a6ddf0fcd8c10bde2add96b2">startMonitor</a> ()</td></tr>
+<tr class="memdesc:abdec5d40a6ddf0fcd8c10bde2add96b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starting the dependency monitor.  <a href="#abdec5d40a6ddf0fcd8c10bde2add96b2"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_arn_depend_8hpp_source.html#l00069">69</a> of file <a class="el" href="_arn_depend_8hpp_source.html">ArnDepend.hpp</a>.</p>
+<div class="textblock"><p>Class for setting up dependencis to needed services. </p>
+<p>The services can be both system types available by internal Arn, and custom application types. The system types have a service name starting with "$".</p>
+<p>This is typically used when an application needs a service to continue. When using persistent values, a client will need to know when they have been synced from the server. Then it's convenient to setup a dependency for the system service "$Persist".</p>
+<p>When all dependent services are available, the <a class="el" href="class_arn_depend.html#a49dbcb4053f36d9205263729612a0440" title="Signal emitted when all dependent services are available.">completed()</a> signal is emitted.</p>
+<p><b>Example usage</b> <br/>
+ </p>
+<div class="fragment"><div class="line">    <span class="comment">// In class declare</span></div>
+<div class="line">    <a class="code" href="class_arn_depend.html" title="Class for setting up dependencis to needed services.">ArnDepend</a>*  _arnDepend;</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// In class code</span></div>
+<div class="line">    _arnDepend = <span class="keyword">new</span> <a class="code" href="class_arn_depend.html#a6360dd776b4599bbf071043f89b5d035">ArnDepend</a>( <span class="keyword">this</span>);</div>
+<div class="line">    _arnDepend-&gt;<a class="code" href="class_arn_depend.html#a5a3bfb64ec7cb6bdd2eeb041dcf9bbc0" title="Set an optional monitor name for debugging.">setMonitorName</a>(<span class="stringliteral">&quot;MyApp_Monitor&quot;</span>);  <span class="comment">// Optional for debug</span></div>
+<div class="line">    _arnDepend-&gt;<a class="code" href="class_arn_depend.html#a87a81882ea75a37c439625c08254efdf" title="Add a dependency for a service">add</a>(<span class="stringliteral">&quot;$Persist&quot;</span>);</div>
+<div class="line">    _arnDepend-&gt;<a class="code" href="class_arn_depend.html#a87a81882ea75a37c439625c08254efdf" title="Add a dependency for a service">add</a>(<span class="stringliteral">&quot;MyService&quot;</span>);</div>
+<div class="line">    _arnDepend-&gt;<a class="code" href="class_arn_depend.html#abdec5d40a6ddf0fcd8c10bde2add96b2" title="Starting the dependency monitor.">startMonitor</a>();</div>
+<div class="line">    connect( _arnDepend, SIGNAL(<a class="code" href="class_arn_depend.html#a49dbcb4053f36d9205263729612a0440" title="Signal emitted when all dependent services are available.">completed</a>()), <span class="keyword">this</span>, SLOT(arnDependOk()));</div>
+</div><!-- fragment --> 
+<p>Definition at line <a class="el" href="_arn_depend_8hpp_source.html#l00129">129</a> of file <a class="el" href="_arn_depend_8hpp_source.html">ArnDepend.hpp</a>.</p>
 </div><hr/><h2>Member Typedef Documentation</h2>
 <a class="anchor" id="a142b1eeb07e181cf4aebc187aadaa9e5"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="struct_arn_depend_slot.html">ArnDependSlot</a> <a class="el" href="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5">ArnDepend::DepSlot</a></td>
+          <td class="memname">typedef ArnDependSlot <a class="el" href="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5">ArnDepend::DepSlot</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_depend_8hpp_source.html#l00073">73</a> of file <a class="el" href="_arn_depend_8hpp_source.html">ArnDepend.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_depend_8hpp_source.html#l00133">133</a> of file <a class="el" href="_arn_depend_8hpp_source.html">ArnDepend.hpp</a>.</p>
 
 </div>
 </div>
@@ -173,7 +197,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00124">124</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00126">126</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
 
 </div>
 </div>
@@ -190,7 +214,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00136">136</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00138">138</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
 
 </div>
 </div>
@@ -219,7 +243,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00170">170</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
+<p>Add a dependency for a <em>service</em> </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">serviceName</td><td>is the name of the needed <em>service</em>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">stateId</td><td>is the needed <em>state</em> id number. -1 is don't care. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00172">172</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
 
 </div>
 </div>
@@ -247,7 +280,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00162">162</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
+<p>Add a dependency for a <em>service</em> </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">serviceName</td><td>is the name of the needed <em>service</em>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">stateName</td><td>is the needed <em>state</em> name. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00164">164</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
 
 </div>
 </div>
@@ -272,6 +314,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Signal emitted when all dependent services are available. </p>
+
 </div>
 </div>
 <a class="anchor" id="a5a3bfb64ec7cb6bdd2eeb041dcf9bbc0"></a>
@@ -288,7 +332,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00178">178</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
+<p>Set an optional monitor name for debugging. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>is the monitor name. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00180">180</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
 
 </div>
 </div>
@@ -305,13 +357,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00184">184</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
+<p>Starting the dependency monitor. </p>
+
+<p>Definition at line <a class="el" href="_arn_depend_8cpp_source.html#l00186">186</a> of file <a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_arn_depend_8hpp_source.html">ArnDepend.hpp</a></li>
-<li>src/<a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp</a></li>
+<li>src/<a class="el" href="_arn_depend_8hpp_source.html">ArnDepend.hpp (1.0.0-9-g2ded014)</a></li>
+<li>src/<a class="el" href="_arn_depend_8cpp_source.html">ArnDepend.cpp (1.0.0-9-g2ded014)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -319,7 +373,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_depend.html">ArnDepend</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:20 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

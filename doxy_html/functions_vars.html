@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -115,17 +115,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 <div class="contents">
 &#160;<ul>
-<li>_abortTimer
-: <a class="el" href="class_arn_script_job_b.html#a8576432b615b9347d29370fa725eec1d">ArnScriptJobB</a>
-</li>
 <li>_arnClient
 : <a class="el" href="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da">ArnMonitor</a>
-</li>
-<li>_arnScr
-: <a class="el" href="class_arn_script_job_b.html#ad395cec9a1a8be8dd947171fc0c8966f">ArnScriptJobB</a>
-</li>
-<li>_configObj
-: <a class="el" href="class_arn_script_job_b.html#abe81ecce55fb3bd395735cf1b0a672b8">ArnScriptJobB</a>
 </li>
 <li>_depOfferProto
 : <a class="el" href="class_arn_script.html#aead5fd375e11232211dbfbaf43a7ce33">ArnScript</a>
@@ -139,59 +130,11 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>_itemProto
 : <a class="el" href="class_arn_script.html#a682125014879c247e52ea2cf530184de">ArnScript</a>
 </li>
-<li>_jobEnter
-: <a class="el" href="class_arn_script_job_b.html#afa9ccf1ad0a13ae72a550794ba6cc502">ArnScriptJobB</a>
-</li>
-<li>_jobInit
-: <a class="el" href="class_arn_script_job_b.html#a69e77615f81d15bf802652907a34c710">ArnScriptJobB</a>
-</li>
-<li>_jobLeave
-: <a class="el" href="class_arn_script_job_b.html#a27f03b05229c823203444ee586508395">ArnScriptJobB</a>
-</li>
-<li>_link
-: <a class="el" href="class_arn_item.html#a654658466ac231e60f12ea2beddb1cf3">ArnItem</a>
-</li>
 <li>_monitorPath
 : <a class="el" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">ArnMonitor</a>
 </li>
 <li>_monitorProto
 : <a class="el" href="class_arn_script.html#a683196dec9da4507330857d5bf908ab4">ArnScript</a>
-</li>
-<li>_retObj
-: <a class="el" href="class_arn_thread_com.html#a568c53122e362016fc6995d1f1aa250e">ArnThreadCom</a>
-</li>
-<li>_retStringList
-: <a class="el" href="class_arn_thread_com.html#a45a529ad7b1081e53c621b2d3d189792">ArnThreadCom</a>
-</li>
-<li>_rpcSender
-: <a class="el" href="class_rpc_receiver_storage.html#ab675e22b29680cc0c9b939bdcdcca060">RpcReceiverStorage</a>
-</li>
-<li>arnEchoPipe
-: <a class="el" href="struct_arn_depend_slot.html#a7b84d5f7a9b21348e494b12b372a3579">ArnDependSlot</a>
-</li>
-<li>arnStateId
-: <a class="el" href="struct_arn_depend_slot.html#a0a11242d24848aeba5755a52fec646a9">ArnDependSlot</a>
-</li>
-<li>arnStateName
-: <a class="el" href="struct_arn_depend_slot.html#a8e05c97c7c1d6ea33cc3c778d7092f1c">ArnDependSlot</a>
-</li>
-<li>isEchoOk
-: <a class="el" href="struct_arn_depend_slot.html#af5926b7e0f236fe301fcb605c9593a1f">ArnDependSlot</a>
-</li>
-<li>isStateOk
-: <a class="el" href="struct_arn_depend_slot.html#a4c71f2666d1e94476d42bc909de1ad06">ArnDependSlot</a>
-</li>
-<li>serviceName
-: <a class="el" href="struct_arn_depend_slot.html#a5e366449f68487c07ae20de58af725dd">ArnDependSlot</a>
-</li>
-<li>stateId
-: <a class="el" href="struct_arn_depend_slot.html#adeafba2ed43fc4d7e38da61161037db4">ArnDependSlot</a>
-</li>
-<li>stateName
-: <a class="el" href="struct_arn_depend_slot.html#a56a19c596c24c5a026b8b4b1b739642f">ArnDependSlot</a>
-</li>
-<li>useStateCheck
-: <a class="el" href="struct_arn_depend_slot.html#a64a6e204f854aa564fc69ad0362c8dd6">ArnDependSlot</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -199,7 +142,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:21 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:21 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

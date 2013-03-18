@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -110,6 +110,9 @@ $(document).ready(function(){initNavTree('class_arn_server.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Class for making an <em>Arn Server</em>.  
+ <a href="class_arn_server.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_arn_server_8hpp_source.html">ArnServer.hpp</a>&gt;</code></p>
 
 <p><a href="class_arn_server-members.html">List of all members.</a></p>
@@ -121,11 +124,24 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7af03d4175af01e18a72d07e39349c9f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_server.html#a7af03d4175af01e18a72d07e39349c9f">ArnServer</a> (<a class="el" href="struct_arn_server_1_1_type.html">Type</a> serverType, QObject *parent=0)</td></tr>
+<tr class="memdesc:a7af03d4175af01e18a72d07e39349c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an Arn <em>server</em> object.  <a href="#a7af03d4175af01e18a72d07e39349c9f"></a><br/></td></tr>
 <tr class="memitem:a13417255db21d5eb2b24d73bb79d905e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_server.html#a13417255db21d5eb2b24d73bb79d905e">start</a> (int port=0)</td></tr>
+<tr class="memdesc:a13417255db21d5eb2b24d73bb79d905e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the Arn <em>server</em>  <a href="#a13417255db21d5eb2b24d73bb79d905e"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_arn_server_8hpp_source.html#l00044">44</a> of file <a class="el" href="_arn_server_8hpp_source.html">ArnServer.hpp</a>.</p>
+<div class="textblock"><p>Class for making an <em>Arn Server</em>. </p>
+<p><a class="el" href="md__description.html#gen_shareArnobj">About Sharing Arn Data Objects</a></p>
+<p><b>Example usage</b> <br/>
+ </p>
+<div class="fragment"><div class="line">    <span class="comment">// In class declare</span></div>
+<div class="line">    <a class="code" href="class_arn_server.html" title="Class for making an Arn Server.">ArnServer</a>*  _server;</div>
+<div class="line"></div>
+<div class="line">    <span class="comment">// In class code</span></div>
+<div class="line">    _server = <span class="keyword">new</span> <a class="code" href="class_arn_server.html#a7af03d4175af01e18a72d07e39349c9f" title="Create an Arn server object.">ArnServer</a>( <a class="code" href="struct_arn_server_1_1_type.html#ae4fba4a82a463c288561b107362dde41abe95db1db12eebabf0398f1eb47a69bb">ArnServer::Type::NetSync</a>, <span class="keyword">this</span>);</div>
+<div class="line">    _server-&gt;<a class="code" href="class_arn_server.html#a13417255db21d5eb2b24d73bb79d905e" title="Start the Arn server">start</a>();</div>
+</div><!-- fragment --> <dl><dt><b>Examples: </b></dt><dd><a class="el" href="_server_main_8cpp-example.html#_a0">ServerMain.cpp</a>, and <a class="el" href="_server_main_8hpp-example.html#_a1">ServerMain.hpp</a>.</dd>
+</dl>
+<p>Definition at line <a class="el" href="_arn_server_8hpp_source.html#l00056">56</a> of file <a class="el" href="_arn_server_8hpp_source.html">ArnServer.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a7af03d4175af01e18a72d07e39349c9f"></a>
 <div class="memitem">
@@ -151,6 +167,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Create an Arn <em>server</em> object. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">serverType</td><td>For now only <em>NetSync</em> is available. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Definition at line <a class="el" href="_arn_server_8cpp_source.html#l00042">42</a> of file <a class="el" href="_arn_server_8cpp_source.html">ArnServer.cpp</a>.</p>
 
 </div>
@@ -170,13 +194,21 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Start the Arn <em>server</em> </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">port</td><td>is the port number (default 2022). </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Definition at line <a class="el" href="_arn_server_8cpp_source.html#l00051">51</a> of file <a class="el" href="_arn_server_8cpp_source.html">ArnServer.cpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_arn_server_8hpp_source.html">ArnServer.hpp</a></li>
-<li>src/<a class="el" href="_arn_server_8cpp_source.html">ArnServer.cpp</a></li>
+<li>src/<a class="el" href="_arn_server_8hpp_source.html">ArnServer.hpp (1.0.0-9-g2ded014)</a></li>
+<li>src/<a class="el" href="_arn_server_8cpp_source.html">ArnServer.cpp (1.0.0-9-g2ded014)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -184,7 +216,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_server.html">ArnServer</a></li>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:20 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:21 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

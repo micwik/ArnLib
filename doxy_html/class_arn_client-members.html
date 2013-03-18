@@ -28,7 +28,6 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.0</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -47,6 +46,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -110,20 +110,8 @@ $(document).ready(function(){initNavTree('class_arn_client.html','');});
 <p>This is the complete list of members for <a class="el" href="class_arn_client.html">ArnClient</a>, including all inherited members.</p>
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a5b34e108640a9308afff44bd95c63862">ArnClient</a>(QObject *parent=0)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#af95b154fadd4b60e9678870c47cef3fd">commandExit</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a58301d2a44cfeba6a7e9c5ed495ae641">commandGet</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#afc7aab3aa73d674e31b042939eba22bb">commandLs</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a3d1fd2e8171e3f52004772d7c279e0c7">commandSet</a>(const QString &amp;path, const QString &amp;data)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#af04c8a4c23ee3fa25a6c18e50c53d03f">commandVersion</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057">connectToArn</a>(const QString &amp;arnHost, quint16 port=0)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#aa9b18c9ed13ce18807e80df71ceae1b0">id</a>() const </td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#acb7d8f7428e2f8acb63fd7da0ac00bd1">newNetItem</a>(QString path, ArnItem::SyncMode syncMode=ArnItem::SyncMode::Normal, bool *isNewPtr=0)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#a39a753ce6bfd60af4d76fae04e5834da">replyGet</a>(QString data, QString path)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a838645279ff4a681bf3bee4e5706b13d">replyLs</a>(QStringList subItems, QString path)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#a8f3e3e47e18a2de4b3511b4deb8e6af9">replyRecord</a>(XStringMap &amp;replyMap)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a8dbb7802c043e9f1e43048f0e6e38723">replyVer</a>(QString version)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60">setAutoConnect</a>(bool isAuto, int retryTime=2)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#aab54a0873ed6dc1db14f0bd6ae1d5faa">setId</a>(QString id)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057">connectToArn</a>(const QString &amp;arnHost, quint16 port=0)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60">setAutoConnect</a>(bool isAuto, int retryTime=2)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548">setMountPoint</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#ad9425c4a02d458105fa608537610eb6e">tcpConnected</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd">tcpDisConnected</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
@@ -133,7 +121,7 @@ $(document).ready(function(){initNavTree('class_arn_client.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 24 2013 17:34:20 for ArnLib by
+    <li class="footer">Generated on Mon Mar 18 2013 00:34:20 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>
