@@ -10,8 +10,9 @@ ARNLIBVER = 1.0.0
 DEFINES += LIBVER=\\\"$${ARNLIBVER}\\\"
 
 win32 {
-DEFINES += BUILDTIME=\\\"$$system('echo %time%')\\\"
 DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
+DEFINES += BUILDTIME=\\\"00:00\\\"
+# DEFINES += BUILDTIME=\\\"$$system('echo %time%')\\\"
 } else {
 DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M')\\\"
 DEFINES += BUILDDATE=\\\"$$system(date '+%y-%m-%d')\\\"
@@ -77,10 +78,14 @@ OTHER_FILES += \
 
 
 ### Install
-
+win32 {
+headers.path = $$OUT_PWD/../include/ArnLib
+target.path = $$OUT_PWD/../lib
+} else {
 headers.path = /usr/include/ArnLib
-headers.files += src/*.hpp
 target.path = /usr/lib64
+}
+headers.files += src/*.hpp
 INSTALLS += target \
     headers
 
