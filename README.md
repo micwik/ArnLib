@@ -20,6 +20,12 @@ exchange, debugging, etc.
 <Br><Br>
 
 
+## Installation and usage
+
+Read [doc/Install.md](\ref ins_build) how to build, install and use.
+<Br><Br>
+
+
 ## Main features
 
 * Based on QT, multiple platform and OS support.

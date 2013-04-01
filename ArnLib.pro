@@ -92,7 +92,7 @@ INSTALLS += target \
 
 ### Custom target 'doc' in *.pro file
 
-doc.commands = doxygen doc/Doxyfile
+doc.commands = doxygen Doxyfile
 doc.depends = FORCE
 QMAKE_EXTRA_TARGETS += doc
 QMAKE_DISTCLEAN += doc/doxy_html/* doc/doxy_html/search/*
