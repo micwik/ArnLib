@@ -19,6 +19,12 @@ var NAVTREE =
       ] ],
       [ "Application notations    ", "md__description.html#gen_appnote", null ]
     ] ],
+    [ "Installation and usage", "md__install.html", [
+      [ "Introduction    ", "md__install.html#ins_intro", null ],
+      [ "Documentation    ", "md__install.html#ins_doc", null ],
+      [ "Building ArnLib    ", "md__install.html#ins_build", null ],
+      [ "Using ArnLib    ", "md__install.html#ins_usage", null ]
+    ] ],
     [ "ArnLib Internals", "md__internals.html", [
       [ "ScriptJobs    ", "md__internals.html#int_scriptjobs", null ],
       [ "ArnMonitor    ", "md__internals.html#int_arnmonitor", null ],

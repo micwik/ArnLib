@@ -5,6 +5,7 @@ var searchData=
   ['indexof',['indexOf',['../class_x_string_map.html#abdf82ce67f3d989febecc6ebef484593',1,'XStringMap::indexOf(const char *key, int from=0) const '],['../class_x_string_map.html#a7713f40ee0468447df950e44c24b9957',1,'XStringMap::indexOf(const QByteArray &amp;key, int from=0) const '],['../class_x_string_map.html#add3f7199d6a4a9ebae2b1009aea9cf2f',1,'XStringMap::indexOf(const QString &amp;key, int from=0) const ']]],
   ['indexofvalue',['indexOfValue',['../class_x_string_map.html#a951e966323051d1f74eaf41e35126586',1,'XStringMap::indexOfValue(const QByteArray &amp;value, int from=0) const '],['../class_x_string_map.html#a95eeb7ae503e89a47fae1df35e62bfd9',1,'XStringMap::indexOfValue(const QString &amp;value, int from=0) const ']]],
   ['info',['info',['../class_arn_m.html#ae0232d87666bd82f0a58be77b24e9b36',1,'ArnM::info()'],['../struct_arn_error_1_1_std_code.html#aea37b0c27c3daa5ee66a133ed3af7366ab2c1979fec2a061f4a09fb675e58dff9',1,'ArnError::StdCode::Info()'],['../struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afa02cab905ea2ce41c70f05b1097383bb5',1,'ArnError::Info()']]],
+  ['install_2emd',['Install.md',['../_install_8md.html',1,'']]],
   ['installextension',['installExtension',['../class_arn_script_job_factory.html#ad37f5b97e0433d138325b020c47a96e1',1,'ArnScriptJobFactory']]],
   ['instance',['instance',['../class_arn_m.html#a91db48e0be7abb8a8cc253867662699d',1,'ArnM']]],
   ['int',['Int',['../struct_arn_link_1_1_type.html#afca7497e82eb99f6729aeaaf81703b72a61ab31074aac1e13baea2a8fa8e32ec0',1,'ArnLink::Type']]],
@@ -29,5 +30,6 @@ var searchData=
   ['itemname',['itemName',['../class_arn_m.html#a485c3dd727f171e4026f038db41b01cf',1,'ArnM']]],
   ['itemnotopen',['ItemNotOpen',['../struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afadee41bdba41a8ca77d4477420bc7b555',1,'ArnError']]],
   ['itemnotset',['ItemNotSet',['../struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afa93e0ffd92c544429f2e0102fc58fe3f3',1,'ArnError']]],
-  ['items',['items',['../class_arn_m.html#af1e6cebe958ca1d956a833f5eef4610a',1,'ArnM']]]
+  ['items',['items',['../class_arn_m.html#af1e6cebe958ca1d956a833f5eef4610a',1,'ArnM']]],
+  ['installation_20and_20usage',['Installation and usage',['../md__install.html',1,'']]]
 ];
