@@ -32,8 +32,9 @@ ArnLib includes a class documentation, that is available in various formats:
   > cd doc/latex <Br>
   > make <Br>
 * **Qt Compressed Help** (*.qch ) for the Qt assistant or creator. <Br> 
-  Load the doc/qthelp/arnlib.qch file into Qt Creator. Start Qt creator and go to Tools > Options, open up Help
-  and Documentation. Click Add and browse for the qch file that was just created, then Apply. 
+  Load the doc/qthelp/arnlib.qch file into Qt Creator. Start Qt creator and go to 
+  Tools > Options, open up Help and Documentation. Click Add and browse for the qch file
+  that was just created, then Apply. 
   It's best to close Qt creator at this point, and restart it. 
 <Br><Br>
 
@@ -51,7 +52,8 @@ When using IDE, don't forget the "make install" step.
 > make <Br>
 > make install
 
-The easiest way of installing this library, is to let it be placed in a standard location for librarys and includes, e.g. /usr/lib and /usr/include/ArnLib.
+The easiest way of installing this library, is to let it be placed in a standard location 
+for librarys and includes, e.g. /usr/lib and /usr/include/ArnLib.
 When using a shared library it's path has to be known to 
 the run-time linker of your operating system. On Linux systems read
 "man ldconfig" ( or google for it ). Another option is to use
