@@ -29,6 +29,8 @@ Read [doc/Install.md](\ref ins_build) how to build, install and use.
 ## Main features
 
 * Based on QT, multiple platform and OS support.
+* QT based Arn browser available. Allows you to access all data objects in a tree view (see ArnBrowser).
+* Web based Arn browser available, allowing you to use a standard web browser (see WebArnBrowser).
 
 #### Arn Data Objects
 
@@ -37,7 +39,7 @@ Read [doc/Install.md](\ref ins_build) how to build, install and use.
 * _Arn Data objects_ can be: integers, floats, strings, byte arrays and variants
 (most QT data types, e.g. QImage).
 
-* Data objects can typically be: measures, settings, datastreams, documents, scripts (js), ...
+* Data objects can typically be: measures, settings, data streams, documents, scripts (js), ...
 
 * _Arn Data objects_ are thread-safe.
 
@@ -46,7 +48,7 @@ Read [doc/Install.md](\ref ins_build) how to build, install and use.
 #### Sharing
 
 * Data objects can be shared in a single program, among threads or between programs at
-different computers. This division of program modules can be changed and are transparent
+different computers. This division of program modules can be changed and is transparent
 to usage of ArnLib.
 
 * Support for temporary session data objects.
