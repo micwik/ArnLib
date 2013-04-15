@@ -1,0 +1,11 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$class_x_string_map.html#a114fbf78e50846fe5c5ae222be5472fc" title="XStringMap::add" alt="" coords="404,322,521,349"/>
+<area shape="rect" id="node5" href="$class_x_string_map.html#a694dfb3459a5480f7e923e532669a769" title="XStringMap::key" alt="" coords="597,170,715,197"/>
+<area shape="rect" id="node7" href="$class_x_string_map.html#aee5d59b6a34abd7d0c3f00f965493db2" title="XStringMap::size" alt="" coords="403,120,523,146"/>
+<area shape="rect" id="node10" href="$class_x_string_map.html#a3d9c567510543a042c592c61caca3402" title="XStringMap::value" alt="" coords="184,170,309,197"/>
+<area shape="rect" id="node12" href="$class_x_string_map.html#a3b5dc5d6aeeed5c38023455cc23c7851" title="XStringMap::toXString" alt="" coords="173,69,321,96"/>
+<area shape="rect" id="node16" href="$class_x_string_map.html#accb22131f0152177766501e354201d6d" title="XStringMap::fromXString" alt="" coords="165,221,328,248"/>
+<area shape="rect" id="node14" href="$class_x_string_map.html#a4923c3743570da4886b25d75b2f66cff" title="XStringMap::stringCode" alt="" coords="383,69,542,96"/>
+<area shape="rect" id="node18" href="$class_x_string_map.html#a680f399fda12c7d1f65cdf0ece7434a4" title="XStringMap::clear" alt="" coords="401,272,525,298"/>
+<area shape="rect" id="node22" href="$class_x_string_map.html#a2350068bdd77b36d600dff6c4989c70a" title="XStringMap::stringDecode" alt="" coords="377,221,549,248"/>
+</map>

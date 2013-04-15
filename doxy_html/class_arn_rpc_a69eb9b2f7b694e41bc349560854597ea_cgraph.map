@@ -1,0 +1,14 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$class_arn_rpc.html#aef5cf7f423813fbc1876249ce9b8236a" title="ArnRpc::setPipe" alt="" coords="179,5,296,32"/>
+<area shape="rect" id="node7" href="$class_arn_item.html#a0f1b81445573dbeaf64d8cf51d82e105" title="Set general mode as Pipe for this Arn Data Object" alt="" coords="369,107,519,133"/>
+<area shape="rect" id="node11" href="$class_arn_item.html#a59252460af76f07c5830e5c48c868774" title="Set client session sync mode as Master for this ArnItem." alt="" coords="171,208,304,235"/>
+<area shape="rect" id="node21" href="$class_arn_item.html#abe0a54c73f6004942580ddefd40e5d19" title="Set client session sync mode as AutoDestroy for this ArnItem." alt="" coords="155,259,320,285"/>
+<area shape="rect" id="node24" href="$class_arn_item.html#aa93648c2e921061e35ccbcf16db21a65" title="Open a handle to an Arn Pipe Object with a unique uuid name." alt="" coords="160,107,315,133"/>
+<area shape="rect" id="node26" href="$class_arn_item.html#aad7d66fe3be087dd393328349812a369" title="Open a handle to an Arn Data Object" alt="" coords="393,157,495,184"/>
+<area shape="rect" id="node5" href="$class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object" alt="" coords="394,5,494,32"/>
+<area shape="rect" id="node9" href="$class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5" title="ArnItem::syncMode" alt="" coords="573,107,707,133"/>
+<area shape="rect" id="node13" href="$class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6" title="ArnM::errorLog" alt="" coords="390,233,498,260"/>
+<area shape="rect" id="node15" href="$class_arn_m.html#a91db48e0be7abb8a8cc253867662699d" title="ArnM::instance" alt="" coords="585,233,695,260"/>
+<area shape="rect" id="node17" href="$class_arn_m.html#a6a22b7ba4ec2087701cea178dae2bb54" title="ArnM::errorSysName" alt="" coords="568,284,712,311"/>
+<area shape="rect" id="node19" href="$class_arn_m.html#a0fc991e4c21a3a11390da3b10df6deb4" title="ArnM::errorLogSig" alt="" coords="577,183,703,209"/>
+</map>

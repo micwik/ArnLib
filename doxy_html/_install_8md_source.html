@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: doc/Install.md (1.0.0) Source File</title>
+<title>ArnLib: doc/Install.md (1.0.0-3-gf59259b) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('_install_8md.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">doc/Install.md (1.0.0)</div>  </div>
+<div class="title">doc/Install.md (1.0.0-3-gf59259b)</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="_install_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Installation and usage</div>
@@ -139,133 +139,135 @@ $(document).ready(function(){initNavTree('_install_8md.html','');});
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  &gt; cd doc/latex &lt;Br&gt;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  &gt; make &lt;Br&gt;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;* **Qt Compressed Help** (*.qch ) for the Qt assistant or creator. &lt;Br&gt; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  Load the doc/qthelp/arnlib.qch file into Qt Creator. Start Qt creator and go to Tools &gt; Options, open up Help</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  and Documentation. Click Add and browse for the qch file that was just created, then Apply. </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  It&#39;s best to close Qt creator at this point, and restart it. </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  Load the doc/qthelp/arnlib.qch file into Qt Creator. Start Qt creator and go to </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  Tools &gt; Options, open up Help and Documentation. Click Add and browse for the qch file</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  that was just created, then Apply. </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  It&#39;s best to close Qt creator at this point, and restart it. </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;Building ArnLib    {#ins_build}</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;---------------</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;The software can be built both by command line and IDE (Qt Creator).</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;When <span class="keyword">using</span> IDE, don<span class="stringliteral">&#39;t forget the &quot;make install&quot; step.</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;Building ArnLib    {#ins_build}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;---------------</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;The software can be built both by command line and IDE (Qt Creator).</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;When <span class="keyword">using</span> IDE, don<span class="stringliteral">&#39;t forget the &quot;make install&quot; step.</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="stringliteral">### A) Unix </span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="stringliteral">&gt; qmake &lt;Br&gt;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="stringliteral">&gt; make &lt;Br&gt;</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="stringliteral">&gt; make install</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="stringliteral">The easiest way of installing this library, is to let it be placed in a standard location for librarys and includes, e.g. /usr/lib and /usr/include/ArnLib.</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="stringliteral">When using a shared library it&#39;</span>s path has to be known to </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;the run-time linker of your operating system. On Linux systems read</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="stringliteral">&quot;man ldconfig&quot;</span> ( or google <span class="keywordflow">for</span> it ). Another option is to use</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;the LD_LIBRARY_PATH (on some systems LIBPATH is used instead, on MacOSX</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;it is called DYLD_LIBRARY_PATH) environment variable.</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;If you only want to check the library examples without installing something,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;you can <span class="keyword">set</span> the LD_LIBRARY_PATH to the lib directory </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;of your local build. </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;The examples is built <span class="keyword">this</span> way:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;&gt; cd examples/ArnDemoChat &lt;Br&gt;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;&gt; qmake &lt;Br&gt;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;&gt; make</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">### B) Win32/MSVC </span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;Has not been tested yet ...</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;Check that your Qt version has been built with MSVC - not with MinGW !</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="stringliteral">### A) Unix </span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="stringliteral">&gt; qmake &lt;Br&gt;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="stringliteral">&gt; make &lt;Br&gt;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="stringliteral">&gt; make install</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="stringliteral">The easiest way of installing this library, is to let it be placed in a standard location </span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="stringliteral">for librarys and includes, e.g. /usr/lib and /usr/include/ArnLib.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="stringliteral">When using a shared library it&#39;</span>s path has to be known to </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;the run-time linker of your operating system. On Linux systems read</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="stringliteral">&quot;man ldconfig&quot;</span> ( or google <span class="keywordflow">for</span> it ). Another option is to use</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;the LD_LIBRARY_PATH (on some systems LIBPATH is used instead, on MacOSX</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;it is called DYLD_LIBRARY_PATH) environment variable.</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;If you only want to check the library examples without installing something,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;you can <span class="keyword">set</span> the LD_LIBRARY_PATH to the lib directory </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;of your local build. </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;The examples is built <span class="keyword">this</span> way:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;&gt; cd examples/ArnDemoChat &lt;Br&gt;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;&gt; qmake &lt;Br&gt;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;&gt; make</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">### B) Win32/MSVC </span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;Has not been tested yet ...</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;Please read the qmake documentation how to convert </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;your *.pro files into your development environment.</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;For example MSVC with nmake:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;&gt; qmake ArnLib.pro &lt;Br&gt;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;&gt; nmake &lt;Br&gt;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;&gt; nmake install</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;The examples is built <span class="keyword">this</span> way:</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;&gt; cd examples\ArnDemoChat &lt;Br&gt;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;&gt; qmake ArnDemoChat.pro &lt;Br&gt;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;&gt; nmake</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;Windows doesn<span class="stringliteral">&#39;t like mixing of debug and release binaries.</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="stringliteral">In windows it&#39;</span>s possible to install the dll files together with the application binary, as the application directory always is included in the search path <span class="keywordflow">for</span> dll.</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;### C) Win32/MinGW </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;Check that your Qt version has been built with MSVC - not with MinGW !</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;Please read the qmake documentation how to convert </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;your *.pro files into your development environment.</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;For example MSVC with nmake:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;&gt; qmake ArnLib.pro &lt;Br&gt;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;&gt; nmake &lt;Br&gt;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;&gt; nmake install</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;The examples is built <span class="keyword">this</span> way:</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;&gt; cd examples\ArnDemoChat &lt;Br&gt;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;&gt; qmake ArnDemoChat.pro &lt;Br&gt;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;&gt; nmake</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;Windows doesn<span class="stringliteral">&#39;t like mixing of debug and release binaries.</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="stringliteral">In windows it&#39;</span>s possible to install the dll files together with the application binary, as the application directory always is included in the search path <span class="keywordflow">for</span> dll.</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;Using Qt Creator <span class="keywordflow">for</span> windows, will give you the needed tools <span class="keywordflow">for</span> building a Qt project.</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;### C) Win32/MinGW </div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;Check that your Qt version has been built with MinGW - not with MSVC !</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;Using Qt Creator <span class="keywordflow">for</span> windows, will give you the needed tools <span class="keywordflow">for</span> building a Qt project.</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;Start a Shell, where Qt4 is initialized. (e.g. with</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="stringliteral">&quot;Programs-&gt;Qt by Trolltech ...-&gt;Qt 4.x.x Command Prompt&quot;</span> ).</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;Check <span class="keywordflow">if</span> you can execute <span class="stringliteral">&quot;make&quot;</span> or something like <span class="stringliteral">&quot;mingw32-make&quot;</span>.</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;&gt; qmake ArnLib.pro &lt;Br&gt;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;&gt; make &lt;Br&gt;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;&gt; make install</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;The examples is built <span class="keyword">this</span> way:</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;&gt; cd examples\ArnDemoChat &lt;Br&gt;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;&gt; qmake ArnDemoChat.pro &lt;Br&gt;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;&gt; make</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;Windows doesn<span class="stringliteral">&#39;t like mixing of debug and release binaries.</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="stringliteral">In windows it&#39;</span>s possible to install the dll files together with the application binary, as the application directory always is included in the search path <span class="keywordflow">for</span> dll.</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;### D) MacOSX</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;Check that your Qt version has been built with MinGW - not with MSVC !</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;Start a Shell, where Qt4 is initialized. (e.g. with</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="stringliteral">&quot;Programs-&gt;Qt by Trolltech ...-&gt;Qt 4.x.x Command Prompt&quot;</span> ).</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;Check <span class="keywordflow">if</span> you can execute <span class="stringliteral">&quot;make&quot;</span> or something like <span class="stringliteral">&quot;mingw32-make&quot;</span>.</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;&gt; qmake ArnLib.pro &lt;Br&gt;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;&gt; make &lt;Br&gt;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;&gt; make install</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;The examples is built <span class="keyword">this</span> way:</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;&gt; cd examples\ArnDemoChat &lt;Br&gt;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;&gt; qmake ArnDemoChat.pro &lt;Br&gt;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;&gt; make</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;Windows doesn<span class="stringliteral">&#39;t like mixing of debug and release binaries.</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="stringliteral">In windows it&#39;</span>s possible to install the dll files together with the application binary, as the application directory always is included in the search path <span class="keywordflow">for</span> dll.</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;Has not been tested yet ...</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;### D) MacOSX</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;Well, the Mac is only another Unix system. So read the instructions in A).</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;Has not been tested yet ...</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;In the recent Qt4 releases the <span class="keywordflow">default</span> target of qmake is to generate</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;XCode project files instead of makefiles. So you might need to <span class="keywordflow">do</span> the</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;following:</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;&gt; qmake -spec macx-g++</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">### E) Qt Embedded</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;ArnLib has been built with Qt Embedded <span class="keyword">using</span> a Raspberry Pi. To build was as simple as <span class="keywordflow">for</span> a regular Unix build.</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;Using ArnLib    {#ins_usage}</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;------------</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;In the *.pro file of the application the follwing can be used:</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;&gt; win32:CONFIG(release, debug|release): LIBS += L$$OUT_PWD/../ArnLib/release/ -lArn &lt;Br&gt;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;&gt; else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -lArn &lt;Br&gt;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;&gt; else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -lArn &lt;Br&gt;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;&gt; </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;&gt; INCLUDEPATH += $$PWD/..</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;This will give a starting point for the configuration. It works well when using the same base directory for ArnLib as the application, e.g. basedir/ArnLib and basedir/myApp. In Unix alike systems it<span class="stringliteral">&#39;s also needed to install the library files in a path known by the system, see a) Unix.</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="stringliteral">If you don&#39;</span>t use qmake you have to add the include path to find the ArnLib </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;headers to your compiler flags and the ArnLib library to your linker list.</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    This Install.md file is based on documentation in the Qwt project.</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;Well, the Mac is only another Unix system. So read the instructions in A).</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;In the recent Qt4 releases the <span class="keywordflow">default</span> target of qmake is to generate</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;XCode project files instead of makefiles. So you might need to <span class="keywordflow">do</span> the</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;following:</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;&gt; qmake -spec macx-g++</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">### E) Qt Embedded</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;ArnLib has been built with Qt Embedded <span class="keyword">using</span> a Raspberry Pi. To build was as simple as <span class="keywordflow">for</span> a regular Unix build.</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;Using ArnLib    {#ins_usage}</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;------------</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;In the *.pro file of the application the follwing can be used:</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;&gt; win32:CONFIG(release, debug|release): LIBS += L$$OUT_PWD/../ArnLib/release/ -lArn &lt;Br&gt;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;&gt; else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -lArn &lt;Br&gt;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;&gt; else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -lArn &lt;Br&gt;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;&gt; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;&gt; INCLUDEPATH += $$PWD/..</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;This will give a starting point for the configuration. It works well when using the same base directory for ArnLib as the application, e.g. basedir/ArnLib and basedir/myApp. In Unix alike systems it<span class="stringliteral">&#39;s also needed to install the library files in a path known by the system, see a) Unix.</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="stringliteral">If you don&#39;</span>t use qmake you have to add the include path to find the ArnLib </div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;headers to your compiler flags and the ArnLib library to your linker list.</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    This Install.md file is based on documentation in the Qwt project.</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="_install_8md.html">Install.md</a></li>
-    <li class="footer">Generated on Mon Apr 1 2013 23:46:52 for ArnLib by
+    <li class="footer">Generated on Tue Apr 9 2013 15:33:49 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

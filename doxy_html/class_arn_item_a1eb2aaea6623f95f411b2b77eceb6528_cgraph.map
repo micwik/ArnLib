@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$class_arn_item.html#a20cae680300033eae41ffed733f0b181" title="ArnItem::isTemplate" alt="" coords="174,5,311,32"/>
+<area shape="rect" id="node5" href="$class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5" title="ArnItem::syncMode" alt="" coords="563,107,698,133"/>
+<area shape="rect" id="node7" href="$class_arn_item.html#a2a6dbdb8ccc20629acb7e85b8da5caf4" title="Add general mode settings for this Arn Data Object" alt="" coords="179,107,307,133"/>
+<area shape="rect" id="node17" href="$class_arn_item.html#a71094b74ad2a58a7283b771cb68505f3" title="Use with care, link must be &quot;referenced&quot; before use, otherwise it might have been deleted..." alt="" coords="180,157,305,184"/>
+<area shape="rect" id="node19" href="$class_arn_item.html#aad7d66fe3be087dd393328349812a369" title="Open a handle to an Arn Data Object" alt="" coords="191,208,294,235"/>
+<area shape="rect" id="node9" href="$class_arn_item.html#a0f1b81445573dbeaf64d8cf51d82e105" title="Set general mode as Pipe for this Arn Data Object" alt="" coords="362,107,513,133"/>
+<area shape="rect" id="node12" href="$class_arn_item.html#ace4a2dc82057499c68183fc09b0bc40b" title="Set general mode as Bidirectional for this Arn Data Object" alt="" coords="361,157,514,184"/>
+<area shape="rect" id="node15" href="$class_arn_item.html#aff24ab5f88812065a4a70a8dbc967306" title="Set general mode as Save for this Arn Data Object" alt="" coords="361,208,514,235"/>
+</map>

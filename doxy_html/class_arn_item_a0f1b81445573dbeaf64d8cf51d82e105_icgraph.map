@@ -1,0 +1,8 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$class_arn_depend_offer.html#ad6e77bc45148794730f7c32a40f03997" title="Advertise an available service" alt="" coords="206,5,378,32"/>
+<area shape="rect" id="node7" href="$class_arn_item.html#aa93648c2e921061e35ccbcf16db21a65" title="Open a handle to an Arn Pipe Object with a unique uuid name." alt="" coords="215,56,369,83"/>
+<area shape="rect" id="node9" href="$class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea" title="ArnRpc::open" alt="" coords="464,81,565,108"/>
+<area shape="rect" id="node11" href="$class_arn_item.html#a2a6dbdb8ccc20629acb7e85b8da5caf4" title="Add general mode settings for this Arn Data Object" alt="" coords="228,157,356,184"/>
+<area shape="rect" id="node5" href="$class_arn_persist.html#a5a5df6121afbf16f1980093001aafdd4" title="Set the persistent enabled tree path." alt="" coords="427,5,602,32"/>
+<area shape="rect" id="node13" href="$class_arn_item.html#a1eb2aaea6623f95f411b2b77eceb6528" title="Construction of a handle to a path with a template for modes" alt="" coords="455,157,575,184"/>
+</map>
