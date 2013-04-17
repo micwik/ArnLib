@@ -39,8 +39,8 @@ ArnLib helps giving an out-of-the-box data sharing system that replicates Arn ob
 
 * _Networked services by RPC (remote procedure call)._  <Br>
 Will be quite the same as setting up slots for local calls. Also calling a remote slot
-can be done via a signal or a direct call. You can find an easy example in the ArLib package,
-showing a simple chat Client and Server.
+can be done via a signal or a direct call. You can find an easy example in the ArnLib
+package, showing a simple chat Client and Server.
 
 * _Customization with scripts._  <Br>
 Helps giving integration of Java Script to C++ and objects stored in the Arn Registry.
