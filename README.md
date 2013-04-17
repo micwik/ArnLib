@@ -13,7 +13,7 @@ objects are real time presented in a tree view.
 * **Data mart:** Statistical data gathered from different systems. This makes it possible
 to run cross system analysis.
 
-* **Windows Registry:** Centralized configuration data. All in one place easily shared.
+* **Windows Registry & AD:** Centralized configuration data. All in one place easily shared.
 
 * **ArnLib:** Hot changing data from different systems. Enables easy cross system data
 exchange, debugging, etc.
@@ -23,6 +23,27 @@ exchange, debugging, etc.
 ## Installation and usage
 
 Read [doc/Install.md](\ref ins_build) how to build, install and use.
+
+ArnLib could be beneficial in a lot of projects.
+It should be well suited to the following conditions:
+
+* _A lot of configurations and changing values._  <Br>
+ArnLib helps giving out-of-the-box diagnostics and ability to change values not yet
+available in the custom application user interface.
+
+* _Hardware with a lot of sensors and controls._  <Br>
+Arnlib helps giving a common interface and diagnostic.
+
+* _Distributed systems._  <Br>
+ArnLib helps giving an out-of-the-box data sharing system that replicates Arn objects.
+
+* _Networked services by RPC (remote procedure call)._  <Br>
+Will be quite the same as setting up slots for local calls. Also calling a remote slot
+can be done via a signal or a direct call. You can find an easy example in the ArLib package,
+showing a simple chat Client and Server.
+
+* _Customization with scripts._  <Br>
+Helps giving integration of Java Script to C++ and objects stored in the Arn Registry.
 <Br><Br>
 
 
