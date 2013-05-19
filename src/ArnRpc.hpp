@@ -265,6 +265,7 @@ private:
     bool  xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &index, const QByteArray& methodName);
     void  funcHelp( const XStringMap &xsm);
     void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin);
+    static QByteArray  methodSignature( const QMetaMethod& method);
 
     DynamicSignals*  _dynamicSignals;
     RpcReceiverStorage*  _receiverStorage;

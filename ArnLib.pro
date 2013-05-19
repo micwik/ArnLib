@@ -3,7 +3,7 @@
 # -------------------------------------------------
 
 PROJECT = ArnLib
-ARNLIBVER = 1.0.0
+ARNLIBVER = 1.0.1
 
 !win32:VERSION = $$ARNLIBVER
 
@@ -24,7 +24,11 @@ QT += script
 QT += sql
 QT -= gui
 
-TARGET = Arn
+greaterThan(QT_MAJOR_VERSION, 4) {
+    TARGET = Arn5
+} else {
+    TARGET = Arn
+}
 TEMPLATE = lib
 
 # CONFIG += staticlib

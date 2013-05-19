@@ -39,6 +39,7 @@
 #include "MQFlags.hpp"
 #include <QTextStream>
 #include <QObject>
+#include <QMetaMethod>
 #include <QString>
 #include <QByteArray>
 #include <QVariant>
@@ -536,9 +537,22 @@ private:
     void  setupOpenItem( bool isFolder);
     bool  open( const QString& path, bool isFolder);
     bool  open( const ArnItem& folder, const QString& itemName, bool isFolder);
+    void  trfValue( QByteArray value, int sendId, bool forceKeep);
+
+#if QT_VERSION >= 0x050000
+    void  connectNotify( const QMetaMethod & signal);
+    void  disconnectNotify( const QMetaMethod & signal);
+    static QMetaMethod  _metaSignalChanged;
+    static QMetaMethod  _metaSignalChangedInt;
+    static QMetaMethod  _metaSignalChangedDouble;
+    static QMetaMethod  _metaSignalChangedBool;
+    static QMetaMethod  _metaSignalChangedString;
+    static QMetaMethod  _metaSignalChangedByteArray;
+    static QMetaMethod  _metaSignalChangedVariant;
+#else
     void  connectNotify( const char* signal);
     void  disconnectNotify( const char* signal);
-    void  trfValue( QByteArray value, int sendId, bool forceKeep);
+#endif
 
     /// Source for unique id to all ArnItem ..
     static QAtomicInt  _idCount;

@@ -625,15 +625,19 @@ QString  ArnLink::twinName()
 /// Can only be called from main-thread
 void  ArnLink::setRefCount( int count)
 {
+#if QT_VERSION >= 0x050000
+    valueLink()->_refCount.store( count);
+#else
     valueLink()->_refCount = count;
+#endif
 }
 
 
 /// Can only be called from main-thread
 void  ArnLink::ref()
 {
-    if (valueLink()->_refCount <= 0)   // First reference, no other thread involved
-        valueLink()->_refCount = 1;
+    if (refCount() <= 0)   // First reference, no other thread involved
+        setRefCount(1);
     else
         valueLink()->_refCount.ref();  // Increase reference atomicly
     if (gDebugLinkRef)  qDebug() << "link-ref: path=" << this->linkPath() << " count=" << refCount();
@@ -653,7 +657,11 @@ void  ArnLink::deref()
 
 int  ArnLink::refCount()
 {
+#if QT_VERSION >= 0x050000
+    return valueLink()->_refCount.load();
+#else
     return valueLink()->_refCount;
+#endif
 }
 
 

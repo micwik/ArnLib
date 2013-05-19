@@ -99,7 +99,7 @@ int  DynamicSignals::qt_metacall( QMetaObject::Call call, int id, void **argumen
                                      slot.parNames.at(i).constData(),
                                      arguments[i + 1]);
     }
-    _rpc->invoke( QString::fromAscii( slot.funcName),
+    _rpc->invoke( QString::fromLatin1( slot.funcName),
                   args[0],
                   args[1],
                   args[2],
@@ -207,7 +207,7 @@ void  ArnRpc::setReceiver( QObject *receiver)
 
 void  ArnRpc::setMethodPrefix( QString prefix)
 {
-    _methodPrefix = prefix.toAscii();
+    _methodPrefix = prefix.toLatin1();
 }
 
 
@@ -238,8 +238,8 @@ void  ArnRpc::addSenderSignals( QObject* sender, QString prefix)
         const QMetaMethod&  method = metaObject->method(i);
         if (method.methodType() != QMetaMethod::Signal)  continue;
 
-        QByteArray  methodSign = method.signature();
-        if (!methodSign.startsWith( prefix.toAscii()))  continue;
+        QByteArray  methodSign = methodSignature( method);
+        if (!methodSign.startsWith( prefix.toLatin1()))  continue;
 
         QByteArray  methodName = methodSign.left( methodSign.indexOf('('));
         QByteArray  funcName   = methodName.mid( prefix.size());
@@ -293,9 +293,9 @@ bool  ArnRpc::invoke( const QString& funcName,
 
     XStringMap  xsmCall;
     if (_legacy)
-        xsmCall.add("func", funcName.toAscii());
+        xsmCall.add("func", funcName.toLatin1());
     else
-        xsmCall.add("", funcName.toAscii());
+        xsmCall.add("", funcName.toLatin1());
 
     int  nArg = 0;
     bool stat = true;  // Default ok
@@ -585,12 +585,20 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
     //// Import data to arg
     if (isListType) {
         QVariant  varArg( argDataList);
+#if QT_VERSION >= 0x050000
+        void*  argData = QMetaType::create( type, varArg.constData());
+#else
         void*  argData = QMetaType::construct( type, varArg.constData());
+#endif
         Q_ASSERT( argData);
         arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
     }
     else if (isBinaryType) {
+#if QT_VERSION >= 0x050000
+        void*  argData = QMetaType::create( type);
+#else
         void*  argData = QMetaType::construct( type);
+#endif
         Q_ASSERT( argData);
         arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
         QDataStream  stream( argDataDump);
@@ -609,7 +617,11 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
                       ArnError::RpcReceiveError);
             return false;
         }
+#if QT_VERSION >= 0x050000
+        void*  argData = QMetaType::create( type, varArg.constData());
+#else
         void*  argData = QMetaType::construct( type, varArg.constData());
+#endif
         Q_ASSERT( argData);
         arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
     }
@@ -630,7 +642,7 @@ void  ArnRpc::funcHelp( const XStringMap &xsm)
     int  methodCount = metaObject->methodCount();
     for (int i = 0; i < methodCount; ++i) {
         const QMetaMethod&  method = metaObject->method(i);
-        QByteArray  methodSign = method.signature();
+        QByteArray  methodSign = methodSignature( method);
         if (!methodSign.startsWith( _methodPrefix))  continue;
 
         methodSign.chop(1);  // Remove last ")"
@@ -658,7 +670,7 @@ void  ArnRpc::funcHelp( const XStringMap &xsm)
 
 void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int parNumMin)
 {
-    QString  line = QString::fromAscii( name.mid( _methodPrefix.size()));
+    QString  line = QString::fromLatin1( name.mid( _methodPrefix.size()));
 
     QList<QByteArray>  typesNames = method.parameterTypes();
     QList<QByteArray>  parNames   = method.parameterNames();
@@ -699,7 +711,7 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
         param += "<" + parName + ">";
         if (i >= parNumMin)
             param = "[" + param + "]";
-        line += " " + QString::fromAscii( param);
+        line += " " + QString::fromLatin1( param);
 
         wasListType = isListType;
     }
@@ -748,19 +760,19 @@ void  ArnRpc::batchConnect( const QObject *sender, const QRegExp &rgx,
         const QMetaMethod&  method = metaObject->method(i);
         if (method.methodType() != QMetaMethod::Signal)  continue;  // Must be a Signal
 
-        QByteArray  signalSign = method.signature();
+        QByteArray  signalSign = methodSignature( method);
         if (doneMethodSignTab.contains( signalSign))  continue;  // Already done (inherited)
         doneMethodSignTab += signalSign;
 
-        QString  signalName = QString::fromAscii( signalSign.left( signalSign.indexOf('(')).constData());
+        QString  signalName = QString::fromLatin1( signalSign.left( signalSign.indexOf('(')).constData());
         QByteArray  paramSign  = signalSign.mid( signalName.size());
         if (rgx.indexIn( signalName) >= 0) {  // Match of signal in regExp
             QString  methodName = replace;
-            for (int j = 1; j <= rgx.numCaptures(); ++j) {
+            for (int j = 1; j <= rgx.captureCount(); ++j) {
                 methodName.replace("\\" + QString::number(j), rgx.cap(j));
             }
             signalSignTab    += signalSign;
-            QByteArray  methodSignLow = (methodName.toAscii() + paramSign).toLower();
+            QByteArray  methodSignLow = (methodName.toLatin1() + paramSign).toLower();
             methodSignLowTab += methodSignLow;
             if (mode.is( mode.Debug))
                 qDebug() << "batchConnect: try match signal=" << signalSign <<
@@ -777,7 +789,7 @@ void  ArnRpc::batchConnect( const QObject *sender, const QRegExp &rgx,
     QByteArray  methodSignCompHead;
     for (int i = 0; i < methodCount; ++i) {
         const QMetaMethod&  method = metaObject->method(i);
-        QByteArray  methodSign = method.signature();
+        QByteArray  methodSign = methodSignature( method);
         if (doneMethodSignTab.contains( methodSign))  continue;  // Already done (inherited)
         doneMethodSignTab += methodSign;
 
@@ -801,4 +813,14 @@ void  ArnRpc::batchConnect( const QObject *sender, const QRegExp &rgx,
         else if (mode.is( mode.Debug))
             qDebug() << "batchConnect: No match on method=" << methodSignLow;
     }
+}
+
+
+QByteArray  ArnRpc::methodSignature( const QMetaMethod &method)
+{
+#if QT_VERSION >= 0x050000
+    return method.methodSignature();
+#else
+    return QByteArray( method.signature());
+#endif
 }

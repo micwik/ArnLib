@@ -41,6 +41,24 @@
 
 QAtomicInt ArnItem::_idCount(1);
 
+#if QT_VERSION >= 0x050000
+//// Store meta methods for the "changed..." signals, used later for comparison
+QMetaMethod  ArnItem::_metaSignalChanged(
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)()>(&ArnItem::changed)));
+QMetaMethod  ArnItem::_metaSignalChangedInt(
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(int)>(&ArnItem::changed)));
+QMetaMethod  ArnItem::_metaSignalChangedDouble(
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(double)>(&ArnItem::changed)));
+QMetaMethod  ArnItem::_metaSignalChangedBool(
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(bool)>(&ArnItem::changed)));
+QMetaMethod  ArnItem::_metaSignalChangedString(
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(QString)>(&ArnItem::changed)));
+QMetaMethod  ArnItem::_metaSignalChangedByteArray(
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(QByteArray)>(&ArnItem::changed)));
+QMetaMethod  ArnItem::_metaSignalChangedVariant(
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(QVariant)>(&ArnItem::changed)));
+#endif
+
 
 void  ArnItem::init()
 {
@@ -797,6 +815,62 @@ void  ArnItem::trfValue( QByteArray value, int sendId, bool forceKeep)
 }
 
 
+#if QT_VERSION >= 0x050000
+
+void  ArnItem::connectNotify( const QMetaMethod &signal)
+{
+    if (signal == _metaSignalChanged) {
+        _emitChanged++;
+    }
+    else if (signal == _metaSignalChangedInt) {
+        _emitChangedInt++;
+    }
+    else if (signal == _metaSignalChangedDouble) {
+        _emitChangedDouble++;
+    }
+    else if (signal == _metaSignalChangedBool) {
+        _emitChangedBool++;
+    }
+    else if (signal == _metaSignalChangedString) {
+        _emitChangedString++;
+    }
+    else if (signal == _metaSignalChangedByteArray) {
+        _emitChangedByteArray++;
+    }
+    else if (signal == _metaSignalChangedVariant) {
+        _emitChangedVariant++;
+    }
+}
+
+
+void  ArnItem::disconnectNotify( const QMetaMethod &signal)
+{
+    if (signal == _metaSignalChanged) {
+        _emitChanged--;
+    }
+    else if (signal == _metaSignalChangedInt) {
+        _emitChangedInt--;
+    }
+    else if (signal == _metaSignalChangedDouble) {
+        _emitChangedDouble--;
+    }
+    else if (signal == _metaSignalChangedBool) {
+        _emitChangedBool--;
+    }
+    else if (signal == _metaSignalChangedString) {
+        _emitChangedString--;
+    }
+    else if (signal == _metaSignalChangedByteArray) {
+        _emitChangedByteArray--;
+    }
+    else if (signal == _metaSignalChangedVariant) {
+        _emitChangedVariant--;
+    }
+}
+
+
+#else
+
 void  ArnItem::connectNotify( const char *signal)
 {
     if (QLatin1String( signal) == SIGNAL(changed())) {
@@ -847,6 +921,8 @@ void  ArnItem::disconnectNotify( const char *signal)
         _emitChangedVariant--;
     }
 }
+
+#endif
 
 
 QStringList  ArnItem::childItemsMain()  const
