@@ -49,8 +49,8 @@ Helps giving integration of Java Script to C++ and objects stored in the Arn Reg
 
 ## Main features
 
-* Based on QT, multiple platform and OS support.
-* QT based Arn browser available. Allows you to access all data objects in a tree view (see ArnBrowser).
+* Based on Qt (4 & 5), multiple platform and OS support.
+* Qt based Arn browser available. Allows you to access all data objects in a tree view (see ArnBrowser).
 * Web based Arn browser available, allowing you to use a standard web browser (see WebArnBrowser).
 
 #### Arn Data Objects
@@ -58,7 +58,7 @@ Helps giving integration of Java Script to C++ and objects stored in the Arn Reg
 * Hierarchical storage of "hot" changing data objects.
 
 * _Arn Data objects_ can be: integers, floats, strings, byte arrays and variants
-(most QT data types, e.g. QImage).
+(most Qt data types, e.g. QImage).
 
 * Data objects can typically be: measures, settings, data streams, documents, scripts (js), ...
 
