@@ -26,6 +26,7 @@ ui_*.h
 Makefile
 Makefile.*
 *-build-*
+android/
 
 # Debug and Release directories (created under Windows, not Linux)
 Debug/

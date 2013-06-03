@@ -138,7 +138,7 @@ ArnRpc::ArnRpc( QObject* parent) :
     _receiver         = 0;
     _receiverStorage  = 0;
     _isIncludeSender  = false;
-    _legacy           = true;
+    _legacy           = false;  //true;
     _dynamicSignals   = new DynamicSignals( this);
 }
 
