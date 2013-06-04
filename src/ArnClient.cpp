@@ -45,6 +45,7 @@ ArnClient::ArnClient(QObject *parent) :
     _isAutoConnect = false;
     _retryTime     = 2;
     _port          = 0;
+    _nextHost      = -1;
 
     _socket = new QTcpSocket( this);
     _arnNetSync = new ArnSync( _socket, true, this);
@@ -65,12 +66,36 @@ ArnClient::ArnClient(QObject *parent) :
 }
 
 
+void  ArnClient::clearArnList()
+{
+    _hostTab.clear();
+}
+
+
+void  ArnClient::addToArnList(const QString &arnHost, quint16 port)
+{
+    HostSlot  slot;
+    slot.arnHost = arnHost;
+    slot.port    = port;
+    _hostTab += slot;
+}
+
+
+void  ArnClient::connectToArnList()
+{
+    if (_hostTab.isEmpty())  return;
+
+    _nextHost = 0;
+    doConnectArnLogic();
+}
+
+
 void  ArnClient::connectToArn( const QString& arnHost, quint16 port)
 {
-    _arnHost = arnHost;
-    _port = (port == 0) ? 2022 : port;
-    _socket->abort();
-    _socket->connectToHost( _arnHost, _port);
+    _nextHost = -1;
+    _arnHost  = arnHost;
+    _port     = port;
+    doConnectArnLogic();
 }
 
 
@@ -191,7 +216,10 @@ void  ArnClient::tcpError(QAbstractSocket::SocketError socketError)
     ArnM::errorLog( errTextSum, ArnError::ConnectionError);
     emit tcpError( _socket->errorString(), socketError);
 
-    if (_isAutoConnect) {
+    if ((_nextHost >= 0) && (_nextHost < _hostTab.size())) {
+        doConnectArnLogic();
+    }
+    else if (_isAutoConnect) {
         _connectTimer->start( _retryTime * 1000);
     }
 }
@@ -200,8 +228,36 @@ void  ArnClient::tcpError(QAbstractSocket::SocketError socketError)
 void  ArnClient::reConnectArn()
 {
     _connectTimer->stop();
+    doConnectArnLogic();
+}
+
+
+void  ArnClient::doConnectArnLogic()
+{
+    QString  arnHost;
+    quint16  port = 0;
+
+    if (_nextHost < 0) {  // Normal single host connect
+        arnHost = _arnHost;
+        port    = _port;
+    }
+    else if (!_hostTab.isEmpty()){  // Arn connection list
+        if (_nextHost >= _hostTab.size())  // Past end of list, restart
+            _nextHost = 0;
+
+        const HostSlot&  slot = _hostTab.at( _nextHost);
+        ++_nextHost;
+        arnHost = slot.arnHost;
+        port    = slot.port;
+    }
+
+    if (arnHost.isEmpty())  return;
+
+    if (port == 0)
+        port = 2022;
+
     _socket->abort();
-    _socket->connectToHost( _arnHost, _port);
+    _socket->connectToHost( arnHost, port);
 }
 
 

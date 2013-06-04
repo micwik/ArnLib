@@ -39,6 +39,7 @@
 #include <QObject>
 #include <QAbstractSocket>
 #include <QStringList>
+#include <QList>
 
 class ArnSync;
 class ArnItemNet;
@@ -65,6 +66,23 @@ class ARNLIBSHARED_EXPORT ArnClient : public QObject
 Q_OBJECT
 public:
     explicit ArnClient(QObject *parent = 0);
+
+    //! Clear the Arn connection list
+    /*! Typically used to start making a new Arn connection list.
+     */
+    void  clearArnList();
+
+    //! Add an _Arn Server_ to the Arn connection list
+    /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
+     *  \param[in] port is the port number (default 2022).
+     */
+    void  addToArnList( const QString& arnHost, quint16 port = 0);
+
+    //! Connect to an _Arn Server_ in the Arn connection list
+    /*! Will scan the connection list once until a successful connection is made.
+     *  If the end of the list is reached without connection, the tcpError() signal
+     */
+    void  connectToArnList();
 
     //! Connect to an _Arn Server_
     /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
@@ -130,6 +148,15 @@ private slots:
     void  reConnectArn();
 
 private:
+    void doConnectArnLogic();
+
+    struct HostSlot {
+        QString  arnHost;
+        quint16  port;
+    };
+    QList<HostSlot>  _hostTab;
+    int  _nextHost;
+
     QStringList  makeItemList( XStringMap& xsMap);
     QTcpSocket*  _socket;
     ArnSync*  _arnNetSync;
