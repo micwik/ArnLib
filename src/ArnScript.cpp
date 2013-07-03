@@ -82,6 +82,11 @@ ArnScript::ArnScript( QObject* parent) :
     _engine->globalObject().setProperty("ArnMonitor",     monitorConstrScr);
     _engine->globalObject().setProperty("ArnDependOffer", depOfferConstrScr);
     _engine->globalObject().setProperty("ArnDepend",      depConstrScr);
+    // Legacy RegistryLib
+    _engine->globalObject().setProperty("RegistryItem",        itemConstrScr);
+    _engine->globalObject().setProperty("RegistryNetMon",      monitorConstrScr);
+    _engine->globalObject().setProperty("RegistryDependOffer", depOfferConstrScr);
+    _engine->globalObject().setProperty("RegistryDepend",      depConstrScr);
 
     // Add properties to prototypes (manually)
     itemProtoScr.setProperty("num", _engine->newFunction( ArnItemProto::getSetNum),
@@ -90,7 +95,9 @@ ArnScript::ArnScript( QObject* parent) :
 
     _engine->globalObject().setProperty( "arn", _engine->newQObject( new ArnInterface( this),
             QScriptEngine::QtOwnership, QScriptEngine::ExcludeSuperClassContents));
-
+    // Legacy RegistryLib
+    _engine->globalObject().setProperty( "registry", _engine->newQObject( new ArnInterface( this),
+            QScriptEngine::QtOwnership, QScriptEngine::ExcludeSuperClassContents));
 }
 
 
