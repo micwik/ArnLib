@@ -509,7 +509,7 @@ QByteArray  ArnItem::arnExport()  const
     if (!_link)  return QByteArray();
 
     QByteArray  retVal;
-    if (_link->type().e == ArnLink::Type::Variant) {
+    if (_link->type() == ArnLink::Type::Variant) {
         QDataStream  stream( &retVal, QIODevice::WriteOnly);
         QVariant value = toVariant();
         stream << qint8( ArnLink::Type::Variant) << value;
@@ -584,7 +584,7 @@ ArnItem&  ArnItem::operator=( const ArnItem& other)
     ArnLink *link = other._link;
 
     if (link) {
-        switch (link->type().e) {
+        switch (link->type()) {
         case ArnLink::Type::Int:
             this->setValue( link->toInt());
             break;
@@ -811,7 +811,6 @@ void  ArnItem::trfValue( QByteArray value, int sendId, bool forceKeep)
                                Q_ARG( QByteArray, value),
                                Q_ARG( int, sendId),
                                Q_ARG( bool, forceKeep));
-
 }
 
 
