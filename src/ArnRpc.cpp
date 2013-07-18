@@ -138,7 +138,6 @@ ArnRpc::ArnRpc( QObject* parent) :
     _receiver         = 0;
     _receiverStorage  = 0;
     _isIncludeSender  = false;
-    _legacy           = false;  //true;
     _dynamicSignals   = new DynamicSignals( this);
 }
 
@@ -292,10 +291,7 @@ bool  ArnRpc::invoke( const QString& funcName,
     }
 
     XStringMap  xsmCall;
-    if (_legacy)
-        xsmCall.add("func", funcName.toLatin1());
-    else
-        xsmCall.add("", funcName.toLatin1());
+    xsmCall.add("", funcName.toLatin1());
 
     int  nArg = 0;
     bool stat = true;  // Default ok
@@ -307,8 +303,6 @@ bool  ArnRpc::invoke( const QString& funcName,
     stat &= xsmAddArg( xsmCall, arg6, 6, nArg);
     stat &= xsmAddArg( xsmCall, arg7, 7, nArg);
     stat &= xsmAddArg( xsmCall, arg8, 8, nArg);
-    if (_legacy)
-        xsmCall.add("n", QByteArray::number( nArg));
 
     if (stat) {
         *_pipe = xsmCall.toXString();
@@ -337,9 +331,6 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
 
     //// Get arg label
     QByteArray  argLabel = arg.label();
-    if (!argLabel.isEmpty()) {
-        _legacy = false;
-    }
 
     //// Export data from arg
     QByteArray  argDataDump;
@@ -362,14 +353,9 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
         isBinaryType = true;
     }
 
-    if (isBinaryType && _legacy)
-        xsm.add("f", index, QByteArray("@"));
-
     //// Make arg prefix and/or type
     QByteArray  argPrefix;
-    if (_legacy)
-        xsm.add("type", index, typeName);
-    else if (typeName == "int")
+    if (typeName == "int")
         argPrefix = "int";
     else if (typeName == "uint")
         argPrefix = "uint";
@@ -383,33 +369,29 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
         xsm.add((isBinaryType ? "tb" : "t"), typeName);
 
     //// Output argument to xsm
-    if (_legacy)
-        xsm.add("arg",  index, argDataDump);
+    if (argPrefix.isEmpty())
+        argPrefix = "a";
+    if (!argLabel.isEmpty())
+        argPrefix += ".";
+    if (isListType) {  // Handle list (QStringList)
+        int i = 0;
+        QString  argData;
+        if (!argDataList.isEmpty() && !argDataList.at(0).isEmpty()) {
+            argData = argDataList.at(0);
+            ++i;
+        }
+        xsm.add( argPrefix + argLabel, argData);
+        // Output each element in list
+        for(; i < argDataList.size(); ++i) {
+            argData = argDataList.at(i);
+            if (argData.isEmpty())
+                xsm.add("le", "");
+            else
+                xsm.add("", argData);
+        }
+    }
     else {
-        if (argPrefix.isEmpty())
-            argPrefix = "a";
-        if (!argLabel.isEmpty())
-            argPrefix += ".";
-        if (isListType) {  // Handle list (QStringList)
-            int i = 0;
-            QString  argData;
-            if (!argDataList.isEmpty() && !argDataList.at(0).isEmpty()) {
-                argData = argDataList.at(0);
-                ++i;
-            }
-            xsm.add( argPrefix + argLabel, argData);
-            // Output each element in list
-            for(; i < argDataList.size(); ++i) {
-                argData = argDataList.at(i);
-                if (argData.isEmpty())
-                    xsm.add("le", "");
-                else
-                    xsm.add("", argData);
-            }
-        }
-        else {
-            xsm.add( argPrefix + argLabel, argDataDump);
-        }
+        xsm.add( argPrefix + argLabel, argDataDump);
     }
 
     ++nArg;
@@ -438,7 +420,6 @@ void  ArnRpc::pipeInput( QByteArray data)
 
     // qDebug() << "rpc pipeInput: data=" << data;
     QByteArray  methodName = _methodPrefix + rpcFunc;
-    _legacy &= !xsmCall.key(0).isEmpty();  // Detect legacy or new
 
     if (_isIncludeSender) {
         args[ argc++] = Q_ARG( ArnRpc*, this);
