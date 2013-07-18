@@ -274,7 +274,6 @@ private:
     QByteArray  _methodPrefix;
     bool  _isIncludeSender;
     Mode  _mode;
-    bool  _legacy;
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnRpc::Mode)
