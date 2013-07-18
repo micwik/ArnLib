@@ -33,6 +33,8 @@
 #ifndef ARNRPC_HPP
 #define ARNRPC_HPP
 
+#define MQ_NO_QUEUE  // MetaObject tag to give Invoke::NoQueue
+
 #include "Arn.hpp"
 #include "XStringMap.hpp"
 #include "ArnLib_global.hpp"
@@ -113,7 +115,7 @@ class ARNLIBSHARED_EXPORT ArnRpc : public QObject
 {
     Q_OBJECT
 public:
-    struct Mode{
+    struct Mode {
         enum E {
             //! Provider side (opposed to requester)
             Provider      = 0x01,
@@ -129,6 +131,13 @@ public:
             UuidAutoDestroy = UuidPipe | AutoDestroy
         };
         MQ_DECLARE_FLAGS( Mode)
+    };
+    struct Invoke {
+        enum E {
+            //! This invoke is not queued, multiple calls to same method might overwrite
+            NoQueue = 0x01
+        };
+        MQ_DECLARE_FLAGS( Invoke)
     };
 
     explicit  ArnRpc( QObject* parent = 0);
@@ -167,6 +176,17 @@ public:
      *  \param[in] val1 second arg.
      */
     bool invoke( const QString& funcName,
+                 MQGenericArgument val0 = MQGenericArgument(0),
+                 MQGenericArgument val1 = MQGenericArgument(),
+                 MQGenericArgument val2 = MQGenericArgument(),
+                 MQGenericArgument val3 = MQGenericArgument(),
+                 MQGenericArgument val4 = MQGenericArgument(),
+                 MQGenericArgument val5 = MQGenericArgument(),
+                 MQGenericArgument val6 = MQGenericArgument(),
+                 MQGenericArgument val7 = MQGenericArgument());
+
+    bool invoke( const QString& funcName,
+                 Invoke  InvokeFlags,
                  MQGenericArgument val0 = MQGenericArgument(0),
                  MQGenericArgument val1 = MQGenericArgument(),
                  MQGenericArgument val2 = MQGenericArgument(),
@@ -277,6 +297,7 @@ private:
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnRpc::Mode)
+MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnRpc::Invoke)
 Q_DECLARE_METATYPE(ArnRpc*)
 
 #endif // ARNRPC_HPP

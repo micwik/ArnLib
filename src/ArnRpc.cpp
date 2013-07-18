@@ -66,6 +66,7 @@ private:
         QByteArray  funcName;
         QList<QByteArray>  typeNames;
         QList<QByteArray>  parNames;
+        ArnRpc::Invoke  invokeFlags;
     };
     QList<Slot>  _slotTab;
 
@@ -100,6 +101,7 @@ int  DynamicSignals::qt_metacall( QMetaObject::Call call, int id, void **argumen
                                      arguments[i + 1]);
     }
     _rpc->invoke( QString::fromLatin1( slot.funcName),
+                  slot.invokeFlags,
                   args[0],
                   args[1],
                   args[2],
@@ -119,9 +121,12 @@ bool  DynamicSignals::addSignal( QObject *sender, int signalId, QByteArray funcN
     const QMetaMethod&  method = metaObject->method( signalId);
 
     Slot  slot;
-    slot.funcName  = funcName;
-    slot.typeNames = method.parameterTypes();
-    slot.parNames  = method.parameterNames();
+    slot.funcName    = funcName;
+    slot.typeNames   = method.parameterTypes();
+    slot.parNames    = method.parameterNames();
+    ArnRpc::Invoke  ivf;
+    ivf.set( ivf.NoQueue, QByteArray( method.tag()) == "MQ_NO_QUEUE");
+    slot.invokeFlags = ivf;
     _slotTab += slot;
 
     bool  status = QMetaObject::connect( sender, signalId, this, _slotIdCount);
@@ -275,14 +280,14 @@ ArnRpc*  ArnRpc::rpcSender( QObject *receiver)
 
 
 bool  ArnRpc::invoke( const QString& funcName,
-                          MQGenericArgument arg1,
-                          MQGenericArgument arg2,
-                          MQGenericArgument arg3,
-                          MQGenericArgument arg4,
-                          MQGenericArgument arg5,
-                          MQGenericArgument arg6,
-                          MQGenericArgument arg7,
-                          MQGenericArgument arg8)
+                      MQGenericArgument arg1,
+                      MQGenericArgument arg2,
+                      MQGenericArgument arg3,
+                      MQGenericArgument arg4,
+                      MQGenericArgument arg5,
+                      MQGenericArgument arg6,
+                      MQGenericArgument arg7,
+                      MQGenericArgument arg8)
 {
     if (!_pipe || !_pipe->isOpen()) {
         errorLog( QString(tr("Pipe not open")),
@@ -306,6 +311,49 @@ bool  ArnRpc::invoke( const QString& funcName,
 
     if (stat) {
         *_pipe = xsmCall.toXString();
+    }
+    return stat;
+}
+
+
+bool  ArnRpc::invoke( const QString& funcName,
+                      Invoke  invokeFlags,
+                      MQGenericArgument arg1,
+                      MQGenericArgument arg2,
+                      MQGenericArgument arg3,
+                      MQGenericArgument arg4,
+                      MQGenericArgument arg5,
+                      MQGenericArgument arg6,
+                      MQGenericArgument arg7,
+                      MQGenericArgument arg8)
+{
+    if (!_pipe || !_pipe->isOpen()) {
+        errorLog( QString(tr("Pipe not open")),
+                  ArnError::RpcInvokeError);
+        return false;
+    }
+
+    XStringMap  xsmCall;
+    xsmCall.add("", funcName.toLatin1());
+
+    int  nArg = 0;
+    bool stat = true;  // Default ok
+    stat &= xsmAddArg( xsmCall, arg1, 1, nArg);
+    stat &= xsmAddArg( xsmCall, arg2, 2, nArg);
+    stat &= xsmAddArg( xsmCall, arg3, 3, nArg);
+    stat &= xsmAddArg( xsmCall, arg4, 4, nArg);
+    stat &= xsmAddArg( xsmCall, arg5, 5, nArg);
+    stat &= xsmAddArg( xsmCall, arg6, 6, nArg);
+    stat &= xsmAddArg( xsmCall, arg7, 7, nArg);
+    stat &= xsmAddArg( xsmCall, arg8, 8, nArg);
+
+    if (stat) {
+        if (invokeFlags.is( Invoke::NoQueue)) {
+            QRegExp rx("^" + funcName + "\\b");
+            _pipe->setValuePipeOverwrite( xsmCall.toXString(), rx);
+        }
+        else
+            *_pipe = xsmCall.toXString();
     }
     return stat;
 }
