@@ -82,12 +82,24 @@ public:
         };
         MQ_DECLARE_FLAGS( NameF)
     };
+    struct Handle {
+        //! Select how to handle a data assignment
+        enum E {
+            //! Normal handling procedure
+            Normal = 0,
+            //! For pipes. If any item in the sendqueue matches Regexp, the item is replaced by
+            //! this assignment. Typically used to avoid queue filling during a disconnected tcp.
+            QueueFindRegexp
+        };
+        MQ_DECLARE_ENUM( Handle)
+    };
 
     //! \cond ADV
     void  setValue( int value, int sendId = 0, bool forceKeep = 0);
     void  setValue( double value, int sendId = 0, bool forceKeep = 0);
     void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0);
-    void  setValue( const QByteArray& value, int sendId = 0, bool forceKeep = 0);
+    void  setValue(const QByteArray& value, int sendId = 0, bool forceKeep = 0,
+                   Handle handle = Handle::Normal, const QVariant* handleData = 0);
     void  setValue( const QVariant& value, int sendId = 0, bool forceKeep = 0);
 
     int  toInt();
@@ -125,11 +137,12 @@ public:
     static QString  convertBaseName( const QString& name, NameF nameF);
 
 public slots:
-    void  trfValue( QByteArray value, int sendId, bool forceKeep);
+    void  trfValue( QByteArray value, int sendId, bool forceKeep,
+                    int handle, QVariant handleData);
 
 signals:
-    void  changed( uint sendId);
-    void  changed( uint sendId, QByteArray value);
+    void  changed( uint sendId, int handle, const QVariant* handleData);
+    void  changed( uint sendId, QByteArray value, int handle, QVariant handleData);
     void  modeChanged( QString path, uint linkId);
     void  modeChangedBelow( QString path, uint linkId);
     void  linkCreatedBelow( ArnLink* link);
@@ -148,7 +161,8 @@ protected:
 
 private:
     void  resetHave();
-    void  emitChanged( int sendId);
+    void  emitChanged( int sendId,
+                       Handle handle = Handle::Normal, const QVariant* handleData = 0);
 
     /// Source for unique id to all ArnLink ..
     static QAtomicInt  _idCount;
@@ -184,6 +198,5 @@ private:
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnLink::Flags)
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnLink::NameF)
-
 
 #endif // ARNLINK_HPP

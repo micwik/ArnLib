@@ -69,7 +69,7 @@ private slots:
     void  connected();
     void  disConnected();
     void  socketInput();
-    void  addToFluxQue();
+    void  addToFluxQue( ArnLink::Handle handle, const QVariant* handleData);
     void  addToModeQue();
     void  sendNext();
     void  linkDestroyedHandle();

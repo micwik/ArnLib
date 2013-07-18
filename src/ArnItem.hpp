@@ -386,6 +386,12 @@ public:
     ArnItem&  operator=( const QVariant& other);
     ArnItem&  operator=( const char* other);
 
+    //! Assign a _QByteArray_ to a _Pipe_ by overwrite Regexp match in sendqueue
+    /*! \param[in] value to be assigned
+     *  \param[in] rx is regexp to be matched with items in send queue.
+     */
+    void  setValuePipeOverwrite( const QByteArray& value, const QRegExp& rx);
+
 public slots:    
     //! Assign an _integer_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
@@ -516,7 +522,8 @@ protected:
     Mode  getMode( ArnLink* link)  const;
     void  addSyncMode( SyncMode syncMode, bool linkShare);
     void  resetOnlyEcho()  {_isOnlyEcho = true;}
-    virtual void  itemUpdateStart() {}
+    virtual void  itemUpdateStart( ArnLink::Handle handle, const QVariant* handleData)
+                  {Q_UNUSED(handle); Q_UNUSED(handleData);}
     virtual void  itemUpdateEnd();
     QStringList  childItemsMain()  const;
     void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
@@ -525,9 +532,10 @@ protected:
     //! \endcond
 
 private slots:
-    void  linkValueUpdated( uint sendId);
-    void  linkValueUpdated( uint sendId, QByteArray value);
-    void  doItemUpdate();
+    void  linkValueUpdated( uint sendId, int handle, const QVariant* handleData);
+    void  linkValueUpdated( uint sendId, QByteArray value,
+                            int handle, QVariant handleData);
+    void  doItemUpdate( ArnLink::Handle handle, const QVariant* handleData);
     void  arnLinkCreatedBelow( ArnLink* link);
     void  arnModeChangedBelow( QString path, uint linkId);
     void  doArnLinkDestroyed();
@@ -537,7 +545,9 @@ private:
     void  setupOpenItem( bool isFolder);
     bool  open( const QString& path, bool isFolder);
     bool  open( const ArnItem& folder, const QString& itemName, bool isFolder);
-    void  trfValue( QByteArray value, int sendId, bool forceKeep);
+    void  trfValue( QByteArray value, int sendId, bool forceKeep,
+                    ArnLink::Handle handle = ArnLink::Handle::Normal,
+                    const QVariant& handleData = QVariant());
 
 #if QT_VERSION >= 0x050000
     void  connectNotify( const QMetaMethod & signal);

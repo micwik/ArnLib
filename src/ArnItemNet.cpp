@@ -122,11 +122,11 @@ void  ArnItemNet::submittedMode()
 }
 
 
-void  ArnItemNet::itemUpdateStart()
+void  ArnItemNet::itemUpdateStart( ArnLink::Handle handle, const QVariant* handleData)
 {
     if (!_dirty) {
         _dirty = true;
-        emit goneDirty();
+        emit goneDirty( handle, handleData);
     }
 }
 

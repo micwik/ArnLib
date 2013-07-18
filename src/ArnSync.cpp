@@ -97,7 +97,8 @@ void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
     itemNet->setNetId( netId);
     _itemNetMap.insert( netId, itemNet);
 
-    connect( itemNet, SIGNAL(goneDirty()), this, SLOT(addToFluxQue()));
+    connect( itemNet, SIGNAL(goneDirty(ArnLink::Handle,const QVariant*)),
+             this, SLOT(addToFluxQue(ArnLink::Handle,const QVariant*)));
     connect( itemNet, SIGNAL(goneDirtyMode()), this, SLOT(addToModeQue()));
     connect( itemNet, SIGNAL(arnLinkDestroyed()), this, SLOT(linkDestroyedHandle()));
     connect( itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,bool)),
@@ -255,7 +256,7 @@ uint  ArnSync::doCommandSync()
     }
     if ((itemNet->type() != ArnLink::Type::Null)
     && !(itemNet->syncMode().is( syncMode.Master))) {  // Only send non Null Value to non master
-        itemNet->itemUpdateStart();    // Make server send the current value to client
+        itemNet->itemUpdateStart( ArnLink::Handle::Normal, 0); // Make server send the current value to client
     }
 
     return ArnError::Ok;
@@ -424,7 +425,7 @@ void  ArnSync::connected()
         if ((itemNet->type() != ArnLink::Type::Null)            // Only send non Null Value ...
         && (!itemNet->isPipeMode())                                      // from non pipe ..
         && (itemNet->syncMode().is( ArnItem::SyncMode::Master))) {  // which is master
-            itemNet->itemUpdateStart();    // Make client send the current value to server
+            itemNet->itemUpdateStart( ArnLink::Handle::Normal, 0);  // Make client send the current value to server
         }
     }
     sendNext();
@@ -525,7 +526,7 @@ void  ArnSync::doArnEvent( QByteArray type, QByteArray data, bool isLocal)
 }
 
 
-void  ArnSync::addToFluxQue()
+void  ArnSync::addToFluxQue( ArnLink::Handle handle, const QVariant* handleData)
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
@@ -538,9 +539,33 @@ void  ArnSync::addToFluxQue()
         FluxRec*  fluxRec = getFreeFluxRec();
         fluxRec->xString += makeFluxString( itemNet);
         itemNet->submitted();
-        _fluxPipeQueue.enqueue( fluxRec);
+        if (handle == ArnLink::Handle::QueueFindRegexp) {
+            QRegExp  rx = handleData->toRegExp();
+            int i;
+            for (i = 0; i < _fluxPipeQueue.size(); ++i) {
+                FluxRec*&  fluxRecQ = _fluxPipeQueue[i];
+                QString  fluxStrQ = QString::fromUtf8( fluxRecQ->xString.constData());
+                if (rx.indexIn( fluxStrQ) >= 0) {  // Match
+                    qDebug() << "AddFluxQueue Pipe QOW match: old:"
+                             << fluxStrQ << "  new:" << fluxRec->xString;
+                    _fluxRecPool += fluxRecQ;  // Free item to be replaced
+                    fluxRecQ = fluxRec;
+                    i = -1;  // Mark match
+                }
+            }
+            if (i >= 0) {  // No match
+                qDebug() << "AddFluxQueue Pipe QOW nomatch:"
+                         << fluxRec->xString;
+                _fluxPipeQueue.enqueue( fluxRec);
+            }
+        }
+        else {  // Normal Pipe
+            qDebug() << "AddFluxQueue Pipe:"
+                     << fluxRec->xString;
+            _fluxPipeQueue.enqueue( fluxRec);
+        }
     }
-    else {
+    else {  // Normal Item
         itemNet->setQueueNum( ++_queueNumCount);
         _fluxItemQueue.enqueue( itemNet);
         // cout << "EnQueue (id): " << itemNet->netId() << endl;

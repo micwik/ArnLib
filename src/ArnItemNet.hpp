@@ -65,7 +65,7 @@ public:
     void  submitted();
     void  submittedMode();
     bool  isDirtyMode()  const { return _dirtyMode;}
-    virtual void  itemUpdateStart();
+    virtual void  itemUpdateStart( ArnLink::Handle handle, const QVariant* handleData);
     virtual void  itemUpdateEnd();
     virtual void  modeUpdate( bool isSetup = false);
 
@@ -73,7 +73,7 @@ public:
 
 signals:
     void  arnEvent( QByteArray type, QByteArray data, bool isLocal);
-    void  goneDirty();
+    void  goneDirty( ArnLink::Handle handle, const QVariant* handleData);
     void  goneDirtyMode();
 
 public slots:

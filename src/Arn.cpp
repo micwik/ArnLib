@@ -860,6 +860,7 @@ ArnM::ArnM()
     _root                   = new ArnLink( 0, "", ArnLink::Flags::Folder);
 
     qRegisterMetaType<ArnThreadCom*>();
+    qRegisterMetaType<QVariant>("QVariant");
 
     //// Error setup
     _consoleError = true;

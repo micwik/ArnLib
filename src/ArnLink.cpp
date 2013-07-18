@@ -50,14 +50,14 @@ void ArnLink::resetHave()
 
 
 //// This should in threaded: preserve order of setValue, optimize return of bytearray
-void ArnLink::emitChanged( int sendId)
+void ArnLink::emitChanged( int sendId, Handle handle, const QVariant* handleData)
 {
     // qDebug() << "emitChanged: isThr=" << _isThreaded << " isPipe=" << _isPipeMode <<
     //            " path=" << linkPath() << " value=" << toByteArray();
-    if (_isThreaded && _isPipeMode)
-        emit changed( sendId, toByteArray());
+    if (_isThreaded && (_isPipeMode || handleData))
+        emit changed( sendId, toByteArray(), handle, (handleData ? *handleData : QVariant()));
     else
-        emit changed( sendId);
+        emit changed( sendId, handle, handleData);
 }
 
 
@@ -116,10 +116,11 @@ void ArnLink::setValue( const QString& value, int sendId, bool forceKeep)
 }
 
 
-void ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep)
+void ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
+                        Handle handle, const QVariant* handleData)
 {
     if (_twin  &&  !forceKeep) {    // support for bidirectional function
-        _twin->setValue( value, sendId, true);
+        _twin->setValue( value, sendId, true, handle, handleData);
         return;
     }
 
@@ -131,7 +132,7 @@ void ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep)
     _haveByteArray   = true;
     if (_isThreaded)  _mutex.unlock();
 
-    emitChanged( sendId);
+    emitChanged( sendId, handle, handleData);
 }
 
 
@@ -153,9 +154,10 @@ void ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
 }
 
 
-void ArnLink::trfValue( QByteArray value, int sendId, bool forceKeep)
+void ArnLink::trfValue( QByteArray value, int sendId, bool forceKeep,
+                        int handle, QVariant handleData)
 {
-    setValue( value, sendId, forceKeep);
+    setValue( value, sendId, forceKeep, Handle::fromInt( handle), &handleData);
 }
 
 
