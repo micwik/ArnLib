@@ -541,27 +541,30 @@ void  ArnSync::addToFluxQue( ArnLink::Handle handle, const QVariant* handleData)
         itemNet->submitted();
         if (handle == ArnLink::Handle::QueueFindRegexp) {
             QRegExp  rx = handleData->toRegExp();
+            // qDebug() << "AddFluxQueue Pipe QOW: rx=" << rx.pattern();
             int i;
             for (i = 0; i < _fluxPipeQueue.size(); ++i) {
                 FluxRec*&  fluxRecQ = _fluxPipeQueue[i];
-                QString  fluxStrQ = QString::fromUtf8( fluxRecQ->xString.constData());
-                if (rx.indexIn( fluxStrQ) >= 0) {  // Match
-                    qDebug() << "AddFluxQueue Pipe QOW match: old:"
-                             << fluxStrQ << "  new:" << fluxRec->xString;
+                _syncMap.fromXString( fluxRecQ->xString);
+                QString  fluxDataStrQ = _syncMap.valueString("data");
+                if (rx.indexIn( fluxDataStrQ) >= 0) {  // Match
+                    // qDebug() << "AddFluxQueue Pipe QOW match: old:"
+                    //          << fluxRecQ->xString << "  new:" << fluxRec->xString;
                     _fluxRecPool += fluxRecQ;  // Free item to be replaced
                     fluxRecQ = fluxRec;
                     i = -1;  // Mark match
+                    break;
                 }
             }
             if (i >= 0) {  // No match
-                qDebug() << "AddFluxQueue Pipe QOW nomatch:"
-                         << fluxRec->xString;
+                // qDebug() << "AddFluxQueue Pipe QOW nomatch:"
+                //          << fluxRec->xString;
                 _fluxPipeQueue.enqueue( fluxRec);
             }
         }
         else {  // Normal Pipe
-            qDebug() << "AddFluxQueue Pipe:"
-                     << fluxRec->xString;
+            // qDebug() << "AddFluxQueue Pipe:"
+            //          << fluxRec->xString;
             _fluxPipeQueue.enqueue( fluxRec);
         }
     }
