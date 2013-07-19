@@ -125,7 +125,7 @@ bool  DynamicSignals::addSignal( QObject *sender, int signalId, QByteArray funcN
     slot.typeNames   = method.parameterTypes();
     slot.parNames    = method.parameterNames();
     ArnRpc::Invoke  ivf;
-    ivf.set( ivf.NoQueue, QByteArray( method.tag()) == "MQ_NO_QUEUE");
+    ivf.set( ivf.NoQueue, QByteArray( method.tag()) == "no_queue");
     slot.invokeFlags = ivf;
     _slotTab += slot;
 

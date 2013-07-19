@@ -33,7 +33,7 @@
 #ifndef ARNRPC_HPP
 #define ARNRPC_HPP
 
-#define MQ_NO_QUEUE  // MetaObject tag to give Invoke::NoQueue
+#define no_queue  // MetaObject tag to give Invoke::NoQueue
 
 #include "Arn.hpp"
 #include "XStringMap.hpp"
