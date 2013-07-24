@@ -69,7 +69,7 @@ private slots:
     void  connected();
     void  disConnected();
     void  socketInput();
-    void  addToFluxQue( ArnLink::Handle handle, const QVariant* handleData);
+    void  addToFluxQue( const ArnLinkHandle& handleData);
     void  addToModeQue();
     void  sendNext();
     void  linkDestroyedHandle();
@@ -87,7 +87,7 @@ private:
     void  setupMonitorItem( ArnItemNet* itemNet);
     void  doChildsToEvent( ArnItemNet* itemNet);
     FluxRec*  getFreeFluxRec();
-    QByteArray  makeFluxString( const ArnItemNet* itemNet);
+    QByteArray  makeFluxString( const ArnItemNet* itemNet, const ArnLinkHandle& handleData);
     void  sendFluxItem( const ArnItemNet* itemNet);
     void  sendSyncItem( ArnItemNet* itemNet);
     void  sendModeItem( ArnItemNet* itemNet);

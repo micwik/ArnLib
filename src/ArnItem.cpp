@@ -131,10 +131,10 @@ void  ArnItem::setupOpenItem( bool isFolder)
     }
     else {
         //// Optimize: Only one changed() should be connected depending on thread & pipeMode
-        connect( _link, SIGNAL(changed(uint,int,const QVariant*)),
-                 this, SLOT(linkValueUpdated(uint,int,const QVariant*)));
-        connect( _link, SIGNAL(changed(uint,QByteArray,int,QVariant)),
-                 this, SLOT(linkValueUpdated(uint,QByteArray,int,QVariant)));
+        connect( _link, SIGNAL(changed(uint,const ArnLinkHandle&)),
+                 this, SLOT(linkValueUpdated(uint,const ArnLinkHandle&)));
+        connect( _link, SIGNAL(changed(uint,QByteArray,ArnLinkHandle)),
+                 this, SLOT(linkValueUpdated(uint,QByteArray,ArnLinkHandle)));
         connect( _link, SIGNAL(modeChanged(QString,uint)), this, SLOT(modeUpdate()));
     }
 }
@@ -473,12 +473,18 @@ void  ArnItem::setDelay( int delay)
     if (!_delayTimer) {
         _delayTimer = new QTimer;
         _delayTimer->setInterval( delay);
-        connect( _delayTimer, SIGNAL(timeout()), this, SLOT(doItemUpdate()));
+        connect( _delayTimer, SIGNAL(timeout()), this, SLOT(timeoutItemUpdate()));
     }
 }
 
 
 void  ArnItem::arnImport( const QByteArray& data, int ignoreSame)
+{
+    arnImport( data, ignoreSame, ArnLinkHandle());
+}
+
+
+void  ArnItem::arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData)
 {
     if (!data.isEmpty()) {
         if (data.at(0) < 32) {  // Assume SetAs-code
@@ -487,21 +493,21 @@ void  ArnItem::arnImport( const QByteArray& data, int ignoreSame)
                     //qDebug() << "ArnImport Variant: size=" << data.size();
                     QVariant  value;
                     QDataStream  stream( data);
-                    quint8  dummy;  // Will get SetAs-code
+                    quint8  dummy;  // Will get Type-code
                     stream >> dummy >> value;
                     //qDebug() << "ArnImport dataType=" << value.typeName();
-                    setValue( value, ignoreSame);
+                    setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
                     return;
                 }
             case ArnLink::Type::ByteArray:
-                setValue( data.mid(1), ignoreSame);
+                setValue( data.mid(1), ignoreSame, handleData);
                 return;
             default:  // Not supported code
                 return;
             }
         }
     }
-    setValue( data, ignoreSame);    // Normal printable data
+    setValue( data, ignoreSame, handleData);    // Normal printable data
 }
 
 
@@ -669,14 +675,14 @@ ArnItem&  ArnItem::operator=( const QVariant& other)
 void  ArnItem::setValuePipeOverwrite( const QByteArray& value, const QRegExp& rx)
 {
     if (_link) {
-        QVariant  handleData( rx);
+        ArnLinkHandle  handleData;
+        handleData.add( ArnLinkHandle::QueueFindRegexp, QVariant( rx));
         if (!_link->isPipeMode())
             errorLog( QString(tr("Assigning bytearray PipeOW not a pipe")), ArnError::Undef);
         else if (_link->isThreaded())
-            trfValue( value, _id, _useForceKeep, ArnLink::Handle::QueueFindRegexp, handleData);
+            trfValue( value, _id, _useForceKeep, handleData);
         else
-            _link->setValue( value, _id, _useForceKeep,
-                             ArnLink::Handle::QueueFindRegexp, &handleData);
+            _link->setValue( value, _id, _useForceKeep, handleData);
     }
     else {
         errorLog( QString(tr("Assigning bytearray PipeOW:")) + QString::fromUtf8( value.constData(), value.size()),
@@ -825,15 +831,35 @@ void  ArnItem::toggleBool()
 }
 
 
-void  ArnItem::trfValue( QByteArray value, int sendId, bool forceKeep,
-                         ArnLink::Handle handle, const QVariant& handleData)
+void  ArnItem::setValue( const QByteArray& value, int ignoreSame, const ArnLinkHandle& handleData)
+{
+    bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
+    if (_link) {
+        if (isIgnoreSame) {
+            if (value == _link->holderLink( _useForceKeep)->toByteArray()) {
+                return;
+            }
+        }
+        if (_link->isPipeMode() && _link->isThreaded())
+            trfValue( value, _id, _useForceKeep, handleData);
+        else
+            _link->setValue( value, _id, _useForceKeep, handleData);
+    }
+    else {
+        errorLog( QString(tr("Assigning bytearray (ArnLinkHandle):")) + QString::fromUtf8( value.constData(), value.size()),
+                  ArnError::ItemNotOpen);
+    }
+}
+
+
+void  ArnItem::trfValue( const QByteArray& value, int sendId, bool forceKeep,
+                         const ArnLinkHandle& handleData)
 {
     QMetaObject::invokeMethod( _link, "trfValue", Qt::QueuedConnection,
                                Q_ARG( QByteArray, value),
                                Q_ARG( int, sendId),
                                Q_ARG( bool, forceKeep),
-                               Q_ARG( int, handle),
-                               Q_ARG( QVariant, handleData));
+                               Q_ARG( ArnLinkHandle, handleData));
 }
 
 
@@ -964,8 +990,7 @@ void  ArnItem::errorLog( QString errText, ArnError err, void* reference)
 }
 
 
-void  ArnItem::linkValueUpdated( uint sendId,
-                                 int handle, const QVariant* handleData)
+void  ArnItem::linkValueUpdated( uint sendId, const ArnLinkHandle& handleData)
 {
     if (_blockEcho  &&  sendId == _id) {  // This update was initiated from this Item, it can be blocked ...
         return;
@@ -978,20 +1003,19 @@ void  ArnItem::linkValueUpdated( uint sendId,
         }
     }
     else {
-        doItemUpdate( ArnLink::Handle::fromInt( handle), handleData);
+        doItemUpdate( handleData);
     }
 }
 
 
-void  ArnItem::linkValueUpdated( uint sendId, QByteArray value,
-                                 int handle, QVariant handleData)
+void  ArnItem::linkValueUpdated( uint sendId, QByteArray value, ArnLinkHandle handleData)
 {
     if (_blockEcho  &&  sendId == _id) {  // This update was initiated from this Item, it can be blocked ...
         return;
     }
     _isOnlyEcho = (sendId == _id) ? _isOnlyEcho : false;
 
-    itemUpdateStart( ArnLink::Handle::fromInt( handle), &handleData);
+    itemUpdateStart( handleData);
     if (_emitChanged) {
         emit changed();
     }
@@ -1018,13 +1042,13 @@ void  ArnItem::linkValueUpdated( uint sendId, QByteArray value,
 }
 
 
-void  ArnItem::doItemUpdate( ArnLink::Handle handle, const QVariant* handleData)
+void  ArnItem::doItemUpdate( const ArnLinkHandle& handleData)
 {
     if (_delayTimer ) {
         _delayTimer->stop();
     }
 
-    itemUpdateStart( handle, handleData);
+    itemUpdateStart( handleData);
     if (_emitChanged) {
         emit changed();
     }
@@ -1047,6 +1071,12 @@ void  ArnItem::doItemUpdate( ArnLink::Handle handle, const QVariant* handleData)
         emit changed(_link->toVariant());
     }
     itemUpdateEnd();
+}
+
+
+void  ArnItem::timeoutItemUpdate()
+{
+    doItemUpdate( ArnLinkHandle());
 }
 
 

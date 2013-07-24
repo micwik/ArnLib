@@ -97,8 +97,8 @@ void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
     itemNet->setNetId( netId);
     _itemNetMap.insert( netId, itemNet);
 
-    connect( itemNet, SIGNAL(goneDirty(ArnLink::Handle,const QVariant*)),
-             this, SLOT(addToFluxQue(ArnLink::Handle,const QVariant*)));
+    connect( itemNet, SIGNAL(goneDirty(const ArnLinkHandle&)),
+             this, SLOT(addToFluxQue(const ArnLinkHandle&)));
     connect( itemNet, SIGNAL(goneDirtyMode()), this, SLOT(addToModeQue()));
     connect( itemNet, SIGNAL(arnLinkDestroyed()), this, SLOT(linkDestroyedHandle()));
     connect( itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,bool)),
@@ -256,7 +256,7 @@ uint  ArnSync::doCommandSync()
     }
     if ((itemNet->type() != ArnLink::Type::Null)
     && !(itemNet->syncMode().is( syncMode.Master))) {  // Only send non Null Value to non master
-        itemNet->itemUpdateStart( ArnLink::Handle::Normal, 0); // Make server send the current value to client
+        itemNet->itemUpdateStart( ArnLinkHandle()); // Make server send the current value to client
     }
 
     return ArnError::Ok;
@@ -318,9 +318,15 @@ uint  ArnSync::doCommandFlux()
 {
     uint       netId = _commandMap.value("id").toUInt();
     QByteArray  type = _commandMap.value("type");
+    QByteArray  nqrx = _commandMap.value("nqrx");
     QByteArray  data = _commandMap.value("data");
 
     bool  isOnlyEcho = type.contains("E");
+
+    ArnLinkHandle  handleData;
+    if (!nqrx.isEmpty())
+        handleData.add( ArnLinkHandle::QueueFindRegexp,
+                        QVariant( QRegExp( QString::fromUtf8( nqrx.constData(), nqrx.size()))));
 
     ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
     if (!itemNet) {
@@ -329,7 +335,7 @@ uint  ArnSync::doCommandFlux()
 
     bool  isIgnoreSame = isOnlyEcho;
     if (!isOnlyEcho || !itemNet->getMode().is( ArnItem::Mode::Pipe))  // Echo to Pipe is ignored
-        itemNet->arnImport( data, isIgnoreSame);
+        itemNet->arnImport( data, isIgnoreSame, handleData);
     return ArnError::Ok;
 }
 
@@ -425,7 +431,7 @@ void  ArnSync::connected()
         if ((itemNet->type() != ArnLink::Type::Null)            // Only send non Null Value ...
         && (!itemNet->isPipeMode())                                      // from non pipe ..
         && (itemNet->syncMode().is( ArnItem::SyncMode::Master))) {  // which is master
-            itemNet->itemUpdateStart( ArnLink::Handle::Normal, 0);  // Make client send the current value to server
+            itemNet->itemUpdateStart( ArnLinkHandle());  // Make client send the current value to server
         }
     }
     sendNext();
@@ -526,7 +532,7 @@ void  ArnSync::doArnEvent( QByteArray type, QByteArray data, bool isLocal)
 }
 
 
-void  ArnSync::addToFluxQue( ArnLink::Handle handle, const QVariant* handleData)
+void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
@@ -537,10 +543,10 @@ void  ArnSync::addToFluxQue( ArnLink::Handle handle, const QVariant* handleData)
 
     if (itemNet->isPipeMode()) {
         FluxRec*  fluxRec = getFreeFluxRec();
-        fluxRec->xString += makeFluxString( itemNet);
+        fluxRec->xString += makeFluxString( itemNet, handleData);
         itemNet->submitted();
-        if (handle == ArnLink::Handle::QueueFindRegexp) {
-            QRegExp  rx = handleData->toRegExp();
+        if (handleData.has( ArnLinkHandle::QueueFindRegexp)) {
+            QRegExp  rx = handleData.value( ArnLinkHandle::QueueFindRegexp).toRegExp();
             // qDebug() << "AddFluxQueue Pipe QOW: rx=" << rx.pattern();
             int i;
             for (i = 0; i < _fluxPipeQueue.size(); ++i) {
@@ -715,7 +721,7 @@ void  ArnSync::sendNext()
 }
 
 
-QByteArray  ArnSync::makeFluxString( const ArnItemNet* itemNet)
+QByteArray  ArnSync::makeFluxString(const ArnItemNet* itemNet, const ArnLinkHandle& handleData)
 {
     QByteArray  type;
     if( itemNet->isOnlyEcho())  type += "E";
@@ -725,6 +731,8 @@ QByteArray  ArnSync::makeFluxString( const ArnItemNet* itemNet)
     //_syncMap.add("id", QByteArray::number( itemNet->netId()));
     if (!type.isEmpty())
         _syncMap.add("type", type);
+    if (handleData.has( ArnLinkHandle::QueueFindRegexp))
+        _syncMap.add("nqrx", handleData.value( ArnLinkHandle::QueueFindRegexp).toRegExp().pattern());
     _syncMap.add("data", itemNet->arnExport());
 
     return _syncMap.toXString();
@@ -738,7 +746,7 @@ void  ArnSync::sendFluxItem( const ArnItemNet* itemNet)
         return;
     }
 
-    send( makeFluxString( itemNet));
+    send( makeFluxString( itemNet, ArnLinkHandle()));
 }
 
 

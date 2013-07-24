@@ -32,11 +32,69 @@
 
 #include "ArnLink.hpp"
 #include <QDebug>
-// #include <QMutexLocker>
 #include <limits>
 
 
 QAtomicInt ArnLink::_idCount(1);
+
+
+ArnLinkHandle::ArnLinkHandle()
+{
+    _codes = Normal;
+    _data  = 0;
+}
+
+
+ArnLinkHandle::ArnLinkHandle( const ArnLinkHandle& other)
+{
+    _codes = other._codes;
+    if (other._data)
+        _data = new HandleData( *other._data);
+    else
+        _data = 0;
+}
+
+
+ArnLinkHandle::~ArnLinkHandle()
+{
+    if (_data)
+        delete _data;
+}
+
+
+ArnLinkHandle&  ArnLinkHandle::add( Code code, const QVariant& value)
+{
+    if (code == Normal)  return *this;
+
+    if (!_data)
+        _data = new HandleData;
+    _data->insert( code, value);
+    _codes |= code;
+    return *this;
+}
+
+
+bool  ArnLinkHandle::has( Code code)  const
+{
+    return _codes.testFlag( code);
+}
+
+
+bool  ArnLinkHandle::isNull()  const
+{
+    return _codes == Normal;
+}
+
+
+const QVariant&  ArnLinkHandle::value( Code code)  const
+{
+    static QVariant  nullValue;
+
+    if (!_data || !has( code))  // Should not be used ...
+        return nullValue;
+
+    return _data->constFind( code).value();
+}
 
 
 void ArnLink::resetHave()
@@ -50,14 +108,14 @@ void ArnLink::resetHave()
 
 
 //// This should in threaded: preserve order of setValue, optimize return of bytearray
-void ArnLink::emitChanged( int sendId, Handle handle, const QVariant* handleData)
+void ArnLink::emitChanged( int sendId, const ArnLinkHandle& handleData)
 {
     // qDebug() << "emitChanged: isThr=" << _isThreaded << " isPipe=" << _isPipeMode <<
     //            " path=" << linkPath() << " value=" << toByteArray();
-    if (_isThreaded && (_isPipeMode || handleData))
-        emit changed( sendId, toByteArray(), handle, (handleData ? *handleData : QVariant()));
+    if (_isThreaded && (_isPipeMode || !handleData.isNull()))
+        emit changed( sendId, toByteArray(), handleData);
     else
-        emit changed( sendId, handle, handleData);
+        emit changed( sendId, handleData);
 }
 
 
@@ -117,10 +175,10 @@ void ArnLink::setValue( const QString& value, int sendId, bool forceKeep)
 
 
 void ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
-                        Handle handle, const QVariant* handleData)
+                        const ArnLinkHandle& handleData)
 {
     if (_twin  &&  !forceKeep) {    // support for bidirectional function
-        _twin->setValue( value, sendId, true, handle, handleData);
+        _twin->setValue( value, sendId, true, handleData);
         return;
     }
 
@@ -132,7 +190,7 @@ void ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
     _haveByteArray   = true;
     if (_isThreaded)  _mutex.unlock();
 
-    emitChanged( sendId, handle, handleData);
+    emitChanged( sendId, handleData);
 }
 
 
@@ -154,10 +212,9 @@ void ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
 }
 
 
-void ArnLink::trfValue( QByteArray value, int sendId, bool forceKeep,
-                        int handle, QVariant handleData)
+void ArnLink::trfValue( QByteArray value, int sendId, bool forceKeep, ArnLinkHandle handleData)
 {
-    setValue( value, sendId, forceKeep, Handle::fromInt( handle), &handleData);
+    setValue( value, sendId, forceKeep, handleData);
 }
 
 

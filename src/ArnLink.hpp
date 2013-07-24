@@ -37,10 +37,45 @@
 #include "ArnLib_global.hpp"
 #include "MQFlags.hpp"
 #include <QObject>
+#include <QMetaType>
 #include <QString>
 #include <QVariant>
+#include <QMap>
 #include <QAtomicInt>
 #include <QMutex>
+
+
+class ArnLinkHandle
+{
+public:
+    //! Select how to handle a data assignment
+    enum Code {
+        //! Normal handling procedure
+        Normal = 0,
+        //! For pipes. If any item in the sendqueue matches Regexp, the item is replaced by
+        //! this assignment. Typically used to avoid queue filling during a disconnected tcp.
+        QueueFindRegexp = 0x01,
+        //! For pipes. Sequence number is used and available in HandleData.
+        SeqNo           = 0x02
+    };
+    Q_DECLARE_FLAGS( Codes, Code)
+
+    ArnLinkHandle();
+    ArnLinkHandle( const ArnLinkHandle& other);
+    ~ArnLinkHandle();
+    ArnLinkHandle&  add( Code code, const QVariant& value);
+    bool  has( Code code)  const;
+    bool  isNull()  const;
+    const QVariant&  value( Code code)  const;
+
+private:
+    Codes  _codes;
+    typedef QMap<int,QVariant>  HandleData;
+    HandleData*  _data;
+};
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( ArnLinkHandle::Codes)
+Q_DECLARE_METATYPE( ArnLinkHandle)
 
 
 class ArnLink : public QObject
@@ -82,24 +117,13 @@ public:
         };
         MQ_DECLARE_FLAGS( NameF)
     };
-    struct Handle {
-        //! Select how to handle a data assignment
-        enum E {
-            //! Normal handling procedure
-            Normal = 0,
-            //! For pipes. If any item in the sendqueue matches Regexp, the item is replaced by
-            //! this assignment. Typically used to avoid queue filling during a disconnected tcp.
-            QueueFindRegexp
-        };
-        MQ_DECLARE_ENUM( Handle)
-    };
 
     //! \cond ADV
     void  setValue( int value, int sendId = 0, bool forceKeep = 0);
     void  setValue( double value, int sendId = 0, bool forceKeep = 0);
     void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0);
     void  setValue( const QByteArray& value, int sendId = 0, bool forceKeep = 0,
-                    Handle handle = Handle::Normal, const QVariant* handleData = 0);
+                    const ArnLinkHandle& handleData = ArnLinkHandle());
     void  setValue( const QVariant& value, int sendId = 0, bool forceKeep = 0);
 
     int  toInt();
@@ -137,12 +161,11 @@ public:
     static QString  convertBaseName( const QString& name, NameF nameF);
 
 public slots:
-    void  trfValue( QByteArray value, int sendId, bool forceKeep,
-                    int handle, QVariant handleData);
+    void  trfValue( QByteArray value, int sendId, bool forceKeep, ArnLinkHandle handleData);
 
 signals:
-    void  changed( uint sendId, int handle, const QVariant* handleData);
-    void  changed( uint sendId, QByteArray value, int handle, QVariant handleData);
+    void  changed( uint sendId, const ArnLinkHandle& handleData);
+    void  changed( uint sendId, QByteArray value, ArnLinkHandle handleData);
     void  modeChanged( QString path, uint linkId);
     void  modeChangedBelow( QString path, uint linkId);
     void  linkCreatedBelow( ArnLink* link);
@@ -161,8 +184,7 @@ protected:
 
 private:
     void  resetHave();
-    void  emitChanged( int sendId,
-                       Handle handle = Handle::Normal, const QVariant* handleData = 0);
+    void  emitChanged( int sendId, const ArnLinkHandle& handleData = ArnLinkHandle());
 
     /// Source for unique id to all ArnLink ..
     static QAtomicInt  _idCount;

@@ -40,6 +40,7 @@
 #include "ArnItem.hpp"
 #include <QStringList>
 #include <QVector>
+#include <QMetaType>
 #include <QObject>
 #include <QMutex>
 #include <QWaitCondition>
