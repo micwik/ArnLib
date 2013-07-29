@@ -838,7 +838,7 @@ void  ArnRpc::timeoutHeartBeatCheck()
 
 void  ArnRpc::sendText( QString txt)
 {
-    *_pipe = "\"" + txt + "\"";
+    *_pipe = "\"" + txt.toUtf8() + "\"";
 }
 
 
