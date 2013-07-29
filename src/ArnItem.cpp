@@ -1015,7 +1015,7 @@ void  ArnItem::linkValueUpdated( uint sendId, QByteArray value, ArnLinkHandle ha
     }
     _isOnlyEcho = (sendId == _id) ? _isOnlyEcho : false;
 
-    itemUpdateStart( handleData);
+    itemUpdateStart( handleData, &value);
     if (_emitChanged) {
         emit changed();
     }

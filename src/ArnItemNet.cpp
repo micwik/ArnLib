@@ -122,8 +122,10 @@ void  ArnItemNet::submittedMode()
 }
 
 
-void  ArnItemNet::itemUpdateStart( const ArnLinkHandle& handleData)
+void  ArnItemNet::itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value)
 {
+    Q_UNUSED(value);
+
     if (!_dirty) {
         _dirty = true;
         emit goneDirty( handleData);

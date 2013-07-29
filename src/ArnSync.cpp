@@ -319,6 +319,7 @@ uint  ArnSync::doCommandFlux()
     uint       netId = _commandMap.value("id").toUInt();
     QByteArray  type = _commandMap.value("type");
     QByteArray  nqrx = _commandMap.value("nqrx");
+    QByteArray  seq  = _commandMap.value("seq");
     QByteArray  data = _commandMap.value("data");
 
     bool  isOnlyEcho = type.contains("E");
@@ -327,6 +328,10 @@ uint  ArnSync::doCommandFlux()
     if (!nqrx.isEmpty())
         handleData.add( ArnLinkHandle::QueueFindRegexp,
                         QVariant( QRegExp( QString::fromUtf8( nqrx.constData(), nqrx.size()))));
+
+    if (!seq.isEmpty())
+        handleData.add( ArnLinkHandle::SeqNo,
+                        QVariant( seq.toInt()));
 
     ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
     if (!itemNet) {
@@ -728,11 +733,15 @@ QByteArray  ArnSync::makeFluxString(const ArnItemNet* itemNet, const ArnLinkHand
 
     _syncMap.clear();
     _syncMap.add(ARNRECNAME, "flux").add("id", QByteArray::number( itemNet->netId()));
-    //_syncMap.add("id", QByteArray::number( itemNet->netId()));
+
     if (!type.isEmpty())
         _syncMap.add("type", type);
+
     if (handleData.has( ArnLinkHandle::QueueFindRegexp))
         _syncMap.add("nqrx", handleData.value( ArnLinkHandle::QueueFindRegexp).toRegExp().pattern());
+    else if (handleData.has( ArnLinkHandle::SeqNo))
+        _syncMap.add("seq", QByteArray::number( handleData.value( ArnLinkHandle::SeqNo).toInt()));
+
     _syncMap.add("data", itemNet->arnExport());
 
     return _syncMap.toXString();

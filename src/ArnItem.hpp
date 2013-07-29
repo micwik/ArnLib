@@ -519,11 +519,16 @@ protected slots:
 protected:
     bool  open( const ArnItem& folder, const QString& itemName);
     void  setForceKeep( bool fk = true)  {_useForceKeep = fk;}
+    bool  isForceKeep()  const {return _useForceKeep;}
     Mode  getMode( ArnLink* link)  const;
     void  addSyncMode( SyncMode syncMode, bool linkShare);
     void  resetOnlyEcho()  {_isOnlyEcho = true;}
-    virtual void  itemUpdateStart( const ArnLinkHandle& handleData)
-                  {Q_UNUSED(handleData);}
+    void  setValue( const QByteArray& value, int ignoreSame, const ArnLinkHandle& handleData);
+    void  trfValue( const QByteArray& value, int sendId, bool forceKeep,
+                    const ArnLinkHandle& handleData = ArnLinkHandle());
+    void  arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData);
+    virtual void  itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value = 0)
+        {Q_UNUSED(handleData); Q_UNUSED(value);}
     virtual void  itemUpdateEnd();
     QStringList  childItemsMain()  const;
     void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
@@ -545,10 +550,6 @@ private:
     bool  open( const QString& path, bool isFolder);
     bool  open( const ArnItem& folder, const QString& itemName, bool isFolder);
     void  doItemUpdate( const ArnLinkHandle& handleData);
-    void  setValue( const QByteArray& value, int ignoreSame, const ArnLinkHandle& handleData);
-    void  trfValue( const QByteArray& value, int sendId, bool forceKeep,
-                    const ArnLinkHandle& handleData = ArnLinkHandle());
-    void  arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData);
 
 #if QT_VERSION >= 0x050000
     void  connectNotify( const QMetaMethod & signal);

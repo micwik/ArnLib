@@ -65,7 +65,7 @@ public:
     void  submitted();
     void  submittedMode();
     bool  isDirtyMode()  const { return _dirtyMode;}
-    virtual void  itemUpdateStart( const ArnLinkHandle& handleData);
+    virtual void  itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  itemUpdateEnd();
     virtual void  modeUpdate( bool isSetup = false);
 

@@ -33,6 +33,7 @@
 #include "ArnRpc.hpp"
 #include <QMetaType>
 #include <QMetaMethod>
+#include <QTimer>
 #include <QRegExp>
 #include <QVariant>
 #include <QDebug>
@@ -139,11 +140,17 @@ bool  DynamicSignals::addSignal( QObject *sender, int signalId, QByteArray funcN
 ArnRpc::ArnRpc( QObject* parent) :
     QObject( parent)
 {
-    _pipe             = 0;
-    _receiver         = 0;
-    _receiverStorage  = 0;
-    _isIncludeSender  = false;
-    _dynamicSignals   = new DynamicSignals( this);
+    _pipe                = 0;
+    _receiver            = 0;
+    _receiverStorage     = 0;
+    _isIncludeSender     = false;
+    _dynamicSignals      = new DynamicSignals( this);
+    _isHeartBeatOk       = true;
+    _timerHeartBeatSend  = new QTimer( this);
+    _timerHeartBeatCheck = new QTimer( this);
+
+    connect( _timerHeartBeatSend, SIGNAL(timeout()), this, SLOT(timeoutHeartBeatSend()));
+    connect( _timerHeartBeatCheck, SIGNAL(timeout()), this, SLOT(timeoutHeartBeatCheck()));
 }
 
 
@@ -159,8 +166,8 @@ bool  ArnRpc::open( QString pipePath)
 {
     setPipe(0);  // Remove any existing pipe
 
-    ArnItem*  pipe = new ArnItem;
-    pipe->setPipeMode();
+    ArnPipe*  pipe = new ArnPipe;
+    //pipe->setPipeMode();
     if (!_mode.is(_mode.Provider))
         pipe->setMaster();
     if (_mode.is(_mode.AutoDestroy))
@@ -171,7 +178,12 @@ bool  ArnRpc::open( QString pipePath)
         stat = pipe->openUuidPipe( pipePath);
     else
         stat = pipe->open( pipePath);
-    if (!stat) {
+
+    if (stat) {
+        pipe->setUseSendSeq( _mode.is(_mode.SendSequence));
+        pipe->setUseCheckSeq( _mode.is(_mode.CheckSequence));
+    }
+    else {
         delete pipe;
         return false;
     }
@@ -181,7 +193,7 @@ bool  ArnRpc::open( QString pipePath)
 }
 
 
-void  ArnRpc::setPipe( ArnItem* pipe)
+void  ArnRpc::setPipe( ArnPipe* pipe)
 {
     if (_pipe) {
         qDebug() << "Rpc delete pipe: path=" << _pipe->path();
@@ -193,6 +205,7 @@ void  ArnRpc::setPipe( ArnItem* pipe)
         connect( _pipe, SIGNAL(changed(QByteArray)), this, SLOT(pipeInput(QByteArray)),
                  Qt::QueuedConnection);
         connect( _pipe, SIGNAL(arnLinkDestroyed()), this, SLOT(destroyPipe()));
+        connect( _pipe, SIGNAL(outOfSequence()), this, SIGNAL(outOfSequence()));
     }
 }
 
@@ -230,6 +243,30 @@ void  ArnRpc::setMode( Mode mode)
 ArnRpc::Mode  ArnRpc::mode()  const
 {
     return _mode;
+}
+
+
+void  ArnRpc::setHeartBeatSend( int time)
+{
+    if (time == 0)
+        _timerHeartBeatSend->stop();
+    else
+        _timerHeartBeatSend->start( time * 1000);
+}
+
+
+void  ArnRpc::setHeartBeatCheck( int time)
+{
+    if (time == 0)
+        _timerHeartBeatCheck->stop();
+    else
+        _timerHeartBeatCheck->start( time * 1000);
+}
+
+
+bool  ArnRpc::isHeartBeatOk()  const
+{
+    return _isHeartBeatOk;
 }
 
 
@@ -459,7 +496,10 @@ void  ArnRpc::pipeInput( QByteArray data)
 
     XStringMap  xsmCall( data);
     QByteArray  rpcFunc = xsmCall.value(0);
-    if (rpcFunc == "$help") {  // Built in help
+    if (rpcFunc == "$heartbeat") {  // Built in Heart beat support
+        return funcHeartBeat( xsmCall);
+    }
+    if (rpcFunc == "$help") {  // Built in Help
         return funcHelp( xsmCall);
     }
 
@@ -659,7 +699,30 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
 }
 
 
-void  ArnRpc::funcHelp( const XStringMap &xsm)
+void  ArnRpc::funcHeartBeat( const XStringMap& xsm)
+{
+    QByteArray  time = xsm.value(1);
+    if (time == "off") {  // Remote turn off heart beat function for both directions
+        _timerHeartBeatSend->stop();
+        invoke("$heartbeat", MQ_ARG( QString, time, "off1"));
+    }
+    if (time == "off1") {  // Remote turn off heart beat function for this direction
+        _timerHeartBeatSend->stop();
+        invoke("$heartbeat", MQ_ARG( QString, time, "0"));
+    }
+    else if (time == "0") {  // Remote turn off heart beat checking for this direction
+        _timerHeartBeatCheck->stop();
+        _isHeartBeatOk = true;
+    }
+    else
+        emit heartBeatReceived();
+
+    if (_timerHeartBeatCheck->isActive())
+        _timerHeartBeatCheck->start();  // Restart heart beat check timer
+}
+
+
+void  ArnRpc::funcHelp( const XStringMap& xsm)
 {
     Q_UNUSED(xsm)
 
@@ -693,6 +756,7 @@ void  ArnRpc::funcHelp( const XStringMap &xsm)
     }
     if (methodIndexHead >= 0)
         funcHelpMethod( metaObject->method( methodIndexHead), methodNameHead, parCountMin);
+    sendText("$heartbeat [time|off|off1]");
     sendText("$help");
 }
 
@@ -753,6 +817,22 @@ void  ArnRpc::destroyPipe()
     qDebug() << "Rpc Destroy pipe: path=" << _pipe->path();
     emit pipeClosed();
     setPipe(0);
+}
+
+
+void  ArnRpc::timeoutHeartBeatSend()
+{
+    invoke("$heartbeat",
+           MQ_ARG( QString, time, QByteArray::number( _timerHeartBeatSend->interval() / 1000)));
+}
+
+
+void  ArnRpc::timeoutHeartBeatCheck()
+{
+    if (_isHeartBeatOk) {
+        _isHeartBeatOk = false;
+        emit heartBeatChanged( _isHeartBeatOk);
+    }
 }
 
 
@@ -853,3 +933,4 @@ QByteArray  ArnRpc::methodSignature( const QMetaMethod &method)
     return QByteArray( method.signature());
 #endif
 }
+

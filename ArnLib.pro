@@ -50,7 +50,8 @@ SOURCES += src/Arn.cpp \
     src/ArnScriptJob.cpp \
     src/ArnSapi.cpp \
     src/ArnMonitor.cpp \
-    src/ArnSync.cpp
+    src/ArnSync.cpp \
+    src/ArnPipe.cpp
 
 HEADERS += src/ArnLib_global.hpp \
     src/Arn.hpp \
@@ -72,7 +73,8 @@ HEADERS += src/ArnLib_global.hpp \
     src/ArnSapi.hpp \
     src/ArnPersistSapi.hpp \
     src/ArnMonitor.hpp \
-    src/ArnSync.hpp
+    src/ArnSync.hpp \
+    src/ArnPipe.hpp
 
 OTHER_FILES += \
     doc/Internals.md \

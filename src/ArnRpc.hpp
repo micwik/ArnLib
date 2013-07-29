@@ -36,6 +36,7 @@
 #define no_queue  // MetaObject tag to give Invoke::NoQueue
 
 #include "Arn.hpp"
+#include "ArnPipe.hpp"
 #include "XStringMap.hpp"
 #include "ArnLib_global.hpp"
 #include "MQFlags.hpp"
@@ -51,6 +52,7 @@ class RpcReceiverStorage;
 class DynamicSignals;
 class QMetaMethod;
 class QRegExp;
+class QTimer;
 
 //! Similar to QGenericArgument but with added argument label (parameter name)
 class ARNLIBSHARED_EXPORT MQGenericArgument : public QGenericArgument
@@ -125,8 +127,12 @@ public:
             UuidPipe      = 0x04,
             //! If guarantied no default arguments, member name overload is ok
             NoDefaultArgs = 0x08,
+            //! Send sequence order information to pipe
+            SendSequence  = 0x10,
+            //! Check sequence order information from pipe. Can generate signal outOfSequence().
+            CheckSequence = 0x20,
             //! Debug mode, dumping done batch connections
-            Debug         = 0x10,
+            Debug         = 0x40,
             //! Convenience, combined _UuidPipe_ and _AutoDestroy_
             UuidAutoDestroy = UuidPipe | AutoDestroy
         };
@@ -149,7 +155,7 @@ public:
     QString  pipePath() const;
 
     bool  open( QString pipePath);
-    void  setPipe( ArnItem* pipe);
+    void  setPipe( ArnPipe* pipe);
     void  setReceiver( QObject* receiver);
     void  setMethodPrefix( QString prefix);
     void  setIncludeSender( bool v);
@@ -159,6 +165,27 @@ public:
     /*! \return current _mode_
      */
     Mode  mode()  const;
+
+    //! Set period time for sending heart beat message
+    /*! Setting time to zero will turn off sending.
+     *  \param[in] time is the time period in seconds
+     *  \see setHeartBeatCheck();
+     */
+    void  setHeartBeatSend( int time);
+
+    //! Set max time period for receiving heart beat message
+    /*! Setting time to zero will turn off checking.
+     *  \param[in] time is the time period in seconds
+     *  \see setHeartBeatSend();
+     */
+    void  setHeartBeatCheck( int time);
+
+    //! Get the state of heart beat
+    /*! \retval false if not getting heart beat in time
+     *  \see heartBeatChanged()
+     */
+    bool  isHeartBeatOk()  const;
+
     void  addSenderSignals( QObject* sender, QString prefix);
 
     //! Calls a named remote procedure
@@ -265,6 +292,19 @@ signals:
      */
     void  textReceived( QString text);
 
+    //! Signal emitted when checked sequence order is wrong.
+    void  outOfSequence();
+
+    //! Signal emitted when Heart beat changes state.
+    /*! Heart beat messages are detected and expected within a check time.
+     *  If this is satisfied, the state of heart beat is ok.
+     *  \param[in] isOk is the Heart beat state, false = Not received.
+     */
+    void  heartBeatChanged( bool isOk);
+
+    //! Signal emitted when Heart beat message is received.
+    void  heartBeatReceived();
+
 public slots:
     //! Send a general text message to the other end of the used _pipe_
     /*! Is used by ArnRpc to give errors and help messages, mostly for debugging.
@@ -276,6 +316,8 @@ public slots:
 private slots:
     void  pipeInput( QByteArray data);
     void  destroyPipe();
+    void  timeoutHeartBeatSend();
+    void  timeoutHeartBeatCheck();
 
 protected:
     void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
@@ -283,17 +325,21 @@ protected:
 private:
     bool  xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint index, int& nArg);
     bool  xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &index, const QByteArray& methodName);
-    void  funcHelp( const XStringMap &xsm);
+    void  funcHeartBeat( const XStringMap& xsm);
+    void  funcHelp( const XStringMap& xsm);
     void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin);
     static QByteArray  methodSignature( const QMetaMethod& method);
 
     DynamicSignals*  _dynamicSignals;
     RpcReceiverStorage*  _receiverStorage;
-    ArnItem*  _pipe;
+    ArnPipe*  _pipe;
     QObject*  _receiver;
     QByteArray  _methodPrefix;
     bool  _isIncludeSender;
     Mode  _mode;
+    bool  _isHeartBeatOk;
+    QTimer*  _timerHeartBeatSend;
+    QTimer*  _timerHeartBeatCheck;
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnRpc::Mode)
