@@ -756,7 +756,7 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
     }
     if (methodIndexHead >= 0)
         funcHelpMethod( metaObject->method( methodIndexHead), methodNameHead, parCountMin);
-    sendText("$heartbeat [time|off|off1]");
+    sendText("$heartbeat [<time>|off|off1]");
     sendText("$help");
 }
 
