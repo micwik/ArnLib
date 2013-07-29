@@ -123,6 +123,9 @@ public:
 
     using ArnRpc::pipePath;
     using ArnRpc::mode;
+    using ArnRpc::setHeartBeatSend;
+    using ArnRpc::setHeartBeatCheck;
+    using ArnRpc::isHeartBeatOk;
     using ArnRpc::invoke;
     using ArnRpc::batchConnect;
 

@@ -714,8 +714,13 @@ void  ArnRpc::funcHeartBeat( const XStringMap& xsm)
         _timerHeartBeatCheck->stop();
         _isHeartBeatOk = true;
     }
-    else
+    else {
         emit heartBeatReceived();
+        if (!_isHeartBeatOk) {
+            _isHeartBeatOk = true;
+            emit heartBeatChanged( _isHeartBeatOk);
+        }
+    }
 
     if (_timerHeartBeatCheck->isActive())
         _timerHeartBeatCheck->start();  // Restart heart beat check timer
@@ -822,6 +827,8 @@ void  ArnRpc::destroyPipe()
 
 void  ArnRpc::timeoutHeartBeatSend()
 {
+    if (!_pipe || !_pipe->isOpen())  return;
+
     invoke("$heartbeat",
            MQ_ARG( QString, time, QByteArray::number( _timerHeartBeatSend->interval() / 1000)));
 }
