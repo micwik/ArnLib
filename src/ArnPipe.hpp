@@ -59,6 +59,7 @@ have it's own handles i.e ArnItem instances.
 \endcode
 */
 
+// TODO: This should be based on a limited ArnItem like an ArnItemBase
 class ARNLIBSHARED_EXPORT ArnPipe : public ArnItem
 {
     Q_OBJECT
@@ -90,7 +91,10 @@ public:
         {setValue( value); return *this;}
 
     //! Assign a _QByteArray_ to a _Pipe_ by overwrite Regexp match in sendqueue
-    /*! \param[in] value to be assigned
+    /*! This is used to limit the filling of sendqueue with recuring messages during
+     *  some kind of disconnection. Matched message in sendqueue is instead overwritten
+     *  by the new message (value).
+     *  \param[in] value to be assigned
      *  \param[in] rx is regexp to be matched with items in send queue.
      */
     void  setValueOverwrite( const QByteArray& value, const QRegExp& rx);
