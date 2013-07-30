@@ -41,8 +41,8 @@ void  ArnPipe::init()
 {
     _useSendSeq  = true;
     _useCheckSeq = true;
-    _sendSeqNum  = -1;
-    _checkSeqNum = -1;
+    _sendSeqNum  = 0;
+    _checkSeqNum = 0;
     setPipeMode();
 }
 

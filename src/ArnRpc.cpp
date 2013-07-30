@@ -829,7 +829,7 @@ void  ArnRpc::timeoutHeartBeatSend()
 {
     if (!_pipe || !_pipe->isOpen())  return;
 
-    invoke("$heartbeat",
+    invoke("$heartbeat", Invoke::NoQueue,
            MQ_ARG( QString, time, QByteArray::number( _timerHeartBeatSend->interval() / 1000)));
 }
 
