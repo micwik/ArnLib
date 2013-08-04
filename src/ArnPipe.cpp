@@ -32,8 +32,6 @@
 
 #include "ArnPipe.hpp"
 #include "Arn.hpp"
-//#include <QDataStream>
-//#include <QUuid>
 #include <QDebug>
 
 
@@ -42,20 +40,20 @@ void  ArnPipe::init()
     _useSendSeq  = true;
     _useCheckSeq = true;
     _sendSeqNum  = 0;
-    _checkSeqNum = 0;
+    _checkSeqNum = -1;  // Indicate first time (no history)
     setPipeMode();
 }
 
 
 ArnPipe::ArnPipe( QObject* parent)
-            : ArnItem( parent)
+    : ArnItem( parent)
 {
     init();
 }
 
 
 ArnPipe::ArnPipe( const QString& path, QObject* parent)
-            : ArnItem( parent)
+    : ArnItem( parent)
 {
     init();
     this->open( path);
@@ -139,9 +137,10 @@ void  ArnPipe::itemUpdateStart(const ArnLinkHandle& handleData, const QByteArray
     ArnItem::itemUpdateStart( handleData);  // MW: Base
     if (_useCheckSeq && handleData.has( ArnLinkHandle::SeqNo)) {
         int seqNum = handleData.value( ArnLinkHandle::SeqNo).toInt();
-        if (seqNum != _checkSeqNum) {
-            _checkSeqNum = seqNum;  // Resync to last received checkSeqNum
-            emit outOfSequence();
+        if (seqNum != _checkSeqNum) {  // Sequence not matching
+            if (_checkSeqNum != -1)  // If not initial, this is out of sequence
+                emit outOfSequence();
+            _checkSeqNum = seqNum;  // Resync to this received SeqNum
         }
         _checkSeqNum = (_checkSeqNum + 1) % 1000;
     }
