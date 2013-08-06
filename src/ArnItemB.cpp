@@ -30,7 +30,7 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnItem.hpp"
+#include "ArnItemB.hpp"
 #include "Arn.hpp"
 #include <QDataStream>
 #include <QUuid>
@@ -39,73 +39,34 @@
 #include <QDebug>
 
 
-//QAtomicInt ArnItemB::_idCount(1);
+QAtomicInt ArnItemB::_idCount(1);
 
-#if QT_VERSION >= 0x050000
-//// Store meta methods for the "changed..." signals, used later for comparison
-QMetaMethod  ArnItem::_metaSignalChanged(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)()>(&ArnItem::changed)));
-QMetaMethod  ArnItem::_metaSignalChangedInt(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(int)>(&ArnItem::changed)));
-QMetaMethod  ArnItem::_metaSignalChangedDouble(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(double)>(&ArnItem::changed)));
-QMetaMethod  ArnItem::_metaSignalChangedBool(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(bool)>(&ArnItem::changed)));
-QMetaMethod  ArnItem::_metaSignalChangedString(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(QString)>(&ArnItem::changed)));
-QMetaMethod  ArnItem::_metaSignalChangedByteArray(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(QByteArray)>(&ArnItem::changed)));
-QMetaMethod  ArnItem::_metaSignalChangedVariant(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(QVariant)>(&ArnItem::changed)));
-#endif
 
-//2
-void  ArnItem::init()
+void  ArnItemB::init()
 {
-    _delayTimer = 0;
-    _isTemplate = false;
+    _link       = 0;
+    _reference  = 0;
+    _id         = _idCount.fetchAndAddRelaxed(1);
 
-    _emitChanged          = 0;
-    _emitChangedInt       = 0;
-    _emitChangedDouble    = 0;
-    _emitChangedBool      = 0;
-    _emitChangedString    = 0;
-    _emitChangedByteArray = 0;
+    _useForceKeep    = false;
+    _blockEcho       = false;
+    _ignoreSameValue = ArnM::defaultIgnoreSameValue();
+    _isOnlyEcho      = true;  // Nothing else yet ...
+
+    _syncMode = SyncMode();
+    _mode     = Mode();
+    _syncModeLinkShare = true;
 }
 
-//2
-ArnItem::ArnItem( QObject *parent)
-            : ArnItemB( parent)
+
+ArnItemB::ArnItemB( QObject *parent)
+            : QObject( parent)
 {
     init();
 }
 
-//ai
-ArnItem::ArnItem( const QString& path, QObject *parent)
-            : ArnItemB( parent)
-{
-    init();
-    this->open( path);
-}
 
-//ai
-ArnItem::ArnItem( const ArnItem& folder_template, const QString& itemName_path, QObject *parent)
-            : ArnItemB( parent)
-{
-    init();
-    /// Double usage 2 modes: template, folder
-    if (folder_template.isTemplate()) {  // Template mode: Copy syncMode & Mode from template to this Item
-        this->addSyncMode( folder_template.syncMode(), true);
-        this->addMode( folder_template.getMode());
-        this->open( itemName_path);  // (path)
-    }
-    else {  // folder mode: Open itemName based on folder item
-        this->open( folder_template, itemName_path);  // (folder, itemName)
-    }
-}
-
-/*
-void  ArnItem::setupOpenItem( bool isFolder)
+void  ArnItemB::setupOpenItem( bool isFolder)
 {
     addMode( _mode);  // Transfer modes to the link
     modeUpdate(true);
@@ -128,7 +89,7 @@ void  ArnItem::setupOpenItem( bool isFolder)
 }
 
 
-bool  ArnItem::open( const QString &path, bool isFolder)
+bool  ArnItemB::open( const QString &path, bool isFolder)
 {
     SyncMode  syncMode = _syncModeLinkShare ? _syncMode : SyncMode();
     ArnLink::Flags  flags;
@@ -140,14 +101,14 @@ bool  ArnItem::open( const QString &path, bool isFolder)
 }
 
 
-bool  ArnItem::open( const QString &path)
+bool  ArnItemB::open( const QString &path)
 {
     bool  isFolder = path.endsWith("/");
     return open( path, isFolder);
 }
 
 
-bool  ArnItem::openUuidPipe( const QString &path)
+bool  ArnItemB::openUuidPipe( const QString &path)
 {
     QUuid  uuid = QUuid::createUuid();
     QString  fullPath = path + uuid.toString();
@@ -157,13 +118,13 @@ bool  ArnItem::openUuidPipe( const QString &path)
 }
 
 
-bool  ArnItem::openFolder( const QString &path)
+bool  ArnItemB::openFolder( const QString &path)
 {
     return open( path, true);
 }
 
 
-bool  ArnItem::open( const ArnItem& folder, const QString& itemName, bool isFolder)
+bool  ArnItemB::open( const ArnItemB& folder, const QString& itemName, bool isFolder)
 {
     ArnLink *parent = folder._link;
 
@@ -178,14 +139,14 @@ bool  ArnItem::open( const ArnItem& folder, const QString& itemName, bool isFold
 }
 
 
-bool  ArnItem::open( const ArnItem& folder, const QString& itemName)
+bool  ArnItemB::open( const ArnItemB& folder, const QString& itemName)
 {
     bool  isFolder = itemName.endsWith("/");
     return open( folder, itemName, isFolder);
 }
 
 
-void  ArnItem::close()
+void  ArnItemB::close()
 {
     if (!_link)  return;
 
@@ -196,19 +157,19 @@ void  ArnItem::close()
 }
 
 
-void  ArnItem::destroyLink()
+void  ArnItemB::destroyLink()
 {
     ArnM::destroyLink( _link);
 }
 
 
-bool  ArnItem::isOpen()  const
+bool  ArnItemB::isOpen()  const
 {
     return _link != 0;
 }
 
 
-bool  ArnItem::isFolder()  const
+bool  ArnItemB::isFolder()  const
 {
     if (!_link)  return false;
 
@@ -216,7 +177,7 @@ bool  ArnItem::isFolder()  const
 }
 
 
-bool  ArnItem::isBiDir()  const
+bool  ArnItemB::isBiDir()  const
 {
     if (!_link)  return false;
 
@@ -224,7 +185,7 @@ bool  ArnItem::isBiDir()  const
 }
 
 
-ArnLink::Type  ArnItem::type()  const
+ArnLink::Type  ArnItemB::type()  const
 {
     if (!_link)  return ArnLink::Type::Null;
 
@@ -232,7 +193,7 @@ ArnLink::Type  ArnItem::type()  const
 }
 
 
-uint  ArnItem::linkId()  const
+uint  ArnItemB::linkId()  const
 {
     if (!_link)  return 0;
 
@@ -240,7 +201,7 @@ uint  ArnItem::linkId()  const
 }
 
 
-void  ArnItem::modeUpdate( bool isSetup)
+void  ArnItemB::modeUpdate( bool isSetup)
 {
     Q_UNUSED(isSetup);
 
@@ -250,7 +211,7 @@ void  ArnItem::modeUpdate( bool isSetup)
 }
 
 
-void  ArnItem::addSyncMode( SyncMode syncMode, bool linkShare)
+void  ArnItemB::addSyncMode( SyncMode syncMode, bool linkShare)
 {
     _syncModeLinkShare = linkShare;
     _syncMode.f |= syncMode.f;
@@ -260,47 +221,16 @@ void  ArnItem::addSyncMode( SyncMode syncMode, bool linkShare)
 }
 
 
-ArnItem::SyncMode  ArnItem::syncMode()  const
+ArnItemB::SyncMode  ArnItemB::syncMode()  const
 {
     if (_syncModeLinkShare  &&  _link) {
-        return ArnItem::SyncMode::F( _link->syncMode());
+        return ArnItemB::SyncMode::fromInt( _link->syncMode());
     }
     return _syncMode;
 }
-*/
-//ai
-void  ArnItem::itemUpdateEnd()
-{
-    resetOnlyEcho();  // Nothing else yet ...
-}
 
-//ai
-void  ArnItem::itemCreatedBelow( QString path)
-{
-    emit arnItemCreated( path);
-}
 
-//ai
-void  ArnItem::itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode)
-{
-    emit arnModeChanged( path, linkId, mode);
-}
-
-//ai
-ArnItem&  ArnItem::setTemplate( bool isTemplate)
-{
-    _isTemplate = isTemplate;
-    return *this;
-}
-
-//ai
-bool  ArnItem::isTemplate()  const
-{
-    return _isTemplate;
-}
-
-/*
-ArnItem&  ArnItem::setBiDirMode()
+ArnItemB&  ArnItemB::setBiDirMode()
 {
     _mode.f |= _mode.BiDir;
     if (!_link)  return *this;
@@ -315,7 +245,7 @@ ArnItem&  ArnItem::setBiDirMode()
 }
 
 
-bool  ArnItem::isBiDirMode()  const
+bool  ArnItemB::isBiDirMode()  const
 {
     if (!_link)  return _mode.is( _mode.BiDir);
 
@@ -323,7 +253,7 @@ bool  ArnItem::isBiDirMode()  const
 }
 
 
-ArnItem&  ArnItem::setPipeMode()
+ArnItemB&  ArnItemB::setPipeMode()
 {
     _mode.f |= _mode.Pipe | _mode.BiDir;
     if (!_link)  return *this;
@@ -340,7 +270,7 @@ ArnItem&  ArnItem::setPipeMode()
 }
 
 
-bool  ArnItem::isPipeMode()  const
+bool  ArnItemB::isPipeMode()  const
 {
     if (!_link)  return _mode.is( _mode.Pipe);
 
@@ -348,7 +278,7 @@ bool  ArnItem::isPipeMode()  const
 }
 
 
-ArnItem&  ArnItem::setSaveMode()
+ArnItemB&  ArnItemB::setSaveMode()
 {
     _mode.f |= _mode.Save;
     if (!_link)  return *this;
@@ -358,7 +288,7 @@ ArnItem&  ArnItem::setSaveMode()
 }
 
 
-bool  ArnItem::isSaveMode()  const
+bool  ArnItemB::isSaveMode()  const
 {
     if (!_link)  return _mode.is( _mode.Save);
 
@@ -366,7 +296,7 @@ bool  ArnItem::isSaveMode()  const
 }
 
 
-ArnItem&  ArnItem::setMaster()
+ArnItemB&  ArnItemB::setMaster()
 {
     if (_link) {
         ArnM::errorLog( QString(tr("Setting item/link as master")),
@@ -377,13 +307,13 @@ ArnItem&  ArnItem::setMaster()
 }
 
 
-bool  ArnItem::isMaster()  const
+bool  ArnItemB::isMaster()  const
 {
     return syncMode().is( SyncMode::Master);
 }
 
 
-ArnItem&  ArnItem::setAutoDestroy()
+ArnItemB&  ArnItemB::setAutoDestroy()
 {
     if (_link) {
         ArnM::errorLog( QString(tr("Setting item/link to autoDestroy")),
@@ -394,13 +324,13 @@ ArnItem&  ArnItem::setAutoDestroy()
 }
 
 
-bool  ArnItem::isAutoDestroy()  const
+bool  ArnItemB::isAutoDestroy()  const
 {
     return syncMode().is( SyncMode::AutoDestroy);
 }
 
 
-void  ArnItem::addMode( Mode mode)
+void  ArnItemB::addMode( Mode mode)
 {
     _mode.f |= mode.f;  // Just in case, transfer all modes
 
@@ -416,14 +346,14 @@ void  ArnItem::addMode( Mode mode)
 }
 
 
-ArnItem::Mode  ArnItem::getMode()  const
+ArnItemB::Mode  ArnItemB::getMode()  const
 {
     return getMode( _link);
 }
 
 
 /// Use with care, link must be "referenced" before use, otherwise it might have been deleted
-ArnItem::Mode  ArnItem::getMode( ArnLink* link)  const
+ArnItemB::Mode  ArnItemB::getMode( ArnLink* link)  const
 {
     if (!link)  return _mode;
 
@@ -436,19 +366,19 @@ ArnItem::Mode  ArnItem::getMode( ArnLink* link)  const
 }
 
 
-void  ArnItem::setIgnoreSameValue( bool isIgnore)
+void  ArnItemB::setIgnoreSameValue( bool isIgnore)
 {
     _ignoreSameValue = isPipeMode() ? false :isIgnore;
 }
 
 
-bool  ArnItem::isIgnoreSameValue()
+bool  ArnItemB::isIgnoreSameValue()
 {
     return _ignoreSameValue;
 }
 
 
-QString  ArnItem::path( ArnLink::NameF nameF)  const
+QString  ArnItemB::path( ArnLink::NameF nameF)  const
 {
     if (!_link)  return QString();
 
@@ -456,31 +386,21 @@ QString  ArnItem::path( ArnLink::NameF nameF)  const
 }
 
 
-QString  ArnItem::name( ArnLink::NameF nameF)  const
+QString  ArnItemB::name( ArnLink::NameF nameF)  const
 {
     if (!_link)  return QString();
 
     return _link->linkName( nameF);
 }
-*/
-//ai
-void  ArnItem::setDelay( int delay)
-{
-    if (!_delayTimer) {
-        _delayTimer = new QTimer;
-        _delayTimer->setInterval( delay);
-        connect( _delayTimer, SIGNAL(timeout()), this, SLOT(timeoutItemUpdate()));
-    }
-}
 
-/*
-void  ArnItem::arnImport( const QByteArray& data, int ignoreSame)
+
+void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame)
 {
     arnImport( data, ignoreSame, ArnLinkHandle());
 }
 
 
-void  ArnItem::arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData)
+void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData)
 {
     if (!data.isEmpty()) {
         if (data.at(0) < 32) {  // Assume SetAs-code
@@ -507,7 +427,7 @@ void  ArnItem::arnImport( const QByteArray& data, int ignoreSame, const ArnLinkH
 }
 
 
-QByteArray  ArnItem::arnExport()  const
+QByteArray  ArnItemB::arnExport()  const
 {
     if (!_link)  return QByteArray();
 
@@ -534,7 +454,7 @@ QByteArray  ArnItem::arnExport()  const
 }
 
 
-QString  ArnItem::toString() const
+QString  ArnItemB::toString() const
 {
     if (!_link)  return QString();
 
@@ -542,7 +462,7 @@ QString  ArnItem::toString() const
 }
 
 
-QByteArray  ArnItem::toByteArray() const
+QByteArray  ArnItemB::toByteArray() const
 {
     if (!_link)  return QByteArray();
 
@@ -550,7 +470,7 @@ QByteArray  ArnItem::toByteArray() const
 }
 
 
-QVariant  ArnItem::toVariant() const
+QVariant  ArnItemB::toVariant() const
 {
     if (!_link)  return QVariant();
 
@@ -558,7 +478,7 @@ QVariant  ArnItem::toVariant() const
 }
 
 
-int  ArnItem::toInt() const
+int  ArnItemB::toInt() const
 {
     if (!_link)  return 0;
 
@@ -566,7 +486,7 @@ int  ArnItem::toInt() const
 }
 
 
-double  ArnItem::toDouble() const
+double  ArnItemB::toDouble() const
 {
     if (!_link)  return 0.0;
 
@@ -574,64 +494,15 @@ double  ArnItem::toDouble() const
 }
 
 
-bool  ArnItem::toBool() const
+bool  ArnItemB::toBool() const
 {
     if (!_link)  return false;
 
     return _link->toInt() != 0;
 }
-*/
-//ai
-ArnItem&  ArnItem::operator=( const ArnItem& other)
-{
-    this->setValue( other);
-    return *this;
-}
 
-//ai
-ArnItem&  ArnItem::operator=( int other)
-{
-    this->setValue( other);
-    return *this;
-}
 
-//ai
-ArnItem&  ArnItem::operator=( double other)
-{
-    this->setValue( other);
-    return *this;
-}
-
-//ai
-ArnItem&  ArnItem::operator=( const QString& other)
-{
-    this->setValue( other);
-    return *this;
-}
-
-//ai
-ArnItem&  ArnItem::operator=( const QByteArray& other)
-{
-    this->setValue( other);
-    return *this;
-}
-
-//ai
-ArnItem&  ArnItem::operator=( const char* other)
-{
-    this->setValue( other);
-    return *this;
-}
-
-//ai
-ArnItem&  ArnItem::operator=( const QVariant& other)
-{
-    this->setValue( other);
-    return *this;
-}
-
-/*
-void  ArnItem::setValue( const ArnItem& other, int ignoreSame)
+void  ArnItemB::setValue( const ArnItemB& other, int ignoreSame)
 {
     ArnLink *link = other._link;
 
@@ -673,7 +544,7 @@ void  ArnItem::setValue( const ArnItem& other, int ignoreSame)
 }
 
 
-void  ArnItem::setValue( int value, int ignoreSame)
+void  ArnItemB::setValue( int value, int ignoreSame)
 {
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
@@ -694,7 +565,7 @@ void  ArnItem::setValue( int value, int ignoreSame)
 }
 
 
-void  ArnItem::setValue( double value, int ignoreSame)
+void  ArnItemB::setValue( double value, int ignoreSame)
 {
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
@@ -715,7 +586,7 @@ void  ArnItem::setValue( double value, int ignoreSame)
 }
 
 
-void  ArnItem::setValue( bool value, int ignoreSame)
+void  ArnItemB::setValue( bool value, int ignoreSame)
 {
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
@@ -736,7 +607,7 @@ void  ArnItem::setValue( bool value, int ignoreSame)
 }
 
 
-void  ArnItem::setValue( const QString& value, int ignoreSame)
+void  ArnItemB::setValue( const QString& value, int ignoreSame)
 {
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
@@ -757,7 +628,7 @@ void  ArnItem::setValue( const QString& value, int ignoreSame)
 }
 
 
-void  ArnItem::setValue( const QByteArray& value, int ignoreSame)
+void  ArnItemB::setValue( const QByteArray& value, int ignoreSame)
 {
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
@@ -778,7 +649,7 @@ void  ArnItem::setValue( const QByteArray& value, int ignoreSame)
 }
 
 
-void  ArnItem::setValue( const QVariant& value, int ignoreSame)
+void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
 {
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
@@ -797,23 +668,9 @@ void  ArnItem::setValue( const QVariant& value, int ignoreSame)
                   ArnError::ItemNotOpen);
     }
 }
-*/
-//ai
-void  ArnItem::setValue( const char* value, int ignoreSame)
-{
-        setValue( QByteArray( value), ignoreSame);
-}
 
-//ai
-void  ArnItem::toggleBool()
-{
-    bool value = toBool();
 
-    setValue( !value);
-}
-
-/*
-void  ArnItem::setValue( const QByteArray& value, int ignoreSame, const ArnLinkHandle& handleData)
+void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, const ArnLinkHandle& handleData)
 {
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
@@ -834,7 +691,7 @@ void  ArnItem::setValue( const QByteArray& value, int ignoreSame, const ArnLinkH
 }
 
 
-void  ArnItem::trfValue( const QByteArray& value, int sendId, bool forceKeep,
+void  ArnItemB::trfValue( const QByteArray& value, int sendId, bool forceKeep,
                          const ArnLinkHandle& handleData)
 {
     QMetaObject::invokeMethod( _link, "trfValue", Qt::QueuedConnection,
@@ -843,126 +700,16 @@ void  ArnItem::trfValue( const QByteArray& value, int sendId, bool forceKeep,
                                Q_ARG( bool, forceKeep),
                                Q_ARG( ArnLinkHandle, handleData));
 }
-*/
-//ai
-#if QT_VERSION >= 0x050000
-
-void  ArnItem::connectNotify( const QMetaMethod &signal)
-{
-    if (signal == _metaSignalChanged) {
-        _emitChanged++;
-    }
-    else if (signal == _metaSignalChangedInt) {
-        _emitChangedInt++;
-    }
-    else if (signal == _metaSignalChangedDouble) {
-        _emitChangedDouble++;
-    }
-    else if (signal == _metaSignalChangedBool) {
-        _emitChangedBool++;
-    }
-    else if (signal == _metaSignalChangedString) {
-        _emitChangedString++;
-    }
-    else if (signal == _metaSignalChangedByteArray) {
-        _emitChangedByteArray++;
-    }
-    else if (signal == _metaSignalChangedVariant) {
-        _emitChangedVariant++;
-    }
-}
 
 
-void  ArnItem::disconnectNotify( const QMetaMethod &signal)
-{
-    if (signal == _metaSignalChanged) {
-        _emitChanged--;
-    }
-    else if (signal == _metaSignalChangedInt) {
-        _emitChangedInt--;
-    }
-    else if (signal == _metaSignalChangedDouble) {
-        _emitChangedDouble--;
-    }
-    else if (signal == _metaSignalChangedBool) {
-        _emitChangedBool--;
-    }
-    else if (signal == _metaSignalChangedString) {
-        _emitChangedString--;
-    }
-    else if (signal == _metaSignalChangedByteArray) {
-        _emitChangedByteArray--;
-    }
-    else if (signal == _metaSignalChangedVariant) {
-        _emitChangedVariant--;
-    }
-}
-
-
-#else
-//ai
-void  ArnItem::connectNotify( const char *signal)
-{
-    if (QLatin1String( signal) == SIGNAL(changed())) {
-        _emitChanged++;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(int))) {
-        _emitChangedInt++;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(double))) {
-        _emitChangedDouble++;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(bool))) {
-        _emitChangedBool++;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(QString))) {
-        _emitChangedString++;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(QByteArray))) {
-        _emitChangedByteArray++;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(QVariant))) {
-        _emitChangedVariant++;
-    }
-}
-
-//ai
-void  ArnItem::disconnectNotify( const char *signal)
-{
-    if (QLatin1String( signal) == SIGNAL(changed())) {
-        _emitChanged--;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(int))) {
-        _emitChangedInt--;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(double))) {
-        _emitChangedDouble--;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(bool))) {
-        _emitChangedBool--;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(QString))) {
-        _emitChangedString--;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(QByteArray))) {
-        _emitChangedByteArray--;
-    }
-    else if (QLatin1String( signal) == SIGNAL(changed(QVariant))) {
-        _emitChangedVariant--;
-    }
-}
-
-#endif
-
-/*
-QStringList  ArnItem::childItemsMain()  const
+QStringList  ArnItemB::childItemsMain()  const
 {
     // This must be run in main thread as childs only can be deleted there
     return ArnM::itemsMain( _link);
 }
 
 
-void  ArnItem::errorLog( QString errText, ArnError err, void* reference)
+void  ArnItemB::errorLog( QString errText, ArnError err, void* reference)
 {
     QString  itemText;
     if (_link) {
@@ -970,141 +717,31 @@ void  ArnItem::errorLog( QString errText, ArnError err, void* reference)
     }
     ArnM::errorLog( errText + itemText, err, reference);
 }
-*/
 
 
-void  ArnItem::itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value)
-{
-    if (!value) {
-        if (_delayTimer) {
-            if (!_delayTimer->isActive()) {
-                _delayTimer->start();
-            }
-        }
-        else {
-            doItemUpdate( handleData);
-        }
-    }
-    else {
-        itemUpdateStart( handleData, value);
-        if (_emitChanged) {
-            emit changed();
-        }
-        if (_emitChangedInt) {
-            emit changed( int( value->toInt()));
-        }
-        if (_emitChangedDouble) {
-            emit changed( double( value->toDouble()));
-        }
-        if (_emitChangedBool) {
-            emit changed( bool( value->toInt() != 0));
-        }
-        if (_emitChangedString) {
-            emit changed( QString::fromUtf8( value->constData(), value->size()));
-        }
-        if (_emitChangedByteArray) {
-            emit changed( *value);
-        }
-        if (_emitChangedVariant) {
-            // Can only handle printable value ...
-            emit changed( QVariant( QString::fromUtf8( value->constData(), value->size())));
-        }
-        itemUpdateEnd();
-    }
-}
-
-
-void  ArnItem::doItemUpdate( const ArnLinkHandle& handleData)
-{
-    if (_delayTimer ) {
-        _delayTimer->stop();
-    }
-
-    itemUpdateStart( handleData);
-    if (_emitChanged) {
-        emit changed();
-    }
-    if (_emitChangedInt) {
-        emit changed( toInt());
-    }
-    if (_emitChangedDouble) {
-        emit changed( toDouble());
-    }
-    if (_emitChangedBool) {
-        emit changed( toBool());
-    }
-    if (_emitChangedString) {
-        emit changed( toString());
-    }
-    if (_emitChangedByteArray) {
-        emit changed( toByteArray());
-    }
-    if (_emitChangedByteArray) {
-        emit changed( toVariant());
-    }
-    itemUpdateEnd();
-}
-
-//ai
-void  ArnItem::timeoutItemUpdate()
-{
-    doItemUpdate( ArnLinkHandle());
-}
-
-/*
-void  ArnItem::linkValueUpdated( uint sendId, const ArnLinkHandle& handleData)
+void  ArnItemB::linkValueUpdated( uint sendId, const ArnLinkHandle& handleData)
 {
     if (_blockEcho  &&  sendId == _id) {  // This update was initiated from this Item, it can be blocked ...
         return;
     }
     _isOnlyEcho = (sendId == _id) ? _isOnlyEcho : false;
 
-    if (_delayTimer) {
-        if (!_delayTimer->isActive()) {
-            _delayTimer->start();
-        }
-    }
-    else {
-        doItemUpdate( handleData);
-    }
+    itemUpdate( handleData);
 }
 
 
-void  ArnItem::linkValueUpdated( uint sendId, QByteArray value, ArnLinkHandle handleData)
+void  ArnItemB::linkValueUpdated( uint sendId, QByteArray value, ArnLinkHandle handleData)
 {
     if (_blockEcho  &&  sendId == _id) {  // This update was initiated from this Item, it can be blocked ...
         return;
     }
     _isOnlyEcho = (sendId == _id) ? _isOnlyEcho : false;
 
-    itemUpdateStart( handleData, &value);
-    if (_emitChanged) {
-        emit changed();
-    }
-    if (_emitChangedInt) {
-        emit changed( int( value.toInt()));
-    }
-    if (_emitChangedDouble) {
-        emit changed( double( value.toDouble()));
-    }
-    if (_emitChangedBool) {
-        emit changed( bool( value.toInt() != 0));
-    }
-    if (_emitChangedString) {
-        emit changed( QString::fromUtf8( value.constData(), value.size()));
-    }
-    if (_emitChangedByteArray) {
-        emit changed( value);
-    }
-    if (_emitChangedVariant) {
-        // Can only handle printable value ...
-        emit changed( QVariant( QString::fromUtf8( value.constData(), value.size())));
-    }
-    itemUpdateEnd();
+    itemUpdate( handleData, &value);
 }
 
 
-void  ArnItem::arnLinkCreatedBelow( ArnLink* link)
+void  ArnItemB::arnLinkCreatedBelow( ArnLink* link)
 {
     if (!link->isFolder()) {
         itemCreatedBelow( link->linkPath());
@@ -1112,7 +749,7 @@ void  ArnItem::arnLinkCreatedBelow( ArnLink* link)
 }
 
 
-void  ArnItem::arnModeChangedBelow( QString path, uint linkId)
+void  ArnItemB::arnModeChangedBelow( QString path, uint linkId)
 {
     ArnLink::Flags  flags;
     ArnLink*  link = ArnM::link( path, flags.SilentError);
@@ -1123,22 +760,15 @@ void  ArnItem::arnModeChangedBelow( QString path, uint linkId)
 }
 
 
-void  ArnItem::doArnLinkDestroyed()
+void  ArnItemB::doArnLinkDestroyed()
 {
     qDebug() << "Item arnLinkDestroyed: path=" << path();
     emit arnLinkDestroyed();
     close();
 }
-*/
-//2
-ArnItem::~ArnItem()
-{
-}
 
-//ai
-QTextStream &operator<<( QTextStream& out, const ArnItem& item)
-{
-    out << item.toString();
-    return out;
-}
 
+ArnItemB::~ArnItemB()
+{
+    close();
+}

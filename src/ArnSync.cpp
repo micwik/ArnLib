@@ -340,7 +340,7 @@ uint  ArnSync::doCommandFlux()
 
     bool  isIgnoreSame = isOnlyEcho;
     if (!isOnlyEcho || !itemNet->getMode().is( ArnItem::Mode::Pipe))  // Echo to Pipe is ignored
-        itemNet->arnImport( data, isIgnoreSame, handleData);
+        itemNet->ArnItemB::arnImport( data, isIgnoreSame, handleData);
     return ArnError::Ok;
 }
 

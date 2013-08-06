@@ -35,6 +35,7 @@
 
 #include "ArnLib.hpp"
 #include "ArnLib_global.hpp"
+#include "ArnDefs.hpp"
 #include "ArnError.hpp"
 #include "ArnLink.hpp"
 #include "ArnItem.hpp"
@@ -102,7 +103,7 @@ This singleton class is the main reference to the Active Registry Network.
 class ARNLIBSHARED_EXPORT ArnM : public QObject
 {
 Q_OBJECT
-    friend class ArnItem;
+    friend class ArnItemB;
 
 public:
     static ArnM&  instance();

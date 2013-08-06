@@ -124,8 +124,7 @@ private slots:
 private:
     void  init();
     void  setupSeq( ArnLinkHandle& handleData);
-    /// Source for unique id to all ArnItem ..
-    //static QAtomicInt  _idCount;
+
     bool  _useSendSeq;
     bool  _useCheckSeq;
     int  _sendSeqNum;

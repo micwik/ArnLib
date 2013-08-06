@@ -33,6 +33,7 @@
 #ifndef ARNITEM_HPP
 #define ARNITEM_HPP
 
+#include "ArnItemB.hpp"
 #include "ArnLib_global.hpp"
 #include "ArnError.hpp"
 #include "ArnLink.hpp"
@@ -46,6 +47,7 @@
 #include <QAtomicInt>
 
 class QTimer;
+
 
 
 //! Handle for an _Arn Data Object_.
@@ -69,13 +71,14 @@ have it's own handles i.e ArnItem instances.
     _arnTime = "Undefined ...";
 \endcode
 */
-class ARNLIBSHARED_EXPORT ArnItem : public QObject
+class ARNLIBSHARED_EXPORT ArnItem : public ArnItemB
 {
     Q_OBJECT
     friend class ArnClient;
     friend class ArnSync;
 
 public:
+/*
     //! General global mode of an _Arn Data Object_
     struct Mode{
         enum E {
@@ -102,9 +105,9 @@ public:
         };
         MQ_DECLARE_FLAGS( SyncMode)
     };
-
+*/
     //! Standard constructor of a closed handle
-    ArnItem( QObject* parent = 0);
+    ArnItem( QObject* parent = 0);  //2
 
     //! Construction of a handle to a path
     /*! \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
@@ -118,79 +121,87 @@ public:
      */
     ArnItem( const ArnItem& folder_template, const QString& itemName_path, QObject* parent = 0);
 
-    virtual  ~ArnItem();
+    virtual  ~ArnItem();  //2
 
     //! Open a handle to an _Arn Data Object_
     /*! \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
      *  \retval false if error
      */
-    bool  open( const QString& path);
+    //bool  open( const QString& path);
 
     //! Open a handle to an Arn Pipe Object with a unique uuid name
     /*! \param[in] path The prefix for Arn uuid pipe path e.g. "//Pipes/pipe"
      *  \retval false if error
      */
-    bool  openUuidPipe( const QString& path);
+    bool  openUuidPipe( const QString& path)
+    {return ArnItemB::openUuidPipe( path);}
 
     //! Open a handle to an Arn folder
     /*! \param[in] path The Arn folder path e.g. "//Measure/Water" (the / is appended)
      *  \retval false if error
      */
-    bool  openFolder( const QString& path);
+    bool  openFolder( const QString& path)
+    {return ArnItemB::openFolder( path);}
 
     //! Close the handle
-    void  close();
+    //void  close();
 
     //! Destroy the _Arn Data Object_
     /*! The link (_Arn Data Object_) will be removed locally, from server and all
      *  connected clients.
      */
-    void  destroyLink();
+    //void  destroyLink();
 
     //! State of the handle
     /*! \retval true if this ArnItem is open
      */
-    bool  isOpen()  const;
+    //bool  isOpen()  const;
 
     /*! \retval true if this ArnItem is a folder
      */
-    bool  isFolder()  const;
+    bool  isFolder()  const
+    {return ArnItemB::isFolder();}
 
     /*! \retval true if this ArnItem is bi-directional
      *  \see setBiDirMode()
      *  \see \ref gen_arnobjModes
      */
-    bool  isBiDir()  const;
+    bool  isBiDir()  const
+    {return ArnItemB::isBiDir();}
 
     //! The type stored in the _Arn Data Object_
     /*! \return The type stored
      */
-    ArnLink::Type  type()  const;
+    ArnLink::Type  type()  const
+    {return ArnItemB::type();}
+
 
     //! Path of the _Arn Data Object_
     /*! \param[in] nameF The format of the returned path
      *  \return The object path
      */
-    QString  path( ArnLink::NameF nameF = ArnLink::NameF::EmptyOk)  const;
+    //QString  path( ArnLink::NameF nameF = ArnLink::NameF::EmptyOk)  const;
 
     //! Name of the _Arn Data Object_
     /*! \param[in] nameF The format of the returned name
      *  \return The object name
      */
-    QString  name( ArnLink::NameF nameF)  const;
+    //QString  name( ArnLink::NameF nameF)  const;
 
-    bool  isOnlyEcho()  const {return _isOnlyEcho;}
-    void  setBlockEcho( bool blockEcho)  {_blockEcho = blockEcho;}
+    //pr bool  isOnlyEcho()  const {return _isOnlyEcho;}
+    //pr void  setBlockEcho( bool blockEcho)  {_blockEcho = blockEcho;}
 
     //! Set skipping of equal value
     /*! \param[in] isIgnore If true, assignment of equal value don't give a changed signal.
      */
-    void  setIgnoreSameValue( bool isIgnore = true);
+    void  setIgnoreSameValue( bool isIgnore = true)
+    {ArnItemB::setIgnoreSameValue( isIgnore);}
 
     /*! \retval true if skipping equal values
      *  \see setIgnoreSameValue()
      */
-    bool  isIgnoreSameValue();
+    bool  isIgnoreSameValue()
+    {return ArnItemB::isIgnoreSameValue();}
 
     //! Set an associated external reference
     /*! This is typically used when having many _ArnItems_ changed signal connected
@@ -200,13 +211,13 @@ public:
      *  \param[in] reference Any external structure or id.
      *  \see reference()
      */
-    void  setReference( void* reference)  {_reference = reference;}
+    //void  setReference( void* reference)  {_reference = reference;}
 
     //! Get the stored external reference
     /*! \return The associated external reference
      *  \see setReference()
      */
-    void*  reference()  const {return _reference;}
+    //void*  reference()  const {return _reference;}
 
     //! Get the _id_ for this ArnItem
     /*! The ArnItem _id_ is unique within its running program. Even if 2 ArnItems are
@@ -214,7 +225,7 @@ public:
      *  \return _id_ for this ArnItem
      *  \see linkId()
      */
-    uint  itemId()  const {return _id;}
+    //uint  itemId()  const {return _id;}
 
     //! Get the _id_ for this _Arn Data Object_
     /*! The link (_Arn Data Object_) _id_ is unique within its running program.
@@ -223,7 +234,7 @@ public:
      *  \return Id for the _Arn Data Object_, 0 if closed
      *  \see itemId()
      */
-    uint  linkId()  const;
+    //uint  linkId()  const;
 
     //! Add _general mode_ settings for this _Arn Data Object_
     /*! If this ArnItem is in closed state, the added modes will be stored and
@@ -234,19 +245,22 @@ public:
      *  \see getMode()
      *  \see \ref gen_arnobjModes
      */
-    void  addMode( Mode mode);
+    void  addMode( Mode mode)
+    {return ArnItemB::addMode( mode);}
 
     /*! \return The _general mode_ of the _Arn Data Object_
      *  \see addMode()
      *  \see \ref gen_arnobjModes
      */
-    Mode  getMode()  const;
+    Mode  getMode()  const
+    {return ArnItemB::getMode();}
 
     /*! \return The client session _sync mode_ of an _Arn Data Object_
      *  \see addSyncMode()
      *  \see \ref gen_arnobjModes
      */
-    SyncMode  syncMode()  const;
+    SyncMode  syncMode()  const
+    {return ArnItemB::syncMode();}
 
     //! Mark this ArnItem as a template
     /*! When marked as a template it can be setup with a combination of _modes_ which
@@ -268,28 +282,32 @@ public:
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_bidirArnobj
      */
-    ArnItem&  setBiDirMode();
+    ArnItem&  setBiDirMode()
+    {ArnItemB::setBiDirMode(); return *this;}
 
     /*! \retval true if Bidirectional
      *  \see setBiDirMode()
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_bidirArnobj
      */
-    bool  isBiDirMode()  const;
+    bool  isBiDirMode()  const
+    {return ArnItemB::isBiDirMode();}
 
     //! Set _general mode_ as Pipe for this _Arn Data Object_
     /*! Implies _Bidir_.
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_pipeArnobj
      */
-    ArnItem&  setPipeMode();
+    ArnItem&  setPipeMode()
+    {ArnItemB::setPipeMode(); return *this;}
 
     /*! \retval true if _Pipe mode_
      *  \see setPipeMode()
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_pipeArnobj
      */
-    bool  isPipeMode()  const;
+    bool  isPipeMode()  const
+    {return ArnItemB::isPipeMode();}
 
     //! Set _general mode_ as _Save_ for this _Arn Data Object_
     /*! Data is persistent and will be saved
@@ -297,38 +315,44 @@ public:
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_persistArnobj
      */
-    ArnItem&  setSaveMode();
+    ArnItem&  setSaveMode()
+    {ArnItemB::setSaveMode(); return *this;}
 
     /*! \retval true if _Save mode_
      *  \see setSaveMode()
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_persistArnobj
      */
-    bool  isSaveMode()  const;
+    bool  isSaveMode()  const
+    {return ArnItemB::isSaveMode();}
 
     //! Set client session _sync mode_ as _Master_ for this ArnItem
     /*! This ArnItem at client side is set as default generator of data.
      *  \pre This must be set before open().
      *  \see \ref gen_arnobjModes
      */
-    ArnItem&  setMaster();
+    ArnItem&  setMaster()
+    {ArnItemB::setMaster(); return *this;}
 
     /*! \retval true if _Master mode_
      *  \see setMaster()
      *  \see \ref gen_arnobjModes
      */
-    bool  isMaster()  const;
+    bool  isMaster()  const
+    {return ArnItemB::isMaster();}
 
     //! Set client session _sync mode_ as _AutoDestroy_ for this ArnItem
     /*! This ArnItem at client side is setup for auto destruction.
      *  \pre This must be set before open().
      */
-    ArnItem&  setAutoDestroy();
+    ArnItem&  setAutoDestroy()
+    {ArnItemB::setAutoDestroy(); return *this;}
 
     /*! \retval true if _AutoDestroy mode_
      *  \see setAutoDestroy()
      */
-    bool  isAutoDestroy()  const;
+    bool  isAutoDestroy()  const
+    {return ArnItemB::isAutoDestroy();}
 
     //! Set _delay_ of data changed signal
     /*! Normally any change of the _Arn Data Object_ is immediately signalled.
@@ -347,36 +371,44 @@ public:
      *  \see arnExport()
      *  \see setIgnoreSameValue()
      */
-    void  arnImport( const QByteArray& data, int ignoreSame = -1);
+    void  arnImport( const QByteArray& data, int ignoreSame = -1)
+    {ArnItemB::arnImport( data, ignoreSame);}
 
     /*! \return A data blob representing the _Arn Data Object_
      *  \see arnImport()
      */
-    QByteArray  arnExport()  const;
+    QByteArray  arnExport()  const
+    {return ArnItemB::arnExport();}
 
     /*! \return Convert _Arn Data Object_ to a _integer_
      */
-    int  toInt()  const;
+    int  toInt()  const
+    {return ArnItemB::toInt();}
 
     /*! \return Convert _Arn Data Object_ to a _double_
      */
-    double  toDouble()  const;
+    double  toDouble()  const
+    {return ArnItemB::toDouble();}
 
     /*! \return Convert _Arn Data Object_ to a _bool_
      */
-    bool  toBool()  const;
+    bool  toBool()  const
+    {return ArnItemB::toBool();}
 
     /*! \return Convert _Arn Data Object_ to a _QString_
      */
-    QString  toString()  const;
+    QString  toString()  const
+    {return ArnItemB::toString();}
 
     /*! \return Convert _Arn Data Object_ to a _QByteArray_
      */
-    QByteArray  toByteArray()  const;
+    QByteArray  toByteArray()  const
+    {return ArnItemB::toByteArray();}
 
     /*! \return Convert _Arn Data Object_ to a _QVariant_
      */
-    QVariant  toVariant()  const;
+    QVariant  toVariant()  const
+    {return ArnItemB::toVariant();}
 
     ArnItem&  operator=( const ArnItem& other);
     ArnItem&  operator=( int other);
@@ -386,54 +418,57 @@ public:
     ArnItem&  operator=( const QVariant& other);
     ArnItem&  operator=( const char* other);
 
-    //! Assign a _QByteArray_ to a _Pipe_ by overwrite Regexp match in sendqueue
-    /*! \param[in] value to be assigned
-     *  \param[in] rx is regexp to be matched with items in send queue.
-     */
-    void  setValuePipeOverwrite( const QByteArray& value, const QRegExp& rx);
+    void  setValue( const ArnItem& other, int ignoreSame = -1)
+    {ArnItemB::setValue( other, ignoreSame);}
 
-public slots:    
+public slots:
     //! Assign an _integer_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
      *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( int value, int ignoreSame = -1);
+    void  setValue( int value, int ignoreSame = -1)
+    {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _double_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
      *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( double value, int ignoreSame = -1);
+    void  setValue( double value, int ignoreSame = -1)
+    {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _bool_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
      *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( bool value, int ignoreSame = -1);
+    void  setValue( bool value, int ignoreSame = -1)
+    {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _QString_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
      *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const QString& value, int ignoreSame = -1);
+    void  setValue( const QString& value, int ignoreSame = -1)
+    {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _QByteArray_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
      *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const QByteArray& value, int ignoreSame = -1);
+    void  setValue( const QByteArray& value, int ignoreSame = -1)
+    {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _QVariant_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
      *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const QVariant& value, int ignoreSame = -1);
+    void  setValue( const QVariant& value, int ignoreSame = -1)
+    {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _char*_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
@@ -510,45 +545,58 @@ signals:
      *  thrown away like a null device.
      *  \see destroyLink()
      */
-    void  arnLinkDestroyed();
+    //void  arnLinkDestroyed();
 
     //! \cond ADV
 protected slots:
-    virtual void  modeUpdate( bool isSetup = false);
+    //virtual void  modeUpdate( bool isSetup = false);
 
+/*
 protected:
-    bool  open( const ArnItem& folder, const QString& itemName);
-    void  setForceKeep( bool fk = true)  {_useForceKeep = fk;}
-    bool  isForceKeep()  const {return _useForceKeep;}
-    Mode  getMode( ArnLink* link)  const;
-    void  addSyncMode( SyncMode syncMode, bool linkShare);
-    void  resetOnlyEcho()  {_isOnlyEcho = true;}
-    void  setValue( const QByteArray& value, int ignoreSame, const ArnLinkHandle& handleData);
-    void  trfValue( const QByteArray& value, int sendId, bool forceKeep,
-                    const ArnLinkHandle& handleData = ArnLinkHandle());
-    void  arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData);
+    virtual void  itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value = 0)
+        {Q_UNUSED(handleData); Q_UNUSED(value);}
+    virtual void  itemUpdateEnd()  {}
+    virtual void  itemCreatedBelow( QString path);
+        {Q_UNUSED(path);}
+    virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItem::Mode mode);
+        {Q_UNUSED(path); Q_UNUSED(linkId); Q_UNUSED(mode);}
+*/
+protected:
+    // bool  open( const ArnItem& folder, const QString& itemName);
+    // void  setForceKeep( bool fk = true)  {_useForceKeep = fk;}
+    // bool  isForceKeep()  const {return _useForceKeep;}
+    // Mode  getMode( ArnLink* link)  const;
+    // void  addSyncMode( SyncMode syncMode, bool linkShare);
+    // void  resetOnlyEcho()  {_isOnlyEcho = true;}
+    // void  setValue( const QByteArray& value, int ignoreSame, const ArnLinkHandle& handleData);
+    // void  trfValue( const QByteArray& value, int sendId, bool forceKeep,
+    //                 const ArnLinkHandle& handleData = ArnLinkHandle());
+    // void  arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData);
+    virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value = 0)
         {Q_UNUSED(handleData); Q_UNUSED(value);}
     virtual void  itemUpdateEnd();
-    QStringList  childItemsMain()  const;
-    void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
+    virtual void  itemCreatedBelow( QString path);
+    virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode);
+    // QStringList  childItemsMain()  const;
+    // void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
 
-    ArnLink*  _link;
+    // ArnLink*  _link;
     //! \endcond
 
 private slots:
-    void  linkValueUpdated( uint sendId, const ArnLinkHandle& handleData);
-    void  linkValueUpdated( uint sendId, QByteArray value, ArnLinkHandle handleData);
+    // void  linkValueUpdated( uint sendId, const ArnLinkHandle& handleData);
+    // void  linkValueUpdated( uint sendId, QByteArray value, ArnLinkHandle handleData);
     void  timeoutItemUpdate();
-    void  arnLinkCreatedBelow( ArnLink* link);
-    void  arnModeChangedBelow( QString path, uint linkId);
-    void  doArnLinkDestroyed();
+    // void  arnLinkCreatedBelow( ArnLink* link);
+    // void  arnModeChangedBelow( QString path, uint linkId);
+    // void  doArnLinkDestroyed();
 
 private:
-    void  init();
-    void  setupOpenItem( bool isFolder);
-    bool  open( const QString& path, bool isFolder);
-    bool  open( const ArnItem& folder, const QString& itemName, bool isFolder);
+    void  init();  //2
+    // void  setupOpenItem( bool isFolder);
+    // bool  open( const QString& path, bool isFolder);
+    // bool  open( const ArnItem& folder, const QString& itemName, bool isFolder);
     void  doItemUpdate( const ArnLinkHandle& handleData);
 
 #if QT_VERSION >= 0x050000
@@ -567,7 +615,7 @@ private:
 #endif
 
     /// Source for unique id to all ArnItem ..
-    static QAtomicInt  _idCount;
+    // static QAtomicInt  _idCount;
 
     QTimer*  _delayTimer;
 
@@ -579,21 +627,21 @@ private:
     int  _emitChangedByteArray;
     int  _emitChangedVariant;
 
-    SyncMode  _syncMode;
-    Mode  _mode;
-    bool  _syncModeLinkShare;
-    bool  _useForceKeep;
-    bool  _blockEcho;
-    bool  _ignoreSameValue;
+    // SyncMode  _syncMode;
+    // Mode  _mode;
+    // bool  _syncModeLinkShare;
+    // bool  _useForceKeep;
+    // bool  _blockEcho;
+    // bool  _ignoreSameValue;
     bool  _isTemplate;
-    bool  _isOnlyEcho;
-    uint  _id;
-    void*  _reference;
+    // bool  _isOnlyEcho;
+    // uint  _id;
+    // void*  _reference;
 };
 
 QTextStream&  operator<<(QTextStream& out, const ArnItem& item);
 
-MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnItem::Mode)
-MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnItem::SyncMode)
+// MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnItem::Mode)
+// MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnItem::SyncMode)
 
 #endif // ARNITEM_HPP

@@ -387,7 +387,7 @@ bool  ArnRpc::invoke( const QString& funcName,
     if (stat) {
         if (invokeFlags.is( Invoke::NoQueue)) {
             QRegExp rx("^" + funcName + "\\b");
-            _pipe->setValuePipeOverwrite( xsmCall.toXString(), rx);
+            _pipe->setValueOverwrite( xsmCall.toXString(), rx);
         }
         else
             *_pipe = xsmCall.toXString();
