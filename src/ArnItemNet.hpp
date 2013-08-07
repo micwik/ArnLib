@@ -34,17 +34,14 @@
 #define ARNITEMNET_HPP
 
 
-#include "ArnLib_global.hpp"
-#include <QObject>
+#include "ArnItemB.hpp"
+//#include "ArnLib_global.hpp"
 #include <QStringList>
-#include "ArnItem.hpp"
-
-class ArnLink;
 
 
 //! \cond ADV
 // Must only be used in main thread
-class ArnItemNet : public ArnItem
+class ArnItemNet : public ArnItemB
 {
 Q_OBJECT
 public:
@@ -65,11 +62,20 @@ public:
     void  submitted();
     void  submittedMode();
     bool  isDirtyMode()  const { return _dirtyMode;}
-    virtual void  itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value = 0);
-    virtual void  itemUpdateEnd();
+
+    virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  modeUpdate( bool isSetup = false);
 
-    QStringList  childItemsMain()  const {return ArnItem::childItemsMain();}
+    using ArnItemB::addSyncMode;
+    using ArnItemB::syncMode;
+    using ArnItemB::getMode;
+    using ArnItemB::isPipeMode;
+    using ArnItemB::setBlockEcho;
+    using ArnItemB::isOnlyEcho;
+    using ArnItemB::type;
+    using ArnItemB::arnExport;
+    using ArnItemB::arnImport;
+    using ArnItemB::childItemsMain;
 
 signals:
     void  arnEvent( QByteArray type, QByteArray data, bool isLocal);
@@ -84,7 +90,6 @@ protected:
 private:
     void  init();
 
-    //Type  _type;
     uint  _netId;      // id used during sync over net
     int  _queueNum;    // number used in itemQueue
     bool  _dirty;      // item has been updated but not yet sent

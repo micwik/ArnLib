@@ -53,6 +53,7 @@ class ArnThreadCom
 {
     friend class ArnThreadComCaller;
     friend class ArnThreadComProxyLock;
+
 public:
     ArnThreadCom() {
         _retObj = 0;

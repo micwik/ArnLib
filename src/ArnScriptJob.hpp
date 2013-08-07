@@ -66,6 +66,7 @@ class ArnScriptJobB : public QObject
 {
     Q_OBJECT
     friend class ArnScriptJobControl;
+
 public:
     explicit  ArnScriptJobB( int id, QObject* parent = 0);
     bool  evaluateScript( QByteArray script, QString idName);

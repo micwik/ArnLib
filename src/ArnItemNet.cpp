@@ -30,10 +30,10 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include <QDebug>
-#include "Arn.hpp"
-#include "ArnClient.hpp"
 #include "ArnItemNet.hpp"
+//#include "ArnClient.hpp"
+//#include "Arn.hpp"
+#include <QDebug>
 
 
 void  ArnItemNet::init()
@@ -48,22 +48,23 @@ void  ArnItemNet::init()
 
 
 ArnItemNet::ArnItemNet( QObject *parent) :
-    ArnItem( parent)
+    ArnItemB( parent)
 {
     init();
 }
 
 
 ArnItemNet::ArnItemNet( const QString& path, QObject *parent) :
-        ArnItem( path, parent)
+        ArnItemB( parent)
 {
+    open( path);
     init();
 }
 
 
 void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
 {
-    ArnItem::SyncMode  syncMode;
+    ArnItemB::SyncMode  syncMode;
 
     syncMode.set( syncMode.Master,      smode.contains("master"));
     syncMode.set( syncMode.AutoDestroy, smode.contains("autodestroy"));
@@ -76,7 +77,7 @@ void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
 QByteArray  ArnItemNet::getSyncModeString()  const
 {
     QByteArray  smode;
-    SyncMode  syncMode = ArnItem::syncMode();
+    SyncMode  syncMode = ArnItemB::syncMode();
 
     if (syncMode.is( syncMode.Master))       smode += "master ";
     if (syncMode.is( syncMode.AutoDestroy))  smode += "autodestroy ";
@@ -89,9 +90,10 @@ QByteArray  ArnItemNet::getSyncModeString()  const
 void  ArnItemNet::setModeString( const QByteArray& modeString)
 {
     Mode  mode;
-    if (modeString.contains('P'))  mode.f |= mode.Pipe;
-    if (modeString.contains('V'))  mode.f |= mode.BiDir;
-    if (modeString.contains('S'))  mode.f |= mode.Save;
+    if (modeString.contains('P'))  mode.set( mode.Pipe);
+    if (modeString.contains('V'))  mode.set( mode.BiDir);  // Legacy
+    if (modeString.contains('B'))  mode.set( mode.BiDir);
+    if (modeString.contains('S'))  mode.set( mode.Save);
 
     addMode( mode);
 }
@@ -101,9 +103,9 @@ QByteArray  ArnItemNet::getModeString()  const
 {
     Mode  mode = getMode();
     QByteArray  modeString;
-    if (mode.is( mode.Pipe))       modeString += "P";
-    if (mode.is( mode.BiDir))  modeString += "V";
-    if (mode.is( mode.Save))       modeString += "S";
+    if (mode.is( mode.Pipe))   modeString += "P";
+    if (mode.is( mode.BiDir))  modeString += "VB";  // Legacy V
+    if (mode.is( mode.Save))   modeString += "S";
 
     return modeString;
 }
@@ -122,7 +124,7 @@ void  ArnItemNet::submittedMode()
 }
 
 
-void  ArnItemNet::itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value)
+void  ArnItemNet::itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value)
 {
     Q_UNUSED(value);
 
@@ -133,14 +135,9 @@ void  ArnItemNet::itemUpdateStart( const ArnLinkHandle& handleData, const QByteA
 }
 
 
-void  ArnItemNet::itemUpdateEnd()
-{
-}
-
-
 void  ArnItemNet::modeUpdate( bool isSetup)
 {
-    ArnItem::modeUpdate( isSetup); // must be called for base-class update
+    ArnItemB::modeUpdate( isSetup); // must be called for base-class update
     if (isSetup)  return;
 
     if (!_dirtyMode) {

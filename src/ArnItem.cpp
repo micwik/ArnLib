@@ -103,12 +103,6 @@ ArnItem::ArnItem( const ArnItem& folder_template, const QString& itemName_path, 
 }
 
 
-void  ArnItem::itemUpdateEnd()
-{
-    resetOnlyEcho();  // Nothing else yet ...
-}
-
-
 void  ArnItem::itemCreatedBelow( QString path)
 {
     emit arnItemCreated( path);
@@ -330,7 +324,6 @@ void  ArnItem::itemUpdate( const ArnLinkHandle& handleData, const QByteArray* va
         }
     }
     else {  // Update of item with data supplied (pipe in multi-thread)
-        itemUpdateStart( handleData, value);
         if (_emitChanged) {
             emit changed();
         }
@@ -353,18 +346,19 @@ void  ArnItem::itemUpdate( const ArnLinkHandle& handleData, const QByteArray* va
             // Can only handle printable value ...
             emit changed( QVariant( QString::fromUtf8( value->constData(), value->size())));
         }
-        itemUpdateEnd();
+        resetOnlyEcho();  // Nothing else yet ...
     }
 }
 
 
 void  ArnItem::doItemUpdate( const ArnLinkHandle& handleData)
 {
+    Q_UNUSED(handleData);
+
     if (_delayTimer ) {
         _delayTimer->stop();
     }
 
-    itemUpdateStart( handleData);
     if (_emitChanged) {
         emit changed();
     }
@@ -386,7 +380,7 @@ void  ArnItem::doItemUpdate( const ArnLinkHandle& handleData)
     if (_emitChangedByteArray) {
         emit changed( toVariant());
     }
-    itemUpdateEnd();
+    resetOnlyEcho();  // Nothing else yet ...
 }
 
 

@@ -81,7 +81,6 @@ Q_DECLARE_METATYPE( ArnLinkHandle)
 class ArnLink : public QObject
 {
     Q_OBJECT
-
     friend class ArnM;
 
 public:

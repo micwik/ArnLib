@@ -62,8 +62,6 @@ See ArnItem.
 class ARNLIBSHARED_EXPORT ArnItemB : public QObject
 {
     Q_OBJECT
-    friend class ArnClient;
-    friend class ArnSync;
 
 public:
     //! General global mode of an _Arn Data Object_
@@ -390,9 +388,6 @@ protected:
     //// To be reimplemented
     virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0)
         {Q_UNUSED(handleData); Q_UNUSED(value);}
-    virtual void  itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value = 0)
-        {Q_UNUSED(handleData); Q_UNUSED(value);}
-    virtual void  itemUpdateEnd()  {}
     virtual void  itemCreatedBelow( QString path)
         {Q_UNUSED(path);}
     virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode)
@@ -413,8 +408,6 @@ protected:
     void  arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData);
     QStringList  childItemsMain()  const;
     void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
-
-    ArnLink*  _link;
     //! \endcond
 
 private slots:
@@ -433,6 +426,7 @@ private:
     /// Source for unique id to all ArnItem ..
     static QAtomicInt  _idCount;
 
+    ArnLink*  _link;
     SyncMode  _syncMode;
     Mode  _mode;
     bool  _syncModeLinkShare;

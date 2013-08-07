@@ -577,10 +577,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
     bool  isBinaryType = false;
     bool  isListType   = false;
     bool  argInType    = false;
-    if (xsm.keyRef( index).startsWith("f")) {  // Legacy
-        isBinaryType = true;
-        ++index;
-    }
+
     const QByteArray&  typeKey = xsm.keyRef( index);
     if (typeKey == "tb") {
         isBinaryType = true;

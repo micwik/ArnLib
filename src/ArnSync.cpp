@@ -247,7 +247,7 @@ uint  ArnSync::doCommandSync()
     setupItemNet( itemNet, netId);
     itemNet->addSyncModeString( smode, false);  // SyncMode is only for the item (session), not the link
 
-    ArnItem::SyncMode  syncMode = itemNet->syncMode();
+    ArnItemB::SyncMode  syncMode = itemNet->syncMode();
     if (syncMode.is( syncMode.Monitor)) {
         setupMonitorItem( itemNet);
     }
@@ -256,7 +256,7 @@ uint  ArnSync::doCommandSync()
     }
     if ((itemNet->type() != ArnLink::Type::Null)
     && !(itemNet->syncMode().is( syncMode.Master))) {  // Only send non Null Value to non master
-        itemNet->itemUpdateStart( ArnLinkHandle()); // Make server send the current value to client
+        itemNet->itemUpdate( ArnLinkHandle()); // Make server send the current value to client
     }
 
     return ArnError::Ok;
@@ -340,7 +340,7 @@ uint  ArnSync::doCommandFlux()
 
     bool  isIgnoreSame = isOnlyEcho;
     if (!isOnlyEcho || !itemNet->getMode().is( ArnItem::Mode::Pipe))  // Echo to Pipe is ignored
-        itemNet->ArnItemB::arnImport( data, isIgnoreSame, handleData);
+        itemNet->arnImport( data, isIgnoreSame, handleData);
     return ArnError::Ok;
 }
 
@@ -436,7 +436,7 @@ void  ArnSync::connected()
         if ((itemNet->type() != ArnLink::Type::Null)            // Only send non Null Value ...
         && (!itemNet->isPipeMode())                                      // from non pipe ..
         && (itemNet->syncMode().is( ArnItem::SyncMode::Master))) {  // which is master
-            itemNet->itemUpdateStart( ArnLinkHandle());  // Make client send the current value to server
+            itemNet->itemUpdate( ArnLinkHandle());  // Make client send the current value to server
         }
     }
     sendNext();

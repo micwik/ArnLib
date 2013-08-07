@@ -74,8 +74,6 @@ have it's own handles i.e ArnItem instances.
 class ARNLIBSHARED_EXPORT ArnItem : public ArnItemB
 {
     Q_OBJECT
-    friend class ArnClient;
-    friend class ArnSync;
 
 public:
     //! Standard constructor of a closed handle
@@ -450,9 +448,6 @@ signals:
     //! \cond ADV
 protected:
     virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
-    virtual void  itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value = 0)
-        {Q_UNUSED(handleData); Q_UNUSED(value);}
-    virtual void  itemUpdateEnd();
     virtual void  itemCreatedBelow( QString path);
     virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode);
     //! \endcond
