@@ -446,11 +446,18 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
         argPrefix = "uint";
     else if (typeName == "bool")
         argPrefix = "bool";
-    else if (typeName == "QByteArray")
+    else if (typeName == "double")
+        argPrefix = "double";
+    else if (typeName == "QByteArray")  // Legacy
         argPrefix = "ba";
+    // else if (typeName == "QByteArray")  // Legacy Should be
+    //     argPrefix = "bytes";
     else if (typeName == "QStringList")
         argPrefix = "list";
-    else if (typeName != "QString")
+    else if (typeName == "QString")
+        argPrefix = "a";  // Legacy
+        // argPrefix = "string";  // Legacy should be
+    else
         xsm.add((isBinaryType ? "tb" : "t"), typeName);
 
     //// Output argument to xsm
@@ -571,6 +578,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
     static const QByteArray  intName     = "int";
     static const QByteArray  uintName    = "uint";
     static const QByteArray  boolName    = "bool";
+    static const QByteArray  doubleName  = "double";
 
     //// Get arg type info
     const QByteArray*  typeName = &qstringName;  // Default type
@@ -588,26 +596,38 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
         typeName = &xsm.valueRef( index);
         ++index;
     }
-    else if (typeKey.startsWith("int")) {
+    else if (typeKey.startsWith("in")) {
         typeName  = &intName;
         argInType = true;
     }
-    else if (typeKey.startsWith("uint")) {
+    else if (typeKey.startsWith("ui")) {
         typeName  = &uintName;
         argInType = true;
     }
-    else if (typeKey.startsWith("bool")) {
+    else if (typeKey.startsWith("bo")) {
         typeName  = &boolName;
         argInType = true;
     }
-    else if (typeKey.startsWith("ba")) {
+    else if (typeKey.startsWith("do")) {
+        typeName  = &doubleName;
+        argInType = true;
+    }
+    else if (typeKey.startsWith("by")) {
         typeName  = &qbaName;
+        argInType = true;
+    }
+    else if (typeKey.startsWith("st")) {
+        typeName  = &qstringName;
         argInType = true;
     }
     else if (typeKey.startsWith("li")) {
         typeName   = &qlistName;
         isListType = true;
         argInType  = true;
+    }
+    else if (typeKey.startsWith("ba")) {  // legacy
+        typeName  = &qbaName;
+        argInType = true;
     }
     int  type = QMetaType::type( typeName->constData());
     if (!type) {
@@ -788,14 +808,19 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
             parType = "uint";
         else if (typeName == "bool")
             parType = "bool";
-        else if (typeName == "QByteArray")
+        else if (typeName == "double")
+            parType = "double";
+        else if (typeName == "QByteArray")  // Legacy
             parType = "ba";
+        //  else if (typeName == "QByteArray")  // Legacy Should be ...
+        //    parType = "bytes";
         else if (typeName == "QStringList") {
             parType = "list";
             isListType = true;
         }
         else if (typeName == "QString")
-            parType = wasListType ? "a" : "";
+            parType = wasListType ? "a" : "";  // Legacy
+            // parType = wasListType ? "string" : "";  // Legacy should be
         else {
             parType = "a";
             param += (isBinaryType ? "tb" : "t") + QByteArray("=") + typeName + " ";
