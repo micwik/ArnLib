@@ -46,17 +46,17 @@ void  ArnPipe::init()
 
 
 ArnPipe::ArnPipe( QObject* parent)
-    : ArnItem( parent)
+    : ArnItemB( parent)
 {
     init();
 }
 
 
 ArnPipe::ArnPipe( const QString& path, QObject* parent)
-    : ArnItem( parent)
+    : ArnItemB( parent)
 {
     init();
-    this->open( path);
+    open( path);
 }
 
 
@@ -67,13 +67,10 @@ ArnPipe::~ArnPipe()
 
 void  ArnPipe::setValue( const QByteArray& value)
 {
-    if (_link) {
+    if (isOpen()) {
         ArnLinkHandle  handleData;
         setupSeq( handleData);
-        if (_link->isThreaded())
-            trfValue( value, itemId(), isForceKeep(), handleData);
-        else
-            _link->setValue( value, itemId(), isForceKeep(), handleData);
+        ArnItemB::setValue( value, Arn::SameValue::Accept, handleData);
     }
     else {
         errorLog( QString(tr("Assigning bytearray Pipe:")) + QString::fromUtf8( value.constData(), value.size()),
@@ -84,13 +81,10 @@ void  ArnPipe::setValue( const QByteArray& value)
 
 void  ArnPipe::setValueOverwrite( const QByteArray& value, const QRegExp& rx)
 {
-    if (_link) {
+    if (isOpen()) {
         ArnLinkHandle  handleData;
         handleData.add( ArnLinkHandle::QueueFindRegexp, QVariant( rx));
-        if (_link->isThreaded())
-            trfValue( value, itemId(), isForceKeep(), handleData);
-        else
-            _link->setValue( value, itemId(), isForceKeep(), handleData);
+        ArnItemB::setValue( value, Arn::SameValue::Accept, handleData);
     }
     else {
         errorLog( QString(tr("Assigning bytearray PipeOW:")) + QString::fromUtf8( value.constData(), value.size()),
@@ -132,9 +126,10 @@ void  ArnPipe::setUseCheckSeq( bool useCheckSeq)
 }
 
 
-void  ArnPipe::itemUpdateStart(const ArnLinkHandle& handleData, const QByteArray* value)
+void  ArnPipe::itemUpdate(const ArnLinkHandle& handleData, const QByteArray* value)
 {
-    ArnItem::itemUpdateStart( handleData);  // MW: Base
+    ArnItemB::itemUpdate( handleData, value);
+
     if (_useCheckSeq && handleData.has( ArnLinkHandle::SeqNo)) {
         int seqNum = handleData.value( ArnLinkHandle::SeqNo).toInt();
         if (seqNum != _checkSeqNum) {  // Sequence not matching
@@ -147,11 +142,5 @@ void  ArnPipe::itemUpdateStart(const ArnLinkHandle& handleData, const QByteArray
     if (value)
         emit changed( *value);
     else
-        emit changed( _link->toByteArray());
-}
-
-
-void  ArnPipe::itemUpdateEnd()
-{
-    ArnItem::itemUpdateEnd();  // MW: Base
+        emit changed( toByteArray());
 }

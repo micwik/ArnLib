@@ -175,7 +175,7 @@ bool  ArnRpc::open( QString pipePath)
 
     bool  stat;
     if (_mode.is(_mode.UuidPipe))
-        stat = pipe->openUuidPipe( pipePath);
+        stat = pipe->openUuid( pipePath);
     else
         stat = pipe->open( pipePath);
 

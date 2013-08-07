@@ -78,34 +78,6 @@ class ARNLIBSHARED_EXPORT ArnItem : public ArnItemB
     friend class ArnSync;
 
 public:
-/*
-    //! General global mode of an _Arn Data Object_
-    struct Mode{
-        enum E {
-            //! A two way object, typically for validation or pipe
-            BiDir = 0x01,
-            //! Implies _BiDir_ and all data is preserved as a stream
-            Pipe  = 0x02,
-            //! Data is persistent and will be saved
-            Save  = 0x04
-        };
-        MQ_DECLARE_FLAGS( Mode)
-    };
-    //! The client session sync mode of an _Arn Data Object_
-    struct SyncMode{     // This mode is sent with sync-command
-        enum E {
-            //! default
-            Normal      = 0x000,
-            //! Monitor of server object for client
-            Monitor     = 0x001,
-            //! The client is default generator of data
-            Master      = 0x100,
-            //! Destroy this _Arn Data Object_ when client (tcp/ip) closes
-            AutoDestroy = 0x200
-        };
-        MQ_DECLARE_FLAGS( SyncMode)
-    };
-*/
     //! Standard constructor of a closed handle
     ArnItem( QObject* parent = 0);  //2
 
@@ -123,12 +95,6 @@ public:
 
     virtual  ~ArnItem();  //2
 
-    //! Open a handle to an _Arn Data Object_
-    /*! \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
-     *  \retval false if error
-     */
-    //bool  open( const QString& path);
-
     //! Open a handle to an Arn Pipe Object with a unique uuid name
     /*! \param[in] path The prefix for Arn uuid pipe path e.g. "//Pipes/pipe"
      *  \retval false if error
@@ -142,20 +108,6 @@ public:
      */
     bool  openFolder( const QString& path)
     {return ArnItemB::openFolder( path);}
-
-    //! Close the handle
-    //void  close();
-
-    //! Destroy the _Arn Data Object_
-    /*! The link (_Arn Data Object_) will be removed locally, from server and all
-     *  connected clients.
-     */
-    //void  destroyLink();
-
-    //! State of the handle
-    /*! \retval true if this ArnItem is open
-     */
-    //bool  isOpen()  const;
 
     /*! \retval true if this ArnItem is a folder
      */
@@ -175,22 +127,6 @@ public:
     ArnLink::Type  type()  const
     {return ArnItemB::type();}
 
-
-    //! Path of the _Arn Data Object_
-    /*! \param[in] nameF The format of the returned path
-     *  \return The object path
-     */
-    //QString  path( ArnLink::NameF nameF = ArnLink::NameF::EmptyOk)  const;
-
-    //! Name of the _Arn Data Object_
-    /*! \param[in] nameF The format of the returned name
-     *  \return The object name
-     */
-    //QString  name( ArnLink::NameF nameF)  const;
-
-    //pr bool  isOnlyEcho()  const {return _isOnlyEcho;}
-    //pr void  setBlockEcho( bool blockEcho)  {_blockEcho = blockEcho;}
-
     //! Set skipping of equal value
     /*! \param[in] isIgnore If true, assignment of equal value don't give a changed signal.
      */
@@ -202,39 +138,6 @@ public:
      */
     bool  isIgnoreSameValue()
     {return ArnItemB::isIgnoreSameValue();}
-
-    //! Set an associated external reference
-    /*! This is typically used when having many _ArnItems_ changed signal connected
-     *  to a common slot.
-     *  The slot can then discover the signalling ArnItem:s associated structure
-     *  for further processing.
-     *  \param[in] reference Any external structure or id.
-     *  \see reference()
-     */
-    //void  setReference( void* reference)  {_reference = reference;}
-
-    //! Get the stored external reference
-    /*! \return The associated external reference
-     *  \see setReference()
-     */
-    //void*  reference()  const {return _reference;}
-
-    //! Get the _id_ for this ArnItem
-    /*! The ArnItem _id_ is unique within its running program. Even if 2 ArnItems are
-     *  pointing to the same _Arn Data Object_, they have different _item id_.
-     *  \return _id_ for this ArnItem
-     *  \see linkId()
-     */
-    //uint  itemId()  const {return _id;}
-
-    //! Get the _id_ for this _Arn Data Object_
-    /*! The link (_Arn Data Object_) _id_ is unique within its running program.
-     *  If 2 ArnItems are pointing to the same _Arn Data Object_, they have same
-     *  _link id_.
-     *  \return Id for the _Arn Data Object_, 0 if closed
-     *  \see itemId()
-     */
-    //uint  linkId()  const;
 
     //! Add _general mode_ settings for this _Arn Data Object_
     /*! If this ArnItem is in closed state, the added modes will be stored and
@@ -418,6 +321,11 @@ public:
     ArnItem&  operator=( const QVariant& other);
     ArnItem&  operator=( const char* other);
 
+    //! Assign the value of an other ArnItem to an _Arn Data Object_
+    /*! \param[in] other is the ArnItem containing the value to assign
+     *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
+     *  \see setIgnoreSameValue()
+     */
     void  setValue( const ArnItem& other, int ignoreSame = -1)
     {ArnItemB::setValue( other, ignoreSame);}
 
@@ -539,64 +447,21 @@ signals:
      */
     void  arnModeChanged( QString path, uint linkId, ArnItem::Mode mode);
 
-    //! Signal emitted when the _Arn Data Object_ is destroyed.
-    /*! When the link (_Arn Data Object_) is destroyed, this ArnItem is closed and
-     *  will give this signal. It's ok to assign values etc to a closed ArnItem, it's
-     *  thrown away like a null device.
-     *  \see destroyLink()
-     */
-    //void  arnLinkDestroyed();
-
     //! \cond ADV
-protected slots:
-    //virtual void  modeUpdate( bool isSetup = false);
-
-/*
 protected:
-    virtual void  itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value = 0)
-        {Q_UNUSED(handleData); Q_UNUSED(value);}
-    virtual void  itemUpdateEnd()  {}
-    virtual void  itemCreatedBelow( QString path);
-        {Q_UNUSED(path);}
-    virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItem::Mode mode);
-        {Q_UNUSED(path); Q_UNUSED(linkId); Q_UNUSED(mode);}
-*/
-protected:
-    // bool  open( const ArnItem& folder, const QString& itemName);
-    // void  setForceKeep( bool fk = true)  {_useForceKeep = fk;}
-    // bool  isForceKeep()  const {return _useForceKeep;}
-    // Mode  getMode( ArnLink* link)  const;
-    // void  addSyncMode( SyncMode syncMode, bool linkShare);
-    // void  resetOnlyEcho()  {_isOnlyEcho = true;}
-    // void  setValue( const QByteArray& value, int ignoreSame, const ArnLinkHandle& handleData);
-    // void  trfValue( const QByteArray& value, int sendId, bool forceKeep,
-    //                 const ArnLinkHandle& handleData = ArnLinkHandle());
-    // void  arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData);
     virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value = 0)
         {Q_UNUSED(handleData); Q_UNUSED(value);}
     virtual void  itemUpdateEnd();
     virtual void  itemCreatedBelow( QString path);
     virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode);
-    // QStringList  childItemsMain()  const;
-    // void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
-
-    // ArnLink*  _link;
     //! \endcond
 
 private slots:
-    // void  linkValueUpdated( uint sendId, const ArnLinkHandle& handleData);
-    // void  linkValueUpdated( uint sendId, QByteArray value, ArnLinkHandle handleData);
     void  timeoutItemUpdate();
-    // void  arnLinkCreatedBelow( ArnLink* link);
-    // void  arnModeChangedBelow( QString path, uint linkId);
-    // void  doArnLinkDestroyed();
 
 private:
-    void  init();  //2
-    // void  setupOpenItem( bool isFolder);
-    // bool  open( const QString& path, bool isFolder);
-    // bool  open( const ArnItem& folder, const QString& itemName, bool isFolder);
+    void  init();
     void  doItemUpdate( const ArnLinkHandle& handleData);
 
 #if QT_VERSION >= 0x050000
@@ -614,9 +479,6 @@ private:
     void  disconnectNotify( const char* signal);
 #endif
 
-    /// Source for unique id to all ArnItem ..
-    // static QAtomicInt  _idCount;
-
     QTimer*  _delayTimer;
 
     int  _emitChanged;
@@ -627,21 +489,9 @@ private:
     int  _emitChangedByteArray;
     int  _emitChangedVariant;
 
-    // SyncMode  _syncMode;
-    // Mode  _mode;
-    // bool  _syncModeLinkShare;
-    // bool  _useForceKeep;
-    // bool  _blockEcho;
-    // bool  _ignoreSameValue;
     bool  _isTemplate;
-    // bool  _isOnlyEcho;
-    // uint  _id;
-    // void*  _reference;
 };
 
 QTextStream&  operator<<(QTextStream& out, const ArnItem& item);
-
-// MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnItem::Mode)
-// MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnItem::SyncMode)
 
 #endif // ARNITEM_HPP

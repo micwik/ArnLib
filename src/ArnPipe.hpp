@@ -37,30 +37,14 @@
 #include "ArnItem.hpp"
 
 
-//! Handle for an _Arn Data Object_ specialized as a pipe.
+//! ArnItem specialized as a pipe.
 /*!
 [About Arn Data Object](\ref gen_arnobj)
 
-When opening an ArnItem to an _Arn Data object_, the ArnItem act as a handle (pointer)
-to the object. There can be any amount of ArnItem:s opened (pointing) to the same
-_Arn Data object_. Deleting the ArnItem won't effect the _Arn Data object_.
-
 This class is not thread-safe, but the _Arn Data object_ is, so each thread should
 have it's own handles i.e ArnItem instances.
-
-<b>Example usage</b> \n \code
-    // In class declare
-    ArnItem  _arnTime;
-
-    // In class code
-    _arnTime.open("//Chat/Time/value");
-    connect( &_arnTime, SIGNAL(changed(QString)), this, SLOT(doTimeUpdate(QString)));
-    _arnTime = "Undefined ...";
-\endcode
 */
-
-// TODO: This should be based on a limited ArnItem like an ArnItemBase
-class ARNLIBSHARED_EXPORT ArnPipe : public ArnItem
+class ARNLIBSHARED_EXPORT ArnPipe : public ArnItemB
 {
     Q_OBJECT
 
@@ -80,15 +64,44 @@ public:
     /*! \param[in] path The prefix for Arn uuid pipe path e.g. "//Pipes/pipe"
      *  \retval false if error
      */
-    // bool  openUuid( const QString& path);
+    bool  openUuid( const QString& path)
+    {return ArnItemB::openUuidPipe( path);}
+
+    //! Set client session _sync mode_ as _Master_ for this ArnItem
+    /*! This ArnItem at client side is set as default generator of data.
+     *  \pre This must be set before open().
+     *  \see \ref gen_arnobjModes
+     */
+    ArnPipe&  setMaster()
+    {ArnItemB::setMaster(); return *this;}
+
+    /*! \retval true if _Master mode_
+     *  \see setMaster()
+     *  \see \ref gen_arnobjModes
+     */
+    bool  isMaster()  const
+    {return ArnItemB::isMaster();}
+
+    //! Set client session _sync mode_ as _AutoDestroy_ for this ArnItem
+    /*! This ArnItem at client side is setup for auto destruction.
+     *  \pre This must be set before open().
+     */
+    ArnPipe&  setAutoDestroy()
+    {ArnItemB::setAutoDestroy(); return *this;}
+
+    /*! \retval true if _AutoDestroy mode_
+     *  \see setAutoDestroy()
+     */
+    bool  isAutoDestroy()  const
+    {return ArnItemB::isAutoDestroy();}
 
     //! Assign a _QByteArray_ to a _Pipe_.
     /*! \param[in] value to be assigned
      */
     void  setValue( const QByteArray& value);
 
-    ArnItem&  operator=( const QByteArray& value)
-        {setValue( value); return *this;}
+    ArnPipe&  operator=( const QByteArray& value)
+    {setValue( value); return *this;}
 
     //! Assign a _QByteArray_ to a _Pipe_ by overwrite Regexp match in sendqueue
     /*! This is used to limit the filling of sendqueue with recuring messages during
@@ -115,8 +128,7 @@ signals:
 
     //! \cond ADV
 protected:
-    virtual void  itemUpdateStart( const ArnLinkHandle& handleData, const QByteArray* value = 0);
-    virtual void  itemUpdateEnd();
+    virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     //! \endcond
 
 private slots:
