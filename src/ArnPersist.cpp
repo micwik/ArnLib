@@ -47,6 +47,8 @@
 #include <QMetaObject>
 #include <QMetaMethod>
 
+const int  arnDbSaveVer = 200;
+
 
 ArnItemPersist::ArnItemPersist( ArnPersist* arnPersist) :
     ArnItem( arnPersist)
@@ -390,7 +392,84 @@ bool  ArnPersist::setupDataBase( QString dbName)
         return false;
     }
     _query = new QSqlQuery( *_db);
+
+    int  curArnDbVer = 100;  // Default for db with no meta table
+    qDebug() << "Persist-Db tables:" << _db->tables();
+    if (_db->tables().contains("meta"))
+        curArnDbVer = metaDbValue("ver", "101").toInt();
+    bool  hasStoreTable = _db->tables().contains("store");
+
+    //// Legacy conversion of db
+    if (curArnDbVer <= 100) {
+        _query->exec("CREATE TABLE meta ("
+                     "attr TEXT PRIMARY KEY,"
+                     "value TEXT)");
+        ArnM::errorLog("Creating Persist meta-table", ArnError::Info);
+    }
+    if (curArnDbVer <= 101)
+        setMetaDbValue("ver", "102");
+
+    if ((curArnDbVer < 200) && hasStoreTable) {
+        _query->exec("ALTER TABLE store RENAME TO store_save");
+        ArnM::errorLog("Saving old Persist data to table 'store_save'", ArnError::Info);
+    }
+    if ((curArnDbVer < 200) || !hasStoreTable) {
+        _query->exec("CREATE TABLE store ("
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                     "meta TEXT,"
+                     "path TEXT,"
+                     "valueTxt TEXT,"
+                     "value BLOB,"
+                     "isMandatory INTEGER NOT NULL DEFAULT(0),"
+                     "isUsed INTEGER NOT NULL DEFAULT(1))");
+        setMetaDbValue("ver", "200");
+        ArnM::errorLog("Creating new Persist data table", ArnError::Info);
+    }
+    if ((curArnDbVer < 200) && hasStoreTable) {
+        _query->exec("INSERT INTO store (path, value, isUsed, isMandatory) "
+                     "SELECT path, value, isUsed, isMandatory FROM store_save");
+        _query->exec("DROP TABLE store_save");
+        ArnM::errorLog("Converting Persist data to ArnDB 2.0", ArnError::Info);
+    }
+
     return true;
+}
+
+
+QString  ArnPersist::metaDbValue( const QString& attr, const QString& def)
+{
+    QString  retVal = def;
+
+    _query->prepare("SELECT value FROM meta WHERE attr = :attr");
+    _query->bindValue(":attr", attr);
+    _query->exec();
+    if (_query->next()) {
+        retVal = _query->value(0).toString();
+        if (retVal.isNull())  // Successful query must not be null
+            retVal = "";
+    }
+    _query->finish();
+
+    return retVal;
+}
+
+
+bool  ArnPersist::setMetaDbValue( const QString& attr, const QString& value)
+{
+    QString  curVal = metaDbValue( attr);
+    if (value == curVal)  return true;  // Already set to value
+
+    if (curVal.isNull())  // Meta attr not present, insert new
+        _query->prepare("INSERT INTO meta (attr, value) VALUES (:attr, :value)");
+    else  // Meta attr present, update it
+        _query->prepare("UPDATE meta SET value = :value WHERE attr = :attr");
+
+    _query->bindValue(":attr", attr);
+    _query->bindValue(":value", value);
+    bool  retVal = _query->exec();
+    _query->finish();
+
+    return retVal;
 }
 
 
@@ -414,18 +493,71 @@ bool  ArnPersist::getDbId( QString path, int& storeId)
 }
 
 
+/*! meta, valueTxt and value comes from database and vill be converted to a new
+ *  value to be used in ArnItemB::arnImport()
+ */
+void  ArnPersist::dbSetupReadValue( const QString& meta, const QString& valueTxt,
+                                    QByteArray& value)
+{
+    if (!value.isEmpty())  return;  // Non textual is used
+
+    if (meta.contains('V')) { // Variant is stored
+        value = char( ArnItemB::ExportCode::VariantTxt) + valueTxt.toUtf8();
+    }
+    else {
+        value = valueTxt.toUtf8();
+        if (!value.isEmpty()) {
+            if (value.at(0) < 32) {  // Starting char conflicting with Export-code
+                value.insert( 0, char( ArnItemB::ExportCode::String));  // Stuff String-code
+            }
+        }
+    }
+}
+
+
+/*! value comes from ArnItemB::arnExport() and vill be converted to new
+ *  meta, valueTxt and value to be used in database
+ */
+void ArnPersist::dbSetupWriteValue( QString& meta, QString& valueTxt, QByteArray& value)
+{
+    valueTxt = "";
+    meta = "";
+    if (value.isEmpty())  return;
+
+    uchar  c = value.at(0);
+    if (c == ArnItemB::ExportCode::VariantTxt) {
+        meta = "V";
+        valueTxt = QString::fromUtf8( value.constData() + 1, value.size() - 1);
+        value = QByteArray();
+    }
+    else if (c == ArnItemB::ExportCode::String) {
+        valueTxt = QString::fromUtf8( value.constData() + 1, value.size() - 1);
+        value = QByteArray();
+    }
+    else if (c >= 32) {  // Normal printable
+        valueTxt = QString::fromUtf8( value.constData(), value.size());
+        value = QByteArray();
+    }
+}
+
+
 bool  ArnPersist::getDbValue(int storeId, QString &path, QByteArray &value)
 {
     bool  retVal = false;
     int   isUsed = 1;
-    _query->prepare("SELECT path, value, isUsed FROM store WHERE id = :id");
+    QByteArray  meta;
+    QString  valueTxt;
+    _query->prepare("SELECT meta, path, valueTxt, value, isUsed FROM store WHERE id = :id");
     _query->bindValue(":id", storeId);
     _query->exec();
     if (_query->next()) {
-        path    = _query->value(0).toString();
-        value   = _query->value(1).toByteArray();
-        isUsed  = _query->value(2).toInt();
-        retVal  = true;
+        meta     = _query->value(0).toByteArray();
+        path     = _query->value(1).toString();
+        valueTxt = _query->value(2).toString();
+        value    = _query->value(3).toByteArray();
+        isUsed   = _query->value(4).toInt();
+        retVal   = true;
+        dbSetupReadValue( meta, valueTxt, value);
     }
     _query->finish();
 
@@ -438,14 +570,19 @@ bool  ArnPersist::getDbValue( QString path, QByteArray& value, int& storeId)
 {
     bool  retVal = false;
     int   isUsed = 1;
-    _query->prepare("SELECT id, value, isUsed FROM store WHERE path = :path");
+    QByteArray  meta;
+    QString  valueTxt;
+    _query->prepare("SELECT id, meta, valueTxt, value, isUsed FROM store WHERE path = :path");
     _query->bindValue(":path", path);
     _query->exec();
     if (_query->next()) {
-        storeId = _query->value(0).toInt();
-        value   = _query->value(1).toByteArray();
-        isUsed  = _query->value(2).toInt();
-        retVal  = true;
+        storeId  = _query->value(0).toInt();
+        meta     = _query->value(1).toByteArray();
+        valueTxt = _query->value(2).toString();
+        value    = _query->value(3).toByteArray();
+        isUsed   = _query->value(4).toInt();
+        retVal   = true;
+        dbSetupReadValue( meta, valueTxt, value);
     }
     _query->finish();
 
@@ -491,9 +628,15 @@ bool  ArnPersist::insertDbValue( QString path, QByteArray value)
 {
     bool  retVal = false;
 
-    _query->prepare("INSERT INTO store (path, value) "
-                   "VALUES (:path, :value)");
+    QString  meta;
+    QString  valueTxt;
+    dbSetupWriteValue( meta, valueTxt, value);
+
+    _query->prepare("INSERT INTO store (meta, path, valueTxt, value) "
+                   "VALUES (:meta, :path, :valueTxt, :value)");
+    _query->bindValue(":meta", meta);
     _query->bindValue(":path", path);
+    _query->bindValue(":valueTxt", valueTxt);
     _query->bindValue(":value", value);
     retVal = _query->exec();
     _query->finish();
@@ -507,8 +650,15 @@ bool  ArnPersist::updateDbValue( int storeId, QByteArray value)
     //qDebug() << "Persist updateDb: id=" << storeId << " value=" << value;
     bool  retVal = false;
 
-    _query->prepare("UPDATE store SET value = :value WHERE id = :id");
+    QString  meta;
+    QString  valueTxt;
+    dbSetupWriteValue( meta, valueTxt, value);
+
+    _query->prepare("UPDATE store SET meta = :meta, valueTxt = :valueTxt, value = :value "
+                    "WHERE id = :id");
     _query->bindValue(":id", storeId);
+    _query->bindValue(":meta", meta);
+    _query->bindValue(":valueTxt", valueTxt);
     _query->bindValue(":value", value);
     retVal = _query->exec();
     _query->finish();

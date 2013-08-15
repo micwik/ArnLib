@@ -38,20 +38,34 @@
 QAtomicInt ArnLink::_idCount(1);
 
 
-ArnLinkHandle::ArnLinkHandle()
+void ArnLinkHandle::init()
 {
     _codes = Normal;
     _data  = 0;
 }
 
 
+ArnLinkHandle::ArnLinkHandle()
+{
+    init();
+}
+
+
 ArnLinkHandle::ArnLinkHandle( const ArnLinkHandle& other)
 {
     _codes = other._codes;
+    _flags = other._flags;
     if (other._data)
         _data = new HandleData( *other._data);
     else
         _data = 0;
+}
+
+
+ArnLinkHandle::ArnLinkHandle( const ArnLinkHandle::Flags& flags)
+{
+    init();
+    _flags = flags;
 }
 
 
@@ -82,7 +96,7 @@ bool  ArnLinkHandle::has( Code code)  const
 
 bool  ArnLinkHandle::isNull()  const
 {
-    return _codes == Normal;
+    return (_codes == Normal) && (_flags == Flags());
 }
 
 
@@ -155,10 +169,11 @@ void ArnLink::setValue( double value, int sendId, bool forceKeep)
 }
 
 
-void ArnLink::setValue( const QString& value, int sendId, bool forceKeep)
+void ArnLink::setValue( const QString& value, int sendId, bool forceKeep,
+                        const ArnLinkHandle& handleData)
 {
     if (_twin  &&  !forceKeep) {    // support for bidirectional function
-        _twin->setValue( value, sendId, true);
+        _twin->setValue( value, sendId, true, handleData);
         return;
     }
 
@@ -170,7 +185,7 @@ void ArnLink::setValue( const QString& value, int sendId, bool forceKeep)
     _haveString   = true;
     if (_isThreaded)  _mutex.unlock();
 
-    emitChanged( sendId);
+    emitChanged( sendId, handleData);
 }
 
 
@@ -214,7 +229,15 @@ void ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
 
 void ArnLink::trfValue( QByteArray value, int sendId, bool forceKeep, ArnLinkHandle handleData)
 {
-    setValue( value, sendId, forceKeep, handleData);
+    ArnLinkHandle::Flags&  handleFlags = handleData._flags;
+
+    if (handleFlags.is( handleFlags.Text)) {
+        handleFlags.set( handleFlags.Text, false);  // Text flag not needed anymore
+        setValue( QString::fromUtf8( value.constData(), value.size()),
+                  sendId, forceKeep, handleData);
+    }
+    else
+        setValue( value, sendId, forceKeep, handleData);
 }
 
 

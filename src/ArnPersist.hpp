@@ -200,6 +200,8 @@ public:
     bool  setupDataBase( QString dbName = "persist.db");
 
     //! \cond ADV
+    QString  metaDbValue( const QString& attr, const QString& def = QString());
+    bool  setMetaDbValue( const QString& attr, const QString& value);
     bool  getDbId( QString path, int& storeId);
     bool  getDbValue( int storeId, QString& path, QByteArray& value);
     bool  getDbValue( QString path, QByteArray& value, int& storeId);
@@ -248,6 +250,9 @@ private:
     void  doLoadFiles();
     void  setupSapi( ArnPersistSapi* sapi, QString pipePath);
     void  convertFileList( QStringList& files, ArnLink::NameF nameF);
+    void  dbSetupReadValue( const QString& meta, const QString& valueTxt,
+                            QByteArray& value);
+    void  dbSetupWriteValue( QString& meta, QString& valueTxt, QByteArray& value);
 
     QDir*  _persistDir;
     QDir*  _archiveDir;

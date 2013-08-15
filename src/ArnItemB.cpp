@@ -396,34 +396,80 @@ QString  ArnItemB::name( ArnLink::NameF nameF)  const
 
 void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame)
 {
-    arnImport( data, ignoreSame, ArnLinkHandle());
+    ArnLinkHandle  handle;
+    arnImport( data, ignoreSame, handle);
 }
 
 
-void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData)
+void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData)
 {
     if (!data.isEmpty()) {
-        if (data.at(0) < 32) {  // Assume SetAs-code
-            switch (static_cast<ArnLink::Type::E>( data.at(0))) {
-            case ArnLink::Type::Variant: {
-                    //qDebug() << "ArnImport Variant: size=" << data.size();
-                    QVariant  value;
-                    QDataStream  stream( data);
-                    quint8  dummy;  // Will get Type-code
-                    stream >> dummy >> value;
-                    //qDebug() << "ArnImport dataType=" << value.typeName();
-                    setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
+        if (data.at(0) < 32) {  // Assume Export-code
+            switch (ExportCode::fromInt( data.at(0))) {
+            case ExportCode::Variant: {  // Legacy
+                QVariant  value;
+                QDataStream  stream( data);
+                quint8  dummy;  // Will get Export-code
+                stream >> dummy >> value;
+                setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
+                return;
+            }
+            case ExportCode::VariantTxt: {
+                int  sepPos = data.indexOf(':', 1);
+                Q_ASSERT(sepPos > 0);
+
+                QByteArray  typeName( data.constData() + 1, sepPos - 1);
+                int  type = QMetaType::type( typeName.constData());
+                if (!type) {
+                    errorLog( QString(tr("Import unknown type:") + typeName.constData()),
+                              ArnError::Undef);
                     return;
                 }
-            case ArnLink::Type::ByteArray:
+                QVariant  value( QString::fromUtf8( data.constData() + sepPos + 1,
+                                                    data.size() - sepPos - 1));
+                if (!value.convert( QVariant::Type( type))) {
+                    errorLog( QString(tr("Can't' import data type:") + typeName.constData()),
+                              ArnError::Undef);
+                    return;
+                }
+
+                setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
+                return;
+            }
+            case ExportCode::VariantBin: {
+                int  sepPos = data.indexOf(':', 1);
+                Q_ASSERT(sepPos > 0);
+
+                QByteArray  typeName( data.constData() + 1, sepPos - 1);
+                int  type = QMetaType::type( typeName.constData());
+                if (!type) {
+                    errorLog( QString(tr("Import unknown type:") + typeName.constData()),
+                              ArnError::Undef);
+                    return;
+                }
+                QVariant  value( type, data.constData() + sepPos + 1);
+
+                setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
+                return;
+            }
+            case ExportCode::ByteArray:
                 setValue( data.mid(1), ignoreSame, handleData);
+                return;
+            case ExportCode::String:
+                handleData._flags.set( handleData._flags.Text);
+                setValue( data.mid(1), ignoreSame, handleData);
+                //setValue( QString::fromUtf8( data.constData() + 1, data.size() - 1),
+                //          ignoreSame, handleData);
                 return;
             default:  // Not supported code
                 return;
             }
         }
     }
-    setValue( data, ignoreSame, handleData);    // Normal printable data
+    // Normal printable data
+    handleData._flags.set( handleData._flags.Text);
+    setValue( data, ignoreSame, handleData);
+    //setValue( QString::fromUtf8( data.constData(), data.size()), ignoreSame, handleData);
 }
 
 
@@ -432,20 +478,50 @@ QByteArray  ArnItemB::arnExport()  const
     if (!_link)  return QByteArray();
 
     QByteArray  retVal;
-    if (_link->type() == ArnLink::Type::Variant) {
-        QDataStream  stream( &retVal, QIODevice::WriteOnly);
-        QVariant value = toVariant();
-        stream << qint8( ArnLink::Type::Variant) << value;
-        // retVal will contain SetAs-code at pos 0 followed by the QVariant
+    ArnLink::Type  arnType = _link->type();
 
-        //qDebug() << "ArnExport dataType=" << value.typeName();
-        //qDebug() << "ArnExport Variant: size=" << retVal.size();
+    if (arnType == ArnLink::Type::Variant) {
+        QVariant value = toVariant();
+        const char*  typeName = value.typeName();
+        if (!typeName)
+            typeName = "<Invalid>";
+        int  type = QMetaType::type( typeName);
+        if (!type) {
+            errorLog( QString(tr("Export unknown type:") + typeName),
+                      ArnError::Undef);
+            return QByteArray();
+        }
+
+        if (value.canConvert( QVariant::String)) {  // Textual Variant
+            retVal += char( ExportCode::VariantTxt);
+            retVal += typeName;
+            retVal += ':';
+            retVal += value.toString().toUtf8();
+        }
+        else { // Binary Variant
+#if 0       //// Legacy
+            QDataStream  stream( &retVal, QIODevice::WriteOnly);
+            stream << qint8( ExportCode::Variant) << value;
+            // retVal will contain Export-code at pos 0 followed by the QVariant
+#else
+            QDataStream  stream( &retVal, QIODevice::WriteOnly);
+            stream << qint8( ExportCode::VariantBin) << typeName << ":";
+            if (!QMetaType::save( stream, type, value.constData())) {
+                errorLog( QString(tr("Can't export type:") + typeName),
+                          ArnError::Undef);
+                return QByteArray();
+            }
+#endif
+        }
     }
-    else {
-        retVal = toByteArray();
+    else if (arnType == ArnLink::Type::ByteArray) {
+        retVal = char( ExportCode::ByteArray) + toByteArray();
+    }
+    else {  // Expect only normal printable (could also be \n etc)
+        retVal = toString().toUtf8();
         if (!retVal.isEmpty()) {
-            if (retVal.at(0) < 32) {  // Starting char is conflicting with SetAs-code
-                retVal.insert( 0, char( ArnLink::Type::ByteArray));  // Stuff ByteArray-code at pos 0
+            if (retVal.at(0) < 32) {  // Starting char conflicting with Export-code
+                retVal.insert( 0, char( ExportCode::String));  // Stuff String-code at pos 0
             }
         }
     }
@@ -554,7 +630,8 @@ void  ArnItemB::setValue( int value, int ignoreSame)
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( QByteArray::number( value), _id, _useForceKeep);
+            trfValue( QByteArray::number( value), _id, _useForceKeep,
+                      ArnLinkHandle( ArnLinkHandle::Flags::Text));
         else
             _link->setValue( value, _id, _useForceKeep);
     }
@@ -575,7 +652,8 @@ void  ArnItemB::setValue( double value, int ignoreSame)
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( QByteArray::number( value), _id, _useForceKeep);
+            trfValue( QByteArray::number( value), _id, _useForceKeep,
+                      ArnLinkHandle( ArnLinkHandle::Flags::Text));
         else
             _link->setValue( value, _id, _useForceKeep);
     }
@@ -596,7 +674,8 @@ void  ArnItemB::setValue( bool value, int ignoreSame)
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( QByteArray::number( value ? 1 : 0), _id, _useForceKeep);
+            trfValue( QByteArray::number( value ? 1 : 0), _id, _useForceKeep,
+                      ArnLinkHandle( ArnLinkHandle::Flags::Text));
         else
             _link->setValue( value ? 1 : 0, _id, _useForceKeep);
     }
@@ -617,7 +696,8 @@ void  ArnItemB::setValue( const QString& value, int ignoreSame)
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( value.toUtf8(), _id, _useForceKeep);
+            trfValue( value.toUtf8(), _id, _useForceKeep,
+                      ArnLinkHandle( ArnLinkHandle::Flags::Text));
         else
             _link->setValue( value, _id, _useForceKeep);
     }
@@ -638,7 +718,8 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame)
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( value, _id, _useForceKeep);
+            trfValue( value, _id, _useForceKeep,
+                      ArnLinkHandle());
         else
             _link->setValue( value, _id, _useForceKeep);
     }
@@ -659,7 +740,9 @@ void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( value.toString().toUtf8(), _id, _useForceKeep);
+            // QVariant is not realy supported for pipe in threaded usage
+            trfValue( value.toString().toUtf8(), _id, _useForceKeep,
+                      ArnLinkHandle( ArnLinkHandle::Flags::Text));
         else
             _link->setValue( value, _id, _useForceKeep);
     }
@@ -670,19 +753,35 @@ void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
 }
 
 
-void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, const ArnLinkHandle& handleData)
+void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData)
 {
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
+    ArnLinkHandle::Flags&  handleFlags = handleData._flags;
+    QString  valueTxt;
+
+    if (handleFlags.is( handleFlags.Text))
+        valueTxt = QString::fromUtf8( value.constData(), value.size());
+
     if (_link) {
         if (isIgnoreSame) {
-            if (value == _link->holderLink( _useForceKeep)->toByteArray()) {
-                return;
+            if (handleFlags.is( handleFlags.Text)) {
+                if (valueTxt == _link->holderLink( _useForceKeep)->toString())
+                    return;
+            }
+            else {
+                if (value == _link->holderLink( _useForceKeep)->toByteArray())
+                    return;
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
             trfValue( value, _id, _useForceKeep, handleData);
         else
-            _link->setValue( value, _id, _useForceKeep, handleData);
+            if (handleFlags.is( handleFlags.Text)) {
+                handleFlags.set( handleFlags.Text, false);  // Text flag not needed anymore
+                _link->setValue( valueTxt, _id, _useForceKeep, handleData);
+            }
+            else
+                _link->setValue( value, _id, _useForceKeep, handleData);
     }
     else {
         errorLog( QString(tr("Assigning bytearray (ArnLinkHandle):")) + QString::fromUtf8( value.constData(), value.size()),
@@ -709,7 +808,7 @@ QStringList  ArnItemB::childItemsMain()  const
 }
 
 
-void  ArnItemB::errorLog( QString errText, ArnError err, void* reference)
+void  ArnItemB::errorLog( QString errText, ArnError err, void* reference)  const
 {
     QString  itemText;
     if (_link) {

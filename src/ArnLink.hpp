@@ -60,21 +60,35 @@ public:
     };
     Q_DECLARE_FLAGS( Codes, Code)
 
+    struct Flags {
+        enum E {
+            //! Transitional temporary flag to indicate utf8-coded bytearray.
+            Text = 0x01
+        };
+        MQ_DECLARE_FLAGS( Flags)
+    };
+
     ArnLinkHandle();
     ArnLinkHandle( const ArnLinkHandle& other);
+    ArnLinkHandle( const Flags& flags);
     ~ArnLinkHandle();
     ArnLinkHandle&  add( Code code, const QVariant& value);
     bool  has( Code code)  const;
     bool  isNull()  const;
     const QVariant&  value( Code code)  const;
 
+    Flags  _flags;
+
 private:
+    void  init();
+
     Codes  _codes;
     typedef QMap<int,QVariant>  HandleData;
     HandleData*  _data;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( ArnLinkHandle::Codes)
+MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnLinkHandle::Flags)
 Q_DECLARE_METATYPE( ArnLinkHandle)
 
 
@@ -86,12 +100,13 @@ class ArnLink : public QObject
 public:
     struct Type {
         enum E {
-            Null      = 0,
-            Int       = 1,
-            Double    = 2,
-            ByteArray = 3,
-            String    = 4,
-            Variant   = 5
+            Null       = 0,
+            Int        = 1,
+            Double     = 2,
+            ByteArray  = 3,
+            String     = 4,
+            Variant    = 5
+            // 16 and above is reserved by ArnItemB::ExportCode
         };
         MQ_DECLARE_ENUM( Type)
     };
@@ -120,7 +135,8 @@ public:
     //! \cond ADV
     void  setValue( int value, int sendId = 0, bool forceKeep = 0);
     void  setValue( double value, int sendId = 0, bool forceKeep = 0);
-    void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0);
+    void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0,
+                    const ArnLinkHandle& handleData = ArnLinkHandle());
     void  setValue( const QByteArray& value, int sendId = 0, bool forceKeep = 0,
                     const ArnLinkHandle& handleData = ArnLinkHandle());
     void  setValue( const QVariant& value, int sendId = 0, bool forceKeep = 0);

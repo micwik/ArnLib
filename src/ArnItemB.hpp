@@ -90,6 +90,17 @@ public:
         };
         MQ_DECLARE_FLAGS( SyncMode)
     };
+    //! Code used in blob for arnExport() and arnImport()
+    struct ExportCode {
+        enum E {
+            ByteArray  = 3,
+            String     = 4,
+            Variant    = 5,  // Legacy
+            VariantTxt = 16,
+            VariantBin = 17
+        };
+        MQ_DECLARE_ENUM( ExportCode)
+    };
 
     //! Standard constructor of a closed handle
     ArnItemB( QObject* parent = 0);
@@ -402,12 +413,12 @@ protected:
     void  resetOnlyEcho()  {_isOnlyEcho = true;}
     bool  isOnlyEcho()  const {return _isOnlyEcho;}
     void  setBlockEcho( bool blockEcho)  {_blockEcho = blockEcho;}
-    void  setValue( const QByteArray& value, int ignoreSame, const ArnLinkHandle& handleData);
+    void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
     void  trfValue( const QByteArray& value, int sendId, bool forceKeep,
                     const ArnLinkHandle& handleData = ArnLinkHandle());
-    void  arnImport( const QByteArray& data, int ignoreSame, const ArnLinkHandle& handleData);
+    void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
     QStringList  childItemsMain()  const;
-    void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
+    void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0)  const;
     //! \endcond
 
 private slots:
