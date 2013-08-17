@@ -84,6 +84,8 @@ private:
 //! \endcond
 
 
+/*! TODO: Add destructor that deletes jobs in _jobSlots
+ */
 class ARNLIBSHARED_EXPORT ArnScriptJobs : public QObject
 {
     Q_OBJECT

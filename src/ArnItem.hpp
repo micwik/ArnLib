@@ -91,7 +91,7 @@ public:
      */
     ArnItem( const ArnItem& folder_template, const QString& itemName_path, QObject* parent = 0);
 
-    virtual  ~ArnItem();  //2
+    virtual  ~ArnItem();
 
     //! Open a handle to an Arn Pipe Object with a unique uuid name
     /*! \param[in] path The prefix for Arn uuid pipe path e.g. "//Pipes/pipe"

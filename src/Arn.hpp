@@ -354,7 +354,7 @@ private:
     QObject*  _errorLogger;
 
     volatile bool  _isThreadedApp;
-    QThread* _mainThread;
+    QThread*  _mainThread;
 };
 
 #endif // ARN_HPP

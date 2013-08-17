@@ -40,7 +40,7 @@ ArnMonitor::ArnMonitor( QObject* parent) :
     QObject( parent)
 {
     _arnClient = 0;
-    //_itemNet = 0;
+    _itemNet = 0;
 }
 
 
@@ -61,7 +61,8 @@ QString  ArnMonitor::clientId()  const
 
 void  ArnMonitor::setMonitorPath( QString path, ArnClient *client)
 {
-    if (client)  _arnClient = client;
+    if (client)
+        _arnClient = client;
     _monitorPath = path;
     if (!_monitorPath.endsWith("/"))  _monitorPath += "/";
 
@@ -108,6 +109,8 @@ void  ArnMonitor::reStart()
 
 void  ArnMonitor::emitArnEvent( QByteArray type, QByteArray data)
 {
+    if (!_itemNet)  return;
+
     QMetaObject::invokeMethod( _itemNet,
                                "emitArnEvent",
                                Qt::AutoConnection,
