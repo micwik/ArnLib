@@ -40,10 +40,11 @@ void  ArnItemNet::init()
 {
     setForceKeep();
     setIgnoreSameValue( false);
-    _netId = 0;
-    _dirty = false;
+    _netId     = 0;
+    _dirty     = false;
     _dirtyMode = false;
-    _disable = false;
+    _disable   = false;
+    _isMonitor = false;
 }
 
 
@@ -111,6 +112,24 @@ QByteArray  ArnItemNet::getModeString()  const
 }
 
 
+void  ArnItemNet::emitNewItemEvent( QString path, bool isOld)
+{
+    emit arnEvent( isOld ? "itemFound" : "itemCreated", path.toUtf8(), true);
+}
+
+
+bool  ArnItemNet::isMonitor() const
+{
+    return _isMonitor;
+}
+
+
+void  ArnItemNet::setMonitor( bool isMonitor)
+{
+    _isMonitor = isMonitor;
+}
+
+
 void  ArnItemNet::submitted()
 {
     _dirty = false;
@@ -132,6 +151,13 @@ void  ArnItemNet::itemUpdate( const ArnLinkHandle& handleData, const QByteArray*
         _dirty = true;
         emit goneDirty( handleData);
     }
+}
+
+
+void  ArnItemNet::itemCreatedBelow( QString path)
+{
+    if (_isMonitor)
+        emitNewItemEvent( path);
 }
 
 

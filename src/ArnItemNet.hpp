@@ -53,9 +53,12 @@ public:
     QByteArray  getSyncModeString()  const;
     void  setModeString( const QByteArray& mode);
     QByteArray  getModeString()  const;
+    void  emitNewItemEvent( QString path, bool isOld = 0);
 
     void  setDisable( bool disable = true)  { _disable = disable;}
     bool  isDisable()  const { return _disable;}
+    bool  isMonitor() const;
+    void  setMonitor( bool isMonitor);
 
     void  setQueueNum( int num)  {_queueNum = num;}
     int  queueNum()  const {return _queueNum;}
@@ -64,6 +67,7 @@ public:
     bool  isDirtyMode()  const { return _dirtyMode;}
 
     virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemCreatedBelow( QString path);
     virtual void  modeUpdate( bool isSetup = false);
 
     using ArnItemB::addSyncMode;
@@ -95,6 +99,7 @@ private:
     bool  _dirty;      // item has been updated but not yet sent
     bool  _dirtyMode;  // item Mode has been updated but not yet sent
     bool  _disable;    // item is defunct and should not send (destroy command)
+    bool  _isMonitor;  // item is used as a Monitor
 
 private slots:
 };

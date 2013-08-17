@@ -46,7 +46,6 @@
 #define ARNRECNAME  "rec"
 
 class QTcpSocket;
-// class ArnItemNet;
 
 
 //! \cond ADV
@@ -58,7 +57,7 @@ public:
     ArnSync( QTcpSocket* socket, bool clientSide = 0, QObject *parent = 0);
     ~ArnSync();
     ArnItemNet*  newNetItem( const QString& path,
-                                  ArnItem::SyncMode syncMode = ArnItem::SyncMode::Normal, bool* isNewPtr = 0);
+                             ArnItem::SyncMode syncMode = ArnItem::SyncMode::Normal, bool* isNewPtr = 0);
     void  sendXSMap( const XStringMap& xsMap);
     void  send( const QByteArray& xString);
 
@@ -74,7 +73,6 @@ private slots:
     void  sendNext();
     void  linkDestroyedHandle();
     void  doArnEvent( QByteArray type, QByteArray data, bool isLocal);
-    void  doNewItemEvent( QString path, bool isOld = 0, ArnItemNet* itemNet_= 0);
 
 private:
     typedef QPointer<ArnItemNet>  ArnItemNetQPtr;

@@ -266,20 +266,20 @@ uint  ArnSync::doCommandSync()
 void  ArnSync::setupMonitorItem(ArnItemNet *itemNet)
 {
     //// NewItemEvent to be sent for future created posterity (also not direct children)
-    connect( itemNet, SIGNAL(arnItemCreated(QString)), this, SLOT(doNewItemEvent(QString)));
+    itemNet->setMonitor( true);
 
     //// Send NewItemEvent for any existing (direct) children (also folders)
     doChildsToEvent( itemNet);
 }
 
 
-void  ArnSync::doChildsToEvent(ArnItemNet *itemNet)
+void  ArnSync::doChildsToEvent( ArnItemNet *itemNet)
 {
     //// Send NewItemEvent for any existing direct children (also folders)
     QString  path = itemNet->path();
     QStringList  childList = itemNet->childItemsMain();
     foreach (QString childName, childList) {
-        doNewItemEvent( ArnM::makePath( path, childName), true, itemNet);
+        itemNet->emitNewItemEvent( ArnM::makePath( path, childName), true);
     }
 }
 
@@ -588,21 +588,6 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
     if (!_isSending) {
         sendNext();
     }
-}
-
-
-void  ArnSync::doNewItemEvent( QString path, bool isOld, ArnItemNet* itemNet_)
-{
-    ArnItemNet*  itemNet;
-    itemNet = itemNet_ ? itemNet_ : qobject_cast<ArnItemNet*>( sender());
-    if (!itemNet) {
-        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for newItemEvent")),
-                            ArnError::Undef);
-        return;
-    }
-
-    itemNet->emitArnEvent( isOld ? "itemFound" : "itemCreated",
-                           path.toUtf8());
 }
 
 
