@@ -33,6 +33,7 @@
 #include "ArnPersist.hpp"
 #include "ArnPersistSapi.hpp"
 #include "ArnDepend.hpp"
+#include "XStringMap.hpp"
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
@@ -152,14 +153,15 @@ void  ArnVcs::checkout( QString ref, QStringList files)
 ArnPersist::ArnPersist( QObject* parent) :
     QObject( parent)
 {
+    _db            = new QSqlDatabase;
+    _archiveDir    = new QDir("archive");
+    _persistDir    = new QDir("persist");
+    _xsm           = new XStringMap;
+    _sapiCommon    = new ArnPersistSapi( this);
+    _vcs           = new ArnVcs( this);
     _arnMountPoint = 0;
-    _db         = new QSqlDatabase;
-    _archiveDir = new QDir("archive");
-    _persistDir = new QDir("persist");
-    _query      = 0;
-    _depOffer   = 0;
-    _sapiCommon = new ArnPersistSapi( this);
-    _vcs        = new ArnVcs( this);
+    _query         = 0;
+    _depOffer      = 0;
 
     setupSapi( _sapiCommon, "//.sys/Persist/Pipes/CommonPipe!");
 }
@@ -168,7 +170,12 @@ ArnPersist::ArnPersist( QObject* parent) :
 ArnPersist::~ArnPersist()
 {
     delete _db;
+    delete _archiveDir;
+    delete _persistDir;
+    delete _xsm;
+    if (_arnMountPoint)  delete _arnMountPoint;
     if (_query)  delete _query;
+    if (_depOffer)  delete _depOffer;
 }
 
 
@@ -501,15 +508,19 @@ void  ArnPersist::dbSetupReadValue( const QString& meta, const QString& valueTxt
 {
     if (!value.isEmpty())  return;  // Non textual is used
 
-    if (meta.contains('V')) { // Variant is stored
-        value = char( ArnItemB::ExportCode::VariantTxt) + valueTxt.toUtf8();
+    if (!meta.isEmpty()) {
+        _xsm->fromXString( meta.toLatin1());
+        QByteArray  variantType = _xsm->value("V");
+        if (!variantType.isEmpty()) {  // Variant is stored
+            value = char( ArnItemB::ExportCode::VariantTxt)
+                  + variantType + ":" + valueTxt.toUtf8();
+            return;
+        }
     }
-    else {
-        value = valueTxt.toUtf8();
-        if (!value.isEmpty()) {
-            if (value.at(0) < 32) {  // Starting char conflicting with Export-code
-                value.insert( 0, char( ArnItemB::ExportCode::String));  // Stuff String-code
-            }
+    value = valueTxt.toUtf8();
+    if (!value.isEmpty()) {
+        if (value.at(0) < 32) {  // Starting char conflicting with Export-code
+            value.insert( 0, char( ArnItemB::ExportCode::String));  // Stuff String-code
         }
     }
 }
@@ -526,8 +537,14 @@ void ArnPersist::dbSetupWriteValue( QString& meta, QString& valueTxt, QByteArray
 
     uchar  c = value.at(0);
     if (c == ArnItemB::ExportCode::VariantTxt) {
-        meta = "V";
-        valueTxt = QString::fromUtf8( value.constData() + 1, value.size() - 1);
+        int  sepPos = value.indexOf(':', 1);
+        Q_ASSERT(sepPos > 0);
+
+        QByteArray  variantType( value.constData() + 1, sepPos - 1);
+        _xsm->clear();
+        _xsm->add("V", variantType);
+        meta = QString::fromLatin1( _xsm->toXString().constData());
+        valueTxt = QString::fromUtf8( value.constData() + sepPos + 1, value.size() - sepPos - 1);
         value = QByteArray();
     }
     else if (c == ArnItemB::ExportCode::String) {

@@ -46,6 +46,7 @@ class QSqlDatabase;
 class QSqlQuery;
 class QDir;
 class QStringList;
+class XStringMap;
 
 
 //! \cond ADV
@@ -263,6 +264,7 @@ private:
     QSqlDatabase*  _db;
     QSqlQuery*  _query;
     ArnPersistSapi*  _sapiCommon;
+    XStringMap*  _xsm;
 };
 
 #endif // ARNPERSIST_HPP
