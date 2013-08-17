@@ -35,15 +35,13 @@
 #include <QDebug>
 
 
-XStringMap::XStringMap( QObject* parent) :
-    QObject( parent)
+XStringMap::XStringMap()
 {
     init();
 }
 
 
-XStringMap::XStringMap( const QByteArray& xString, QObject* parent) :
-    QObject( parent)
+XStringMap::XStringMap( const QByteArray& xString)
 {
     init();
     fromXString( xString);
@@ -503,6 +501,8 @@ bool  XStringMap::fromXString( const QByteArray& inXString, int size)
         size = inXString.size();
     }
     clear();
+    if (size == 0)  return true;  // Nothing to load
+
     int  startPos = 0;
     QByteArray  key;
     QByteArray  val;

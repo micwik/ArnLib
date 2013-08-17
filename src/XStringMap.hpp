@@ -35,7 +35,7 @@
 #define XSTRINGMAP_HPP
 
 #include "ArnLib_global.hpp"
-#include <QObject>
+//#include <QObject>
 #include <QVector>
 #include <QByteArray>
 #include <QStringList>
@@ -47,7 +47,13 @@ This class can store data with a key like QMaps. There is a guarantied order of
 storing, i.e. its not sorted like QMaps.
 
 The stored data can be ascii as well as binary. When converted to a XString,
-it's optimized for giving an easy readable representation.
+it's optimized for giving an easy readable representation which never contains
+char codes below 32 (space).
+
+Following mapping is done to the XString.
+Special codes below 32: code 0 -> "\0",  code 10 -> "\n", code 13 -> "\r"
+General codes below 32: code 1 -> "^A", code 2 -> "^B" and so on to code 31
+code 32 (space) -> "_", "_" -> "\_", "^" -> "\^", "\" -> "\\"
 
 The XString can be imported to the XStringMap. To get back stored values,
 XStringMap is Queried with the keys.
@@ -61,12 +67,11 @@ XStringMap is Queried with the keys.
 \endcode
 This will print "XString: put id=level val=12"
 */
-class ARNLIBSHARED_EXPORT XStringMap : public QObject
+class ARNLIBSHARED_EXPORT XStringMap
 {
-Q_OBJECT
 public:
-    explicit  XStringMap( QObject* parent = 0);
-    explicit  XStringMap( const QByteArray& xString, QObject* parent = 0);
+    explicit  XStringMap();
+    explicit  XStringMap( const QByteArray& xString);
     ~XStringMap();
 
     int  size()  const { return _size; }
