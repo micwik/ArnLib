@@ -296,7 +296,7 @@ QString  XStringMap::keyString( int i, const QString& def)  const
 QString  XStringMap::keyString( const QString& value, const QString& def)  const
 {
     int  i = indexOfValue( value);
-    return valueString( i, def);
+    return keyString( i, def);
 }
 
 
