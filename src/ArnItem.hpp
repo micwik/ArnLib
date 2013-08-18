@@ -77,7 +77,7 @@ class ARNLIBSHARED_EXPORT ArnItem : public ArnItemB
 
 public:
     //! Standard constructor of a closed handle
-    ArnItem( QObject* parent = 0);  //2
+    ArnItem( QObject* parent = 0);
 
     //! Construction of a handle to a path
     /*! \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"

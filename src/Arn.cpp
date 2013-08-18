@@ -775,13 +775,13 @@ void  ArnM::doZeroRefLink( QObject* /*obj*/)
     if (!link)  return;
 
     link->setRefCount( -1);  // Mark link as fully de-referenced
-    qDebug() << "ZeroRef: set fully deref path=" << link->linkPath();
+    // qDebug() << "ZeroRef: set fully deref path=" << link->linkPath();
 
     while (link->isRetired()  &&
            link->refCount() < 0  &&
            link->children().size() == 0) {  // Has no children
         ArnLink*  parent = qobject_cast<ArnLink*>( link->parent());
-        qDebug() << "ZeroRef: delete link path=" << link->linkPath();
+        // qDebug() << "ZeroRef: delete link path=" << link->linkPath();
         delete link;
         link = parent;
     }

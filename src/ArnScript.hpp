@@ -46,21 +46,40 @@ class ArnScript;
 
 
 //! \cond ADV
+class ArnItemScr : public ArnItem
+{
+    Q_OBJECT
+public:
+    ArnItemScr( QObject* parent = 0);
+    ArnItemScr( const QString& path, QObject* parent = 0);
+    ArnItemScr( const ArnItem& folder_template, const QString& itemName_path, QObject* parent = 0);
+    virtual  ~ArnItemScr();
+
+    int  _defaultType;
+
+private:
+    void  init();
+};
+
+
 class ARNLIBSHARED_EXPORT ArnItemProto : public QObject, public QScriptable
 {
     Q_OBJECT
-    Q_PROPERTY( QString path       READ path          WRITE setPath)
-    Q_PROPERTY( QVariant value     READ value         WRITE setValue)
-    Q_PROPERTY( QString string     READ string        WRITE setString)
+    Q_PROPERTY( QString defaultType READ defaultType   WRITE setDefaultType)
+    Q_PROPERTY( QString path        READ path          WRITE setPath)
+    Q_PROPERTY( QVariant value      READ value         WRITE setValue)
+    Q_PROPERTY( QString string      READ string        WRITE setString)
     // Property  num  is set manually
-    Q_PROPERTY( bool pipeMode      READ isPipeMode    WRITE setPipeMode)
-    Q_PROPERTY( bool saveMode      READ isSaveMode    WRITE setSaveMode)
-    Q_PROPERTY( bool smMaster      READ isMaster      WRITE setMaster)
-    Q_PROPERTY( bool smAutoDestroy READ isAutoDestroy WRITE setAutoDestroy)
-    Q_PROPERTY( bool smTemplate    READ isTemplate    WRITE setTemplate)
+    Q_PROPERTY( bool pipeMode       READ isPipeMode    WRITE setPipeMode)
+    Q_PROPERTY( bool saveMode       READ isSaveMode    WRITE setSaveMode)
+    Q_PROPERTY( bool smMaster       READ isMaster      WRITE setMaster)
+    Q_PROPERTY( bool smAutoDestroy  READ isAutoDestroy WRITE setAutoDestroy)
+    Q_PROPERTY( bool smTemplate     READ isTemplate    WRITE setTemplate)
 public:
     ArnItemProto( ArnScript* parent = 0);
 
+    QString  defaultType() const;
+    void  setDefaultType( const QString& typeName);
     QString  path() const;
     void  setPath( const QString& path);
     QVariant  value() const;

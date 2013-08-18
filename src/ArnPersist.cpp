@@ -291,21 +291,21 @@ void  ArnPersist::doArnDestroy()
 
 void  ArnPersist::doArnModeChanged( QString path, uint linkId, ArnItem::Mode mode)
 {
-    qDebug() << "Persist modeChanged: path=" << path << " mode=" << mode.f;
+    // qDebug() << "Persist modeChanged: path=" << path << " mode=" << mode.f;
     if (!mode.is( mode.Save))  return;  // Not save-mode
     if (_itemPersistMap.contains( linkId))  return;  // Already in map
-    qDebug() << "Persist modeChanged New: path=" << path << " mode=" << mode.f;
+    // qDebug() << "Persist modeChanged New: path=" << path << " mode=" << mode.f;
 
     ArnItemPersist*  item = getPersistItem( path);
     QByteArray  data;
     int  storeId;
     if (getDbValue( path, data, storeId)) {  // path exist in db, load data
-        qDebug() << "Persist modeChanged dbRead: path=" << path;
+        // qDebug() << "Persist modeChanged dbRead: path=" << path;
         item->arnImport( data, false);
         item->setStoreId( storeId);
     }
     else {  // path is new in db, create it with null data
-        qDebug() << "Persist modeChanged dbInsert: path=" << path;
+        // qDebug() << "Persist modeChanged dbInsert: path=" << path;
         insertDbValue( path, QByteArray());
         if (getDbId( path, storeId)) {
             item->setStoreId( storeId);
@@ -401,7 +401,7 @@ bool  ArnPersist::setupDataBase( QString dbName)
     _query = new QSqlQuery( *_db);
 
     int  curArnDbVer = 100;  // Default for db with no meta table
-    qDebug() << "Persist-Db tables:" << _db->tables();
+    // qDebug() << "Persist-Db tables:" << _db->tables();
     if (_db->tables().contains("meta"))
         curArnDbVer = metaDbValue("ver", "101").toInt();
     bool  hasStoreTable = _db->tables().contains("store");

@@ -39,10 +39,42 @@
 #include <QFile>
 #include <QDebug>
 
-Q_DECLARE_METATYPE(ArnItem*)
+Q_DECLARE_METATYPE(ArnItemScr*)
 Q_DECLARE_METATYPE(ArnMonitor*)
 Q_DECLARE_METATYPE(ArnDependOffer*)
 Q_DECLARE_METATYPE(ArnDepend*)
+
+
+void  ArnItemScr::init()
+{
+    _defaultType = QMetaType::Void;
+}
+
+
+ArnItemScr::ArnItemScr( QObject* parent) :
+    ArnItem( parent)
+{
+    init();
+}
+
+
+ArnItemScr::ArnItemScr( const QString& path, QObject* parent) :
+    ArnItem( path, parent)
+{
+    init();
+}
+
+
+ArnItemScr::ArnItemScr( const ArnItem& folder_template, const QString& itemName_path, QObject* parent) :
+    ArnItem( folder_template, itemName_path, parent)
+{
+    init();
+}
+
+
+ArnItemScr::~ArnItemScr()
+{
+}
 
 
 ArnScript::ArnScript( QObject* parent) :
@@ -68,7 +100,7 @@ ArnScript::ArnScript( QObject* parent) :
     QScriptValue depOfferProtoScr = _engine->newQObject( _depOfferProto);
     QScriptValue depProtoScr      = _engine->newQObject( _depProto);
 
-    _engine->setDefaultPrototype( qMetaTypeId<ArnItem*>(),        itemProtoScr);
+    _engine->setDefaultPrototype( qMetaTypeId<ArnItemScr*>(),        itemProtoScr);
     _engine->setDefaultPrototype( qMetaTypeId<ArnMonitor*>(),     monitorProtoScr);
     _engine->setDefaultPrototype( qMetaTypeId<ArnDependOffer*>(), depOfferProtoScr);
     _engine->setDefaultPrototype( qMetaTypeId<ArnDepend*>(),      depProtoScr);
@@ -186,9 +218,44 @@ ArnItemProto::ArnItemProto( ArnScript* parent)
 }
 
 
+QString  ArnItemProto::defaultType() const
+{
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
+    if (!item)  return QString();
+    if (item->_defaultType == QMetaType::Void)  return QString();
+
+    const char*  typeName = QMetaType::typeName( item->_defaultType);
+    if (!typeName)  return QString();
+
+    return typeName;
+}
+
+
+void  ArnItemProto::setDefaultType( const QString &typeName)
+{
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
+    if (!item)  return;
+
+    if (typeName.isEmpty()) {
+        item->_defaultType = QMetaType::Void;
+        return;
+    }
+
+    int  type = QMetaType::type( typeName.toLatin1().constData());
+    if (!type) {
+        context()->throwError( QScriptContext::TypeError,
+                               "Setting unknown defaultType=" + typeName);
+        return;
+    }
+
+
+    item->_defaultType = type;
+}
+
+
 QString  ArnItemProto::path() const
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  return item->path();
     return QString();
 }
@@ -196,14 +263,14 @@ QString  ArnItemProto::path() const
 
 void  ArnItemProto::setPath( const QString &path)
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  item->open( path);
 }
 
 
 QVariant  ArnItemProto::value() const
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  return item->toVariant();
     return QVariant();
 }
@@ -211,14 +278,27 @@ QVariant  ArnItemProto::value() const
 
 void  ArnItemProto::setValue( const QVariant &value)
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
-    if (item)  item->setValue( value);
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
+    if (!item)  return;
+
+    if (item->_defaultType == QMetaType::Void)  // No defaultType, no conversion
+        item->setValue( value);
+    else {  // Use defaultType
+        QVariant  val = value;
+        if (val.convert( QVariant::Type( item->_defaultType))) {
+            item->setValue( val);
+        }
+        else {
+            context()->throwError( QScriptContext::TypeError,
+                                   "Can't convert to defaultType=" + defaultType());
+        }
+    }
 }
 
 
 QString  ArnItemProto::string() const
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  return item->toString();
     return QString();
 }
@@ -226,14 +306,14 @@ QString  ArnItemProto::string() const
 
 void  ArnItemProto::setString( const QString &value)
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  item->setValue( value);
 }
 
 
 bool  ArnItemProto::isPipeMode() const
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  return item->isPipeMode();
     return false;
 }
@@ -241,14 +321,14 @@ bool  ArnItemProto::isPipeMode() const
 
 void  ArnItemProto::setPipeMode( bool /*isPipeMode*/)
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  item->setPipeMode();
 }
 
 
 bool  ArnItemProto::isMaster() const
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  return item->isMaster();
     return false;
 }
@@ -256,7 +336,7 @@ bool  ArnItemProto::isMaster() const
 
 void  ArnItemProto::setMaster( bool /*isMaster*/)
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)
         item->setMaster();
 }
@@ -264,7 +344,7 @@ void  ArnItemProto::setMaster( bool /*isMaster*/)
 
 bool  ArnItemProto::isAutoDestroy() const
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  return item->isAutoDestroy();
     return false;
 }
@@ -272,14 +352,14 @@ bool  ArnItemProto::isAutoDestroy() const
 
 void  ArnItemProto::setAutoDestroy( bool /*isAutoDestroy*/)
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  item->setAutoDestroy();
 }
 
 
 bool  ArnItemProto::isSaveMode() const
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  return item->isSaveMode();
     return false;
 }
@@ -287,14 +367,14 @@ bool  ArnItemProto::isSaveMode() const
 
 void  ArnItemProto::setSaveMode( bool /*isSaveMode*/)
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  item->setSaveMode();
 }
 
 
 bool  ArnItemProto::isTemplate() const
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  return item->isTemplate();
     return false;
 }
@@ -302,14 +382,14 @@ bool  ArnItemProto::isTemplate() const
 
 void  ArnItemProto::setTemplate( bool isTemplate)
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (item)  item->setTemplate( isTemplate);
 }
 
 
 QScriptValue ArnItemProto::getSetNum(QScriptContext* context, QScriptEngine* engine)
 {
-    ArnItem*  item = qscriptvalue_cast<ArnItem*>( context->thisObject());
+    ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( context->thisObject());
     QScriptValue  result;
     if (context->argumentCount() == 1) {  // Set property
         result = context->argument(0);
@@ -331,9 +411,9 @@ QScriptValue  ArnItemProto::constructor( QScriptContext* context, QScriptEngine*
                                     "use the 'new' operator");
     }
 
-    ArnItem*  arnItem;
+    ArnItemScr*  arnItem;
     if (context->argumentCount() >= 2) {  // (Item, Path) as arguments
-        ArnItem*  item = qscriptvalue_cast<ArnItem*>( context->argument(0));
+        ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( context->argument(0));
         if (!item) {
             return context->throwError(QScriptContext::TypeError,
                                        "is not ArnItem as first argument");
@@ -343,7 +423,7 @@ QScriptValue  ArnItemProto::constructor( QScriptContext* context, QScriptEngine*
             return context->throwError(QScriptContext::TypeError,
                                        "is not String (path) as second argument");
         }
-        arnItem = new ArnItem( *item, path);
+        arnItem = new ArnItemScr( *item, path);
     }
     else if (context->argumentCount() >= 1) {  // Path as argument
         QString  path = qscriptvalue_cast<QString>( context->argument(0));
@@ -351,10 +431,10 @@ QScriptValue  ArnItemProto::constructor( QScriptContext* context, QScriptEngine*
             return context->throwError(QScriptContext::TypeError,
                                        "is not String (path) as first argument");
         }
-        arnItem = new ArnItem( path);
+        arnItem = new ArnItemScr( path);
     }
     else {  // No argument
-        arnItem = new ArnItem;
+        arnItem = new ArnItemScr;
     }
 
     // let the engine manage the new object's lifetime.
@@ -529,3 +609,4 @@ QScriptValue  ArnDepProto::constructor( QScriptContext* context, QScriptEngine* 
     // let the engine manage the new object's lifetime.
     return engine->newQObject( dep, QScriptEngine::ScriptOwnership);
 }
+
