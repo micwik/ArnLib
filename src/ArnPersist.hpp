@@ -232,6 +232,7 @@ private slots:
     void  sapiDbMandatory( QString path, bool isMandatory);
     void  sapiDbMandatoryLs( QString path);
     void  sapiDbLs( QString path, bool isUsed = true);
+    void  sapiDbMarkUnused( QString path);
     void  sapiInfo();
 
     void  vcsCheckoutR();

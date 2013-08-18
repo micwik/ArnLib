@@ -70,6 +70,7 @@ MQ_PUBLIC_ACCESS
     void  pv_dbMandatory( QString path, bool isMandatory);
     void  pv_dbMandatoryLs( QString path);
     void  pv_dbLs( QString path, bool isUsed = true);
+    void  pv_dbMarkUnused( QString path);
     void  pv_info();
 
     //// Requester API
@@ -79,6 +80,7 @@ MQ_PUBLIC_ACCESS
     void  rq_dbMandatoryR( bool isOk);
     void  rq_dbMandatoryLsR( QStringList paths);
     void  rq_dbLsR( QStringList paths);
+    void  rq_dbMarkUnusedR( bool isOk);
     void  rq_infoR( QString name, QString ver);
     void  rq_vcsNotify( QString msg);
     void  rq_vcsProgress( int percent, QString msg=QString());

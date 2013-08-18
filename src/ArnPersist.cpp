@@ -971,6 +971,29 @@ void  ArnPersist::sapiDbLs( QString path, bool isUsed)
 }
 
 
+void  ArnPersist::sapiDbMarkUnused( QString path)
+{
+    QList<int>  storeIdList;
+    if (!getDbList( true, storeIdList)) {
+        emit _sapiCommon->rq_dbMarkUnusedR(false);  // Error
+        return;
+    }
+
+    QString  pathDb;
+    QByteArray  value;
+    foreach (int storeId, storeIdList) {
+        if (!getDbValue( storeId, pathDb, value))  continue;
+        if (!pathDb.startsWith( path))  continue;
+
+        if (!updateDbUsed( storeId, false)) {
+            emit _sapiCommon->rq_dbMarkUnusedR(false);  // Error
+            return;
+        }
+    }
+    emit _sapiCommon->rq_dbMarkUnusedR(true);  // Success
+}
+
+
 void  ArnPersist::sapiInfo()
 {
     emit _sapiCommon->rq_infoR("Arn Persist", "1.0");
