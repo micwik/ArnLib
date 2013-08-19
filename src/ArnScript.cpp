@@ -271,8 +271,20 @@ void  ArnItemProto::setPath( const QString &path)
 QVariant  ArnItemProto::value() const
 {
     ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
-    if (item)  return item->toVariant();
-    return QVariant();
+    if (!item)  return QVariant();
+
+    QVariant  val = item->toVariant();
+    int  type = val.type();
+
+    switch (type) {
+    case QMetaType::QTime:
+        val = QVariant( QDateTime( QDate( 1, 1, 1), val.toTime()));
+        break;
+    default:
+        break;
+    }
+
+    return val;
 }
 
 
