@@ -454,6 +454,12 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
         argPrefix = "ba";
     // else if (typeName == "QByteArray")  // Legacy Should be
     //     argPrefix = "bytes";
+    else if (typeName == "QDate")
+        argPrefix = "date";
+    else if (typeName == "QTime")
+        argPrefix = "time";
+    else if (typeName == "QDateTime")
+        argPrefix = "datetime";
     else if (typeName == "QStringList")
         argPrefix = "list";
     else if (typeName == "QString")
@@ -574,13 +580,16 @@ void  ArnRpc::pipeInput( QByteArray data)
 bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &index,
                                const QByteArray& methodName)
 {
-    static const QByteArray  qlistName   = "QStringList";
-    static const QByteArray  qstringName = "QString";
-    static const QByteArray  qbaName     = "QByteArray";
     static const QByteArray  intName     = "int";
     static const QByteArray  uintName    = "uint";
     static const QByteArray  boolName    = "bool";
     static const QByteArray  doubleName  = "double";
+    static const QByteArray  qbaName     = "QByteArray";
+    static const QByteArray  qstringName = "QString";
+    static const QByteArray  qdateName   = "QDate";
+    static const QByteArray  qtimeName   = "QTime";
+    static const QByteArray  qdtmName    = "QDateTime";
+    static const QByteArray  qlistName   = "QStringList";
 
     //// Get arg type info
     const QByteArray*  typeName = &qstringName;  // Default type
@@ -620,6 +629,18 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
     }
     else if (typeKey.startsWith("st")) {
         typeName  = &qstringName;
+        argInType = true;
+    }
+    else if (typeKey.startsWith("da")) {
+        typeName  = &qdateName;
+        argInType = true;
+    }
+    else if (typeKey.startsWith("ti")) {
+        typeName  = &qtimeName;
+        argInType = true;
+    }
+    else if (typeKey.startsWith("datet")) {
+        typeName  = &qdtmName;
         argInType = true;
     }
     else if (typeKey.startsWith("li")) {
@@ -817,6 +838,12 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
             parType = "ba";
         //  else if (typeName == "QByteArray")  // Legacy Should be ...
         //    parType = "bytes";
+        else if (typeName == "QDate")
+            parType = "date";
+        else if (typeName == "QTime")
+            parType = "time";
+        else if (typeName == "QDateTime")
+            parType = "datetime";
         else if (typeName == "QStringList") {
             parType = "list";
             isListType = true;
