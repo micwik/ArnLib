@@ -35,6 +35,8 @@
 
 #include "MQFlags.hpp"
 
+#define DATASTREAM_VER  QDataStream::Qt_4_6
+
 
 namespace Arn {
 struct SameValue {

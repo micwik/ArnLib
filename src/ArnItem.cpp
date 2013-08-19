@@ -32,8 +32,8 @@
 
 #include "ArnItem.hpp"
 #include "Arn.hpp"
-#include <QDataStream>
-#include <QUuid>
+//#include <QDataStream>
+//#include <QUuid>
 #include <QTimer>
 #include <QMetaObject>
 #include <QDebug>

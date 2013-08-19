@@ -32,6 +32,7 @@
 
 #include "ArnItemB.hpp"
 #include "Arn.hpp"
+#include "ArnDefs.hpp"
 #include <QDataStream>
 #include <QUuid>
 #include <QTimer>
@@ -409,6 +410,7 @@ void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle
             case ExportCode::Variant: {  // Legacy
                 QVariant  value;
                 QDataStream  stream( data);
+                stream.setVersion( DATASTREAM_VER);
                 quint8  dummy;  // Will get Export-code
                 stream >> dummy >> value;
                 setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
@@ -421,7 +423,7 @@ void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle
                 QByteArray  typeName( data.constData() + 1, sepPos - 1);
                 int  type = QMetaType::type( typeName.constData());
                 if (!type) {
-                    errorLog( QString(tr("Import unknown type:") + typeName.constData()),
+                    errorLog( QString(tr("Import unknown text type:") + typeName.constData()),
                               ArnError::Undef);
                     return;
                 }
@@ -437,17 +439,39 @@ void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle
                 return;
             }
             case ExportCode::VariantBin: {
-                int  sepPos = data.indexOf(':', 1);
-                Q_ASSERT(sepPos > 0);
-
-                QByteArray  typeName( data.constData() + 1, sepPos - 1);
-                int  type = QMetaType::type( typeName.constData());
-                if (!type) {
-                    errorLog( QString(tr("Import unknown type:") + typeName.constData()),
+                if (data.at(2) != DATASTREAM_VER) {
+                    errorLog( QString(tr("Import not same DataStream version")),
                               ArnError::Undef);
                     return;
                 }
-                QVariant  value( type, data.constData() + sepPos + 1);
+                int  sepPos = data.indexOf(':', 3);
+                Q_ASSERT(sepPos > 0);
+
+                QByteArray  typeName( data.constData() + 3, sepPos - 3);
+                int  type = QMetaType::type( typeName.constData());
+                if (!type) {
+                    errorLog( QString(tr("Import unknown binary type:") + typeName.constData()),
+                              ArnError::Undef);
+                    return;
+                }
+#if QT_VERSION >= 0x050000
+                void*  valData = QMetaType::create( type);
+#else
+                void*  valData = QMetaType::construct( type);
+#endif
+                Q_ASSERT( valData);
+                QDataStream  stream( data);
+                stream.setVersion( DATASTREAM_VER);
+                stream.skipRawData( sepPos + 1);
+                if (!QMetaType::load( stream, type, valData)) {
+                    errorLog( QString(tr("Can't' import binary type:") + typeName.constData()),
+                              ArnError::Undef);
+                    QMetaType::destroy( type, valData);
+                    return;
+                }
+
+                QVariant  value( type, valData);
+                QMetaType::destroy( type, valData);
 
                 setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
                 return;
@@ -482,12 +506,10 @@ QByteArray  ArnItemB::arnExport()  const
 
     if (arnType == ArnLink::Type::Variant) {
         QVariant value = toVariant();
-        const char*  typeName = value.typeName();
-        if (!typeName)
-            typeName = "<Invalid>";
-        int  type = QMetaType::type( typeName);
+        QByteArray  typeName( value.typeName());
+        int  type = QMetaType::type( typeName.constData());
         if (!type) {
-            errorLog( QString(tr("Export unknown type:") + typeName),
+            errorLog( QString(tr("Export unknown type:") + typeName.constData()),
                       ArnError::Undef);
             return QByteArray();
         }
@@ -501,11 +523,17 @@ QByteArray  ArnItemB::arnExport()  const
         else { // Binary Variant
 #if 0       //// Legacy
             QDataStream  stream( &retVal, QIODevice::WriteOnly);
+            stream.setVersion( DATASTREAM_VER);
             stream << qint8( ExportCode::Variant) << value;
             // retVal will contain Export-code at pos 0 followed by the QVariant
 #else
             QDataStream  stream( &retVal, QIODevice::WriteOnly);
-            stream << qint8( ExportCode::VariantBin) << typeName << ":";
+            stream.setVersion( DATASTREAM_VER);
+            stream << quint8( ExportCode::VariantBin);
+            stream << quint8(0);  // Spare
+            stream << quint8( DATASTREAM_VER);
+            stream.writeRawData( typeName.constData(), typeName.size());
+            stream << quint8(':');
             if (!QMetaType::save( stream, type, value.constData())) {
                 errorLog( QString(tr("Can't export type:") + typeName),
                           ArnError::Undef);

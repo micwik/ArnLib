@@ -31,6 +31,7 @@
 //
 
 #include "ArnRpc.hpp"
+#include "ArnDefs.hpp"
 #include <QMetaType>
 #include <QMetaMethod>
 #include <QTimer>
@@ -430,6 +431,7 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
     }
     else {
         QDataStream  stream( &argDataDump, QIODevice::WriteOnly);
+        stream.setVersion( DATASTREAM_VER);
         if (!QMetaType::save( stream, type, arg.data())) {
             errorLog( QString(tr("Can't export type:") + typeName.constData()),
                       ArnError::RpcInvokeError);
@@ -688,8 +690,9 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
         Q_ASSERT( argData);
         arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
         QDataStream  stream( argDataDump);
+        stream.setVersion( DATASTREAM_VER);
         if (!QMetaType::load( stream, type, argData)) {
-            errorLog( QString(tr("Can't' import ds type:") + typeName->constData())
+            errorLog( QString(tr("Can't' import bin type:") + typeName->constData())
                       + tr(" method:") + methodName.constData(),
                       ArnError::RpcReceiveError);
             return false;
