@@ -3,7 +3,7 @@
 # -------------------------------------------------
 
 PROJECT = ArnLib
-ARNLIBVER = 1.1.0
+ARNLIBVER = 2.0.0
 
 !win32:VERSION = $$ARNLIBVER
 
