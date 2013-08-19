@@ -268,17 +268,11 @@ void  ArnClient::doReplyRecord( XStringMap& replyMap)
     if (reply == "Rget") {
         emit replyGet( replyMap.valueString("data"), replyMap.valueString("path"));
     }
-    else if (reply == "Rset") {
-    }
-    else if (reply == "Rsync") {
-    }
     else if (reply == "Rls") {
         emit replyLs( makeItemList( replyMap), replyMap.valueString("path"));
     }
     else if (reply == "Rver") {
         emit replyVer( replyMap.valueString("data"));
-    }
-    else {
     }
 }
 
