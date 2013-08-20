@@ -439,7 +439,7 @@ void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle
                 return;
             }
             case ExportCode::VariantBin: {
-                if (data.at(2) != DATASTREAM_VER) {
+                if ((data.size() < 3) || (data.at(2) != DATASTREAM_VER)) {
                     errorLog( QString(tr("Import not same DataStream version")),
                               ArnError::Undef);
                     return;

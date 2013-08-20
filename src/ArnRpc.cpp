@@ -403,11 +403,7 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
     if (nArg + 1 != int( index))  return true;  // Out of seq - Finished
 
     //// Get arg type info
-    bool  isListType = false;
     QByteArray  typeName = arg.name();
-    if (typeName == "QStringList") {
-        isListType = true;
-    }
     int  type = QMetaType::type( typeName.constData());
     if (!type) {
         errorLog( QString(tr("Unknown type:") + typeName.constData()),
@@ -421,10 +417,15 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
     //// Export data from arg
     QByteArray  argDataDump;
     QStringList  argDataList;
+    bool  isListType = false;
     bool  isBinaryType = false;
     QVariant  varArg( type, arg.data());
-    if (isListType) {
+    if (type == QMetaType::QStringList) {
         argDataList = varArg.toStringList();
+        isListType = true;
+    }
+    else if (type == QMetaType::QByteArray) {
+        argDataDump = varArg.toByteArray();
     }
     else if (varArg.canConvert( QVariant::String)) {
         argDataDump = varArg.toString().toUtf8();
@@ -432,6 +433,8 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
     else {
         QDataStream  stream( &argDataDump, QIODevice::WriteOnly);
         stream.setVersion( DATASTREAM_VER);
+        stream << quint8(0);  // Spare
+        stream << quint8( DATASTREAM_VER);
         if (!QMetaType::save( stream, type, arg.data())) {
             errorLog( QString(tr("Can't export type:") + typeName.constData()),
                       ArnError::RpcInvokeError);
@@ -702,7 +705,16 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
         Q_ASSERT( argData);
         arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
     }
+    else if (type == QMetaType::QByteArray) {
+        QByteArray*  argData = new QByteArray( argDataDump);
+        arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
+    }
     else if (isBinaryType) {
+        if ((argDataDump.size() < 2) || (argDataDump.at(1) != DATASTREAM_VER)) {
+            errorLog( QString(tr("Not same DataStream version, method:")) + methodName.constData(),
+                      ArnError::RpcReceiveError);
+            return false;
+        }
 #if QT_VERSION >= 0x050000
         void*  argData = QMetaType::create( type);
 #else
@@ -712,6 +724,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
         arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
         QDataStream  stream( argDataDump);
         stream.setVersion( DATASTREAM_VER);
+        stream.skipRawData(2);
         if (!QMetaType::load( stream, type, argData)) {
             errorLog( QString(tr("Can't' import bin type:") + typeName->constData())
                       + tr(" method:") + methodName.constData(),
@@ -719,7 +732,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
             return false;
         }
     }
-    else {
+    else {  // Textual type
         QVariant  varArg( QString::fromUtf8( argDataDump.constData(), argDataDump.size()));
         if (!varArg.convert( QVariant::Type( type))) {
             errorLog( QString(tr("Can't' import str type:") + typeName->constData())
