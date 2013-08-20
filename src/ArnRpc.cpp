@@ -453,10 +453,8 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
         argPrefix = "bool";
     else if (typeName == "double")
         argPrefix = "double";
-    else if (typeName == "QByteArray")  // Legacy
-        argPrefix = "ba";
-    // else if (typeName == "QByteArray")  // Legacy Should be
-    //     argPrefix = "bytes";
+    else if (typeName == "QByteArray")
+        argPrefix = "bytes";
     else if (typeName == "QDate")
         argPrefix = "date";
     else if (typeName == "QTime")
@@ -466,8 +464,7 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
     else if (typeName == "QStringList")
         argPrefix = "list";
     else if (typeName == "QString")
-        argPrefix = "a";  // Legacy
-        // argPrefix = "string";  // Legacy should be
+        argPrefix = "string";
     else
         xsm.add((isBinaryType ? "tb" : "t"), typeName);
 
@@ -847,10 +844,8 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
             parType = "bool";
         else if (typeName == "double")
             parType = "double";
-        else if (typeName == "QByteArray")  // Legacy
-            parType = "ba";
-        //  else if (typeName == "QByteArray")  // Legacy Should be ...
-        //    parType = "bytes";
+        else if (typeName == "QByteArray")
+            parType = "bytes";
         else if (typeName == "QDate")
             parType = "date";
         else if (typeName == "QTime")
@@ -862,8 +857,7 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
             isListType = true;
         }
         else if (typeName == "QString")
-            parType = wasListType ? "a" : "";  // Legacy
-            // parType = wasListType ? "string" : "";  // Legacy should be
+            parType = wasListType ? "string" : "";
         else {
             parType = "a";
             param += (isBinaryType ? "tb" : "t") + QByteArray("=") + typeName + " ";

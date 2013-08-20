@@ -43,7 +43,7 @@
 #include <QPointer>
 #include "XStringMap.hpp"
 
-#define ARNRECNAME  "rec"
+#define ARNRECNAME  ""
 
 class QTcpSocket;
 

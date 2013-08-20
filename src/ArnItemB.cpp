@@ -521,12 +521,6 @@ QByteArray  ArnItemB::arnExport()  const
             retVal += value.toString().toUtf8();
         }
         else { // Binary Variant
-#if 0       //// Legacy
-            QDataStream  stream( &retVal, QIODevice::WriteOnly);
-            stream.setVersion( DATASTREAM_VER);
-            stream << qint8( ExportCode::Variant) << value;
-            // retVal will contain Export-code at pos 0 followed by the QVariant
-#else
             QDataStream  stream( &retVal, QIODevice::WriteOnly);
             stream.setVersion( DATASTREAM_VER);
             stream << quint8( ExportCode::VariantBin);
@@ -539,7 +533,6 @@ QByteArray  ArnItemB::arnExport()  const
                           ArnError::Undef);
                 return QByteArray();
             }
-#endif
         }
     }
     else if (arnType == ArnLink::Type::ByteArray) {

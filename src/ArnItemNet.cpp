@@ -105,7 +105,7 @@ QByteArray  ArnItemNet::getModeString()  const
     Mode  mode = getMode();
     QByteArray  modeString;
     if (mode.is( mode.Pipe))   modeString += "P";
-    if (mode.is( mode.BiDir))  modeString += "VB";  // Legacy V
+    if (mode.is( mode.BiDir))  modeString += "B";
     if (mode.is( mode.Save))   modeString += "S";
 
     return modeString;
