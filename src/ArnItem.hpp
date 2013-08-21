@@ -37,7 +37,6 @@
 #include "ArnLib_global.hpp"
 #include "ArnError.hpp"
 #include "ArnLink.hpp"
-#include "MQFlags.hpp"
 #include <QTextStream>
 #include <QObject>
 #include <QMetaMethod>
@@ -268,11 +267,11 @@ public:
     /*! Data blob from a previos \p arnExport() can be imported.
      *  This is essentially assigning the _Arn Data Object_ with same as exported.
      *  \param[in] data is the data blob
-     *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see arnExport()
      *  \see setIgnoreSameValue()
      */
-    void  arnImport( const QByteArray& data, int ignoreSame = -1)
+    void  arnImport( const QByteArray& data, int ignoreSame = Arn::SameValue::DefaultAction)
     {ArnItemB::arnImport( data, ignoreSame);}
 
     /*! \return A data blob representing the _Arn Data Object_
@@ -321,67 +320,67 @@ public:
 
     //! Assign the value of an other ArnItem to an _Arn Data Object_
     /*! \param[in] other is the ArnItem containing the value to assign
-     *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const ArnItem& other, int ignoreSame = -1)
+    void  setValue( const ArnItem& other, int ignoreSame = Arn::SameValue::DefaultAction)
     {ArnItemB::setValue( other, ignoreSame);}
 
 public slots:
     //! Assign an _integer_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
-     *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( int value, int ignoreSame = -1)
+    void  setValue( int value, int ignoreSame = Arn::SameValue::DefaultAction)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _double_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
-     *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( double value, int ignoreSame = -1)
+    void  setValue( double value, int ignoreSame = Arn::SameValue::DefaultAction)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _bool_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
-     *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( bool value, int ignoreSame = -1)
+    void  setValue( bool value, int ignoreSame = Arn::SameValue::DefaultAction)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _QString_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
-     *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const QString& value, int ignoreSame = -1)
+    void  setValue( const QString& value, int ignoreSame = Arn::SameValue::DefaultAction)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _QByteArray_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
-     *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const QByteArray& value, int ignoreSame = -1)
+    void  setValue( const QByteArray& value, int ignoreSame = Arn::SameValue::DefaultAction)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _QVariant_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
-     *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const QVariant& value, int ignoreSame = -1)
+    void  setValue( const QVariant& value, int ignoreSame = Arn::SameValue::DefaultAction)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _char*_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
-     *  \param[in] ignoreSame -1 = don't care, otherwise overide ignoreSame setting.
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const char* value, int ignoreSame = -1);
+    void  setValue( const char* value, int ignoreSame = Arn::SameValue::DefaultAction);
 
     //! Toggle the _bool_ at the _Arn Data Object_
     /*! The _Arn Data Object_ is first converted to a _bool_, then the toggled value

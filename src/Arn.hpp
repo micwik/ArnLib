@@ -286,6 +286,12 @@ public:
      */
     static void  setValue( const QString& path, const QVariant& value);
 
+    //! Assign a _char*_ to an _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \param[in] value to be assigned
+     */
+    static void  setValue( const QString& path, const char* value);
+
     static void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
     static QString  errorSysName();
 

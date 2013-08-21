@@ -189,7 +189,7 @@ ArnItem&  ArnItem::operator=( const QVariant& other)
 
 void  ArnItem::setValue( const char* value, int ignoreSame)
 {
-        setValue( QByteArray( value), ignoreSame);
+    setValue( QString::fromUtf8( value), ignoreSame);
 }
 
 
