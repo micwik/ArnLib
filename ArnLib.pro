@@ -3,26 +3,25 @@
 # -------------------------------------------------
 
 PROJECT = ArnLib
-ARNLIBVER = 2.0.0
 
-!win32:VERSION = $$ARNLIBVER
-
-DEFINES += LIBVER=\\\"$${ARNLIBVER}\\\"
-
-win32 {
-DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
-DEFINES += BUILDTIME=\\\"00:00\\\"
-# DEFINES += BUILDTIME=\\\"$$system('echo %time%')\\\"
-} else {
-DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M')\\\"
-DEFINES += BUILDDATE=\\\"$$system(date '+%y-%m-%d')\\\"
-DEFINES += DUMMY=\\\"$$system(rm tmp/Arn.o)\\\"
-}
+ARN += client server
 
 QT += network
 QT += script
 QT += sql
 QT -= gui
+
+include(src/ArnLib.pri)
+#include(ArnLib.pri)
+
+#include(src/ArnCore.pri)
+#include(src/ArnNetClient.pri)
+#include(src/ArnNetServer.pri)
+
+win32 {
+} else {
+DEFINES += DUMMY=\\\"$$system(rm tmp/Arn.o)\\\"
+}
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     TARGET = Arn5
@@ -31,59 +30,19 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 }
 TEMPLATE = lib
 
+!win32:VERSION = $$ARNLIBVER
+
 # CONFIG += staticlib
 DEFINES += ARNLIB_LIBRARY
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
-SOURCES += src/Arn.cpp \
-    src/ArnClient.cpp \
-    src/ArnItem.cpp \
-    src/ArnLink.cpp \
-    src/ArnServer.cpp \
-    src/XStringMap.cpp \
-    src/ArnItemNet.cpp \
-    src/ArnScript.cpp \
-    src/ArnScriptJobs.cpp \
-    src/ArnPersist.cpp \
-    src/ArnDepend.cpp \
-    src/ArnRpc.cpp \
-    src/ArnScriptJob.cpp \
-    src/ArnSapi.cpp \
-    src/ArnMonitor.cpp \
-    src/ArnSync.cpp \
-    src/ArnPipe.cpp \
-    src/ArnItemB.cpp
-
-HEADERS += src/ArnLib_global.hpp \
-    src/Arn.hpp \
-    src/ArnClient.hpp \
-    src/ArnItem.hpp \
-    src/ArnLink.hpp \
-    src/ArnServer.hpp \
-    src/XStringMap.hpp \
-    src/ArnError.hpp \
-    src/ArnItemNet.hpp \
-    src/ArnScript.hpp \
-    src/ArnScriptJobs.hpp \
-    src/ArnPersist.hpp \
-    src/ArnDepend.hpp \
-    src/MQFlags.hpp \
-    src/ArnLib.hpp \
-    src/ArnRpc.hpp \
-    src/ArnScriptJob.hpp \
-    src/ArnSapi.hpp \
-    src/ArnPersistSapi.hpp \
-    src/ArnMonitor.hpp \
-    src/ArnSync.hpp \
-    src/ArnPipe.hpp \
-    src/ArnDefs.hpp \
-    src/ArnItemB.hpp
 
 OTHER_FILES += \
     doc/Internals.md \
     README.md \
     doc/Description.md \
-    examples/Examples.txt
+    examples/Examples.txt \
+    ArnLib.pri
 
 
 ### Install

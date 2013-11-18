@@ -801,7 +801,7 @@ QString  ArnM::errorSysName()
 
 QByteArray  ArnM::info()
 {
-    return QByteArray("Name=ArnLib Ver=" LIBVER " Date=" BUILDDATE " Time=" BUILDTIME);
+    return QByteArray("Name=ArnLib Ver=" ARNLIBVER " Date=" ARNBUILDDATE " Time=" ARNBUILDTIME);
 }
 
 
