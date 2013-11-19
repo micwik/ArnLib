@@ -19,6 +19,7 @@ INCLUDEPATH += $$PWD
 
 contains(ARN, server) {
     ARN += client
+    QT += script sql
     SOURCES += $$PWD/ArnServer.cpp \
         $$PWD/ArnScript.cpp \
         $$PWD/ArnScriptJobs.cpp \
@@ -34,6 +35,7 @@ contains(ARN, server) {
 
 contains(ARN, client) {
     ARN += core
+    QT += network
     SOURCES += $$PWD/ArnClient.cpp \
         $$PWD/ArnItemNet.cpp \
         $$PWD/ArnDepend.cpp \

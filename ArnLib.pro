@@ -4,19 +4,14 @@
 
 PROJECT = ArnLib
 
-ARN += client server
-
-QT += network
-QT += script
-QT += sql
+# ARN += core       Basic Arn functionality without any tcp and syncing
+# ARN += client     Client TCP functionality with sync etc
+# ARN += server     Server TCP functionality with persistence etc
+ARN += server
 QT -= gui
 
 include(src/ArnLib.pri)
-#include(ArnLib.pri)
 
-#include(src/ArnCore.pri)
-#include(src/ArnNetClient.pri)
-#include(src/ArnNetServer.pri)
 
 win32 {
 } else {
