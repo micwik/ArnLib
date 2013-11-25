@@ -293,7 +293,7 @@ The service name can be given directly if known, but typically it comes from Arn
     connect( ds, SIGNAL(resolved(QByteArray)), this, SLOT(onResolved(QByteArray)));
     ds->resolve();
 
-void MainWindow::onResolved( QByteArray escFullDomain)
+void XXX::onResolved( QByteArray escFullDomain)
 {
     ArnZeroConfResolv*  ds = qobject_cast<ArnZeroConfResolv*>( sender());
     XStringMap  xsmPar;
@@ -407,21 +407,18 @@ This class handles browsing of ZeroConfig services.
             this, SLOT(onServiceRemoved(QString,QString)));
     _serviceBrowser->browse();
 
-void MainWindow::onServiceAdded(QString name, QString domain)
+void XXX::onServiceAdded(QString name, QString domain)
 {
-    if (!_activeServices.contains( name)) {
-        _activeServices.insert( name, "Some associeated service info ...");
-        ArnZeroConfResolv*  ds = new ArnZeroConfResolv( name, this);
-        connect( ds, SIGNAL(resolveError(int)), this, SLOT(onResolveError(int)));
-        connect( ds, SIGNAL(resolved(QByteArray)), this, SLOT(onResolved(QByteArray)));
-        ds->resolve();
-    }
+    _activeServices.insert( name, "Some associeated service info ...");
+    ArnZeroConfResolv*  ds = new ArnZeroConfResolv( name, this);
+    connect( ds, SIGNAL(resolveError(int)), this, SLOT(onResolveError(int)));
+    connect( ds, SIGNAL(resolved(QByteArray)), this, SLOT(onResolved(QByteArray)));
+    ds->resolve();
 }
 
-void MainWindow::onServiceRemoved(QString name, QString domain)
+void XXX::onServiceRemoved(QString name, QString domain)
 {
-    if (_activeServices.remove( name) > 0) {
-    }
+    _activeServices.remove( name);
 }
 \endcode
 */
@@ -450,6 +447,7 @@ public:
     void  setSubType( const QString& subtype);
     QString  subType();
 
+    QStringList  activeServiceNames()  const;
     bool  isBrowsing()  const;
 
 public slots:
@@ -458,11 +456,14 @@ public slots:
 
 signals:
     void  browseError( int errorCode);
+    void  serviceChanged( bool isAdded, const QString& serviceName, const QString& domain);
     void  serviceAdded( const QString& serviceName, const QString& domain);
     void  serviceRemoved( const QString& serviceName, const QString& domain);
 
 private:
     void  init();
+
+    QStringList  _activeServiceNames;
 };
 
 #endif // ARNZEROCONF_HPP

@@ -573,6 +573,12 @@ ArnZeroConfBrowser::~ArnZeroConfBrowser() {
 }
 
 
+QStringList ArnZeroConfBrowser::activeServiceNames() const
+{
+    return _activeServiceNames;
+}
+
+
 bool  ArnZeroConfBrowser::isBrowsing()  const
 {
     return _state == State::Browsing;
@@ -646,13 +652,24 @@ void  ArnZeroConfIntern::browseServiceCallback( DNSServiceRef service, DNSServic
     Q_UNUSED(service);
     Q_UNUSED(iface);
     //Q_UNUSED(regtype);
+
     qDebug() << "Browse CB: regType=" << regtype << " replyDomain=" << replyDomain;
     ArnZeroConfBrowser* self = reinterpret_cast<ArnZeroConfBrowser*>(context);
     if (errCode == kDNSServiceErr_NoError) {
-        if (flags & kDNSServiceFlagsAdd)
-            emit self->serviceAdded( QString::fromUtf8( serviceName), QString::fromUtf8( replyDomain));
-        else
-            emit self->serviceRemoved( QString::fromUtf8( serviceName), QString::fromUtf8( replyDomain));
+        bool  isAdded = (flags & kDNSServiceFlagsAdd) != 0;
+        QString  servName  = QString::fromUtf8( serviceName);
+        QString  repDomain = QString::fromUtf8( replyDomain);
+        if (isAdded != self->_activeServiceNames.contains( servName)) {  // Not multiple add or remove, ok
+            if (isAdded) {
+                self->_activeServiceNames += servName;
+                emit self->serviceAdded( servName, repDomain);
+            }
+            else {
+                self->_activeServiceNames.removeOne( servName);
+                emit self->serviceRemoved( servName, repDomain);
+            }
+            emit self->serviceChanged( isAdded, servName, repDomain);
+        }
     }
     else {
         emit self->browseError( errCode);
