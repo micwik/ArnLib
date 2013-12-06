@@ -30,69 +30,33 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include <QTcpServer>
-#include <QTcpSocket>
-#include <QDebug>
-#include "ArnError.hpp"
-#include "Arn.hpp"
-#include "ArnServer.hpp"
-#include "ArnSync.hpp"
+#ifndef ARNDISCOVER_HPP
+#define ARNDISCOVER_HPP
 
+#include "ArnItem.hpp"
 
-ArnServer::ArnServer( Type serverType, QObject *parent)
-    : QObject( parent)
+class ArnServer;
+class ArnZeroConfRegister;
+class QTimer;
+
+class ArnDiscoverAdvertise : public QObject
 {
-    _tcpServerActive = false;
-    _tcpServer       = new QTcpServer( this);
-    _serverType      = serverType;
-}
+    Q_OBJECT
+public:
+    explicit ArnDiscoverAdvertise( QObject *parent = 0);
 
+    void  setArnServer( ArnServer* arnServer);
 
-void  ArnServer::start(int port)
-{
-    if (port < 0) {
-        switch (_serverType) {
-        case Type::NetSync:
-            port = 2022;
-            break;
-        default:
-            ArnM::errorLog( QString(tr("Unknown Arn server Type:")) + QString::number( _serverType),
-                                ArnError::Undef);
-            return;
-        }
-    }
-    if (_tcpServer->listen(QHostAddress::Any, port)) {
-        _tcpServerActive = true;
+signals:
 
-        connect(_tcpServer, SIGNAL(newConnection()), this,
-                SLOT(tcpConnection()));
-    }
-    else {
-        ArnM::errorLog( QString(tr("Failed start Arn Server Port:")) + QString::number( port),
-                            ArnError::ConnectionError);
-    }
-}
+private slots:
+    void  serviceChanged( QString val);
+    void  serviceTimeout();
 
+private:
+    ArnZeroConfRegister*  _arnZCReg;
+    ArnItem  _arnServicePv;
+    QTimer*  _servTimer;
+};
 
-int  ArnServer::port()
-{
-    return _tcpServer->serverPort();
-}
-
-
-QHostAddress  ArnServer::address()
-{
-    return _tcpServer->serverAddress();
-}
-
-
-void  ArnServer::tcpConnection()
-{
-    QTcpSocket*  socket = _tcpServer->nextPendingConnection();
-
-    switch (_serverType) {
-    case Type::NetSync:
-        new ArnSync( socket, false);
-        break;
-    }
-}
+#endif // ARNDISCOVER_HPP

@@ -30,69 +30,52 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include <QTcpServer>
-#include <QTcpSocket>
-#include <QDebug>
-#include "ArnError.hpp"
-#include "Arn.hpp"
+#include "ArnDiscover.hpp"
+#include "ArnZeroConf.hpp"
 #include "ArnServer.hpp"
-#include "ArnSync.hpp"
+#include <QTimer>
 
 
-ArnServer::ArnServer( Type serverType, QObject *parent)
-    : QObject( parent)
+ArnDiscoverAdvertise::ArnDiscoverAdvertise( QObject *parent) :
+    QObject( parent)
 {
-    _tcpServerActive = false;
-    _tcpServer       = new QTcpServer( this);
-    _serverType      = serverType;
+    _arnZCReg = new ArnZeroConfRegister( this);
+    _servTimer = new QTimer( this);
 }
 
 
-void  ArnServer::start(int port)
+void  ArnDiscoverAdvertise::setArnServer( ArnServer* arnServer)
 {
-    if (port < 0) {
-        switch (_serverType) {
-        case Type::NetSync:
-            port = 2022;
-            break;
-        default:
-            ArnM::errorLog( QString(tr("Unknown Arn server Type:")) + QString::number( _serverType),
-                                ArnError::Undef);
-            return;
-        }
-    }
-    if (_tcpServer->listen(QHostAddress::Any, port)) {
-        _tcpServerActive = true;
+    _arnServicePv.addMode( ArnItem::Mode::Save);
+    _arnServicePv.open("/Sys/Discover/This/Service/value!");
+    connect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(serviceChanged(QString)));
 
-        connect(_tcpServer, SIGNAL(newConnection()), this,
-                SLOT(tcpConnection()));
-    }
-    else {
-        ArnM::errorLog( QString(tr("Failed start Arn Server Port:")) + QString::number( port),
-                            ArnError::ConnectionError);
-    }
+    QString  hostAddr = arnServer->address().toString();
+    int      hostPort = arnServer->port();
+    ArnM::setValue("/Sys/Discover/This/Host/value", hostAddr);
+    ArnM::setValue("/Sys/Discover/This/Host/Port/value", hostPort);
+
+    _arnZCReg->setPort( hostPort);
+
+    _servTimer->start( 5000);
+    connect( _servTimer, SIGNAL(timeout()), this, SLOT(serviceTimeout()));
 }
 
 
-int  ArnServer::port()
+void  ArnDiscoverAdvertise::serviceChanged( QString val)
 {
-    return _tcpServer->serverPort();
+    _servTimer->stop();
+
+    _arnServicePv = val;
+
+    if (_arnZCReg->state() != ArnZeroConfRegister::State::None)
+        _arnZCReg->releaseService();
+    _arnZCReg->setServiceName( val);
+    _arnZCReg->registerService();
 }
 
 
-QHostAddress  ArnServer::address()
+void  ArnDiscoverAdvertise::serviceTimeout()
 {
-    return _tcpServer->serverAddress();
-}
-
-
-void  ArnServer::tcpConnection()
-{
-    QTcpSocket*  socket = _tcpServer->nextPendingConnection();
-
-    switch (_serverType) {
-    case Type::NetSync:
-        new ArnSync( socket, false);
-        break;
-    }
+    serviceChanged("Arn Default Service");
 }

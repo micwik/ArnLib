@@ -34,11 +34,13 @@
 #define ARNSERVER_HPP
 
 #include "ArnLib_global.hpp"
-#include <QObject>
 #include "Arn.hpp"
 #include "MQFlags.hpp"
+#include <QObject>
+#include <QHostAddress>
 
 class QTcpServer;
+
 
 //! Class for making an _Arn Server_.
 /*!
@@ -72,7 +74,17 @@ public:
     //! Start the Arn _server_
     /*! \param[in] port is the port number (default 2022).
      */
-    void start( int port = 0);
+    void  start( int port = -1);
+
+    //! Port number of the Arn _server_
+    /*! \retval is the port number.
+     */
+    int  port();
+
+    //! Address of the Arn _server_
+    /*! \retval is the address.
+     */
+    QHostAddress address();
 
 private:
     QTcpServer *_tcpServer;
