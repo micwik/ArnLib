@@ -75,7 +75,7 @@ static int num_pkts_rejected = 0;
 // ***************************************************************************
 // Functions
 
-int gMDNSPlatformPosixVerboseLevel = 0;
+int gMDNSPlatformPosixVerboseLevel = 1;
 
 #define PosixErrorToStatus(errNum) ((errNum) == 0 ? mStatus_NoError : mStatus_UnknownErr)
 
@@ -369,12 +369,7 @@ mDNSlocal void FreePosixNetworkInterface(PosixNetworkInterface *intf)
     Q_ASSERT(intf);
     if (intf->intfName != NULL)
         free((void*) intf->intfName);
-    if (intf->multicastSocket4 != -1)
-        Q_ASSERT(close( intf->multicastSocket4) == 0);
-#if HAVE_IPV6
-    if (intf->multicastSocket6 != -1)
-        Q_ASSERT(close( intf->multicastSocket6) == 0);
-#endif
+    // The sockets intf->multicastSocket4 and intf->multicastSocket6 are closed by QUdpSocket in ArnMDns
     mDNSPlatformMemFree( intf);
 }
 
@@ -734,12 +729,7 @@ mDNSexport void  mDNSPlatformClose( mDNS* const m)
 {
     Q_ASSERT(m);
     ClearInterfaceList( m);
-    if (m->p->unicastSocket4 != -1)
-        Q_ASSERT(close(m->p->unicastSocket4) == 0);
-#if HAVE_IPV6
-    if (m->p->unicastSocket6 != -1)
-        Q_ASSERT(close(m->p->unicastSocket6) == 0);
-#endif
+    // The sockets m->p->unicastSocket4 and m->p->unicastSocket6 are closed by QUdpSocket in ArnMDns
 }
 
 
