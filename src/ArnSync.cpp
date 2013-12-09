@@ -43,7 +43,7 @@
 ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     : QObject( parent)
 {
-    _socket          = socket;
+    _socket          = socket;  // Note: client side does not own socket ...
     _isClientSide    = isClientSide;
     _isSending       = false;
     _fluxQueueSwitch = 0;
@@ -60,6 +60,7 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
         connect( _socket, SIGNAL(connected()), this, SLOT(connected()));
     }
     else {
+        _socket->setParent( this);  // Server side takes ownerchip of socket
         _isConnected = true;
     }
 }
@@ -67,7 +68,6 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
 
 ArnSync::~ArnSync()
 {
-    delete _socket;
 }
 
 

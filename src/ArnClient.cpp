@@ -38,8 +38,8 @@
 #include <QDebug>
 
 
-ArnClient::ArnClient(QObject *parent) :
-    QObject(parent)
+ArnClient::ArnClient( QObject* parent) :
+    QObject( parent)
 {
     _arnMountPoint = 0;
     _isAutoConnect = false;

@@ -71,7 +71,7 @@ class ArnMDns : public QObject
 public:
     static void  attach();
     static void  detach();
-    static void  shutDown();
+    // static void  shutDown();
 
     static ArnMDnsSockInfo*  addSocket();
     static void  addSocketInfo( ArnMDnsSockInfo* mdi);
@@ -87,7 +87,6 @@ signals:
     
 private slots:
     void  poll();
-    void  socketDataProc( mDNS *const m, PosixNetworkInterface *intf, int skt, ArnMDnsSockInfo* mdi);
     void  socketDataReady();
 
 private:
@@ -95,6 +94,7 @@ private:
     ~ArnMDns();
     int  setup();
     void  close();
+    void  socketDataProc( mDNS *const m, PosixNetworkInterface *intf, int skt, ArnMDnsSockInfo* mdi);
 
     static ArnMDns*  _self;
     static int  _refCount;

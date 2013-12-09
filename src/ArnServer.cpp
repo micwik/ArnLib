@@ -92,7 +92,7 @@ void  ArnServer::tcpConnection()
 
     switch (_serverType) {
     case Type::NetSync:
-        new ArnSync( socket, false);
+        new ArnSync( socket, false, this);
         break;
     }
 }

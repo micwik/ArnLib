@@ -43,6 +43,7 @@
 #include <QSocketNotifier>
 #include <QUdpSocket>
 #include <QNetworkAddressEntry>
+#include <QMapIterator>
 #include <QDebug>
 
 
@@ -129,13 +130,18 @@ void  ArnMDns::close()
 {
     qDebug() << "ArmDns close: refcount=" << _refCount;
     if (_started) {
-        qDebug() << "ArmDns close mDNS start";
         QEventLoop  loop;
         QTimer::singleShot( 500, &loop, SLOT(quit()));  // Min 100ms
         loop.exec( QEventLoop::ExcludeUserInputEvents);
 
+        _pollTimer.stop();
+        QMapIterator<int,ArnMDnsSockInfo*>  i(_sockInfoMap);
+        while (i.hasNext()) {
+            i.next();
+            ArnMDnsSockInfo*  mdi = i.value();
+            delete mdi;
+        }
         mDNS_Close(&mDNSStorage);
-        qDebug() << "ArmDns close mDNS end";
     }
     _started = false;
 }
@@ -159,17 +165,18 @@ void ArnMDns::detach()
     if (_refCount == 0) {
         _self->close();
         _self->deleteLater();
+        _self = 0;
     }
 }
 
-
+/*
 void  ArnMDns::shutDown()
 {
     if (!_self)  return;
 
     _self->close();
 }
-
+*/
 
 ArnMDnsSockInfo*  ArnMDns::addSocket()
 {
@@ -425,5 +432,3 @@ void ArnMDns::socketDataReady()
         qWarning() << "ArnMDNS received data from unexpected socket: sd=" << sd;
     }
 }
-
-
