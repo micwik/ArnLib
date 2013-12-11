@@ -293,6 +293,7 @@ void  ArnPersist::doArnModeChanged( QString path, uint linkId, ArnItem::Mode mod
 {
     // qDebug() << "Persist modeChanged: path=" << path << " mode=" << mode.f;
     if (!mode.is( mode.Save))  return;  // Not save-mode
+    if (ArnM::isProviderPath( path))  return;  // Only value path is used (non provider)
     if (_itemPersistMap.contains( linkId))  return;  // Already in map
     // qDebug() << "Persist modeChanged New: path=" << path << " mode=" << mode.f;
 

@@ -69,8 +69,6 @@ ArnItemB::ArnItemB( QObject *parent)
 
 void  ArnItemB::setupOpenItem( bool isFolder)
 {
-    addMode( _mode);  // Transfer modes to the link
-    modeUpdate(true);
     connect( _link, SIGNAL(retired()), this, SLOT(doArnLinkDestroyed()));
 
     if (isFolder) {
@@ -87,6 +85,8 @@ void  ArnItemB::setupOpenItem( bool isFolder)
                  this, SLOT(linkValueUpdated(uint,QByteArray,ArnLinkHandle)));
         connect( _link, SIGNAL(modeChanged(QString,uint)), this, SLOT(modeUpdate()));
     }
+    addMode( _mode);  // Transfer modes to the link
+    modeUpdate(true);
 }
 
 
