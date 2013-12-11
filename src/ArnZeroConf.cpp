@@ -405,10 +405,11 @@ void  ArnZeroConfIntern::registerServiceCallback( DNSServiceRef service, DNSServ
     ArnZeroConfRegister*  self = reinterpret_cast<ArnZeroConfRegister*>(context);
     qDebug() << "Register callback: Iregtype=" << self->serviceType();
     if (errCode == kDNSServiceErr_NoError) {
-        self->setServiceName( QString::fromUtf8( name));
+        QString  servName = QString::fromUtf8( name);
+        self->setServiceName( servName);
         self->setDomain( QString::fromUtf8( domain));
         self->_state = ArnZeroConfB::State::Registered;
-        emit self->registered();
+        emit self->registered( servName);
     }
     else {
         self->_state = ArnZeroConfB::State::None;

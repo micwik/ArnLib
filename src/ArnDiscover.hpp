@@ -50,12 +50,16 @@ public:
 signals:
 
 private slots:
-    void  serviceChanged( QString val);
+    void  postSetup();
     void  serviceTimeout();
+    void  firstServiceSetup( QString serviceName);
+    void  serviceChanged( QString val);
+    void  serviceRegistered( QString serviceName);
 
 private:
     ArnZeroConfRegister*  _arnZCReg;
     ArnItem  _arnServicePv;
+    ArnItem  _arnService;
     QTimer*  _servTimer;
 };
 

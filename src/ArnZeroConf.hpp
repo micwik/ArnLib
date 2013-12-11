@@ -268,7 +268,7 @@ signals:
     //! Indicate successfull registration of service
     /*! \see registerService()
      */
-    void  registered();
+    void  registered( QString serviceName);
 
     //! Indicate unsuccessfull registration of service
     /*! \param[in] code error code.
