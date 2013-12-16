@@ -39,28 +39,43 @@ class ArnServer;
 class ArnZeroConfRegister;
 class QTimer;
 
+
 class ArnDiscoverAdvertise : public QObject
 {
     Q_OBJECT
 public:
     explicit ArnDiscoverAdvertise( QObject *parent = 0);
 
+    QString  defaultService()  const;
+    void  setDefaultService( const QString& defaultService);
+
+    QString  service() const;
+
     void  setArnServer( ArnServer* arnServer);
 
 signals:
+    void  serviceChanged( QString serviceName);
+    void  serviceChangeError( int code);
+
+public slots:
+    void  setService( QString service);
 
 private slots:
     void  postSetup();
     void  serviceTimeout();
     void  firstServiceSetup( QString serviceName);
-    void  serviceChanged( QString val);
+    void  doServiceChanged( QString val);
     void  serviceRegistered( QString serviceName);
+    void  serviceRegistrationError( int code);
 
 private:
     ArnZeroConfRegister*  _arnZCReg;
     ArnItem  _arnServicePv;
     ArnItem  _arnService;
     QTimer*  _servTimer;
+    QString  _defaultService;
+    QString  _service;
+    bool  _hasBeenSetup;
 };
 
 #endif // ARNDISCOVER_HPP
