@@ -305,13 +305,16 @@ void  ArnPersist::doArnModeChanged( QString path, uint linkId, ArnItem::Mode mod
         item->arnImport( data, false);
         item->setStoreId( storeId);
     }
-    else {  // path is new in db, create it with null data
+    else {  // path is new in db, create it with cuurent value in item  // null data
         // qDebug() << "Persist modeChanged dbInsert: path=" << path;
-        insertDbValue( path, QByteArray());
+        //insertDbValue( path, QByteArray());
+        QByteArray  data = item->arnExport();
+        insertDbValue( path, data);
         if (getDbId( path, storeId)) {
             item->setStoreId( storeId);
         }
-        item->setValue( QByteArray(), false);  // Do a null update, to signal update done
+        item->arnImport( data, false);  // Do an update, to signal update done
+        //item->setValue( QByteArray(), false);  // Do a null update, to signal update done
     }
 }
 
