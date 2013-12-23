@@ -37,6 +37,7 @@
 #include "Arn.hpp"
 #include "ArnServer.hpp"
 #include "ArnSync.hpp"
+#include "ArnDefs.hpp"
 
 
 ArnServer::ArnServer( Type serverType, QObject *parent)
@@ -53,7 +54,7 @@ void  ArnServer::start(int port)
     if (port < 0) {
         switch (_serverType) {
         case Type::NetSync:
-            port = 2022;
+            port = Arn::defaultTcpPort;
             break;
         default:
             ArnM::errorLog( QString(tr("Unknown Arn server Type:")) + QString::number( _serverType),

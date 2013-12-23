@@ -32,6 +32,7 @@
 
 #include "ArnClient.hpp"
 #include "ArnSync.hpp"
+#include "ArnDefs.hpp"
 #include <QTcpSocket>
 #include <QStringList>
 #include <QTimer>
@@ -51,7 +52,7 @@ ArnClient::ArnClient( QObject* parent) :
     _arnNetSync = new ArnSync( _socket, true, this);
     _connectTimer = new QTimer( this);
 
-    connect( _socket, SIGNAL(connected()), this, SIGNAL(tcpConnected()));
+    connect( _socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
     connect( _socket, SIGNAL(disconnected()), this, SIGNAL(tcpDisConnected()));
     connect( _arnNetSync, SIGNAL(replyRecord(XStringMap&)), this, SLOT(doReplyRecord(XStringMap&)));
     connect( _arnNetSync, SIGNAL(replyRecord(XStringMap&)), this, SIGNAL(replyRecord(XStringMap&)));
@@ -72,11 +73,17 @@ void  ArnClient::clearArnList()
 }
 
 
+const ArnClient::HostList&  ArnClient::ArnList()  const
+{
+    return _hostTab;
+}
+
+
 void  ArnClient::addToArnList(const QString &arnHost, quint16 port)
 {
-    HostSlot  slot;
-    slot.arnHost = arnHost;
-    slot.port    = port;
+    HostAddrPort  slot;
+    slot.addr = arnHost;
+    slot.port = port ? port : Arn::defaultTcpPort;
     _hostTab += slot;
 }
 
@@ -94,7 +101,7 @@ void  ArnClient::connectToArn( const QString& arnHost, quint16 port)
 {
     _nextHost = -1;
     _arnHost  = arnHost;
-    _port     = port;
+    _port     = port ? port : Arn::defaultTcpPort;
     doConnectArnLogic();
 }
 
@@ -232,6 +239,13 @@ void  ArnClient::reConnectArn()
 }
 
 
+void  ArnClient::doTcpConnected()
+{
+    qDebug() << "ArnClient TcpConnected: hostAddr=" << _curConnectAP.addr;
+    emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
+}
+
+
 void  ArnClient::doConnectArnLogic()
 {
     QString  arnHost;
@@ -245,19 +259,21 @@ void  ArnClient::doConnectArnLogic()
         if (_nextHost >= _hostTab.size())  // Past end of list, restart
             _nextHost = 0;
 
-        const HostSlot&  slot = _hostTab.at( _nextHost);
+        const HostAddrPort&  slot = _hostTab.at( _nextHost);
         ++_nextHost;
-        arnHost = slot.arnHost;
+        arnHost = slot.addr;
         port    = slot.port;
     }
 
     if (arnHost.isEmpty())  return;
 
     if (port == 0)
-        port = 2022;
+        port = Arn::defaultTcpPort;
 
     _socket->abort();
     _socket->connectToHost( arnHost, port);
+    _curConnectAP.addr = arnHost;
+    _curConnectAP.port = port;
 }
 
 

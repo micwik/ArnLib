@@ -39,6 +39,8 @@
 
 
 namespace Arn {
+    const quint16  defaultTcpPort = 2022;
+
 struct SameValue {
     enum E {
         //! Assigning same value generates an update of the _Arn Data Object_

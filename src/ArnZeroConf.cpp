@@ -31,6 +31,7 @@
 //
 
 #include "ArnZeroConf.hpp"
+#include "ArnDefs.hpp"
 #ifdef MDNS_INTERN
 #  include "mDNS/ArnMDns.hpp"
 #  include "mDNS/mDNSShared/dns_sd.h"
@@ -59,7 +60,7 @@ public:
 ArnZeroConfB::ArnZeroConfB( QObject* parent)
     : QObject( parent)
 {
-    _port        = 2022;
+    _port        = Arn::defaultTcpPort;
     _iface       = 0;
     _notifier    = 0;
     _state       = State::None;

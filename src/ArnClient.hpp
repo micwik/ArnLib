@@ -65,12 +65,27 @@ class ARNLIBSHARED_EXPORT ArnClient : public QObject
 {
 Q_OBJECT
 public:
+    struct HostAddrPort {
+        QString  addr;
+        quint16  port;
+
+        HostAddrPort() {
+            port = Arn::defaultTcpPort;
+        }
+    };
+    typedef QList<HostAddrPort>  HostList;
+
     explicit ArnClient(QObject *parent = 0);
 
     //! Clear the Arn connection list
     /*! Typically used to start making a new Arn connection list.
      */
     void  clearArnList();
+
+    //! Return the Arn connection list
+    /*! \retval the Arn connection list.
+     */
+    const HostList&  ArnList()  const;
 
     //! Add an _Arn Server_ to the Arn connection list
     /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
@@ -127,7 +142,10 @@ signals:
     void  tcpError( QString errorText, QAbstractSocket::SocketError socketError);
 
     //! Signal emitted when the tcp connection is successfull.
-    void  tcpConnected();
+    /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
+     *  \param[in] port is the port number (default 2022).
+     */
+    void  tcpConnected( QString arnHost = QString(), quint16 port = 0);
 
     //! Signal emitted when the tcp connection is broken (has been successfull).
     void  tcpDisConnected();
@@ -146,15 +164,12 @@ private slots:
     void  createNewItem( QString path);
     void  doReplyRecord( XStringMap& replyMap);
     void  reConnectArn();
+    void  doTcpConnected();
 
 private:
     void doConnectArnLogic();
 
-    struct HostSlot {
-        QString  arnHost;
-        quint16  port;
-    };
-    QList<HostSlot>  _hostTab;
+    HostList  _hostTab;
     int  _nextHost;
 
     QStringList  makeItemList( XStringMap& xsMap);
@@ -169,6 +184,7 @@ private:
     ArnItem*  _arnMountPoint;
     XStringMap  _commandMap;
     QString  _id;
+    HostAddrPort  _curConnectAP;
 };
 
 #endif // ARNCLIENT_HPP
