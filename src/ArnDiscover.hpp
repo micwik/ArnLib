@@ -36,6 +36,7 @@
 #include "ArnItem.hpp"
 
 class ArnServer;
+class ArnClient;
 class ArnZeroConfRegister;
 class QTimer;
 
@@ -52,24 +53,33 @@ public:
     QString  service() const;
 
     void  setArnServer( ArnServer* arnServer);
+    void  startNewArnServer( int port = -1);
+    void  addArnClient( ArnClient* arnClient, const QString& id);
 
 signals:
     void  serviceChanged( QString serviceName);
     void  serviceChangeError( int code);
+    void  clientReadyToConnect( ArnClient* arnClient);
 
 public slots:
     void  setService( QString service);
 
 private slots:
-    void  postSetup();
+    //// Handle Service This
+    void  postSetupThis();
     void  serviceTimeout();
     void  firstServiceSetup( QString serviceName);
     void  doServiceChanged( QString val);
     void  serviceRegistered( QString serviceName);
     void  serviceRegistrationError( int code);
+    //// Handle Client
+    void  postSetupClient( QObject* arnClientObj);
+    void  doClientConnected( QString arnHost, quint16 port);
+    void  doClientDirHostChanged( QObject* dirHostsObj = 0);
 
 private:
     ArnZeroConfRegister*  _arnZCReg;
+    ArnServer*  _arnInternalServer;
     ArnItem  _arnServicePv;
     ArnItem  _arnService;
     QTimer*  _servTimer;

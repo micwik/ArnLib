@@ -32,15 +32,17 @@
 
 #include "ArnDiscover.hpp"
 #include "ArnZeroConf.hpp"
+#include "ArnClient.hpp"
 #include "ArnServer.hpp"
 #include <QTimer>
-
+#include <QMetaObject>
 
 ArnDiscoverAdvertise::ArnDiscoverAdvertise( QObject *parent) :
     QObject( parent)
 {
     _arnZCReg  = new ArnZeroConfRegister( this);
     _servTimer = new QTimer( this);
+    _arnInternalServer = 0;
     _hasBeenSetup = false;
     _defaultService = "Arn Default Service";
 }
@@ -57,11 +59,36 @@ void  ArnDiscoverAdvertise::setArnServer( ArnServer* arnServer)
     connect( _arnZCReg, SIGNAL(registered(QString)), this, SLOT(serviceRegistered(QString)));
     connect( _arnZCReg, SIGNAL(registrationError(int)), this, SLOT(serviceRegistrationError(int)));
 
-    QTimer::singleShot(0, this, SLOT(postSetup()));  // Ĺet persistance service etc init before ...
+    QTimer::singleShot(0, this, SLOT(postSetupThis()));  // Ĺet persistance service etc init before ...
 }
 
 
-void  ArnDiscoverAdvertise::postSetup()
+void  ArnDiscoverAdvertise::startNewArnServer( int port)
+{
+    if (!_arnInternalServer)
+        delete _arnInternalServer;
+    _arnInternalServer = new ArnServer( ArnServer::Type::NetSync, this);
+    _arnInternalServer->start( port);
+
+    setArnServer( _arnInternalServer);
+}
+
+
+void  ArnDiscoverAdvertise::addArnClient( ArnClient* arnClient, const QString& id)
+{
+    Q_ASSERT( arnClient);
+    if (!arnClient)  return;
+    arnClient->setObjectName(id);
+
+    connect( arnClient, SIGNAL(tcpConnected(QString,quint16)), this, SLOT(doClientConnected(QString,quint16)));
+    QMetaObject::invokeMethod( this,
+                               "postSetupClient",
+                               Qt::QueuedConnection,
+                               Q_ARG( QObject*, arnClient));
+}
+
+
+void  ArnDiscoverAdvertise::postSetupThis()
 {
     _servTimer->start( 5000);
     connect( _servTimer, SIGNAL(timeout()), this, SLOT(serviceTimeout()));
@@ -88,14 +115,17 @@ void  ArnDiscoverAdvertise::serviceTimeout()
 
 void  ArnDiscoverAdvertise::firstServiceSetup( QString serviceName)
 {
-    qDebug() << "firstServiceSetup: serviceName=" << serviceName;
+    QString  service = serviceName;
+    if (service.isEmpty())
+        service = _defaultService;
+    qDebug() << "firstServiceSetup: serviceName=" << service;
 
     _servTimer->stop();
     disconnect( &_arnService,   SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
     disconnect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
     connect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(doServiceChanged(QString)));
 
-    doServiceChanged( serviceName);
+    doServiceChanged( service);
 }
 
 
@@ -125,6 +155,74 @@ void  ArnDiscoverAdvertise::serviceRegistrationError(int code)
     qDebug() << "Service registration error: code=" << code;
 
     emit serviceChangeError( code);
+}
+
+
+void  ArnDiscoverAdvertise::postSetupClient( QObject* arnClientObj)
+{
+    ArnClient*  arnClient = qobject_cast<ArnClient*>( arnClientObj);
+    Q_ASSERT( arnClient);
+    if (!arnClient)  return;
+    QString  id = arnClient->objectName();
+
+    QObject*  dirHosts = new QObject( arnClient);
+    dirHosts->setObjectName("dirHosts");
+
+    ArnClient::HostList  arnHosts = arnClient->ArnList();
+    int  i = 0;
+    foreach (ArnClient::HostAddrPort  host, arnHosts) {
+        ++i;
+        QString  path = "/Sys/Discover/Connect/" + id + "/DirectHosts/Host-" + QString::number(i) + "/";
+        ArnItem*  hostAddr = new ArnItem( path + "value", dirHosts);
+        ArnItem*  hostPort = new ArnItem( path + "Port/value", dirHosts);
+        *hostAddr = host.addr;  // Default addr
+        *hostPort = host.port;  // Default port
+        hostAddr->addMode( ArnItem::Mode::Save);
+        hostPort->addMode( ArnItem::Mode::Save);
+        connect( hostAddr, SIGNAL(changed()), this, SLOT(doClientDirHostChanged()));
+        connect( hostPort, SIGNAL(changed()), this, SLOT(doClientDirHostChanged()));
+    }
+    doClientDirHostChanged( dirHosts);
+    emit clientReadyToConnect( arnClient);
+}
+
+
+void  ArnDiscoverAdvertise::doClientConnected( QString arnHost, quint16 port)
+{
+    ArnClient*  client = qobject_cast<ArnClient*>( sender());
+    Q_ASSERT(client);
+
+    QString  path = "/Sys/Discover/Connect/" + client->objectName() + "/UsingHost/";
+    ArnM::setValue( path + "value", arnHost);
+    ArnM::setValue( path + "Port/value", port);
+}
+
+
+void  ArnDiscoverAdvertise::doClientDirHostChanged( QObject* dirHostsObj)
+{
+    QObject*  dirHostsO = dirHostsObj;
+    if (!dirHostsO) {
+        QObject*  s = sender();
+        Q_ASSERT(s);
+        dirHostsO = s->parent();
+        Q_ASSERT(dirHostsO);
+    }
+    ArnClient*  client = qobject_cast<ArnClient*>( dirHostsO->parent());
+    Q_ASSERT(client);
+
+    QObjectList  dirHostOList = dirHostsO->children();
+    int  dirHostOListSize = dirHostOList.size();
+    Q_ASSERT((dirHostOListSize & 1) == 0);
+
+    //// Rebuild ArnList in client
+    client->clearArnList();
+    for (int i = 0; i < dirHostOListSize / 2; ++i) {
+        ArnItem*  hostAddr = qobject_cast<ArnItem*>( dirHostOList.at( 2 * i + 0));
+        Q_ASSERT(hostAddr);
+        ArnItem*  hostPort = qobject_cast<ArnItem*>( dirHostOList.at( 2 * i + 1));
+        Q_ASSERT(hostPort);
+        client->addToArnList( hostAddr->toString(), quint16( hostPort->toInt()));
+    }
 }
 
 
