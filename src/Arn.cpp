@@ -204,8 +204,8 @@ QStringList  ArnM::itemsMain( const ArnLink *parent)
         return QStringList();
     }
 
-    const QList<QObject*> children = parent->children();
-    QStringList childnames;
+    QObjectList  children = parent->children();
+    QStringList  childnames;
 
     for (int i = 0; i < children.size(); i++) {
         QObject *child = children.at(i);
@@ -433,6 +433,7 @@ void  ArnM::setValue( const QString& path, const QVariant& value)
         link->deref();
     }
 }
+
 
 void ArnM::setValue(const QString& path, const char* value)
 {
@@ -865,7 +866,6 @@ ArnM::ArnM()
     _root                   = new ArnLink( 0, "", ArnLink::Flags::Folder);
 
     qRegisterMetaType<ArnThreadCom*>();
-    //qRegisterMetaType<ArnLink::HandleData>("HandleData");
     qRegisterMetaType<ArnLinkHandle>("ArnLinkHandle");
     qRegisterMetaType<QVariant>("QVariant");
 

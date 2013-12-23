@@ -536,7 +536,7 @@ ArnLink::~ArnLink()
 ArnLink*  ArnLink::findLink( const QString& name)
 {
     QString  name_ = convertBaseName( name, NameF());
-    const QList<QObject*>  children = this->children();
+    QObjectList  children = this->children();
 
     for (int i = 0; i < children.size(); i++) {
         QObject*  child = children.at(i);
