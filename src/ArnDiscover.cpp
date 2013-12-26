@@ -176,8 +176,9 @@ void  ArnDiscoverAdvertise::postSetupClient( QObject* arnClientObj)
     *arnConnectStatus = arnClient->connectStatus();
     connect( arnClient, SIGNAL(connectionStatusChanged(int)), arnConnectStatus, SLOT(setValue(int)));
     typedef ArnClient::ConnectStat CS;
-    ArnM::setValue( path + "set", QString("%1=Initialized %2=Connected %3=Connect_error %4=Disconnected")
-                                  .arg(CS::Init).arg(CS::Connected).arg(CS::Error).arg(CS::Disconnected));
+    ArnM::setValue( path + "set",
+                    QString("%1=Initialized %2=Connecting %3=Connected %4=Connect_error %5=Disconnected")
+                    .arg(CS::Init).arg(CS::Connecting).arg(CS::Connected).arg(CS::Error).arg(CS::Disconnected));
 
     path = connectIdPath + "Request/";
     ArnItem*  arnConnectReqPV = new ArnItem( path + "value!", arnClient);

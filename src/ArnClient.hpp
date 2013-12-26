@@ -70,6 +70,8 @@ public:
         enum E {
             //! Initialized, not yet any result of trying to connect ...
             Init = 0,
+            //! Trying to connect to an Arn host
+            Connecting,
             //! Successfully connected to an Arn host
             Connected,
             //! Unsuccessfull when trying to connect to an Arn host

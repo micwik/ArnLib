@@ -284,6 +284,8 @@ void  ArnClient::doConnectArnLogic()
     _socket->connectToHost( arnHost, port);
     _curConnectAP.addr = arnHost;
     _curConnectAP.port = port;
+    _connectStat = ConnectStat::Connecting;
+    emit connectionStatusChanged( _connectStat);
 }
 
 
