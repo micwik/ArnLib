@@ -106,6 +106,12 @@ void  ArnClient::connectToArn( const QString& arnHost, quint16 port)
 }
 
 
+ArnClient::ConnectStat  ArnClient::connectStatus()  const
+{
+    return _connectStat;
+}
+
+
 bool  ArnClient::setMountPoint( const QString& path)
 {
     if (_arnMountPoint)  delete _arnMountPoint;
@@ -222,6 +228,8 @@ void  ArnClient::tcpError(QAbstractSocket::SocketError socketError)
     QString  errTextSum = QString(tr("TCP Client Msg:")) + _socket->errorString();
     ArnM::errorLog( errTextSum, ArnError::ConnectionError);
     emit tcpError( _socket->errorString(), socketError);
+    _connectStat = (_connectStat == ConnectStat::Connected) ? ConnectStat::Disconnected : ConnectStat::Error;
+    emit connectionStatusChanged( _connectStat);
 
     if ((_nextHost >= 0) && (_nextHost < _hostTab.size())) {
         doConnectArnLogic();
@@ -243,6 +251,8 @@ void  ArnClient::doTcpConnected()
 {
     qDebug() << "ArnClient TcpConnected: hostAddr=" << _curConnectAP.addr;
     emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
+    _connectStat = ConnectStat::Connected;
+    emit connectionStatusChanged( _connectStat);
 }
 
 
@@ -255,7 +265,7 @@ void  ArnClient::doConnectArnLogic()
         arnHost = _arnHost;
         port    = _port;
     }
-    else if (!_hostTab.isEmpty()){  // Arn connection list
+    else if (!_hostTab.isEmpty()) {  // Arn connection list
         if (_nextHost >= _hostTab.size())  // Past end of list, restart
             _nextHost = 0;
 

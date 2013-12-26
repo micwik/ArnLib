@@ -76,6 +76,7 @@ private slots:
     void  postSetupClient( QObject* arnClientObj);
     void  doClientConnected( QString arnHost, quint16 port);
     void  doClientDirHostChanged( QObject* dirHostsObj = 0);
+    void  doClientConnectRequest( int reqCode);
 
 private:
     ArnZeroConfRegister*  _arnZCReg;

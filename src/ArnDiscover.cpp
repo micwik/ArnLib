@@ -168,11 +168,28 @@ void  ArnDiscoverAdvertise::postSetupClient( QObject* arnClientObj)
     QObject*  dirHosts = new QObject( arnClient);
     dirHosts->setObjectName("dirHosts");
 
+    QString  path;
+    QString  connectIdPath = "/Sys/Discover/Connect/" + id + "/";
+
+    path = connectIdPath + "Status/";
+    ArnItem*  arnConnectStatus = new ArnItem( path + "value", arnClient);
+    *arnConnectStatus = arnClient->connectStatus();
+    connect( arnClient, SIGNAL(connectionStatusChanged(int)), arnConnectStatus, SLOT(setValue(int)));
+    typedef ArnClient::ConnectStat CS;
+    ArnM::setValue( path + "set", QString("%1=Initialized %2=Connected %3=Connect_error %4=Disconnected")
+                                  .arg(CS::Init).arg(CS::Connected).arg(CS::Error).arg(CS::Disconnected));
+
+    path = connectIdPath + "Request/";
+    ArnItem*  arnConnectReqPV = new ArnItem( path + "value!", arnClient);
+    *arnConnectReqPV = "0";
+    connect( arnConnectReqPV, SIGNAL(changed(int)), this, SLOT(doClientConnectRequest(int)));
+    ArnM::setValue( path + "set", QString("0=Idle 1=Start_connect"));
+
     ArnClient::HostList  arnHosts = arnClient->ArnList();
     int  i = 0;
     foreach (ArnClient::HostAddrPort  host, arnHosts) {
         ++i;
-        QString  path = "/Sys/Discover/Connect/" + id + "/DirectHosts/Host-" + QString::number(i) + "/";
+        path = connectIdPath + "DirectHosts/Host-" + QString::number(i) + "/";
         ArnItem*  hostAddr = new ArnItem( path + "value", dirHosts);
         ArnItem*  hostPort = new ArnItem( path + "Port/value", dirHosts);
         *hostAddr = host.addr;  // Default addr
@@ -223,6 +240,18 @@ void  ArnDiscoverAdvertise::doClientDirHostChanged( QObject* dirHostsObj)
         Q_ASSERT(hostPort);
         client->addToArnList( hostAddr->toString(), quint16( hostPort->toInt()));
     }
+}
+
+
+void  ArnDiscoverAdvertise::doClientConnectRequest( int reqCode)
+{
+    ArnItem*  arnConnectReqPV = qobject_cast<ArnItem*>( sender());
+    Q_ASSERT(arnConnectReqPV);
+    ArnClient*  client = qobject_cast<ArnClient*>( arnConnectReqPV->parent());
+    Q_ASSERT(client);
+
+    if (reqCode)
+        client->connectToArnList();
 }
 
 

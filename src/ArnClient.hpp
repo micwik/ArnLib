@@ -36,6 +36,7 @@
 #include "Arn.hpp"
 #include "ArnLib_global.hpp"
 #include "XStringMap.hpp"
+#include "MQFlags.hpp"
 #include <QObject>
 #include <QAbstractSocket>
 #include <QStringList>
@@ -65,6 +66,20 @@ class ARNLIBSHARED_EXPORT ArnClient : public QObject
 {
 Q_OBJECT
 public:
+    struct ConnectStat {
+        enum E {
+            //! Initialized, not yet any result of trying to connect ...
+            Init = 0,
+            //! Successfully connected to an Arn host
+            Connected,
+            //! Unsuccessfull when trying to connect to an Arn host
+            Error,
+            //! TCP connection is broken (has been successfull)
+            Disconnected
+        };
+        MQ_DECLARE_ENUM( ConnectStat)
+    };
+
     struct HostAddrPort {
         QString  addr;
         quint16  port;
@@ -116,6 +131,11 @@ public:
      */
     bool  setMountPoint( const QString& path);
 
+    //! Return the Arn connection status
+    /*! \retval the Arn connection status.
+     */
+    ConnectStat  connectStatus()  const;
+
     //! Set automatic reconnect
     /*! \param[in] isAuto true if using auto reconnect
      *  \param[in] retryTime is the time between reconnection attempts in seconds
@@ -149,6 +169,9 @@ signals:
 
     //! Signal emitted when the tcp connection is broken (has been successfull).
     void  tcpDisConnected();
+
+    //! Signal emitted when the connection status is changed.
+    void  connectionStatusChanged( int status);
 
     //! \cond ADV
     void  replyRecord( XStringMap& replyMap);
@@ -185,6 +208,7 @@ private:
     XStringMap  _commandMap;
     QString  _id;
     HostAddrPort  _curConnectAP;
+    ConnectStat  _connectStat;
 };
 
 #endif // ARNCLIENT_HPP
