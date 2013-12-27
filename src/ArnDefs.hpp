@@ -52,6 +52,37 @@ struct SameValue {
     };
     MQ_DECLARE_ENUM( SameValue)
 };
+
+struct DataType {
+    enum E {
+        Null       = 0,
+        Int        = 1,
+        Double     = 2,
+        ByteArray  = 3,
+        String     = 4,
+        Variant    = 5
+        // 16 and above is reserved by ArnItemB::ExportCode
+    };
+    MQ_DECLARE_ENUM( DataType)
+};
+
+struct NameF {
+    //! Selects a format for path or item name
+    enum E {
+        //! Only on discrete names, no effect on path. "test/" ==> "test"
+        NoFolderMark = 0x01,
+        //! Path: "/@/test" ==> "//test", Item: "@" ==> ""
+        EmptyOk      = 0x02,
+        //! Only on path, no effect on discrete names. "/test/value" ==> "test/value"
+        Relative     = 0x04
+    };
+    MQ_DECLARE_FLAGS( NameF)
+};
+
+QString  convertName( const QString& name, Arn::NameF nameF = Arn::NameF());
+QString  convertBaseName( const QString& name, Arn::NameF nameF);
 }
+
+MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::NameF)
 
 #endif // ARNDEFS_HPP

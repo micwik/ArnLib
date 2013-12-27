@@ -260,7 +260,7 @@ QString  ArnM::itemName( const QString &path)
     int  pos = path.lastIndexOf('/', from);
 
     if (pos < 0)  return path;
-    return ArnLink::convertName( path.mid( pos + 1));
+    return Arn::convertName( path.mid( pos + 1));
 }
 
 
@@ -283,11 +283,11 @@ QString  ArnM::makePath( const QString &parentPath, const QString &itemName)
     QString  parentPath_ = parentPath;
     if (!parentPath_.endsWith('/'))  parentPath_ += '/';
 
-    return parentPath_ + ArnLink::convertName( itemName, ArnLink::NameF::EmptyOk);
+    return parentPath_ + Arn::convertName( itemName, Arn::NameF::EmptyOk);
 }
 
 
-QString  ArnM::addPath( const QString &parentPath, const QString &childRelPath, ArnLink::NameF nameF)
+QString  ArnM::addPath( const QString &parentPath, const QString &childRelPath, Arn::NameF nameF)
 {
     QString  retPath = parentPath;
     if (!retPath.endsWith('/'))
@@ -298,7 +298,7 @@ QString  ArnM::addPath( const QString &parentPath, const QString &childRelPath, 
 }
 
 
-QString  ArnM::convertPath(const QString &path, ArnLink::NameF nameF)
+QString  ArnM::convertPath(const QString &path, Arn::NameF nameF)
 {
     nameF.set( nameF.NoFolderMark, false);  // Foldermark '/' must be ...
     if (nameF.is( nameF.Relative))
@@ -323,7 +323,7 @@ QString  ArnM::convertPath(const QString &path, ArnLink::NameF nameF)
         if (needSeparator)
             retPath += '/';  // Add link separator
 
-        retPath += ArnLink::convertName( linkName, nameF);
+        retPath += Arn::convertName( linkName, nameF);
         needSeparator = true;
     }
     if (isFolder && !pathNorm.isEmpty())  // Folder that is not root
@@ -922,4 +922,33 @@ void  ArnM::setDefaultIgnoreSameValue( bool isIgnore)
 bool  ArnM::defaultIgnoreSameValue()
 {
     return instance()._defaultIgnoreSameValue;
+}
+
+
+namespace Arn {
+
+QString  convertName( const QString& name, NameF nameF)
+{
+    bool  isFolderMarked = name.endsWith('/');
+    QString  baseName = name.left( name.size() - int( isFolderMarked));  // remove any foldermark
+
+    QString  retVal = convertBaseName( baseName, nameF);
+    if (isFolderMarked && !nameF.is(( nameF.NoFolderMark)))
+        retVal += '/';  // Restore previous foldermark
+
+    return retVal;
+}
+
+
+QString  convertBaseName( const QString& name, NameF nameF)
+{
+    QString  retVal("");
+
+    if (name.isEmpty() && !nameF.is( nameF.EmptyOk))
+        retVal = '@';
+    else if ((name != "@") || !nameF.is( nameF.EmptyOk))
+        retVal = name;
+
+    return retVal;
+}
 }

@@ -344,7 +344,7 @@ void  ArnPersist::doArnUpdate()
     }
     case ArnItemPersist::StoreType::File:
     {
-        QString  relPath = item->path( ArnLink::NameF::Relative);
+        QString  relPath = item->path( Arn::NameF::Relative);
         qDebug() << "Persist arnUpdate: Save to relPath=" << relPath;
         QFile  file( _persistDir->absoluteFilePath( relPath));
         file.open( QIODevice::WriteOnly);
@@ -777,7 +777,7 @@ void  ArnPersist::doLoadFiles()
 
 void  ArnPersist::loadFile( QString relPath)
 {
-    QString  arnPath = ArnM::convertPath( relPath, ArnLink::NameF::EmptyOk);
+    QString  arnPath = ArnM::convertPath( relPath, Arn::NameF::EmptyOk);
     qDebug() << "Persist loadFile: relPath=" << relPath;
 
     ArnItemPersist*  item;
@@ -838,7 +838,7 @@ void  ArnPersist::destroyRpc()
 }
 
 
-void  ArnPersist::convertFileList( QStringList &files, ArnLink::NameF nameF)
+void  ArnPersist::convertFileList( QStringList &files, Arn::NameF nameF)
 {
     for (int i = 0; i < files.size(); ++i) {
         files[i] = ArnM::convertPath( files.at(i), nameF);
@@ -874,7 +874,7 @@ void  ArnPersist::sapiLs( QString path)
 {
     QStringList  flist;
     fileList( flist, *_persistDir);
-    convertFileList( flist, ArnLink::NameF::EmptyOk);
+    convertFileList( flist, Arn::NameF::EmptyOk);
 
     if (path.isEmpty())
         emit _sapiCommon->rq_lsR( flist);
@@ -885,7 +885,7 @@ void  ArnPersist::sapiLs( QString path)
 
 void  ArnPersist::sapiRm( QString path)
 {
-    QString  relPath = ArnM::convertPath( path, ArnLink::NameF::Relative);
+    QString  relPath = ArnM::convertPath( path, Arn::NameF::Relative);
     bool  isOk = _persistDir->remove( relPath);
     if (isOk) {
         QString  filePath = _persistDir->absoluteFilePath( relPath);
@@ -901,7 +901,7 @@ void  ArnPersist::sapiTouch( QString path)
     if (path.endsWith('/'))  return;  // Don't touch a dir
 
     bool  isOk = true;
-    QString  relPath = ArnM::convertPath( path, ArnLink::NameF::Relative);
+    QString  relPath = ArnM::convertPath( path, Arn::NameF::Relative);
     QString  filePath = _persistDir->absoluteFilePath( relPath);
     // Make any needed directories
     isOk &= _persistDir->mkpath( QFileInfo( filePath).dir().path());

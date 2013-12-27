@@ -184,7 +184,7 @@ public:
      *  \see convertPath()
      */
     static QString  addPath( const QString& parentPath, const QString& childRelPath,
-                             ArnLink::NameF nameF = ArnLink::NameF::EmptyOk);
+                             Arn::NameF nameF = Arn::NameF::EmptyOk);
 
     //! Convert a path to a specific format
     /*! Example: _path_ = "//Measure/depth/value", nameF = Relative
@@ -194,7 +194,7 @@ public:
      *  \return The converted _path_
      */
     static QString  convertPath( const QString& path,
-                                 ArnLink::NameF nameF = ArnLink::NameF::EmptyOk);
+                                 Arn::NameF nameF = Arn::NameF::EmptyOk);
     //! Get the bidirectional twin to a given _path_
     /*! Example: _path_ = "//Measure/depth/value!"
      *  ==> return = "//Measure/depth/value"

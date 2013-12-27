@@ -186,7 +186,7 @@ bool  ArnItemB::isBiDir()  const
 }
 
 
-ArnLink::Type  ArnItemB::type()  const
+Arn::DataType  ArnItemB::type()  const
 {
     if (!_link)  return ArnLink::Type::Null;
 
@@ -379,7 +379,7 @@ bool  ArnItemB::isIgnoreSameValue()
 }
 
 
-QString  ArnItemB::path( ArnLink::NameF nameF)  const
+QString  ArnItemB::path( Arn::NameF nameF)  const
 {
     if (!_link)  return QString();
 
@@ -387,7 +387,7 @@ QString  ArnItemB::path( ArnLink::NameF nameF)  const
 }
 
 
-QString  ArnItemB::name( ArnLink::NameF nameF)  const
+QString  ArnItemB::name( Arn::NameF nameF)  const
 {
     if (!_link)  return QString();
 

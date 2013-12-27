@@ -121,7 +121,7 @@ public:
     //! The type stored in the _Arn Data Object_
     /*! \return The type stored
      */
-    ArnLink::Type  type()  const
+    Arn::DataType  type()  const
     {return ArnItemB::type();}
 
     //! Set skipping of equal value

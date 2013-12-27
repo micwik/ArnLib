@@ -34,6 +34,7 @@
 #define ARNLINK_HPP
 
 #include "ArnLib.hpp"
+#include "ArnDefs.hpp"
 #include "ArnLib_global.hpp"
 #include "MQFlags.hpp"
 #include <QObject>
@@ -98,18 +99,8 @@ class ArnLink : public QObject
     friend class ArnM;
 
 public:
-    struct Type {
-        enum E {
-            Null       = 0,
-            Int        = 1,
-            Double     = 2,
-            ByteArray  = 3,
-            String     = 4,
-            Variant    = 5
-            // 16 and above is reserved by ArnItemB::ExportCode
-        };
-        MQ_DECLARE_ENUM( Type)
-    };
+    typedef Arn::DataType Type;
+
     struct Flags {
         enum E {
             Folder        = 0x01,
@@ -118,18 +109,6 @@ public:
             Threaded      = 0x08
         };
         MQ_DECLARE_FLAGS( Flags)
-    };
-    struct NameF {
-        //! Selects a format for path or item name
-        enum E {
-            //! Only on discrete names, no effect on path. "test/" ==> "test"
-            NoFolderMark = 0x01,
-            //! Path: "/@/test" ==> "//test", Item: "@" ==> ""
-            EmptyOk      = 0x02,
-            //! Only on path, no effect on discrete names. "/test/value" ==> "test/value"
-            Relative     = 0x04
-        };
-        MQ_DECLARE_FLAGS( NameF)
     };
 
     //! \cond ADV
@@ -149,8 +128,8 @@ public:
 
     Type  type();
 
-    QString  linkPath( ArnLink::NameF nameF = ArnLink::NameF::EmptyOk);
-    QString  linkName( NameF nameF = NameF());
+    QString  linkPath( Arn::NameF nameF = Arn::NameF::EmptyOk);
+    QString  linkName( Arn::NameF nameF = Arn::NameF());
     uint  linkId()  const { return _id;}
     bool  isFolder();
 
@@ -172,8 +151,8 @@ public:
     void  deref();
     ~ArnLink();
 
-    static QString  convertName( const QString& name, NameF nameF = NameF());
-    static QString  convertBaseName( const QString& name, NameF nameF);
+    //static QString  convertName( const QString& name, Arn::NameF nameF = Arn::NameF());
+    //static QString  convertBaseName( const QString& name, Arn::NameF nameF);
 
 public slots:
     void  trfValue( QByteArray value, int sendId, bool forceKeep, ArnLinkHandle handleData);
@@ -234,6 +213,5 @@ private:
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnLink::Flags)
-MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnLink::NameF)
 
 #endif // ARNLINK_HPP

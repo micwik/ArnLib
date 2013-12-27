@@ -132,13 +132,13 @@ public:
     /*! \param[in] nameF The format of the returned path
      *  \return The object path
      */
-    QString  path( ArnLink::NameF nameF = ArnLink::NameF::EmptyOk)  const;
+    QString  path( Arn::NameF nameF = Arn::NameF::EmptyOk)  const;
 
     //! Name of the _Arn Data Object_
     /*! \param[in] nameF The format of the returned name
      *  \return The object name
      */
-    QString  name( ArnLink::NameF nameF)  const;
+    QString  name( Arn::NameF nameF)  const;
 
     //! Set an associated external reference
     /*! This is typically used when having many _ArnItems_ changed signal connected
@@ -212,7 +212,7 @@ protected:
     //! The type stored in the _Arn Data Object_
     /*! \return The type stored
      */
-    ArnLink::Type  type()  const;
+    Arn::DataType  type()  const;
 
     //! Set skipping of equal value
     /*! \param[in] isIgnore If true, assignment of equal value don't give a changed signal.

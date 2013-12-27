@@ -416,7 +416,7 @@ ArnLink::Type  ArnLink::type()
 }
 
 
-QString ArnLink::linkPath( ArnLink::NameF nameF)
+QString ArnLink::linkPath( Arn::NameF nameF)
 {
     nameF.set( nameF.NoFolderMark, false);  // Foldermark '/' must be ...
     QString  path;
@@ -438,7 +438,7 @@ QString ArnLink::linkPath( ArnLink::NameF nameF)
 }
 
 
-QString ArnLink::linkName( NameF nameF)
+QString ArnLink::linkName( Arn::NameF nameF)
 {
     QString  retVal = convertBaseName( objectName(), nameF);
     if (this->isFolder() && !nameF.is(( nameF.NoFolderMark)))
@@ -448,36 +448,10 @@ QString ArnLink::linkName( NameF nameF)
 }
 
 
-QString ArnLink::convertName( const QString& name, NameF nameF)
-{
-    bool  isFolderMarked = name.endsWith('/');
-    QString  baseName = name.left( name.size() - int( isFolderMarked));  // remove any foldermark
-
-    QString  retVal = convertBaseName( baseName, nameF);
-    if (isFolderMarked && !nameF.is(( nameF.NoFolderMark)))
-        retVal += '/';  // Restore previous foldermark
-
-    return retVal;
-}
-
-
-QString ArnLink::convertBaseName( const QString& name, NameF nameF)
-{
-    QString  retVal("");
-
-    if (name.isEmpty() && !nameF.is( nameF.EmptyOk))
-        retVal = '@';
-    else if ((name != "@") || !nameF.is( nameF.EmptyOk))
-        retVal = name;
-
-    return retVal;
-}
-
-
 ArnLink::ArnLink( ArnLink *parent, const QString& name, Flags flags)
         : QObject(0)
 {
-    QString  name_ = convertBaseName( name, NameF());
+    QString  name_ = Arn::convertBaseName( name, Arn::NameF());
 
     QObject::setParent((QObject*) parent);
     QObject::setObjectName( name_);
@@ -535,7 +509,7 @@ ArnLink::~ArnLink()
 
 ArnLink*  ArnLink::findLink( const QString& name)
 {
-    QString  name_ = convertBaseName( name, NameF());
+    QString  name_ = Arn::convertBaseName( name, Arn::NameF());
     QObjectList  children = this->children();
 
     for (int i = 0; i < children.size(); i++) {
