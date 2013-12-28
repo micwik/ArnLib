@@ -34,10 +34,10 @@
 #define ARNITEMB_HPP
 
 #include "ArnLib_global.hpp"
+#include "ArnLinkHandle.hpp"
 #include "ArnError.hpp"
-#include "ArnLink.hpp"
-#include "MQFlags.hpp"
 #include "ArnDefs.hpp"
+#include "MQFlags.hpp"
 #include <QTextStream>
 #include <QObject>
 #include <QMetaMethod>
@@ -47,6 +47,7 @@
 #include <QAtomicInt>
 
 class QTimer;
+class ArnLink;
 
 
 //! Base class handle for an _Arn Data Object_.
@@ -416,7 +417,7 @@ protected:
     void  setBlockEcho( bool blockEcho)  {_blockEcho = blockEcho;}
     void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
     void  trfValue( const QByteArray& value, int sendId, bool forceKeep,
-                    const ArnLinkHandle& handleData = ArnLinkHandle());
+                    const ArnLinkHandle& handleData);
     void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
     QStringList  childItemsMain()  const;
     void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0)  const;

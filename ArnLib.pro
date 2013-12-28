@@ -55,13 +55,13 @@ OTHER_FILES += \
 
 ### Install
 win32 {
-headers.path = $$OUT_PWD/../include/ArnLib
+headers.path = $$OUT_PWD/../include/ArnInc
 target.path = $$OUT_PWD/../lib
 } else {
-headers.path = /usr/include/ArnLib
+headers.path = /usr/include/ArnInc
 target.path = /usr/lib64
 }
-headers.files += src/*.hpp
+headers.files += src/ArnInc/*
 INSTALLS += target \
     headers
 

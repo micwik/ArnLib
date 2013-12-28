@@ -30,10 +30,10 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnPersist.hpp"
-#include "ArnPersistSapi.hpp"
-#include "ArnDepend.hpp"
-#include "XStringMap.hpp"
+#include "ArnInc/ArnPersist.hpp"
+#include "ArnInc/ArnPersistSapi.hpp"
+#include "ArnInc/ArnDepend.hpp"
+#include "ArnInc/XStringMap.hpp"
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>

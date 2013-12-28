@@ -33,64 +33,18 @@
 #ifndef ARNLINK_HPP
 #define ARNLINK_HPP
 
-#include "ArnLib.hpp"
-#include "ArnDefs.hpp"
-#include "ArnLib_global.hpp"
-#include "MQFlags.hpp"
+#include "ArnInc/ArnLib_global.hpp"
+#include "ArnInc/ArnLinkHandle.hpp"
+#include "ArnInc/ArnLib.hpp"
+#include "ArnInc/ArnDefs.hpp"
+#include "ArnInc/ArnLib_global.hpp"
+#include "ArnInc/MQFlags.hpp"
 #include <QObject>
-#include <QMetaType>
 #include <QString>
 #include <QVariant>
 #include <QMap>
 #include <QAtomicInt>
 #include <QMutex>
-
-
-class ArnLinkHandle
-{
-public:
-    //! Select how to handle a data assignment
-    enum Code {
-        //! Normal handling procedure
-        Normal = 0,
-        //! For pipes. If any item in the sendqueue matches Regexp, the item is replaced by
-        //! this assignment. Typically used to avoid queue filling during a disconnected tcp.
-        QueueFindRegexp = 0x01,
-        //! For pipes. Sequence number is used and available in HandleData.
-        SeqNo           = 0x02
-    };
-    Q_DECLARE_FLAGS( Codes, Code)
-
-    struct Flags {
-        enum E {
-            //! Transitional temporary flag to indicate utf8-coded bytearray.
-            Text = 0x01
-        };
-        MQ_DECLARE_FLAGS( Flags)
-    };
-
-    ArnLinkHandle();
-    ArnLinkHandle( const ArnLinkHandle& other);
-    ArnLinkHandle( const Flags& flags);
-    ~ArnLinkHandle();
-    ArnLinkHandle&  add( Code code, const QVariant& value);
-    bool  has( Code code)  const;
-    bool  isNull()  const;
-    const QVariant&  value( Code code)  const;
-
-    Flags  _flags;
-
-private:
-    void  init();
-
-    Codes  _codes;
-    typedef QMap<int,QVariant>  HandleData;
-    HandleData*  _data;
-};
-
-Q_DECLARE_OPERATORS_FOR_FLAGS( ArnLinkHandle::Codes)
-MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnLinkHandle::Flags)
-Q_DECLARE_METATYPE( ArnLinkHandle)
 
 
 class ArnLink : public QObject
@@ -99,17 +53,8 @@ class ArnLink : public QObject
     friend class ArnM;
 
 public:
-    typedef Arn::DataType Type;
-
-    struct Flags {
-        enum E {
-            Folder        = 0x01,
-            CreateAllowed = 0x02,
-            SilentError   = 0x04,
-            Threaded      = 0x08
-        };
-        MQ_DECLARE_FLAGS( Flags)
-    };
+typedef Arn::DataType Type;
+typedef Arn::LinkFlags Flags;
 
     //! \cond ADV
     void  setValue( int value, int sendId = 0, bool forceKeep = 0);
@@ -211,7 +156,5 @@ private:
     volatile bool  _isSaveMode;
     bool  _hasBeenSetup;
 };
-
-MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnLink::Flags)
 
 #endif // ARNLINK_HPP

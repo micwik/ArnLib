@@ -31,7 +31,7 @@
 // THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#include "XStringMap.hpp"
+#include "ArnInc/XStringMap.hpp"
 #include <QDebug>
 
 

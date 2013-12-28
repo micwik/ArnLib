@@ -30,9 +30,9 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnClient.hpp"
+#include "ArnInc/ArnClient.hpp"
+#include "ArnInc/ArnDefs.hpp"
 #include "ArnSync.hpp"
-#include "ArnDefs.hpp"
 #include <QTcpSocket>
 #include <QStringList>
 #include <QTimer>

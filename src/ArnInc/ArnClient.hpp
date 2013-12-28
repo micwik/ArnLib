@@ -33,8 +33,8 @@
 #ifndef ARNCLIENT_HPP
 #define ARNCLIENT_HPP
 
-#include "Arn.hpp"
 #include "ArnLib_global.hpp"
+#include "Arn.hpp"
 #include "XStringMap.hpp"
 #include "MQFlags.hpp"
 #include <QObject>

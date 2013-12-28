@@ -19,11 +19,11 @@ INCLUDEPATH += $$PWD
 
 SOURCES += $$PWD/XStringMap.cpp
 
-HEADERS += $$PWD/ArnLib_global.hpp \
-    $$PWD/XStringMap.hpp \
-    $$PWD/ArnError.hpp \
-    $$PWD/ArnDefs.hpp \
-    $$PWD/MQFlags.hpp
+HEADERS += $$PWD/ArnInc/ArnLib_global.hpp \
+    $$PWD/ArnInc/XStringMap.hpp \
+    $$PWD/ArnInc/ArnError.hpp \
+    $$PWD/ArnInc/ArnDefs.hpp \
+    $$PWD/ArnInc/MQFlags.hpp
 
 
 contains(ARN, server) {
@@ -35,11 +35,11 @@ contains(ARN, server) {
         $$PWD/ArnPersist.cpp \
         $$PWD/ArnScriptJob.cpp
 
-    HEADERS +=$$PWD/ArnServer.hpp \
-        $$PWD/ArnScript.hpp \
-        $$PWD/ArnScriptJobs.hpp \
-        $$PWD/ArnPersist.hpp \
-        $$PWD/ArnScriptJob.hpp
+    HEADERS +=$$PWD/ArnInc/ArnServer.hpp \
+        $$PWD/ArnInc/ArnScript.hpp \
+        $$PWD/ArnInc/ArnScriptJobs.hpp \
+        $$PWD/ArnInc/ArnPersist.hpp \
+        $$PWD/ArnInc/ArnScriptJob.hpp
 }
 
 
@@ -54,13 +54,13 @@ contains(ARN, client) {
         $$PWD/ArnMonitor.cpp \
         $$PWD/ArnSync.cpp
 
-    HEADERS += $$PWD/ArnClient.hpp \
+    HEADERS += $$PWD/ArnInc/ArnClient.hpp \
+        $$PWD/ArnInc/ArnDepend.hpp \
+        $$PWD/ArnInc/ArnRpc.hpp \
+        $$PWD/ArnInc/ArnSapi.hpp \
+        $$PWD/ArnInc/ArnPersistSapi.hpp \
+        $$PWD/ArnInc/ArnMonitor.hpp \
         $$PWD/ArnItemNet.hpp \
-        $$PWD/ArnDepend.hpp \
-        $$PWD/ArnRpc.hpp \
-        $$PWD/ArnSapi.hpp \
-        $$PWD/ArnPersistSapi.hpp \
-        $$PWD/ArnMonitor.hpp \
         $$PWD/ArnSync.hpp
 }
 
@@ -68,27 +68,29 @@ contains(ARN, client) {
 contains(ARN, core) {
     SOURCES += $$PWD/Arn.cpp \
         $$PWD/ArnItem.cpp \
+        $$PWD/ArnLinkHandle.cpp \
         $$PWD/ArnLink.cpp \
         $$PWD/ArnPipe.cpp \
         $$PWD/ArnItemB.cpp
 
-    HEADERS += $$PWD/Arn.hpp \
-        $$PWD/ArnItem.hpp \
-        $$PWD/ArnLink.hpp \
-        $$PWD/ArnLib.hpp \
-        $$PWD/ArnPipe.hpp \
-        $$PWD/ArnItemB.hpp
+    HEADERS += $$PWD/ArnInc/Arn.hpp \
+        $$PWD/ArnInc/ArnItem.hpp \
+        $$PWD/ArnInc/ArnLib.hpp \
+        $$PWD/ArnInc/ArnPipe.hpp \
+        $$PWD/ArnInc/ArnItemB.hpp \
+        $$PWD/ArnInc/ArnLinkHandle.hpp \
+        $$PWD/ArnLink.hpp
 }
 
 
 contains(ARN, zeroconf) {
     SOURCES += $$PWD/ArnZeroConf.cpp
-    HEADERS += $$PWD/ArnZeroConf.hpp \
+    HEADERS += $$PWD/ArnInc/ArnZeroConf.hpp \
         $$PWD/mDNS/mDNSShared/dns_sd.h
 
     contains(ARN, server) {
         SOURCES += $$PWD/ArnDiscover.cpp
-        HEADERS += $$PWD/ArnDiscover.hpp
+        HEADERS += $$PWD/ArnInc/ArnDiscover.hpp
     }
 
     mDnsIntern {

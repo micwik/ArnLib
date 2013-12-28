@@ -30,8 +30,8 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnMonitor.hpp"
-#include "ArnClient.hpp"
+#include "ArnInc/ArnMonitor.hpp"
+#include "ArnInc/ArnClient.hpp"
 #include "ArnItemNet.hpp"
 #include <QDebug>
 #include <QTime>

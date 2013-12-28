@@ -30,7 +30,7 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnScriptJob.hpp"
+#include "ArnInc/ArnScriptJob.hpp"
 #include <QScriptable>
 #include <QtScript>
 #include <QScriptEngine>

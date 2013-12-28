@@ -30,70 +30,62 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnInc/ArnServer.hpp"
-#include "ArnInc/ArnError.hpp"
-#include "ArnInc/ArnDefs.hpp"
-#include "ArnInc/Arn.hpp"
-#include "ArnSync.hpp"
-#include <QTcpServer>
-#include <QTcpSocket>
-#include <QDebug>
+#ifndef ARNLINKHANDLE_HPP
+#define ARNLINKHANDLE_HPP
+
+#include "ArnLib.hpp"
+#include "ArnDefs.hpp"
+#include "MQFlags.hpp"
+#include <QMetaType>
+#include <QString>
+#include <QVariant>
+#include <QMap>
 
 
-ArnServer::ArnServer( Type serverType, QObject *parent)
-    : QObject( parent)
+class ArnLinkHandle
 {
-    _tcpServerActive = false;
-    _tcpServer       = new QTcpServer( this);
-    _serverType      = serverType;
-}
+public:
+    //! Select how to handle a data assignment
+    enum Code {
+        //! Normal handling procedure
+        Normal = 0,
+        //! For pipes. If any item in the sendqueue matches Regexp, the item is replaced by
+        //! this assignment. Typically used to avoid queue filling during a disconnected tcp.
+        QueueFindRegexp = 0x01,
+        //! For pipes. Sequence number is used and available in HandleData.
+        SeqNo           = 0x02
+    };
+    Q_DECLARE_FLAGS( Codes, Code)
 
+    struct Flags {
+        enum E {
+            //! Transitional temporary flag to indicate utf8-coded bytearray.
+            Text = 0x01
+        };
+        MQ_DECLARE_FLAGS( Flags)
+    };
 
-void  ArnServer::start(int port)
-{
-    if (port < 0) {
-        switch (_serverType) {
-        case Type::NetSync:
-            port = Arn::defaultTcpPort;
-            break;
-        default:
-            ArnM::errorLog( QString(tr("Unknown Arn server Type:")) + QString::number( _serverType),
-                                ArnError::Undef);
-            return;
-        }
-    }
-    if (_tcpServer->listen(QHostAddress::Any, port)) {
-        _tcpServerActive = true;
+    ArnLinkHandle();
+    ArnLinkHandle( const ArnLinkHandle& other);
+    ArnLinkHandle( const Flags& flags);
+    ~ArnLinkHandle();
+    ArnLinkHandle&  add( Code code, const QVariant& value);
+    bool  has( Code code)  const;
+    bool  isNull()  const;
+    const QVariant&  value( Code code)  const;
 
-        connect(_tcpServer, SIGNAL(newConnection()), this,
-                SLOT(tcpConnection()));
-    }
-    else {
-        ArnM::errorLog( QString(tr("Failed start Arn Server Port:")) + QString::number( port),
-                            ArnError::ConnectionError);
-    }
-}
+    Flags  _flags;
 
+private:
+    void  init();
 
-int  ArnServer::port()
-{
-    return _tcpServer->serverPort();
-}
+    Codes  _codes;
+    typedef QMap<int,QVariant>  HandleData;
+    HandleData*  _data;
+};
 
+Q_DECLARE_OPERATORS_FOR_FLAGS( ArnLinkHandle::Codes)
+MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnLinkHandle::Flags)
+Q_DECLARE_METATYPE( ArnLinkHandle)
 
-QHostAddress  ArnServer::address()
-{
-    return _tcpServer->serverAddress();
-}
-
-
-void  ArnServer::tcpConnection()
-{
-    QTcpSocket*  socket = _tcpServer->nextPendingConnection();
-
-    switch (_serverType) {
-    case Type::NetSync:
-        new ArnSync( socket, false, this);
-        break;
-    }
-}
+#endif // ARNLINKHANDLE_HPP

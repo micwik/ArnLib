@@ -30,9 +30,10 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnItemB.hpp"
-#include "Arn.hpp"
-#include "ArnDefs.hpp"
+#include "ArnInc/ArnItemB.hpp"
+#include "ArnInc/Arn.hpp"
+#include "ArnInc/ArnDefs.hpp"
+#include "ArnLink.hpp"
 #include <QDataStream>
 #include <QUuid>
 #include <QTimer>

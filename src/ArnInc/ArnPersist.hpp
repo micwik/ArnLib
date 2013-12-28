@@ -33,8 +33,8 @@
 #ifndef ARNPERSIST_HPP
 #define ARNPERSIST_HPP
 
-#include "Arn.hpp"
 #include "ArnLib_global.hpp"
+#include "Arn.hpp"
 #include <QMap>
 #include <QList>
 #include <QObject>

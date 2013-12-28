@@ -30,9 +30,9 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnScript.hpp"
-#include "ArnDepend.hpp"
-#include "ArnMonitor.hpp"
+#include "ArnInc/ArnScript.hpp"
+#include "ArnInc/ArnDepend.hpp"
+#include "ArnInc/ArnMonitor.hpp"
 #include <QtScript>
 #include <QScriptValue>
 #include <QScriptEngine>

@@ -33,8 +33,8 @@
 #ifndef ARNSCRIPTJOBS_HPP
 #define ARNSCRIPTJOBS_HPP
 
-#include "ArnScriptJob.hpp"
 #include "ArnLib_global.hpp"
+#include "ArnScriptJob.hpp"
 #include "MQFlags.hpp"
 #include <QThread>
 #include <QObject>

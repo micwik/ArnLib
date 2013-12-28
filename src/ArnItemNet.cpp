@@ -31,8 +31,6 @@
 //
 
 #include "ArnItemNet.hpp"
-//#include "ArnClient.hpp"
-//#include "Arn.hpp"
 #include <QDebug>
 
 

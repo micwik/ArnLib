@@ -33,8 +33,8 @@
 #ifndef ARNSCRIPTJOB_HPP
 #define ARNSCRIPTJOB_HPP
 
-#include "ArnScript.hpp"
 #include "ArnLib_global.hpp"
+#include "ArnScript.hpp"
 #include <QScriptValue>
 #include <QObject>
 #include <QAtomicInt>

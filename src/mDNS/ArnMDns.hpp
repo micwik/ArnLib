@@ -41,12 +41,12 @@
 #ifndef ARNMDNS_HPP
 #define ARNMDNS_HPP
 
+#include "mDNS/mDNSCore/mDNSEmbeddedAPI.h"
+#include "mDNS/mDNSQt/mDNSQt.h"
 #include <QTimer>
 #include <QSocketNotifier>
 #include <QObject>
 #include <QMap>
-#include "mDNS/mDNSCore/mDNSEmbeddedAPI.h"
-#include "mDNS/mDNSQt/mDNSQt.h"
 
 class QUdpSocket;
 class QHostAddress;

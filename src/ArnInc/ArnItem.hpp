@@ -33,10 +33,9 @@
 #ifndef ARNITEM_HPP
 #define ARNITEM_HPP
 
-#include "ArnItemB.hpp"
 #include "ArnLib_global.hpp"
+#include "ArnItemB.hpp"
 #include "ArnError.hpp"
-#include "ArnLink.hpp"
 #include <QTextStream>
 #include <QObject>
 #include <QMetaMethod>

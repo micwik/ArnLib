@@ -33,15 +33,15 @@
 #ifndef ARNSYNC_HPP
 #define ARNSYNC_HPP
 
+#include "ArnInc/ArnLib_global.hpp"
+#include "ArnInc/ArnClient.hpp"
+#include "ArnInc/XStringMap.hpp"
 #include "ArnItemNet.hpp"
-#include "ArnClient.hpp"
-#include "ArnLib_global.hpp"
 #include <QObject>
 #include <QByteArray>
 #include <QMap>
 #include <QQueue>
 #include <QPointer>
-#include "XStringMap.hpp"
 
 #define ARNRECNAME  ""
 

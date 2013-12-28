@@ -30,10 +30,10 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnDiscover.hpp"
-#include "ArnZeroConf.hpp"
-#include "ArnClient.hpp"
-#include "ArnServer.hpp"
+#include "ArnInc/ArnDiscover.hpp"
+#include "ArnInc/ArnZeroConf.hpp"
+#include "ArnInc/ArnClient.hpp"
+#include "ArnInc/ArnServer.hpp"
 #include <QTimer>
 #include <QMetaObject>
 

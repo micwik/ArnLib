@@ -30,8 +30,8 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnRpc.hpp"
-#include "ArnDefs.hpp"
+#include "ArnInc/ArnRpc.hpp"
+#include "ArnInc/ArnDefs.hpp"
 #include <QMetaType>
 #include <QMetaMethod>
 #include <QTimer>

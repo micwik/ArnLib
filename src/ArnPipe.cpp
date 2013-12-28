@@ -30,8 +30,8 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnPipe.hpp"
-#include "Arn.hpp"
+#include "ArnInc/ArnPipe.hpp"
+#include "ArnInc/Arn.hpp"
 #include <QDebug>
 
 

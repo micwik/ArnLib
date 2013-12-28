@@ -33,11 +33,10 @@
 #ifndef ARN_HPP
 #define ARN_HPP
 
-#include "ArnLib.hpp"
 #include "ArnLib_global.hpp"
+#include "ArnLib.hpp"
 #include "ArnDefs.hpp"
 #include "ArnError.hpp"
-#include "ArnLink.hpp"
 #include "ArnItem.hpp"
 #include <QStringList>
 #include <QVector>
@@ -316,12 +315,12 @@ signals:
 protected:
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     static ArnLink*  root();
-    static ArnLink*  link( const QString& path, ArnLink::Flags flags,
+    static ArnLink*  link( const QString& path, Arn::LinkFlags flags,
                            ArnItem::SyncMode syncMode = ArnItem::SyncMode());
-    static ArnLink*  link( ArnLink *parent, const QString& name, ArnLink::Flags flags,
+    static ArnLink*  link( ArnLink *parent, const QString& name, Arn::LinkFlags flags,
                            ArnItem::SyncMode syncMode = ArnItem::SyncMode());
     static ArnLink*  addTwin( ArnLink* child, ArnItem::SyncMode syncMode = ArnItem::SyncMode(),
-                              ArnLink::Flags flags = ArnLink::Flags());
+                              Arn::LinkFlags flags = Arn::LinkFlags());
     static void  destroyLink( ArnLink* link);
     static void  destroyLinkMain( ArnLink* link);
 #endif
@@ -339,15 +338,15 @@ private:
     ~ArnM();
     ArnM&  operator=( const ArnM&);
 
-    static ArnLink*  linkMain( const QString& path, ArnLink::Flags flags,
+    static ArnLink*  linkMain( const QString& path, Arn::LinkFlags flags,
                                ArnItem::SyncMode syncMode = ArnItem::SyncMode());
-    static ArnLink*  linkThread( const QString& path, ArnLink::Flags flags,
+    static ArnLink*  linkThread( const QString& path, Arn::LinkFlags flags,
                                  ArnItem::SyncMode syncMode = ArnItem::SyncMode());
-    static ArnLink*  linkMain( ArnLink *parent, const QString& name, ArnLink::Flags flags,
+    static ArnLink*  linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags flags,
                                ArnItem::SyncMode syncMode = ArnItem::SyncMode());
     static ArnLink*  addTwinMain( ArnLink* child, ArnItem::SyncMode syncMode = ArnItem::SyncMode(),
-                                  ArnLink::Flags flags = ArnLink::Flags::F(0));
-    static ArnLink*  getRawLink( ArnLink *parent, const QString& name, ArnLink::Flags flags);
+                                  Arn::LinkFlags flags = Arn::LinkFlags::fromInt(0));
+    static ArnLink*  getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags);
     static QStringList  itemsMain( const ArnLink *parent);
     static QStringList  itemsMain( const QString& path);
 

@@ -35,10 +35,10 @@
 
 #define no_queue  // MetaObject tag to give Invoke::NoQueue
 
+#include "ArnLib_global.hpp"
 #include "Arn.hpp"
 #include "ArnPipe.hpp"
 #include "XStringMap.hpp"
-#include "ArnLib_global.hpp"
 #include "MQFlags.hpp"
 #include <QGenericArgument>
 #include <QString>

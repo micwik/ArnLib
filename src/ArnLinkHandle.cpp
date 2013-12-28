@@ -30,59 +30,78 @@
 // GNU Lesser General Public License for more details.
 //
 
-#ifndef ARNDEFS_HPP
-#define ARNDEFS_HPP
-
-#include "MQFlags.hpp"
-
-#define DATASTREAM_VER  QDataStream::Qt_4_6
+#include "ArnInc/ArnLinkHandle.hpp"
+#include <QDebug>
 
 
-namespace Arn {
-    const quint16  defaultTcpPort = 2022;
-
-struct SameValue {
-    enum E {
-        //! Assigning same value generates an update of the _Arn Data Object_
-        Accept = 0,
-        //! Assigning same value is ignored
-        Ignore = 1,
-        //! Assigning same value gives default action set in ArnM or ArnItem
-        DefaultAction = -1
-    };
-    MQ_DECLARE_ENUM( SameValue)
-};
-
-struct DataType {
-    enum E {
-        Null       = 0,
-        Int        = 1,
-        Double     = 2,
-        ByteArray  = 3,
-        String     = 4,
-        Variant    = 5
-        // 16 and above is reserved by ArnItemB::ExportCode
-    };
-    MQ_DECLARE_ENUM( DataType)
-};
-
-struct NameF {
-    //! Selects a format for path or item name
-    enum E {
-        //! Only on discrete names, no effect on path. "test/" ==> "test"
-        NoFolderMark = 0x01,
-        //! Path: "/@/test" ==> "//test", Item: "@" ==> ""
-        EmptyOk      = 0x02,
-        //! Only on path, no effect on discrete names. "/test/value" ==> "test/value"
-        Relative     = 0x04
-    };
-    MQ_DECLARE_FLAGS( NameF)
-};
-
-QString  convertName( const QString& name, Arn::NameF nameF = Arn::NameF());
-QString  convertBaseName( const QString& name, Arn::NameF nameF);
+void ArnLinkHandle::init()
+{
+    _codes = Normal;
+    _data  = 0;
 }
 
-MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::NameF)
 
-#endif // ARNDEFS_HPP
+ArnLinkHandle::ArnLinkHandle()
+{
+    init();
+}
+
+
+ArnLinkHandle::ArnLinkHandle( const ArnLinkHandle& other)
+{
+    _codes = other._codes;
+    _flags = other._flags;
+    if (other._data)
+        _data = new HandleData( *other._data);
+    else
+        _data = 0;
+}
+
+
+ArnLinkHandle::ArnLinkHandle( const ArnLinkHandle::Flags& flags)
+{
+    init();
+    _flags = flags;
+}
+
+
+ArnLinkHandle::~ArnLinkHandle()
+{
+    if (_data)
+        delete _data;
+}
+
+
+ArnLinkHandle&  ArnLinkHandle::add( Code code, const QVariant& value)
+{
+    if (code == Normal)  return *this;
+
+    if (!_data)
+        _data = new HandleData;
+    _data->insert( code, value);
+    _codes |= code;
+    return *this;
+}
+
+
+bool  ArnLinkHandle::has( Code code)  const
+{
+    return _codes.testFlag( code);
+}
+
+
+bool  ArnLinkHandle::isNull()  const
+{
+    return (_codes == Normal) && (_flags == Flags());
+}
+
+
+const QVariant&  ArnLinkHandle::value( Code code)  const
+{
+    static QVariant  nullValue;
+
+    if (!_data || !has( code))  // Should not be used ...
+        return nullValue;
+
+    return _data->constFind( code).value();
+}

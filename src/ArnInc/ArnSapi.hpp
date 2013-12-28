@@ -33,8 +33,8 @@
 #ifndef ARNSAPI_HPP
 #define ARNSAPI_HPP
 
-#include "ArnRpc.hpp"
 #include "ArnLib_global.hpp"
+#include "ArnRpc.hpp"
 #include <QString>
 #include <QByteArray>
 #include <QObject>

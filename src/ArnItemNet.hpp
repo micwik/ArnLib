@@ -34,8 +34,7 @@
 #define ARNITEMNET_HPP
 
 
-#include "ArnItemB.hpp"
-//#include "ArnLib_global.hpp"
+#include "ArnInc/ArnItemB.hpp"
 #include <QStringList>
 
 

@@ -30,6 +30,8 @@
 // GNU Lesser General Public License for more details.
 //
 
+#include "ArnInc/Arn.hpp"
+#include "ArnLink.hpp"
 #include <iostream>
 #include <QStringList>
 #include <QVector>
@@ -41,8 +43,6 @@
 #include <QThread>
 #include <QCoreApplication>
 #include <QMetaType>
-
-#include "Arn.hpp"
 
 
 const bool gDebugThreading = 0;
@@ -460,7 +460,7 @@ void  ArnM::linkProxy( ArnThreadCom* threadCom, const QString& path, int flagVal
 }
 
 
-ArnLink*  ArnM::link( const QString& path, ArnLink::Flags flags, ArnItem::SyncMode syncMode)
+ArnLink*  ArnM::link( const QString& path, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
 {
     if (isMainThread())  return linkMain(   path, flags, syncMode);
     else                 return linkThread( path, flags, syncMode);
@@ -468,7 +468,7 @@ ArnLink*  ArnM::link( const QString& path, ArnLink::Flags flags, ArnItem::SyncMo
 
 
 /// Threaded - must be threadsafe
-ArnLink*  ArnM::linkThread( const QString& path, ArnLink::Flags flags, ArnItem::SyncMode syncMode)
+ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
 {
     flags.f |= flags.Threaded;
 
@@ -490,7 +490,7 @@ ArnLink*  ArnM::linkThread( const QString& path, ArnLink::Flags flags, ArnItem::
 }
 
 
-ArnLink*  ArnM::linkMain( const QString& path, ArnLink::Flags flags, ArnItem::SyncMode syncMode)
+ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
 {
     // qDebug() << "### link-main: path=" << path;
     QString  pathNorm = path;
@@ -521,7 +521,7 @@ ArnLink*  ArnM::linkMain( const QString& path, ArnLink::Flags flags, ArnItem::Sy
 }
 
 
-ArnLink*  ArnM::link( ArnLink *parent, const QString& name, ArnLink::Flags flags, ArnItem::SyncMode syncMode)
+ArnLink*  ArnM::link( ArnLink *parent, const QString& name, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
 {
     if (isMainThread()) {
         ArnLink*  link = linkMain( parent, name, flags, syncMode);
@@ -548,7 +548,7 @@ ArnLink*  ArnM::link( ArnLink *parent, const QString& name, ArnLink::Flags flags
 }
 
 
-ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, ArnLink::Flags flags, ArnItem::SyncMode syncMode)
+ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
 {
     if (!parent) {  // No parent (folder) error
         if (!flags.is( flags.SilentError)) {
@@ -581,7 +581,7 @@ ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, ArnLink::Flags f
 }
 
 
-ArnLink*  ArnM::addTwin( ArnLink* link, ArnItem::SyncMode syncMode, ArnLink::Flags flags)
+ArnLink*  ArnM::addTwin( ArnLink* link, ArnItem::SyncMode syncMode, Arn::LinkFlags flags)
 {
     if (!link)  return 0;
 
@@ -603,7 +603,7 @@ ArnLink*  ArnM::addTwin( ArnLink* link, ArnItem::SyncMode syncMode, ArnLink::Fla
 }
 
 
-ArnLink*  ArnM::addTwinMain( ArnLink* link, ArnItem::SyncMode syncMode, ArnLink::Flags flags)
+ArnLink*  ArnM::addTwinMain( ArnLink* link, ArnItem::SyncMode syncMode, Arn::LinkFlags flags)
 {
     if (!link) {
         return 0;
@@ -630,7 +630,7 @@ ArnLink*  ArnM::addTwinMain( ArnLink* link, ArnItem::SyncMode syncMode, ArnLink:
 #endif
 
 
-ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, ArnLink::Flags flags)
+ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
 {
     bool  showErrors = !flags.is( flags.SilentError);
     if (!parent) {  // No parent (folder) error

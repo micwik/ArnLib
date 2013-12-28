@@ -30,8 +30,8 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnZeroConf.hpp"
-#include "ArnDefs.hpp"
+#include "ArnInc/ArnZeroConf.hpp"
+#include "ArnInc/ArnDefs.hpp"
 #ifdef MDNS_INTERN
 #  include "mDNS/ArnMDns.hpp"
 #  include "mDNS/mDNSShared/dns_sd.h"

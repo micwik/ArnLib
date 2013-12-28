@@ -30,8 +30,8 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnDepend.hpp"
-#include "Arn.hpp"
+#include "ArnInc/ArnDepend.hpp"
+#include "ArnInc/Arn.hpp"
 #include <QUuid>
 #include <QTimer>
 #include <QtAlgorithms>
