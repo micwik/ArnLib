@@ -131,6 +131,12 @@ public:
      */
     static bool  isThreadedApp();
 
+    //! Test if _path_ is a _folder path_
+    /*! \param[in] path.
+     *  \retval true if _path_ is a _folder path_, i.e. ends with a "/".
+     */
+    static bool  isFolderPath( const QString& path);
+
     //! Test if _path_ is a _provider path_
     /*! [About Bidirectional Arn Data Objects](\ref gen_bidirArnobj)
      *  \param[in] path.

@@ -342,7 +342,13 @@ QString  ArnM::twinPath( const QString& path)
 }
 
 
-bool  ArnM::isProviderPath( const QString &path)
+bool  ArnM::isFolderPath( const QString& path)
+{
+    return path.endsWith('/');
+}
+
+
+bool  ArnM::isProviderPath( const QString& path)
 {
     return path.endsWith('!');
 }
