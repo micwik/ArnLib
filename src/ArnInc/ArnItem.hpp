@@ -388,7 +388,7 @@ public slots:
     void  toggleBool();
 
 signals:
-    //! Signals emitted when _Arn Data Object_ is changed.
+    //! Signals emitted when data in _Arn Data Object_ is changed.
     /*! Only the connected (used) signals are emitted for efficiency.
      *  When using pipes with queued connection to a slot, it's strongly advised to
      *  use the signal that carries the updated data. Otherwise some stream data can
@@ -424,6 +424,13 @@ signals:
      */
     void  changed( QVariant value);
 
+    //! Signal emitted when mode in _Arn Data Object_ is changed.
+    /*! Object changing _general mode_ will give this signal.
+     *  \param[in] mode is the new _general mode_
+     *  \see \ref gen_arnobjModes
+     */
+    void  modeChanged( ArnItem::Mode mode);
+
     //! Signal emitted when an _Arn Data Object_ is created in the tree below.
     /*! The ArnItem is a folder. Created objects in this folder or its children
      *  will give this signal.
@@ -446,6 +453,7 @@ signals:
     //! \cond ADV
 protected:
     virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  modeUpdate( bool isSetup = false);
     virtual void  itemCreatedBelow( QString path);
     virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode);
     //! \endcond
