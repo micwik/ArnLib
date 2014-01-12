@@ -40,6 +40,7 @@
 #include <QStringList>
 #include <QString>
 #include <QAbstractSocket>
+#include <QAtomicInt>
 
 typedef struct _DNSServiceRef_t *DNSServiceRef;
 class QSocketNotifier;
@@ -338,6 +339,20 @@ public:
      */
     virtual ~ArnZeroConfResolv();
 
+    //! Returns the id number for this resolv
+    /*! \retval the id number
+     *  \see setId()
+     */
+    int id() const;
+
+    //! Sets the id number for this this resolv
+    /*! This id can be used to identify different resolves when using a common handler.
+     *  When not set, the default will allways be -1.
+     *  \param[in] id the id number
+     *  \see id()
+     */
+    void setId(int id);
+
     QString  host()  const
     {return ArnZeroConfB::host();}
 
@@ -375,7 +390,7 @@ signals:
     //! Indicate successfull resolve of service
     /*! \see resolve()
      */
-    void  resolved( const QByteArray& escFullDomain);
+    void  resolved( int id, const QByteArray& escFullDomain);
 
     //! Indicate unsuccessfull resolve of service
     /*! \param[in] code error code.
@@ -385,6 +400,8 @@ signals:
 
 private:
     void  init();
+
+    int  _id;
 };
 
 
@@ -401,13 +418,13 @@ This class handles browsing of ZeroConfig services.
     _serviceBrowser = new ArnZeroConfBrowser( this);
     connect(_serviceBrowser, SIGNAL(browseError(int)),
             this, SLOT(onBrowseError(int)));
-    connect(_serviceBrowser, SIGNAL(serviceAdded(QString,QString)),
-            this, SLOT(onServiceAdded(QString,QString)));
-    connect(_serviceBrowser, SIGNAL(serviceRemoved(QString,QString)),
-            this, SLOT(onServiceRemoved(QString,QString)));
+    connect(_serviceBrowser, SIGNAL(serviceAdded(int,QString,QString)),
+            this, SLOT(onServiceAdded(int,QString,QString)));
+    connect(_serviceBrowser, SIGNAL(serviceRemoved(int,QString,QString)),
+            this, SLOT(onServiceRemoved(int,QString,QString)));
     _serviceBrowser->browse();
 
-void XXX::onServiceAdded(QString name, QString domain)
+void  XXX::onServiceAdded( int id, QString name, QString domain)
 {
     _activeServices.insert( name, "Some associeated service info ...");
     ArnZeroConfResolv*  ds = new ArnZeroConfResolv( name, this);
@@ -416,7 +433,7 @@ void XXX::onServiceAdded(QString name, QString domain)
     ds->resolve();
 }
 
-void XXX::onServiceRemoved(QString name, QString domain)
+void  XXX::onServiceRemoved( int id, QString name, QString domain)
 {
     _activeServices.remove( name);
 }
@@ -456,14 +473,16 @@ public slots:
 
 signals:
     void  browseError( int errorCode);
-    void  serviceChanged( bool isAdded, const QString& serviceName, const QString& domain);
-    void  serviceAdded( const QString& serviceName, const QString& domain);
-    void  serviceRemoved( const QString& serviceName, const QString& domain);
+    void  serviceChanged( bool isAdded, int id, const QString& serviceName, const QString& domain);
+    void  serviceAdded( int id, const QString& serviceName, const QString& domain);
+    void  serviceRemoved( int id, const QString& serviceName, const QString& domain);
 
 private:
     void  init();
 
-    QStringList  _activeServiceNames;
+    QMap<QString,int>  _activeServiceNames;
+    // Source for unique id to all discovered services ...
+    static QAtomicInt  _idCount;
 };
 
 #endif // ARNZEROCONF_HPP

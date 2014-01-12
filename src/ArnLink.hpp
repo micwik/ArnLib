@@ -125,7 +125,7 @@ private:
     void  resetHave();
     void  emitChanged( int sendId, const ArnLinkHandle& handleData = ArnLinkHandle());
 
-    /// Source for unique id to all ArnLink ..
+    // Source for unique id to all ArnLink ..
     static QAtomicInt  _idCount;
 
     uint  _id;

@@ -48,13 +48,20 @@ ArnDiscoverAdvertise::ArnDiscoverAdvertise( QObject *parent) :
 }
 
 
-void  ArnDiscoverAdvertise::setArnServer( ArnServer* arnServer)
+void  ArnDiscoverAdvertise::setArnServer( ArnServer* arnServer, Type discoverType)
 {
+    _discoverType = discoverType;
     QString  hostAddr = arnServer->address().toString();
     int      hostPort = arnServer->port();
     ArnM::setValue("/Sys/Discover/This/Host/value", hostAddr);
     ArnM::setValue("/Sys/Discover/This/Host/Port/value", hostPort);
 
+    XStringMap  xsm;
+    xsm.add("ver", "1.0");
+    xsm.add("server", QByteArray::number( _discoverType == Type::Server));
+    _arnZCReg->setTxtRecordMap( xsm);
+    _arnZCReg->setSubTypes( QStringList());
+    _arnZCReg->addSubType( _discoverType == Type::Server ? "server" : "client");
     _arnZCReg->setPort( hostPort);
     connect( _arnZCReg, SIGNAL(registered(QString)), this, SLOT(serviceRegistered(QString)));
     connect( _arnZCReg, SIGNAL(registrationError(int)), this, SLOT(serviceRegistrationError(int)));
@@ -63,14 +70,14 @@ void  ArnDiscoverAdvertise::setArnServer( ArnServer* arnServer)
 }
 
 
-void  ArnDiscoverAdvertise::startNewArnServer( int port)
+void  ArnDiscoverAdvertise::startNewArnServer( Type discoverType, int port)
 {
     if (!_arnInternalServer)
         delete _arnInternalServer;
     _arnInternalServer = new ArnServer( ArnServer::Type::NetSync, this);
     _arnInternalServer->start( port);
 
-    setArnServer( _arnInternalServer);
+    setArnServer( _arnInternalServer, discoverType);
 }
 
 

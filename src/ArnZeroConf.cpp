@@ -118,7 +118,8 @@ void  ArnZeroConfB::setSubTypes( const QStringList& subTypes)
 
 void  ArnZeroConfB::addSubType( const QString& subType)
 {
-    _serviceSubTypes += subType;
+    if (!subType.isEmpty() && !_serviceSubTypes.contains( subType))
+        _serviceSubTypes += subType;
 }
 
 
@@ -423,6 +424,8 @@ void  ArnZeroConfIntern::registerServiceCallback( DNSServiceRef service, DNSServ
 
 void  ArnZeroConfResolv::init()
 {
+    _id = -1;
+
 #ifdef MDNS_INTERN
     ArnMDns::attach();
 #endif
@@ -464,6 +467,18 @@ ArnZeroConfResolv::~ArnZeroConfResolv()
 #ifdef MDNS_INTERN
     ArnMDns::detach();
 #endif
+}
+
+
+int  ArnZeroConfResolv::id()  const
+{
+    return _id;
+}
+
+
+void  ArnZeroConfResolv::setId( int id)
+{
+    _id = id;
 }
 
 
@@ -531,7 +546,7 @@ void  ArnZeroConfIntern::resolveServiceCallback(DNSServiceRef service, DNSServic
         self->setTxtRecord( txtLen > 0 ? QByteArray((const char*) txt, txtLen) : QByteArray());
         self->_iface = iface;
         self->_state = ArnZeroConfB::State::Resolved;
-        emit self->resolved( fullname);
+        emit self->resolved( self->_id, fullname);
     }
     else {
         self->_state = ArnZeroConfB::State::None;
@@ -541,6 +556,9 @@ void  ArnZeroConfIntern::resolveServiceCallback(DNSServiceRef service, DNSServic
 
 
 ////////////////// Browse
+
+QAtomicInt ArnZeroConfBrowser::_idCount(1);
+
 
 void  ArnZeroConfBrowser::init()
 {
@@ -577,7 +595,7 @@ ArnZeroConfBrowser::~ArnZeroConfBrowser() {
 
 QStringList ArnZeroConfBrowser::activeServiceNames() const
 {
-    return _activeServiceNames;
+    return _activeServiceNames.keys();
 }
 
 
@@ -662,15 +680,18 @@ void  ArnZeroConfIntern::browseServiceCallback( DNSServiceRef service, DNSServic
         QString  servName  = QString::fromUtf8( serviceName);
         QString  repDomain = QString::fromUtf8( replyDomain);
         if (isAdded != self->_activeServiceNames.contains( servName)) {  // Not multiple add or remove, ok
+            int  id = 0;
             if (isAdded) {
-                self->_activeServiceNames += servName;
-                emit self->serviceAdded( servName, repDomain);
+                id = ArnZeroConfBrowser::_idCount.fetchAndAddRelaxed(1);
+                self->_activeServiceNames.insert( servName, id);
+                emit self->serviceAdded( id, servName, repDomain);
             }
             else {
-                self->_activeServiceNames.removeOne( servName);
-                emit self->serviceRemoved( servName, repDomain);
+                id = self->_activeServiceNames.value( servName);
+                self->_activeServiceNames.remove( servName);
+                emit self->serviceRemoved( id, servName, repDomain);
             }
-            emit self->serviceChanged( isAdded, servName, repDomain);
+            emit self->serviceChanged( id, isAdded, servName, repDomain);
         }
     }
     else {

@@ -45,6 +45,19 @@ class ArnDiscoverAdvertise : public QObject
 {
     Q_OBJECT
 public:
+    //! Types of Arn discover advertise
+    struct Type {
+        enum E {
+            //! Undefined Arn discover
+            None,
+            //! Server Arn discover
+            Server,
+            //! Client Arn discover
+            Client
+        };
+        MQ_DECLARE_ENUM( Type)
+    };
+
     explicit ArnDiscoverAdvertise( QObject *parent = 0);
 
     QString  defaultService()  const;
@@ -52,8 +65,8 @@ public:
 
     QString  service() const;
 
-    void  setArnServer( ArnServer* arnServer);
-    void  startNewArnServer( int port = -1);
+    void  setArnServer( ArnServer* arnServer, Type discoverType = Type::Server);
+    void  startNewArnServer( Type discoverType, int port = -1);
     void  addArnClient( ArnClient* arnClient, const QString& id);
 
 signals:
@@ -87,6 +100,7 @@ private:
     QString  _defaultService;
     QString  _service;
     bool  _hasBeenSetup;
+    Type  _discoverType;
 };
 
 #endif // ARNDISCOVER_HPP
