@@ -663,6 +663,7 @@ void ArnZeroConfBrowser::stopBrowse()
 #endif
     }
     _state = State::None;
+    _activeServiceNames.clear();
 }
 
 
