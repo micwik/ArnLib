@@ -607,7 +607,7 @@ bool  ArnZeroConfBrowser::isBrowsing()  const
 
 void  ArnZeroConfBrowser::setSubType( const QString& subtype)
 {
-    setSubTypes( QStringList( subtype));
+    setSubTypes( subtype.isEmpty() ? QStringList() : QStringList( subtype));
 }
 
 

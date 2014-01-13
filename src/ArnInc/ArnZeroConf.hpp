@@ -461,7 +461,12 @@ public:
      */
     virtual ~ArnZeroConfBrowser();
 
+    //! Set subtype (filter)
+    /*! If passing empy subtype, this is taken as subtype (filter) disabled
+     *  \param[in] subtype the filter
+     */
     void  setSubType( const QString& subtype);
+
     QString  subType();
 
     QStringList  activeServiceNames()  const;
