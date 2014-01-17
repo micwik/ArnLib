@@ -34,30 +34,135 @@
 #define ARNDISCOVER_HPP
 
 #include "ArnItem.hpp"
+#include "XStringMap.hpp"
+#include <QHostAddress>
 
 class ArnServer;
 class ArnClient;
 class ArnZeroConfRegister;
+class ArnZeroConfBrowser;
+class QHostInfo;
 class QTimer;
+
+
+namespace ArnDiscover
+{
+//! Types of Arn discover advertise
+struct Type {
+    enum E {
+        //! Undefined Arn discover
+        None,
+        //! Server Arn discover
+        Server,
+        //! Client Arn discover
+        Client
+    };
+    MQ_DECLARE_ENUM( Type)
+};
+}
+
+
+class ArnDiscoverInfo
+{
+    friend class ArnDiscoverBrowser;
+public:
+    //! State of Arn discover browse data
+    struct State {
+        enum E {
+            //! Initialized null state
+            Init,
+            //! Got service name and domain (from browsing)
+            ServiceName,
+            //! Also got HostName, HostPort, type and properties (from resolving)
+            HostInfo,
+            //! Also got HostIp (from DNS lookup)
+            HostIp
+        };
+        MQ_DECLARE_ENUM( State)
+    };
+
+    ArnDiscoverInfo();
+
+    State  state()  const;
+    State  stopState()  const;
+    ArnDiscover::Type type()  const;
+    QString  serviceName()  const;
+    QString  domain()  const;
+    QString  hostName()  const;
+    quint16  hostPort()  const;
+    QHostAddress  hostIp()  const;
+    XStringMap  properties()  const;
+    QString  typeString()  const;
+    QString  hostPortString()  const;
+    QString  hostIpString()  const;
+
+private:
+    int  _id;
+    State  _state;
+    State  _stopState;
+    ArnDiscover::Type  _type;
+    QString  _serviceName;
+    QString  _domain;
+    QString  _hostName;
+    quint16  _hostPort;
+    QHostAddress  _hostIp;
+    XStringMap  _properties;
+};
+
+
+class ArnDiscoverBrowser : public QObject
+{
+    Q_OBJECT
+public:
+    explicit ArnDiscoverBrowser( QObject *parent = 0);
+
+    const ArnDiscoverInfo&  infoByIndex( int index);
+    const ArnDiscoverInfo&  infoById( int id);
+    const ArnDiscoverInfo&  infoByName( QString serviceName);
+    int  indexToId( int index);
+    int  IdToIndex( int id);
+
+    bool  isBrowsing()  const;
+    void  setFilter( ArnDiscover::Type typeFilter);
+
+    ArnDiscoverInfo::State  defaultStopState()  const;
+    void  setDefaultStopState( ArnDiscoverInfo::State defaultStopState);
+
+signals:
+    void  serviceAdded( int index, QString name);
+    void  serviceRemoved( int index);
+    void  infoUpdated( int index, ArnDiscoverInfo::State state);
+
+public slots:
+    void  browse( bool enable = true);
+    void  stopBrowse();
+
+private slots:
+    void  onBrowseError( int code);
+    void  onServiceAdded( int id, QString name, QString domain);
+    void  onServiceRemoved( int id, QString name, QString domain);
+
+    void  onResolveError( int code);
+    void  onResolved( int id, QByteArray escFullDomain);
+
+    void  onIpLookup( const QHostInfo& host);
+
+private:
+    void  doNextState( const ArnDiscoverInfo& info);
+
+    ArnZeroConfBrowser*  _serviceBrowser;
+    QList<int>  _activeServIds;
+    QList<ArnDiscoverInfo>  _activeServInfos;
+    QMap<int,int>  _ipLookupIds;
+    QString  _filter;
+    ArnDiscoverInfo::State  _defaultStopState;
+};
 
 
 class ArnDiscoverAdvertise : public QObject
 {
     Q_OBJECT
 public:
-    //! Types of Arn discover advertise
-    struct Type {
-        enum E {
-            //! Undefined Arn discover
-            None,
-            //! Server Arn discover
-            Server,
-            //! Client Arn discover
-            Client
-        };
-        MQ_DECLARE_ENUM( Type)
-    };
-
     explicit ArnDiscoverAdvertise( QObject *parent = 0);
 
     QString  defaultService()  const;
@@ -65,8 +170,8 @@ public:
 
     QString  service() const;
 
-    void  setArnServer( ArnServer* arnServer, Type discoverType = Type::Server);
-    void  startNewArnServer( Type discoverType, int port = -1);
+    void  setArnServer( ArnServer* arnServer, ArnDiscover::Type discoverType = ArnDiscover::Type::Server);
+    void  startNewArnServer( ArnDiscover::Type discoverType, int port = -1);
     void  addArnClient( ArnClient* arnClient, const QString& id);
 
 signals:
@@ -100,7 +205,7 @@ private:
     QString  _defaultService;
     QString  _service;
     bool  _hasBeenSetup;
-    Type  _discoverType;
+    ArnDiscover::Type  _discoverType;
 };
 
 #endif // ARNDISCOVER_HPP
