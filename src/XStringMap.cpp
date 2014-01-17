@@ -246,34 +246,25 @@ void  XStringMap::set( const QString& key, const QString& val)
 
 const QByteArray&  XStringMap::keyRef( int i)  const
 {
-    if (i < 0  ||  i >= _size) {
-        return _nullValue;
-    }
+    if ((i < 0) || (i >= _size))  return _nullValue;
+
     return _keyList[i];
 }
 
 
 QByteArray  XStringMap::key( int i, const char* def)  const
 {
-    if (def == 0) {
-        def = "";
-    }
-    if (i < 0  ||  i >= _size) {
-        return QByteArray( def);
-    }
+    if ((i < 0) || (i >= _size))  return def ? QByteArray( def) : QByteArray();
+
     return _keyList.at(i);
 }
 
 
 QByteArray  XStringMap::key( const QByteArray& value, const char* def)  const
 {
-    if (def == 0) {
-        def = "";
-    }
     int  i = indexOfValue( value);
-    if (i < 0) {
-        return QByteArray( def);
-    }
+    if (i < 0)  return def ? QByteArray( def) : QByteArray();
+
     return _keyList.at(i);
 }
 
@@ -302,34 +293,25 @@ QString  XStringMap::keyString( const QString& value, const QString& def)  const
 
 const QByteArray&  XStringMap::valueRef( int i)  const
 {
-    if (i < 0  ||  i >= _size) {
-        return _nullValue;
-    }
+    if ((i < 0) || (i >= _size))  return _nullValue;
+
     return _valList[i];
 }
 
 
 QByteArray  XStringMap::value( int i, const char* def)  const
 {
-    if (def == 0) {
-        def = "";
-    }
-    if (i < 0  ||  i >= _size) {
-        return QByteArray( def);
-    }
+    if ((i < 0) || (i >= _size))  return def ? QByteArray( def) : QByteArray();
+
     return _valList.at(i);
 }
 
 
 QByteArray  XStringMap::value( const char* key, const char* def)  const
 {
-    if (def == 0) {
-        def = "";
-    }
     int  i = indexOf( key);
-    if (i < 0) {
-        return QByteArray( def);
-    }
+    if (i < 0)  return def ? QByteArray( def) : QByteArray();
+
     return _valList.at(i);
 }
 
@@ -337,7 +319,7 @@ QByteArray  XStringMap::value( const char* key, const char* def)  const
 QByteArray  XStringMap::value( const char* keyPrefix, uint eNum, const char* def)  const
 {
     if (!keyPrefix) {
-        keyPrefix ="";
+        keyPrefix = "";
     }
     QByteArray  key;
     key += keyPrefix;
@@ -349,13 +331,9 @@ QByteArray  XStringMap::value( const char* keyPrefix, uint eNum, const char* def
 
 QByteArray  XStringMap::value( const QByteArray& key, const char* def)  const
 {
-    if (def == 0) {
-        def = "";
-    }
     int  i = indexOf( key);
-    if (i < 0) {
-        return QByteArray( def);
-    }
+    if (i < 0)  return def ? QByteArray( def) : QByteArray();
+
     return _valList.at(i);
 }
 

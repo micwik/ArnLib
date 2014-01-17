@@ -57,7 +57,7 @@ General codes below 32: code 1 -> "^A", code 2 -> "^B" and so on to code 31
 code 32 (space) -> "_", "_" -> "\_", "^" -> "\^", "\" -> "\\"
 
 The XString can be imported to the XStringMap. To get back stored values,
-XStringMap is Queried with the keys.
+XStringMap is Queried with the keys or by index.
 
 \code
     XStringMap xsm;
