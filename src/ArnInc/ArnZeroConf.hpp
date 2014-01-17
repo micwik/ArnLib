@@ -470,6 +470,7 @@ public:
     QString  subType();
 
     QStringList  activeServiceNames()  const;
+    int  serviceNameToId( const QString& name);
     bool  isBrowsing()  const;
 
 public slots:

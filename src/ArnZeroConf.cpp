@@ -599,6 +599,12 @@ QStringList ArnZeroConfBrowser::activeServiceNames() const
 }
 
 
+int  ArnZeroConfBrowser::serviceNameToId( const QString& name)
+{
+    return _activeServiceNames.value( name, -1);
+}
+
+
 bool  ArnZeroConfBrowser::isBrowsing()  const
 {
     return _state == State::Browsing;
@@ -622,12 +628,9 @@ QString ArnZeroConfBrowser::subType()
 void ArnZeroConfBrowser::browse( bool enable)
 {
     if (!enable)  return stopBrowse();
+    if (state() != State::None)  return;  // Already browsing
 
-    if ((state() != State::None) && (state() != State::Resolved)) {
-        qWarning() << "ZeroConfBrowser: Error starting browse service when not None or Resolved state";
-        emit browseError(0);
-        return;
-    }
+    _activeServiceNames.clear();
 
     QStringList serviceTypes( fullServiceType());
     serviceTypes += _serviceSubTypes;
@@ -663,7 +666,6 @@ void ArnZeroConfBrowser::stopBrowse()
 #endif
     }
     _state = State::None;
-    _activeServiceNames.clear();
 }
 
 
