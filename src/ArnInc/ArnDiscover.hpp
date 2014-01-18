@@ -86,6 +86,7 @@ public:
     State  state()  const;
     State  stopState()  const;
     ArnDiscover::Type type()  const;
+    QString  group()  const;
     QString  serviceName()  const;
     QString  domain()  const;
     QString  hostName()  const;
@@ -124,9 +125,11 @@ public:
 
     bool  isBrowsing()  const;
     void  setFilter( ArnDiscover::Type typeFilter);
+    void  setFilter( QString group);
 
     ArnDiscoverInfo::State  defaultStopState()  const;
     void  setDefaultStopState( ArnDiscoverInfo::State defaultStopState);
+    bool  goTowardState( int index, ArnDiscoverInfo::State state);
 
 signals:
     void  serviceAdded( int index, QString name);
@@ -167,6 +170,9 @@ public:
 
     QString  defaultService()  const;
     void  setDefaultService( const QString& defaultService);
+    QString  group()  const;
+    void  setGroup( const QString& group);
+
 
     QString  service() const;
 
@@ -204,6 +210,7 @@ private:
     QTimer*  _servTimer;
     QString  _defaultService;
     QString  _service;
+    QString  _group;
     bool  _hasBeenSetup;
     ArnDiscover::Type  _discoverType;
 };

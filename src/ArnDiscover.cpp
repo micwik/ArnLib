@@ -67,6 +67,12 @@ ArnDiscover::Type  ArnDiscoverInfo::type()  const
 }
 
 
+QString  ArnDiscoverInfo::group()  const
+{
+    return _properties.valueString("group");
+}
+
+
 QString  ArnDiscoverInfo::serviceName()  const
 {
     return _serviceName;
@@ -201,6 +207,12 @@ void  ArnDiscoverBrowser::setFilter( ArnDiscover::Type typeFilter)
 }
 
 
+void ArnDiscoverBrowser::setFilter( QString group)
+{
+    _filter = group;
+}
+
+
 ArnDiscoverInfo::State  ArnDiscoverBrowser::defaultStopState()  const
 {
     return _defaultStopState;
@@ -210,6 +222,27 @@ ArnDiscoverInfo::State  ArnDiscoverBrowser::defaultStopState()  const
 void  ArnDiscoverBrowser::setDefaultStopState( ArnDiscoverInfo::State defaultStopState)
 {
     _defaultStopState = defaultStopState;
+}
+
+
+bool  ArnDiscoverBrowser::goTowardState( int index, ArnDiscoverInfo::State state)
+{
+    ArnDiscoverInfo&  info = _activeServInfos[ index];
+    if (state <= info._state)  return false;  // Can only go forward
+
+    if (info._state < info._stopState) {  // Next state is in progress
+        info._stopState = state;  // Just update final state
+    }
+    else if (info._state == info._stopState) {  // Nothing in progress
+        info._stopState = state;  // Update for new final state
+        doNextState( info);  // Startup state change
+    }
+    else {
+        Q_ASSERT_X(false, "ArnDiscoverBrowser::goTowardState()", "State passed stopState");
+        return false;  // Internal error
+    }
+
+    return true;
 }
 
 
@@ -305,9 +338,9 @@ void  ArnDiscoverBrowser::onResolved( int id, QByteArray escFullDomain)
         info._type = servProp.isNull() ? ArnDiscover::Type::None
                                        : (servProp.toInt() ? ArnDiscover::Type::Server
                                                            : ArnDiscover::Type::Client);
-        info._state = ArnDiscoverInfo::State::HostInfo;
-        info._hostName = ds->host();
-        info._hostPort = ds->port();
+        info._state      = ArnDiscoverInfo::State::HostInfo;
+        info._hostName   = ds->host();
+        info._hostPort   = ds->port();
         info._properties = xsmTxt;
 
         emit infoUpdated( index, info._state);
@@ -396,9 +429,13 @@ void  ArnDiscoverAdvertise::setArnServer( ArnServer* arnServer, ArnDiscover::Typ
     XStringMap  xsm;
     xsm.add("ver", "1.0");
     xsm.add("server", QByteArray::number( _discoverType == ArnDiscover::Type::Server));
-    _arnZCReg->setTxtRecordMap( xsm);
     _arnZCReg->setSubTypes( QStringList());
     _arnZCReg->addSubType( _discoverType == ArnDiscover::Type::Server ? "server" : "client");
+    if (!_group.isEmpty()) {
+        _arnZCReg->addSubType( _group);
+        xsm.add("group", _group);
+    }
+    _arnZCReg->setTxtRecordMap( xsm);
     _arnZCReg->setPort( hostPort);
     connect( _arnZCReg, SIGNAL(registered(QString)), this, SLOT(serviceRegistered(QString)));
     connect( _arnZCReg, SIGNAL(registrationError(int)), this, SLOT(serviceRegistrationError(int)));
@@ -624,4 +661,16 @@ QString  ArnDiscoverAdvertise::defaultService()  const
 void  ArnDiscoverAdvertise::setDefaultService( const QString& defaultService)
 {
     _defaultService = defaultService;
+}
+
+
+QString  ArnDiscoverAdvertise::group()  const
+{
+    return _group;
+}
+
+
+void  ArnDiscoverAdvertise::setGroup( const QString& group)
+{
+    _group = group;
 }
