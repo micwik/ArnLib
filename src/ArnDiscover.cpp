@@ -427,13 +427,12 @@ void  ArnDiscoverAdvertise::setArnServer( ArnServer* arnServer, ArnDiscover::Typ
     ArnM::setValue("/Sys/Discover/This/Host/Port/value", hostPort);
 
     XStringMap  xsm;
-    xsm.add("ver", "1.0");
+    xsm.add("protovers", "1.0");
     xsm.add("server", QByteArray::number( _discoverType == ArnDiscover::Type::Server));
-    _arnZCReg->setSubTypes( QStringList());
+    _arnZCReg->setSubTypes( _groups);
     _arnZCReg->addSubType( _discoverType == ArnDiscover::Type::Server ? "server" : "client");
-    if (!_group.isEmpty()) {
-        _arnZCReg->addSubType( _group);
-        xsm.add("group", _group);
+    for (int i = 0; i < _groups.size(); ++i) {
+        xsm.add("group", i, _groups.at(i));
     }
     _arnZCReg->setTxtRecordMap( xsm);
     _arnZCReg->setPort( hostPort);
@@ -664,13 +663,19 @@ void  ArnDiscoverAdvertise::setDefaultService( const QString& defaultService)
 }
 
 
-QString  ArnDiscoverAdvertise::group()  const
+QStringList  ArnDiscoverAdvertise::groups()  const
 {
-    return _group;
+    return _groups;
 }
 
 
-void  ArnDiscoverAdvertise::setGroup( const QString& group)
+void  ArnDiscoverAdvertise::setGroups( const QStringList& groups)
 {
-    _group = group;
+    _groups = groups;
+}
+
+
+void  ArnDiscoverAdvertise::addGroup( const QString& group)
+{
+    _groups += group;
 }

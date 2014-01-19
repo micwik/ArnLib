@@ -104,6 +104,30 @@ void  ArnZeroConfB::parseFullDomain( const QByteArray& domainName)
 }
 
 
+QByteArray  ArnZeroConfB::escapedName( const QByteArray& name)
+{
+    QByteArray  retVal;
+    const char*  namep = name.constData();
+    int  len = name.size();
+
+    for (int i = 0; i < len; ++i) {
+        uchar  c = *namep++;
+        if (c <= ' ') {
+            retVal += '\\';
+            retVal += QByteArray::number(c).rightJustified(3, '0');
+        }
+        else if ((c == '.') || (c == '\\')) {
+            retVal += '\\';
+            retVal += char(c);
+        }
+        else
+            retVal += char(c);
+    }
+
+    return retVal;
+}
+
+
 QStringList  ArnZeroConfB::subTypes()  const
 {
     return _serviceSubTypes;
@@ -349,17 +373,18 @@ void  ArnZeroConfRegister::registerService( bool noAutoRename)
     if (txtRec.isEmpty())
         txtRec.fill(0, 1);
 
-    QStringList  serviceTypes( fullServiceType());
-    serviceTypes += _serviceSubTypes;
+    QByteArray  serviceTypes = fullServiceType().toUtf8();
+    foreach (const QString& subType, _serviceSubTypes) {
+        serviceTypes += ",_" + escapedName( subType.toUtf8());
+    }
 
-    qDebug() << "Register: subTypes=" << serviceTypes.join(",_").toUtf8().constData()
-             << "";
+    qDebug() << "Register: serviceTypes=" << serviceTypes.constData() << "";
     DNSServiceErrorType err;
     err = DNSServiceRegister(&_serviceRef,
                              noAutoRename ? kDNSServiceFlagsNoAutoRename : 0,
                              _iface,
                              serviceName().toUtf8().constData(),
-                             serviceTypes.join(",_").toUtf8().constData(),
+                             serviceTypes.constData(),
                              domain().toUtf8().constData(),
                              host().toUtf8().constData(),
                              qToBigEndian( port()),
@@ -632,14 +657,16 @@ void ArnZeroConfBrowser::browse( bool enable)
 
     _activeServiceNames.clear();
 
-    QStringList serviceTypes( fullServiceType());
-    serviceTypes += _serviceSubTypes;
+    QByteArray  serviceTypes = fullServiceType().toUtf8();
+    if (!_serviceSubTypes.isEmpty()) {
+        serviceTypes += ",_" + escapedName( _serviceSubTypes.at(0).toUtf8());
+    }
 
     DNSServiceErrorType err;
     err = DNSServiceBrowse(&_serviceRef,
                            0,
                            _iface,
-                           serviceTypes.join(",_").toUtf8().constData(),
+                           serviceTypes.constData(),
                            domain().toUtf8().constData(),
                            ArnZeroConfIntern::browseServiceCallback,
                            this);

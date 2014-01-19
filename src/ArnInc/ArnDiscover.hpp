@@ -170,9 +170,9 @@ public:
 
     QString  defaultService()  const;
     void  setDefaultService( const QString& defaultService);
-    QString  group()  const;
-    void  setGroup( const QString& group);
-
+    QStringList groups() const;
+    void setGroups(const QStringList& groups);
+    void  addGroup( const QString& group);
 
     QString  service() const;
 
@@ -210,7 +210,7 @@ private:
     QTimer*  _servTimer;
     QString  _defaultService;
     QString  _service;
-    QString  _group;
+    QStringList  _groups;
     bool  _hasBeenSetup;
     ArnDiscover::Type  _discoverType;
 };

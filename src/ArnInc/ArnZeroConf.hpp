@@ -137,6 +137,8 @@ protected:
 
     void  parseFullDomain( const QByteArray& domainName);
 
+    static QByteArray  escapedName( const QByteArray& name);
+
     QString  _serviceName;
     QString  _domain;
     QAbstractSocket::SocketType  _socketType;
