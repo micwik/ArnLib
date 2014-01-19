@@ -57,6 +57,9 @@ public:
 };
 
 
+QAtomicInt  ArnZeroConfB::_idCount(1);
+
+
 ArnZeroConfB::ArnZeroConfB( QObject* parent)
     : QObject( parent)
 {
@@ -125,6 +128,12 @@ QByteArray  ArnZeroConfB::escapedName( const QByteArray& name)
     }
 
     return retVal;
+}
+
+
+int  ArnZeroConfB::getNextId()
+{
+    return ArnZeroConfB::_idCount.fetchAndAddRelaxed(1);
 }
 
 
@@ -571,6 +580,8 @@ void  ArnZeroConfIntern::resolveServiceCallback(DNSServiceRef service, DNSServic
         self->setTxtRecord( txtLen > 0 ? QByteArray((const char*) txt, txtLen) : QByteArray());
         self->_iface = iface;
         self->_state = ArnZeroConfB::State::Resolved;
+        if (self->_id < 0)  // No valid id set, get one
+            self->_id = ArnZeroConfB::getNextId();
         emit self->resolved( self->_id, fullname);
     }
     else {
@@ -581,9 +592,6 @@ void  ArnZeroConfIntern::resolveServiceCallback(DNSServiceRef service, DNSServic
 
 
 ////////////////// Browse
-
-QAtomicInt ArnZeroConfBrowser::_idCount(1);
-
 
 void  ArnZeroConfBrowser::init()
 {
@@ -712,7 +720,7 @@ void  ArnZeroConfIntern::browseServiceCallback( DNSServiceRef service, DNSServic
         if (isAdded != self->_activeServiceNames.contains( servName)) {  // Not multiple add or remove, ok
             int  id = 0;
             if (isAdded) {
-                id = ArnZeroConfBrowser::_idCount.fetchAndAddRelaxed(1);
+                id = ArnZeroConfB::getNextId();
                 self->_activeServiceNames.insert( servName, id);
                 emit self->serviceAdded( id, servName, repDomain);
             }

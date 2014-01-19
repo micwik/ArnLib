@@ -136,6 +136,7 @@ protected:
     void  setTxtRecordMap( const XStringMap& xsm);
 
     void  parseFullDomain( const QByteArray& domainName);
+    static int  getNextId();
 
     static QByteArray  escapedName( const QByteArray& name);
 
@@ -153,6 +154,9 @@ protected:
     QString  _txtRecord;
 
     QSocketNotifier*  _notifier;
+
+    // Source for unique id to all discovered services ...
+    static QAtomicInt  _idCount;
 
 private:
     quint16  _port;
@@ -475,6 +479,9 @@ public:
     int  serviceNameToId( const QString& name);
     bool  isBrowsing()  const;
 
+    static int  getNextId()
+    { return ArnZeroConfB::getNextId();}
+
 public slots:
     void  browse( bool enable = true);
     void  stopBrowse();
@@ -489,8 +496,6 @@ private:
     void  init();
 
     QMap<QString,int>  _activeServiceNames;
-    // Source for unique id to all discovered services ...
-    static QAtomicInt  _idCount;
 };
 
 #endif // ARNZEROCONF_HPP

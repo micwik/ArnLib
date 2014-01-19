@@ -171,7 +171,7 @@ const ArnDiscoverInfo&  ArnDiscoverBrowser::infoById( int id)
 
 const ArnDiscoverInfo&  ArnDiscoverBrowser::infoByName( QString serviceName)
 {
-    return infoById( _serviceBrowser->serviceNameToId( serviceName));
+    return infoById( serviceNameToId( serviceName));
 }
 
 
@@ -186,6 +186,16 @@ int  ArnDiscoverBrowser::indexToId( int index)
 int  ArnDiscoverBrowser::IdToIndex( int id)
 {
     return _activeServIds.indexOf( id);
+}
+
+
+int  ArnDiscoverBrowser::serviceNameToId( const QString& name)
+{
+    foreach (const ArnDiscoverInfo& info, _activeServInfos) {
+        if (info._serviceName == name)
+            return info._id;
+    }
+    return -1;  // Not found
 }
 
 
@@ -266,6 +276,21 @@ void  ArnDiscoverBrowser::stopBrowse()
 }
 
 
+void  ArnDiscoverBrowser::resolve( QString serviceName)
+{
+    if (isBrowsing()) {
+        qCritical() << "ArnDiscoverBrowser::resolve Browse must be stopped: serviceName=" << serviceName;
+        return;
+    }
+    qDebug() << "Man resolve Service: name=" << serviceName;
+
+    int  id = ArnZeroConfBrowser::getNextId();
+    int  index = newServiceInfo( id, serviceName, QString());
+
+    doNextState( _activeServInfos.at( index));
+}
+
+
 void  ArnDiscoverBrowser::onBrowseError( int code)
 {
     qDebug() << "Browse Error code=" << code;
@@ -277,21 +302,7 @@ void  ArnDiscoverBrowser::onServiceAdded( int id, QString name, QString domain)
     qDebug() << "Browse Service added: name=" << name << " domain=" << domain
              << " escFullDomain=" << _serviceBrowser->escapedFullDomain();
 
-    ArnDiscoverInfo  info;
-    info._id          = id;
-    info._state       = ArnDiscoverInfo::State::ServiceName;
-    info._serviceName = name;
-    info._domain      =  domain;
-    info._stopState   = _defaultStopState;
-
-    int  index;
-    for (index = 0; index < _activeServInfos.size(); ++index) {
-        const QString&  indexName = _activeServInfos.at( index)._serviceName;
-        Q_ASSERT(name != indexName);
-        if (name < indexName)  break;  // Sorting place found
-    }
-    _activeServIds.insert( index, id);
-    _activeServInfos.insert( index, info);
+    int  index = newServiceInfo( id, name, domain);
 
     emit serviceAdded( index, name);
     doNextState( _activeServInfos.at( index));
@@ -377,6 +388,28 @@ void  ArnDiscoverBrowser::onIpLookup( const QHostInfo& host)
     info._hostIp = host.addresses().first();
 
     emit infoUpdated( index, info._state);
+}
+
+
+int  ArnDiscoverBrowser::newServiceInfo( int id, QString name, QString domain)
+{
+    ArnDiscoverInfo  info;
+    info._id          = id;
+    info._state       = ArnDiscoverInfo::State::ServiceName;
+    info._serviceName = name;
+    info._domain      =  domain;
+    info._stopState   = _defaultStopState;
+
+    int  index;
+    for (index = 0; index < _activeServInfos.size(); ++index) {
+        const QString&  indexName = _activeServInfos.at( index)._serviceName;
+        Q_ASSERT(name != indexName);
+        if (name < indexName)  break;  // Sorting place found
+    }
+    _activeServIds.insert( index, id);
+    _activeServInfos.insert( index, info);
+
+    return index;
 }
 
 

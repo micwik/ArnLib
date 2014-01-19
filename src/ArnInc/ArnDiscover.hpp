@@ -122,6 +122,7 @@ public:
     const ArnDiscoverInfo&  infoByName( QString serviceName);
     int  indexToId( int index);
     int  IdToIndex( int id);
+    int  serviceNameToId( const QString& name);
 
     bool  isBrowsing()  const;
     void  setFilter( ArnDiscover::Type typeFilter);
@@ -139,6 +140,7 @@ signals:
 public slots:
     void  browse( bool enable = true);
     void  stopBrowse();
+    void  resolve( QString serviceName);
 
 private slots:
     void  onBrowseError( int code);
@@ -151,6 +153,7 @@ private slots:
     void  onIpLookup( const QHostInfo& host);
 
 private:
+    int  newServiceInfo( int id, QString name, QString domain);
     void  doNextState( const ArnDiscoverInfo& info);
 
     ArnZeroConfBrowser*  _serviceBrowser;
