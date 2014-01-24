@@ -480,7 +480,7 @@ public:
     bool  isBrowsing()  const;
 
     static int  getNextId()
-    { return ArnZeroConfB::getNextId();}
+    {return ArnZeroConfB::getNextId();}
 
 public slots:
     void  browse( bool enable = true);

@@ -64,7 +64,7 @@ struct Type {
 
 class ArnDiscoverInfo
 {
-    friend class ArnDiscoverBrowser;
+    friend class ArnDiscoverBrowserB;
 public:
     //! State of Arn discover browse data
     struct State {
@@ -110,12 +110,12 @@ private:
     XStringMap  _properties;
 };
 
-
-class ArnDiscoverBrowser : public QObject
+/// Browse() and resolve() together, may never be used to the same instance.
+class ArnDiscoverBrowserB : public QObject
 {
     Q_OBJECT
 public:
-    explicit ArnDiscoverBrowser( QObject *parent = 0);
+    explicit ArnDiscoverBrowserB( QObject *parent = 0);
 
     const ArnDiscoverInfo&  infoByIndex( int index);
     const ArnDiscoverInfo&  infoById( int id);
@@ -123,10 +123,6 @@ public:
     int  indexToId( int index);
     int  IdToIndex( int id);
     int  serviceNameToId( const QString& name);
-
-    bool  isBrowsing()  const;
-    void  setFilter( ArnDiscover::Type typeFilter);
-    void  setFilter( QString group);
 
     ArnDiscoverInfo::State  defaultStopState()  const;
     void  setDefaultStopState( ArnDiscoverInfo::State defaultStopState);
@@ -138,6 +134,12 @@ signals:
     void  infoUpdated( int index, ArnDiscoverInfo::State state);
 
 public slots:
+
+protected:
+    bool  isBrowsing()  const;
+    void  setFilter( ArnDiscover::Type typeFilter);
+    void  setFilter( QString group);
+
     void  browse( bool enable = true);
     void  stopBrowse();
     void  resolve( QString serviceName);
@@ -165,6 +167,47 @@ private:
 };
 
 
+class ArnDiscoverBrowser : public ArnDiscoverBrowserB
+{
+    Q_OBJECT
+public:
+    explicit ArnDiscoverBrowser( QObject *parent = 0);
+
+    bool  isBrowsing()  const
+    {return ArnDiscoverBrowserB::isBrowsing();}
+
+    void  setFilter( ArnDiscover::Type typeFilter)
+    {return ArnDiscoverBrowserB::setFilter( typeFilter);}
+
+    void  setFilter( QString group)
+    {return ArnDiscoverBrowserB::setFilter( group);}
+
+public slots:
+    void  browse( bool enable = true)
+    {ArnDiscoverBrowserB::browse( enable);}
+
+    void  stopBrowse()
+    {ArnDiscoverBrowserB::stopBrowse();}
+};
+
+
+class ArnDiscoverResolver : public ArnDiscoverBrowserB
+{
+    Q_OBJECT
+public:
+    explicit ArnDiscoverResolver( QObject *parent = 0);
+
+    QString  defaultService()  const;
+    void  setDefaultService( const QString& defaultService);
+
+public slots:
+    void  resolve( QString serviceName);
+
+private:
+    QString  _defaultService;
+};
+
+
 class ArnDiscoverAdvertise : public QObject
 {
     Q_OBJECT
@@ -182,6 +225,7 @@ public:
     void  setArnServer( ArnServer* arnServer, ArnDiscover::Type discoverType = ArnDiscover::Type::Server);
     void  startNewArnServer( ArnDiscover::Type discoverType, int port = -1);
     void  addArnClient( ArnClient* arnClient, const QString& id);
+    void  setDiscoverResolver( ArnDiscoverResolver* resolver, const QString& id);
 
 signals:
     void  serviceChanged( QString serviceName);
@@ -199,15 +243,20 @@ private slots:
     void  doServiceChanged( QString val);
     void  serviceRegistered( QString serviceName);
     void  serviceRegistrationError( int code);
-    //// Handle Client
+    //// Handle Client directHosts
     void  postSetupClient( QObject* arnClientObj);
     void  doClientConnected( QString arnHost, quint16 port);
     void  doClientDirHostChanged( QObject* dirHostsObj = 0);
     void  doClientConnectRequest( int reqCode);
+    //// Handle Client resolvHost
+    void  postSetupResolver( QObject* arnDiscoverResolverObj);
+    void  doClientServicetChanged( QObject* resHostsObj = 0);
+    void  doClientResolvChanged( int index, ArnDiscoverInfo::State state, ArnDiscoverResolver* resolver = 0);
 
 private:
     ArnZeroConfRegister*  _arnZCReg;
     ArnServer*  _arnInternalServer;
+    ArnDiscoverResolver*  _arnDResolver;
     ArnItem  _arnServicePv;
     ArnItem  _arnService;
     QTimer*  _servTimer;
