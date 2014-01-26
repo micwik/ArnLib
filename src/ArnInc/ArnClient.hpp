@@ -96,19 +96,26 @@ public:
 
     //! Clear the Arn connection list
     /*! Typically used to start making a new Arn connection list.
+     *  \param[in] prioFilter selects hosts in the list with this pri, to be removed. Default -1 removes all.
+     *  \see addToArnList()
      */
-    void  clearArnList();
+    void  clearArnList( int prioFilter = -1);
 
     //! Return the Arn connection list
-    /*! \retval the Arn connection list.
+    /*! \param[in] prioFilter selects hosts in the list with this pri. Default -1 selects all.
+     *  \retval the selected Arn connection list.
+     *  \see addToArnList()
      */
-    const HostList&  ArnList()  const;
+    HostList  arnList( int prioFilter = -1)  const;
 
     //! Add an _Arn Server_ to the Arn connection list
     /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
      *  \param[in] port is the port number (default 2022).
+     *  \param[in] prio gives the sorting (connection) order and can be used for selection filter.
+     *  \see clearArnList()
+     *  \see arnList()
      */
-    void  addToArnList( const QString& arnHost, quint16 port = 0);
+    void  addToArnList( const QString& arnHost, quint16 port = 0, int prio = 0);
 
     //! Connect to an _Arn Server_ in the Arn connection list
     /*! Will scan the connection list once until a successful connection is made.
@@ -195,6 +202,7 @@ private:
     void doConnectArnLogic();
 
     HostList  _hostTab;
+    QList<int>  _hostPrioTab;
     int  _nextHost;
 
     QStringList  makeItemList( XStringMap& xsMap);

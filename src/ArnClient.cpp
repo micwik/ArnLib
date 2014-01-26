@@ -67,24 +67,54 @@ ArnClient::ArnClient( QObject* parent) :
 }
 
 
-void  ArnClient::clearArnList()
+void  ArnClient::clearArnList( int prioFilter)
 {
-    _hostTab.clear();
+    if ((prioFilter < 0) || _hostTab.isEmpty()) {
+        _hostTab.clear();
+        _hostPrioTab.clear();
+        return;
+    }
+
+    int  index = -1;
+    forever {
+        index = _hostPrioTab.indexOf( prioFilter, index + 1);
+        if (index < 0)  break;
+        _hostTab.removeAt( index);
+        _hostPrioTab.removeAt( index);
+    }
 }
 
 
-const ArnClient::HostList&  ArnClient::ArnList()  const
+ArnClient::HostList  ArnClient::arnList( int prioFilter)  const
 {
-    return _hostTab;
+    if ((prioFilter < 0) || _hostTab.isEmpty())
+        return _hostTab;
+
+    HostList  retVal;
+    int  index = -1;
+    forever {
+        index = _hostPrioTab.indexOf( prioFilter, index + 1);
+        if (index < 0)  break;
+        retVal += _hostTab.at( index);
+    }
+    return retVal;
 }
 
 
-void  ArnClient::addToArnList(const QString &arnHost, quint16 port)
+void  ArnClient::addToArnList( const QString &arnHost, quint16 port, int prio)
 {
+    if (arnHost.isEmpty())  return;  // Invalid
+
     HostAddrPort  slot;
     slot.addr = arnHost;
     slot.port = port ? port : Arn::defaultTcpPort;
-    _hostTab += slot;
+
+    int index;
+    for (index = 0; index < _hostPrioTab.size(); ++index) {
+        if (prio < _hostPrioTab.at( index))  break;  // Found place
+    }
+    _hostTab.insert( index, slot);
+    _hostPrioTab.insert( index, prio);
 }
 
 
