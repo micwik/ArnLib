@@ -66,15 +66,19 @@ class ArnDiscoverInfo
 {
     friend class ArnDiscoverBrowserB;
 public:
-    //! State of Arn discover browse data
+    //! State of Arn discover browse data. Can be tested by relative order.
     struct State {
         enum E {
             //! Initialized null state
             Init,
             //! Got service name and domain (from browsing)
             ServiceName,
+            //! Got error during resolving HostName, HostPort, type and properties
+            HostInfoErr,
             //! Also got HostName, HostPort, type and properties (from resolving)
             HostInfo,
+            //! Got error during DNS lookup HostIp
+            HostIpErr,
             //! Also got HostIp (from DNS lookup)
             HostIp
         };
@@ -96,6 +100,7 @@ public:
     QString  typeString()  const;
     QString  hostPortString()  const;
     QString  hostIpString()  const;
+    int  resolvCode()  const;
 
 private:
     int  _id;
@@ -108,6 +113,7 @@ private:
     quint16  _hostPort;
     QHostAddress  _hostIp;
     XStringMap  _properties;
+    int  _resolvCode;
 };
 
 /// Browse() and resolve() together, may never be used to the same instance.
@@ -142,20 +148,21 @@ protected:
 
     void  browse( bool enable = true);
     void  stopBrowse();
-    void  resolve( QString serviceName);
+    void  resolve( QString serviceName, bool forceUpdate = true);
 
 private slots:
     void  onBrowseError( int code);
     void  onServiceAdded( int id, QString name, QString domain);
     void  onServiceRemoved( int id, QString name, QString domain);
 
-    void  onResolveError( int code);
+    void  onResolveError( int id, int code);
     void  onResolved( int id, QByteArray escFullDomain);
 
     void  onIpLookup( const QHostInfo& host);
 
 private:
     int  newServiceInfo( int id, QString name, QString domain);
+    void  removeServiceInfo( int index);
     void  doNextState( const ArnDiscoverInfo& info);
 
     ArnZeroConfBrowser*  _serviceBrowser;
@@ -201,10 +208,64 @@ public:
     void  setDefaultService( const QString& defaultService);
 
 public slots:
-    void  resolve( QString serviceName);
+    void  resolve( QString serviceName, bool forceUpdate = true);
 
 private:
     QString  _defaultService;
+};
+
+
+class ArnDiscoverConnector : public QObject
+{
+    Q_OBJECT
+public:
+    ArnDiscoverConnector( ArnClient& client, const QString& id);
+
+    //! Clear the DirectHost connection list
+    /*! Typically used to start making a new connection list.
+     *  \see addToDirectHosts()
+     */
+    void  clearDirectHosts();
+
+    //! Add an _Arn Server_ to the DirectHost connection list
+    /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
+     *  \param[in] port is the port number (default 2022).
+     *  \see clearDirectHosts()
+     */
+    void  addToDirectHosts( const QString& arnHost, quint16 port = 0);
+
+    void  setResolver( ArnDiscoverResolver* resolver);
+    void  start();
+
+public slots:
+
+signals:
+    void  clientReadyToConnect( ArnClient* arnClient);
+
+private slots:
+    //// Handle Client directHosts
+    void  postSetupClient();
+    void  doClientConnected( QString arnHost, quint16 port);
+    void  doClientDirHostChanged();
+    void  doClientConnectRequest( int reqCode);
+    //// Handle Client resolvHost
+    void  postSetupResolver();
+    void  doClientServicetChanged();
+    void  doClientResolvChanged( int index, ArnDiscoverInfo::State state);
+
+private:
+    ArnClient*  _client;
+    ArnDiscoverResolver*  _resolver;
+    QString  _id;
+    int  _directHostPrio;
+    int  _resolvHostPrio;
+    QObject*  _directHosts;
+
+    ArnItem*  _arnResHostService;
+    ArnItem*  _arnResHostServicePv;
+    ArnItem*  _arnResHostAddress;
+    ArnItem*  _arnResHostPort;
+    ArnItem*  _arnResHostStatus;
 };
 
 
@@ -224,8 +285,7 @@ public:
 
     void  setArnServer( ArnServer* arnServer, ArnDiscover::Type discoverType = ArnDiscover::Type::Server);
     void  startNewArnServer( ArnDiscover::Type discoverType, int port = -1);
-    void  addArnClient( ArnClient* arnClient, const QString& id);
-    void  setDiscoverResolver( ArnDiscoverResolver* resolver, const QString& id);
+    ArnDiscoverConnector&  newConnector( ArnClient& client, const QString& id);
 
 signals:
     void  serviceChanged( QString serviceName);
@@ -243,15 +303,6 @@ private slots:
     void  doServiceChanged( QString val);
     void  serviceRegistered( QString serviceName);
     void  serviceRegistrationError( int code);
-    //// Handle Client directHosts
-    void  postSetupClient( QObject* arnClientObj);
-    void  doClientConnected( QString arnHost, quint16 port);
-    void  doClientDirHostChanged( QObject* dirHostsObj = 0);
-    void  doClientConnectRequest( int reqCode);
-    //// Handle Client resolvHost
-    void  postSetupResolver( QObject* arnDiscoverResolverObj);
-    void  doClientServicetChanged( QObject* resHostsObj = 0);
-    void  doClientResolvChanged( int index, ArnDiscoverInfo::State state, ArnDiscoverResolver* resolver = 0);
 
 private:
     ArnZeroConfRegister*  _arnZCReg;

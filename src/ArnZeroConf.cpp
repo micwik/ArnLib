@@ -39,6 +39,7 @@
 #  include <dns_sd.h>
 #endif
 #include <QSocketNotifier>
+#include <QTimer>
 #include <QtEndian>
 
 
@@ -459,6 +460,9 @@ void  ArnZeroConfIntern::registerServiceCallback( DNSServiceRef service, DNSServ
 void  ArnZeroConfResolv::init()
 {
     _id = -1;
+    _resolvTimer = new QTimer( this);
+    _resolvTimer->setInterval(2000);
+    connect( _resolvTimer, SIGNAL(timeout()), this, SLOT(resolveTimeout()));
 
 #ifdef MDNS_INTERN
     ArnMDns::attach();
@@ -518,9 +522,12 @@ void  ArnZeroConfResolv::setId( int id)
 
 void  ArnZeroConfResolv::resolve(bool forceMulticast)
 {
+    if (_id < 0)  // No valid id set, get one
+        _id = ArnZeroConfB::getNextId();
+
     if ((state() != State::None) && (state() != State::Resolved)) {
         qWarning() << "ZeroConfResolv: Error resolve service when not None or Resolved state";
-        emit resolveError(0);
+        emit resolveError( _id, -2);
         return;
     }
     if (state() == State::Resolved)
@@ -537,10 +544,12 @@ void  ArnZeroConfResolv::resolve(bool forceMulticast)
                             this);
     if (err != kDNSServiceErr_NoError) {
         _state = State::None;
-        emit resolveError(err);
+        emit resolveError( _id, err);
     }
     else {
         _state = State::Resolving;
+        _resolvTimer->start();
+
 #ifndef MDNS_INTERN
         _notifier = new QSocketNotifier( DNSServiceRefSockFD( _serviceRef), QSocketNotifier::Read, this);
         connect( _notifier, SIGNAL(activated(int)), this, SLOT(socketData()));
@@ -551,6 +560,8 @@ void  ArnZeroConfResolv::resolve(bool forceMulticast)
 
 void  ArnZeroConfResolv::releaseService()
 {
+    _resolvTimer->stop();
+
     if ((state() != State::Resolved) && (state() != State::Resolving)) {
         qWarning() << "ZeroConfResolv release: unresolved service";
     }
@@ -565,28 +576,41 @@ void  ArnZeroConfResolv::releaseService()
 }
 
 
+void  ArnZeroConfResolv::resolveTimeout()
+{
+    releaseService();
+
+    emit resolveError( _id, -3);
+}
+
+
 void  ArnZeroConfIntern::resolveServiceCallback(DNSServiceRef service, DNSServiceFlags flags, quint32 iface,
         DNSServiceErrorType errCode, const char* fullname, const char* host, quint16 port, quint16 txtLen,
         const unsigned char* txt, void* context)
 {
     Q_UNUSED(service);
     Q_UNUSED(flags);
-    ArnZeroConfResolv* self = reinterpret_cast<ArnZeroConfResolv*>(context);
+    ArnZeroConfResolv*  self = reinterpret_cast<ArnZeroConfResolv*>(context);
+    Q_ASSERT(self);
 
-    if(errCode == kDNSServiceErr_NoError) {
+    self->_resolvTimer->stop();
+
+    if (self->_id < 0)  // No valid id set, get one
+        self->_id = ArnZeroConfB::getNextId();
+
+    qDebug() << "Resolve callback errCode=" << errCode;
+    if (errCode == kDNSServiceErr_NoError) {
         self->parseFullDomain( fullname);
         self->setHost( host);
         self->setPort( qFromBigEndian( port));
         self->setTxtRecord( txtLen > 0 ? QByteArray((const char*) txt, txtLen) : QByteArray());
         self->_iface = iface;
         self->_state = ArnZeroConfB::State::Resolved;
-        if (self->_id < 0)  // No valid id set, get one
-            self->_id = ArnZeroConfB::getNextId();
         emit self->resolved( self->_id, fullname);
     }
     else {
         self->_state = ArnZeroConfB::State::None;
-        emit self->resolveError( errCode);
+        emit self->resolveError( self->_id, errCode);
     }
 }
 

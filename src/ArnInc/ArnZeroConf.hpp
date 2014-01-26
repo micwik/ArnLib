@@ -44,6 +44,7 @@
 
 typedef struct _DNSServiceRef_t *DNSServiceRef;
 class QSocketNotifier;
+class QTimer;
 
 
 class ARNLIBSHARED_EXPORT ArnZeroConfB : public QObject
@@ -296,11 +297,11 @@ The service name can be given directly if known, but typically it comes from Arn
 <b>Example usage</b> \n \code
     // In class code
     ArnZeroConfResolv*  ds = new ArnZeroConfResolv("My TestService. In the attic", this);
-    connect( ds, SIGNAL(resolveError(int)), this, SLOT(onResolveError(int)));
-    connect( ds, SIGNAL(resolved(QByteArray)), this, SLOT(onResolved(QByteArray)));
+    connect( ds, SIGNAL(resolveError(int,int)), this, SLOT(onResolveError(int,int)));
+    connect( ds, SIGNAL(resolved(int,QByteArray)), this, SLOT(onResolved(int,QByteArray)));
     ds->resolve();
 
-void XXX::onResolved( QByteArray escFullDomain)
+void XXX::onResolved( int id, QByteArray escFullDomain)
 {
     ArnZeroConfResolv*  ds = qobject_cast<ArnZeroConfResolv*>( sender());
     XStringMap  xsmPar;
@@ -402,12 +403,16 @@ signals:
     /*! \param[in] code error code.
      *  \see resolve()
      */
-    void  resolveError( int code);
+    void  resolveError( int id, int code);
+
+private slots:
+    void  resolveTimeout();
 
 private:
     void  init();
 
     int  _id;
+    QTimer*  _resolvTimer;
 };
 
 
@@ -434,8 +439,8 @@ void  XXX::onServiceAdded( int id, QString name, QString domain)
 {
     _activeServices.insert( name, "Some associeated service info ...");
     ArnZeroConfResolv*  ds = new ArnZeroConfResolv( name, this);
-    connect( ds, SIGNAL(resolveError(int)), this, SLOT(onResolveError(int)));
-    connect( ds, SIGNAL(resolved(QByteArray)), this, SLOT(onResolved(QByteArray)));
+    connect( ds, SIGNAL(resolveError(int,int)), this, SLOT(onResolveError(int,int)));
+    connect( ds, SIGNAL(resolved(int,QByteArray)), this, SLOT(onResolved(int,QByteArray)));
     ds->resolve();
 }
 

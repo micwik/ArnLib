@@ -43,9 +43,10 @@
 
 ArnDiscoverInfo::ArnDiscoverInfo()
 {
-    _id        = -1;  // Unknown
-    _hostPort  = 0;
-    _stopState = State::HostIp;
+    _id         = -1;  // Unknown
+    _resolvCode = -1;  // Init
+    _hostPort   = 0;
+    _stopState  = State::HostIp;
 }
 
 
@@ -135,6 +136,12 @@ QString  ArnDiscoverInfo::hostIpString()  const
 }
 
 
+int  ArnDiscoverInfo::resolvCode() const
+{
+    return _resolvCode;
+}
+
+
 ///////// ArnDiscoverBrowser
 
 ArnDiscoverBrowser::ArnDiscoverBrowser( QObject* parent) :
@@ -151,9 +158,9 @@ ArnDiscoverResolver::ArnDiscoverResolver( QObject* parent) :
 }
 
 
-void  ArnDiscoverResolver::resolve( QString serviceName)
+void  ArnDiscoverResolver::resolve(QString serviceName, bool forceUpdate)
 {
-    ArnDiscoverBrowserB::resolve( serviceName.isEmpty() ? _defaultService : serviceName);
+    ArnDiscoverBrowserB::resolve( serviceName.isEmpty() ? _defaultService : serviceName, forceUpdate);
 }
 
 
@@ -310,11 +317,16 @@ void  ArnDiscoverBrowserB::stopBrowse()
 }
 
 
-void  ArnDiscoverBrowserB::resolve( QString serviceName)
+void  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
 {
     qDebug() << "Man resolve Service: name=" << serviceName;
 
     int  id = serviceNameToId( serviceName);
+    if ((id >= 0) && forceUpdate) {
+        int  index = IdToIndex( id);
+        removeServiceInfo( index);
+        id = -1;  // Mark not found
+    }
     if (id < 0) {  // Not found, resolve new service
         id = ArnZeroConfBrowser::getNextId();
         int  index = newServiceInfo( id, serviceName, QString());
@@ -352,19 +364,28 @@ void  ArnDiscoverBrowserB::onServiceRemoved( int id, QString name, QString domai
 {
     qDebug() << "Browse Service removed: name=" << name << " domain=" << domain;
     int  index = _activeServIds.indexOf( id);
-    _activeServIds.removeAt( index);
-    _activeServInfos.removeAt( index);
+    removeServiceInfo( index);
 
     emit serviceRemoved( index);
 }
 
 
-void  ArnDiscoverBrowserB::onResolveError( int code)
+void  ArnDiscoverBrowserB::onResolveError( int id, int code)
 {
     ArnZeroConfResolv*  ds = qobject_cast<ArnZeroConfResolv*>( sender());
     Q_ASSERT(ds);
 
     qDebug() << "Resolve Error code=" << code;
+
+    int  index = _activeServIds.indexOf( id);
+    if (index >= 0) {  // Service still exist
+        ArnDiscoverInfo&  info = _activeServInfos[ index];
+        info._state      = ArnDiscoverInfo::State::HostInfoErr;
+        info._resolvCode = code;
+
+        emit infoUpdated( index, info._state);
+        // Will not go to next state during error
+    }
 
     ds->releaseService();
     ds->deleteLater();
@@ -389,6 +410,7 @@ void  ArnDiscoverBrowserB::onResolved( int id, QByteArray escFullDomain)
                                        : (servProp.toInt() ? ArnDiscover::Type::Server
                                                            : ArnDiscover::Type::Client);
         info._state      = ArnDiscoverInfo::State::HostInfo;
+        info._resolvCode = 0;
         info._hostName   = ds->host();
         info._hostPort   = ds->port();
         info._properties = xsmTxt;
@@ -411,18 +433,22 @@ void  ArnDiscoverBrowserB::onIpLookup( const QHostInfo& host)
 
     _ipLookupIds.remove( ipLookupId);
 
+    int  index = _activeServIds.indexOf( id);
+    if (index < 0)  return;  // Service not exist anymore
+
+    ArnDiscoverInfo&  info = _activeServInfos[ index];
+
     if (host.error() != QHostInfo::NoError) {
          qDebug() << "Lookup failed:" << host.errorString();
+         info._state = ArnDiscoverInfo::State::HostIpErr;
+
+         emit infoUpdated( index, info._state);
          return;
     }
 
     foreach (const QHostAddress &address, host.addresses())
         qDebug() << "Found address:" << address.toString();
 
-    int  index = _activeServIds.indexOf( id);
-    if (index < 0)  return;  // Service not exist anymore
-
-    ArnDiscoverInfo&  info = _activeServInfos[ index];
     info._state = ArnDiscoverInfo::State::HostIp;
     info._hostIp = host.addresses().first();
 
@@ -452,20 +478,35 @@ int  ArnDiscoverBrowserB::newServiceInfo( int id, QString name, QString domain)
 }
 
 
+void  ArnDiscoverBrowserB::removeServiceInfo( int index)
+{
+    if ((index < 0) || (index >= _activeServIds.size()))  return;
+
+    _activeServIds.removeAt( index);
+    _activeServInfos.removeAt( index);
+}
+
+
 void  ArnDiscoverBrowserB::doNextState( const ArnDiscoverInfo& info)
 {
     if (info._state >= info._stopState)  return;  // At stop state, do nothing more now
 
     switch (info._state) {
-    case ArnDiscoverInfo::State::ServiceName: {
+    case ArnDiscoverInfo::State::HostInfoErr:  // Will retry resolv
+        // Fall throu
+    case ArnDiscoverInfo::State::ServiceName:
+    {
         ArnZeroConfResolv*  ds = new ArnZeroConfResolv( info._serviceName, this);
         ds->setId( info._id);
-        connect( ds, SIGNAL(resolveError(int)), this, SLOT(onResolveError(int)));
+        connect( ds, SIGNAL(resolveError(int,int)), this, SLOT(onResolveError(int,int)));
         connect( ds, SIGNAL(resolved(int,QByteArray)), this, SLOT(onResolved(int,QByteArray)));
         ds->resolve();
         break;
     }
-    case ArnDiscoverInfo::State::HostInfo: {
+    case ArnDiscoverInfo::State::HostIpErr:  // Will retry ip lookup
+        // Fall throu
+    case ArnDiscoverInfo::State::HostInfo:
+    {
         int  ipLookupId = QHostInfo::lookupHost( info._hostName, this, SLOT(onIpLookup(QHostInfo)));
         _ipLookupIds.insert( ipLookupId, info._id);
         qDebug() << "LookingUp host=" << info._hostName << " lookupId=" << ipLookupId;
@@ -473,6 +514,202 @@ void  ArnDiscoverBrowserB::doNextState( const ArnDiscoverInfo& info)
     }
     default:
         break;
+    }
+}
+
+
+///////// ArnDiscoverConnector
+
+ArnDiscoverConnector::ArnDiscoverConnector( ArnClient& client, const QString& id) :
+    QObject( &client)
+{
+    _client = &client;
+    _id = id;
+    _resolvHostPrio = 1;
+    _directHostPrio = 2;
+    _directHosts = new QObject( this);
+    _directHosts->setObjectName("dirHosts");
+    _resolver = 0;
+    _arnResHostService = 0;
+    _arnResHostServicePv = 0;
+    _arnResHostAddress = 0;
+    _arnResHostPort = 0;
+}
+
+
+void  ArnDiscoverConnector::clearDirectHosts()
+{
+    _client->clearArnList( _directHostPrio);
+}
+
+
+void  ArnDiscoverConnector::addToDirectHosts( const QString& arnHost, quint16 port)
+{
+    _client->addToArnList( arnHost, port, _directHostPrio);
+}
+
+
+void  ArnDiscoverConnector::setResolver( ArnDiscoverResolver* resolver)
+{
+    Q_ASSERT( resolver);
+    if (!resolver)  return;
+    _resolver = resolver;
+
+    QMetaObject::invokeMethod( this,
+                               "postSetupResolver",
+                               Qt::QueuedConnection);
+}
+
+
+void  ArnDiscoverConnector::start()
+{
+    connect( _client, SIGNAL(tcpConnected(QString,quint16)), this, SLOT(doClientConnected(QString,quint16)));
+
+    QMetaObject::invokeMethod( this,
+                               "postSetupClient",
+                               Qt::QueuedConnection);
+
+}
+
+
+void  ArnDiscoverConnector::postSetupClient()
+{
+    QString  path;
+    QString  connectIdPath = "/Sys/Discover/Connect/" + _id + "/";
+
+    path = connectIdPath + "Status/";
+    ArnItem*  arnConnectStatus = new ArnItem( path + "value", this);
+    *arnConnectStatus = _client->connectStatus();
+    connect( _client, SIGNAL(connectionStatusChanged(int)), arnConnectStatus, SLOT(setValue(int)));
+    typedef ArnClient::ConnectStat CS;
+    ArnM::setValue( path + "set",
+                    QString("%1=Initialized %2=Connecting %3=Connected %4=Connect_error %5=Disconnected")
+                    .arg(CS::Init).arg(CS::Connecting).arg(CS::Connected).arg(CS::Error).arg(CS::Disconnected));
+
+    path = connectIdPath + "Request/";
+    ArnItem*  arnConnectReqPV = new ArnItem( path + "value!", this);
+    *arnConnectReqPV = "0";
+    connect( arnConnectReqPV, SIGNAL(changed(int)), this, SLOT(doClientConnectRequest(int)));
+    ArnM::setValue( path + "set", QString("0=Idle 1=Start_connect"));
+
+    ArnClient::HostList  arnHosts = _client->arnList( _directHostPrio);
+    int  i = 0;
+    foreach (ArnClient::HostAddrPort host, arnHosts) {
+        ++i;
+        path = connectIdPath + "DirectHosts/Host-" + QString::number(i) + "/";
+        ArnItem*  hostAddr = new ArnItem( path + "value", _directHosts);
+        ArnItem*  hostPort = new ArnItem( path + "Port/value", _directHosts);
+        *hostAddr = host.addr;  // Default addr
+        *hostPort = host.port;  // Default port
+        hostAddr->addMode( ArnItem::Mode::Save);  // Save mode after default set, will not save default value
+        hostPort->addMode( ArnItem::Mode::Save);
+        connect( hostAddr, SIGNAL(changed()), this, SLOT(doClientDirHostChanged()));
+        connect( hostPort, SIGNAL(changed()), this, SLOT(doClientDirHostChanged()));
+    }
+    doClientDirHostChanged();  // Any loaded persistent values will be used
+
+    if (!_resolver)
+        emit clientReadyToConnect( _client);
+}
+
+
+void  ArnDiscoverConnector::doClientConnected( QString arnHost, quint16 port)
+{
+    QString  path = "/Sys/Discover/Connect/" + _id + "/UsingHost/";
+    ArnM::setValue( path + "value", arnHost);
+    ArnM::setValue( path + "Port/value", port);
+}
+
+
+void  ArnDiscoverConnector::doClientDirHostChanged()
+{
+    QObjectList  dirHostOList = _directHosts->children();
+    int  dirHostOListSize = dirHostOList.size();
+    Q_ASSERT((dirHostOListSize & 1) == 0);
+
+    //// Rebuild ArnList in client
+    _client->clearArnList( _directHostPrio);
+    for (int i = 0; i < dirHostOListSize / 2; ++i) {
+        ArnItem*  hostAddr = qobject_cast<ArnItem*>( dirHostOList.at( 2 * i + 0));
+        Q_ASSERT(hostAddr);
+        ArnItem*  hostPort = qobject_cast<ArnItem*>( dirHostOList.at( 2 * i + 1));
+        Q_ASSERT(hostPort);
+        _client->addToArnList( hostAddr->toString(), quint16( hostPort->toInt()), _directHostPrio);
+    }
+}
+
+
+void ArnDiscoverConnector::doClientConnectRequest(int reqCode)
+{
+    if (reqCode)
+        _client->connectToArnList();
+}
+
+
+void  ArnDiscoverConnector::postSetupResolver()
+{
+    QString  path;
+    QString  connectIdPath = "/Sys/Discover/Connect/" + _id + "/";
+
+    path = connectIdPath + "DiscoverHost/";
+    _arnResHostServicePv = new ArnItem( path + "Service/value!", this);
+    _arnResHostService   = new ArnItem( path + "Service/value",  this);
+    _arnResHostAddress   = new ArnItem( path + "Host/value", this);
+    _arnResHostPort      = new ArnItem( path + "Host/Port/value", this);
+    _arnResHostStatus    = new ArnItem( path + "Status/value", this);
+
+    *_arnResHostServicePv = _resolver->defaultService();  // Use this default if no active persistent service
+    _arnResHostService->addMode(  ArnItem::Mode::Save);  // Save mode after default set, will not save default value
+    *_arnResHostService = _arnResHostService->toString();  // Any loaded persistent values will be used as request
+
+    connect( _arnResHostServicePv,  SIGNAL(changed()), this, SLOT(doClientServicetChanged()));
+    connect( _resolver, SIGNAL(infoUpdated(int,ArnDiscoverInfo::State)),
+             this, SLOT(doClientResolvChanged(int,ArnDiscoverInfo::State)));
+
+    doClientServicetChanged();  // Perform request
+}
+
+
+void  ArnDiscoverConnector::doClientServicetChanged()
+{
+    Q_ASSERT(_arnResHostServicePv);
+    QString  serviceName = _arnResHostServicePv->toString();
+    if (serviceName.isEmpty())
+        serviceName = _resolver->defaultService();
+    *_arnResHostServicePv = serviceName;  // Current service must be set before resolving
+
+    doClientResolvChanged(-1, ArnDiscoverInfo::State::Init);
+    _resolver->resolve( serviceName, true);  // Force new resolve
+}
+
+
+void  ArnDiscoverConnector::doClientResolvChanged( int index, ArnDiscoverInfo::State state)
+{
+    Q_ASSERT(_arnResHostService);
+    Q_ASSERT(_arnResHostAddress);
+    Q_ASSERT(_arnResHostPort);
+
+    ArnDiscoverInfo  info = _resolver->infoByIndex( index);
+    if ((index >= 0) && (info.serviceName() != _arnResHostService->toString()))  return;  // Not the current service
+
+    *_arnResHostAddress = info.hostName();
+    *_arnResHostPort    = info.hostPortString();
+    *_arnResHostStatus  = info.resolvCode();
+
+    if (index < 0)
+        _client->clearArnList( _resolvHostPrio);
+    else if (state == state.HostInfo) {
+        _client->clearArnList( _resolvHostPrio);
+        _client->addToArnList( info.hostName(), info.hostPort(), _resolvHostPrio);
+        if (_client->connectStatus() == ArnClient::ConnectStat::Init) {
+            emit clientReadyToConnect( _client);
+        }
+    }
+    else if (state == state.HostInfoErr) {
+        _client->clearArnList( _resolvHostPrio);
+        if (_client->connectStatus() == ArnClient::ConnectStat::Init) {
+            emit clientReadyToConnect( _client);
+        }
     }
 }
 
@@ -527,31 +764,12 @@ void  ArnDiscoverAdvertise::startNewArnServer( ArnDiscover::Type discoverType, i
 }
 
 
-void  ArnDiscoverAdvertise::addArnClient( ArnClient* arnClient, const QString& id)
+ArnDiscoverConnector&  ArnDiscoverAdvertise::newConnector( ArnClient& client, const QString& id)
 {
-    Q_ASSERT( arnClient);
-    if (!arnClient)  return;
-    arnClient->setObjectName(id);
+    ArnDiscoverConnector*  connector = new ArnDiscoverConnector( client, id);
+    connect( connector, SIGNAL(clientReadyToConnect(ArnClient*)), this, SIGNAL(clientReadyToConnect(ArnClient*)));
 
-    connect( arnClient, SIGNAL(tcpConnected(QString,quint16)), this, SLOT(doClientConnected(QString,quint16)));
-    QMetaObject::invokeMethod( this,
-                               "postSetupClient",
-                               Qt::QueuedConnection,
-                               Q_ARG( QObject*, arnClient));
-}
-
-
-void  ArnDiscoverAdvertise::setDiscoverResolver( ArnDiscoverResolver* resolver, const QString& id)
-{
-    Q_ASSERT( resolver);
-    if (!resolver)  return;
-    resolver->setObjectName( id);
-
-    //connect( resolver, SIGNAL(tcpConnected(QString,quint16)), this, SLOT(doClientConnected(QString,quint16)));
-    QMetaObject::invokeMethod( this,
-                               "postSetupResolver",
-                               Qt::QueuedConnection,
-                               Q_ARG( QObject*, resolver));
+    return *connector;
 }
 
 
@@ -622,192 +840,6 @@ void  ArnDiscoverAdvertise::serviceRegistrationError(int code)
     qDebug() << "Service registration error: code=" << code;
 
     emit serviceChangeError( code);
-}
-
-
-void  ArnDiscoverAdvertise::postSetupClient( QObject* arnClientObj)
-{
-    ArnClient*  arnClient = qobject_cast<ArnClient*>( arnClientObj);
-    Q_ASSERT( arnClient);
-    if (!arnClient)  return;
-    QString  id = arnClient->objectName();
-
-    QObject*  dirHosts = new QObject( arnClient);
-    dirHosts->setObjectName("dirHosts");
-
-    QString  path;
-    QString  connectIdPath = "/Sys/Discover/Connect/" + id + "/";
-
-    path = connectIdPath + "Status/";
-    ArnItem*  arnConnectStatus = new ArnItem( path + "value", arnClient);
-    *arnConnectStatus = arnClient->connectStatus();
-    connect( arnClient, SIGNAL(connectionStatusChanged(int)), arnConnectStatus, SLOT(setValue(int)));
-    typedef ArnClient::ConnectStat CS;
-    ArnM::setValue( path + "set",
-                    QString("%1=Initialized %2=Connecting %3=Connected %4=Connect_error %5=Disconnected")
-                    .arg(CS::Init).arg(CS::Connecting).arg(CS::Connected).arg(CS::Error).arg(CS::Disconnected));
-
-    path = connectIdPath + "Request/";
-    ArnItem*  arnConnectReqPV = new ArnItem( path + "value!", arnClient);
-    *arnConnectReqPV = "0";
-    connect( arnConnectReqPV, SIGNAL(changed(int)), this, SLOT(doClientConnectRequest(int)));
-    ArnM::setValue( path + "set", QString("0=Idle 1=Start_connect"));
-
-    ArnClient::HostList  arnHosts = arnClient->ArnList();
-    int  i = 0;
-    foreach (ArnClient::HostAddrPort  host, arnHosts) {
-        ++i;
-        path = connectIdPath + "DirectHosts/Host-" + QString::number(i) + "/";
-        ArnItem*  hostAddr = new ArnItem( path + "value", dirHosts);
-        ArnItem*  hostPort = new ArnItem( path + "Port/value", dirHosts);
-        *hostAddr = host.addr;  // Default addr
-        *hostPort = host.port;  // Default port
-        hostAddr->addMode( ArnItem::Mode::Save);  // Save mode after default set, will not save default value
-        hostPort->addMode( ArnItem::Mode::Save);
-        connect( hostAddr, SIGNAL(changed()), this, SLOT(doClientDirHostChanged()));
-        connect( hostPort, SIGNAL(changed()), this, SLOT(doClientDirHostChanged()));
-    }
-    doClientDirHostChanged( dirHosts);  // Any loaded persistent values will be used
-    emit clientReadyToConnect( arnClient);
-}
-
-
-void  ArnDiscoverAdvertise::doClientConnected( QString arnHost, quint16 port)
-{
-    ArnClient*  client = qobject_cast<ArnClient*>( sender());
-    Q_ASSERT(client);
-
-    QString  path = "/Sys/Discover/Connect/" + client->objectName() + "/UsingHost/";
-    ArnM::setValue( path + "value", arnHost);
-    ArnM::setValue( path + "Port/value", port);
-}
-
-
-void  ArnDiscoverAdvertise::doClientDirHostChanged( QObject* dirHostsObj)
-{
-    QObject*  dirHostsO = dirHostsObj;
-    if (!dirHostsO) {
-        QObject*  s = sender();
-        Q_ASSERT(s);
-        dirHostsO = s->parent();
-        Q_ASSERT(dirHostsO);
-    }
-    ArnClient*  client = qobject_cast<ArnClient*>( dirHostsO->parent());
-    Q_ASSERT(client);
-
-    QObjectList  dirHostOList = dirHostsO->children();
-    int  dirHostOListSize = dirHostOList.size();
-    Q_ASSERT((dirHostOListSize & 1) == 0);
-
-    //// Rebuild ArnList in client
-    client->clearArnList();
-    for (int i = 0; i < dirHostOListSize / 2; ++i) {
-        ArnItem*  hostAddr = qobject_cast<ArnItem*>( dirHostOList.at( 2 * i + 0));
-        Q_ASSERT(hostAddr);
-        ArnItem*  hostPort = qobject_cast<ArnItem*>( dirHostOList.at( 2 * i + 1));
-        Q_ASSERT(hostPort);
-        client->addToArnList( hostAddr->toString(), quint16( hostPort->toInt()));
-    }
-}
-
-
-void  ArnDiscoverAdvertise::doClientConnectRequest( int reqCode)
-{
-    ArnItem*  arnConnectReqPV = qobject_cast<ArnItem*>( sender());
-    Q_ASSERT(arnConnectReqPV);
-    ArnClient*  client = qobject_cast<ArnClient*>( arnConnectReqPV->parent());
-    Q_ASSERT(client);
-
-    if (reqCode)
-        client->connectToArnList();
-}
-
-
-void  ArnDiscoverAdvertise::postSetupResolver( QObject* arnDiscoverResolverObj)
-{
-    ArnDiscoverResolver*  resolver = qobject_cast<ArnDiscoverResolver*>( arnDiscoverResolverObj);
-    Q_ASSERT( resolver);
-    if (!resolver)  return;
-    QString  id = resolver->objectName();
-
-    QObject*  resHost = new QObject( resolver);
-    resHost->setObjectName("resHost");
-
-    QString  path;
-    QString  connectIdPath = "/Sys/Discover/Connect/" + id + "/";
-
-    path = connectIdPath + "DiscoverHost/";
-    ArnItem*  arnServicePv = new ArnItem( path + "Service/value!", resHost);
-    ArnItem*  arnService   = new ArnItem( path + "Service/value",  resHost);
-    ArnItem*  arnHostAddr  = new ArnItem( path + "Host/value", resHost);
-    ArnItem*  arnHostPort  = new ArnItem( path + "Host/Port/value", resHost);
-    arnServicePv->setObjectName("servPv");
-    arnService->setObjectName("serv");
-    arnHostAddr->setObjectName("addr");
-    arnHostPort->setObjectName("port");
-
-    *arnServicePv = resolver->defaultService();  // Use this default if no active persistent service
-    arnService->addMode(  ArnItem::Mode::Save);  // Save mode after default set, will not save default value
-    *arnService = arnService->toString();  // Any loaded persistent values will be used as request
-    connect( arnServicePv,  SIGNAL(changed()), this, SLOT(doClientServicetChanged()));
-    connect( resolver, SIGNAL(infoUpdated(int,ArnDiscoverInfo::State)),
-             this, SLOT(doClientResolvChanged(int,ArnDiscoverInfo::State)));
-
-    doClientServicetChanged( resHost);  // Perform request
-}
-
-
-void  ArnDiscoverAdvertise::doClientServicetChanged( QObject* resHostsObj)
-{
-    QObject*  resHostsO = resHostsObj;
-    if (!resHostsO) {
-        QObject*  s = sender();
-        Q_ASSERT(s);
-        resHostsO = s->parent();
-        Q_ASSERT(resHostsO);
-    }
-    ArnDiscoverResolver*  resolver = qobject_cast<ArnDiscoverResolver*>( resHostsO->parent());
-    Q_ASSERT(resolver);
-
-    ArnItem*  arnServicePv = resHostsO->findChild<ArnItem*>("servPv");
-    Q_ASSERT(arnServicePv);
-    if (!arnServicePv)  return;
-
-    QString  serviceName = arnServicePv->toString();
-    if (serviceName.isEmpty())
-        serviceName = resolver->defaultService();
-    *arnServicePv = serviceName;  // Current service must be set before resolving
-
-    doClientResolvChanged(-1, ArnDiscoverInfo::State::Init, resolver);
-    resolver->resolve( serviceName);
-}
-
-
-void  ArnDiscoverAdvertise::doClientResolvChanged( int index, ArnDiscoverInfo::State state,
-                                                   ArnDiscoverResolver* resolver)
-{
-    Q_UNUSED(state);
-
-    ArnDiscoverResolver*  resolv = resolver;
-    if (!resolv)
-        resolv = qobject_cast<ArnDiscoverResolver*>( sender());
-    Q_ASSERT(resolv);
-
-    QObject*  resHostsO = resolv->findChild<QObject*>("resHost");
-    Q_ASSERT(resHostsO);
-
-    ArnItem*  arnService = resHostsO->findChild<ArnItem*>("serv");
-    Q_ASSERT(arnService);
-    ArnItem*  arnHostAddr = resHostsO->findChild<ArnItem*>("addr");
-    Q_ASSERT(arnHostAddr);
-    ArnItem*  arnHostPort = resHostsO->findChild<ArnItem*>("port");
-    Q_ASSERT(arnHostPort);
-
-    ArnDiscoverInfo  info = resolv->infoByIndex( index);
-    if ((index >= 0) && (info.serviceName() != arnService->toString()))  return;  // Not the current service
-
-    *arnHostAddr = info.hostName();
-    *arnHostPort = info.hostPortString();
 }
 
 
