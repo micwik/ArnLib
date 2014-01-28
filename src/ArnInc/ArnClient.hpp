@@ -152,6 +152,10 @@ public:
     void  setAutoConnect( bool isAuto, int retryTime = 2);
 
     //! \cond ADV
+    void  setId( QString id)  {_id = id;}
+    QString  id()  const {return _id;}
+    int  curPrio()  const;
+
     void  commandGet( const QString& path);
     void  commandSet( const QString& path, const QString& data);
     void  commandLs( const QString& path);
@@ -159,9 +163,8 @@ public:
     void  commandExit();
     ArnItemNet*  newNetItem( QString path,
                              ArnItem::SyncMode syncMode = ArnItem::SyncMode::Normal, bool* isNewPtr = 0);
-    void  setId( QString id)  {_id = id;}
-    QString  id()  const {return _id;}
     //! \endcond
+
 
 signals:
     //! Signal emitted when a connection tcp error occur.
@@ -204,6 +207,7 @@ private:
     HostList  _hostTab;
     QList<int>  _hostPrioTab;
     int  _nextHost;
+    int  _curPrio;
 
     QStringList  makeItemList( XStringMap& xsMap);
     QTcpSocket*  _socket;

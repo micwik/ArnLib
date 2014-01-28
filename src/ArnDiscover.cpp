@@ -36,6 +36,7 @@
 #include "ArnInc/ArnServer.hpp"
 #include <QHostInfo>
 #include <QTimer>
+#include <QTime>
 #include <QMetaObject>
 
 
@@ -529,6 +530,8 @@ ArnDiscoverConnector::ArnDiscoverConnector( ArnClient& client, const QString& id
     _directHostPrio = 2;
     _directHosts = new QObject( this);
     _directHosts->setObjectName("dirHosts");
+    _resolveRefreshBlocked = false;
+    _resolveRefreshTime = 0;
     _resolver = 0;
     _arnResHostService = 0;
     _arnResHostServicePv = 0;
@@ -553,6 +556,9 @@ void  ArnDiscoverConnector::setResolver( ArnDiscoverResolver* resolver)
 {
     Q_ASSERT( resolver);
     if (!resolver)  return;
+
+    if (!_resolveRefreshTime)  // first time
+        _resolveRefreshTime = new QTime;
     _resolver = resolver;
 
     QMetaObject::invokeMethod( this,
@@ -568,7 +574,22 @@ void  ArnDiscoverConnector::start()
     QMetaObject::invokeMethod( this,
                                "postSetupClient",
                                Qt::QueuedConnection);
+}
 
+
+void  ArnDiscoverConnector::doClientErr()
+{
+    if (!_resolver)  return;
+    if (_client->curPrio() != _resolvHostPrio)  return;  // Error not for resolved host
+
+    if (_resolveRefreshTime->elapsed() >= 60000)
+        _resolveRefreshBlocked = false;
+    if (_resolveRefreshBlocked)  return;
+
+    _resolveRefreshBlocked = true;  // Block for further refresh within lockout time
+    _resolveRefreshTime->start();
+
+    _resolver->resolve( _arnResHostService->toString(), true);  // Do a resolve refresh
 }
 
 
@@ -608,6 +629,7 @@ void  ArnDiscoverConnector::postSetupClient()
     }
     doClientDirHostChanged();  // Any loaded persistent values will be used
 
+    connect( _client, SIGNAL(tcpError(QString,QAbstractSocket::SocketError)), this, SLOT(doClientErr()));
     if (!_resolver)
         emit clientReadyToConnect( _client);
 }

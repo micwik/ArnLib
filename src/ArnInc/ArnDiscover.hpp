@@ -43,6 +43,7 @@ class ArnZeroConfRegister;
 class ArnZeroConfBrowser;
 class QHostInfo;
 class QTimer;
+class QTime;
 
 
 namespace ArnDiscover
@@ -243,6 +244,7 @@ signals:
     void  clientReadyToConnect( ArnClient* arnClient);
 
 private slots:
+    void  doClientErr();
     //// Handle Client directHosts
     void  postSetupClient();
     void  doClientConnected( QString arnHost, quint16 port);
@@ -260,6 +262,8 @@ private:
     int  _directHostPrio;
     int  _resolvHostPrio;
     QObject*  _directHosts;
+    QTime*  _resolveRefreshTime;
+    bool  _resolveRefreshBlocked;
 
     ArnItem*  _arnResHostService;
     ArnItem*  _arnResHostServicePv;

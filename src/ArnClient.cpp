@@ -47,6 +47,7 @@ ArnClient::ArnClient( QObject* parent) :
     _retryTime     = 2;
     _port          = 0;
     _nextHost      = -1;
+    _curPrio       = -1;
 
     _socket = new QTcpSocket( this);
     _arnNetSync = new ArnSync( _socket, true, this);
@@ -160,6 +161,12 @@ void  ArnClient::setAutoConnect( bool isAuto, int retryTime)
 {
     _isAutoConnect = isAuto;
     _retryTime = retryTime > 1 ? retryTime : 1;
+}
+
+
+int ArnClient::curPrio() const
+{
+    return _curPrio;
 }
 
 
@@ -290,19 +297,22 @@ void  ArnClient::doConnectArnLogic()
 {
     QString  arnHost;
     quint16  port = 0;
+    int  curPrio  = -1;
+    _curPrio = curPrio;
 
     if (_nextHost < 0) {  // Normal single host connect
-        arnHost = _arnHost;
-        port    = _port;
+        arnHost  = _arnHost;
+        port     = _port;
     }
     else if (!_hostTab.isEmpty()) {  // Arn connection list
         if (_nextHost >= _hostTab.size())  // Past end of list, restart
             _nextHost = 0;
 
         const HostAddrPort&  slot = _hostTab.at( _nextHost);
-        ++_nextHost;
         arnHost = slot.addr;
         port    = slot.port;
+        curPrio = _hostPrioTab.at( _nextHost);
+        ++_nextHost;
     }
 
     if (arnHost.isEmpty())  return;
@@ -314,7 +324,9 @@ void  ArnClient::doConnectArnLogic()
     _socket->connectToHost( arnHost, port);
     _curConnectAP.addr = arnHost;
     _curConnectAP.port = port;
+    _curPrio           = curPrio;
     _connectStat = ConnectStat::Connecting;
+
     emit connectionStatusChanged( _connectStat);
 }
 
