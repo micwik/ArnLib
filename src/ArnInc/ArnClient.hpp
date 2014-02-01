@@ -183,7 +183,11 @@ signals:
     void  tcpDisConnected();
 
     //! Signal emitted when the connection status is changed.
-    void  connectionStatusChanged( int status);
+    /*! \param[in] status is the new connection status ArnClient::ConnectStat.
+     *  \param[in] curPrio is the current priority of the connection in ArnList
+     *  \see curPrio()
+     */
+    void  connectionStatusChanged( int status, int curPrio);
 
     //! \cond ADV
     void  replyRecord( XStringMap& replyMap);

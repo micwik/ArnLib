@@ -265,8 +265,9 @@ void  ArnClient::tcpError(QAbstractSocket::SocketError socketError)
     QString  errTextSum = QString(tr("TCP Client Msg:")) + _socket->errorString();
     ArnM::errorLog( errTextSum, ArnError::ConnectionError);
     emit tcpError( _socket->errorString(), socketError);
+
     _connectStat = (_connectStat == ConnectStat::Connected) ? ConnectStat::Disconnected : ConnectStat::Error;
-    emit connectionStatusChanged( _connectStat);
+    emit connectionStatusChanged( _connectStat, _curPrio);
 
     if ((_nextHost >= 0) && (_nextHost < _hostTab.size())) {
         doConnectArnLogic();
@@ -289,7 +290,7 @@ void  ArnClient::doTcpConnected()
     qDebug() << "ArnClient TcpConnected: hostAddr=" << _curConnectAP.addr;
     emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
     _connectStat = ConnectStat::Connected;
-    emit connectionStatusChanged( _connectStat);
+    emit connectionStatusChanged( _connectStat, _curPrio);
 }
 
 
@@ -327,7 +328,7 @@ void  ArnClient::doConnectArnLogic()
     _curPrio           = curPrio;
     _connectStat = ConnectStat::Connecting;
 
-    emit connectionStatusChanged( _connectStat);
+    emit connectionStatusChanged( _connectStat, _curPrio);
 }
 
 

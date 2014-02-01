@@ -238,13 +238,22 @@ public:
     void  setResolver( ArnDiscoverResolver* resolver);
     void  start();
 
+    int  directHostPrio()  const;
+    void  setDirectHostPrio( int directHostPrio);
+
+    int  resolvHostPrio()  const;
+    void  setResolvHostPrio( int resolvHostPrio);
+
+    int  resolveRefreshTimeout()  const;
+    void  setResolveRefreshTimeout( int resolveRefreshTimeout);
+
 public slots:
 
 signals:
     void  clientReadyToConnect( ArnClient* arnClient);
 
 private slots:
-    void  doClientErr();
+    void  doClientConnectChanged( int stat, int curPrio);
     //// Handle Client directHosts
     void  postSetupClient();
     void  doClientConnected( QString arnHost, quint16 port);
@@ -261,6 +270,7 @@ private:
     QString  _id;
     int  _directHostPrio;
     int  _resolvHostPrio;
+    int  _resolveRefreshTimeout;
     QObject*  _directHosts;
     QTime*  _resolveRefreshTime;
     bool  _resolveRefreshBlocked;
