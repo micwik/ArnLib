@@ -600,8 +600,11 @@ void  ArnZeroConfIntern::resolveServiceCallback(DNSServiceRef service, DNSServic
 
     qDebug() << "Resolve callback errCode=" << errCode;
     if (errCode == kDNSServiceErr_NoError) {
+        QString  resHost = QString::fromUtf8( host);
+        if (resHost.endsWith('.'))  // MW: Remove strangely added "."
+            resHost.resize( resHost.size() - 1);
         self->parseFullDomain( fullname);
-        self->setHost( host);
+        self->setHost( resHost);
         self->setPort( qFromBigEndian( port));
         self->setTxtRecord( txtLen > 0 ? QByteArray((const char*) txt, txtLen) : QByteArray());
         self->_iface = iface;
