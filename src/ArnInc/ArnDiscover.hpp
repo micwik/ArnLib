@@ -37,13 +37,11 @@
 #include "XStringMap.hpp"
 #include <QHostAddress>
 
-class ArnServer;
-class ArnClient;
+//class ArnServer;
+//class ArnClient;
 class ArnZeroConfRegister;
 class ArnZeroConfBrowser;
 class QHostInfo;
-class QTimer;
-class QTime;
 
 
 namespace ArnDiscover
@@ -185,10 +183,10 @@ public:
     {return ArnDiscoverBrowserB::isBrowsing();}
 
     void  setFilter( ArnDiscover::Type typeFilter)
-    {return ArnDiscoverBrowserB::setFilter( typeFilter);}
+    {ArnDiscoverBrowserB::setFilter( typeFilter);}
 
     void  setFilter( QString group)
-    {return ArnDiscoverBrowserB::setFilter( group);}
+    {ArnDiscoverBrowserB::setFilter( group);}
 
 public slots:
     void  browse( bool enable = true)
@@ -216,116 +214,40 @@ private:
 };
 
 
-class ArnDiscoverConnector : public QObject
-{
-    Q_OBJECT
-public:
-    ArnDiscoverConnector( ArnClient& client, const QString& id);
-
-    //! Clear the DirectHost connection list
-    /*! Typically used to start making a new connection list.
-     *  \see addToDirectHosts()
-     */
-    void  clearDirectHosts();
-
-    //! Add an _Arn Server_ to the DirectHost connection list
-    /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
-     *  \param[in] port is the port number (default 2022).
-     *  \see clearDirectHosts()
-     */
-    void  addToDirectHosts( const QString& arnHost, quint16 port = 0);
-
-    void  setResolver( ArnDiscoverResolver* resolver);
-    void  start();
-
-    int  directHostPrio()  const;
-    void  setDirectHostPrio( int directHostPrio);
-
-    int  resolvHostPrio()  const;
-    void  setResolvHostPrio( int resolvHostPrio);
-
-    int  resolveRefreshTimeout()  const;
-    void  setResolveRefreshTimeout( int resolveRefreshTimeout);
-
-public slots:
-
-signals:
-    void  clientReadyToConnect( ArnClient* arnClient);
-
-private slots:
-    void  doClientConnectChanged( int stat, int curPrio);
-    //// Handle Client directHosts
-    void  postSetupClient();
-    void  doClientConnected( QString arnHost, quint16 port);
-    void  doClientDirHostChanged();
-    void  doClientConnectRequest( int reqCode);
-    //// Handle Client resolvHost
-    void  postSetupResolver();
-    void  doClientServicetChanged();
-    void  doClientResolvChanged( int index, ArnDiscoverInfo::State state);
-
-private:
-    ArnClient*  _client;
-    ArnDiscoverResolver*  _resolver;
-    QString  _id;
-    int  _directHostPrio;
-    int  _resolvHostPrio;
-    int  _resolveRefreshTimeout;
-    QObject*  _directHosts;
-    QTime*  _resolveRefreshTime;
-    bool  _resolveRefreshBlocked;
-
-    ArnItem*  _arnResHostService;
-    ArnItem*  _arnResHostServicePv;
-    ArnItem*  _arnResHostAddress;
-    ArnItem*  _arnResHostPort;
-    ArnItem*  _arnResHostStatus;
-};
-
-
 class ArnDiscoverAdvertise : public QObject
 {
     Q_OBJECT
 public:
     explicit ArnDiscoverAdvertise( QObject *parent = 0);
 
-    QString  defaultService()  const;
-    void  setDefaultService( const QString& defaultService);
     QStringList groups() const;
-    void setGroups(const QStringList& groups);
+    void setGroups( const QStringList& groups);
     void  addGroup( const QString& group);
 
     QString  service() const;
 
-    void  setArnServer( ArnServer* arnServer, ArnDiscover::Type discoverType = ArnDiscover::Type::Server);
-    void  startNewArnServer( ArnDiscover::Type discoverType, int port = -1);
-    ArnDiscoverConnector&  newConnector( ArnClient& client, const QString& id);
+    void  advertiseService( ArnDiscover::Type discoverType, QString serviceName,
+                            int port = -1, const QString& hostName = QString());
 
 signals:
     void  serviceChanged( QString serviceName);
     void  serviceChangeError( int code);
-    void  clientReadyToConnect( ArnClient* arnClient);
 
 public slots:
     void  setService( QString service);
 
 private slots:
-    //// Handle Service This
     void  postSetupThis();
-    void  serviceTimeout();
-    void  firstServiceSetup( QString serviceName);
+    //void  serviceTimeout();
+    //void  firstServiceSetup( QString serviceName);
     void  doServiceChanged( QString val);
     void  serviceRegistered( QString serviceName);
     void  serviceRegistrationError( int code);
 
 private:
     ArnZeroConfRegister*  _arnZCReg;
-    ArnServer*  _arnInternalServer;
-    ArnDiscoverResolver*  _arnDResolver;
-    ArnItem  _arnServicePv;
-    ArnItem  _arnService;
-    QTimer*  _servTimer;
-    QString  _defaultService;
+    //ArnDiscoverResolver*  _arnDResolver;
+    //QTimer*  _servTimer;
     QString  _service;
     QStringList  _groups;
     bool  _hasBeenSetup;

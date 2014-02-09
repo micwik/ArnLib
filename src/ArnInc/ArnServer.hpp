@@ -73,18 +73,22 @@ public:
 
     //! Start the Arn _server_
     /*! \param[in] port is the port number (default 2022).
+     *  \param[in] listenAddr is the interface address to listen for connections (default any)
      */
-    void  start( int port = -1);
+    void  start( int port = -1, QHostAddress listenAddr = QHostAddress::Any);
 
     //! Port number of the Arn _server_
     /*! \retval is the port number.
      */
     int  port();
 
-    //! Address of the Arn _server_
-    /*! \retval is the address.
+    //! Address of the interface used to listening for connections to the Arn _server_
+    /*! \retval is the address (which usually is QHostAddress::Any).
+     *  \see start()
      */
-    QHostAddress address();
+    QHostAddress  listenAddress();
+
+    static QHostAddress  getInterface1Address();
 
 private:
     QTcpServer *_tcpServer;

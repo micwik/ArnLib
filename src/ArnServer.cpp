@@ -37,6 +37,8 @@
 #include "ArnSync.hpp"
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QHostInfo>
+#include <QNetworkInterface>
 #include <QDebug>
 
 
@@ -49,7 +51,7 @@ ArnServer::ArnServer( Type serverType, QObject *parent)
 }
 
 
-void  ArnServer::start(int port)
+void  ArnServer::start( int port, QHostAddress listenAddr)
 {
     if (port < 0) {
         switch (_serverType) {
@@ -62,15 +64,15 @@ void  ArnServer::start(int port)
             return;
         }
     }
-    if (_tcpServer->listen(QHostAddress::Any, port)) {
+
+    if (_tcpServer->listen( listenAddr, port)) {
         _tcpServerActive = true;
 
-        connect(_tcpServer, SIGNAL(newConnection()), this,
-                SLOT(tcpConnection()));
+        connect( _tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnection()));
     }
     else {
         ArnM::errorLog( QString(tr("Failed start Arn Server Port:")) + QString::number( port),
-                            ArnError::ConnectionError);
+                        ArnError::ConnectionError);
     }
 }
 
@@ -81,9 +83,40 @@ int  ArnServer::port()
 }
 
 
-QHostAddress  ArnServer::address()
+QHostAddress  ArnServer::listenAddress()
 {
-    return _tcpServer->serverAddress();
+    QHostAddress  addr = _tcpServer->serverAddress();
+    return addr;
+}
+
+
+QHostAddress  ArnServer::getInterface1Address()
+{
+    QNetworkAddressEntry  firstLoopbackEntry;
+
+    foreach (QNetworkInterface  interface, QNetworkInterface::allInterfaces()) {
+        QNetworkInterface::InterfaceFlags  flags = interface.flags();
+        if (!flags.testFlag( QNetworkInterface::IsUp)
+        || flags.testFlag( QNetworkInterface::IsPointToPoint))
+            continue;
+
+        foreach (QNetworkAddressEntry  entry, interface.addressEntries()) {
+            QAbstractSocket::NetworkLayerProtocol  prot = entry.ip().protocol();
+            if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
+                continue;
+
+            // qDebug() << "--- serverIntfList found: " << interface.name() + " " + entry.ip().toString();
+            if (flags.testFlag( QNetworkInterface::IsLoopBack)) {
+                if (firstLoopbackEntry.ip().isNull())
+                    firstLoopbackEntry = entry;
+            }
+            else
+                return entry.ip();
+        }
+    }
+
+    // If we found no normal interfaces, use the loopback interface (if found).
+    return firstLoopbackEntry.ip();
 }
 
 

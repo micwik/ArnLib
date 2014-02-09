@@ -83,15 +83,22 @@ contains(ARN, core) {
 }
 
 
+contains(ARN, discover) {
+    ARN += zeroconf
+    SOURCES += $$PWD/ArnDiscover.cpp
+    HEADERS += $$PWD/ArnInc/ArnDiscover.hpp
+
+    contains(ARN, server) {
+        SOURCES += $$PWD/ArnDiscoverRemote.cpp
+        HEADERS += $$PWD/ArnInc/ArnDiscoverRemote.hpp
+    }
+}
+
+
 contains(ARN, zeroconf) {
     SOURCES += $$PWD/ArnZeroConf.cpp
     HEADERS += $$PWD/ArnInc/ArnZeroConf.hpp \
         $$PWD/mDNS/mDNSShared/dns_sd.h
-
-    contains(ARN, server) {
-        SOURCES += $$PWD/ArnDiscover.cpp
-        HEADERS += $$PWD/ArnInc/ArnDiscover.hpp
-    }
 
     mDnsIntern {
         DEFINES += MDNS_INTERN

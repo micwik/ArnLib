@@ -7,9 +7,11 @@ PROJECT = ArnLib
 # ARN += core       # Level 1: Basic Arn functionality without any tcp and syncing
 # ARN += client     # Level 2: Client TCP functionality with sync etc
 # ARN += server     # Level 3: Server TCP functionality with persistence etc
-# ARN += zeroconf   # Part of Bonjour (R), Apple's (R) implementation of zero-configuration networking.
+# ARN += zeroconf   # Using part of Bonjour (R), Apple's (R) implementation of zero-configuration networking.
+# ARN += discover   # High level service discovery using <zeroconf> and optionally <server> for remote config
 ARN += server
-ARN += zeroconf
+#ARN += core
+ARN += discover
 QT -= gui
 
 # Usage of internal mDNS code (no external dependency)
