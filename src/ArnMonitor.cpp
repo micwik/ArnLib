@@ -133,7 +133,7 @@ void  ArnMonitor::dispatchArnEvent( QByteArray type, QByteArray data, bool isLoc
         foundPath = QString::fromUtf8( data.constData(), data.size());
     }
 
-    QString childPath = ArnM::childPath( _monitorPath, foundPath);
+    QString childPath = Arn::childPath( _monitorPath, foundPath);
     // qDebug() << "### arnMon dispArnEv: childPath=" << childPath;
     if (!childPath.isEmpty()) {
         if (!_foundChilds.contains( childPath)) {  // Only send events about unknown items

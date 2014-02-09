@@ -293,7 +293,7 @@ void  ArnPersist::doArnModeChanged( QString path, uint linkId, ArnItem::Mode mod
 {
     // qDebug() << "Persist modeChanged: path=" << path << " mode=" << mode.f;
     if (!mode.is( mode.Save))  return;  // Not save-mode
-    if (ArnM::isProviderPath( path))  return;  // Only value path is used (non provider)
+    if (Arn::isProviderPath( path))  return;  // Only value path is used (non provider)
     if (_itemPersistMap.contains( linkId))  return;  // Already in map
     // qDebug() << "Persist modeChanged New: path=" << path << " mode=" << mode.f;
 
@@ -777,7 +777,7 @@ void  ArnPersist::doLoadFiles()
 
 void  ArnPersist::loadFile( QString relPath)
 {
-    QString  arnPath = ArnM::convertPath( relPath, Arn::NameF::EmptyOk);
+    QString  arnPath = Arn::convertPath( relPath, Arn::NameF::EmptyOk);
     qDebug() << "Persist loadFile: relPath=" << relPath;
 
     ArnItemPersist*  item;
@@ -838,10 +838,10 @@ void  ArnPersist::destroyRpc()
 }
 
 
-void  ArnPersist::convertFileList( QStringList &files, Arn::NameF nameF)
+void  ArnPersist::convertFileList( QStringList& files, Arn::NameF nameF)
 {
     for (int i = 0; i < files.size(); ++i) {
-        files[i] = ArnM::convertPath( files.at(i), nameF);
+        files[i] = Arn::convertPath( files.at(i), nameF);
     }
 }
 
@@ -885,7 +885,7 @@ void  ArnPersist::sapiLs( QString path)
 
 void  ArnPersist::sapiRm( QString path)
 {
-    QString  relPath = ArnM::convertPath( path, Arn::NameF::Relative);
+    QString  relPath = Arn::convertPath( path, Arn::NameF::Relative);
     bool  isOk = _persistDir->remove( relPath);
     if (isOk) {
         QString  filePath = _persistDir->absoluteFilePath( relPath);
@@ -901,7 +901,7 @@ void  ArnPersist::sapiTouch( QString path)
     if (path.endsWith('/'))  return;  // Don't touch a dir
 
     bool  isOk = true;
-    QString  relPath = ArnM::convertPath( path, Arn::NameF::Relative);
+    QString  relPath = Arn::convertPath( path, Arn::NameF::Relative);
     QString  filePath = _persistDir->absoluteFilePath( relPath);
     // Make any needed directories
     isOk &= _persistDir->mkpath( QFileInfo( filePath).dir().path());

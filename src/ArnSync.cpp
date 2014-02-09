@@ -280,7 +280,7 @@ void  ArnSync::doChildsToEvent( ArnItemNet *itemNet)
     QString  path = itemNet->path();
     QStringList  childList = itemNet->childItemsMain();
     foreach (QString childName, childList) {
-        itemNet->emitNewItemEvent( ArnM::makePath( path, childName), true);
+        itemNet->emitNewItemEvent( Arn::makePath( path, childName), true);
     }
 }
 

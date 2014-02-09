@@ -104,7 +104,7 @@ ArnThreadComProxyLock::~ArnThreadComProxyLock()
 }
 
 
-/////////////// Arn
+/////////////// ArnM
 
 
 int  ArnM::valueInt( const QString& path)
@@ -251,106 +251,6 @@ bool  ArnM::isMainThread()
 bool  ArnM::isThreadedApp()
 {
     return instance()._isThreadedApp;
-}
-
-
-QString  ArnM::itemName( const QString &path)
-{
-    int  from = path.endsWith('/') ? -2 : -1;
-    int  pos = path.lastIndexOf('/', from);
-
-    if (pos < 0)  return path;
-    return Arn::convertName( path.mid( pos + 1));
-}
-
-
-QString  ArnM::childPath( const QString &parentPath, const QString &posterityPath)
-{
-    QString  parentPath_ = parentPath;
-    if (!parentPath_.endsWith('/'))  parentPath_ += '/';
-    if (!posterityPath.startsWith( parentPath_))  return QString();  // Null, posterity not belonging tp parent
-
-    int  i = posterityPath.indexOf('/', parentPath_.size());
-    if (i >= 0)  // The child part has folder(s)
-        return posterityPath.left(i + 1);
-    else
-        return posterityPath;
-}
-
-
-QString  ArnM::makePath( const QString &parentPath, const QString &itemName)
-{
-    QString  parentPath_ = parentPath;
-    if (!parentPath_.endsWith('/'))  parentPath_ += '/';
-
-    return parentPath_ + Arn::convertName( itemName, Arn::NameF::EmptyOk);
-}
-
-
-QString  ArnM::addPath( const QString &parentPath, const QString &childRelPath, Arn::NameF nameF)
-{
-    QString  retPath = parentPath;
-    if (!retPath.endsWith('/'))
-        retPath += '/';
-    retPath += childRelPath;
-
-    return convertPath( retPath, nameF);
-}
-
-
-QString  ArnM::convertPath(const QString &path, Arn::NameF nameF)
-{
-    nameF.set( nameF.NoFolderMark, false);  // Foldermark '/' must be ...
-    if (nameF.is( nameF.Relative))
-        nameF.set( nameF.EmptyOk, false);   // Relative implicates no emty links
-
-    QString  retPath;
-    if (!nameF.is( nameF.Relative))
-        retPath += '/';  // Start of absolute path
-
-    QString  pathNorm = path.trimmed();
-    bool  isFolder = pathNorm.isEmpty() || pathNorm.endsWith("/");
-    if (isFolder && !pathNorm.isEmpty())
-        pathNorm.resize( pathNorm.size() - 1);  // Remove '/' at end  (Also root become "")
-
-    QStringList  linkNames = pathNorm.split("/", QString::KeepEmptyParts);
-    bool needSeparator = false;
-
-    for (int i = 0; i < linkNames.size(); i++) {
-        QString  linkName = linkNames.at(i);
-        if (linkName.isEmpty()  &&  i == 0)  // If link is root, go for next link
-            continue;
-        if (needSeparator)
-            retPath += '/';  // Add link separator
-
-        retPath += Arn::convertName( linkName, nameF);
-        needSeparator = true;
-    }
-    if (isFolder && !pathNorm.isEmpty())  // Folder that is not root
-        retPath += '/';  // Add folder mark
-
-    return retPath;
-}
-
-
-QString  ArnM::twinPath( const QString& path)
-{
-    if (path.endsWith('/'))  return path;  // Can't return twin for a folder
-
-    if (path.endsWith('!'))  return path.left( path.size() - 1);
-    return path + '!';
-}
-
-
-bool  ArnM::isFolderPath( const QString& path)
-{
-    return path.endsWith('/');
-}
-
-
-bool  ArnM::isProviderPath( const QString& path)
-{
-    return path.endsWith('!');
 }
 
 
@@ -956,5 +856,105 @@ QString  convertBaseName( const QString& name, NameF nameF)
         retVal = name;
 
     return retVal;
+}
+
+
+QString  itemName( const QString &path)
+{
+    int  from = path.endsWith('/') ? -2 : -1;
+    int  pos = path.lastIndexOf('/', from);
+
+    if (pos < 0)  return path;
+    return Arn::convertName( path.mid( pos + 1));
+}
+
+
+QString  childPath( const QString &parentPath, const QString &posterityPath)
+{
+    QString  parentPath_ = parentPath;
+    if (!parentPath_.endsWith('/'))  parentPath_ += '/';
+    if (!posterityPath.startsWith( parentPath_))  return QString();  // Null, posterity not belonging tp parent
+
+    int  i = posterityPath.indexOf('/', parentPath_.size());
+    if (i >= 0)  // The child part has folder(s)
+        return posterityPath.left(i + 1);
+    else
+        return posterityPath;
+}
+
+
+QString  makePath( const QString &parentPath, const QString &itemName)
+{
+    QString  parentPath_ = parentPath;
+    if (!parentPath_.endsWith('/'))  parentPath_ += '/';
+
+    return parentPath_ + Arn::convertName( itemName, Arn::NameF::EmptyOk);
+}
+
+
+QString  addPath( const QString &parentPath, const QString &childRelPath, Arn::NameF nameF)
+{
+    QString  retPath = parentPath;
+    if (!retPath.endsWith('/'))
+        retPath += '/';
+    retPath += childRelPath;
+
+    return convertPath( retPath, nameF);
+}
+
+
+QString  convertPath(const QString &path, Arn::NameF nameF)
+{
+    nameF.set( nameF.NoFolderMark, false);  // Foldermark '/' must be ...
+    if (nameF.is( nameF.Relative))
+        nameF.set( nameF.EmptyOk, false);   // Relative implicates no emty links
+
+    QString  retPath;
+    if (!nameF.is( nameF.Relative))
+        retPath += '/';  // Start of absolute path
+
+    QString  pathNorm = path.trimmed();
+    bool  isFolder = pathNorm.isEmpty() || pathNorm.endsWith("/");
+    if (isFolder && !pathNorm.isEmpty())
+        pathNorm.resize( pathNorm.size() - 1);  // Remove '/' at end  (Also root become "")
+
+    QStringList  linkNames = pathNorm.split("/", QString::KeepEmptyParts);
+    bool needSeparator = false;
+
+    for (int i = 0; i < linkNames.size(); i++) {
+        QString  linkName = linkNames.at(i);
+        if (linkName.isEmpty()  &&  i == 0)  // If link is root, go for next link
+            continue;
+        if (needSeparator)
+            retPath += '/';  // Add link separator
+
+        retPath += Arn::convertName( linkName, nameF);
+        needSeparator = true;
+    }
+    if (isFolder && !pathNorm.isEmpty())  // Folder that is not root
+        retPath += '/';  // Add folder mark
+
+    return retPath;
+}
+
+
+QString  twinPath( const QString& path)
+{
+    if (path.endsWith('/'))  return path;  // Can't return twin for a folder
+
+    if (path.endsWith('!'))  return path.left( path.size() - 1);
+    return path + '!';
+}
+
+
+bool  isFolderPath( const QString& path)
+{
+    return path.endsWith('/');
+}
+
+
+bool  isProviderPath( const QString& path)
+{
+    return path.endsWith('!');
 }
 }

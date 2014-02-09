@@ -184,12 +184,12 @@ public slots:
     void  setNum( const QString& path, double value)
                                                 {ArnM::instance().setValue( path, value);}
     //// "static" help functions
-    QString  itemName( const QString& path)     {return ArnM::instance().itemName( path);}
+    QString  itemName( const QString& path)     {return Arn::itemName( path);}
     QString  childPath( const QString &parentPath, const QString &posterityPath)
-                                                {return ArnM::instance().childPath( parentPath, posterityPath);}
+                                                {return Arn::childPath( parentPath, posterityPath);}
 
     QString  makePath( const QString &parentPath, const QString &itemName)
-                                                {return ArnM::instance().makePath( parentPath, itemName);}
+                                                {return Arn::makePath( parentPath, itemName);}
 private:
 };
 //! \endcond
