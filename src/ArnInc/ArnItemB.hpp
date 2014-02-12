@@ -36,7 +36,7 @@
 #include "ArnLib_global.hpp"
 #include "ArnLinkHandle.hpp"
 #include "ArnError.hpp"
-#include "ArnDefs.hpp"
+#include "Arn.hpp"
 #include "MQFlags.hpp"
 #include <QTextStream>
 #include <QObject>

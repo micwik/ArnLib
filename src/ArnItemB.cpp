@@ -31,8 +31,7 @@
 //
 
 #include "ArnInc/ArnItemB.hpp"
-#include "ArnInc/Arn.hpp"
-#include "ArnInc/ArnDefs.hpp"
+#include "ArnInc/ArnM.hpp"
 #include "ArnLink.hpp"
 #include <QDataStream>
 #include <QUuid>

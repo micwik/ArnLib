@@ -34,7 +34,7 @@
 #define ARNCLIENT_HPP
 
 #include "ArnLib_global.hpp"
-#include "Arn.hpp"
+#include "ArnM.hpp"
 #include "XStringMap.hpp"
 #include "MQFlags.hpp"
 #include <QObject>

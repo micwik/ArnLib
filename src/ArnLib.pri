@@ -22,7 +22,7 @@ SOURCES += $$PWD/XStringMap.cpp
 HEADERS += $$PWD/ArnInc/ArnLib_global.hpp \
     $$PWD/ArnInc/XStringMap.hpp \
     $$PWD/ArnInc/ArnError.hpp \
-    $$PWD/ArnInc/ArnDefs.hpp \
+    $$PWD/ArnInc/Arn.hpp \
     $$PWD/ArnInc/MQFlags.hpp
 
 
@@ -73,7 +73,7 @@ contains(ARN, core) {
         $$PWD/ArnPipe.cpp \
         $$PWD/ArnItemB.cpp
 
-    HEADERS += $$PWD/ArnInc/Arn.hpp \
+    HEADERS += $$PWD/ArnInc/ArnM.hpp \
         $$PWD/ArnInc/ArnItem.hpp \
         $$PWD/ArnInc/ArnLib.hpp \
         $$PWD/ArnInc/ArnPipe.hpp \

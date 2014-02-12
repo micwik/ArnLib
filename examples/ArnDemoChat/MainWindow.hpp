@@ -31,8 +31,8 @@
 #define MAINWINDOW_HPP
 
 #include "../ArnDemoChatServer/ChatSapi.hpp"
-#include <ArnLib/ArnClient.hpp>
-#include <ArnLib/ArnItem.hpp>
+#include <ArnInc/ArnClient.hpp>
+#include <ArnInc/ArnItem.hpp>
 #include <QMainWindow>
 #include <QVector>
 

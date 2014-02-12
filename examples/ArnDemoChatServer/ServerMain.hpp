@@ -31,8 +31,8 @@
 #define SERVERMAIN_HPP
 
 #include "ChatSapi.hpp"
-#include <ArnLib/ArnItem.hpp>
-#include <ArnLib/ArnServer.hpp>
+#include <ArnInc/ArnItem.hpp>
+#include <ArnInc/ArnServer.hpp>
 #include <QTimer>
 #include <QStringList>
 #include <QObject>

@@ -35,7 +35,7 @@
 
 
 #include "ArnLib_global.hpp"
-#include "Arn.hpp"
+#include "ArnM.hpp"
 #include <QObject>
 #include <QScriptable>
 #include <QScriptValue>

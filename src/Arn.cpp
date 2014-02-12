@@ -30,7 +30,7 @@
 // GNU Lesser General Public License for more details.
 //
 
-#include "ArnInc/Arn.hpp"
+#include "ArnInc/ArnM.hpp"
 #include "ArnLink.hpp"
 #include <iostream>
 #include <QStringList>

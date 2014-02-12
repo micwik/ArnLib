@@ -34,7 +34,7 @@
 #define ARNLINKHANDLE_HPP
 
 #include "ArnLib.hpp"
-#include "ArnDefs.hpp"
+#include "Arn.hpp"
 #include "MQFlags.hpp"
 #include <QMetaType>
 #include <QString>

@@ -30,7 +30,7 @@
 #ifndef CHATSAPI_HPP
 #define CHATSAPI_HPP
 
-#include <ArnLib/ArnSapi.hpp>
+#include <ArnInc/ArnSapi.hpp>
 
 
 /// Demo Chat Service API

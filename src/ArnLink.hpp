@@ -36,8 +36,7 @@
 #include "ArnInc/ArnLib_global.hpp"
 #include "ArnInc/ArnLinkHandle.hpp"
 #include "ArnInc/ArnLib.hpp"
-#include "ArnInc/ArnDefs.hpp"
-#include "ArnInc/ArnLib_global.hpp"
+#include "ArnInc/Arn.hpp"
 #include "ArnInc/MQFlags.hpp"
 #include <QObject>
 #include <QString>

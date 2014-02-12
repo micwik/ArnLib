@@ -33,262 +33,152 @@
 #ifndef ARN_HPP
 #define ARN_HPP
 
-#include "ArnLib_global.hpp"
-#include "ArnLib.hpp"
-#include "ArnDefs.hpp"
-#include "ArnError.hpp"
-#include "ArnItem.hpp"
-#include <QStringList>
-#include <QVector>
-#include <QMetaType>
-#include <QObject>
-#include <QMutex>
-#include <QWaitCondition>
+#include "MQFlags.hpp"
 
-//! \cond ADV
-class ArnThreadComStorage;
+#define DATASTREAM_VER  QDataStream::Qt_4_6
 
-class ArnThreadCom
-{
-    friend class ArnThreadComCaller;
-    friend class ArnThreadComProxyLock;
 
-public:
-    ArnThreadCom() {
-        _retObj = 0;
-    }
+namespace Arn {
 
-    //// Payload of "return value" from proxy to caller
-    QObject*  _retObj;
-    QStringList  _retStringList;
+    const quint16  defaultTcpPort = 2022;
 
-private:
-    static ArnThreadCom*  getThreadCom();
+    extern const QString  pathLocal;
+    extern const QString  pathLocalSys;
+    extern const QString  pathDiscoverThis;
+    extern const QString  pathDiscoverConnect;
 
-    static ArnThreadComStorage* _threadStorage;
-    QWaitCondition  _commandEnd;
-    QMutex  _mutex;
+struct SameValue {
+    enum E {
+        //! Assigning same value generates an update of the _Arn Data Object_
+        Accept = 0,
+        //! Assigning same value is ignored
+        Ignore = 1,
+        //! Assigning same value gives default action set in ArnM or ArnItem
+        DefaultAction = -1
+    };
+    MQ_DECLARE_ENUM( SameValue)
 };
 
-Q_DECLARE_METATYPE(ArnThreadCom*)
-
-
-class ArnThreadComCaller
-{
-    ArnThreadCom*  _p;
-public:
-    ArnThreadComCaller();
-    ~ArnThreadComCaller();
-    void  waitCommandEnd();
-    ArnThreadCom*  p()  {return _p;}
+struct DataType {
+    enum E {
+        Null       = 0,
+        Int        = 1,
+        Double     = 2,
+        ByteArray  = 3,
+        String     = 4,
+        Variant    = 5
+        // 16 and above is reserved by ArnItemB::ExportCode
+    };
+    MQ_DECLARE_ENUM( DataType)
 };
 
-
-class ArnThreadComProxyLock
-{
-    ArnThreadCom*  _p;
-public:
-    ArnThreadComProxyLock( ArnThreadCom* threadCom);
-    ~ArnThreadComProxyLock();
+struct LinkFlags {
+    enum E {
+        Folder        = 0x01,
+        CreateAllowed = 0x02,
+        SilentError   = 0x04,
+        Threaded      = 0x08
+    };
+    MQ_DECLARE_FLAGS( LinkFlags)
 };
-//! \endcond
 
+struct NameF {
+    //! Selects a format for path or item name
+    enum E {
+        //! Only on discrete names, no effect on path. "test/" ==> "test"
+        NoFolderMark = 0x01,
+        //! Path: "/@/test" ==> "//test", Item: "@" ==> ""
+        EmptyOk      = 0x02,
+        //! Only on path, no effect on discrete names. "/test/value" ==> "test/value"
+        Relative     = 0x04
+    };
+    MQ_DECLARE_FLAGS( NameF)
+};
 
-//! Arn main class
-/*!
-[About Arn Data Object](\ref gen_arnobj)
+QString  convertName( const QString& name, Arn::NameF nameF = Arn::NameF());
+QString  convertBaseName( const QString& name, Arn::NameF nameF);
+QString  fullPath( const QString& path);
 
-This singleton class is the main reference to the Active Registry Network.
+//! Test if _path_ is a _folder path_
+/*! \param[in] path.
+ *  \retval true if _path_ is a _folder path_, i.e. ends with a "/".
  */
-class ARNLIBSHARED_EXPORT ArnM : public QObject
-{
-Q_OBJECT
-    friend class ArnItemB;
+bool  isFolderPath( const QString& path);
 
-public:
-    static ArnM&  instance();
+//! Test if _path_ is a _provider path_
+/*! [About Bidirectional Arn Data Objects](\ref gen_bidirArnobj)
+ *  \param[in] path.
+ *  \retval true if _path_ is a _provider path_, i.e. ends with a "!".
+ */
+bool  isProviderPath( const QString& path);
 
-    //! \deprecated
-    static ArnM&  getInstance()  {return instance();}  // For compatibility ... (do not use)
+/*! \return The itemName, i.e. the last part of the path after last "/"
+ */
+QString  itemName( const QString& path);
 
-    static void  setConsoleError( bool isConsoleError);
+//! Get substring for child from a path
+/*! _parentPath_ don't have to end with a "/", if missing it's added.
+ *
+ *  If _posterityPath_ not starts with _parentPath_, QString() is returned.
+ *  Otherwise given the _posterityPath_ the child to _parentPath_ is returned.
+ *
+ *  Example 1: _posterityPath_ = "//Measure/depth/value",
+ *  _parentPath_ = "//Measure/" ==> return = "//Measure/depth/"
+ *
+ *  Example 2: _posterityPath_ = "//Measure/depth/value",
+ *  _parentPath_ = "//Measure/depth/" ==> return = //Measure/depth/value"
+ *  \param[in] parentPath
+ *  \param[in] posterityPath
+ *  \return The _child path_
+ */
+QString  childPath( const QString& parentPath, const QString& posterityPath);
 
-    //! Set system default skipping of equal value
-    /*! \param[in] isIgnore If true, assignment of equal value don't give a changed signal.
-     */
-    static void  setDefaultIgnoreSameValue( bool isIgnore = true);
+//! Make a path from a parent and an item name
+/*! _parentPath_ don't have to end with a "/", if missing it's added.
+ *  Empty folder _itemName_ is allowed on returned path.
+ *
+ *  Example: _parentPath_ = "//Measure/depth/", _itemName_ = "value"
+ *  ==> return = "//Measure/depth/value"
+ *  \param[in] parentPath
+ *  \param[in] itemName
+ *  \return The _path_
+ */
+QString  makePath( const QString& parentPath, const QString& itemName);
 
-    /*! \retval true if default skipping equal values
-     *  \see setDefaultIgnoreSameValue()
-     */
-    static bool  defaultIgnoreSameValue();
+//! Make a path from a parent and an additional relative path
+/*! _parentPath_ don't have to end with a "/", if missing it's added.
+ *
+ *  Example: _parentPath_ = "//Measure/", _childRelPath_ = "depth/value"
+ *  ==> return = "//Measure/depth/value"
+ *  \param[in] parentPath
+ *  \param[in] childRelPath
+ *  \param[in] nameF is the path naming format
+ *  \return The _path_
+ *  \see convertPath()
+ */
+QString  addPath( const QString& parentPath, const QString& childRelPath,
+                         Arn::NameF nameF = Arn::NameF::EmptyOk);
 
-    /*! \retval true if this is the main thread in the application
-     */
-    static bool  isMainThread();
+//! Convert a path to a specific format
+/*! Example: _path_ = "//Measure/depth/value", nameF = Relative
+ *  ==> return = "@/Measure/depth/value"
+ *  \param[in] path
+ *  \param[in] nameF is the path naming format
+ *  \return The converted _path_
+ */
+QString  convertPath( const QString& path,
+                             Arn::NameF nameF = Arn::NameF::EmptyOk);
+//! Get the bidirectional twin to a given _path_
+/*! Example: _path_ = "//Measure/depth/value!"
+ *  ==> return = "//Measure/depth/value"
+ *  \param[in] path
+ *  \return The twin _path_
+ *  \see \ref gen_bidirArnobj
+ */
+QString  twinPath( const QString& path);
+}
 
-    /*! \retval true if this is a threaded application
-     */
-    static bool  isThreadedApp();
-
-    //! Get the value of _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \return The _Arn Data Object_ as an _integer_
-     */
-    static int   valueInt( const QString& path);
-
-    //! Get the value of _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \return The _Arn Data Object_ as a _double_
-     */
-    static double   valueDouble( const QString& path);
-
-    //! Get the value of _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \return The _Arn Data Object_ as a _QString_
-     */
-    static QString  valueString( const QString& path);
-
-    //! Get the value of _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \return The _Arn Data Object_ as a _QByteArray_
-     */
-    static QByteArray  valueByteArray( const QString& path);
-
-    //! Get the value of _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \return The _Arn Data Object_ as a _QVariant_
-     */
-    static QVariant  valueVariant( const QString& path);
-
-    //! Get the childrens of the folder at _path_
-    /*! Example: return list = {"test"; "folder/"; "@/"; "value"}
-     *  \param[in] path
-     *  \return The items (children)
-     */
-    static QStringList  items( const QString& path);
-
-    /*! \param[in] path
-     *  \retval true if _Arn Data Object_ exist at _path_
-     */
-    static bool  exist(const QString& path);
-
-    /*! \param[in] path
-     *  \retval true if _Arn Data Object_ at _path_ is a folder
-     */
-    static bool  isFolder( const QString& path);
-
-    /*! \param[in] path
-     *  \retval true if _Arn Data Object_ at _path_ is a leaf (non folder)
-     */
-    static bool  isLeaf( const QString& path);
-
-    //! Assign an _integer_ to an _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \param[in] value to be assigned
-     */
-    static void  setValue( const QString& path, int value);
-
-    //! Assign a _double_ to an _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \param[in] value to be assigned
-     */
-    static void  setValue( const QString& path, double value);
-
-    //! Assign a _QString_ to an _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \param[in] value to be assigned
-     */
-    static void  setValue( const QString& path, const QString& value);
-
-    //! Assign a _QByteArray_ to an _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \param[in] value to be assigned
-     */
-    static void  setValue( const QString& path, const QByteArray& value);
-
-    //! Assign a _QVariant_ to an _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \param[in] value to be assigned
-     */
-    static void  setValue( const QString& path, const QVariant& value);
-
-    //! Assign a _char*_ to an _Arn Data Object_ at _path_
-    /*! \param[in] path
-     *  \param[in] value to be assigned
-     */
-    static void  setValue( const QString& path, const char* value);
-
-    static void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
-    static QString  errorSysName();
-
-    //! Give information about this library
-    /*! \return The info, e.g. "Name=ArnLib Ver=1.0.0 Date=12-12-30 Time=00:37"
-     */
-    static QByteArray  info();
-
-public slots:
-    //! Destroy the _Arn Data Object_ at _path_
-    /*! The link (_Arn Data Object_) will be removed locally, from server and all
-     *  connected clients.
-     *  \param[in] path
-     */
-    static void  destroyLink( const QString& path);
-
-    static void  setupErrorlog( QObject* errLog);
-
-signals:
-    void  errorLogSig( QString errText, uint errCode, void* reference);
-
-protected:
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-    static ArnLink*  root();
-    static ArnLink*  link( const QString& path, Arn::LinkFlags flags,
-                           ArnItem::SyncMode syncMode = ArnItem::SyncMode());
-    static ArnLink*  link( ArnLink *parent, const QString& name, Arn::LinkFlags flags,
-                           ArnItem::SyncMode syncMode = ArnItem::SyncMode());
-    static ArnLink*  addTwin( ArnLink* child, ArnItem::SyncMode syncMode = ArnItem::SyncMode(),
-                              Arn::LinkFlags flags = Arn::LinkFlags());
-    static void  destroyLink( ArnLink* link);
-    static void  destroyLinkMain( ArnLink* link);
-#endif
-
-private slots:
-    static void  linkProxy( ArnThreadCom* threadCom, const QString& path,
-                            int flagValue, int syncMode = 0);
-    static void  itemsProxy( ArnThreadCom* threadCom, const QString& path);
-    static void  doZeroRefLink( QObject* obj = 0);
-
-private:
-    /// Private constructor/destructor to keep this class singleton
-    ArnM();
-    ArnM( const ArnM&);
-    ~ArnM();
-    ArnM&  operator=( const ArnM&);
-
-    static ArnLink*  linkMain( const QString& path, Arn::LinkFlags flags,
-                               ArnItem::SyncMode syncMode = ArnItem::SyncMode());
-    static ArnLink*  linkThread( const QString& path, Arn::LinkFlags flags,
-                                 ArnItem::SyncMode syncMode = ArnItem::SyncMode());
-    static ArnLink*  linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags flags,
-                               ArnItem::SyncMode syncMode = ArnItem::SyncMode());
-    static ArnLink*  addTwinMain( ArnLink* child, ArnItem::SyncMode syncMode = ArnItem::SyncMode(),
-                                  Arn::LinkFlags flags = Arn::LinkFlags::fromInt(0));
-    static ArnLink*  getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags);
-    static QStringList  itemsMain( const ArnLink *parent);
-    static QStringList  itemsMain( const QString& path);
-
-    // The root object of all other arn data
-    ArnLink*  _root;
-
-    QVector<QString>  _errTextTab;
-    bool  _consoleError;
-    bool  _defaultIgnoreSameValue;
-    QObject*  _errorLogger;
-
-    volatile bool  _isThreadedApp;
-    QThread*  _mainThread;
-};
+MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::LinkFlags)
+MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::NameF)
 
 #endif // ARN_HPP
-

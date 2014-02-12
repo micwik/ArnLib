@@ -32,8 +32,7 @@
 
 #include "ArnInc/ArnServer.hpp"
 #include "ArnInc/ArnError.hpp"
-#include "ArnInc/ArnDefs.hpp"
-#include "ArnInc/Arn.hpp"
+#include "ArnInc/ArnM.hpp"
 #include "ArnSync.hpp"
 #include <QTcpServer>
 #include <QTcpSocket>

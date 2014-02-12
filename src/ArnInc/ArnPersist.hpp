@@ -34,7 +34,7 @@
 #define ARNPERSIST_HPP
 
 #include "ArnLib_global.hpp"
-#include "Arn.hpp"
+#include "ArnM.hpp"
 #include <QMap>
 #include <QList>
 #include <QObject>

@@ -31,7 +31,7 @@
 //
 
 #include "ArnInc/ArnZeroConf.hpp"
-#include "ArnInc/ArnDefs.hpp"
+#include "ArnInc/Arn.hpp"
 #ifdef MDNS_INTERN
 #  include "mDNS/ArnMDns.hpp"
 #  include "mDNS/mDNSShared/dns_sd.h"

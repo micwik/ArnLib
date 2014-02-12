@@ -28,7 +28,7 @@
 //
 //! [code]
 #include "ServerMain.hpp"
-#include <ArnLib/ArnItem.hpp>
+#include <ArnInc/ArnItem.hpp>
 #include <QTime>
 #include <QCoreApplication>
 #include <QDebug>
@@ -59,7 +59,7 @@ ServerMain::ServerMain( QObject* parent) :
 
 void  ServerMain::doNewSession( QString path)
 {
-    if (!ArnM::isProviderPath( path))  return;  // Only provider pipe is used
+    if (!Arn::isProviderPath( path))  return;  // Only provider pipe is used
 
     ChatSapi*  soleSapi = new ChatSapi( this);
     soleSapi->open( path, ArnSapi::Mode::Provider);
