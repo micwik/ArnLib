@@ -105,7 +105,7 @@ bool  ArnItemB::open( const QString &path, bool isFolder)
 
 bool  ArnItemB::open( const QString &path)
 {
-    bool  isFolder = path.endsWith("/");
+    bool  isFolder = Arn::isFolderPath( path);
     return open( path, isFolder);
 }
 
@@ -133,7 +133,7 @@ bool  ArnItemB::open( const ArnItemB& folder, const QString& itemName, bool isFo
     SyncMode  syncMode = _syncModeLinkShare ? _syncMode : SyncMode();
     ArnLink::Flags  flags;
     _link = ArnM::link( parent, itemName,
-                            flags.flagIf( isFolder, flags.Folder) | flags.CreateAllowed, syncMode);
+                        flags.flagIf( isFolder, flags.Folder) | flags.CreateAllowed, syncMode);
     if (!_link)  return false;
 
     setupOpenItem( isFolder);

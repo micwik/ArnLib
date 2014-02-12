@@ -278,6 +278,8 @@ bool  ArnM::isFolder( const QString& path)
 
 bool  ArnM::isLeaf( const QString& path)
 {
+    if (Arn::isFolderPath( path))  return false;
+
     ArnLink*  link = ArnM::link( path, ArnLink::Flags::SilentError);
 
     if (!link)  return false;
@@ -399,7 +401,7 @@ ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, ArnItem::
 ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
 {
     // qDebug() << "### link-main: path=" << path;
-    QString  pathNorm = path;
+    QString  pathNorm = Arn::fullPath( path);
     if (pathNorm.endsWith("/")) {
         flags.f |= flags.Folder;
         pathNorm.resize( pathNorm.size() - 1);  // Remove '/' at end  (Also root become "")
@@ -833,6 +835,12 @@ bool  ArnM::defaultIgnoreSameValue()
 
 namespace Arn {
 
+const QString  pathLocal           = "/Local/";  // Must be absolute (full) path
+const QString  pathLocalSys        = "Sys/";
+const QString  pathDiscoverThis    = "Sys/Discover/This/";
+const QString  pathDiscoverConnect = "Sys/Discover/Connect/";
+
+
 QString  convertName( const QString& name, NameF nameF)
 {
     bool  isFolderMarked = name.endsWith('/');
@@ -856,6 +864,14 @@ QString  convertBaseName( const QString& name, NameF nameF)
         retVal = name;
 
     return retVal;
+}
+
+
+QString  fullPath( const QString& path)
+{
+    if (path.startsWith('/'))  return path;
+
+    return Arn::pathLocal + path;
 }
 
 

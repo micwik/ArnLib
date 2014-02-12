@@ -135,7 +135,7 @@ void  ArnDiscoverConnector::doClientConnectChanged( int stat, int curPrio)
 void  ArnDiscoverConnector::postSetupClient()
 {
     QString  path;
-    QString  connectIdPath = "/Sys/Discover/Connect/" + _id + "/";
+    QString  connectIdPath = Arn::pathDiscoverConnect + _id + "/";
 
     path = connectIdPath + "Status/";
     ArnItem*  arnConnectStatus = new ArnItem( path + "value", this);
@@ -176,7 +176,7 @@ void  ArnDiscoverConnector::postSetupClient()
 
 void  ArnDiscoverConnector::doClientConnected( QString arnHost, quint16 port)
 {
-    QString  path = "/Sys/Discover/Connect/" + _id + "/UsingHost/";
+    QString  path = Arn::pathDiscoverConnect + _id + "/UsingHost/";
     ArnM::setValue( path + "value", arnHost);
     ArnM::setValue( path + "Port/value", port);
 }
@@ -210,7 +210,7 @@ void ArnDiscoverConnector::doClientConnectRequest(int reqCode)
 void  ArnDiscoverConnector::postSetupResolver()
 {
     QString  path;
-    QString  connectIdPath = "/Sys/Discover/Connect/" + _id + "/";
+    QString  connectIdPath = Arn::pathDiscoverConnect + _id + "/";
 
     path = connectIdPath + "DiscoverHost/";
     _arnDisHostServicePv = new ArnItem( path + "Service/value!", this);
@@ -298,10 +298,10 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
     QString  listenAddr = ((addr == QHostAddress::Any) || (addr == QHostAddress::AnyIPv6))
                           ? QString("Any") : addr.toString();
     int  hostPort = arnServer->port();
-    ArnM::setValue("/Sys/Discover/This/Interface/Listen/value", listenAddr);
-    ArnM::setValue("/Sys/Discover/This/Interface/First/value", ArnServer::getInterface1Address().toString());
-    ArnM::setValue("/Sys/Discover/This/Host/value", QHostInfo::localHostName());
-    ArnM::setValue("/Sys/Discover/This/Host/Port/value", hostPort);
+    ArnM::setValue( Arn::pathDiscoverThis + "Interface/Listen/value", listenAddr);
+    ArnM::setValue( Arn::pathDiscoverThis + "Interface/First/value", ArnServer::getInterface1Address().toString());
+    ArnM::setValue( Arn::pathDiscoverThis + "Host/value", QHostInfo::localHostName());
+    ArnM::setValue( Arn::pathDiscoverThis + "Host/Port/value", hostPort);
 
     XStringMap  xsm;
     xsm.add("protovers", "1.0");
@@ -347,9 +347,10 @@ void  ArnDiscoverRemote::postSetupThis()
 
     connect( &_arnService,   SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
     connect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
-    _arnServicePv.open("/Sys/Discover/This/Service/value!");
+    QString  servicePath = Arn::pathDiscoverThis + "Service/value";
+    _arnServicePv.open( Arn::twinPath( servicePath));
     _arnService.addMode( ArnItem::Mode::Save);
-    _arnService.open("/Sys/Discover/This/Service/value");
+    _arnService.open( servicePath);
 
     _hasBeenSetup = true;
     if (!_service.isNull())

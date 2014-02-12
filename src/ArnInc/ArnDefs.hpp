@@ -40,6 +40,10 @@
 
 namespace Arn {
     const quint16  defaultTcpPort = 2022;
+    extern const QString  pathLocal;
+    extern const QString  pathLocalSys;
+    extern const QString  pathDiscoverThis;
+    extern const QString  pathDiscoverConnect;
 
 struct SameValue {
     enum E {
@@ -91,6 +95,7 @@ struct NameF {
 
 QString  convertName( const QString& name, Arn::NameF nameF = Arn::NameF());
 QString  convertBaseName( const QString& name, Arn::NameF nameF);
+QString  fullPath( const QString& path);
 
 //! Test if _path_ is a _folder path_
 /*! \param[in] path.
