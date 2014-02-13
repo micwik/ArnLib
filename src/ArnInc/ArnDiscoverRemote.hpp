@@ -34,8 +34,7 @@
 #define ARNDISCOVERREMOTE_HPP
 
 #include "ArnDiscover.hpp"
-//#include "ArnItem.hpp"
-//#include "XStringMap.hpp"
+#include "ArnItem.hpp"
 
 class ArnServer;
 class ArnClient;
@@ -112,7 +111,7 @@ private:
 };
 
 
-class ArnDiscoverRemote : public QObject
+class ArnDiscoverRemote : public ArnDiscoverAdvertise
 {
     Q_OBJECT
 public:
@@ -120,45 +119,35 @@ public:
 
     QString  defaultService()  const;
     void  setDefaultService( const QString& defaultService);
-    QStringList groups() const;
-    void  setGroups(const QStringList& groups);
-    void  addGroup( const QString& group);
-
-    QString  service() const;
 
     void  startUseServer( ArnServer* arnServer, ArnDiscover::Type discoverType = ArnDiscover::Type::Server);
     void  startUseNewServer( ArnDiscover::Type discoverType, int port = -1);
     ArnDiscoverConnector*  newConnector( ArnClient& client, const QString& id);
 
 signals:
-    void  serviceChanged( QString serviceName);
-    void  serviceChangeError( int code);
     void  clientReadyToConnect( ArnClient* arnClient);
 
 public slots:
-    void  setService( QString service);
+    virtual void  setService( QString service);
+
+protected:
+    //// Handle Service This
+    virtual void  postSetupThis();
+    virtual void  serviceRegistered( QString serviceName);
 
 private slots:
     //// Handle Service This
-    void  postSetupThis();
     void  serviceTimeout();
     void  firstServiceSetup( QString serviceName);
     void  doServiceChanged( QString val);
-    void  serviceRegistered( QString serviceName);
-    void  serviceRegistrationError( int code);
 
 private:
-    ArnZeroConfRegister*  _arnZCReg;
     ArnServer*  _arnInternalServer;
     ArnDiscoverResolver*  _arnDResolver;
     ArnItem  _arnServicePv;
     ArnItem  _arnService;
     QTimer*  _servTimer;
     QString  _defaultService;
-    QString  _service;
-    QStringList  _groups;
-    bool  _hasBeenSetup;
-    ArnDiscover::Type  _discoverType;
 };
 
 #endif // ARNDISCOVERREMOTE_HPP

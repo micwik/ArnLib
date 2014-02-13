@@ -33,12 +33,10 @@
 #ifndef ARNDISCOVER_HPP
 #define ARNDISCOVER_HPP
 
-#include "ArnItem.hpp"
 #include "XStringMap.hpp"
+#include "MQFlags.hpp"
 #include <QHostAddress>
 
-//class ArnServer;
-//class ArnClient;
 class ArnZeroConfRegister;
 class ArnZeroConfBrowser;
 class QHostInfo;
@@ -234,23 +232,45 @@ signals:
     void  serviceChangeError( int code);
 
 public slots:
-    void  setService( QString service);
+    //! Set the service name
+    /*! Will update current advertised service name if this advertiser has been setup,
+     *  otherwise the service name is stored for future use.
+     *  Note: This member must be called from derived member.
+     *  \param[in] service is the service name.
+     *  \see advertiseService()
+     */
+    virtual void  setService( QString service);
 
-private slots:
-    void  postSetupThis();
-    //void  serviceTimeout();
-    //void  firstServiceSetup( QString serviceName);
-    void  doServiceChanged( QString val);
-    void  serviceRegistered( QString serviceName);
-    void  serviceRegistrationError( int code);
+protected:
+    bool  hasSetupAdvertise()  const;
+
+protected slots:
+    //! Post setup routine called from base class
+    /*! Can be derived for special setup.
+     *  Note: This member must be called from derived member.
+     *  \param[in] service is the service name.
+     */
+    virtual void  postSetupThis();
+
+    //! Service registration callback
+    /*! Can be derived for special notifying.
+     *  Note: This member must be called from derived member.
+     *  \param[in] serviceName is the service name registered.
+     */
+    virtual void  serviceRegistered( QString serviceName);
+
+    //! Service registration error callback
+    /*! Can be derived for special notifying.
+     *  Note: This member must be called from derived member.
+     *  \param[in] code is the error code.
+     */
+    virtual void  serviceRegistrationError( int code);
 
 private:
     ArnZeroConfRegister*  _arnZCReg;
-    //ArnDiscoverResolver*  _arnDResolver;
-    //QTimer*  _servTimer;
     QString  _service;
     QStringList  _groups;
-    bool  _hasBeenSetup;
+    bool  _hasSetupAdvertise;
     ArnDiscover::Type  _discoverType;
 };
 

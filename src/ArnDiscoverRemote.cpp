@@ -1,5 +1,4 @@
 #include "ArnInc/ArnDiscoverRemote.hpp"
-#include "ArnInc/ArnZeroConf.hpp"
 #include "ArnInc/ArnClient.hpp"
 #include "ArnInc/ArnServer.hpp"
 #include <QTimer>
@@ -15,7 +14,7 @@ ArnDiscoverConnector::ArnDiscoverConnector( ArnClient& client, const QString& id
 {
     _client = &client;
     _id     = id;
-    _discoverHostPrio        = 1;
+    _discoverHostPrio      = 1;
     _directHostPrio        = 2;
     _resolveRefreshTimeout = 60;
     _directHosts           = new QObject( this);
@@ -280,20 +279,17 @@ void  ArnDiscoverConnector::doClientResolvChanged( int index, ArnDiscoverInfo::S
 ///////// ArnDiscoverRemote
 
 ArnDiscoverRemote::ArnDiscoverRemote( QObject *parent) :
-    QObject( parent)
+    ArnDiscoverAdvertise( parent)
 {
-    _arnZCReg  = new ArnZeroConfRegister( this);
-    _servTimer = new QTimer( this);
+    _servTimer         = new QTimer( this);
     _arnInternalServer = 0;
-    _arnDResolver = 0;
-    _hasBeenSetup = false;
-    _defaultService = "Arn Default Service";
+    _arnDResolver      = 0;
+    _defaultService    = "Arn Default Service";
 }
 
 
 void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type discoverType)
 {
-    _discoverType = discoverType;
     QHostAddress  addr  = arnServer->listenAddress();
     QString  listenAddr = ((addr == QHostAddress::Any) || (addr == QHostAddress::AnyIPv6))
                           ? QString("Any") : addr.toString();
@@ -303,20 +299,8 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
     ArnM::setValue( Arn::pathDiscoverThis + "Host/value", QHostInfo::localHostName());
     ArnM::setValue( Arn::pathDiscoverThis + "Host/Port/value", hostPort);
 
-    XStringMap  xsm;
-    xsm.add("protovers", "1.0");
-    xsm.add("server", QByteArray::number( _discoverType == ArnDiscover::Type::Server));
-    _arnZCReg->setSubTypes( _groups);
-    _arnZCReg->addSubType( _discoverType == ArnDiscover::Type::Server ? "server" : "client");
-    for (int i = 0; i < _groups.size(); ++i) {
-        xsm.add("group", i, _groups.at(i));
-    }
-    _arnZCReg->setTxtRecordMap( xsm);
-    _arnZCReg->setPort( hostPort);
-    connect( _arnZCReg, SIGNAL(registered(QString)), this, SLOT(serviceRegistered(QString)));
-    connect( _arnZCReg, SIGNAL(registrationError(int)), this, SLOT(serviceRegistrationError(int)));
-
-    QTimer::singleShot(0, this, SLOT(postSetupThis()));  // Ĺet persistance service etc init before ...
+    // Setup advertise, but don't start yet, waiting for service name
+    ArnDiscoverAdvertise::advertiseService( discoverType, QString(), hostPort);
 }
 
 
@@ -351,10 +335,9 @@ void  ArnDiscoverRemote::postSetupThis()
     _arnServicePv.open( Arn::twinPath( servicePath));
     _arnService.addMode( ArnItem::Mode::Save);
     _arnService.open( servicePath);
+    // Any loaded persistent service name has now been sent to firstServiceSetup()
 
-    _hasBeenSetup = true;
-    if (!_service.isNull())
-        setService( _service);
+    ArnDiscoverAdvertise::postSetupThis();
 }
 
 
@@ -378,51 +361,33 @@ void  ArnDiscoverRemote::firstServiceSetup( QString serviceName)
     disconnect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
     connect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(doServiceChanged(QString)));
 
-    doServiceChanged( service);
+    setService( service);
 }
 
 
 void  ArnDiscoverRemote::doServiceChanged( QString val)
 {
-    qDebug() << "Service changed: servname=" << val;
-    _service = val;
-
-    if (_arnZCReg->state() != ArnZeroConfRegister::State::None)
-        _arnZCReg->releaseService();
-    _arnZCReg->setServiceName( val);
-    _arnZCReg->registerService();
+    qDebug() << "DiscoverRemote Service changed: servname=" << val;
+    ArnDiscoverAdvertise::setService( val);
 }
 
 
 void  ArnDiscoverRemote::serviceRegistered( QString serviceName)
 {
-    qDebug() << "Service registered: serviceName=" << serviceName;
+    qDebug() << "DiscoverRemote Service registered: serviceName=" << serviceName;
 
     _arnServicePv = serviceName;
-    emit serviceChanged( serviceName);
-}
 
-
-void  ArnDiscoverRemote::serviceRegistrationError(int code)
-{
-    qDebug() << "Service registration error: code=" << code;
-
-    emit serviceChangeError( code);
-}
-
-
-QString  ArnDiscoverRemote::service()  const
-{
-    return _service;
+    ArnDiscoverAdvertise::serviceRegistered( serviceName);
 }
 
 
 void  ArnDiscoverRemote::setService( QString service)
 {
-    if (_hasBeenSetup)
+    if (hasSetupAdvertise())
         _arnService = service;
     else
-        _service = service;
+        ArnDiscoverAdvertise::setService( service);
 }
 
 
@@ -435,22 +400,4 @@ QString  ArnDiscoverRemote::defaultService()  const
 void  ArnDiscoverRemote::setDefaultService( const QString& defaultService)
 {
     _defaultService = defaultService;
-}
-
-
-QStringList  ArnDiscoverRemote::groups()  const
-{
-    return _groups;
-}
-
-
-void  ArnDiscoverRemote::setGroups( const QStringList& groups)
-{
-    _groups = groups;
-}
-
-
-void  ArnDiscoverRemote::addGroup( const QString& group)
-{
-    _groups += group;
 }

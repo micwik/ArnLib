@@ -32,12 +32,8 @@
 
 #include "ArnInc/ArnDiscover.hpp"
 #include "ArnInc/ArnZeroConf.hpp"
-//#include "ArnInc/ArnClient.hpp"
-//#include "ArnInc/ArnServer.hpp"
 #include <QHostInfo>
 #include <QTimer>
-//#include <QTime>
-//#include <QMetaObject>
 
 
 ///////// ArnDiscoverInfo
@@ -525,9 +521,7 @@ ArnDiscoverAdvertise::ArnDiscoverAdvertise( QObject *parent) :
     QObject( parent)
 {
     _arnZCReg  = new ArnZeroConfRegister( this);
-    //_servTimer = new QTimer( this);
-    //_arnDResolver = 0;
-    _hasBeenSetup = false;
+    _hasSetupAdvertise = false;
 }
 
 
@@ -536,10 +530,6 @@ void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QSt
 {
     _discoverType = discoverType;
     _service      = serviceName;
-    //QString  hostAddr = arnServer->address().toString();
-    //int      hostPort = arnServer->port();
-    //ArnM::setValue("/Sys/Discover/This/Host/value", hostAddr);
-    //ArnM::setValue("/Sys/Discover/This/Host/Port/value", hostPort);
 
     XStringMap  xsm;
     xsm.add("protovers", "1.0");
@@ -551,9 +541,6 @@ void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QSt
     }
     _arnZCReg->setTxtRecordMap( xsm);
     _arnZCReg->setHost( hostName);
-    //qDebug() << "#### Advertise host=" << QHostInfo::localHostName() << " domain=" << QHostInfo::localDomainName();
-    //_arnZCReg->setHost("idun.apa");
-    //_arnZCReg->setDomain( QHostInfo::localDomainName());
     _arnZCReg->setPort( port);
     connect( _arnZCReg, SIGNAL(registered(QString)), this, SLOT(serviceRegistered(QString)));
     connect( _arnZCReg, SIGNAL(registrationError(int)), this, SLOT(serviceRegistrationError(int)));
@@ -564,62 +551,16 @@ void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QSt
 
 void  ArnDiscoverAdvertise::postSetupThis()
 {
-    //_servTimer->start( 5000);
-    //connect( _servTimer, SIGNAL(timeout()), this, SLOT(serviceTimeout()));
-
-    //connect( &_arnService,   SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
-    //connect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
-    //_arnServicePv.open("/Sys/Discover/This/Service/value!");
-    //_arnService.addMode( ArnItem::Mode::Save);
-    //_arnService.open("/Sys/Discover/This/Service/value");
-
-    _hasBeenSetup = true;
+    _hasSetupAdvertise = true;
     if (!_service.isNull())
         setService( _service);
-}
-
-/*
-void  ArnDiscoverRemote::serviceTimeout()
-{
-    qDebug() << "First service setup timeout, using default.";
-
-    firstServiceSetup( _defaultService);
-}
-
-
-void  ArnDiscoverRemote::firstServiceSetup( QString serviceName)
-{
-    QString  service = serviceName;
-    if (service.isEmpty())
-        service = _defaultService;
-    qDebug() << "firstServiceSetup: serviceName=" << service;
-
-    _servTimer->stop();
-    disconnect( &_arnService,   SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
-    disconnect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
-    connect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(doServiceChanged(QString)));
-
-    doServiceChanged( service);
-}
-*/
-
-void  ArnDiscoverAdvertise::doServiceChanged( QString val)
-{
-    qDebug() << "Service changed: servname=" << val;
-    _service = val;
-
-    if (_arnZCReg->state() != ArnZeroConfRegister::State::None)
-        _arnZCReg->releaseService();
-    _arnZCReg->setServiceName( val);
-    _arnZCReg->registerService();
 }
 
 
 void  ArnDiscoverAdvertise::serviceRegistered( QString serviceName)
 {
-    qDebug() << "Service registered: serviceName=" << serviceName;
+    qDebug() << "DiscoverAdvertice Service registered: serviceName=" << serviceName;
 
-    //_arnServicePv = serviceName;
     emit serviceChanged( serviceName);
 }
 
@@ -632,6 +573,12 @@ void  ArnDiscoverAdvertise::serviceRegistrationError(int code)
 }
 
 
+bool  ArnDiscoverAdvertise::hasSetupAdvertise()  const
+{
+    return _hasSetupAdvertise;
+}
+
+
 QString  ArnDiscoverAdvertise::service()  const
 {
     return _service;
@@ -640,11 +587,14 @@ QString  ArnDiscoverAdvertise::service()  const
 
 void  ArnDiscoverAdvertise::setService( QString service)
 {
-    if (_hasBeenSetup)
-        doServiceChanged( service);
-        //_arnService = service;
-    else
-        _service = service;
+    _service = service;
+    if (!_hasSetupAdvertise)  return;
+
+    qDebug() << "Advertise Service changed: servname=" << _service;
+    if (_arnZCReg->state() != ArnZeroConfRegister::State::None)
+        _arnZCReg->releaseService();
+    _arnZCReg->setServiceName( _service);
+    _arnZCReg->registerService();
 }
 
 
