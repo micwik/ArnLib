@@ -86,7 +86,7 @@ void  ArnSync::send( const QByteArray& xString)
 
     QByteArray  sendString;
     sendString += xString;
-    if (gDebugRecInOut)  qDebug() << "Rec-Out: " << sendString;
+    if (Arn::debugRecInOut)  qDebug() << "Rec-Out: " << sendString;
     sendString += "\r\n";
     _socket->write( sendString);
 }
@@ -165,7 +165,7 @@ void  ArnSync::socketInput()
         _commandMap.fromXString( xString); // Load command Map
         _replyMap.clear();                  // Reset reply Map
 
-        if (gDebugRecInOut)  qDebug() << "Rec-in: " << xString;
+        if (Arn::debugRecInOut)  qDebug() << "Rec-in: " << xString;
         doCommand();
 
         if (_replyMap.size()) {
@@ -516,7 +516,7 @@ void  ArnSync::doArnEvent( QByteArray type, QByteArray data, bool isLocal)
     }
 
     if (type == "monitorStart") {
-        if (gDebugMonitor)  qDebug() << "ArnMonitor-Test: monitorStart Event";
+        if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: monitorStart Event";
 
         ArnItem::SyncMode  syncMode = itemNet->syncMode();
         if (isLocal && _isClientSide) {  // Client Side
@@ -528,7 +528,7 @@ void  ArnSync::doArnEvent( QByteArray type, QByteArray data, bool isLocal)
         }
     }
     if (type == "monitorReStart") {
-        if (gDebugMonitor)  qDebug() << "ArnMonitor-Test: monitorReStart Event";
+        if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: monitorReStart Event";
 
         if (!isLocal && !_isClientSide) {  // Server side
             //// Send NewItemEvent for any existing direct children (also folders)

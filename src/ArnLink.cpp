@@ -623,7 +623,7 @@ void  ArnLink::ref()
         setRefCount(1);
     else
         valueLink()->_refCount.ref();  // Increase reference atomicly
-    if (gDebugLinkRef)  qDebug() << "link-ref: path=" << this->linkPath() << " count=" << refCount();
+    if (Arn::debugLinkRef)  qDebug() << "link-ref: path=" << this->linkPath() << " count=" << refCount();
 }
 
 
@@ -631,7 +631,7 @@ void  ArnLink::ref()
 void  ArnLink::deref()
 {
     bool  moreRefs = valueLink()->_refCount.deref();
-    if (gDebugLinkRef)  qDebug() << "link-deref: path=" << this->linkPath() << " count=" << refCount();
+    if (Arn::debugLinkRef)  qDebug() << "link-deref: path=" << this->linkPath() << " count=" << refCount();
     if (!moreRefs) {  // This is last reference
         emit zeroRef();  // Will be received in main-thread
     }

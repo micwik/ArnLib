@@ -17,9 +17,12 @@ DEFINES += ARNBUILDDATE=\\\"$$system(date '+%y-%m-%d')\\\"
 
 INCLUDEPATH += $$PWD
 
-SOURCES += $$PWD/XStringMap.cpp
+SOURCES += \
+    $$PWD/XStringMap.cpp \
+    $$PWD/Arn.cpp
 
-HEADERS += $$PWD/ArnInc/ArnLib_global.hpp \
+HEADERS += \
+    $$PWD/ArnInc/ArnLib_global.hpp \
     $$PWD/ArnInc/XStringMap.hpp \
     $$PWD/ArnInc/ArnError.hpp \
     $$PWD/ArnInc/Arn.hpp \
@@ -29,13 +32,15 @@ HEADERS += $$PWD/ArnInc/ArnLib_global.hpp \
 contains(ARN, server) {
     ARN += client
     QT += script sql
-    SOURCES += $$PWD/ArnServer.cpp \
+    SOURCES += \
+        $$PWD/ArnServer.cpp \
         $$PWD/ArnScript.cpp \
         $$PWD/ArnScriptJobs.cpp \
         $$PWD/ArnPersist.cpp \
         $$PWD/ArnScriptJob.cpp
 
-    HEADERS +=$$PWD/ArnInc/ArnServer.hpp \
+    HEADERS += \
+        $$PWD/ArnInc/ArnServer.hpp \
         $$PWD/ArnInc/ArnScript.hpp \
         $$PWD/ArnInc/ArnScriptJobs.hpp \
         $$PWD/ArnInc/ArnPersist.hpp \
@@ -46,7 +51,8 @@ contains(ARN, server) {
 contains(ARN, client) {
     ARN += core
     QT += network
-    SOURCES += $$PWD/ArnClient.cpp \
+    SOURCES += \
+        $$PWD/ArnClient.cpp \
         $$PWD/ArnItemNet.cpp \
         $$PWD/ArnDepend.cpp \
         $$PWD/ArnRpc.cpp \
@@ -54,7 +60,8 @@ contains(ARN, client) {
         $$PWD/ArnMonitor.cpp \
         $$PWD/ArnSync.cpp
 
-    HEADERS += $$PWD/ArnInc/ArnClient.hpp \
+    HEADERS += \
+        $$PWD/ArnInc/ArnClient.hpp \
         $$PWD/ArnInc/ArnDepend.hpp \
         $$PWD/ArnInc/ArnRpc.hpp \
         $$PWD/ArnInc/ArnSapi.hpp \
@@ -66,14 +73,16 @@ contains(ARN, client) {
 
 
 contains(ARN, core) {
-    SOURCES += $$PWD/Arn.cpp \
+    SOURCES += \
+        $$PWD/ArnM.cpp \
         $$PWD/ArnItem.cpp \
         $$PWD/ArnLinkHandle.cpp \
         $$PWD/ArnLink.cpp \
         $$PWD/ArnPipe.cpp \
         $$PWD/ArnItemB.cpp
 
-    HEADERS += $$PWD/ArnInc/ArnM.hpp \
+    HEADERS += \
+        $$PWD/ArnInc/ArnM.hpp \
         $$PWD/ArnInc/ArnItem.hpp \
         $$PWD/ArnInc/ArnLib.hpp \
         $$PWD/ArnInc/ArnPipe.hpp \
@@ -97,7 +106,8 @@ contains(ARN, discover) {
 
 contains(ARN, zeroconf) {
     SOURCES += $$PWD/ArnZeroConf.cpp
-    HEADERS += $$PWD/ArnInc/ArnZeroConf.hpp \
+    HEADERS += \
+        $$PWD/ArnInc/ArnZeroConf.hpp \
         $$PWD/mDNS/mDNSShared/dns_sd.h
 
     mDnsIntern {
@@ -110,7 +120,8 @@ contains(ARN, zeroconf) {
         DEFINES += HAVE_LINUX
         DEFINES += TARGET_OS_LINUX
 
-        SOURCES += $$PWD/mDNS/mDNSCore/mDNS.c \
+        SOURCES += \
+            $$PWD/mDNS/mDNSCore/mDNS.c \
             $$PWD/mDNS/mDNSCore/uDNS.c \
             $$PWD/mDNS/mDNSCore/DNSDigest.c \
             $$PWD/mDNS/mDNSCore/DNSCommon.c \
@@ -120,8 +131,9 @@ contains(ARN, zeroconf) {
             $$PWD/mDNS/mDNSQt/mDNSQt.cpp \
             $$PWD/mDNS/ArnMDns.cpp
 
-        HEADERS += $$PWD/mDNS/mDNSQt/mDNSQt.h
-        HEADERS += $$PWD/mDNS/mDNSCore/DNSCommon.h \
+        HEADERS += \
+            $$PWD/mDNS/mDNSQt/mDNSQt.h \
+            $$PWD/mDNS/mDNSCore/DNSCommon.h \
             $$PWD/mDNS/mDNSCore/uDNS.h \
             $$PWD/mDNS/mDNSCore/mDNSEmbeddedAPI.h \
             $$PWD/mDNS/mDNSCore/mDNSDebug.h \

@@ -78,7 +78,7 @@ void  ArnMonitor::setMonitorPath( QString path, ArnClient *client)
                  this, SLOT(dispatchArnEvent(QByteArray,QByteArray,bool)));
 
         if (isNew) {
-            if (gDebugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorStart Before";
+            if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorStart Before";
             QMetaObject::invokeMethod( this,
                                        "emitArnEvent",
                                        Qt::QueuedConnection,  // make sure started after all setup is done in this thread
@@ -86,15 +86,15 @@ void  ArnMonitor::setMonitorPath( QString path, ArnClient *client)
             //// Check thread event sequence by big delay
             // QTime  ts = QTime::currentTime();
             // while (QTime::currentTime() < ts.addSecs(5));
-            if (gDebugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorStart After (delay)";
+            if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorStart After (delay)";
         }
         else {
-            if (gDebugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart Before";
+            if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart Before";
             QMetaObject::invokeMethod( this,
                                        "emitArnEvent",
                                        Qt::QueuedConnection,  // make sure restarted after all setup is done in this thread
                                        Q_ARG( QByteArray, "monitorReStart"));
-            if (gDebugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart After (delay)";
+            if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart After (delay)";
         }
     }
 }

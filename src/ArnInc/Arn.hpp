@@ -176,7 +176,8 @@ QString  convertPath( const QString& path,
  *  \see \ref gen_bidirArnobj
  */
 QString  twinPath( const QString& path);
-}
+
+}  // Arn::
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::LinkFlags)
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::NameF)

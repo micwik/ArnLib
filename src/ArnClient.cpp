@@ -221,9 +221,9 @@ void  ArnClient::newNetItemProxy( ArnThreadCom *threadCom,
 {
     ArnThreadComProxyLock  proxyLock( threadCom);
 
-    if (gDebugThreading)  qDebug() << "newNetItemProxy: path=" << path;
+    if (Arn::debugThreading)  qDebug() << "newNetItemProxy: path=" << path;
     threadCom->_retObj = newNetItem( path, ArnItem::SyncMode::F( syncMode), (bool*) isNewPtr);
-    if (gDebugThreading)  qDebug() << "newNetItemProxy: waking thread";
+    if (Arn::debugThreading)  qDebug() << "newNetItemProxy: waking thread";
 }
 
 
@@ -236,7 +236,7 @@ ArnItemNet*  ArnClient::newNetItem( QString path, ArnItem::SyncMode syncMode, bo
         ArnThreadComCaller  threadCom;
 
         threadCom.p()->_retObj = 0;  // Just in case ...
-        if (gDebugThreading)  qDebug() << "newNetItem-thread: start path=" << path;
+        if (Arn::debugThreading)  qDebug() << "newNetItem-thread: start path=" << path;
         QMetaObject::invokeMethod( this,
                                    "newNetItemProxy",
                                    Qt::QueuedConnection,
@@ -246,7 +246,7 @@ ArnItemNet*  ArnClient::newNetItem( QString path, ArnItem::SyncMode syncMode, bo
                                    Q_ARG( void*, isNewPtr));
         threadCom.waitCommandEnd();  // Wait main-thread gives retObj
         ArnItemNet*  retItemNet = qobject_cast<ArnItemNet*>( threadCom.p()->_retObj);
-        if (retItemNet)  if (gDebugThreading)  qDebug() << "newNetItem-thread: end path=" << retItemNet->path();
+        if (retItemNet)  if (Arn::debugThreading)  qDebug() << "newNetItem-thread: end path=" << retItemNet->path();
 
         return retItemNet;
     }

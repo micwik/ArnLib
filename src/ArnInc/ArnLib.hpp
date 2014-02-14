@@ -34,9 +34,13 @@
 #define ARNLIB_HPP
 
 
-extern const bool gDebugThreading;
-extern const bool gDebugLinkRef;
-extern const bool gDebugRecInOut;
-extern const bool gDebugMonitor;
+namespace Arn {
+
+extern bool debugThreading;
+extern bool debugLinkRef;
+extern bool debugRecInOut;
+extern bool debugMonitor;
+
+}  // Arn::
 
 #endif // ARNLIB_HPP
