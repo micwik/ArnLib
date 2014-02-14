@@ -378,7 +378,7 @@ ArnLink*  ArnM::link( const QString& path, Arn::LinkFlags flags, ArnItem::SyncMo
 /// Threaded - must be threadsafe
 ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
 {
-    flags.f |= flags.Threaded;
+    flags.set( flags.Threaded);
 
     ArnThreadComCaller  threadCom;
 
@@ -388,7 +388,7 @@ ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, ArnItem::
                                "linkProxy",
                                Qt::QueuedConnection,
                                Q_ARG( ArnThreadCom*, threadCom.p()),
-                               Q_ARG( QString, path), Q_ARG( int, flags.f),
+                               Q_ARG( QString, path), Q_ARG( int, flags.toInt()),
                                Q_ARG( int, syncMode.f));
     threadCom.waitCommandEnd();  // Wait main-thread gives retLink
     ArnLink*  retLink = qobject_cast<ArnLink*>( threadCom.p()->_retObj);
@@ -429,33 +429,6 @@ ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, ArnItem::Sy
 }
 
 
-ArnLink*  ArnM::link( ArnLink *parent, const QString& name, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
-{
-    if (isMainThread()) {
-        ArnLink*  link = linkMain( parent, name, flags, syncMode);
-        if (link)  link->ref();
-        return link;
-    }
-    else {  // Threaded
-        if (!parent) {
-            if (!flags.is( flags.SilentError)) {
-                errorLog( QString(tr("Threaded, can't handle SubItem=")) + name,
-                          ArnError::FolderNotOpen);
-            }
-            return 0;
-        }
-        if (!parent->isFolder()) {
-            if (!flags.is( flags.SilentError)) {
-                errorLog( QString(tr("Threaded, is not folder, Path=")) + parent->linkPath(),
-                          ArnError::CreateError);
-            }
-            return 0;
-        }
-        return linkThread( parent->linkPath() + name, flags, syncMode);
-    }
-}
-
-
 ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
 {
     if (!parent) {  // No parent (folder) error
@@ -468,7 +441,7 @@ ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags f
 
     QString  nameNorm = name;
     if (nameNorm.endsWith("/")) {
-        flags.f |= flags.Folder;
+        flags.set( flags.Folder);
         nameNorm.resize( nameNorm.size() - 1);  // Remove '/' at end
     }
 

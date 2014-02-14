@@ -31,7 +31,7 @@
 //
 
 #include "ArnInc/ArnItem.hpp"
-#include "ArnInc/Arn.hpp"
+#include "ArnInc/ArnM.hpp"
 #include "ArnLink.hpp"
 #include <QTimer>
 #include <QMetaObject>
@@ -86,18 +86,18 @@ ArnItem::ArnItem( const QString& path, QObject *parent)
 }
 
 
-ArnItem::ArnItem( const ArnItem& folder_template, const QString& itemName_path, QObject *parent)
+ArnItem::ArnItem( const ArnItem& itemTemplate, const QString& path, QObject *parent)
             : ArnItemB( parent)
 {
     init();
-    /// Double usage 2 modes: template, folder
-    if (folder_template.isTemplate()) {  // Template mode: Copy syncMode & Mode from template to this Item
-        this->addSyncMode( folder_template.syncMode(), true);
-        this->addMode( folder_template.getMode());
-        this->open( itemName_path);  // (path)
+    if (itemTemplate.isTemplate()) {  // Template mode: Copy syncMode & Mode from template to this Item
+        this->addSyncMode( itemTemplate.syncMode(), true);
+        this->addMode( itemTemplate.getMode());
+        this->open( path);
     }
-    else {  // folder mode: Open itemName based on folder item
-        this->open( folder_template, itemName_path);  // (folder, itemName)
+    else {
+        ArnM::errorLog( QString(tr("Should be template path=")) + path,
+                        ArnError::CreateError);
     }
 }
 

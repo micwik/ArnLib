@@ -52,7 +52,7 @@ class ArnItemScr : public ArnItem
 public:
     ArnItemScr( QObject* parent = 0);
     ArnItemScr( const QString& path, QObject* parent = 0);
-    ArnItemScr( const ArnItem& folder_template, const QString& itemName_path, QObject* parent = 0);
+    ArnItemScr( const ArnItem& itemTemplate, const QString& path, QObject* parent = 0);
     virtual  ~ArnItemScr();
 
     int  _defaultType;

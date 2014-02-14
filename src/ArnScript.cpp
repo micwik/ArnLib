@@ -65,8 +65,8 @@ ArnItemScr::ArnItemScr( const QString& path, QObject* parent) :
 }
 
 
-ArnItemScr::ArnItemScr( const ArnItem& folder_template, const QString& itemName_path, QObject* parent) :
-    ArnItem( folder_template, itemName_path, parent)
+ArnItemScr::ArnItemScr( const ArnItem& itemTemplate, const QString& path, QObject* parent) :
+    ArnItem( itemTemplate, path, parent)
 {
     init();
 }

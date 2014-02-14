@@ -188,6 +188,12 @@ protected slots:
     virtual void  modeUpdate( bool isSetup = false);
 
 protected:
+    //! Open a handle to an Arn Object with a unique uuid name
+    /*! \param[in] path The prefix for Arn uuid path e.g. "//Names/name"
+     *  \retval false if error
+     */
+    bool  openUuid( const QString& path);
+
     //! Open a handle to an Arn Pipe Object with a unique uuid name
     /*! \param[in] path The prefix for Arn uuid pipe path e.g. "//Pipes/pipe"
      *  \retval false if error
@@ -407,7 +413,6 @@ protected:
         {Q_UNUSED(path); Q_UNUSED(linkId); Q_UNUSED(mode);}
 
     //// Methods not to be public
-    bool  open( const ArnItemB& folder, const QString& itemName);
     void  setForceKeep( bool fk = true)  {_useForceKeep = fk;}
     bool  isForceKeep()  const {return _useForceKeep;}
     Mode  getMode( ArnLink* link)  const;
@@ -433,8 +438,7 @@ private slots:
 private:
     void  init();
     void  setupOpenItem( bool isFolder);
-    bool  open( const QString& path, bool isFolder);
-    bool  open( const ArnItemB& folder, const QString& itemName, bool isFolder);
+    //bool  open( const ArnItemB& folder, const QString& itemName, bool isFolder);
 
     /// Source for unique id to all ArnItem ..
     static QAtomicInt  _idCount;

@@ -108,9 +108,6 @@ Q_OBJECT
 public:
     static ArnM&  instance();
 
-    //! \deprecated
-    static ArnM&  getInstance()  {return instance();}  // For compatibility ... (do not use)
-
     static void  setConsoleError( bool isConsoleError);
 
     //! Set system default skipping of equal value
@@ -244,8 +241,6 @@ protected:
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     static ArnLink*  root();
     static ArnLink*  link( const QString& path, Arn::LinkFlags flags,
-                           ArnItem::SyncMode syncMode = ArnItem::SyncMode());
-    static ArnLink*  link( ArnLink *parent, const QString& name, Arn::LinkFlags flags,
                            ArnItem::SyncMode syncMode = ArnItem::SyncMode());
     static ArnLink*  addTwin( ArnLink* child, ArnItem::SyncMode syncMode = ArnItem::SyncMode(),
                               Arn::LinkFlags flags = Arn::LinkFlags());

@@ -95,9 +95,6 @@ typedef Arn::LinkFlags Flags;
     void  deref();
     ~ArnLink();
 
-    //static QString  convertName( const QString& name, Arn::NameF nameF = Arn::NameF());
-    //static QString  convertBaseName( const QString& name, Arn::NameF nameF);
-
 public slots:
     void  trfValue( QByteArray value, int sendId, bool forceKeep, ArnLinkHandle handleData);
 
@@ -111,7 +108,7 @@ signals:
     void  retired();
 
 protected:
-    ArnLink( ArnLink *parent, const QString& name, Flags flags);
+    ArnLink( ArnLink* parent, const QString& name, Flags flags);
     void  setupEnd( int syncMode);
     ArnLink*  findLink(const QString& name);
     void  ref();

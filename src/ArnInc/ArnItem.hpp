@@ -87,9 +87,16 @@ public:
     /*! \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
      *  \param[in] folder_template The template for setting _modes_
      */
-    ArnItem( const ArnItem& folder_template, const QString& itemName_path, QObject* parent = 0);
+    ArnItem( const ArnItem& itemTemplate, const QString& path, QObject* parent = 0);
 
     virtual  ~ArnItem();
+
+    //! Open a handle to an Arn Object with a unique uuid name
+    /*! \param[in] path The prefix for Arn uuid path e.g. "//Names/name"
+     *  \retval false if error
+     */
+    bool  openUuid( const QString& path)
+    {return ArnItemB::openUuid( path);}
 
     //! Open a handle to an Arn Pipe Object with a unique uuid name
     /*! \param[in] path The prefix for Arn uuid pipe path e.g. "//Pipes/pipe"

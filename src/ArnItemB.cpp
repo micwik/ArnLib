@@ -90,60 +90,43 @@ void  ArnItemB::setupOpenItem( bool isFolder)
 }
 
 
-bool  ArnItemB::open( const QString &path, bool isFolder)
+bool  ArnItemB::open( const QString& path)
 {
     SyncMode  syncMode = _syncModeLinkShare ? _syncMode : SyncMode();
-    ArnLink::Flags  flags;
-    _link = ArnM::link( path, flags.flagIf( isFolder, flags.Folder) | flags.CreateAllowed, syncMode);
+    _link = ArnM::link( path,  Arn::LinkFlags::CreateAllowed, syncMode);
     if (!_link)  return false;
 
-    setupOpenItem( isFolder);
+    setupOpenItem( _link->isFolder());
     return true;
 }
 
 
-bool  ArnItemB::open( const QString &path)
-{
-    bool  isFolder = Arn::isFolderPath( path);
-    return open( path, isFolder);
-}
-
-
-bool  ArnItemB::openUuidPipe( const QString &path)
+bool  ArnItemB::openUuid( const QString& path)
 {
     QUuid  uuid = QUuid::createUuid();
     QString  fullPath = path + uuid.toString();
-    bool  stat = open( fullPath, false);
+    bool  stat = open( fullPath);
+
+    return stat;
+}
+
+
+bool  ArnItemB::openUuidPipe( const QString& path)
+{
+    bool  stat = openUuid( path);
+
     setPipeMode();
     return stat;
 }
 
 
-bool  ArnItemB::openFolder( const QString &path)
+bool  ArnItemB::openFolder( const QString& path)
 {
-    return open( path, true);
-}
+    QString  folderPath = path;
+    if (!Arn::isFolderPath( folderPath))
+        folderPath += '/';
 
-
-bool  ArnItemB::open( const ArnItemB& folder, const QString& itemName, bool isFolder)
-{
-    ArnLink *parent = folder._link;
-
-    SyncMode  syncMode = _syncModeLinkShare ? _syncMode : SyncMode();
-    ArnLink::Flags  flags;
-    _link = ArnM::link( parent, itemName,
-                        flags.flagIf( isFolder, flags.Folder) | flags.CreateAllowed, syncMode);
-    if (!_link)  return false;
-
-    setupOpenItem( isFolder);
-    return true;
-}
-
-
-bool  ArnItemB::open( const ArnItemB& folder, const QString& itemName)
-{
-    bool  isFolder = itemName.endsWith("/");
-    return open( folder, itemName, isFolder);
+    return open( folderPath);
 }
 
 
