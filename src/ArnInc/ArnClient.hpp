@@ -190,7 +190,7 @@ signals:
     void  connectionStatusChanged( int status, int curPrio);
 
     //! \cond ADV
-    void  replyRecord( XStringMap& replyMap);
+    void  replyRecord( Arn::XStringMap& replyMap);
     void  replyGet( QString data, QString path);
     void  replyLs( QStringList subItems, QString path);
     void  replyVer( QString version);
@@ -201,7 +201,7 @@ private slots:
                            const QString& path, int syncMode = 0, void* isNewPtr = 0);
     void  tcpError(QAbstractSocket::SocketError socketError);
     void  createNewItem( QString path);
-    void  doReplyRecord( XStringMap& replyMap);
+    void  doReplyRecord( Arn::XStringMap& replyMap);
     void  reConnectArn();
     void  doTcpConnected();
 
@@ -213,7 +213,7 @@ private:
     int  _nextHost;
     int  _curPrio;
 
-    QStringList  makeItemList( XStringMap& xsMap);
+    QStringList  makeItemList( Arn::XStringMap& xsMap);
     QTcpSocket*  _socket;
     ArnSync*  _arnNetSync;
 
@@ -223,7 +223,7 @@ private:
     int  _retryTime;
     QTimer*  _connectTimer;
     ArnItem*  _arnMountPoint;
-    XStringMap  _commandMap;
+    Arn::XStringMap  _commandMap;
     QString  _id;
     HostAddrPort  _curConnectAP;
     ConnectStat  _connectStat;

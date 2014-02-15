@@ -96,7 +96,7 @@ bool  ArnLinkHandle::isNull()  const
 }
 
 
-const QVariant&  ArnLinkHandle::value( Code code)  const
+const QVariant&  ArnLinkHandle::valueRef( Code code)  const
 {
     static QVariant  nullValue;
 

@@ -39,16 +39,18 @@
 #include <QVariant>
 #include <QDebug>
 
+using Arn::XStringMap;
+
 #define RPC_STORAGE_NAME "_ArnRpcStorage"
 
 
 //! \cond ADV
-class RpcReceiverStorage : public QObject
+class ArnRpcReceiverStorage : public QObject
 {
 public:
     ArnRpc*  _rpcSender;
 
-    explicit  RpcReceiverStorage( QObject* parent) :
+    explicit  ArnRpcReceiverStorage( QObject* parent) :
         QObject( parent)
     {
         _rpcSender = 0;
@@ -56,10 +58,10 @@ public:
 };
 
 
-class DynamicSignals : public QObject
+class ArnDynamicSignals : public QObject
 {
 public:
-    explicit  DynamicSignals( ArnRpc* rpc);
+    explicit  ArnDynamicSignals( ArnRpc* rpc);
     int  qt_metacall( QMetaObject::Call call, int id, void **arguments);
     bool  addSignal( QObject *sender, int signalId, QByteArray funcName);
 
@@ -77,7 +79,7 @@ private:
 };
 
 
-DynamicSignals::DynamicSignals( ArnRpc* rpc) :
+ArnDynamicSignals::ArnDynamicSignals( ArnRpc* rpc) :
     QObject( rpc)
 {
     _slotIdCount = QObject::staticMetaObject.methodCount();
@@ -85,7 +87,7 @@ DynamicSignals::DynamicSignals( ArnRpc* rpc) :
 }
 
 
-int  DynamicSignals::qt_metacall( QMetaObject::Call call, int id, void **arguments)
+int  ArnDynamicSignals::qt_metacall( QMetaObject::Call call, int id, void **arguments)
 {
     id = QObject::qt_metacall( call, id, arguments);
     if ((id < 0) || (call != QMetaObject::InvokeMetaMethod))
@@ -117,7 +119,7 @@ int  DynamicSignals::qt_metacall( QMetaObject::Call call, int id, void **argumen
 }
 
 
-bool  DynamicSignals::addSignal( QObject *sender, int signalId, QByteArray funcName)
+bool  ArnDynamicSignals::addSignal( QObject *sender, int signalId, QByteArray funcName)
 {
     const QMetaObject*  metaObject = sender->metaObject();
     const QMetaMethod&  method = metaObject->method( signalId);
@@ -145,7 +147,7 @@ ArnRpc::ArnRpc( QObject* parent) :
     _receiver            = 0;
     _receiverStorage     = 0;
     _isIncludeSender     = false;
-    _dynamicSignals      = new DynamicSignals( this);
+    _dynamicSignals      = new ArnDynamicSignals( this);
     _isHeartBeatOk       = true;
     _timerHeartBeatSend  = new QTimer( this);
     _timerHeartBeatCheck = new QTimer( this);
@@ -215,9 +217,9 @@ void  ArnRpc::setReceiver( QObject *receiver)
 {
     _receiver = receiver;
 
-    _receiverStorage = _receiver->findChild<RpcReceiverStorage*>( RPC_STORAGE_NAME);
+    _receiverStorage = _receiver->findChild<ArnRpcReceiverStorage*>( RPC_STORAGE_NAME);
     if (!_receiverStorage) {
-        _receiverStorage = new RpcReceiverStorage( _receiver);
+        _receiverStorage = new ArnRpcReceiverStorage( _receiver);
         _receiverStorage->setObjectName( RPC_STORAGE_NAME);
     }
 }
@@ -310,7 +312,7 @@ ArnRpc*  ArnRpc::rpcSender( QObject *receiver)
 {
     if (!receiver)  return 0;
 
-    RpcReceiverStorage*  recStore = receiver->findChild<RpcReceiverStorage*>( RPC_STORAGE_NAME);
+    ArnRpcReceiverStorage*  recStore = receiver->findChild<ArnRpcReceiverStorage*>( RPC_STORAGE_NAME);
     if (!recStore)  return 0;
 
     return recStore->_rpcSender;

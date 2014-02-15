@@ -48,8 +48,8 @@
 //! Similar to Q_ARG but with added argument label (parameter name)
 #define MQ_ARG(type, label, data) MQArgument<type >(#type, #label, data)
 
-class RpcReceiverStorage;
-class DynamicSignals;
+class ArnRpcReceiverStorage;
+class ArnDynamicSignals;
 class QMetaMethod;
 class QRegExp;
 class QTimer;
@@ -323,15 +323,15 @@ protected:
     void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
 
 private:
-    bool  xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint index, int& nArg);
-    bool  xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &index, const QByteArray& methodName);
-    void  funcHeartBeat( const XStringMap& xsm);
-    void  funcHelp( const XStringMap& xsm);
+    bool  xsmAddArg( Arn::XStringMap& xsm, const MQGenericArgument& arg, uint index, int& nArg);
+    bool  xsmLoadArg( const Arn::XStringMap& xsm, QGenericArgument& arg, int &index, const QByteArray& methodName);
+    void  funcHeartBeat( const Arn::XStringMap& xsm);
+    void  funcHelp( const Arn::XStringMap& xsm);
     void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin);
     static QByteArray  methodSignature( const QMetaMethod& method);
 
-    DynamicSignals*  _dynamicSignals;
-    RpcReceiverStorage*  _receiverStorage;
+    ArnDynamicSignals*  _dynamicSignals;
+    ArnRpcReceiverStorage*  _receiverStorage;
     ArnPipe*  _pipe;
     QObject*  _receiver;
     QByteArray  _methodPrefix;

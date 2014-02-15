@@ -93,7 +93,7 @@ public:
     QString  hostName()  const;
     quint16  hostPort()  const;
     QHostAddress  hostIp()  const;
-    XStringMap  properties()  const;
+    Arn::XStringMap  properties()  const;
     QString  typeString()  const;
     QString  hostPortString()  const;
     QString  hostIpString()  const;
@@ -109,7 +109,7 @@ private:
     QString  _hostName;
     quint16  _hostPort;
     QHostAddress  _hostIp;
-    XStringMap  _properties;
+    Arn::XStringMap  _properties;
     int  _resolvCode;
 };
 

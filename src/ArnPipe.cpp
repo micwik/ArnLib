@@ -131,7 +131,7 @@ void  ArnPipe::itemUpdate(const ArnLinkHandle& handleData, const QByteArray* val
     ArnItemB::itemUpdate( handleData, value);
 
     if (_useCheckSeq && handleData.has( ArnLinkHandle::SeqNo)) {
-        int seqNum = handleData.value( ArnLinkHandle::SeqNo).toInt();
+        int seqNum = handleData.valueRef( ArnLinkHandle::SeqNo).toInt();
         if (seqNum != _checkSeqNum) {  // Sequence not matching
             if (_checkSeqNum != -1)  // If not initial, this is out of sequence
                 emit outOfSequence();

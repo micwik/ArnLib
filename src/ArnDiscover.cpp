@@ -35,6 +35,8 @@
 #include <QHostInfo>
 #include <QTimer>
 
+using Arn::XStringMap;
+
 
 ///////// ArnDiscoverInfo
 

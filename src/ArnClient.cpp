@@ -38,6 +38,8 @@
 #include <QTimer>
 #include <QDebug>
 
+using Arn::XStringMap;
+
 
 ArnClient::ArnClient( QObject* parent) :
     QObject( parent)

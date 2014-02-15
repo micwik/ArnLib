@@ -40,6 +40,8 @@
 #include <QStringList>
 
 
+namespace Arn {
+
 //! Container class with string representation for serialized data.
 /*!
 The primary usage is for creating and parsing serialized data.
@@ -60,7 +62,7 @@ The XString can be imported to the XStringMap. To get back stored values,
 XStringMap is Queried with the keys or by index.
 
 \code
-    XStringMap xsm;
+    Arn::XStringMap xsm;
     xsm.add("", "put");
     xsm.add("id", "level");
     xsm.add("val", QByteArray::number(12));
@@ -157,7 +159,8 @@ private:
     QByteArray  _nullValue;
 };
 
-
 void XStringMapTest();
+
+}  // Arn::
 
 #endif // XSTRINGMAP_HPP

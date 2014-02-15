@@ -133,8 +133,8 @@ protected:
     void  setHost( const QString& host);
     QByteArray  txtRecord()  const;
     void  setTxtRecord( const QByteArray& txt);
-    bool  getTxtRecordMap( XStringMap& xsm);
-    void  setTxtRecordMap( const XStringMap& xsm);
+    bool  getTxtRecordMap( Arn::XStringMap& xsm);
+    void  setTxtRecordMap( const Arn::XStringMap& xsm);
 
     void  parseFullDomain( const QByteArray& domainName);
     static int  getNextId();
@@ -178,7 +178,7 @@ A given TXT record can be registered together with the service.
     // In class code
     _advertService = new ArnZeroConfRegister("My TestService. In the attic", this);
     _advertService->addSubType("server");
-    XStringMap xsmPar;
+    Arn::XStringMap xsmPar;
     xsmPar.add("ver", "1.0").add("server", "1");
     _advertService->setTxtRecordMap( xsmPar);
     connect(_advertService, SIGNAL(registered()), this, SLOT(onRegistered()));
@@ -251,10 +251,10 @@ public:
     void  setTxtRecord( const QByteArray& txt)
     {ArnZeroConfB::setTxtRecord( txt);}
 
-    bool  getTxtRecordMap( XStringMap& xsm)
+    bool  getTxtRecordMap( Arn::XStringMap& xsm)
     {return ArnZeroConfB::getTxtRecordMap( xsm);}
 
-    void  setTxtRecordMap( const XStringMap& xsm)
+    void  setTxtRecordMap( const Arn::XStringMap& xsm)
     {ArnZeroConfB::setTxtRecordMap( xsm);}
 
     //! Register the service
@@ -304,7 +304,7 @@ The service name can be given directly if known, but typically it comes from Arn
 void XXX::onResolved( int id, QByteArray escFullDomain)
 {
     ArnZeroConfResolv*  ds = qobject_cast<ArnZeroConfResolv*>( sender());
-    XStringMap  xsmPar;
+    Arn::XStringMap  xsmPar;
     ds->getTxtRecordMap( xsmPar);
     QString  info = QString()
                   +  " Domain=" + ds->domain()
@@ -375,7 +375,7 @@ public:
     QByteArray  txtRecord()  const
     {return ArnZeroConfB::txtRecord();}
 
-    bool  getTxtRecordMap( XStringMap& xsm)
+    bool  getTxtRecordMap( Arn::XStringMap& xsm)
     {return ArnZeroConfB::getTxtRecordMap( xsm);}
 
     //! Resolve the service

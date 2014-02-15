@@ -58,11 +58,11 @@ public:
     ~ArnSync();
     ArnItemNet*  newNetItem( const QString& path,
                              ArnItem::SyncMode syncMode = ArnItem::SyncMode::Normal, bool* isNewPtr = 0);
-    void  sendXSMap( const XStringMap& xsMap);
+    void  sendXSMap( const Arn::XStringMap& xsMap);
     void  send( const QByteArray& xString);
 
 signals:
-    void  replyRecord( XStringMap& replyMap);
+    void  replyRecord( Arn::XStringMap& replyMap);
 
 private slots:
     void  connected();
@@ -106,9 +106,9 @@ private:
 
     QByteArray  _dataReadBuf;
     QByteArray  _dataRemain;
-    XStringMap  _commandMap;
-    XStringMap  _replyMap;
-    XStringMap  _syncMap;
+    Arn::XStringMap  _commandMap;
+    Arn::XStringMap  _replyMap;
+    Arn::XStringMap  _syncMap;
 
     QMap<uint,ArnItemNet*>  _itemNetMap;
 

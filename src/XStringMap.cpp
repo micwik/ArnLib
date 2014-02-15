@@ -35,6 +35,8 @@
 #include <QDebug>
 
 
+namespace Arn {
+
 XStringMap::XStringMap()
 {
     init();
@@ -660,3 +662,5 @@ void  XStringMapTest()
         qDebug() << xsm2.key( i) << " = " << xsm2.value( i);
     }
 }
+
+}  // Arn::

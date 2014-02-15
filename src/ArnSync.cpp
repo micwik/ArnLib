@@ -40,6 +40,8 @@
 #include <QDebug>
 #include <limits.h>
 
+using Arn::XStringMap;
+
 
 ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     : QObject( parent)
@@ -552,7 +554,7 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
         fluxRec->xString += makeFluxString( itemNet, handleData);
         itemNet->submitted();
         if (handleData.has( ArnLinkHandle::QueueFindRegexp)) {
-            QRegExp  rx = handleData.value( ArnLinkHandle::QueueFindRegexp).toRegExp();
+            QRegExp  rx = handleData.valueRef( ArnLinkHandle::QueueFindRegexp).toRegExp();
             // qDebug() << "AddFluxQueue Pipe QOW: rx=" << rx.pattern();
             int i;
             for (i = 0; i < _fluxPipeQueue.size(); ++i) {
@@ -724,9 +726,9 @@ QByteArray  ArnSync::makeFluxString(const ArnItemNet* itemNet, const ArnLinkHand
         _syncMap.add("type", type);
 
     if (handleData.has( ArnLinkHandle::QueueFindRegexp))
-        _syncMap.add("nqrx", handleData.value( ArnLinkHandle::QueueFindRegexp).toRegExp().pattern());
+        _syncMap.add("nqrx", handleData.valueRef( ArnLinkHandle::QueueFindRegexp).toRegExp().pattern());
     else if (handleData.has( ArnLinkHandle::SeqNo))
-        _syncMap.add("seq", QByteArray::number( handleData.value( ArnLinkHandle::SeqNo).toInt()));
+        _syncMap.add("seq", QByteArray::number( handleData.valueRef( ArnLinkHandle::SeqNo).toInt()));
 
     _syncMap.add("data", itemNet->arnExport());
 

@@ -42,6 +42,8 @@
 #include <QTimer>
 #include <QtEndian>
 
+using Arn::XStringMap;
+
 
 //// Used to hide dns_sd details from the header
 class ArnZeroConfIntern

@@ -48,6 +48,8 @@
 #include <QMetaObject>
 #include <QMetaMethod>
 
+using Arn::XStringMap;
+
 const int  arnDbSaveVer = 200;
 
 

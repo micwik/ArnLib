@@ -69,10 +69,10 @@ public:
     ArnLinkHandle( const ArnLinkHandle& other);
     ArnLinkHandle( const Flags& flags);
     ~ArnLinkHandle();
-    ArnLinkHandle&  add( Code code, const QVariant& value);
+    ArnLinkHandle&  add( Code code, const QVariant& valueRef);
     bool  has( Code code)  const;
     bool  isNull()  const;
-    const QVariant&  value( Code code)  const;
+    const QVariant&  valueRef( Code code)  const;
 
     Flags  _flags;
 
