@@ -57,8 +57,8 @@ ArnClient::ArnClient( QObject* parent) :
 
     connect( _socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
     connect( _socket, SIGNAL(disconnected()), this, SIGNAL(tcpDisConnected()));
-    connect( _arnNetSync, SIGNAL(replyRecord(XStringMap&)), this, SLOT(doReplyRecord(XStringMap&)));
-    connect( _arnNetSync, SIGNAL(replyRecord(XStringMap&)), this, SIGNAL(replyRecord(XStringMap&)));
+    connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SLOT(doReplyRecord(Arn::XStringMap&)));
+    connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SIGNAL(replyRecord(Arn::XStringMap&)));
 
     connect( _socket, SIGNAL(error(QAbstractSocket::SocketError)),
              this, SLOT(tcpError(QAbstractSocket::SocketError)));
