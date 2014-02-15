@@ -212,7 +212,7 @@ _service_.
 An extended feature comparing to normal _signals_ is that the _SAPI
 signals_ are _public_ and can be called by non-derived classes.
 This makes it optional to use both _signal to signal_ connections or direct _signal_ calls
-when issuing a RPC to the remote side.
+(emit), when issuing a RPC to the remote side.
 
 The _service_ slot can get the emitting _custom SAPI_ object by using normal
 QObject::sender() functionality.
@@ -248,6 +248,28 @@ below has a first empty element followed by "green".
 > test list= le= green blue int=2
 
 The built-in call "$help" will give an automatically generated list of the present SAPI with the syntax for each available service.
+<Br><Br>
+
+
+ZeroConfig    {#gen_zeroconf}
+----------
+tbd
+<Br><Br>
+
+
+Discover    {#gen_discover}
+--------
+tbd
+<Br><Br>
+
+### Discover remote ###    {#gen_discoverRemote}
+Connecting via resolver uses logic:
+* If connection fails for a resolved host, resolving is forced to be refreshed for the target service name.
+  Host for the service name might have changed since last resolved and doing a refresh can get the new host.
+
+* If connection continues to fail for a resolved host, refreshing the resolv will have a blocking time to
+  avoid spamming the net. Typically this time is 60 seconds, but it can be changed by
+  ArnDiscoverConnector::setResolveRefreshTimeout().
 <Br><Br>
 
 

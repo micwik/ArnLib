@@ -117,7 +117,7 @@ void  ArnDiscoverConnector::doClientConnectChanged( int stat, int curPrio)
         _resolveRefreshBlocked = false;
         return;
     }
-    if (curPrio != _discoverHostPrio)  return;  // Error not for resolved host
+    if (curPrio != _discoverHostPrio)  return;  // Not for resolved host
     if ((cs != cs.Error) && (cs != cs.Disconnected))  return;  // Skip any non error
 
     if (_resolveRefreshTime->elapsed() >= _resolveRefreshTimeout * 1000)
@@ -352,8 +352,8 @@ void  ArnDiscoverRemote::serviceTimeout()
 void  ArnDiscoverRemote::firstServiceSetup( QString serviceName)
 {
     QString  service = serviceName;
-    if (service.isEmpty())
-        service = _defaultService;
+    //if (service.isEmpty())
+    //    service = _defaultService;
     qDebug() << "firstServiceSetup: serviceName=" << service;
 
     _servTimer->stop();
@@ -368,7 +368,8 @@ void  ArnDiscoverRemote::firstServiceSetup( QString serviceName)
 void  ArnDiscoverRemote::doServiceChanged( QString val)
 {
     qDebug() << "DiscoverRemote Service changed: servname=" << val;
-    ArnDiscoverAdvertise::setService( val);
+    _arnServicePv = val;
+    ArnDiscoverAdvertise::setService( val.isEmpty() ? _defaultService : val);
 }
 
 
@@ -376,7 +377,8 @@ void  ArnDiscoverRemote::serviceRegistered( QString serviceName)
 {
     qDebug() << "DiscoverRemote Service registered: serviceName=" << serviceName;
 
-    _arnServicePv = serviceName;
+    //_arnServicePv = serviceName;
+    ArnM::setValue( Arn::pathDiscoverThis + "UsingService/value", serviceName);
 
     ArnDiscoverAdvertise::serviceRegistered( serviceName);
 }

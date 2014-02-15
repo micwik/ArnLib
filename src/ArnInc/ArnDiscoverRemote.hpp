@@ -42,6 +42,16 @@ class QTimer;
 class QTime;
 
 
+//! An Automatic discover connector.
+/*!
+[About Discover Remote](\ref gen_discoverRemote)
+
+tbd
+
+<b>Example usage</b> \n \code
+tbd
+\endcode
+*/
 class ArnDiscoverConnector : public QObject
 {
     Q_OBJECT
