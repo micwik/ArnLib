@@ -62,31 +62,32 @@ struct Error {
     };
     MQ_DECLARE_ENUM( Error)
 };
+
+//! States of ZeroConfig, limited valid for each ArnZeroConfB subclass
+struct State {
+    enum E {
+        //! Inactive state
+        None,
+        //! Registering service in progress
+        Registering,
+        //! Registering service has finished sucessfully
+        Registered,
+        //! Resolving service in progress
+        Resolving,
+        //! Resolving service has finished sucessfully
+        Resolved,
+        //! Browsing for service in progress
+        Browsing
+    };
+    MQ_DECLARE_ENUM( State)
+};
 }
+
 
 class ARNLIBSHARED_EXPORT ArnZeroConfB : public QObject
 {
     Q_OBJECT
 public:
-    //! States of ZeroConfig, limited valid for each subclass
-    struct State {
-        enum E {
-            //! Inactive state
-            None,
-            //! Registering service in progress
-            Registering,
-            //! Registering service has finished sucessfully
-            Registered,
-            //! Resolving service in progress
-            Resolving,
-            //! Resolving service has finished sucessfully
-            Resolved,
-            //! Browsing for service in progress
-            Browsing
-        };
-        MQ_DECLARE_ENUM( State)
-    };
-
     ArnZeroConfB( QObject* parent = 0);
     virtual ~ArnZeroConfB();
 
@@ -100,7 +101,7 @@ public:
     //! Returns the current state of the service
     /*! \retval the state of the service
      */
-    State  state()  const;
+    ArnZeroConf::State  state()  const;
 
     QString  fullServiceType()  const;
     QByteArray  escapedFullDomain()  const;
@@ -165,7 +166,7 @@ protected:
     QString  _host;
     QByteArray  _txtRec;
 
-    State  _state;
+    ArnZeroConf::State  _state;
     _DNSServiceRef_t*  _serviceRef;
     QStringList  _serviceSubTypes;
     int  _iface;

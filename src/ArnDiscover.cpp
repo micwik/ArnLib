@@ -614,7 +614,7 @@ void  ArnDiscoverAdvertise::setService( QString service)
     if (!_hasSetupAdvertise)  return;
 
     qDebug() << "Advertise Service changed: servname=" << _service;
-    if (_arnZCReg->state() != ArnZeroConfRegister::State::None)
+    if (_arnZCReg->state() != ArnZeroConf::State::None)
         _arnZCReg->releaseService();
     _arnZCReg->setServiceName( _service);
     _arnZCReg->registerService();

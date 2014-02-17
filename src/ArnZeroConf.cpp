@@ -69,7 +69,7 @@ ArnZeroConfB::ArnZeroConfB( QObject* parent)
     _port        = Arn::defaultTcpPort;
     _iface       = 0;
     _notifier    = 0;
-    _state       = State::None;
+    _state       = ArnZeroConf::State::None;
     _serviceType = "arn";
     _socketType  = QAbstractSocket::TcpSocket;
     _domain      = "local.";  // Default
@@ -171,7 +171,7 @@ void  ArnZeroConfB::setPort( quint16 port)
 }
 
 
-ArnZeroConfB::State  ArnZeroConfB::state()  const
+ArnZeroConf::State  ArnZeroConfB::state()  const
 {
     return _state;
 }
@@ -364,7 +364,7 @@ ArnZeroConfRegister::ArnZeroConfRegister( const QString& serviceName, const QStr
 
 ArnZeroConfRegister::~ArnZeroConfRegister()
 {
-    if (state() != State::None)
+    if (state() != ArnZeroConf::State::None)
         releaseService();
 
 #ifdef MDNS_INTERN
@@ -375,7 +375,7 @@ ArnZeroConfRegister::~ArnZeroConfRegister()
 
 void  ArnZeroConfRegister::registerService( bool noAutoRename)
 {
-    if (state() != State::None) {
+    if (state() != ArnZeroConf::State::None) {
         qWarning() << "ZeroConfRegister: Error register service while not in None state";
         emit registrationError(0);
         return;
@@ -405,11 +405,11 @@ void  ArnZeroConfRegister::registerService( bool noAutoRename)
                              ArnZeroConfIntern::registerServiceCallback,
                              this);
     if (err != kDNSServiceErr_NoError) {
-        _state = State::None;
+        _state = ArnZeroConf::State::None;
         emit registrationError(err);
     }
     else {
-        _state = State::Registering;
+        _state = ArnZeroConf::State::Registering;
 #ifndef MDNS_INTERN
         _notifier = new QSocketNotifier( DNSServiceRefSockFD( _serviceRef), QSocketNotifier::Read, this);
         connect( _notifier, SIGNAL(activated(int)), this, SLOT(socketData()));
@@ -420,12 +420,12 @@ void  ArnZeroConfRegister::registerService( bool noAutoRename)
 
 void  ArnZeroConfRegister::releaseService()
 {
-    if ((state() != State::Registered) && (state() != State::Registering)) {
+    if ((state() != ArnZeroConf::State::Registered) && (state() != ArnZeroConf::State::Registering)) {
         qWarning() << "ZeroConfRegister release: unregistered service";
     }
     else {
         DNSServiceRefDeallocate( _serviceRef);
-        _state = State::None;
+        _state = ArnZeroConf::State::None;
 #ifndef MDNS_INTERN
         _notifier->deleteLater();
         _notifier = 0;
@@ -447,11 +447,11 @@ void  ArnZeroConfIntern::registerServiceCallback( DNSServiceRef service, DNSServ
         QString  servName = QString::fromUtf8( name);
         self->setServiceName( servName);
         self->setDomain( QString::fromUtf8( domain));
-        self->_state = ArnZeroConfB::State::Registered;
+        self->_state = ArnZeroConf::State::Registered;
         emit self->registered( servName);
     }
     else {
-        self->_state = ArnZeroConfB::State::None;
+        self->_state = ArnZeroConf::State::None;
         emit self->registrationError( errCode);
     }
 }
@@ -501,7 +501,7 @@ ArnZeroConfResolv::ArnZeroConfResolv( const QString& serviceName, const QString&
 
 ArnZeroConfResolv::~ArnZeroConfResolv()
 {
-    if (state() != State::None)
+    if (state() != ArnZeroConf::State::None)
         releaseService();
 
 #ifdef MDNS_INTERN
@@ -527,12 +527,12 @@ void  ArnZeroConfResolv::resolve(bool forceMulticast)
     if (_id < 0)  // No valid id set, get one
         _id = ArnZeroConfB::getNextId();
 
-    if ((state() != State::None) && (state() != State::Resolved)) {
+    if ((state() != ArnZeroConf::State::None) && (state() != ArnZeroConf::State::Resolved)) {
         qWarning() << "ZeroConfResolv: Error resolve service when not None or Resolved state";
         emit resolveError( _id, ArnZeroConf::Error::BadReqSeq);
         return;
     }
-    if (state() == State::Resolved)
+    if (state() == ArnZeroConf::State::Resolved)
         releaseService();
 
     DNSServiceErrorType err;
@@ -545,11 +545,11 @@ void  ArnZeroConfResolv::resolve(bool forceMulticast)
                             ArnZeroConfIntern::resolveServiceCallback,
                             this);
     if (err != kDNSServiceErr_NoError) {
-        _state = State::None;
+        _state = ArnZeroConf::State::None;
         emit resolveError( _id, err);
     }
     else {
-        _state = State::Resolving;
+        _state = ArnZeroConf::State::Resolving;
         _resolvTimer->start();
 
 #ifndef MDNS_INTERN
@@ -564,12 +564,12 @@ void  ArnZeroConfResolv::releaseService()
 {
     _resolvTimer->stop();
 
-    if ((state() != State::Resolved) && (state() != State::Resolving)) {
+    if ((state() != ArnZeroConf::State::Resolved) && (state() != ArnZeroConf::State::Resolving)) {
         qWarning() << "ZeroConfResolv release: unresolved service";
     }
     else {
         DNSServiceRefDeallocate( _serviceRef);
-        _state = State::None;
+        _state = ArnZeroConf::State::None;
 #ifndef MDNS_INTERN
         _notifier->deleteLater();
         _notifier = 0;
@@ -610,11 +610,11 @@ void  ArnZeroConfIntern::resolveServiceCallback(DNSServiceRef service, DNSServic
         self->setPort( qFromBigEndian( port));
         self->setTxtRecord( txtLen > 0 ? QByteArray((const char*) txt, txtLen) : QByteArray());
         self->_iface = iface;
-        self->_state = ArnZeroConfB::State::Resolved;
+        self->_state = ArnZeroConf::State::Resolved;
         emit self->resolved( self->_id, fullname);
     }
     else {
-        self->_state = ArnZeroConfB::State::None;
+        self->_state = ArnZeroConf::State::None;
         emit self->resolveError( self->_id, errCode);
     }
 }
@@ -669,7 +669,7 @@ int  ArnZeroConfBrowser::serviceNameToId( const QString& name)
 
 bool  ArnZeroConfBrowser::isBrowsing()  const
 {
-    return _state == State::Browsing;
+    return _state == ArnZeroConf::State::Browsing;
 }
 
 
@@ -690,7 +690,7 @@ QString ArnZeroConfBrowser::subType()
 void ArnZeroConfBrowser::browse( bool enable)
 {
     if (!enable)  return stopBrowse();
-    if (state() != State::None)  return;  // Already browsing
+    if (state() != ArnZeroConf::State::None)  return;  // Already browsing
 
     _activeServiceNames.clear();
 
@@ -711,7 +711,7 @@ void ArnZeroConfBrowser::browse( bool enable)
         emit browseError(err);
     }
     else {
-        _state = State::Browsing;
+        _state = ArnZeroConf::State::Browsing;
 #ifndef MDNS_INTERN
         _notifier = new QSocketNotifier( DNSServiceRefSockFD( _serviceRef), QSocketNotifier::Read, this);
         connect( _notifier, SIGNAL(activated(int)), this, SLOT(socketData()));
@@ -722,14 +722,14 @@ void ArnZeroConfBrowser::browse( bool enable)
 
 void ArnZeroConfBrowser::stopBrowse()
 {
-    if (state() == State::Browsing) {
+    if (state() == ArnZeroConf::State::Browsing) {
         DNSServiceRefDeallocate( _serviceRef);
 #ifndef MDNS_INTERN
         _notifier->deleteLater();
         _notifier = 0;
 #endif
     }
-    _state = State::None;
+    _state = ArnZeroConf::State::None;
 }
 
 
