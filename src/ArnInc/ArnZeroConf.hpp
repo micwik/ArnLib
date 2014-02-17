@@ -47,6 +47,23 @@ class QSocketNotifier;
 class QTimer;
 
 
+namespace ArnZeroConf {
+//! Errors of ZeroConfig, other values are defined in dns_sd.h
+struct Error {
+    enum E {
+        //! Ok, defined as kDNSServiceErr_NoError in dns_sd.h
+        Ok        = 0,
+        //! Operation in progress
+        Running   = -1,
+        //! Bad request sequence
+        BadReqSeq = -2,
+        //! Operation timeout
+        Timeout   = -3
+    };
+    MQ_DECLARE_ENUM( Error)
+};
+}
+
 class ARNLIBSHARED_EXPORT ArnZeroConfB : public QObject
 {
     Q_OBJECT

@@ -72,6 +72,9 @@ ArnClient::ArnClient( QObject* parent) :
 
 void  ArnClient::clearArnList( int prioFilter)
 {
+    if (_nextHost > 0)
+        _nextHost = 0;
+
     if ((prioFilter < 0) || _hostTab.isEmpty()) {
         _hostTab.clear();
         _hostPrioTab.clear();
@@ -308,13 +311,17 @@ void  ArnClient::doConnectArnLogic()
         port     = _port;
     }
     else if (!_hostTab.isEmpty()) {  // Arn connection list
-        if (_nextHost >= _hostTab.size())  // Past end of list, restart
+        if (_nextHost >= _hostTab.size()) {  // Past end of list, restart
             _nextHost = 0;
+            emit connectionStatusChanged( ConnectStat::TriedAll, -1);
+        }
 
         const HostAddrPort&  slot = _hostTab.at( _nextHost);
         arnHost = slot.addr;
         port    = slot.port;
         curPrio = _hostPrioTab.at( _nextHost);
+        qDebug() << "ArnClient connectlogic: hostTabSize=" << _hostTab.size() << " index=" << _nextHost
+                 << " prio=" << _hostPrioTab.at( _nextHost);
         ++_nextHost;
     }
 

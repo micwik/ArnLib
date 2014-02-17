@@ -77,7 +77,9 @@ public:
             //! Unsuccessfull when trying to connect to an Arn host
             Error,
             //! TCP connection is broken (has been successfull)
-            Disconnected
+            Disconnected,
+            //! Unsuccessfully tried to connect to all hosts in the Arn connection List
+            TriedAll
         };
         MQ_DECLARE_ENUM( ConnectStat)
     };

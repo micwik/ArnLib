@@ -43,9 +43,15 @@ using Arn::XStringMap;
 ArnDiscoverInfo::ArnDiscoverInfo()
 {
     _id         = -1;  // Unknown
-    _resolvCode = -1;  // Init
+    _resolvCode = ArnZeroConf::Error::Ok;
     _hostPort   = 0;
     _stopState  = State::HostIp;
+}
+
+
+bool  ArnDiscoverInfo::inProgress()  const
+{
+    return (_state < _stopState) && (_state != State::HostInfoErr) && (_state != State::HostIpErr);
 }
 
 
@@ -157,7 +163,7 @@ ArnDiscoverResolver::ArnDiscoverResolver( QObject* parent) :
 }
 
 
-void  ArnDiscoverResolver::resolve(QString serviceName, bool forceUpdate)
+void  ArnDiscoverResolver::resolve( QString serviceName, bool forceUpdate)
 {
     ArnDiscoverBrowserB::resolve( serviceName.isEmpty() ? _defaultService : serviceName, forceUpdate);
 }
@@ -280,10 +286,10 @@ bool  ArnDiscoverBrowserB::goTowardState( int index, ArnDiscoverInfo::State stat
     ArnDiscoverInfo&  info = _activeServInfos[ index];
     if (state <= info._state)  return false;  // Can only go forward
 
-    if (info._state < info._stopState) {  // Next state is in progress
+    if (info.inProgress()) {  // Next state is in progress
         info._stopState = state;  // Just update final state
     }
-    else if (info._state == info._stopState) {  // Nothing in progress
+    else if (info._state <= info._stopState) {  // Nothing in progress
         info._stopState = state;  // Update for new final state
         doNextState( info);  // Startup state change
     }
@@ -326,16 +332,27 @@ void  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
         removeServiceInfo( index);
         id = -1;  // Mark not found
     }
+
+    ArnDiscoverInfo*  info = 0;
+    int index = -1;
     if (id < 0) {  // Not found, resolve new service
         id = ArnZeroConfBrowser::getNextId();
-        int  index = newServiceInfo( id, serviceName, QString());
+        index = newServiceInfo( id, serviceName, QString());
         Q_ASSERT(index >= 0);  // Already resolving, internal error ...
 
-        doNextState( _activeServInfos.at( index));
+        info = &_activeServInfos[ index];
+        doNextState( *info);
     }
     else {  // Already resolving / resolved
-        int  index = IdToIndex( id);
-        emit infoUpdated( index, _activeServInfos.at( index)._state);
+        index = IdToIndex( id);
+        info = &_activeServInfos[ index];
+        if (!info->inProgress())  // Not in progress, possibly do retry error
+            doNextState( *info);
+    }
+    Q_ASSERT(info && (index >= 0));
+    if (info->inProgress()) {
+        info->_resolvCode = ArnZeroConf::Error::Running;
+        emit infoUpdated( index, info->_state);
     }
 }
 
@@ -355,7 +372,7 @@ void  ArnDiscoverBrowserB::onServiceAdded( int id, QString name, QString domain)
     Q_ASSERT(index >= 0);
 
     emit serviceAdded( index, name);
-    doNextState( _activeServInfos.at( index));
+    doNextState( _activeServInfos[ index]);
 }
 
 
@@ -409,7 +426,7 @@ void  ArnDiscoverBrowserB::onResolved( int id, QByteArray escFullDomain)
                                        : (servProp.toInt() ? ArnDiscover::Type::Server
                                                            : ArnDiscover::Type::Client);
         info._state      = ArnDiscoverInfo::State::HostInfo;
-        info._resolvCode = 0;
+        info._resolvCode = ArnZeroConf::Error::Ok;
         info._hostName   = ds->host();
         info._hostPort   = ds->port();
         info._properties = xsmTxt;
@@ -461,7 +478,7 @@ int  ArnDiscoverBrowserB::newServiceInfo( int id, QString name, QString domain)
     info._id          = id;
     info._state       = ArnDiscoverInfo::State::ServiceName;
     info._serviceName = name;
-    info._domain      =  domain;
+    info._domain      = domain;
     info._stopState   = _defaultStopState;
 
     int  index;
@@ -486,7 +503,7 @@ void  ArnDiscoverBrowserB::removeServiceInfo( int index)
 }
 
 
-void  ArnDiscoverBrowserB::doNextState( const ArnDiscoverInfo& info)
+void  ArnDiscoverBrowserB::doNextState( ArnDiscoverInfo& info)
 {
     if (info._state >= info._stopState)  return;  // At stop state, do nothing more now
 
@@ -495,6 +512,8 @@ void  ArnDiscoverBrowserB::doNextState( const ArnDiscoverInfo& info)
         // Fall throu
     case ArnDiscoverInfo::State::ServiceName:
     {
+        info._state = ArnDiscoverInfo::State::ServiceName;
+
         ArnZeroConfResolv*  ds = new ArnZeroConfResolv( info._serviceName, this);
         ds->setId( info._id);
         connect( ds, SIGNAL(resolveError(int,int)), this, SLOT(onResolveError(int,int)));
@@ -506,6 +525,8 @@ void  ArnDiscoverBrowserB::doNextState( const ArnDiscoverInfo& info)
         // Fall throu
     case ArnDiscoverInfo::State::HostInfo:
     {
+        info._state = ArnDiscoverInfo::State::HostInfo;
+
         int  ipLookupId = QHostInfo::lookupHost( info._hostName, this, SLOT(onIpLookup(QHostInfo)));
         _ipLookupIds.insert( ipLookupId, info._id);
         qDebug() << "LookingUp host=" << info._hostName << " lookupId=" << ipLookupId;

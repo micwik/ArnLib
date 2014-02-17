@@ -84,6 +84,7 @@ public:
 
     ArnDiscoverInfo();
 
+    bool  inProgress()  const;
     State  state()  const;
     State  stopState()  const;
     ArnDiscover::Type type()  const;
@@ -160,7 +161,7 @@ private slots:
 private:
     int  newServiceInfo( int id, QString name, QString domain);
     void  removeServiceInfo( int index);
-    void  doNextState( const ArnDiscoverInfo& info);
+    void  doNextState( ArnDiscoverInfo& info);
 
     ArnZeroConfBrowser*  _serviceBrowser;
     QList<int>  _activeServIds;

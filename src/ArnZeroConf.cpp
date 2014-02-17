@@ -529,7 +529,7 @@ void  ArnZeroConfResolv::resolve(bool forceMulticast)
 
     if ((state() != State::None) && (state() != State::Resolved)) {
         qWarning() << "ZeroConfResolv: Error resolve service when not None or Resolved state";
-        emit resolveError( _id, -2);
+        emit resolveError( _id, ArnZeroConf::Error::BadReqSeq);
         return;
     }
     if (state() == State::Resolved)
@@ -582,7 +582,7 @@ void  ArnZeroConfResolv::resolveTimeout()
 {
     releaseService();
 
-    emit resolveError( _id, -3);
+    emit resolveError( _id, ArnZeroConf::Error::Timeout);
 }
 
 

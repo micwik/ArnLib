@@ -1,4 +1,5 @@
 #include "ArnInc/ArnDiscoverRemote.hpp"
+#include "ArnInc/ArnZeroConf.hpp"
 #include "ArnInc/ArnClient.hpp"
 #include "ArnInc/ArnServer.hpp"
 #include <QTimer>
@@ -20,6 +21,7 @@ ArnDiscoverConnector::ArnDiscoverConnector( ArnClient& client, const QString& id
     _directHosts           = new QObject( this);
     _directHosts->setObjectName("dirHosts");
     _resolveRefreshBlocked = false;
+    _isResolved            = false;
     _resolveRefreshTime    = 0;
     _resolver              = 0;
     _arnDisHostService     = 0;
@@ -112,22 +114,28 @@ void  ArnDiscoverConnector::doClientConnectChanged( int stat, int curPrio)
 {
     ArnClient::ConnectStat  cs = ArnClient::ConnectStat::fromInt( stat);
 
+    qDebug() << "ArnDiscoverConnector changed 1: stat=" << stat << " prio=" << curPrio;
     if (!_resolver || (cs == cs.Connecting))  return;
     if (cs == cs.Connected) {
         _resolveRefreshBlocked = false;
         return;
     }
-    if (curPrio != _discoverHostPrio)  return;  // Not for resolved host
-    if ((cs != cs.Error) && (cs != cs.Disconnected))  return;  // Skip any non error
+    if (_isResolved || (cs != cs.TriedAll)) {  // Resolv ok or still more to try, consider outdated resolv
+        if (curPrio != _discoverHostPrio)  return;  // Not for resolved host
+        if ((cs != cs.Error) && (cs != cs.Disconnected))  return;  // Skip any non error
+        qDebug() << "ArnDiscoverConnector changed 2:";
 
-    if (_resolveRefreshTime->elapsed() >= _resolveRefreshTimeout * 1000)
-        _resolveRefreshBlocked = false;
-    if (_resolveRefreshBlocked)  return;
+        if (_resolveRefreshTime->elapsed() >= _resolveRefreshTimeout * 1000)
+            _resolveRefreshBlocked = false;
+        if (_resolveRefreshBlocked)  return;
+    }
 
     _resolveRefreshBlocked = true;  // Block for further refresh within lockout time
     _resolveRefreshTime->start();
 
-    _resolver->resolve( _arnDisHostService->toString(), true);  // Do a resolve refresh
+    qDebug() << "ArnDiscoverConnector changed 3 resolve: service=" << _arnDisHostService->toString();
+    bool  forceUpdate = _isResolved;
+    _resolver->resolve( _arnDisHostService->toString(), forceUpdate);  // Do a resolve refresh / retry
 }
 
 
@@ -217,8 +225,10 @@ void  ArnDiscoverConnector::postSetupResolver()
     _arnDisHostAddress   = new ArnItem( path + "Host/value", this);
     _arnDisHostPort      = new ArnItem( path + "Host/Port/value", this);
     _arnDisHostStatus    = new ArnItem( path + "Status/value", this);
+    typedef ArnZeroConf::Error  Err;
     ArnM::setValue( path + "Status/set",
-                    QString("0=Resolved -1=Resolving -2=Bad_request_sequence -3=Resolv_timeout"));
+                    QString("%1=Resolved %2=Resolving %3=Bad_request_sequence %4=Resolv_timeout")
+                    .arg(Err::Ok).arg(Err::Running).arg(Err::BadReqSeq).arg(Err::Timeout));
 
     *_arnDisHostServicePv = _resolver->defaultService();  // Use this default if no active persistent service
     _arnDisHostService->addMode(  ArnItem::Mode::Save);  // Save mode after default set, will not save default value
@@ -240,7 +250,6 @@ void  ArnDiscoverConnector::doClientServicetChanged()
         serviceName = _resolver->defaultService();
     *_arnDisHostServicePv = serviceName;  // Current service must be set before resolving
 
-    doClientResolvChanged(-1, ArnDiscoverInfo::State::Init);
     _resolver->resolve( serviceName, true);  // Force new resolve
 }
 
@@ -252,15 +261,19 @@ void  ArnDiscoverConnector::doClientResolvChanged( int index, ArnDiscoverInfo::S
     Q_ASSERT(_arnDisHostPort);
 
     ArnDiscoverInfo  info = _resolver->infoByIndex( index);
-    if ((index >= 0) && (info.serviceName() != _arnDisHostService->toString()))  return;  // Not the current service
+    if (info.serviceName() != _arnDisHostService->toString())  return;  // Not the current service
 
     *_arnDisHostAddress = info.hostName();
     *_arnDisHostPort    = info.hostPortString();
     *_arnDisHostStatus  = info.resolvCode();
 
-    if (index < 0)
+    if (state <= state.ServiceName) { // New resolv has started
+        qDebug() << "ArnDiscoverConnector New resolv started: service=" << info.serviceName();
+        _isResolved = false;
         _client->clearArnList( _discoverHostPrio);
+    }
     else if (state == state.HostInfo) {
+        _isResolved = true;
         _client->clearArnList( _discoverHostPrio);
         _client->addToArnList( info.hostName(), info.hostPort(), _discoverHostPrio);
         if (_client->connectStatus() == ArnClient::ConnectStat::Init) {

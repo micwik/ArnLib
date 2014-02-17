@@ -92,11 +92,11 @@ signals:
 
 private slots:
     void  doClientConnectChanged( int stat, int curPrio);
+    void  doClientConnectRequest( int reqCode);
     //// Handle Client directHosts
     void  postSetupClient();
     void  doClientConnected( QString arnHost, quint16 port);
     void  doClientDirHostChanged();
-    void  doClientConnectRequest( int reqCode);
     //// Handle Client resolvHost
     void  postSetupResolver();
     void  doClientServicetChanged();
@@ -112,6 +112,7 @@ private:
     QObject*  _directHosts;
     QTime*  _resolveRefreshTime;
     bool  _resolveRefreshBlocked;
+    bool  _isResolved;
 
     ArnItem*  _arnDisHostService;
     ArnItem*  _arnDisHostServicePv;
