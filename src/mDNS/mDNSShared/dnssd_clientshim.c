@@ -177,7 +177,7 @@ static mDNSBool strCaseEqual(const char *str1, const char *str2, int len)
 // In earlier builds this constant was defined to be 1005, so to avoid buffer overruns on clients
 // compiled with that constant we'll actually limit the output to 1005 bytes.
 
-DNSServiceErrorType DNSServiceConstructFullName
+DNSServiceErrorType DNSSD_API DNSServiceConstructFullName
     (
     char       *const fullName,
     const char *const service,      // May be NULL
@@ -298,19 +298,19 @@ typedef struct
 	DNSQuestion                 q;
 	} mDNS_DirectOP_QueryRecord;
 
-int DNSServiceRefSockFD(DNSServiceRef sdRef)
+int DNSSD_API DNSServiceRefSockFD(DNSServiceRef sdRef)
 	{
 	(void)sdRef;	// Unused
 	return(0);
 	}
 
-DNSServiceErrorType DNSServiceProcessResult(DNSServiceRef sdRef)
+DNSServiceErrorType DNSSD_API DNSServiceProcessResult(DNSServiceRef sdRef)
 	{
 	(void)sdRef;	// Unused
 	return(kDNSServiceErr_NoError);
 	}
 
-void DNSServiceRefDeallocate(DNSServiceRef sdRef)
+void DNSSD_API DNSServiceRefDeallocate(DNSServiceRef sdRef)
 	{
 	mDNS_DirectOP *op = (mDNS_DirectOP *)sdRef;
 
@@ -330,7 +330,7 @@ void DNSServiceRefDeallocate(DNSServiceRef sdRef)
 // is run against this Extension, it will get a reasonable error code instead of just
 // failing to launch (Strong Link) or calling an unresolved symbol and crashing (Weak Link)
 #if !MDNS_BUILDINGSTUBLIBRARY
-DNSServiceErrorType DNSServiceEnumerateDomains
+DNSServiceErrorType DNSSD_API DNSServiceEnumerateDomains
 	(
 	DNSServiceRef                       *sdRef,
 	DNSServiceFlags                     flags,
@@ -421,7 +421,7 @@ mDNSlocal void RegCallback(mDNS *const m, ServiceRecordSet *const sr, mStatus re
 		}
 	}
 
-DNSServiceErrorType DNSServiceRegister
+DNSServiceErrorType DNSSD_API DNSServiceRegister
 	(
 	DNSServiceRef                       *sdRef,
 	DNSServiceFlags                     flags,
@@ -519,7 +519,7 @@ fail:
 // is run against this Extension, it will get a reasonable error code instead of just
 // failing to launch (Strong Link) or calling an unresolved symbol and crashing (Weak Link)
 #if !MDNS_BUILDINGSTUBLIBRARY
-DNSServiceErrorType DNSServiceAddRecord
+DNSServiceErrorType DNSSD_API DNSServiceAddRecord
 	(
 	DNSServiceRef                       sdRef,
 	DNSRecordRef                        *RecordRef,
@@ -540,7 +540,7 @@ DNSServiceErrorType DNSServiceAddRecord
 	return(kDNSServiceErr_Unsupported);
 	}
 
-DNSServiceErrorType DNSServiceUpdateRecord
+DNSServiceErrorType DNSSD_API DNSServiceUpdateRecord
 	(
 	DNSServiceRef                       sdRef,
 	DNSRecordRef                        RecordRef,     /* may be NULL */
@@ -559,7 +559,7 @@ DNSServiceErrorType DNSServiceUpdateRecord
 	return(kDNSServiceErr_Unsupported);
 	}
 
-DNSServiceErrorType DNSServiceRemoveRecord
+DNSServiceErrorType DNSSD_API DNSServiceRemoveRecord
 	(
 	DNSServiceRef                 sdRef,
 	DNSRecordRef                  RecordRef,
@@ -612,7 +612,7 @@ mDNSlocal void FoundInstance(mDNS *const m, DNSQuestion *question, const Resourc
 		x->callback((DNSServiceRef)x, flags, 0, 0, cname, ctype, cdom, x->context);
 	}
 
-DNSServiceErrorType DNSServiceBrowse
+DNSServiceErrorType DNSSD_API DNSServiceBrowse
 	(
 	DNSServiceRef                       *sdRef,
 	DNSServiceFlags                     flags,
@@ -709,7 +709,7 @@ mDNSlocal void FoundServiceInfo(mDNS *const m, DNSQuestion *question, const Reso
 		}
 	}
 
-DNSServiceErrorType DNSServiceResolve
+DNSServiceErrorType DNSSD_API DNSServiceResolve
 	(
 	DNSServiceRef                       *sdRef,
 	DNSServiceFlags                     flags,
@@ -811,13 +811,13 @@ fail:
 // is run against this Extension, it will get a reasonable error code instead of just
 // failing to launch (Strong Link) or calling an unresolved symbol and crashing (Weak Link)
 #if !MDNS_BUILDINGSTUBLIBRARY
-DNSServiceErrorType DNSServiceCreateConnection(DNSServiceRef *sdRef)
+DNSServiceErrorType DNSSD_API DNSServiceCreateConnection(DNSServiceRef *sdRef)
 	{
 	(void)sdRef;	// Unused
 	return(kDNSServiceErr_Unsupported);
 	}
 
-DNSServiceErrorType DNSServiceRegisterRecord
+DNSServiceErrorType DNSSD_API DNSServiceRegisterRecord
 	(
 	DNSServiceRef                       sdRef,
 	DNSRecordRef                        *RecordRef,
@@ -869,7 +869,7 @@ mDNSlocal void DNSServiceQueryRecordResponse(mDNS *const m, DNSQuestion *questio
 		fullname, answer->rrtype, answer->rrclass, answer->rdlength, answer->rdata->u.data, answer->rroriginalttl, x->context);
 	}
 
-DNSServiceErrorType DNSServiceQueryRecord
+DNSServiceErrorType DNSSD_API DNSServiceQueryRecord
 	(
 	DNSServiceRef                       *sdRef,
 	DNSServiceFlags                     flags,

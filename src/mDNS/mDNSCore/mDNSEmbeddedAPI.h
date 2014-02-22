@@ -1621,14 +1621,14 @@ struct ServiceInfoQuery_struct
 	void                         *ServiceInfoQueryContext;
 	};
 
-typedef enum { ZoneServiceUpdate, ZoneServiceQuery, ZoneServiceLLQ } ZoneService;
+typedef enum { ZoneServiceUpdate, ZoneServiceQuery, ZoneServiceLLQ } ZoneService_t;
 
-typedef void ZoneDataCallback(mDNS *const m, mStatus err, const ZoneData *result);
+typedef void zoneDataCallback(mDNS *const m, mStatus err, const ZoneData *result);
 
 struct ZoneData_struct
 	{
 	domainname       ChildName;			// Name for which we're trying to find the responsible server
-	ZoneService      ZoneService;		// Which service we're seeking for this zone (update, query, or LLQ)
+	ZoneService_t    ZoneService;		// Which service we're seeking for this zone (update, query, or LLQ)
 	domainname       *CurrentSOA;		// Points to somewhere within ChildName
 	domainname       ZoneName;			// Discovered result: Left-hand-side of SOA record
 	mDNSu16          ZoneClass;			// Discovered result: DNS Class from SOA record
@@ -1636,12 +1636,12 @@ struct ZoneData_struct
 	mDNSIPPort       Port;				// Discovered result: Update port, query port, or LLQ port from SRV record
 	mDNSAddr         Addr;				// Discovered result: Address of Target host from SRV record
 	mDNSBool         ZonePrivate;		// Discovered result: Does zone require encrypted queries?
-	ZoneDataCallback *ZoneDataCallback;	// Caller-specified function to be called upon completion
+	zoneDataCallback *ZoneDataCallback;	// Caller-specified function to be called upon completion
 	void             *ZoneDataContext;
 	DNSQuestion      question;			// Storage for any active question
 	};
 
-extern ZoneData *StartGetZoneData(mDNS *const m, const domainname *const name, const ZoneService target, ZoneDataCallback callback, void *callbackInfo);
+extern ZoneData *StartGetZoneData(mDNS *const m, const domainname *const name, const ZoneService_t target, zoneDataCallback callback, void *callbackInfo);
 extern void CancelGetZoneData(mDNS *const m, ZoneData *nta);
 extern mDNSBool IsGetZoneDataQuestion(DNSQuestion *q);
 

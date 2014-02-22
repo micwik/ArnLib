@@ -15,6 +15,8 @@ DEFINES += ARNBUILDTIME=\\\"$$system(date '+%H:%M')\\\"
 DEFINES += ARNBUILDDATE=\\\"$$system(date '+%y-%m-%d')\\\"
 }
 
+DEFINES += ARNLIB_COMPILE
+
 INCLUDEPATH += $$PWD
 
 SOURCES += \
@@ -119,6 +121,7 @@ contains(ARN, zeroconf) {
         DEFINES += USES_NETLINK
         DEFINES += HAVE_LINUX
         DEFINES += TARGET_OS_LINUX
+        DEFINES += _PLATFORM_HAS_STRONG_PRNG_
 
         SOURCES += \
             $$PWD/mDNS/mDNSCore/mDNS.c \

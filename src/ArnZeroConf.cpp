@@ -402,7 +402,7 @@ void  ArnZeroConfRegister::registerService( bool noAutoRename)
                              qToBigEndian( port()),
                              txtRec.length(),
                              txtRec.constData(),
-                             ArnZeroConfIntern::registerServiceCallback,
+                             (DNSServiceRegisterReply) ArnZeroConfIntern::registerServiceCallback,
                              this);
     if (err != kDNSServiceErr_NoError) {
         _state = ArnZeroConf::State::None;
@@ -542,7 +542,7 @@ void  ArnZeroConfResolv::resolve(bool forceMulticast)
                             serviceName().toUtf8().constData(),
                             fullServiceType().toUtf8().constData(),
                             domain().toUtf8().constData(),
-                            ArnZeroConfIntern::resolveServiceCallback,
+                            (DNSServiceResolveReply) ArnZeroConfIntern::resolveServiceCallback,
                             this);
     if (err != kDNSServiceErr_NoError) {
         _state = ArnZeroConf::State::None;
@@ -705,7 +705,7 @@ void ArnZeroConfBrowser::browse( bool enable)
                            _iface,
                            serviceTypes.constData(),
                            domain().toUtf8().constData(),
-                           ArnZeroConfIntern::browseServiceCallback,
+                           (DNSServiceBrowseReply) ArnZeroConfIntern::browseServiceCallback,
                            this);
     if (err) {
         emit browseError(err);

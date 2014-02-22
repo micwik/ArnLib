@@ -1601,7 +1601,7 @@ mDNSlocal mStatus GetZoneData_StartQuery(mDNS *const m, ZoneData *zd, mDNSu16 qt
 	}
 
 // StartGetZoneData is an internal routine (i.e. must be called with the lock already held)
-mDNSexport ZoneData *StartGetZoneData(mDNS *const m, const domainname *const name, const ZoneService target, ZoneDataCallback callback, void *ZoneDataContext)
+mDNSexport ZoneData *StartGetZoneData(mDNS *const m, const domainname *const name, const ZoneService_t target, zoneDataCallback callback, void *ZoneDataContext)
 	{
 	DomainAuthInfo *AuthInfo = GetAuthInfoForName_internal(m, name);
 	int initialskip = (AuthInfo && AuthInfo->AutoTunnel) ? DomainNameLength(name) - DomainNameLength(&AuthInfo->domain) : 0;

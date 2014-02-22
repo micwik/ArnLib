@@ -5,6 +5,8 @@
 
 #if defined(ARNLIB_LIBRARY)
 #  define ARNLIBSHARED_EXPORT Q_DECL_EXPORT
+#elif defined(ARNLIB_COMPILE)
+#  define ARNLIBSHARED_EXPORT
 #else
 #  define ARNLIBSHARED_EXPORT Q_DECL_IMPORT
 #endif

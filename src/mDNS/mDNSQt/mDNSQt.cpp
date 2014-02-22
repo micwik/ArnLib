@@ -41,6 +41,7 @@
 #include "mDNS/ArnMDns.hpp"
 #include <QUdpSocket>
 #include <QNetworkInterface>
+#include <QHostInfo>
 #include <QDateTime>
 #include <QByteArray>
 #include <QtGlobal>
@@ -311,7 +312,9 @@ mDNSlocal void GetUserSpecifiedRFC1034ComputerName(domainlabel *const namelabel)
 {
 	int len = 0;
 #ifndef ANDROID
-    gethostname((char *)(&namelabel->c[1]), MAX_DOMAIN_LABEL);
+    qstrncpy((char *) &namelabel->c[1],
+             QHostInfo::localHostName().toUtf8().constData(),
+             MAX_DOMAIN_LABEL);
 #else
     // use an appropriate default label rather than the linux default of 'localhost'
     strncpy((char *) &namelabel->c[1], "Android", MAX_DOMAIN_LABEL);
@@ -667,6 +670,8 @@ mDNSexport mStatus  mDNSPlatformInit( mDNS *const m)
 {
 	int err = 0;
     Q_ASSERT(m);
+    
+    qsrand( uint(QDateTime::currentMSecsSinceEpoch()));
 
     if (mDNSPlatformInit_CanReceiveUnicast())
         m->CanReceiveUnicastOn5353 = mDNStrue;
@@ -839,7 +844,7 @@ mDNSexport mDNSs32  mDNSPlatformRawTime()
 
 mDNSexport mDNSs32 mDNSPlatformUTC(void)
 {
-	return time(NULL);
+    return mDNSs32(QDateTime::currentMSecsSinceEpoch() / 1000);
 }
 
 
@@ -921,5 +926,10 @@ mDNSexport void mDNSPlatformWriteLogMsg(const char *ident, const char *buffer, m
 #endif
 }
 
+
+mDNSexport mDNSu32  mDNSPlatformRandomNumber(void)
+{
+    return mDNSu32(qrand());
+}
 
 }  // extern "C"
