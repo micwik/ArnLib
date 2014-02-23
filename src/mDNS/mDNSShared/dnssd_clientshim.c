@@ -47,7 +47,8 @@
 //
 
 #include "dns_sd.h"				// Defines the interface to the client layer above
-#include "mDNSEmbeddedAPI.h"		// The interface we're building on top of
+#include "mDNSEmbeddedAPI.h"	// The interface we're building on top of
+#include "mDNS/mDNSQt/mDNSQt.h"
 
 extern mDNS mDNSStorage;		// We need to pass the address of this storage to the lower-layer functions
 
@@ -930,7 +931,7 @@ fail:
 
 //*************************************************************************************************************
 // DNSServiceGetAddrInfo
-/*
+
 static void DNSServiceGetAddrInfoDispose(mDNS_DirectOP *op)
 	{
 	mDNS_DirectOP_GetAddrInfo *x = (mDNS_DirectOP_GetAddrInfo*)op;
@@ -951,8 +952,8 @@ static void DNSSD_API DNSServiceGetAddrInfoResponse(
 	uint32_t			inTTL,
 	void *				inContext )
 	{
-	mDNS_DirectOP_GetAddrInfo *		x = (mDNS_DirectOP_GetAddrInfo*)inContext;
-	struct sockaddr_in				sa4;
+	mDNS_DirectOP_GetAddrInfo *x = (mDNS_DirectOP_GetAddrInfo*)inContext;
+    struct sockaddr_in        sa4;
     (void)inRef;      // Unused
     (void)inRRClass;  // Unused
     (void)inRDLen;    // Unused
@@ -1007,7 +1008,7 @@ fail:
 	LogMsg("DNSServiceGetAddrInfo(\"%s\", %d) failed: %s (%ld)", inHostName, inProtocol, errormsg, err);
 	return(err);
 	}
-*/
+
 //*************************************************************************************************************
 // DNSServiceReconfirmRecord
 

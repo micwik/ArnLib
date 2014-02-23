@@ -41,11 +41,51 @@
 #ifndef __mDNSPlatformPosix_h
 #define __mDNSPlatformPosix_h
 
+// Supported address families.
+#define AF_INET		2	// Internet IP Protocol V4
+#define AF_INET6	10	// IP version V6
+
 #ifdef  __cplusplus
     extern "C" {
 #endif
 
-struct sockaddr;
+#include "dns_sd.h"
+
+    
+struct sockaddr {
+    unsigned short    sa_family;    // address family, AF_xxx
+    char              sa_data[14];  // 14 bytes of protocol address
+};
+
+
+// IPv4 AF_INET sockets:
+
+struct in_addr {
+    unsigned long s_addr;          // load with inet_pton()
+};
+
+struct sockaddr_in {
+    short            sin_family;   // e.g. AF_INET, AF_INET6
+    unsigned short   sin_port;     // e.g. htons(3490)
+    struct in_addr   sin_addr;     // see struct in_addr, below
+    char             sin_zero[8];  // zero this if you want to
+};
+
+
+// IPv6 AF_INET6 sockets:
+
+struct in6_addr {
+    unsigned char   s6_addr[16];   // load with inet_pton()
+};
+
+struct sockaddr_in6 {
+    uint16_t        sin6_family;   // address family, AF_INET6
+    uint16_t        sin6_port;     // port number, Network Byte Order
+    uint32_t        sin6_flowinfo; // IPv6 flow information
+    struct in6_addr sin6_addr;     // IPv6 address
+    uint32_t        sin6_scope_id; // Scope ID
+};
+
 
 // PosixNetworkInterface is a record extension of the core NetworkInterfaceInfo
 // type that supports extra fields needed by the Posix platform.
