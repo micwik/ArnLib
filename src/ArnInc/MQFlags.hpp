@@ -44,11 +44,14 @@
     inline FEStruct(E e_) : f( e_)  {} \
     inline static E  flagIf( bool test, E e)  {return test ? e : E(0);} \
     inline bool  is(E e)  const {return f.testFlag(e);} \
+    inline bool  isAny(E e)  const {return ((f & e) != 0) && (e != 0 || f == 0 );} \
     inline FEStruct&  set(E e, bool v_ = true)  {f = v_ ? (f | e) : (f & ~e); return *this;} \
     inline static FEStruct  fromInt( int v_)  {return FEStruct( F( v_));} \
     inline int  toInt()  const {return f;} \
     inline operator int()  const {return f;} \
     inline bool  operator!()  const {return !f;}
+
+//inline bool testFlag(Enum f) const { return (i & f) == f && (f != 0 || i == 0 ); }
 
 #define MQ_DECLARE_OPERATORS_FOR_FLAGS( FEStruct) \
     Q_DECLARE_OPERATORS_FOR_FLAGS( FEStruct::F)
