@@ -156,7 +156,8 @@ private slots:
     void  onResolveError( int id, int code);
     void  onResolved( int id, QByteArray escFullDomain);
 
-    void  onIpLookup( const QHostInfo& host);
+    void  onLookupError( int id, int code);
+    void  onLookuped( int id);
 
 private:
     int  newServiceInfo( int id, QString name, QString domain);
@@ -166,7 +167,6 @@ private:
     ArnZeroConfBrowser*  _serviceBrowser;
     QList<int>  _activeServIds;
     QList<ArnDiscoverInfo>  _activeServInfos;
-    QMap<int,int>  _ipLookupIds;
     QString  _filter;
     ArnDiscoverInfo::State  _defaultStopState;
 };

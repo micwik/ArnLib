@@ -36,6 +36,7 @@
 #include "ArnLib_global.hpp"
 #include "XStringMap.hpp"
 #include "MQFlags.hpp"
+#include <QHostAddress>
 #include <QObject>
 #include <QStringList>
 #include <QString>
@@ -45,6 +46,7 @@
 typedef struct _DNSServiceRef_t *DNSServiceRef;
 class QSocketNotifier;
 class QTimer;
+class QHostInfo;
 
 
 namespace ArnZeroConf {
@@ -58,7 +60,9 @@ struct Error {
         //! Bad request sequence
         BadReqSeq = -2,
         //! Operation timeout
-        Timeout   = -3
+        Timeout   = -3,
+        //! Unicast DNS lookup fail
+        UDnsFail  = -4
     };
     MQ_DECLARE_ENUM( Error)
 };
@@ -67,21 +71,35 @@ struct Error {
 struct State {
     enum E {
         //! Inactive state
-        None,
+        None        = 0x0000,
         //! Registering service in progress
-        Registering,
+        Registering = 0x0100,
         //! Registering service has finished sucessfully
-        Registered,
-        //! Resolving service in progress
-        Resolving,
-        //! Resolving service has finished sucessfully
-        Resolved,
+        Registered  = 0x0001,
+        //! Registering service in progress or has finished sucessfully
+        Register    = 0x0101,
         //! Browsing for service in progress
-        Browsing
+        Browsing    = 0x0200,
+        //! Resolving service in progress
+        Resolving   = 0x0400,
+        //! Resolving service has finished sucessfully
+        Resolved    = 0x0004,
+        //! Resolving service in progress or has finished sucessfully
+        Resolve     = 0x0404,
+        //! Lookup host in progress
+        LookingUp   = 0x0800,
+        //! Lookup host has finished sucessfully
+        Lookuped    = 0x0008,
+        //! Lookup host in progress or has finished sucessfully
+        Lookup      = 0x0808,
+        //! Operation in progress
+        InProgress  = 0x0f00
     };
-    MQ_DECLARE_ENUM( State)
+    MQ_DECLARE_FLAGS( State)
 };
-}
+}  // ArnZeroConf::
+
+MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnZeroConf::State)
 
 
 class ARNLIBSHARED_EXPORT ArnZeroConfB : public QObject
@@ -108,7 +126,7 @@ public:
 
 protected slots:
     void socketData();
-
+    
 protected:
     //! Returns the list of current subtypes
     /*! \retval the subtype list
@@ -154,6 +172,9 @@ protected:
     bool  getTxtRecordMap( Arn::XStringMap& xsm);
     void  setTxtRecordMap( const Arn::XStringMap& xsm);
 
+    QHostAddress  hostAddr()  const;
+    void  setHostAddr( const QHostAddress &hostAddr);
+    
     void  parseFullDomain( const QByteArray& domainName);
     static int  getNextId();
 
@@ -164,10 +185,11 @@ protected:
     QAbstractSocket::SocketType  _socketType;
     QString  _serviceType;
     QString  _host;
+    QHostAddress _hostAddr;
     QByteArray  _txtRec;
 
     ArnZeroConf::State  _state;
-    _DNSServiceRef_t*  _serviceRef;
+    _DNSServiceRef_t*  _sdRef;
     QStringList  _serviceSubTypes;
     int  _iface;
     QString  _txtRecord;
@@ -335,7 +357,7 @@ void XXX::onResolved( int id, QByteArray escFullDomain)
 }
 \endcode
 */
-class ARNLIBSHARED_EXPORT ArnZeroConfResolv : public ArnZeroConfB
+class ARNLIBSHARED_EXPORT ArnZeroConfResolve : public ArnZeroConfB
 {
     friend class ArnZeroConfIntern;
     Q_OBJECT
@@ -343,13 +365,13 @@ public:
     //! Standard constructor of an ArnZeroConfResolv object
     /*!
      */
-    ArnZeroConfResolv( QObject* parent = 0);
+    ArnZeroConfResolve( QObject* parent = 0);
 
     //! Constructor of an ArnZeroConfResolv object
     /*! All needed parameters for an "arn" service type.
      *  \param[in] serviceName the human readable naming of the service, e.g. "My fantastic service".
      */
-    ArnZeroConfResolv( const QString& serviceName, QObject* parent = 0);
+    ArnZeroConfResolve( const QString& serviceName, QObject* parent = 0);
 
     //! Constructor of an ArnZeroConfResolv object
     /*! All needed parameters for a service.
@@ -357,12 +379,12 @@ public:
      *  \param[in] serviceName the human readable naming of the service, e.g. "My fantastic service".
      *  \param[in] serviceType the service type, e.g. "arn" or "_arn._tcp".
      */
-    ArnZeroConfResolv( const QString& serviceName, const QString& serviceType, QObject* parent = 0);
+    ArnZeroConfResolve( const QString& serviceName, const QString& serviceType, QObject* parent = 0);
 
     //! Destructor of an ArnZeroConfResolv object
     /*! If the service is registered, it will be unregistered.
      */
-    virtual ~ArnZeroConfResolv();
+    virtual ~ArnZeroConfResolve();
 
     //! Returns the id number for this resolv
     /*! \retval the id number
@@ -396,6 +418,9 @@ public:
     bool  getTxtRecordMap( Arn::XStringMap& xsm)
     {return ArnZeroConfB::getTxtRecordMap( xsm);}
 
+    QHostAddress  hostAddr()  const
+    {return ArnZeroConfB::hostAddr();}
+
     //! Resolve the service
     /*! Tries to resolve the service to determine the host and port necessary to establish a connection.
      *  Result is indicated by resolved() and resolveError() signals.
@@ -406,11 +431,11 @@ public:
      */
     void  resolve( bool forceMulticast = false);
 
-    //! Release the service
-    /*! If the service is registered, it will be unregistered. Any resolve attempts in progress will be aborted.
+    //! Release the resolving
+    /*! Any resolve attempts in progress will be aborted.
      */
-    void  releaseService();
-
+    void  releaseResolve();
+    
 signals:
     //! Indicate successfull resolve of service
     /*! \see resolve()
@@ -424,13 +449,90 @@ signals:
     void  resolveError( int id, int code);
 
 private slots:
-    void  resolveTimeout();
+    void  operationTimeout();
 
 private:
     void  init();
 
     int  _id;
-    QTimer*  _resolvTimer;
+    QTimer*  _operationTimer;
+};
+
+
+//! Lookup a host.
+/*!
+This class handles lookup of a host.
+
+<b>Example usage</b> \n \code
+\endcode
+*/
+class ARNLIBSHARED_EXPORT ArnZeroConfLookup : public ArnZeroConfB
+{
+    friend class ArnZeroConfIntern;
+    Q_OBJECT
+public:
+    //! Standard constructor of an ArnZeroConfLookup object
+    ArnZeroConfLookup( QObject* parent = 0);
+
+    //! Constructor of an ArnZeroConfLookup object
+    /*! All needed parameters for a lookup of a host.
+     *  \param[in] hostName the name of the host.
+     */
+    ArnZeroConfLookup( const QString& hostName, QObject* parent = 0);
+
+    //! Destructor of an ArnZeroConfLookup object
+    /*! If the lookup is ongoing, it will be released.
+     */
+    virtual ~ArnZeroConfLookup();
+
+    //! Returns the id number for this resolv
+    /*! \retval the id number
+     *  \see setId()
+     */
+    int id() const;
+
+    //! Sets the id number for this this lookup
+    /*! This id can be used to identify different lookup:s when using a common handler.
+     *  When not set, the default will allways be -1.
+     *  \param[in] id the id number
+     *  \see id()
+     */
+    void setId(int id);
+
+    QString  host()  const
+    {return ArnZeroConfB::host();}
+
+    QHostAddress  hostAddr()  const
+    {return ArnZeroConfB::hostAddr();}
+
+    void  lookup( bool forceMulticast = false);
+    
+    //! Release the lookup
+    /*! Any lookup attempts in progress will be aborted.
+     */
+    void  releaseLookup();
+
+signals:
+    //! Indicate successfull lookup of host
+    /*! \see lookup()
+     */
+    void  lookuped( int id);
+
+    //! Indicate unsuccessfull lookup of host
+    /*! \param[in] code error code.
+     *  \see lookup()
+     */
+    void  lookupError( int id, int code);
+
+private slots:
+    void  operationTimeout();
+    void  onIpLookup( const QHostInfo& host);
+
+private:
+    void  init();
+
+    int  _id;
+    QTimer*  _operationTimer;
 };
 
 

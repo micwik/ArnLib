@@ -227,8 +227,10 @@ void  ArnDiscoverConnector::postSetupResolver()
     _arnDisHostStatus    = new ArnItem( path + "Status/value", this);
     typedef ArnZeroConf::Error  Err;
     ArnM::setValue( path + "Status/set",
-                    QString("%1=Resolved %2=Resolving %3=Bad_request_sequence %4=Resolv_timeout")
-                    .arg(Err::Ok).arg(Err::Running).arg(Err::BadReqSeq).arg(Err::Timeout));
+                    QString("%1=Resolved %2=Resolving %3=Bad_request_sequence %4=Resolv_timeout"
+                            "%5=Unicast_DNS_Fail")
+                    .arg(Err::Ok).arg(Err::Running).arg(Err::BadReqSeq).arg(Err::Timeout)
+                    .arg(Err::UDnsFail));
 
     *_arnDisHostServicePv = _resolver->defaultService();  // Use this default if no active persistent service
     _arnDisHostService->addMode(  ArnItem::Mode::Save);  // Save mode after default set, will not save default value

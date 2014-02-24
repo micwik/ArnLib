@@ -39,6 +39,7 @@
 #  include <dns_sd.h>
 #endif
 #include <QSocketNotifier>
+#include <QHostInfo>
 #include <QTimer>
 #include <QtEndian>
 
@@ -49,14 +50,21 @@ using Arn::XStringMap;
 class ArnZeroConfIntern
 {
 public:
-    static void  registerServiceCallback(DNSServiceRef service, DNSServiceFlags flags, DNSServiceErrorType errCode,
-                                    const char* name, const char* regtype, const char* domain, void* context);
-
-    static void  resolveServiceCallback(DNSServiceRef service, DNSServiceFlags flags, quint32 iface,
-                                   DNSServiceErrorType errCode, const char* fullname, const char* host, quint16 port,
-                                   quint16 txtLen, const unsigned char* txt, void* context);
-    static void  browseServiceCallback(DNSServiceRef service, DNSServiceFlags flags, quint32 iface, DNSServiceErrorType errCode,
-                                   const char* serviceName, const char* regtype, const char* replyDomain, void* context);
+    static void DNSSD_API  registerServiceCallback( 
+                               DNSServiceRef sdRef, DNSServiceFlags flags, DNSServiceErrorType errCode,
+                               const char* name, const char* regtype, const char* domain, void* context);
+    static void DNSSD_API  resolveServiceCallback( 
+                               DNSServiceRef sdRef, DNSServiceFlags flags, quint32 iface,
+                               DNSServiceErrorType errCode, const char* fullname, const char* host,
+                               quint16 port, quint16 txtLen, const unsigned char* txt, void* context);
+    static void DNSSD_API  browseServiceCallback( 
+                               DNSServiceRef sdRef, DNSServiceFlags flags, quint32 iface, 
+                               DNSServiceErrorType errCode, const char* serviceName, const char* regtype,
+                               const char* replyDomain, void* context);
+    static void DNSSD_API  lookupHostCallback(
+                               DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex,
+                               DNSServiceErrorType errCode, const char *hostname, 
+                               const struct sockaddr *address, uint32_t ttl, void *context);
 };
 
 
@@ -73,6 +81,7 @@ ArnZeroConfB::ArnZeroConfB( QObject* parent)
     _serviceType = "arn";
     _socketType  = QAbstractSocket::TcpSocket;
     _domain      = "local.";  // Default
+    _sdRef       = 0;
 
 #ifndef MDNS_INTERN
     // In case using Avahi, stop stupid warnings about libdns_sd
@@ -291,6 +300,17 @@ void  ArnZeroConfB::setHost( const QString& host)
 }
 
 
+QHostAddress  ArnZeroConfB::hostAddr()  const
+{
+    return _hostAddr;
+}
+
+void  ArnZeroConfB::setHostAddr( const QHostAddress &hostAddr)
+{
+    _hostAddr = hostAddr;
+}
+
+
 QString  ArnZeroConfB::fullServiceType()  const
 {
     QString  ret = "_" + _serviceType + "._";
@@ -392,7 +412,7 @@ void  ArnZeroConfRegister::registerService( bool noAutoRename)
 
     qDebug() << "Register: serviceTypes=" << serviceTypes.constData() << "";
     DNSServiceErrorType err;
-    err = DNSServiceRegister(&_serviceRef,
+    err = DNSServiceRegister(&_sdRef,
                              noAutoRename ? kDNSServiceFlagsNoAutoRename : 0,
                              _iface,
                              serviceName().toUtf8().constData(),
@@ -402,7 +422,7 @@ void  ArnZeroConfRegister::registerService( bool noAutoRename)
                              qToBigEndian( port()),
                              txtRec.length(),
                              txtRec.constData(),
-                             (DNSServiceRegisterReply) ArnZeroConfIntern::registerServiceCallback,
+                             ArnZeroConfIntern::registerServiceCallback,
                              this);
     if (err != kDNSServiceErr_NoError) {
         _state = ArnZeroConf::State::None;
@@ -420,11 +440,11 @@ void  ArnZeroConfRegister::registerService( bool noAutoRename)
 
 void  ArnZeroConfRegister::releaseService()
 {
-    if ((state() != ArnZeroConf::State::Registered) && (state() != ArnZeroConf::State::Registering)) {
+    if (!state().isAny( ArnZeroConf::State::Register)) {
         qWarning() << "ZeroConfRegister release: unregistered service";
     }
     else {
-        DNSServiceRefDeallocate( _serviceRef);
+        DNSServiceRefDeallocate( _sdRef);
         _state = ArnZeroConf::State::None;
 #ifndef MDNS_INTERN
         _notifier->deleteLater();
@@ -434,10 +454,11 @@ void  ArnZeroConfRegister::releaseService()
 }
 
 
-void  ArnZeroConfIntern::registerServiceCallback( DNSServiceRef service, DNSServiceFlags flags,
-        DNSServiceErrorType errCode, const char* name, const char* regtype, const char* domain, void* context)
+void DNSSD_API  ArnZeroConfIntern::registerServiceCallback( 
+                    DNSServiceRef sdRef, DNSServiceFlags flags, DNSServiceErrorType errCode,
+                    const char* name, const char* regtype, const char* domain, void* context)
 {
-    Q_UNUSED(service);
+    Q_UNUSED(sdRef);
     Q_UNUSED(flags);
     Q_UNUSED(regtype);
     qDebug() << "Register callback: name=" << name << " regtype=" << regtype << " domain=" << domain;
@@ -457,14 +478,14 @@ void  ArnZeroConfIntern::registerServiceCallback( DNSServiceRef service, DNSServ
 }
 
 
-////////////////// Resolv
+////////////////// Resolve
 
-void  ArnZeroConfResolv::init()
+void  ArnZeroConfResolve::init()
 {
     _id = -1;
-    _resolvTimer = new QTimer( this);
-    _resolvTimer->setInterval(2000);
-    connect( _resolvTimer, SIGNAL(timeout()), this, SLOT(resolveTimeout()));
+    _operationTimer = new QTimer( this);
+    _operationTimer->setInterval(2000);
+    connect( _operationTimer, SIGNAL(timeout()), this, SLOT(operationTimeout()));
 
 #ifdef MDNS_INTERN
     ArnMDns::attach();
@@ -472,14 +493,14 @@ void  ArnZeroConfResolv::init()
 }
 
 
-ArnZeroConfResolv::ArnZeroConfResolv(QObject* parent)
+ArnZeroConfResolve::ArnZeroConfResolve(QObject* parent)
     : ArnZeroConfB( parent)
 {
     init();
 }
 
 
-ArnZeroConfResolv::ArnZeroConfResolv(const QString& serviceName, QObject* parent)
+ArnZeroConfResolve::ArnZeroConfResolve(const QString& serviceName, QObject* parent)
     : ArnZeroConfB( parent)
 {
     setServiceName( serviceName);
@@ -488,7 +509,7 @@ ArnZeroConfResolv::ArnZeroConfResolv(const QString& serviceName, QObject* parent
 }
 
 
-ArnZeroConfResolv::ArnZeroConfResolv( const QString& serviceName, const QString& serviceType,
+ArnZeroConfResolve::ArnZeroConfResolve( const QString& serviceName, const QString& serviceType,
                                       QObject* parent)
     : ArnZeroConfB( parent)
 {
@@ -499,10 +520,9 @@ ArnZeroConfResolv::ArnZeroConfResolv( const QString& serviceName, const QString&
 }
 
 
-ArnZeroConfResolv::~ArnZeroConfResolv()
+ArnZeroConfResolve::~ArnZeroConfResolve()
 {
-    if (state() != ArnZeroConf::State::None)
-        releaseService();
+    releaseResolve();
 
 #ifdef MDNS_INTERN
     ArnMDns::detach();
@@ -510,47 +530,47 @@ ArnZeroConfResolv::~ArnZeroConfResolv()
 }
 
 
-int  ArnZeroConfResolv::id()  const
+int  ArnZeroConfResolve::id()  const
 {
     return _id;
 }
 
 
-void  ArnZeroConfResolv::setId( int id)
+void  ArnZeroConfResolve::setId( int id)
 {
     _id = id;
 }
 
 
-void  ArnZeroConfResolv::resolve(bool forceMulticast)
+void  ArnZeroConfResolve::resolve( bool forceMulticast)
 {
     if (_id < 0)  // No valid id set, get one
         _id = ArnZeroConfB::getNextId();
 
-    if ((state() != ArnZeroConf::State::None) && (state() != ArnZeroConf::State::Resolved)) {
-        qWarning() << "ZeroConfResolv: Error resolve service when not None or Resolved state";
+    if (state().isAny( ArnZeroConf::State::InProgress)) {
+        qWarning() << "ZeroConfResolv: Error resolve service when operation still in progress";
         emit resolveError( _id, ArnZeroConf::Error::BadReqSeq);
         return;
     }
-    if (state() == ArnZeroConf::State::Resolved)
-        releaseService();
+    releaseResolve();
 
-    DNSServiceErrorType err;
-    err = DNSServiceResolve(&_serviceRef,
+    DNSServiceErrorType  err;
+    err = DNSServiceResolve(&_sdRef,
                             (forceMulticast ? kDNSServiceFlagsForceMulticast : 0),
                             _iface,
                             serviceName().toUtf8().constData(),
                             fullServiceType().toUtf8().constData(),
                             domain().toUtf8().constData(),
-                            (DNSServiceResolveReply) ArnZeroConfIntern::resolveServiceCallback,
+                            ArnZeroConfIntern::resolveServiceCallback,
                             this);
     if (err != kDNSServiceErr_NoError) {
-        _state = ArnZeroConf::State::None;
+        _sdRef = 0;
+        _state.set( ArnZeroConf::State::Resolve, false);
         emit resolveError( _id, err);
     }
     else {
-        _state = ArnZeroConf::State::Resolving;
-        _resolvTimer->start();
+        _state.set( ArnZeroConf::State::Resolving);
+        _operationTimer->start();
 
 #ifndef MDNS_INTERN
         _notifier = new QSocketNotifier( DNSServiceRefSockFD( _serviceRef), QSocketNotifier::Read, this);
@@ -560,42 +580,41 @@ void  ArnZeroConfResolv::resolve(bool forceMulticast)
 }
 
 
-void  ArnZeroConfResolv::releaseService()
+void  ArnZeroConfResolve::releaseResolve()
 {
-    _resolvTimer->stop();
+    _operationTimer->stop();
 
-    if ((state() != ArnZeroConf::State::Resolved) && (state() != ArnZeroConf::State::Resolving)) {
-        qWarning() << "ZeroConfResolv release: unresolved service";
-    }
-    else {
-        DNSServiceRefDeallocate( _serviceRef);
-        _state = ArnZeroConf::State::None;
+    if (_sdRef) {
+        DNSServiceRefDeallocate( _sdRef);
+        _sdRef = 0;
+        
 #ifndef MDNS_INTERN
         _notifier->deleteLater();
         _notifier = 0;
 #endif
     }
+    _state.set( ArnZeroConf::State::Resolve, false);
 }
 
 
-void  ArnZeroConfResolv::resolveTimeout()
+void  ArnZeroConfResolve::operationTimeout()
 {
-    releaseService();
-
+    releaseResolve();
     emit resolveError( _id, ArnZeroConf::Error::Timeout);
 }
 
 
-void  ArnZeroConfIntern::resolveServiceCallback(DNSServiceRef service, DNSServiceFlags flags, quint32 iface,
-        DNSServiceErrorType errCode, const char* fullname, const char* host, quint16 port, quint16 txtLen,
-        const unsigned char* txt, void* context)
+void DNSSD_API  ArnZeroConfIntern::resolveServiceCallback(
+                    DNSServiceRef sdRef, DNSServiceFlags flags, quint32 iface, 
+                    DNSServiceErrorType errCode, const char* fullname, const char* host, quint16 port,
+                    quint16 txtLen, const unsigned char* txt, void* context)
 {
-    Q_UNUSED(service);
+    Q_UNUSED(sdRef);
     Q_UNUSED(flags);
-    ArnZeroConfResolv*  self = reinterpret_cast<ArnZeroConfResolv*>(context);
+    ArnZeroConfResolve*  self = reinterpret_cast<ArnZeroConfResolve*>(context);
     Q_ASSERT(self);
 
-    self->_resolvTimer->stop();
+    self->_operationTimer->stop();
 
     if (self->_id < 0)  // No valid id set, get one
         self->_id = ArnZeroConfB::getNextId();
@@ -610,12 +629,190 @@ void  ArnZeroConfIntern::resolveServiceCallback(DNSServiceRef service, DNSServic
         self->setPort( qFromBigEndian( port));
         self->setTxtRecord( txtLen > 0 ? QByteArray((const char*) txt, txtLen) : QByteArray());
         self->_iface = iface;
-        self->_state = ArnZeroConf::State::Resolved;
+        self->_state.set( ArnZeroConf::State::Resolving, false);
+        self->_state.set( ArnZeroConf::State::Resolved);
         emit self->resolved( self->_id, fullname);
     }
     else {
-        self->_state = ArnZeroConf::State::None;
+        self->_state.set( ArnZeroConf::State::Resolve, false);
         emit self->resolveError( self->_id, errCode);
+    }
+}
+
+
+////////////////// Lookup
+
+void  ArnZeroConfLookup::init()
+{
+    _id = -1;
+    _operationTimer = new QTimer( this);
+    _operationTimer->setInterval(2000);
+    connect( _operationTimer, SIGNAL(timeout()), this, SLOT(operationTimeout()));
+
+#ifdef MDNS_INTERN
+    ArnMDns::attach();
+#endif
+}
+
+
+ArnZeroConfLookup::ArnZeroConfLookup( QObject* parent)
+    : ArnZeroConfB( parent)
+{
+    init();
+}
+
+
+ArnZeroConfLookup::ArnZeroConfLookup( const QString& hostName, QObject* parent)
+    : ArnZeroConfB( parent)
+{
+    setHost( hostName);
+
+    init();
+}
+
+
+ArnZeroConfLookup::~ArnZeroConfLookup()
+{
+    releaseLookup();
+
+#ifdef MDNS_INTERN
+    ArnMDns::detach();
+#endif
+}
+
+
+int  ArnZeroConfLookup::id()  const
+{
+    return _id;
+}
+
+
+void  ArnZeroConfLookup::setId( int id)
+{
+    _id = id;
+}
+
+
+void  ArnZeroConfLookup::lookup( bool forceMulticast)
+{
+    if (_id < 0)  // No valid id set, get one
+        _id = ArnZeroConfB::getNextId();
+
+    if (state().isAny( ArnZeroConf::State::InProgress)) {
+        qWarning() << "ZeroConfLookup: Error lookup host when operation still in progress";
+        emit lookupError( _id, ArnZeroConf::Error::BadReqSeq);
+        return;
+    }
+    releaseLookup();
+    
+    // Unicast lookup
+    if (!forceMulticast && !_host.endsWith(".local")) {
+        int  ipLookupId = QHostInfo::lookupHost( _host, this, SLOT(onIpLookup(QHostInfo)));
+        qDebug() << "ZeroConfLookup: host=" << _host << " lookupId=" << ipLookupId;
+        _state.set( ArnZeroConf::State::LookingUp);
+        return;
+    }
+
+    // Multicast lookup
+    DNSServiceErrorType err;
+    err = DNSServiceGetAddrInfo(&_sdRef,
+                                (forceMulticast ? kDNSServiceFlagsForceMulticast : 0),                                
+                                _iface,
+                                kDNSServiceProtocol_IPv4,
+                                _host.toUtf8().constData(),
+                                ArnZeroConfIntern::lookupHostCallback,
+                                this);
+    if (err != kDNSServiceErr_NoError) {
+        _sdRef = 0;
+        _state.set( ArnZeroConf::State::Lookup, false);
+        emit lookupError( _id, err);
+    }
+    else {
+        _state.set( ArnZeroConf::State::LookingUp);
+        _operationTimer->start();
+
+#ifndef MDNS_INTERN
+        _notifier = new QSocketNotifier( DNSServiceRefSockFD( _serviceRef), QSocketNotifier::Read, this);
+        connect( _notifier, SIGNAL(activated(int)), this, SLOT(socketData()));
+#endif
+    }
+}
+
+
+void  ArnZeroConfLookup::releaseLookup()
+{
+    _operationTimer->stop();
+
+    if (_sdRef) {
+        DNSServiceRefDeallocate( _sdRef);
+        _sdRef = 0;
+
+#ifndef MDNS_INTERN
+        _notifier->deleteLater();
+        _notifier = 0;
+#endif
+    }
+    _state.set( ArnZeroConf::State::Lookup, false);
+}
+
+
+void  ArnZeroConfLookup::operationTimeout()
+{
+    releaseLookup();
+    emit lookupError( _id, ArnZeroConf::Error::Timeout);
+}
+
+
+void  ArnZeroConfLookup::onIpLookup( const QHostInfo &host)
+{
+    if (host.error() == QHostInfo::NoError) {
+        foreach (const QHostAddress &address, host.addresses())
+            qDebug() << "Lookup uDNS callback, Found address:" << address.toString();
+
+        _hostAddr = host.addresses().first();
+        qDebug() << "***** Lookup uDNS callback: hostName=" << _host << " ip=" << _hostAddr.toString();
+        _state.set( ArnZeroConf::State::LookingUp, false);
+        _state.set( ArnZeroConf::State::Lookuped);
+        emit lookuped( _id);
+    }
+    else {
+        qDebug() << "ZeroConfLookup uDNS failed:" << host.errorString();
+        _state.set( ArnZeroConf::State::Lookup, false);
+        emit lookupError( _id, ArnZeroConf::Error::UDnsFail);
+    }
+}
+
+
+void DNSSD_API  ArnZeroConfIntern::lookupHostCallback( 
+                    DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex, 
+                    DNSServiceErrorType errCode, const char *hostname, const sockaddr *address,
+                    uint32_t ttl, void *context)
+{
+    Q_UNUSED(sdRef);
+    Q_UNUSED(flags);
+    Q_UNUSED(interfaceIndex);
+    Q_UNUSED(hostname);
+    Q_UNUSED(ttl);
+    ArnZeroConfLookup*  self = reinterpret_cast<ArnZeroConfLookup*>(context);
+    Q_ASSERT(self);
+
+    self->_operationTimer->stop();
+
+    if (self->_id < 0)  // No valid id set, get one
+        self->_id = ArnZeroConfB::getNextId();
+
+    qDebug() << "***** Resolve Lookup callback hostName=" << hostname << " errCode=" << errCode;
+    if (errCode == kDNSServiceErr_NoError) {
+        QHostAddress  hostAddr( address);
+        self->_hostAddr = hostAddr;
+        qDebug() << "***** Resolve Lookup callback hostName=" << hostname << " ip=" << hostAddr.toString();
+        self->_state.set( ArnZeroConf::State::LookingUp, false);
+        self->_state.set( ArnZeroConf::State::Lookuped);
+        emit self->lookuped( self->_id);
+    }
+    else {
+        self->_state.set( ArnZeroConf::State::Lookup, false);
+        emit self->lookupError( self->_id, errCode);
     }
 }
 
@@ -669,7 +866,7 @@ int  ArnZeroConfBrowser::serviceNameToId( const QString& name)
 
 bool  ArnZeroConfBrowser::isBrowsing()  const
 {
-    return _state == ArnZeroConf::State::Browsing;
+    return _state.is( ArnZeroConf::State::Browsing);
 }
 
 
@@ -700,12 +897,12 @@ void ArnZeroConfBrowser::browse( bool enable)
     }
 
     DNSServiceErrorType err;
-    err = DNSServiceBrowse(&_serviceRef,
+    err = DNSServiceBrowse(&_sdRef,
                            0,
                            _iface,
                            serviceTypes.constData(),
                            domain().toUtf8().constData(),
-                           (DNSServiceBrowseReply) ArnZeroConfIntern::browseServiceCallback,
+                           ArnZeroConfIntern::browseServiceCallback,
                            this);
     if (err) {
         emit browseError(err);
@@ -723,7 +920,7 @@ void ArnZeroConfBrowser::browse( bool enable)
 void ArnZeroConfBrowser::stopBrowse()
 {
     if (state() == ArnZeroConf::State::Browsing) {
-        DNSServiceRefDeallocate( _serviceRef);
+        DNSServiceRefDeallocate( _sdRef);
 #ifndef MDNS_INTERN
         _notifier->deleteLater();
         _notifier = 0;
@@ -733,10 +930,12 @@ void ArnZeroConfBrowser::stopBrowse()
 }
 
 
-void  ArnZeroConfIntern::browseServiceCallback( DNSServiceRef service, DNSServiceFlags flags, quint32 iface,
-        DNSServiceErrorType errCode, const char* serviceName, const char* regtype, const char* replyDomain, void* context)
+void DNSSD_API  ArnZeroConfIntern::browseServiceCallback(
+                    DNSServiceRef sdRef, DNSServiceFlags flags, quint32 iface, 
+                    DNSServiceErrorType errCode, const char* serviceName, const char* regtype,
+                    const char* replyDomain, void* context)
 {
-    Q_UNUSED(service);
+    Q_UNUSED(sdRef);
     Q_UNUSED(iface);
     //Q_UNUSED(regtype);
 

@@ -309,7 +309,6 @@ void  ArnDiscoverBrowserB::browse( bool enable)
 
     _activeServIds.clear();
     _activeServInfos.clear();
-    _ipLookupIds.clear();
 
     _serviceBrowser->setSubType( _filter);
     _serviceBrowser->browse( enable);
@@ -388,7 +387,7 @@ void  ArnDiscoverBrowserB::onServiceRemoved( int id, QString name, QString domai
 
 void  ArnDiscoverBrowserB::onResolveError( int id, int code)
 {
-    ArnZeroConfResolv*  ds = qobject_cast<ArnZeroConfResolv*>( sender());
+    ArnZeroConfResolve*  ds = qobject_cast<ArnZeroConfResolve*>( sender());
     Q_ASSERT(ds);
 
     qDebug() << "Resolve Error code=" << code;
@@ -403,14 +402,14 @@ void  ArnDiscoverBrowserB::onResolveError( int id, int code)
         // Will not go to next state during error
     }
 
-    ds->releaseService();
+    ds->releaseResolve();
     ds->deleteLater();
 }
 
 
 void  ArnDiscoverBrowserB::onResolved( int id, QByteArray escFullDomain)
 {
-    ArnZeroConfResolv*  ds = qobject_cast<ArnZeroConfResolv*>( sender());
+    ArnZeroConfResolve*  ds = qobject_cast<ArnZeroConfResolve*>( sender());
     Q_ASSERT(ds);
 
     QString  name = ds->serviceName();
@@ -435,40 +434,52 @@ void  ArnDiscoverBrowserB::onResolved( int id, QByteArray escFullDomain)
         doNextState( info);
     }
 
-    ds->releaseService();
+    ds->releaseResolve();
     ds->deleteLater();
 }
 
 
-void  ArnDiscoverBrowserB::onIpLookup( const QHostInfo& host)
+void  ArnDiscoverBrowserB::onLookupError( int id, int code)
 {
-    int  ipLookupId = host.lookupId();
-    int  id = _ipLookupIds.value( ipLookupId, -1);
-    qDebug() << "onIpLookup: lookupId=" << ipLookupId;
-    if (id < 0)  return;  // Service not valid anymore
+    ArnZeroConfLookup*  ds = qobject_cast<ArnZeroConfLookup*>( sender());
+    Q_ASSERT(ds);
 
-    _ipLookupIds.remove( ipLookupId);
+    qDebug() << "Lookup Error code=" << code;
 
     int  index = _activeServIds.indexOf( id);
-    if (index < 0)  return;  // Service not exist anymore
+    if (index >= 0) {  // Service still exist
+        ArnDiscoverInfo&  info = _activeServInfos[ index];
+        info._state = ArnDiscoverInfo::State::HostIpErr;
+        info._resolvCode = code;  // MW: Ok?
 
-    ArnDiscoverInfo&  info = _activeServInfos[ index];
-
-    if (host.error() != QHostInfo::NoError) {
-         qDebug() << "Lookup failed:" << host.errorString();
-         info._state = ArnDiscoverInfo::State::HostIpErr;
-
-         emit infoUpdated( index, info._state);
-         return;
+        emit infoUpdated( index, info._state);
+        // Will not go to next state during error
     }
 
-    foreach (const QHostAddress &address, host.addresses())
-        qDebug() << "Found address:" << address.toString();
+    ds->releaseLookup();
+    ds->deleteLater();
+}
 
-    info._state = ArnDiscoverInfo::State::HostIp;
-    info._hostIp = host.addresses().first();
 
-    emit infoUpdated( index, info._state);
+void  ArnDiscoverBrowserB::onLookuped( int id)
+{
+    ArnZeroConfLookup*  ds = qobject_cast<ArnZeroConfLookup*>( sender());
+    Q_ASSERT(ds);
+
+    QString  hostName = ds->host();
+    qDebug() << "Lookuped host: name=" << hostName;
+    int  index = _activeServIds.indexOf( id);
+    if (index >= 0) {  // Service still exist
+        ArnDiscoverInfo&  info = _activeServInfos[ index];
+        info._state = ArnDiscoverInfo::State::HostIp;
+        info._hostIp = ds->hostAddr();
+        info._resolvCode = ArnZeroConf::Error::Ok;  // MW: Ok?
+    
+        emit infoUpdated( index, info._state);
+    }
+
+    ds->releaseLookup();
+    ds->deleteLater();
 }
 
 
@@ -514,7 +525,7 @@ void  ArnDiscoverBrowserB::doNextState( ArnDiscoverInfo& info)
     {
         info._state = ArnDiscoverInfo::State::ServiceName;
 
-        ArnZeroConfResolv*  ds = new ArnZeroConfResolv( info._serviceName, this);
+        ArnZeroConfResolve*  ds = new ArnZeroConfResolve( info._serviceName, this);
         ds->setId( info._id);
         connect( ds, SIGNAL(resolveError(int,int)), this, SLOT(onResolveError(int,int)));
         connect( ds, SIGNAL(resolved(int,QByteArray)), this, SLOT(onResolved(int,QByteArray)));
@@ -527,9 +538,12 @@ void  ArnDiscoverBrowserB::doNextState( ArnDiscoverInfo& info)
     {
         info._state = ArnDiscoverInfo::State::HostInfo;
 
-        int  ipLookupId = QHostInfo::lookupHost( info._hostName, this, SLOT(onIpLookup(QHostInfo)));
-        _ipLookupIds.insert( ipLookupId, info._id);
-        qDebug() << "LookingUp host=" << info._hostName << " lookupId=" << ipLookupId;
+        ArnZeroConfLookup*  ds = new ArnZeroConfLookup( info._hostName, this);
+        ds->setId( info._id);
+        connect( ds, SIGNAL(lookupError(int,int)), this, SLOT(onLookupError(int,int)));
+        connect( ds, SIGNAL(lookuped(int)), this, SLOT(onLookuped(int)));
+        // qDebug() << "LookingUp host=" << info._hostName << " Id=" << info._id;
+        ds->lookup();
         break;
     }
     default:
