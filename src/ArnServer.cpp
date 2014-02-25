@@ -89,36 +89,6 @@ QHostAddress  ArnServer::listenAddress()
 }
 
 
-QHostAddress  ArnServer::getInterface1Address()
-{
-    QNetworkAddressEntry  firstLoopbackEntry;
-
-    foreach (QNetworkInterface  interface, QNetworkInterface::allInterfaces()) {
-        QNetworkInterface::InterfaceFlags  flags = interface.flags();
-        if (!flags.testFlag( QNetworkInterface::IsUp)
-        || flags.testFlag( QNetworkInterface::IsPointToPoint))
-            continue;
-
-        foreach (QNetworkAddressEntry  entry, interface.addressEntries()) {
-            QAbstractSocket::NetworkLayerProtocol  prot = entry.ip().protocol();
-            if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
-                continue;
-
-            // qDebug() << "--- serverIntfList found: " << interface.name() + " " + entry.ip().toString();
-            if (flags.testFlag( QNetworkInterface::IsLoopBack)) {
-                if (firstLoopbackEntry.ip().isNull())
-                    firstLoopbackEntry = entry;
-            }
-            else
-                return entry.ip();
-        }
-    }
-
-    // If we found no normal interfaces, use the loopback interface (if found).
-    return firstLoopbackEntry.ip();
-}
-
-
 void  ArnServer::tcpConnection()
 {
     QTcpSocket*  socket = _tcpServer->nextPendingConnection();

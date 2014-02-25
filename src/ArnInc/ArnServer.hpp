@@ -88,8 +88,6 @@ public:
      */
     QHostAddress  listenAddress();
 
-    static QHostAddress  getInterface1Address();
-
 private:
     QTcpServer *_tcpServer;
     bool  _tcpServerActive;

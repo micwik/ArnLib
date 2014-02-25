@@ -6,6 +6,7 @@
 #include <QTime>
 #include <QMetaObject>
 #include <QHostInfo>
+#include <QNetworkInterface>
 
 
 ///////// ArnDiscoverConnector
@@ -309,11 +310,34 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
     QString  listenAddr = ((addr == QHostAddress::Any) || (addr == QHostAddress::AnyIPv6))
                           ? QString("Any") : addr.toString();
     int  hostPort = arnServer->port();
-    ArnM::setValue( Arn::pathDiscoverThis + "Interface/Listen/value", listenAddr);
-    ArnM::setValue( Arn::pathDiscoverThis + "Interface/First/value", ArnServer::getInterface1Address().toString());
+    ArnM::setValue( Arn::pathDiscoverThis + "Interfaces/Listen/value", listenAddr);
     ArnM::setValue( Arn::pathDiscoverThis + "Host/value", QHostInfo::localHostName());
     ArnM::setValue( Arn::pathDiscoverThis + "Host/Port/value", hostPort);
 
+    int  i = 0;
+    foreach (QNetworkInterface  interface, QNetworkInterface::allInterfaces()) {
+        QNetworkInterface::InterfaceFlags  flags = interface.flags();
+        if (!flags.testFlag( QNetworkInterface::IsUp)
+        || flags.testFlag( QNetworkInterface::IsPointToPoint)
+        || flags.testFlag( QNetworkInterface::IsLoopBack))
+            continue;
+
+        foreach (QNetworkAddressEntry  entry, interface.addressEntries()) {
+            QAbstractSocket::NetworkLayerProtocol  prot = entry.ip().protocol();
+            if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
+                continue;
+
+            // qDebug() << "--- serverIntfList found: " << interface.name() + " " + entry.ip().toString();
+            QString  path = (Arn::pathDiscoverThis + "Interfaces/If%1/").arg(i);
+            QString  addr = entry.ip().toString();
+            QString  name = interface.humanReadableName();
+            ArnM::setValue( path + "addr", addr);
+            ArnM::setValue( path + "name", name);
+            ArnM::setValue( path + "value", addr + "  [" + name + "]");
+            ++i;
+        }
+    }
+    
     // Setup advertise, but don't start yet, waiting for service name
     ArnDiscoverAdvertise::advertiseService( discoverType, QString(), hostPort);
 }
@@ -367,8 +391,6 @@ void  ArnDiscoverRemote::serviceTimeout()
 void  ArnDiscoverRemote::firstServiceSetup( QString serviceName)
 {
     QString  service = serviceName;
-    //if (service.isEmpty())
-    //    service = _defaultService;
     qDebug() << "firstServiceSetup: serviceName=" << service;
 
     _servTimer->stop();
@@ -392,7 +414,6 @@ void  ArnDiscoverRemote::serviceRegistered( QString serviceName)
 {
     qDebug() << "DiscoverRemote Service registered: serviceName=" << serviceName;
 
-    //_arnServicePv = serviceName;
     ArnM::setValue( Arn::pathDiscoverThis + "UsingService/value", serviceName);
 
     ArnDiscoverAdvertise::serviceRegistered( serviceName);

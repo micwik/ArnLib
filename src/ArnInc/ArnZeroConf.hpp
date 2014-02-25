@@ -394,7 +394,7 @@ public:
 
     //! Sets the id number for this this resolv
     /*! This id can be used to identify different resolves when using a common handler.
-     *  When not set, the default will allways be -1.
+     *  When not set, it will be automatically asigned during resolve().
      *  \param[in] id the id number
      *  \see id()
      */
@@ -461,7 +461,7 @@ private:
 
 //! Lookup a host.
 /*!
-This class handles lookup of a host.
+This class handles lookup of a host. It can be booth Multicast and Unicast DNS lookup.
 
 <b>Example usage</b> \n \code
 \endcode
@@ -485,7 +485,7 @@ public:
      */
     virtual ~ArnZeroConfLookup();
 
-    //! Returns the id number for this resolv
+    //! Returns the id number for this lookup
     /*! \retval the id number
      *  \see setId()
      */
@@ -493,7 +493,7 @@ public:
 
     //! Sets the id number for this this lookup
     /*! This id can be used to identify different lookup:s when using a common handler.
-     *  When not set, the default will allways be -1.
+     *  When not set, it will be automatically asigned during lookup().
      *  \param[in] id the id number
      *  \see id()
      */
@@ -501,6 +501,9 @@ public:
 
     QString  host()  const
     {return ArnZeroConfB::host();}
+
+    void  setHost( const QString& host)
+    {ArnZeroConfB::setHost( host);}
 
     QHostAddress  hostAddr()  const
     {return ArnZeroConfB::hostAddr();}
