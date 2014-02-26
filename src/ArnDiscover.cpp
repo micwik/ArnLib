@@ -589,8 +589,7 @@ void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QSt
 void  ArnDiscoverAdvertise::postSetupThis()
 {
     _hasSetupAdvertise = true;
-    if (!_service.isNull())
-        setService( _service);
+    setService( _service);
 }
 
 
@@ -622,10 +621,18 @@ QString  ArnDiscoverAdvertise::service()  const
 }
 
 
+ArnDiscoverAdvertise::State  ArnDiscoverAdvertise::state()  const
+{
+    return State::fromInt( _arnZCReg->state());
+}
+
+
 void  ArnDiscoverAdvertise::setService( QString service)
 {
+    qDebug() << "ArnDiscoverAdvertise::setService service=" << service;
     _service = service;
     if (!_hasSetupAdvertise)  return;
+    if (service.isEmpty())  return;
 
     qDebug() << "Advertise Service changed: servname=" << _service;
     if (_arnZCReg->state() != ArnZeroConf::State::None)

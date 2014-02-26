@@ -217,6 +217,22 @@ class ArnDiscoverAdvertise : public QObject
 {
     Q_OBJECT
 public:
+    //! States of DiscoverAdvertise
+    //// These values must be synced with: ArnZeroConf::State
+    struct State {
+        enum E {
+            //! Inactive state.
+            None             = 0x0000,
+            //! Startup advertising in progress.
+            StartupAdvertise = 0x0100,
+            //! Is now advertising. Startup has finished sucessfully.
+            Advertising      = 0x0001,
+            //! isAny(): Startup advertising in progress or has finished sucessfully.
+            Advertise        = 0x0101,
+        };
+        MQ_DECLARE_FLAGS( State)
+    };
+
     explicit ArnDiscoverAdvertise( QObject *parent = 0);
 
     QStringList groups() const;
@@ -224,6 +240,7 @@ public:
     void  addGroup( const QString& group);
 
     QString  service() const;
+    State  state()  const;
 
     void  advertiseService( ArnDiscover::Type discoverType, QString serviceName,
                             int port = -1, const QString& hostName = QString());
@@ -236,7 +253,7 @@ public slots:
     //! Set the service name
     /*! Will update current advertised service name if this advertiser has been setup,
      *  otherwise the service name is stored for future use.
-     *  Note: This member must be called from derived member.
+     *  Note: This base member must be called from derived member.
      *  \param[in] service is the service name.
      *  \see advertiseService()
      */
@@ -248,21 +265,21 @@ protected:
 protected slots:
     //! Post setup routine called from base class
     /*! Can be derived for special setup.
-     *  Note: This member must be called from derived member.
+     *  Note: This base member must be called from derived member.
      *  \param[in] service is the service name.
      */
     virtual void  postSetupThis();
 
     //! Service registration callback
     /*! Can be derived for special notifying.
-     *  Note: This member must be called from derived member.
+     *  Note: This base member must be called from derived member.
      *  \param[in] serviceName is the service name registered.
      */
     virtual void  serviceRegistered( QString serviceName);
 
     //! Service registration error callback
     /*! Can be derived for special notifying.
-     *  Note: This member must be called from derived member.
+     *  Note: This base member must be called from derived member.
      *  \param[in] code is the error code.
      */
     virtual void  serviceRegistrationError( int code);
@@ -274,5 +291,7 @@ private:
     bool  _hasSetupAdvertise;
     ArnDiscover::Type  _discoverType;
 };
+
+MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnDiscoverAdvertise::State)
 
 #endif // ARNDISCOVER_HPP

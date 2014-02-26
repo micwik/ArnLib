@@ -68,6 +68,7 @@ struct Error {
 };
 
 //! States of ZeroConfig, limited valid for each ArnZeroConfB subclass
+//// These values must be synced with: ArnDiscover::State
 struct State {
     enum E {
         //! Inactive state
@@ -76,7 +77,7 @@ struct State {
         Registering = 0x0100,
         //! Registering service has finished sucessfully
         Registered  = 0x0001,
-        //! Registering service in progress or has finished sucessfully
+        //! isAny(): Registering service in progress or has finished sucessfully
         Register    = 0x0101,
         //! Browsing for service in progress
         Browsing    = 0x0200,
@@ -84,15 +85,15 @@ struct State {
         Resolving   = 0x0400,
         //! Resolving service has finished sucessfully
         Resolved    = 0x0004,
-        //! Resolving service in progress or has finished sucessfully
+        //! isAny(): Resolving service in progress or has finished sucessfully
         Resolve     = 0x0404,
         //! Lookup host in progress
         LookingUp   = 0x0800,
         //! Lookup host has finished sucessfully
         Lookuped    = 0x0008,
-        //! Lookup host in progress or has finished sucessfully
+        //! isAny(): Lookup host in progress or has finished sucessfully
         Lookup      = 0x0808,
-        //! Operation in progress
+        //! isAny(): Operation in progress
         InProgress  = 0x0f00
     };
     MQ_DECLARE_FLAGS( State)
