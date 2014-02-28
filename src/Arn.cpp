@@ -185,8 +185,8 @@ bool  isProviderPath( const QString& path)
 
 QString  makeHostWithInfo( const QString &host, const QString &info)
 {
-    return host + (info.isEmpty() ? QString() 
-                                  : ("  [" + info + "]"));
+    return host + ((info.isEmpty() || info == host) ? QString() 
+                                                    : ("  [" + info + "]"));
 }
 
 
