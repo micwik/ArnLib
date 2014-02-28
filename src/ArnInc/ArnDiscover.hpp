@@ -85,6 +85,7 @@ public:
     ArnDiscoverInfo();
 
     bool  inProgress()  const;
+    bool  isError()  const;
     State  state()  const;
     State  stopState()  const;
     ArnDiscover::Type type()  const;
@@ -98,6 +99,13 @@ public:
     QString  typeString()  const;
     QString  hostPortString()  const;
     QString  hostIpString()  const;
+
+    //! Get the the _HostWithInfo_ string
+    /*! ArnClient and alike accepts such _HostWithInfo_ strings for connection.
+     *  \return The _HostWithInfo_ string, e.g. "192.168.1.1  [myhost.local]"
+     *  \see Arn::makeHostWithInfo()
+     */
+    QString  hostWithInfo()  const;
     int  resolvCode()  const;
 
 private:

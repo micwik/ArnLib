@@ -116,6 +116,7 @@ public:
      *  \param[in] prio gives the sorting (connection) order and can be used for selection filter.
      *  \see clearArnList()
      *  \see arnList()
+     *  \see Arn::makeHostWithInfo()
      */
     void  addToArnList( const QString& arnHost, quint16 port = 0, int prio = 0);
 
@@ -128,6 +129,7 @@ public:
     //! Connect to an _Arn Server_
     /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
      *  \param[in] port is the port number (default 2022).
+     *  \see Arn::makeHostWithInfo()
      */
     void  connectToArn( const QString& arnHost, quint16 port = 0);
 

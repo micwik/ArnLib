@@ -95,7 +95,7 @@ private slots:
     void  doClientConnectRequest( int reqCode);
     //// Handle Client directHosts
     void  postSetupClient();
-    void  doClientConnected( QString arnHost, quint16 port);
+    void  doClientConnectChange( QString arnHost, quint16 port);
     void  doClientDirHostChanged();
     //// Handle Client resolvHost
     void  postSetupResolver();

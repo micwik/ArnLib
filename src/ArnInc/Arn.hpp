@@ -177,6 +177,38 @@ QString  convertPath( const QString& path,
  */
 QString  twinPath( const QString& path);
 
+//! Make a combined host and info string, i.e. _HostWithInfo_
+/*! This is typically used to pass some extra information about the host,
+ *  but still be used for connection to the host.
+ * 
+ *  ArnClient and alike accepts such _HostWithInfo_ strings for connection.
+ *  Hosts discovered using e.g. ArnDiscoverBrowser will be using the ip-address as host
+ *  and the host name as info.  
+ *  Example: _host_ = "192.168.1.1", _info_ = "myhost.local"
+ *  ==> return = "192.168.1.1  [myhost.local]"
+ *  \param[in] host the name or address of the host
+ *  \param[in] info is corresponding info for the host
+ *  \return The _HostWithInfo_ string
+ *  \see hostFromHostWithInfo()
+ *  \note As the format of the _HostWithInfo_ string can be changed in the future,
+ *        allways use makeHostWithInfo() and hostFromHostWithInfo() for coding and decoding.
+ */
+QString  makeHostWithInfo( const QString& host, const QString& info);
+
+//! Get the host from the _HostWithInfo_ string
+/*! This is typically used to extract only the host part without information,
+ *  to be used in e.g. QTcpSocket for connection to the host.
+ * 
+ *  Example: _hostWithInfo_ = "192.168.1.1  [myhost.local]"
+ *  ==> return = "192.168.1.1"
+ *  \param[in] hostWithInfo The _HostWithInfo_ string
+ *  \return The name or address of the host
+ *  \see makeHostWithInfo()
+ *  \note As the format of the _HostWithInfo_ string can be changed in the future,
+ *        allways use makeHostWithInfo() and hostFromHostWithInfo() for coding and decoding.
+ */
+QString  hostFromHostWithInfo( const QString& hostWithInfo);
+
 }  // Arn::
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::LinkFlags)

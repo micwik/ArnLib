@@ -32,6 +32,7 @@
 
 #include "ArnInc/Arn.hpp"
 #include "ArnInc/ArnLib.hpp"
+#include <QRegExp>
 #include <QStringList>
 
 
@@ -179,6 +180,24 @@ bool  isFolderPath( const QString& path)
 bool  isProviderPath( const QString& path)
 {
     return path.endsWith('!');
+}
+
+
+QString  makeHostWithInfo( const QString &host, const QString &info)
+{
+    return host + (info.isEmpty() ? QString() 
+                                  : ("  [" + info + "]"));
+}
+
+
+QString  hostFromHostWithInfo( const QString &hostWithInfo)
+{
+    QString  retVal = hostWithInfo;
+    int  pos = retVal.indexOf( QRegExp("\\s*\\[.+\\]"));
+    if (pos >= 0)
+        retVal.resize( pos);
+    
+    return retVal;
 }
 
 }  // Arn::

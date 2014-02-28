@@ -32,6 +32,7 @@
 
 #include "ArnInc/ArnDiscover.hpp"
 #include "ArnInc/ArnZeroConf.hpp"
+#include "ArnInc/Arn.hpp"
 #include <QHostInfo>
 #include <QTimer>
 
@@ -51,7 +52,13 @@ ArnDiscoverInfo::ArnDiscoverInfo()
 
 bool  ArnDiscoverInfo::inProgress()  const
 {
-    return (_state < _stopState) && (_state != State::HostInfoErr) && (_state != State::HostIpErr);
+    return (_state < _stopState) && !isError();
+}
+
+
+bool  ArnDiscoverInfo::isError()  const
+{
+    return (_state == State::HostInfoErr) || (_state == State::HostIpErr);
 }
 
 
@@ -138,6 +145,12 @@ QString  ArnDiscoverInfo::hostPortString()  const
 QString  ArnDiscoverInfo::hostIpString()  const
 {
     return _state < State::HostIp ? QString() : _hostIp.toString();
+}
+
+
+QString ArnDiscoverInfo::hostWithInfo() const
+{
+    return Arn::makeHostWithInfo( hostIpString(), hostName());
 }
 
 

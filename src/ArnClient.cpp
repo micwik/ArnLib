@@ -331,11 +331,11 @@ void  ArnClient::doConnectArnLogic()
         port = Arn::defaultTcpPort;
 
     _socket->abort();
-    _socket->connectToHost( arnHost, port);
+    _socket->connectToHost( Arn::hostFromHostWithInfo( arnHost), port);
     _curConnectAP.addr = arnHost;
     _curConnectAP.port = port;
     _curPrio           = curPrio;
-    _connectStat = ConnectStat::Connecting;
+    _connectStat       = ConnectStat::Connecting;
 
     emit connectionStatusChanged( _connectStat, _curPrio);
 }

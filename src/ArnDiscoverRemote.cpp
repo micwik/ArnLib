@@ -52,6 +52,7 @@ void  ArnDiscoverConnector::setResolver( ArnDiscoverResolver* resolver)
     if (!_resolveRefreshTime)  // first time
         _resolveRefreshTime = new QTime;
     _resolver = resolver;
+    _resolver->setDefaultStopState( ArnDiscoverInfo::State::HostIp);  // Need IP ...
 
     QMetaObject::invokeMethod( this,
                                "postSetupResolver",
@@ -103,7 +104,8 @@ void  ArnDiscoverConnector::setDirectHostPrio( int directHostPrio)
 
 void  ArnDiscoverConnector::start()
 {
-    connect( _client, SIGNAL(tcpConnected(QString,quint16)), this, SLOT(doClientConnected(QString,quint16)));
+    connect( _client, SIGNAL(tcpConnected(QString,quint16)), 
+             this, SLOT(doClientConnectChange(QString,quint16)));
 
     QMetaObject::invokeMethod( this,
                                "postSetupClient",
@@ -182,11 +184,11 @@ void  ArnDiscoverConnector::postSetupClient()
 }
 
 
-void  ArnDiscoverConnector::doClientConnected( QString arnHost, quint16 port)
+void  ArnDiscoverConnector::doClientConnectChange( QString arnHost, quint16 port)
 {
     QString  path = Arn::pathDiscoverConnect + _id + "/UsingHost/";
     ArnM::setValue( path + "value", arnHost);
-    ArnM::setValue( path + "Port/value", port);
+    ArnM::setValue( path + "Port/value", port ? QString::number( port) : QString());
 }
 
 
@@ -210,8 +212,10 @@ void  ArnDiscoverConnector::doClientDirHostChanged()
 
 void ArnDiscoverConnector::doClientConnectRequest(int reqCode)
 {
-    if (reqCode)
+    if (reqCode) {
+        doClientConnectChange("", 0);
         _client->connectToArnList();
+    }
 }
 
 
@@ -266,7 +270,7 @@ void  ArnDiscoverConnector::doClientResolvChanged( int index, ArnDiscoverInfo::S
     ArnDiscoverInfo  info = _resolver->infoByIndex( index);
     if (info.serviceName() != _arnDisHostService->toString())  return;  // Not the current service
 
-    *_arnDisHostAddress = info.hostName();
+    *_arnDisHostAddress = info.hostWithInfo();
     *_arnDisHostPort    = info.hostPortString();
     *_arnDisHostStatus  = info.resolvCode();
 
@@ -275,15 +279,15 @@ void  ArnDiscoverConnector::doClientResolvChanged( int index, ArnDiscoverInfo::S
         _isResolved = false;
         _client->clearArnList( _discoverHostPrio);
     }
-    else if (state == state.HostInfo) {
+    else if (state == state.HostIp) {
         _isResolved = true;
         _client->clearArnList( _discoverHostPrio);
-        _client->addToArnList( info.hostName(), info.hostPort(), _discoverHostPrio);
+        _client->addToArnList( info.hostWithInfo(), info.hostPort(), _discoverHostPrio);
         if (_client->connectStatus() == ArnClient::ConnectStat::Init) {
             emit clientReadyToConnect( _client);
         }
     }
-    else if (state == state.HostInfoErr) {
+    else if (info.isError()) {
         _client->clearArnList( _discoverHostPrio);
         if (_client->connectStatus() == ArnClient::ConnectStat::Init) {
             emit clientReadyToConnect( _client);
