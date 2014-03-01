@@ -21,13 +21,15 @@ INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/XStringMap.cpp \
-    $$PWD/Arn.cpp
+    $$PWD/Arn.cpp \
+    $$PWD/ArnLib.cpp
 
 HEADERS += \
     $$PWD/ArnInc/ArnLib_global.hpp \
     $$PWD/ArnInc/XStringMap.hpp \
     $$PWD/ArnInc/ArnError.hpp \
     $$PWD/ArnInc/Arn.hpp \
+    $$PWD/ArnInc/ArnLib.hpp \
     $$PWD/ArnInc/MQFlags.hpp
 
 
@@ -86,7 +88,6 @@ contains(ARN, core) {
     HEADERS += \
         $$PWD/ArnInc/ArnM.hpp \
         $$PWD/ArnInc/ArnItem.hpp \
-        $$PWD/ArnInc/ArnLib.hpp \
         $$PWD/ArnInc/ArnPipe.hpp \
         $$PWD/ArnInc/ArnItemB.hpp \
         $$PWD/ArnInc/ArnLinkHandle.hpp \

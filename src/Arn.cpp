@@ -43,11 +43,6 @@ const QString  pathLocalSys        = "Sys/";
 const QString  pathDiscoverThis    = "Sys/Discover/This/";
 const QString  pathDiscoverConnect = "Sys/Discover/Connect/";
 
-bool debugThreading = false;
-bool debugLinkRef   = false;
-bool debugRecInOut  = false;
-bool debugMonitor   = false;
-
 
 QString  convertName( const QString& name, NameF nameF)
 {

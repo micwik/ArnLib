@@ -2,6 +2,7 @@
 #include "ArnInc/ArnZeroConf.hpp"
 #include "ArnInc/ArnClient.hpp"
 #include "ArnInc/ArnServer.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include <QTimer>
 #include <QTime>
 #include <QMetaObject>
@@ -117,7 +118,8 @@ void  ArnDiscoverConnector::doClientConnectChanged( int stat, int curPrio)
 {
     ArnClient::ConnectStat  cs = ArnClient::ConnectStat::fromInt( stat);
 
-    qDebug() << "ArnDiscoverConnector changed 1: stat=" << stat << " prio=" << curPrio;
+    if (Arn::debugDiscover)  qDebug() << "ArnDiscoverConnector changed 1: stat=" << stat 
+                                      << " prio=" << curPrio;
     if (!_resolver || (cs == cs.Connecting))  return;
     if (cs == cs.Connected) {
         _resolveRefreshBlocked = false;
@@ -126,7 +128,7 @@ void  ArnDiscoverConnector::doClientConnectChanged( int stat, int curPrio)
     if (_isResolved || (cs != cs.TriedAll)) {  // Resolv ok or still more to try, consider outdated resolv
         if (curPrio != _discoverHostPrio)  return;  // Not for resolved host
         if ((cs != cs.Error) && (cs != cs.Disconnected))  return;  // Skip any non error
-        qDebug() << "ArnDiscoverConnector changed 2:";
+        if (Arn::debugDiscover)  qDebug() << "ArnDiscoverConnector changed 2:";
 
         if (_resolveRefreshTime->elapsed() >= _resolveRefreshTimeout * 1000)
             _resolveRefreshBlocked = false;
@@ -136,7 +138,7 @@ void  ArnDiscoverConnector::doClientConnectChanged( int stat, int curPrio)
     _resolveRefreshBlocked = true;  // Block for further refresh within lockout time
     _resolveRefreshTime->start();
 
-    qDebug() << "ArnDiscoverConnector changed 3 resolve: service=" << _arnDisHostService->toString();
+    if (Arn::debugDiscover)  qDebug() << "ArnDiscoverConnector changed 3 resolve: service=" << _arnDisHostService->toString();
     bool  forceUpdate = _isResolved;
     _resolver->resolve( _arnDisHostService->toString(), forceUpdate);  // Do a resolve refresh / retry
 }
@@ -275,7 +277,7 @@ void  ArnDiscoverConnector::doClientResolvChanged( int index, ArnDiscoverInfo::S
     *_arnDisHostStatus  = info.resolvCode();
 
     if (state <= state.ServiceName) { // New resolv has started
-        qDebug() << "ArnDiscoverConnector New resolv started: service=" << info.serviceName();
+        if (Arn::debugDiscover)  qDebug() << "ArnDiscoverConnector New resolv started: service=" << info.serviceName();
         _isResolved = false;
         _client->clearArnList( _discoverHostPrio);
     }
@@ -331,7 +333,6 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
             if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
                 continue;
 
-            // qDebug() << "--- serverIntfList found: " << interface.name() + " " + entry.ip().toString();
             QString  path = (Arn::pathDiscoverThis + "Interfaces/If%1/").arg(i);
             QString  addr = entry.ip().toString();
             QString  name = interface.humanReadableName();
@@ -386,7 +387,7 @@ void  ArnDiscoverRemote::postSetupThis()
 
 void  ArnDiscoverRemote::serviceTimeout()
 {
-    qDebug() << "First service setup timeout, using default.";
+    if (Arn::debugDiscover)  qDebug() << "First service setup timeout, using default.";
 
     firstServiceSetup( _defaultService);
 }
@@ -395,7 +396,7 @@ void  ArnDiscoverRemote::serviceTimeout()
 void  ArnDiscoverRemote::firstServiceSetup( QString serviceName)
 {
     QString  service = serviceName;
-    qDebug() << "firstServiceSetup: serviceName=" << service;
+    if (Arn::debugDiscover)  qDebug() << "firstServiceSetup: serviceName=" << service;
 
     _servTimer->stop();
     disconnect( &_arnService,   SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
@@ -408,7 +409,7 @@ void  ArnDiscoverRemote::firstServiceSetup( QString serviceName)
 
 void  ArnDiscoverRemote::doServiceChanged( QString val)
 {
-    qDebug() << "DiscoverRemote Service changed: servname=" << val;
+    if (Arn::debugDiscover)  qDebug() << "DiscoverRemote Service changed: servname=" << val;
     _arnServicePv = val;
     ArnDiscoverAdvertise::setService( val.isEmpty() ? _defaultService : val);
 }
@@ -416,7 +417,7 @@ void  ArnDiscoverRemote::doServiceChanged( QString val)
 
 void  ArnDiscoverRemote::serviceRegistered( QString serviceName)
 {
-    qDebug() << "DiscoverRemote Service registered: serviceName=" << serviceName;
+    if (Arn::debugDiscover)  qDebug() << "DiscoverRemote Service registered: serviceName=" << serviceName;
 
     ArnM::setValue( Arn::pathDiscoverThis + "UsingService/value", serviceName);
 
@@ -426,8 +427,6 @@ void  ArnDiscoverRemote::serviceRegistered( QString serviceName)
 
 void  ArnDiscoverRemote::setService( QString service)
 {
-    qDebug() << "ArnDiscoverRemote::setService service=" << service 
-             << " advHasSetup=" << hasSetupAdvertise();
     if (hasSetupAdvertise()) {
         bool  isAdvertise = state().isAny( State::Advertise);
         _arnService.setValue( service, isAdvertise ? Arn::SameValue::Ignore

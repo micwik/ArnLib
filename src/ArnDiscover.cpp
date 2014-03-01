@@ -33,6 +33,7 @@
 #include "ArnInc/ArnDiscover.hpp"
 #include "ArnInc/ArnZeroConf.hpp"
 #include "ArnInc/Arn.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include <QHostInfo>
 #include <QTimer>
 
@@ -336,7 +337,7 @@ void  ArnDiscoverBrowserB::stopBrowse()
 
 void  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
 {
-    qDebug() << "Man resolve Service: name=" << serviceName;
+    if (Arn::debugDiscover)  qDebug() << "Man resolve Service: name=" << serviceName;
 
     int  id = serviceNameToId( serviceName);
     if ((id >= 0) && forceUpdate) {
@@ -371,14 +372,14 @@ void  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
 
 void  ArnDiscoverBrowserB::onBrowseError( int code)
 {
-    qDebug() << "Browse Error code=" << code;
+    if (Arn::debugDiscover)  qDebug() << "Browse Error code=" << code;
 }
 
 
 void  ArnDiscoverBrowserB::onServiceAdded( int id, QString name, QString domain)
 {
-    qDebug() << "Browse Service added: name=" << name << " domain=" << domain
-             << " escFullDomain=" << _serviceBrowser->escapedFullDomain();
+    if (Arn::debugDiscover)  qDebug() << "Browse Service added: name=" << name << " domain=" << domain
+                                      << " escFullDomain=" << _serviceBrowser->escapedFullDomain();
 
     int  index = newServiceInfo( id, name, domain);
     Q_ASSERT(index >= 0);
@@ -390,7 +391,7 @@ void  ArnDiscoverBrowserB::onServiceAdded( int id, QString name, QString domain)
 
 void  ArnDiscoverBrowserB::onServiceRemoved( int id, QString name, QString domain)
 {
-    qDebug() << "Browse Service removed: name=" << name << " domain=" << domain;
+    if (Arn::debugDiscover)  qDebug() << "Browse Service removed: name=" << name << " domain=" << domain;
     int  index = _activeServIds.indexOf( id);
     removeServiceInfo( index);
 
@@ -403,7 +404,7 @@ void  ArnDiscoverBrowserB::onResolveError( int id, int code)
     ArnZeroConfResolve*  ds = qobject_cast<ArnZeroConfResolve*>( sender());
     Q_ASSERT(ds);
 
-    qDebug() << "Resolve Error code=" << code;
+    if (Arn::debugDiscover)  qDebug() << "Resolve Error code=" << code;
 
     int  index = _activeServIds.indexOf( id);
     if (index >= 0) {  // Service still exist
@@ -426,8 +427,8 @@ void  ArnDiscoverBrowserB::onResolved( int id, QByteArray escFullDomain)
     Q_ASSERT(ds);
 
     QString  name = ds->serviceName();
-    qDebug() << "Resolved Service: name=" << name << " escFullDomainR=" << escFullDomain
-             << " escFullDomain=" << ds->escapedFullDomain();
+    if (Arn::debugDiscover)  qDebug() << "Resolved Service: name=" << name << " escFullDomainR=" << escFullDomain
+                                      << " escFullDomain=" << ds->escapedFullDomain();
     int  index = _activeServIds.indexOf( id);
     if (index >= 0) {  // Service still exist
         ArnDiscoverInfo&  info = _activeServInfos[ index];
@@ -457,7 +458,7 @@ void  ArnDiscoverBrowserB::onLookupError( int id, int code)
     ArnZeroConfLookup*  ds = qobject_cast<ArnZeroConfLookup*>( sender());
     Q_ASSERT(ds);
 
-    qDebug() << "Lookup Error code=" << code;
+    if (Arn::debugDiscover)  qDebug() << "Lookup Error code=" << code;
 
     int  index = _activeServIds.indexOf( id);
     if (index >= 0) {  // Service still exist
@@ -480,7 +481,7 @@ void  ArnDiscoverBrowserB::onLookuped( int id)
     Q_ASSERT(ds);
 
     QString  hostName = ds->host();
-    qDebug() << "Lookuped host: name=" << hostName;
+    if (Arn::debugDiscover)  qDebug() << "Lookuped host: name=" << hostName;
     int  index = _activeServIds.indexOf( id);
     if (index >= 0) {  // Service still exist
         ArnDiscoverInfo&  info = _activeServInfos[ index];
@@ -555,7 +556,7 @@ void  ArnDiscoverBrowserB::doNextState( ArnDiscoverInfo& info)
         ds->setId( info._id);
         connect( ds, SIGNAL(lookupError(int,int)), this, SLOT(onLookupError(int,int)));
         connect( ds, SIGNAL(lookuped(int)), this, SLOT(onLookuped(int)));
-        // qDebug() << "LookingUp host=" << info._hostName << " Id=" << info._id;
+        if (Arn::debugDiscover)  qDebug() << "LookingUp host=" << info._hostName << " Id=" << info._id;
         ds->lookup();
         break;
     }
@@ -608,7 +609,7 @@ void  ArnDiscoverAdvertise::postSetupThis()
 
 void  ArnDiscoverAdvertise::serviceRegistered( QString serviceName)
 {
-    qDebug() << "DiscoverAdvertice Service registered: serviceName=" << serviceName;
+    if (Arn::debugDiscover)  qDebug() << "DiscoverAdvertice Service registered: serviceName=" << serviceName;
 
     emit serviceChanged( serviceName);
 }
@@ -616,7 +617,7 @@ void  ArnDiscoverAdvertise::serviceRegistered( QString serviceName)
 
 void  ArnDiscoverAdvertise::serviceRegistrationError(int code)
 {
-    qDebug() << "Service registration error: code=" << code;
+    if (Arn::debugDiscover)  qDebug() << "Service registration error: code=" << code;
 
     emit serviceChangeError( code);
 }
@@ -642,12 +643,11 @@ ArnDiscoverAdvertise::State  ArnDiscoverAdvertise::state()  const
 
 void  ArnDiscoverAdvertise::setService( QString service)
 {
-    qDebug() << "ArnDiscoverAdvertise::setService service=" << service;
     _service = service;
     if (!_hasSetupAdvertise)  return;
     if (service.isEmpty())  return;
 
-    qDebug() << "Advertise Service changed: servname=" << _service;
+    if (Arn::debugDiscover)  qDebug() << "Advertise Service changed: servname=" << _service;
     if (_arnZCReg->state() != ArnZeroConf::State::None)
         _arnZCReg->releaseService();
     _arnZCReg->setServiceName( _service);

@@ -198,7 +198,7 @@ void  ArnClient::commandLs( const QString& path)
     _commandMap.clear();
     _commandMap.add(ARNRECNAME, "ls").add("path", path);
 
-    qDebug() << "client-ls: path=" << path;
+    // qDebug() << "client-ls: path=" << path;
     _arnNetSync->sendXSMap( _commandMap);
 }
 
@@ -292,7 +292,7 @@ void  ArnClient::reConnectArn()
 
 void  ArnClient::doTcpConnected()
 {
-    qDebug() << "ArnClient TcpConnected: hostAddr=" << _curConnectAP.addr;
+    // qDebug() << "ArnClient TcpConnected: hostAddr=" << _curConnectAP.addr;
     emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
     _connectStat = ConnectStat::Connected;
     emit connectionStatusChanged( _connectStat, _curPrio);
@@ -320,8 +320,8 @@ void  ArnClient::doConnectArnLogic()
         arnHost = slot.addr;
         port    = slot.port;
         curPrio = _hostPrioTab.at( _nextHost);
-        qDebug() << "ArnClient connectlogic: hostTabSize=" << _hostTab.size() << " index=" << _nextHost
-                 << " prio=" << _hostPrioTab.at( _nextHost);
+        // qDebug() << "ArnClient connectlogic: hostTabSize=" << _hostTab.size() << " index=" << _nextHost
+        //          << " prio=" << _hostPrioTab.at( _nextHost);
         ++_nextHost;
     }
 

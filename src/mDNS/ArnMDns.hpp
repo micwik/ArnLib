@@ -71,7 +71,6 @@ class ArnMDns : public QObject
 public:
     static void  attach();
     static void  detach();
-    // static void  shutDown();
 
     static ArnMDnsSockInfo*  addSocket();
     static void  addSocketInfo( ArnMDnsSockInfo* mdi);

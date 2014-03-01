@@ -32,6 +32,7 @@
 
 #include "ArnInc/ArnZeroConf.hpp"
 #include "ArnInc/Arn.hpp"
+#include "ArnInc/ArnLib.hpp"
 #ifdef MDNS_INTERN
 #  include "mDNS/ArnMDns.hpp"
 #  include "mDNS/mDNSShared/dns_sd.h"
@@ -99,7 +100,6 @@ void  ArnZeroConfB::parseFullDomain( const QByteArray& domainName)
 {
     QRegExp rx("^((?:\\\\{2,2}|\\\\\\.|\\\\\\d{3,3}|[^\\\\\\.])+)\\.(.+\\._(?:tcp|udp))\\.(.+)");
     if (rx.indexIn( QString::fromUtf8( domainName.constData())) != -1) {
-        qDebug() << "Servname: capNum=" << rx.captureCount();
         setServiceType(rx.cap(2));
         setDomain(rx.cap(3));
 
@@ -410,7 +410,7 @@ void  ArnZeroConfRegister::registerService( bool noAutoRename)
         serviceTypes += ",_" + escapedName( subType.toUtf8());
     }
 
-    qDebug() << "Register: serviceTypes=" << serviceTypes.constData() << "";
+    if (Arn::debugZeroConf)  qDebug() << "Register: serviceTypes=" << serviceTypes.constData() << "";
     DNSServiceErrorType err;
     err = DNSServiceRegister(&_sdRef,
                              noAutoRename ? kDNSServiceFlagsNoAutoRename : 0,
@@ -461,9 +461,9 @@ void DNSSD_API  ArnZeroConfIntern::registerServiceCallback(
     Q_UNUSED(sdRef);
     Q_UNUSED(flags);
     Q_UNUSED(regtype);
-    qDebug() << "Register callback: name=" << name << " regtype=" << regtype << " domain=" << domain;
+    if (Arn::debugZeroConf)  qDebug() << "Register callback: name=" << name << " regtype=" << regtype 
+                                      << " domain=" << domain;
     ArnZeroConfRegister*  self = reinterpret_cast<ArnZeroConfRegister*>(context);
-    qDebug() << "Register callback: Iregtype=" << self->serviceType();
     if (errCode == kDNSServiceErr_NoError) {
         QString  servName = QString::fromUtf8( name);
         self->setServiceName( servName);
@@ -619,7 +619,7 @@ void DNSSD_API  ArnZeroConfIntern::resolveServiceCallback(
     if (self->_id < 0)  // No valid id set, get one
         self->_id = ArnZeroConfB::getNextId();
 
-    qDebug() << "Resolve callback errCode=" << errCode;
+    if (Arn::debugZeroConf)  qDebug() << "Resolve callback errCode=" << errCode;
     if (errCode == kDNSServiceErr_NoError) {
         QString  resHost = QString::fromUtf8( host);
         if (resHost.endsWith('.'))  // MW: Remove strangely added "."
@@ -708,7 +708,7 @@ void  ArnZeroConfLookup::lookup( bool forceMulticast)
     // Unicast lookup
     if (!forceMulticast && !_host.endsWith(".local")) {
         int  ipLookupId = QHostInfo::lookupHost( _host, this, SLOT(onIpLookup(QHostInfo)));
-        qDebug() << "ZeroConfLookup: host=" << _host << " lookupId=" << ipLookupId;
+        if (Arn::debugZeroConf)  qDebug() << "ZeroConfLookup: host=" << _host << " lookupId=" << ipLookupId;
         _state.set( ArnZeroConf::State::LookingUp);
         return;
     }
@@ -766,17 +766,19 @@ void  ArnZeroConfLookup::operationTimeout()
 void  ArnZeroConfLookup::onIpLookup( const QHostInfo &host)
 {
     if (host.error() == QHostInfo::NoError) {
-        foreach (const QHostAddress &address, host.addresses())
-            qDebug() << "Lookup uDNS callback, Found address:" << address.toString();
+        if (Arn::debugZeroConf)  
+            foreach (const QHostAddress &address, host.addresses())
+                qDebug() << "Lookup uDNS callback, Found address:" << address.toString();
 
         _hostAddr = host.addresses().first();
-        qDebug() << "***** Lookup uDNS callback: hostName=" << _host << " ip=" << _hostAddr.toString();
+        if (Arn::debugZeroConf)  qDebug() << "Lookup uDNS callback: hostName=" << _host 
+                                          << " ip=" << _hostAddr.toString();
         _state.set( ArnZeroConf::State::LookingUp, false);
         _state.set( ArnZeroConf::State::Lookuped);
         emit lookuped( _id);
     }
     else {
-        qDebug() << "ZeroConfLookup uDNS failed:" << host.errorString();
+        if (Arn::debugZeroConf)  qDebug() << "ZeroConfLookup uDNS failed:" << host.errorString();
         _state.set( ArnZeroConf::State::Lookup, false);
         emit lookupError( _id, ArnZeroConf::Error::UDnsFail);
     }
@@ -801,11 +803,13 @@ void DNSSD_API  ArnZeroConfIntern::lookupHostCallback(
     if (self->_id < 0)  // No valid id set, get one
         self->_id = ArnZeroConfB::getNextId();
 
-    qDebug() << "***** Resolve Lookup callback hostName=" << hostname << " errCode=" << errCode;
+    if (Arn::debugZeroConf)  qDebug() << "Resolve Lookup callback hostName=" << hostname 
+                                      << " errCode=" << errCode;
     if (errCode == kDNSServiceErr_NoError) {
         QHostAddress  hostAddr( address);
         self->_hostAddr = hostAddr;
-        qDebug() << "***** Resolve Lookup callback hostName=" << hostname << " ip=" << hostAddr.toString();
+        if (Arn::debugZeroConf)  qDebug() << "Resolve Lookup callback hostName=" << hostname 
+                                          << " ip=" << hostAddr.toString();
         self->_state.set( ArnZeroConf::State::LookingUp, false);
         self->_state.set( ArnZeroConf::State::Lookuped);
         emit self->lookuped( self->_id);
@@ -937,9 +941,8 @@ void DNSSD_API  ArnZeroConfIntern::browseServiceCallback(
 {
     Q_UNUSED(sdRef);
     Q_UNUSED(iface);
-    //Q_UNUSED(regtype);
+    Q_UNUSED(regtype);
 
-    qDebug() << "Browse CB: regType=" << regtype << " replyDomain=" << replyDomain;
     ArnZeroConfBrowser* self = reinterpret_cast<ArnZeroConfBrowser*>(context);
     if (errCode == kDNSServiceErr_NoError) {
         bool  isAdded = (flags & kDNSServiceFlagsAdd) != 0;

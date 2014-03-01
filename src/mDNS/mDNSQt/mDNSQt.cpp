@@ -39,12 +39,14 @@
 //
 
 #include "mDNS/ArnMDns.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include <QUdpSocket>
 #include <QNetworkInterface>
 #include <QHostInfo>
 #include <QDateTime>
 #include <QByteArray>
 #include <QtGlobal>
+#include <QDebug>
 
 extern "C" {
 
@@ -98,8 +100,8 @@ mDNSexport mStatus mDNSPlatformSendUDP(const mDNS *const m, const void *const ms
     Q_ASSERT((((char *) end) - ((char *) msg)) > 0);
 
     if (dstPort.NotAnInteger == 0) {
-        qWarning() << "mDNSPlatformSendUDP: Invalid argument -dstPort is set to 0";
-        //return PosixErrorToStatus(EINVAL);
+        if (Arn::warningMDNS)  
+            qWarning() << "mDNSPlatformSendUDP: Invalid argument -dstPort is set to 0";
         return mStatus_UnknownErr;
     }
 
@@ -385,8 +387,8 @@ mDNSlocal void ClearInterfaceList( mDNS* const m)
     while (m->HostInterfaces) {
         PosixNetworkInterface*  intf = (PosixNetworkInterface*) (m->HostInterfaces);
         mDNS_DeregisterInterface( m, &intf->coreIntf, mDNSfalse);
-        if (gMDNSPlatformPosixVerboseLevel > 0)
-            fprintf(stderr, "Deregistered interface %s\n", intf->intfName);
+        if (Arn::debugMDNS)
+            qDebug("Deregistered interface %s\n", intf->intfName);
         FreePosixNetworkInterface( intf);
     }
 	num_registered_interfaces = 0;
@@ -433,28 +435,30 @@ int SetupSocket(int addrFam, mDNSIPPort port, int interfaceIndex, int *sktPtr)
         anyAddress = QHostAddress::AnyIPv6;
     }
     else {
-        qWarning() << "ArnMDns SetupSocket: unknown addrFam=" << addrFam;
+        if (Arn::warningMDNS)  qWarning() << "ArnMDns SetupSocket: unknown addrFam=" << addrFam;
         return 0;  // Internal error
     }
 
     stat = stat && udpSock->bind( anyAddress, ArnMDns::fromMDNSPort( port), bindMode);
-    qDebug() << "SetupSocket Bind: orgPort=" << ArnMDns::fromMDNSPort( port)
-             << " port=" << udpSock->localPort()
-             << " interfaceIndex=" << interfaceIndex;
+    if (Arn::debugMDNS)  qDebug() << "SetupSocket Bind: orgPort=" << ArnMDns::fromMDNSPort( port)
+                                  << " port=" << udpSock->localPort()
+                                  << " interfaceIndex=" << interfaceIndex;
 
     if (joinMulticastGroup) {
         QNetworkInterface  nif = QNetworkInterface::interfaceFromIndex( interfaceIndex);
-        qDebug() << "--- setupSocket found: " << nif.name()
-                 << "  Join MCG: mcgAdr=" << mcgAddress.toString() << " nif=" << nif.humanReadableName();
+        if (Arn::debugMDNS)  qDebug() << "SetupSocket found: nif=" << nif.humanReadableName()
+                                      << "  Join MCG: mcgAdr=" << mcgAddress.toString();
         stat = stat && udpSock->joinMulticastGroup( mcgAddress, nif);
         udpSock->setMulticastInterface( nif);
     }
+    // Some options are not supported by Qt, will be ignored ...
     // IPV4
     // Should be IP_PKTINFO, (IP_RECVTTL)
     // err = setsockopt(fd, IPPROTO_IP, IP_PKTINFO, &kOn, sizeof(kOn));
     // err = setsockopt(fd, IPPROTO_IP, IP_RECVTTL, &kOn, sizeof(kOn));
     // Should be IP_TTL = 255
     // err = setsockopt(fd, IPPROTO_IP, IP_TTL, &kIntTwoFiveFive, sizeof(kIntTwoFiveFive));
+    //
     // IPV6
     // Should be IPV6_2292_PKTINFO (for multiple homed systems)
     // err = setsockopt(fd, IPPROTO_IPV6, IPV6_2292_PKTINFO, &kOn, sizeof(kOn));
@@ -471,7 +475,9 @@ int SetupSocket(int addrFam, mDNSIPPort port, int interfaceIndex, int *sktPtr)
         return 0;  // Success
     }
     else {
-        qWarning() << "SetupSocket error: code=" << udpSock->error() << " txt=" << udpSock->errorString();
+        if (Arn::warningMDNS)  
+            qWarning() << "SetupSocket error: code=" << udpSock->error() 
+                       << " txt=" << udpSock->errorString();
         if (mdi)
             delete mdi;
         return 1;  // Fail
@@ -502,10 +508,9 @@ int  arnSetupOneInterface( mDNS* const m, const QNetworkInterface& interface,
         // Set up the fields required by the mDNS core.
         ArnMDns::toMDNSAddr( entry.ip(), intf->coreIntf.ip);
         ArnMDns::toMDNSAddr( entry.netmask(), intf->coreIntf.mask);
-        qDebug() << "Setup1Intf: ip=" << entry.ip().toString()
-                 << " mask=" << entry.netmask().toString();
+        if (Arn::debugMDNS)  qDebug() << "Setup1Intf: ip=" << entry.ip().toString()
+                                      << " mask=" << entry.netmask().toString();
 
-        //LogMsg("SetupOneInterface: %#a %#a",  &intf->coreIntf.ip,  &intf->coreIntf.mask);
         strncpy(intf->coreIntf.ifname, intf->intfName, sizeof(intf->coreIntf.ifname));
         intf->coreIntf.ifname[sizeof(intf->coreIntf.ifname)-1] = 0;
         intf->coreIntf.Advertise = m->AdvertiseLocalAddresses;
@@ -521,9 +526,6 @@ int  arnSetupOneInterface( mDNS* const m, const QNetworkInterface& interface,
         alias                       = *intfpp;
         if (alias == NULL)  alias   = intf;
         intf->coreIntf.InterfaceID = (mDNSInterfaceID)alias;
-
-        // if (alias != intf)
-        //      debugf("SetupOneInterface: %s %#a is an alias of %#a", intfName, &intf->coreIntf.ip, &alias->coreIntf.ip);
     }
 
     // Set up the multicast socket
@@ -545,9 +547,10 @@ int  arnSetupOneInterface( mDNS* const m, const QNetworkInterface& interface,
     // Clean up.
     if (err == 0) {
         // num_registered_interfaces++;
-        debugf("SetupOneInterface: %s %#a Registered", intf->intfName, &intf->coreIntf.ip);
-        if (gMDNSPlatformPosixVerboseLevel > 0)
-            fprintf(stderr, "Registered interface %s\n", intf->intfName);
+        debugf("SetupOneInterface: nif=%s ip=%#a Registered", 
+               interface.humanReadableName().toUtf8().constData(), &intf->coreIntf.ip);
+        if (Arn::debugMDNS)
+            qDebug("Registered interface %s\n", intf->intfName);
     }
     else {
         // Use intfName instead of intf->intfName in the next line to avoid dereferencing NULL.
@@ -585,12 +588,15 @@ int  arnSetupInterfaceList( mDNS *const m)
             QAbstractSocket::NetworkLayerProtocol  prot = entry.ip().protocol();
             if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
                 continue;
+            if (entry.prefixLength() == 0)  continue;
 
-            qDebug() << "--- setupIntfList found: " << interface.name() + " " + entry.ip().toString();
+            if (Arn::debugMDNS)  qDebug() << "SetupIntfList found: nif=" 
+                                          << interface.humanReadableName() + " ip=" + entry.ip().toString();
             if (entry.prefixLength() < 0) {
-                // TODO MW: This seemes like a bug in android/qt, any workaround?
+                // MW: This is a bug in Qt for android, windows ...  (Not linux)
                 entry.setPrefixLength( flags.testFlag( QNetworkInterface::IsLoopBack) ? 8 : 24);
-                qDebug() << "Bad netmask, asume prefixLen=" << entry.prefixLength();
+                if (Arn::warningMDNS)  qWarning() << "Bad netmask: nif=" << interface.humanReadableName()
+                                                  << ", asume prefixLen=" << entry.prefixLength();
             }
             if (flags.testFlag( QNetworkInterface::IsLoopBack)) {
                 if (!firstLoopbackInterface.isValid()) {
@@ -713,7 +719,8 @@ mDNSexport mStatus  mDNSPlatformInit( mDNS *const m)
         err = WatchForInterfaceChange( m);
 		// Failure to observe interface changes is non-fatal.
         if (err != mStatus_NoError) {
-			fprintf(stderr, "mDNS(%d) WARNING: Unable to detect interface changes (%d).\n", getpid(), err);
+            if (Arn::debugMDNS)            
+                qDebug("mDNS(%d) WARNING: Unable to detect interface changes (%d).\n", getpid(), err);
 			err = mStatus_NoError;
         }
     }
@@ -842,13 +849,13 @@ mDNSexport mDNSs32  mDNSPlatformRawTime()
 }
 
 
-mDNSexport mDNSs32 mDNSPlatformUTC(void)
+mDNSexport mDNSs32  mDNSPlatformUTC(void)
 {
     return mDNSs32(QDateTime::currentMSecsSinceEpoch() / 1000);
 }
 
 
-mDNSexport void mDNSPlatformSendWakeupPacket(mDNS *const m, mDNSInterfaceID InterfaceID, char *EthAddr, char *IPAddr, int iteration)
+mDNSexport void  mDNSPlatformSendWakeupPacket( mDNS *const m, mDNSInterfaceID InterfaceID, char *EthAddr, char *IPAddr, int iteration)
 {
 	(void) m;
 	(void) InterfaceID;
@@ -858,7 +865,7 @@ mDNSexport void mDNSPlatformSendWakeupPacket(mDNS *const m, mDNSInterfaceID Inte
 }
 
 
-mDNSexport mDNSBool mDNSPlatformValidRecordForInterface(AuthRecord *rr, const NetworkInterfaceInfo *intf)
+mDNSexport mDNSBool  mDNSPlatformValidRecordForInterface( AuthRecord *rr, const NetworkInterfaceInfo *intf)
 {
 	(void) rr;
 	(void) intf;
@@ -867,32 +874,32 @@ mDNSexport mDNSBool mDNSPlatformValidRecordForInterface(AuthRecord *rr, const Ne
 }
 
 
-//#ifndef MDNS_DEBUGMSGS
-mDNSexport void mDNSPlatformWriteDebugMsg(const char *msg)
+#ifdef MDNS_DEBUGMSGS
+mDNSexport void  mDNSPlatformWriteDebugMsg( const char *msg)
 {
 #ifdef ANDROID
     __android_log_print(ANDROID_LOG_DEBUG, "bonjour", "%s", msg);
 #else
-    qDebug("%s\n", msg);
-    //fprintf(stderr,"%s\n", msg);
-    //fflush(stderr);
+    if (Arn::debugMDNS)  qDebug("%s\n", msg);
 #endif
 }
-//#endif
+#endif
 
 
 mDNSexport void mDNSPlatformWriteLogMsg(const char *ident, const char *buffer, mDNSLogLevel_t loglevel)
 {
     Q_UNUSED(ident);
 
+#if 0
     if (mDNS_DebugMode)	{
         qDebug("%s\n", buffer);
         return;
     }
-
+#endif
+    
 #ifdef ANDROID
     //__android_log_print(ANDROID_LOG_DEBUG, "mDNS", "%s", buffer);
-    qDebug("%s\n", buffer);
+    if (Arn::debugMDNS)  qDebug("%s\n", buffer);
 
     int  syslog_level = 0;
     switch (loglevel) {
@@ -913,15 +920,15 @@ mDNSexport void mDNSPlatformWriteLogMsg(const char *ident, const char *buffer, m
         qCritical("%s\n", buffer);
         break;
     case MDNS_LOG_OPERATION:
-        qWarning("%s\n", buffer);
+        if (Arn::warningMDNS)  qWarning("%s\n", buffer);
         break;
     case MDNS_LOG_SPS:
     case MDNS_LOG_INFO:
     case MDNS_LOG_DEBUG:
-        qDebug("%s\n", buffer);
+        if (Arn::debugMDNS)  qDebug("%s\n", buffer);
         break;
     default:
-        qDebug("mDNS Unknown loglevel %d: %s\n", loglevel, buffer);
+        if (Arn::warningMDNS)  qWarning("mDNS Unknown loglevel %d: %s\n", loglevel, buffer);
     }
 #endif
 }

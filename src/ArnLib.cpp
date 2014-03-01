@@ -30,21 +30,20 @@
 // GNU Lesser General Public License for more details.
 //
 
-#ifndef ARNLIB_HPP
-#define ARNLIB_HPP
+#include "ArnInc/ArnLib.hpp"
 
 
 namespace Arn {
 
-extern bool debugThreading;
-extern bool debugLinkRef;
-extern bool debugRecInOut;
-extern bool debugMonitor;
-extern bool debugDiscover;
-extern bool debugZeroConf;
-extern bool debugMDNS;
-extern bool warningMDNS;
+bool debugThreading = false;
+bool debugLinkRef   = false;
+bool debugRecInOut  = false;
+bool debugMonitor   = false;
+bool debugDiscover  = false;
+bool debugZeroConf  = false;
+bool debugMDNS      = false;
+bool warningMDNS    = true;
 
 }  // Arn::
 
-#endif // ARNLIB_HPP
+

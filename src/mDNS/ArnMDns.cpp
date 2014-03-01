@@ -39,6 +39,7 @@
 //
 
 #include "ArnMDns.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include <QEventLoop>
 #include <QSocketNotifier>
 #include <QUdpSocket>
@@ -61,7 +62,7 @@ ArnMDns*  ArnMDns::_self(0);
 int  ArnMDns::_refCount(0);
 
 mDNS mDNSStorage;
-const char ProgramName[] {"ProgramName???"};  // Not realy used
+const char ProgramName[] = "ProgramName???";  // Not realy used
 
 // Start off with a default cache of 16K (about 100 records)
 #define RR_CACHE_SIZE ((16*1024) / sizeof(CacheRecord))
@@ -128,7 +129,7 @@ int  ArnMDns::setup()
 
 void  ArnMDns::close()
 {
-    qDebug() << "ArmDns close: refcount=" << _refCount;
+    if (Arn::debugMDNS)  qDebug() << "ArmDns close: refcount=" << _refCount;
     if (_started) {
         QEventLoop  loop;
         QTimer::singleShot( 500, &loop, SLOT(quit()));  // Min 100ms
@@ -154,14 +155,14 @@ void ArnMDns::attach()
         _self->setup();
     }
     ++_refCount;
-    qDebug() << "ArmDns ref++: count=" << _refCount;
+    if (Arn::debugMDNS)  qDebug() << "ArmDns ref++: count=" << _refCount;
 }
 
 
 void ArnMDns::detach()
 {
     --_refCount;
-    qDebug() << "ArmDns ref--: count=" << _refCount;
+    if (Arn::debugMDNS)  qDebug() << "ArmDns ref--: count=" << _refCount;
     if (_refCount == 0) {
         _self->close();
         _self->deleteLater();
@@ -169,18 +170,9 @@ void ArnMDns::detach()
     }
 }
 
-/*
-void  ArnMDns::shutDown()
-{
-    if (!_self)  return;
-
-    _self->close();
-}
-*/
 
 ArnMDnsSockInfo*  ArnMDns::addSocket()
 {
-    qDebug() << "Adding UDP socket:";
     ArnMDnsSockInfo*  mdi = new ArnMDnsSockInfo( _self);
     QUdpSocket*  sock = new QUdpSocket( mdi);
     mdi->_udpSocket = sock;
@@ -418,7 +410,6 @@ void ArnMDns::socketDataReady()
     Q_ASSERT(mdi);
 
     int sd = udpSocket->socketDescriptor();
-    // qDebug() << "sockDataReady on fd=" << fd;
 
     mDNS*  m = &mDNSStorage;
 
