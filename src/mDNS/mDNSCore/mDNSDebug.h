@@ -26,7 +26,7 @@
 // not to accidentally check-in that change by mistake when you check in your other changes.)
 
 //#undef MDNS_DEBUGMSGS
-//#define MDNS_DEBUGMSGS 2
+#define MDNS_DEBUGMSGS 2
 
 // Set MDNS_CHECK_PRINTF_STYLE_FUNCTIONS to 1 to enable extra GCC compiler warnings
 // Note: You don't normally want to do this, because it generates a bunch of

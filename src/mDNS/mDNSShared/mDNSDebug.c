@@ -45,9 +45,9 @@ mDNSexport int mDNS_LoggingEnabled = 0;
 mDNSexport int mDNS_PacketLoggingEnabled = 0;
 
 #if MDNS_DEBUGMSGS
-mDNSexport int mDNS_DebugMode = mDNStrue;
+mDNSexport int mDNS_DebugMode = mDNStrue;  // Not used
 #else
-mDNSexport int mDNS_DebugMode = mDNSfalse;
+mDNSexport int mDNS_DebugMode = mDNSfalse;  // Not used
 #endif
 
 // Note, this uses mDNS_vsnprintf instead of standard "vsnprintf", because mDNS_vsnprintf knows
