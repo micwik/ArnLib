@@ -93,7 +93,7 @@ private:
     ~ArnMDns();
     int  setup();
     void  close();
-    void  socketDataProc( mDNS *const m, PosixNetworkInterface *intf, int skt, ArnMDnsSockInfo* mdi);
+    void  socketDataProc( mDNS *const m, PosixNetworkInterface *intf, ArnMDnsSockInfo* mdi);
 
     static ArnMDns*  _self;
     static int  _refCount;

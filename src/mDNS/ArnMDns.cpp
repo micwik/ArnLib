@@ -317,7 +317,7 @@ void  ArnMDns::poll()
 
 
 /// This routine is called when the main loop detects that data is available on a socket.
-void  ArnMDns::socketDataProc(mDNS *const m, PosixNetworkInterface *intf, int skt, ArnMDnsSockInfo* mdi)
+void  ArnMDns::socketDataProc( mDNS *const m, PosixNetworkInterface *intf, ArnMDnsSockInfo* mdi)
     {
     mDNSAddr   senderAddr, destAddr;
     mDNSIPPort senderPort;
@@ -328,7 +328,6 @@ void  ArnMDns::socketDataProc(mDNS *const m, PosixNetworkInterface *intf, int sk
     const mDNSInterfaceID InterfaceID = intf ? intf->coreIntf.InterfaceID : NULL;
 
     Q_ASSERT(m);
-    Q_ASSERT(skt >= 0);
 
     // miwi: TODO packet info destAddr, interface
     // packetLen = recvfrom_flags(skt, &packet, sizeof(packet), &flags, (struct sockaddr *) &from, &fromLen, &packetInfo, &ttl);
@@ -418,10 +417,10 @@ void ArnMDns::socketDataReady()
     mDNS*  m = &mDNSStorage;
 
     if (mdi->_isUnicast) {
-        socketDataProc( m, NULL, sd, mdi);
+        socketDataProc( m, NULL, mdi);
     }
     else if (mdi->_mDnsInfo) {
-        socketDataProc( m, mdi->_mDnsInfo, sd, mdi);
+        socketDataProc( m, mdi->_mDnsInfo, mdi);
     }
     else {
         qWarning() << "ArnMDNS received data from unexpected socket: sd=" << sd;
