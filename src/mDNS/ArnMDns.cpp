@@ -129,8 +129,11 @@ int  ArnMDns::setup()
 
 void  ArnMDns::close()
 {
-    if (Arn::debugMDNS)  qDebug() << "ArmDns close: refcount=" << _refCount;
+    if (Arn::debugZeroConf)  qDebug() << "ArmDns close: refcount=" << _refCount
+                                      << " Started=" << _started;
     if (_started) {
+        mDNS_StartExit( &mDNSStorage);
+        
         QEventLoop  loop;
         QTimer::singleShot( 500, &loop, SLOT(quit()));  // Min 100ms
         loop.exec( QEventLoop::ExcludeUserInputEvents);
@@ -142,7 +145,8 @@ void  ArnMDns::close()
             ArnMDnsSockInfo*  mdi = i.value();
             delete mdi;
         }
-        mDNS_Close(&mDNSStorage);
+        //mDNS_Close( &mDNSStorage);
+         mDNS_FinalExit( &mDNSStorage);
     }
     _started = false;
 }
@@ -155,14 +159,14 @@ void ArnMDns::attach()
         _self->setup();
     }
     ++_refCount;
-    if (Arn::debugMDNS)  qDebug() << "ArmDns ref++: count=" << _refCount;
+    if (Arn::debugZeroConf)  qDebug() << "ArmDns ref++: count=" << _refCount;
 }
 
 
 void ArnMDns::detach()
 {
     --_refCount;
-    if (Arn::debugMDNS)  qDebug() << "ArmDns ref--: count=" << _refCount;
+    if (Arn::debugZeroConf)  qDebug() << "ArmDns ref--: count=" << _refCount;
     if (_refCount == 0) {
         _self->close();
         _self->deleteLater();
