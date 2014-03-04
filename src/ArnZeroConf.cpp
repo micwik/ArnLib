@@ -451,12 +451,13 @@ void  ArnZeroConfRegister::releaseService()
         qWarning() << "ZeroConfRegister release: unregistered service";
     }
     else {
-        DNSServiceRefDeallocate( _sdRef);
-        _state = ArnZeroConf::State::None;
 #ifndef MDNS_INTERN
-        _notifier->deleteLater();
+        if (_notifier)  // Should always be non Null ...
+            delete _notifier;
         _notifier = 0;
 #endif
+        DNSServiceRefDeallocate( _sdRef);
+        _state = ArnZeroConf::State::None;
     }
 }
 
@@ -592,13 +593,13 @@ void  ArnZeroConfResolve::releaseResolve()
     _operationTimer->stop();
 
     if (_sdRef) {
-        DNSServiceRefDeallocate( _sdRef);
-        _sdRef = 0;
-        
 #ifndef MDNS_INTERN
-        _notifier->deleteLater();
+        if (_notifier)  // Should always be non Null ...
+            delete _notifier;
         _notifier = 0;
 #endif
+        DNSServiceRefDeallocate( _sdRef);
+        _sdRef = 0;        
     }
     _state.set( ArnZeroConf::State::Resolve, false);
 }
@@ -729,7 +730,7 @@ void  ArnZeroConfLookup::lookup( bool forceMulticast)
 
 #ifdef MDNS_HAVE_LOOKUP
     // Multicast DNS lookup
-    if (Arn::debugZeroConf)  qDebug() << "ZeroConfLookup mDNS: host=" << _host << " lookupId=" << ipLookupId;
+    if (Arn::debugZeroConf)  qDebug() << "ZeroConfLookup mDNS: host=" << _host << " id=" << _id;
     DNSServiceErrorType err;
     err = DNSServiceGetAddrInfo(&_sdRef,
                                 (forceMulticast ? kDNSServiceFlagsForceMulticast : 0),                                
@@ -761,13 +762,14 @@ void  ArnZeroConfLookup::releaseLookup()
     _operationTimer->stop();
 
     if (_sdRef) {
+#ifndef MDNS_INTERN
+        if (_notifier)  // Should always be non Null ...
+            delete _notifier;
+        _notifier = 0;
+#endif
         DNSServiceRefDeallocate( _sdRef);
         _sdRef = 0;
 
-#ifndef MDNS_INTERN
-        _notifier->deleteLater();
-        _notifier = 0;
-#endif
     }
     _state.set( ArnZeroConf::State::Lookup, false);
 }
@@ -958,11 +960,12 @@ void ArnZeroConfBrowser::browse( bool enable)
 void ArnZeroConfBrowser::stopBrowse()
 {
     if (state() == ArnZeroConf::State::Browsing) {
-        DNSServiceRefDeallocate( _sdRef);
 #ifndef MDNS_INTERN
-        _notifier->deleteLater();
+        if (_notifier)  // Should always be non Null ...
+            delete _notifier;
         _notifier = 0;
 #endif
+        DNSServiceRefDeallocate( _sdRef);
     }
     _state = ArnZeroConf::State::None;
 }

@@ -167,7 +167,6 @@ void  ArnDiscoverConnector::postSetupClient()
     ArnClient::HostList  arnHosts = _client->arnList( _directHostPrio);
     int  i = 0;
     foreach (ArnClient::HostAddrPort host, arnHosts) {
-        ++i;
         path = connectIdPath + "DirectHosts/Host-" + QString::number(i) + "/";
         ArnItem*  hostAddr = new ArnItem( path + "value", _directHosts);
         ArnItem*  hostPort = new ArnItem( path + "Port/value", _directHosts);
@@ -177,6 +176,7 @@ void  ArnDiscoverConnector::postSetupClient()
         hostPort->addMode( ArnItem::Mode::Save);
         connect( hostAddr, SIGNAL(changed()), this, SLOT(doClientDirHostChanged()));
         connect( hostPort, SIGNAL(changed()), this, SLOT(doClientDirHostChanged()));
+        ++i;
     }
     doClientDirHostChanged();  // Any loaded persistent values will be used
 
@@ -333,7 +333,7 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
             if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
                 continue;
 
-            QString  path = (Arn::pathDiscoverThis + "Interfaces/If%1/").arg(i);
+            QString  path = (Arn::pathDiscoverThis + "Interfaces/Interf-%1/").arg(i);
             QString  addr = entry.ip().toString();
             QString  name = interface.humanReadableName();
             ArnM::setValue( path + "addr", addr);
