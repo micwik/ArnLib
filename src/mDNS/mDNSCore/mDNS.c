@@ -7830,7 +7830,7 @@ mDNSlocal mDNSu32 GetTimeoutForMcastQuestion(mDNS *m, DNSQuestion *question)
 // Sets all the Valid DNS servers for a question
 mDNSexport mDNSu32 SetValidDNSServers(mDNS *m, DNSQuestion *question)
 	{
-	DNSServer *curmatch = mDNSNULL;
+    // DNSServer *curmatch = mDNSNULL;
 	int bestmatchlen = -1, namecount = CountLabels(&question->qname);
 	DNSServer *curr;
 	int bettermatch, currcount;
@@ -7867,7 +7867,7 @@ mDNSexport mDNSu32 SetValidDNSServers(mDNS *m, DNSQuestion *question)
 			// bit
 			if ((bettermatch == 1) || (bettermatch == 0))
 				{
-				curmatch = curr;
+                // curmatch = curr;
 				bestmatchlen = currcount;
 				if (bettermatch) { debugf("SetValidDNSServers: Resetting all the bits"); question->validDNSServers = zeroOpaque64; timeout = 0; }
 				debugf("SetValidDNSServers: question %##s Setting the bit for DNS server Address %#a (Domain %##s), Scoped:%d index %d,"

@@ -1433,7 +1433,7 @@ mDNSexport mDNSBool DNSDigest_VerifyMessage(DNSMessage *msg, mDNSu8 *end, LargeC
 	mDNSs32				then;
 	mDNSu8				thisDigest[MD5_LEN];
 	mDNSu8				thatDigest[MD5_LEN];
-	mDNSu32				macsize;
+    // mDNSu32				macsize;
 	mDNSOpaque16 		buf;
 	mDNSu8				utc48[6];
 	mDNSs32				delta;
@@ -1497,7 +1497,7 @@ mDNSexport mDNSBool DNSDigest_VerifyMessage(DNSMessage *msg, mDNSu8 *end, LargeC
 
 	// MAC size
 
-	macsize = (mDNSu32) NToH16(ptr);
+    // macsize = (mDNSu32) NToH16(ptr);
 	
 	ptr += sizeof(mDNSu16);
 
