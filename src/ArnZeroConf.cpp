@@ -47,6 +47,13 @@
 using Arn::XStringMap;
 
 
+#ifdef Q_WS_WIN
+bool  ArnZeroConfLookup::_isForceQtDnsLookup( false);  // Windows has normally no mDNS DNS lookup
+#else
+bool  ArnZeroConfLookup::_isForceQtDnsLookup( true);   // Deafult expect platform to support mDNS DNS lookup
+#endif
+
+
 //// Used to hide dns_sd details from the header
 class ArnZeroConfIntern
 {
@@ -339,7 +346,7 @@ QByteArray  ArnZeroConfB::escapedFullDomain()  const
 void  ArnZeroConfB::socketData()
 {
 #ifndef MDNS_INTERN
-    DNSServiceProcessResult( _serviceRef);
+    DNSServiceProcessResult( _sdRef);
 #endif
 }
 
@@ -431,7 +438,7 @@ void  ArnZeroConfRegister::registerService( bool noAutoRename)
     else {
         _state = ArnZeroConf::State::Registering;
 #ifndef MDNS_INTERN
-        _notifier = new QSocketNotifier( DNSServiceRefSockFD( _serviceRef), QSocketNotifier::Read, this);
+        _notifier = new QSocketNotifier( DNSServiceRefSockFD( _sdRef), QSocketNotifier::Read, this);
         connect( _notifier, SIGNAL(activated(int)), this, SLOT(socketData()));
 #endif
     }
@@ -573,7 +580,7 @@ void  ArnZeroConfResolve::resolve( bool forceMulticast)
         _operationTimer->start();
 
 #ifndef MDNS_INTERN
-        _notifier = new QSocketNotifier( DNSServiceRefSockFD( _serviceRef), QSocketNotifier::Read, this);
+        _notifier = new QSocketNotifier( DNSServiceRefSockFD( _sdRef), QSocketNotifier::Read, this);
         connect( _notifier, SIGNAL(activated(int)), this, SLOT(socketData()));
 #endif
     }
@@ -705,15 +712,24 @@ void  ArnZeroConfLookup::lookup( bool forceMulticast)
     }
     releaseLookup();
     
-    // Unicast lookup
-    if (!forceMulticast && !_host.endsWith(".local")) {
+    bool  useQtLookup = false;  // Default
+    useQtLookup |= !forceMulticast && !_host.endsWith(".local");
+    useQtLookup |= _isForceQtDnsLookup;
+#ifndef MDNS_HAVE_LOOKUP
+    useQtLookup = true;
+#endif
+
+    // Qt DNS lookup
+    if (useQtLookup) {
         int  ipLookupId = QHostInfo::lookupHost( _host, this, SLOT(onIpLookup(QHostInfo)));
-        if (Arn::debugZeroConf)  qDebug() << "ZeroConfLookup: host=" << _host << " lookupId=" << ipLookupId;
+        if (Arn::debugZeroConf)  qDebug() << "ZeroConfLookup Qt DNS: host=" << _host << " lookupId=" << ipLookupId;
         _state.set( ArnZeroConf::State::LookingUp);
         return;
     }
 
-    // Multicast lookup
+#ifdef MDNS_HAVE_LOOKUP
+    // Multicast DNS lookup
+    if (Arn::debugZeroConf)  qDebug() << "ZeroConfLookup mDNS: host=" << _host << " lookupId=" << ipLookupId;
     DNSServiceErrorType err;
     err = DNSServiceGetAddrInfo(&_sdRef,
                                 (forceMulticast ? kDNSServiceFlagsForceMulticast : 0),                                
@@ -732,10 +748,11 @@ void  ArnZeroConfLookup::lookup( bool forceMulticast)
         _operationTimer->start();
 
 #ifndef MDNS_INTERN
-        _notifier = new QSocketNotifier( DNSServiceRefSockFD( _serviceRef), QSocketNotifier::Read, this);
+        _notifier = new QSocketNotifier( DNSServiceRefSockFD( _sdRef), QSocketNotifier::Read, this);
         connect( _notifier, SIGNAL(activated(int)), this, SLOT(socketData()));
-#endif
+#endif  // MDNS_INTERN
     }
+#endif  // MDNS_HAVE_LOOKUP
 }
 
 
@@ -766,12 +783,12 @@ void  ArnZeroConfLookup::operationTimeout()
 void  ArnZeroConfLookup::onIpLookup( const QHostInfo &host)
 {
     if (host.error() == QHostInfo::NoError) {
-        if (Arn::debugZeroConf)  
+        if (Arn::debugZeroConf)
             foreach (const QHostAddress &address, host.addresses())
-                qDebug() << "Lookup uDNS callback, Found address:" << address.toString();
+                qDebug() << "Qt Lookup DNS callback, Found address:" << address.toString();
 
         _hostAddr = host.addresses().first();
-        if (Arn::debugZeroConf)  qDebug() << "Lookup uDNS callback: hostName=" << _host 
+        if (Arn::debugZeroConf)  qDebug() << "Qt Lookup DNS callback: hostName=" << _host
                                           << " ip=" << _hostAddr.toString();
         _state.set( ArnZeroConf::State::LookingUp, false);
         _state.set( ArnZeroConf::State::Lookuped);
@@ -798,6 +815,7 @@ void DNSSD_API  ArnZeroConfIntern::lookupHostCallback(
     ArnZeroConfLookup*  self = reinterpret_cast<ArnZeroConfLookup*>(context);
     Q_ASSERT(self);
 
+#ifdef MDNS_HAVE_LOOKUP
     self->_operationTimer->stop();
 
     if (self->_id < 0)  // No valid id set, get one
@@ -818,6 +836,22 @@ void DNSSD_API  ArnZeroConfIntern::lookupHostCallback(
         self->_state.set( ArnZeroConf::State::Lookup, false);
         emit self->lookupError( self->_id, errCode);
     }
+#else
+    Q_UNUSED(errCode)
+    Q_UNUSED(address)
+#endif
+}
+
+
+bool  ArnZeroConfLookup::isForceQtDnsLookup()
+{
+    return _isForceQtDnsLookup;
+}
+
+
+void  ArnZeroConfLookup::setForceQtDnsLookup( bool isForceQtDnsLookup)
+{
+    _isForceQtDnsLookup = isForceQtDnsLookup;
 }
 
 
@@ -914,7 +948,7 @@ void ArnZeroConfBrowser::browse( bool enable)
     else {
         _state = ArnZeroConf::State::Browsing;
 #ifndef MDNS_INTERN
-        _notifier = new QSocketNotifier( DNSServiceRefSockFD( _serviceRef), QSocketNotifier::Read, this);
+        _notifier = new QSocketNotifier( DNSServiceRefSockFD( _sdRef), QSocketNotifier::Read, this);
         connect( _notifier, SIGNAL(activated(int)), this, SLOT(socketData()));
 #endif
     }

@@ -40,9 +40,9 @@ bool debugLinkRef   = false;
 bool debugRecInOut  = false;
 bool debugMonitor   = false;
 bool debugDiscover  = false;
-bool debugZeroConf  = false;
-bool debugMDNS      = false;
-bool warningMDNS    = true;
+bool debugZeroConf  = true;
+bool debugMDNS      = true;
+bool warningMDNS    = false;
 
 }  // Arn::
 

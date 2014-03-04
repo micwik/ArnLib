@@ -39,7 +39,7 @@
 //
 
 #include "mDNS/ArnMDns.hpp"
-#include "ArnInc/ArnLib.hpp"
+#include "../../ArnInc/ArnLib.hpp"
 #include <QUdpSocket>
 #include <QNetworkInterface>
 #include <QHostInfo>
@@ -899,7 +899,7 @@ mDNSexport void mDNSPlatformWriteLogMsg(const char *ident, const char *buffer, m
     
 #ifdef ANDROID
     //__android_log_print(ANDROID_LOG_DEBUG, "mDNS", "%s", buffer);
-    if (Arn::debugMDNS)  qDebug("%s\n", buffer);
+    if (Arn::debugMDNS)  qDebug("Android: %s\n", buffer);
 
     int  syslog_level = 0;
     switch (loglevel) {
@@ -917,18 +917,18 @@ mDNSexport void mDNSPlatformWriteLogMsg(const char *ident, const char *buffer, m
 #else
     switch (loglevel) {
     case MDNS_LOG_MSG:
-        qCritical("%s\n", buffer);
-        break;
+        // qCritical("[Error] %s\n", buffer);
+        // break;
     case MDNS_LOG_OPERATION:
-        if (Arn::warningMDNS)  qWarning("%s\n", buffer);
+        if (Arn::warningMDNS)  qWarning("[Warn1] %s\n", buffer);
         break;
     case MDNS_LOG_SPS:
     case MDNS_LOG_INFO:
     case MDNS_LOG_DEBUG:
-        if (Arn::debugMDNS)  qDebug("%s\n", buffer);
+        if (Arn::debugMDNS)  qDebug("[Debug] %s\n", buffer);
         break;
     default:
-        if (Arn::warningMDNS)  qWarning("mDNS Unknown loglevel %d: %s\n", loglevel, buffer);
+        if (Arn::warningMDNS)  qWarning("[Warn2] mDNS Unknown loglevel %d: %s\n", loglevel, buffer);
     }
 #endif
 }

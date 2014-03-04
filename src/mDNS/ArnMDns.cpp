@@ -39,7 +39,7 @@
 //
 
 #include "ArnMDns.hpp"
-#include "ArnInc/ArnLib.hpp"
+#include "../ArnInc/ArnLib.hpp"
 #include <QEventLoop>
 #include <QSocketNotifier>
 #include <QUdpSocket>

@@ -516,6 +516,9 @@ public:
      */
     void  releaseLookup();
 
+    static bool  isForceQtDnsLookup();
+    static void  setForceQtDnsLookup( bool isForceQtDnsLookup);
+
 signals:
     //! Indicate successfull lookup of host
     /*! \see lookup()
@@ -537,6 +540,8 @@ private:
 
     int  _id;
     QTimer*  _operationTimer;
+
+    static bool  _isForceQtDnsLookup;
 };
 
 

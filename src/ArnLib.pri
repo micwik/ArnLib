@@ -115,6 +115,7 @@ contains(ARN, zeroconf) {
 
     mDnsIntern {
         DEFINES += MDNS_INTERN
+        DEFINES += MDNS_HAVE_LOOKUP
 
         DEFINES += _GNU_SOURCE
         DEFINES += HAVE_IPV6
