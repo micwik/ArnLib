@@ -14,14 +14,11 @@ ARN += discover
 QT -= gui
 
 # Usage of internal mDNS code (no external dependency)
-CONFIG += mDnsIntern
-
-# Usage of external mDNS library
-#CONFIG += mDnsExtern
+#CONFIG += mDnsIntern
 
 include(src/ArnLib.pri)
 
-mDnsExtern {
+!mDnsIntern {
     win32:CONFIG(release, debug|release): LIBS +=  -ldns_sd
     else:win32:CONFIG(debug, debug|release): LIBS +=  -ldns_sd
     else:unix: LIBS += -ldns_sd
