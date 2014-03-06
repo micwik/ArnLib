@@ -266,20 +266,23 @@ QString  ArnZeroConfB::serviceType()  const
 void  ArnZeroConfB::setServiceType( const QString& type)
 {
     QStringList tp = type.split('.');
-    setSocketType( QAbstractSocket::TcpSocket);  // Default
 
-    if ((tp.size() == 2) && (tp.at(0).size() > 0) && (tp.at(0)[0] == '_')) {
+    if ((tp.size() == 2) && (tp.at(0).size() > 0) && (tp.at(0)[0] == '_'))
         _serviceType = tp.at(0).mid(1);
-        if (tp[1] == "_udp") {
-            setSocketType( QAbstractSocket::UdpSocket);
-        }
-        else if (tp[1] != "_tcp") {
-            setSocketType( QAbstractSocket::UnknownSocketType);
-        }
-    }
-    else {
+    else
         _serviceType = type;
+
+    if (tp.size() >= 2) {
+        QString  sockTypePart = tp.last();
+        if (sockTypePart == "_udp")
+            setSocketType( QAbstractSocket::UdpSocket);
+        else if (sockTypePart == "_tcp")
+            setSocketType( QAbstractSocket::TcpSocket);
+        else
+            setSocketType( QAbstractSocket::UnknownSocketType);
     }
+    else
+        setSocketType( QAbstractSocket::TcpSocket);
 }
 
 
@@ -320,6 +323,8 @@ void  ArnZeroConfB::setHostAddr( const QHostAddress &hostAddr)
 
 QString  ArnZeroConfB::fullServiceType()  const
 {
+    if (_serviceType.startsWith('_'))  return _serviceType;  // Non standard type
+
     QString  ret = "_" + _serviceType + "._";
     if (_socketType == QAbstractSocket::TcpSocket)
         ret += "tcp";
@@ -935,6 +940,7 @@ void ArnZeroConfBrowser::browse( bool enable)
     if (!_serviceSubTypes.isEmpty()) {
         serviceTypes += ",_" + escapedName( _serviceSubTypes.at(0).toUtf8());
     }
+    if (Arn::debugZeroConf) qDebug() << "ZeroConf Browse: types=" << serviceTypes;
 
     DNSServiceErrorType err;
     err = DNSServiceBrowse(&_sdRef,

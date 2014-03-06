@@ -14,7 +14,7 @@ ARN += discover
 QT -= gui
 
 # Usage of internal mDNS code (no external dependency)
-#CONFIG += mDnsIntern
+CONFIG += mDnsIntern
 
 include(src/ArnLib.pri)
 
