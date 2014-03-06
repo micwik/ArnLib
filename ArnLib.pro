@@ -32,7 +32,7 @@ DEFINES += DUMMY=\\\"$$system(rm tmp/Arn.o)\\\"
 greaterThan(QT_MAJOR_VERSION, 4) {
     TARGET = Arn5
 } else {
-    TARGET = Arn
+    TARGET = Arn4
 }
 TEMPLATE = lib
 
