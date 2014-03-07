@@ -32,6 +32,7 @@
 //
 
 #include "ArnInc/XStringMap.hpp"
+#include <QMetaType>
 #include <QDebug>
 
 
@@ -50,6 +51,13 @@ XStringMap::XStringMap( const QByteArray& xString)
 }
 
 
+XStringMap::XStringMap( const QVariantMap& variantMap)
+{
+    init();
+    add( variantMap);
+}
+
+
 XStringMap::~XStringMap()
 {
 }
@@ -57,15 +65,27 @@ XStringMap::~XStringMap()
 
 void  XStringMap::init()
 {
-    _keyList.resize(16);
-    _valList.resize(16);
-    clear();
+    clear( true);
 }
 
 
-void  XStringMap::clear()
+void  XStringMap::clear( bool freeMem)
 {
     _size = 0;
+
+    if (freeMem) {
+        _keyList.clear();
+        _valList.clear();
+    }
+}
+
+
+void XStringMap::squeeze()
+{
+    _keyList.resize( _size);
+    _valList.resize( _size);
+    _keyList.squeeze();
+    _valList.squeeze();
 }
 
 
@@ -135,8 +155,11 @@ int  XStringMap::maxEnumOf( const char* keyPrefix)  const
 XStringMap&  XStringMap::add( const char* key, const QByteArray& val)
 {
     if (key == 0)  return *this;  // Not valid key
-    // When empty key, value must not be empty or contain "=" sign
-    if ((*key == 0) && (val.isEmpty() || val.contains('=')))  return *this;
+    // When empty key, value must not be empty and not contain "=" sign
+    if ((*key == 0) && (val.isEmpty() || val.contains('='))) {
+        qWarning() << "XStringMap::add not valid: key=" << key << " val=" << val;
+        return *this;
+    }
 
     checkSpace();
     _keyList[ _size].resize(0);     // Avoid Heap reallocation
@@ -192,6 +215,32 @@ XStringMap&  XStringMap::add( const QByteArray& key, const QString& val)
 XStringMap&  XStringMap::add( const QString& key, const QString& val)
 {
     return add( key.toUtf8(), val.toUtf8());
+}
+
+
+XStringMap&  XStringMap::add( const XStringMap& other)
+{
+    for (int i = 0; i < other._size; ++i) {
+        add( other._keyList.at(i), other._valList.at(i));
+    }
+
+    return *this;
+}
+
+
+XStringMap&  XStringMap::add( const QVariantMap& variantMap)
+{
+    QMapIterator<QString,QVariant>  i( variantMap);
+
+    while (i.hasNext()) {
+        i.next();
+        const QVariant&  value = i.value();
+        QByteArray  valBytes = value.type() == int(QMetaType::QByteArray) ? value.toByteArray()
+                                                                          : value.toString().toUtf8();
+        add( i.key().toUtf8(), valBytes);
+    }
+
+    return *this;
 }
 
 
@@ -457,6 +506,20 @@ QStringList  XStringMap::values()  const
 }
 
 
+QVariantMap XStringMap::toVariantMap() const
+{
+    QVariantMap  retMap;
+
+    for (int i = 0; i < _size; ++i) {
+        const QByteArray&  key = _keyList.at(i);
+        const QByteArray&  value = _valList.at(i);
+        retMap.insertMulti( QString::fromUtf8( key.constData(), key.size()),
+                            QVariant( value));
+    }
+    return retMap;
+}
+
+
 QByteArray  XStringMap::toXString()  const
 {
     QByteArray  outXString;
@@ -631,8 +694,11 @@ void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)
 void  XStringMap::checkSpace()
 {
     if (_size >= _keyList.size()) {     // If out of space allocate more
-        _keyList.resize(2 * (_size + 1));
-        _valList.resize(2 * (_size + 1));
+        int  newCapacity = (_size > 0) ? (2 * _size) : 8;
+        _keyList.reserve( newCapacity);  // Force exact min amount space beeing guaranted, i.e. no extra margin
+        _valList.reserve( newCapacity);
+        _keyList.resize( newCapacity);
+        _valList.resize( newCapacity);
     }
 }
 
