@@ -32,7 +32,7 @@
 
 #include "ArnInc/ArnDiscover.hpp"
 #include "ArnInc/ArnZeroConf.hpp"
-#include "ArnInc/Arn.hpp"
+#include "ArnInc/ArnM.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include <QHostInfo>
 #include <QTimer>
@@ -584,12 +584,14 @@ void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QSt
 
     XStringMap  xsm;
     xsm.add("protovers", "1.0");
+    xsm.add("arnlibVers", XStringMap( ArnM::info()).value("Ver"));
     xsm.add("server", QByteArray::number( _discoverType == ArnDiscover::Type::Server));
     _arnZCReg->setSubTypes( _groups);
     _arnZCReg->addSubType( _discoverType == ArnDiscover::Type::Server ? "server" : "client");
     for (int i = 0; i < _groups.size(); ++i) {
         xsm.add("group", i, _groups.at(i));
     }
+    xsm += _customProperties;
     _arnZCReg->setTxtRecordMap( xsm);
     _arnZCReg->setHost( hostName);
     _arnZCReg->setPort( port);
@@ -620,6 +622,24 @@ void  ArnDiscoverAdvertise::serviceRegistrationError(int code)
     if (Arn::debugDiscover)  qDebug() << "Service registration error: code=" << code;
 
     emit serviceChangeError( code);
+}
+
+
+XStringMap  ArnDiscoverAdvertise::customProperties()  const
+{
+    return _customProperties;
+}
+
+
+void  ArnDiscoverAdvertise::setCustomProperties( const XStringMap& customProperties)
+{
+    _customProperties = customProperties;
+}
+
+
+void ArnDiscoverAdvertise::addCustomProperty(const QString& key, const QString& val)
+{
+    _customProperties.add( key, val);
 }
 
 

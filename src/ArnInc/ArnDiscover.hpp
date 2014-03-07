@@ -36,6 +36,7 @@
 #include "XStringMap.hpp"
 #include "MQFlags.hpp"
 #include <QHostAddress>
+#include <QVariantMap>
 
 class ArnZeroConfRegister;
 class ArnZeroConfBrowser;
@@ -253,6 +254,10 @@ public:
     void  advertiseService( ArnDiscover::Type discoverType, QString serviceName,
                             int port = -1, const QString& hostName = QString());
 
+    Arn::XStringMap  customProperties()  const;
+    void  setCustomProperties( const Arn::XStringMap& customProperties);
+    void  addCustomProperty( const QString& key, const QString& val);
+
 signals:
     void  serviceChanged( QString serviceName);
     void  serviceChangeError( int code);
@@ -296,6 +301,7 @@ private:
     ArnZeroConfRegister*  _arnZCReg;
     QString  _service;
     QStringList  _groups;
+    Arn::XStringMap  _customProperties;
     bool  _hasSetupAdvertise;
     ArnDiscover::Type  _discoverType;
 };
