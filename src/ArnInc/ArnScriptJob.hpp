@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2013 Michael Wiklund.
+// Copyright (C) 2010-2014 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //

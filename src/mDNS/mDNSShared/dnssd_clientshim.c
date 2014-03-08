@@ -1,49 +1,32 @@
-// Copyright (C) 2010-2013 Michael Wiklund.
-// All rights reserved.
+/* -*- Mode: C; tab-width: 4 -*-
+ *
+ * Copyright (c) 2003 Apple Computer, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+
+ * This file defines a simple shim layer between a client calling the "/usr/include/dns_sd.h" APIs
+ * and an implementation of mDNSCore ("mDNSEmbeddedAPI.h" APIs) in the same address space.
+ * When the client calls a dns_sd.h function, the shim calls the corresponding mDNSEmbeddedAPI.h
+ * function, and when mDNSCore calls the shim's callback, we call through to the client's callback.
+ * The shim is responsible for two main things:
+ * - converting string parameters between C string format and native DNS format,
+ * - and for allocating and freeing memory.
+ */
+
+// Modified 2014 by Michael Wiklund.
 // Contact: arnlib@wiklunden.se
 //
 // This file is part of the ArnLib - Active Registry Network.
-// Parts of ArnLib depend on Qt and/or other libraries that have their own
-// licenses. ArnLib is independent of these licenses; however, use of these other
-// libraries is subject to their respective license agreements.
-// This file must also be used in compliance with Apache License, Version 2.0 (see below).
-//
-// GNU Lesser General Public License Usage
-// This file may be used under the terms of the GNU Lesser General Public
-// License version 2.1 as published by the Free Software Foundation and
-// appearing in the file LICENSE.LGPL included in the packaging of this file.
-// In addition, as a special exception, you may use the rights described
-// in the Nokia Qt LGPL Exception version 1.1, included in the file
-// LGPL_EXCEPTION.txt in this package.
-//
-// GNU General Public License Usage
-// Alternatively, this file may be used under the terms of the GNU General
-// Public License version 3.0 as published by the Free Software Foundation
-// and appearing in the file LICENSE.GPL included in the packaging of this file.
-//
-// Other Usage
-// Alternatively, this file may be used in accordance with the terms and
-// conditions contained in a signed written agreement between you and Michael Wiklund.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// This file contain modified code, originating from:
-// Copyright (c) 2003 Apple Computer, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// This file defines a simple shim layer between a client calling the "/usr/include/dns_sd.h" APIs
-// and an implementation of mDNSCore ("mDNSEmbeddedAPI.h" APIs) in the same address space.
-// When the client calls a dns_sd.h function, the shim calls the corresponding mDNSEmbeddedAPI.h
-// function, and when mDNSCore calls the shim's callback, we call through to the client's callback.
-// The shim is responsible for two main things:
-// - converting string parameters between C string format and native DNS format,
-// - and for allocating and freeing memory.
 //
 
 #include "dns_sd.h"				// Defines the interface to the client layer above
