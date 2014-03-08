@@ -579,6 +579,8 @@ ArnDiscoverAdvertise::ArnDiscoverAdvertise( QObject *parent) :
 void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QString serviceName,
                                              int port, const QString& hostName)
 {
+    if (Arn::debugDiscover)  qDebug() << "Discover advertise setup: serviceName=" << serviceName
+                                      << " port=" << port << " hostName=" << hostName;
     _discoverType = discoverType;
     _service      = serviceName;
 
@@ -605,7 +607,9 @@ void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QSt
 void  ArnDiscoverAdvertise::postSetupThis()
 {
     _hasSetupAdvertise = true;
-    setService( _service);
+    if (Arn::debugDiscover)  qDebug() << "DiscoverAdvertise setup has finnished";
+    if (!_service.isEmpty())
+        setService( _service);
 }
 
 
@@ -663,11 +667,13 @@ ArnDiscoverAdvertise::State  ArnDiscoverAdvertise::state()  const
 
 void  ArnDiscoverAdvertise::setService( QString service)
 {
+    if (Arn::debugDiscover)  qDebug() << "DiscoverAdvertise setService: serviceName=" << service;
+
     _service = service;
     if (!_hasSetupAdvertise)  return;
     if (service.isEmpty())  return;
 
-    if (Arn::debugDiscover)  qDebug() << "Advertise Service changed: servname=" << _service;
+    if (Arn::debugDiscover)  qDebug() << "DiscoverAdvertise Service will change: serviceName=" << _service;
     if (_arnZCReg->state() != ArnZeroConf::State::None)
         _arnZCReg->releaseService();
     _arnZCReg->setServiceName( _service);

@@ -190,7 +190,9 @@ public:
 
     //! Set the _Version Control System_ to be used
     /*! The VCS is implemented in a class derived from ArnVcs.
-     *  \param[in] vcs is the class implementing the VCS.
+     *  Ownership is taken of this VCS.
+     *  Any previos set VCS will be deleted.
+     *  \param[in] vcs is the class implementing the VCS. Use 0 (null) to set none.
      *  \see setPersistDir()
      *  \see \ref gen_persistArnobj
      */

@@ -88,7 +88,7 @@ public:
 public slots:
 
 signals:
-    void  clientReadyToConnect( ArnClient* arnClient);
+    void  clientReadyToConnect( ArnClient* arnClient, const QString& id);
 
 private slots:
     void  doClientConnectChanged( int stat, int curPrio);
@@ -122,6 +122,27 @@ private:
 };
 
 
+//! Discover with remote setting.
+/*!
+This class handles is the main class for handling discover with remote setting.
+
+Following is met:
+
+* If service is set before start using server, this service will be used.
+* If no persist is active or it gives an empty service name, timeout-processing is done.
+* Timeout-processing can wait upto initialServiceTimeout(), after that defaultService()
+  will be used as service.
+* If service is set by any method before timeout-processing has finnished that service
+  is used. Timeout-processing is then also aborted.
+* After initial advertise of the service, it can be changed by any method and the changed
+  changed service will be used.
+* The used service will also be saved if using persist.
+* Methods to change service are ArnDiscoverAdvertise::setService() and corresponding
+  _arnObject_ which can be changed locally or remote.
+
+<b>Example usage</b> \n \code
+\endcode
+*/
 class ArnDiscoverRemote : public ArnDiscoverAdvertise
 {
     Q_OBJECT
@@ -131,12 +152,15 @@ public:
     QString  defaultService()  const;
     void  setDefaultService( const QString& defaultService);
 
+    int  initialServiceTimeout()  const;
+    void  setInitialServiceTimeout( int initialServiceTimeout);
+
     void  startUseServer( ArnServer* arnServer, ArnDiscover::Type discoverType = ArnDiscover::Type::Server);
     void  startUseNewServer( ArnDiscover::Type discoverType, int port = -1);
     ArnDiscoverConnector*  newConnector( ArnClient& client, const QString& id);
 
 signals:
-    void  clientReadyToConnect( ArnClient* arnClient);
+    void  clientReadyToConnect( ArnClient* arnClient, const QString& id);
 
 public slots:
     virtual void  setService( QString service);
@@ -149,7 +173,7 @@ protected:
 private slots:
     //// Handle Service This
     void  serviceTimeout();
-    void  firstServiceSetup( QString serviceName);
+    void  firstServiceSetup( QString serviceName, bool forceSetup = false);
     void  doServiceChanged( QString val);
 
 private:
@@ -159,6 +183,7 @@ private:
     ArnItem  _arnService;
     QTimer*  _servTimer;
     QString  _defaultService;
+    int  _initialServiceTimeout;
 };
 
 #endif // ARNDISCOVERREMOTE_HPP

@@ -197,6 +197,8 @@ void  ArnPersist::setVcs( ArnVcs* vcs)
 {
     if (_vcs)
         delete _vcs;
+    if (!vcs)  return;  // No use of VCS
+
     _vcs = vcs;
     _vcs->setParent( this);
 
