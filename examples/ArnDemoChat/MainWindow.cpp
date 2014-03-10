@@ -29,6 +29,7 @@
 //! [code]
 #include "MainWindow.hpp"
 #include "tmp/ui_MainWindow.h"
+#include <ArnInc/ArnDiscoverRemote.hpp>
 
 
 MainWindow::MainWindow( QWidget* parent) :
@@ -39,9 +40,15 @@ MainWindow::MainWindow( QWidget* parent) :
     _ui->userEdit->setFocus();
     connect( _ui->lineEdit, SIGNAL(returnPressed()), this, SLOT(doSendLine()));
 
-    //// Connect to Arn and select tree to sync (//)
-    _arnClient.connectToArn("localhost");
+    //// Select Arn tree to sync (//) and auto reconnect
     _arnClient.setMountPoint("//");
+    _arnClient.setAutoConnect(true);
+
+    //// Setuo discover connect to the Demo Chat Server
+    ArnDiscoverConnector*  connector = new ArnDiscoverConnector( _arnClient, "DemoChat");
+    connector->setResolver( new ArnDiscoverResolver());
+    connector->setService("Demo Chat Server");
+    connector->start();
 
     _arnTime.open("//Chat/Time/value");
     connect( &_arnTime, SIGNAL(changed(QString)), this, SLOT(doTimeUpdate(QString)));

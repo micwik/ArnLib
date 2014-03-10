@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2013 Michael Wiklund.
+// Copyright (C) 2010-2014 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -37,6 +37,8 @@
 #include <QStringList>
 #include <QObject>
 
+class ArnDiscoverRemote;
+
 
 class ServerMain : public QObject
 {
@@ -65,6 +67,7 @@ private:
     ArnItem  _arnTime;
     ArnServer*  _server;
     ChatSapi*  _commonSapi;
+    ArnDiscoverRemote*  _discoverRemote;
 };
 
 #endif // SERVERMAIN_HPP

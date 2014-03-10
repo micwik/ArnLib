@@ -4,9 +4,13 @@
 #
 #-------------------------------------------------
 
+# CONFIG += ArnLibCompile
+
+# Usage of internal mDNS code (no external dependency)
+CONFIG += mDnsIntern
+
 QT       += core gui
 QT       += network
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ArnDemoChat
@@ -24,8 +28,21 @@ HEADERS  += MainWindow.hpp \
 
 FORMS    += MainWindow.ui
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/release/ -lArn
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -lArn
-else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -lArn
+greaterThan(QT_MAJOR_VERSION, 4) {
+    ARNLIB = Arn5
+} else {
+    ARNLIB = Arn4
+}
 
-INCLUDEPATH += $$PWD/..
+ArnLibCompile {
+    ARN += client
+    ARN += discover
+    CONFIG += mDnsIntern
+    include(../../src/ArnLib.pri)
+} else {
+    win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../release/ -l$${ARNLIB}
+    else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../debug/ -l$${ARNLIB}
+    else:unix: LIBS += -L$$OUT_PWD/../../ -l$${ARNLIB}
+}
+
+INCLUDEPATH += $$PWD/../../src

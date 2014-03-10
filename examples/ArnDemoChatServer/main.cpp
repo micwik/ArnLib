@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv, false);
 
     qDebug() << "Startar Arn Chat Server ...";
-    new ServerMain;
+    ServerMain  sm;
 
     return a.exec();
 }

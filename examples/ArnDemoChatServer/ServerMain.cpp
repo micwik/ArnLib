@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2013 Michael Wiklund.
+// Copyright (C) 2010-2014 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -29,6 +29,7 @@
 //! [code]
 #include "ServerMain.hpp"
 #include <ArnInc/ArnItem.hpp>
+#include <ArnInc/ArnDiscoverRemote.hpp>
 #include <QTime>
 #include <QCoreApplication>
 #include <QDebug>
@@ -41,10 +42,16 @@ ServerMain::ServerMain( QObject* parent) :
     connect( &_timer, SIGNAL(timeout()), this, SLOT(doTimeUpdate()));
 
     _server = new ArnServer( ArnServer::Type::NetSync, this);
-    _server->start();
+    _server->start(0);  // Start server on dynamic port
+
+    //// Setuo discover remote advertise
+    _discoverRemote = new ArnDiscoverRemote( this);
+    _discoverRemote->setService("Demo Chat Server");
+    _discoverRemote->addGroup("arndemo/chat");
+    _discoverRemote->addCustomProperty("ChatProtoVer", "1.0");
+    _discoverRemote->startUseServer( _server);
 
     _arnTime.open("//Chat/Time/value");
-
 
     //// Create common service-api, used for calling requesters by "broadcast"
     _commonSapi = new ChatSapi( this);
