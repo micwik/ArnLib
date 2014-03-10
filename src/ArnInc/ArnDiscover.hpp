@@ -237,7 +237,7 @@ public:
             //! Is now advertising. Startup has finished sucessfully.
             Advertising      = 0x0001,
             //! isAny(): Startup advertising in progress or has finished sucessfully.
-            Advertise        = 0x0101,
+            Advertise        = 0x0101
         };
         MQ_DECLARE_FLAGS( State)
     };
@@ -278,21 +278,21 @@ protected:
 protected slots:
     //! Post setup routine called from base class
     /*! Can be derived for special setup.
-     *  Note: This base member must be called from derived member.
+     *  Note: This base method must be called from derived method.
      *  \param[in] service is the service name.
      */
     virtual void  postSetupThis();
 
     //! Service registration callback
     /*! Can be derived for special notifying.
-     *  Note: This base member must be called from derived member.
+     *  Note: This base method must be called from derived method.
      *  \param[in] serviceName is the service name registered.
      */
     virtual void  serviceRegistered( QString serviceName);
 
     //! Service registration error callback
     /*! Can be derived for special notifying.
-     *  Note: This base member must be called from derived member.
+     *  Note: This base method must be called from derived method.
      *  \param[in] code is the error code.
      */
     virtual void  serviceRegistrationError( int code);

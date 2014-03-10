@@ -195,8 +195,10 @@ void  ArnPersist::setArchiveDir(const QString &path)
 
 void  ArnPersist::setVcs( ArnVcs* vcs)
 {
-    if (_vcs)
+    if (_vcs) {
         delete _vcs;
+        _vcs = 0;
+    }
     if (!vcs)  return;  // No use of VCS
 
     _vcs = vcs;

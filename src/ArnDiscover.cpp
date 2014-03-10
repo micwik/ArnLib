@@ -174,6 +174,7 @@ ArnDiscoverBrowser::ArnDiscoverBrowser( QObject* parent) :
 ArnDiscoverResolver::ArnDiscoverResolver( QObject* parent) :
     ArnDiscoverBrowserB( parent)
 {
+    _defaultService = "Arn Default Service";
 }
 
 

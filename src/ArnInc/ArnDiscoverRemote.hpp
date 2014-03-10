@@ -71,10 +71,16 @@ public:
      */
     void  addToDirectHosts( const QString& arnHost, quint16 port = 0);
 
+    //! Set the ArnDiscoverResolver to be used
+    /*! Ownership is taken of this resolver.
+     *  Any previos set resolver will be deleted.
+     *  \param[in] resolver is the used ArnDiscoverResolver. Use 0 (null) to set none.
+     */
     void  setResolver( ArnDiscoverResolver* resolver);
     void  start();
 
     QString  id()  const;
+    QString  service()  const;
 
     int  directHostPrio()  const;
     void  setDirectHostPrio( int directHostPrio);
@@ -85,7 +91,11 @@ public:
     int  resolveRefreshTimeout()  const;
     void  setResolveRefreshTimeout( int resolveRefreshTimeout);
 
+    bool  externalClientConnect()  const;
+    void  setExternalClientConnect( bool externalClientConnect);
+
 public slots:
+    void  setService( QString service);
 
 signals:
     void  clientReadyToConnect( ArnClient* arnClient, const QString& id);
@@ -103,9 +113,12 @@ private slots:
     void  doClientResolvChanged( int index, ArnDiscoverInfo::State state);
 
 private:
+    void  doClientReadyToConnect( ArnClient* arnClient, const QString& id);
+
     ArnClient*  _client;
     ArnDiscoverResolver*  _resolver;
     QString  _id;
+    QString  _service;
     int  _directHostPrio;
     int  _discoverHostPrio;
     int  _resolveRefreshTimeout;
@@ -113,6 +126,8 @@ private:
     QTime*  _resolveRefreshTime;
     bool  _resolveRefreshBlocked;
     bool  _isResolved;
+    bool  _externalClientConnect;
+    bool  _hasBeenSetupClient;
 
     ArnItem*  _arnDisHostService;
     ArnItem*  _arnDisHostServicePv;
