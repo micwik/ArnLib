@@ -53,6 +53,7 @@ public slots:
 private slots:
     void  doNewSession( QString path);
     void  doTimeUpdate();
+    void  shutdown();
 
     // Chat Provider routines
     void  chatList();
@@ -68,6 +69,7 @@ private:
     ArnServer*  _server;
     ChatSapi*  _commonSapi;
     ArnDiscoverRemote*  _discoverRemote;
+    bool  _isShuttingDown;
 };
 
 #endif // SERVERMAIN_HPP

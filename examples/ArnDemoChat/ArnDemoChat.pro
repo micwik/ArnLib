@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-# CONFIG += ArnLibCompile
+CONFIG += ArnLibCompile
 
 # Usage of internal mDNS code (no external dependency)
 CONFIG += mDnsIntern
@@ -35,7 +35,8 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 }
 
 ArnLibCompile {
-    ARN += client
+    //ARN += client
+    ARN += server
     ARN += discover
     CONFIG += mDnsIntern
     include(../../src/ArnLib.pri)

@@ -31,6 +31,7 @@
 #include <ArnInc/ArnItem.hpp>
 #include <ArnInc/ArnDiscoverRemote.hpp>
 #include <QTime>
+#include <QSocketNotifier>
 #include <QCoreApplication>
 #include <QDebug>
 
@@ -61,6 +62,12 @@ ServerMain::ServerMain( QObject* parent) :
     //// Monitor pipe folder for new connecting requesters
     ArnItem*  arnPipes = new ArnItem("//Chat/Pipes/", this);
     connect( arnPipes, SIGNAL(arnItemCreated(QString)), this, SLOT(doNewSession(QString)));
+
+    //// Setup shutdown logic
+    qWarning() << "\nPress <Enter> to quit.\n";
+    QSocketNotifier*  stdinNotifier = new QSocketNotifier( 0, QSocketNotifier::Read, this);
+    connect( stdinNotifier, SIGNAL(activated(int)), this, SLOT(shutdown()), Qt::QueuedConnection);
+    _isShuttingDown = false;
 }
 
 
@@ -78,6 +85,16 @@ void  ServerMain::doNewSession( QString path)
 void  ServerMain::doTimeUpdate()
 {
     _arnTime = QTime::currentTime().toString();
+}
+
+
+void  ServerMain::shutdown()
+{
+    if (_isShuttingDown)  return;  // Guard against multiple shutdowns
+
+    _isShuttingDown = true;
+    delete _discoverRemote;  // Must be deleted while still in the main eventloop
+    QCoreApplication::quit();
 }
 
 

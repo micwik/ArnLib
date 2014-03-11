@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-# CONFIG += ArnLibCompile
+CONFIG += ArnLibCompile
 
 # Usage of internal mDNS code (no external dependency)
 CONFIG += mDnsIntern
