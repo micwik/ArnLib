@@ -183,7 +183,7 @@ void  ArnDiscoverConnector::doClientConnectChanged( int stat, int curPrio)
 {
     ArnClient::ConnectStat  cs = ArnClient::ConnectStat::fromInt( stat);
 
-    if (Arn::debugDiscover)  qDebug() << "ArnDiscoverConnector changed 1: stat=" << stat 
+    if (Arn::debugDiscover)  qDebug() << "Discover ClientConnectChanged 1: stat=" << stat
                                       << " prio=" << curPrio;
     if (!_resolver || (cs == cs.Connecting))  return;
     if (cs == cs.Connected) {
@@ -193,7 +193,7 @@ void  ArnDiscoverConnector::doClientConnectChanged( int stat, int curPrio)
     if (_isResolved || (cs != cs.TriedAll)) {  // Resolv ok or still more to try, consider outdated resolv
         if (curPrio != _discoverHostPrio)  return;  // Not for resolved host
         if ((cs != cs.Error) && (cs != cs.Disconnected))  return;  // Skip any non error
-        if (Arn::debugDiscover)  qDebug() << "ArnDiscoverConnector changed 2:";
+        if (Arn::debugDiscover)  qDebug() << "Discover ClientConnectChanged 2:";
 
         if (_resolveRefreshTime->elapsed() >= _resolveRefreshTimeout * 1000)
             _resolveRefreshBlocked = false;
@@ -203,7 +203,7 @@ void  ArnDiscoverConnector::doClientConnectChanged( int stat, int curPrio)
     _resolveRefreshBlocked = true;  // Block for further refresh within lockout time
     _resolveRefreshTime->start();
 
-    if (Arn::debugDiscover)  qDebug() << "ArnDiscoverConnector changed 3 resolve: service=" << _arnDisHostService->toString();
+    if (Arn::debugDiscover)  qDebug() << "Discover ClientConnectChanged 3 resolve: service=" << _arnDisHostService->toString();
     bool  forceUpdate = _isResolved;
     _resolver->resolve( _arnDisHostService->toString(), forceUpdate);  // Do a resolve refresh / retry
 }

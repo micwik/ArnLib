@@ -199,7 +199,7 @@ bool  ArnRpc::open( QString pipePath)
 void  ArnRpc::setPipe( ArnPipe* pipe)
 {
     if (_pipe) {
-        qDebug() << "Rpc delete pipe: path=" << _pipe->path();
+        if (Arn::debugRPC)  qDebug() << "Rpc delete pipe: path=" << _pipe->path();
         _pipe->deleteLater();
     }
     _pipe = pipe;
@@ -880,7 +880,7 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
 
 void  ArnRpc::destroyPipe()
 {
-    qDebug() << "Rpc Destroy pipe: path=" << _pipe->path();
+    if (Arn::debugRPC)  qDebug() << "Rpc Destroy pipe: path=" << _pipe->path();
     emit pipeClosed();
     setPipe(0);
 }

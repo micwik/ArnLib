@@ -865,7 +865,7 @@ void  ArnItemB::arnModeChangedBelow( QString path, uint linkId)
 
 void  ArnItemB::doArnLinkDestroyed()
 {
-    qDebug() << "Item arnLinkDestroyed: path=" << path();
+    if (Arn::debugLinkDestroy)  qDebug() << "Item arnLinkDestroyed: path=" << path();
     emit arnLinkDestroyed();
     close();
 }

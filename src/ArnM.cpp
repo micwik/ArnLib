@@ -31,6 +31,7 @@
 //
 
 #include "ArnInc/ArnM.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include "ArnLink.hpp"
 #include <iostream>
 #include <QStringList>
@@ -597,7 +598,7 @@ void  ArnM::destroyLink( ArnLink* link)
     if (!link)  return;
 
     if (isMainThread()) {
-        qDebug() << "destroyLink-mainA: start path=" << link->linkPath();
+        if (Arn::debugLinkDestroy) qDebug() << "destroyLink-mainA: start path=" << link->linkPath();
         destroyLinkMain( link);
         return;
     }

@@ -424,11 +424,13 @@ void  ArnDiscoverBrowserB::onResolveError( int id, int code)
 
 void  ArnDiscoverBrowserB::onResolved( int id, QByteArray escFullDomain)
 {
+    Q_UNUSED(escFullDomain)
+
     ArnZeroConfResolve*  ds = qobject_cast<ArnZeroConfResolve*>( sender());
     Q_ASSERT(ds);
 
     QString  name = ds->serviceName();
-    if (Arn::debugDiscover)  qDebug() << "Resolved Service: name=" << name << " escFullDomainR=" << escFullDomain
+    if (Arn::debugDiscover)  qDebug() << "Resolved Service: name=" << name
                                       << " escFullDomain=" << ds->escapedFullDomain();
     int  index = _activeServIds.indexOf( id);
     if (index >= 0) {  // Service still exist

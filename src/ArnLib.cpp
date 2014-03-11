@@ -35,14 +35,16 @@
 
 namespace Arn {
 
-bool debugThreading = false;
-bool debugLinkRef   = false;
-bool debugRecInOut  = false;
-bool debugMonitor   = false;
-bool debugDiscover  = false;
-bool debugZeroConf  = false;
-bool debugMDNS      = false;
-bool warningMDNS    = false;
+bool debugThreading   = false;
+bool debugLinkRef     = false;
+bool debugLinkDestroy = false;
+bool debugRecInOut    = false;
+bool debugMonitor     = false;
+bool debugRPC         = false;
+bool debugDiscover    = false;
+bool debugZeroConf    = false;
+bool debugMDNS        = false;
+bool warningMDNS      = false;
 
 }  // Arn::
 

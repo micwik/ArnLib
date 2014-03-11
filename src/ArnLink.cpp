@@ -425,7 +425,7 @@ void  ArnLink::setupEnd( int syncMode)
 
 ArnLink::~ArnLink()
 {
-    qDebug() << "Destructor link: path=" << linkPath();
+    if (Arn::debugLinkDestroy)  qDebug() << "Destructor link: path=" << linkPath();
     if (_twin) {
         _twin->_twin = 0;  // points to this object
         delete _twin;
@@ -547,7 +547,7 @@ bool  ArnLink::isRetired()
 void  ArnLink::setRetired()
 {
     if (_isThreaded)  _mutex.lock();
-    qDebug() << "setRetired: path=" << this->linkPath();
+    if (Arn::debugLinkDestroy)  qDebug() << "setRetired: path=" << this->linkPath();
     bool  wasRetired = _isRetired;
     _isRetired = true;
     if (_isThreaded)  _mutex.unlock();

@@ -487,7 +487,7 @@ void  ArnSync::linkDestroyedHandle()
 
     uint  sendId = itemNet->isDisable() ? 0 : itemNet->netId();  // 0 = Do not send
 
-    qDebug() << "itemRemove: netId=" << itemNet->netId() << " path=" << itemNet->path();
+    if (Arn::debugLinkDestroy)  qDebug() << "itemRemove: netId=" << itemNet->netId() << " path=" << itemNet->path();
     int s;
     s = _itemNetMap.remove( itemNet->netId());
     // qDebug() << "... remove from itemMap num=" << s;
