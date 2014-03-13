@@ -105,7 +105,7 @@ ArnThreadComProxyLock::~ArnThreadComProxyLock()
 
 int  ArnM::valueInt( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::F(0));
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::fromInt(0));
     if (!link)  return 0;
 
     int  retVal = link->toInt();
@@ -116,7 +116,7 @@ int  ArnM::valueInt( const QString& path)
 
 double  ArnM::valueDouble( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::F(0));
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::fromInt(0));
     if (!link)  return 0;
 
     double  retVal = link->toDouble();
@@ -127,7 +127,7 @@ double  ArnM::valueDouble( const QString& path)
 
 QString  ArnM::valueString( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::F(0));
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::fromInt(0));
     if (!link)  return QString();
 
     QString  retVal = link->toString();
@@ -138,7 +138,7 @@ QString  ArnM::valueString( const QString& path)
 
 QByteArray  ArnM::valueByteArray( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::F(0));
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::fromInt(0));
     if (!link)  return QByteArray();
 
     QByteArray  retVal = link->toByteArray();
@@ -149,7 +149,7 @@ QByteArray  ArnM::valueByteArray( const QString& path)
 
 QVariant  ArnM::valueVariant( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::F(0));
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::fromInt(0));
     if (!link)  return QVariant();
 
     QVariant  retVal = link->toVariant();
@@ -223,7 +223,7 @@ QStringList  ArnM::itemsMain( const ArnLink *parent)
 
 QStringList  ArnM::itemsMain( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::Folder);
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::Folder);
     return itemsMain( link);
 }
 
@@ -252,7 +252,7 @@ bool  ArnM::isThreadedApp()
 
 bool  ArnM::exist( const QString &path)
 {
-    ArnLink::Flags  flags;
+    Arn::LinkFlags  flags;
     ArnLink*  link = ArnM::link( path, flags.SilentError);
 
     if (!link)  return false;
@@ -263,7 +263,7 @@ bool  ArnM::exist( const QString &path)
 
 bool  ArnM::isFolder( const QString& path)
 {
-    ArnLink::Flags  flags;
+    Arn::LinkFlags  flags;
     ArnLink*  link = ArnM::link( path, flags.Folder | flags.SilentError);
 
     if (!link)  return false;
@@ -276,7 +276,7 @@ bool  ArnM::isLeaf( const QString& path)
 {
     if (Arn::isFolderPath( path))  return false;
 
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::SilentError);
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::SilentError);
 
     if (!link)  return false;
     link->deref();
@@ -286,7 +286,7 @@ bool  ArnM::isLeaf( const QString& path)
 
 void  ArnM::setValue( const QString& path, const QString& value)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::CreateAllowed);
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
 
     if (link) {
         link->setValue(value);
@@ -297,7 +297,7 @@ void  ArnM::setValue( const QString& path, const QString& value)
 
 void  ArnM::setValue( const QString& path, int value)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::CreateAllowed);
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
 
     if (link) {
         link->setValue( value);
@@ -308,7 +308,7 @@ void  ArnM::setValue( const QString& path, int value)
 
 void  ArnM::setValue( const QString& path, double value)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::CreateAllowed);
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
 
     if (link) {
         link->setValue( value);
@@ -319,7 +319,7 @@ void  ArnM::setValue( const QString& path, double value)
 
 void  ArnM::setValue( const QString& path, const QByteArray& value)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::CreateAllowed);
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
 
     if (link) {
         link->setValue( value);
@@ -330,7 +330,7 @@ void  ArnM::setValue( const QString& path, const QByteArray& value)
 
 void  ArnM::setValue( const QString& path, const QVariant& value)
 {
-    ArnLink*  link = ArnM::link( path, ArnLink::Flags::CreateAllowed);
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
 
     if (link) {
         link->setValue( value);
@@ -358,7 +358,7 @@ void  ArnM::linkProxy( ArnThreadCom* threadCom, const QString& path, int flagVal
     ArnThreadComProxyLock  proxyLock( threadCom);
 
     if (Arn::debugThreading)  qDebug() << "linkProxy: path=" << path;
-    threadCom->_retObj = linkMain( path, ArnLink::Flags::F( flagValue),
+    threadCom->_retObj = linkMain( path, Arn::LinkFlags::fromInt( flagValue),
                                     ArnItem::SyncMode::F( syncMode));
     if (Arn::debugThreading)  qDebug() << "linkProxy: waking thread";
 }
@@ -407,7 +407,7 @@ ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, ArnItem::Sy
     QStringList pathlist = pathNorm.split("/", QString::KeepEmptyParts);
 
     for (int i = 0; i < pathlist.size(); i++) {
-        ArnLink::Flags  subFlags;
+        Arn::LinkFlags  subFlags;
         subFlags.f = flags.f | flags.flagIf( i < pathlist.size() - 1, flags.Folder);
         QString  subpath = pathlist.at(i);
         if (subpath.isEmpty()  &&  i == 0) {  // If subpath is root, go for next subpath
@@ -611,7 +611,7 @@ void  ArnM::destroyLink( ArnLink* link)
 void  ArnM::destroyLink( const QString& path)
 {
     if (isMainThread()) {
-        ArnLink::Flags  flags;
+        Arn::LinkFlags  flags;
         ArnLink*  link = ArnM::link( path, flags.SilentError);
         if (link) {
             link->deref();  // Ok, as this is main thread. Avoid locking this link
@@ -740,7 +740,7 @@ ArnM::ArnM()
     _defaultIgnoreSameValue = false;
     _isThreadedApp          = false;
     _mainThread             = QThread::currentThread();
-    _root                   = new ArnLink( 0, "", ArnLink::Flags::Folder);
+    _root                   = new ArnLink( 0, "", Arn::LinkFlags::Folder);
 
     qRegisterMetaType<ArnThreadCom*>();
     qRegisterMetaType<ArnLinkHandle>("ArnLinkHandle");

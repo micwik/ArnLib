@@ -125,6 +125,7 @@ public:
     QString  fullServiceType()  const;
     QByteArray  escapedFullDomain()  const;
 
+    //! \cond ADV
 protected slots:
     void socketData();
     
@@ -199,6 +200,7 @@ protected:
 
     // Source for unique id to all discovered services ...
     static QAtomicInt  _idCount;
+    //! \endcond
 
 private:
     quint16  _port;

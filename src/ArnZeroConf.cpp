@@ -54,6 +54,7 @@ bool  ArnZeroConfLookup::_isForceQtDnsLookup( true);   // Deafult expect platfor
 #endif
 
 
+//! \cond ADV
 //// Used to hide dns_sd details from the header
 class ArnZeroConfIntern
 {
@@ -74,6 +75,7 @@ public:
                                DNSServiceErrorType errCode, const char *hostname, 
                                const struct sockaddr *address, uint32_t ttl, void *context);
 };
+//! \endcond
 
 
 QAtomicInt  ArnZeroConfB::_idCount(1);

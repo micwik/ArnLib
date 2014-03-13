@@ -148,6 +148,7 @@ signals:
 
 public slots:
 
+    //! \cond ADV
 protected:
     bool  isBrowsing()  const;
     void  setFilter( ArnDiscover::Type typeFilter);
@@ -156,6 +157,7 @@ protected:
     void  browse( bool enable = true);
     void  stopBrowse();
     void  resolve( QString serviceName, bool forceUpdate = true);
+    //! \endcond
 
 private slots:
     void  onBrowseError( int code);
@@ -272,6 +274,7 @@ public slots:
      */
     virtual void  setService( QString service);
 
+    //! \cond ADV
 protected:
     bool  hasSetupAdvertise()  const;
 
@@ -296,6 +299,7 @@ protected slots:
      *  \param[in] code is the error code.
      */
     virtual void  serviceRegistrationError( int code);
+    //! \endcond
 
 private:
     ArnZeroConfRegister*  _arnZCReg;

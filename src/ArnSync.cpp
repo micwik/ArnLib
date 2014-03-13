@@ -257,7 +257,7 @@ uint  ArnSync::doCommandSync()
     if (!itemNet->getModeString().isEmpty()) {   // If non default mode
         itemNet->modeUpdate();    // Make server send the current mode  to client
     }
-    if ((itemNet->type() != ArnLink::Type::Null)
+    if ((itemNet->type() != Arn::DataType::Null)
     && !(itemNet->syncMode().is( syncMode.Master))) {  // Only send non Null Value to non master
         itemNet->itemUpdate( ArnLinkHandle()); // Make server send the current value to client
     }
@@ -436,7 +436,7 @@ void  ArnSync::connected()
         if (!mode.isEmpty()  &&  !itemNet->isDirtyMode()) {
             _modeQueue.enqueue( itemNet);
         }
-        if ((itemNet->type() != ArnLink::Type::Null)            // Only send non Null Value ...
+        if ((itemNet->type() != Arn::DataType::Null)            // Only send non Null Value ...
         && (!itemNet->isPipeMode())                                      // from non pipe ..
         && (itemNet->syncMode().is( ArnItem::SyncMode::Master))) {  // which is master
             itemNet->itemUpdate( ArnLinkHandle());  // Make client send the current value to server

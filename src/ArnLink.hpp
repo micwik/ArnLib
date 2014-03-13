@@ -46,16 +46,13 @@
 #include <QMutex>
 
 
+//! \cond ADV
 class ArnLink : public QObject
 {
     Q_OBJECT
     friend class ArnM;
 
 public:
-typedef Arn::DataType Type;
-typedef Arn::LinkFlags Flags;
-
-    //! \cond ADV
     void  setValue( int value, int sendId = 0, bool forceKeep = 0);
     void  setValue( double value, int sendId = 0, bool forceKeep = 0);
     void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0,
@@ -70,7 +67,7 @@ typedef Arn::LinkFlags Flags;
     QByteArray  toByteArray();
     QVariant  toVariant();
 
-    Type  type();
+    Arn::DataType  type();
 
     QString  linkPath( Arn::NameF nameF = Arn::NameF::EmptyOk);
     QString  linkName( Arn::NameF nameF = Arn::NameF());
@@ -108,14 +105,13 @@ signals:
     void  retired();
 
 protected:
-    ArnLink( ArnLink* parent, const QString& name, Flags flags);
+    ArnLink( ArnLink* parent, const QString& name, Arn::LinkFlags flags);
     void  setupEnd( int syncMode);
     ArnLink*  findLink(const QString& name);
     void  ref();
     int  refCount();
     void  setRefCount( int count);
     void  setRetired();
-    //! \endcond
 
 private:
     void  resetHave();
@@ -144,7 +140,7 @@ private:
     volatile bool  _haveByteArray;
     volatile bool  _haveVariant;
 
-    volatile Type  _type;
+    volatile Arn::DataType  _type;
 
     ArnLink*  _twin;   // Used for bidirectional functionality
     volatile int   _syncMode;
@@ -152,5 +148,6 @@ private:
     volatile bool  _isSaveMode;
     bool  _hasBeenSetup;
 };
+//! \endcond
 
 #endif // ARNLINK_HPP

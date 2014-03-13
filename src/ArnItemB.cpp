@@ -171,7 +171,7 @@ bool  ArnItemB::isBiDir()  const
 
 Arn::DataType  ArnItemB::type()  const
 {
-    if (!_link)  return ArnLink::Type::Null;
+    if (!_link)  return Arn::DataType::Null;
 
     return _link->type();
 }
@@ -485,9 +485,9 @@ QByteArray  ArnItemB::arnExport()  const
     if (!_link)  return QByteArray();
 
     QByteArray  retVal;
-    ArnLink::Type  arnType = _link->type();
+    Arn::DataType  arnType = _link->type();
 
-    if (arnType == ArnLink::Type::Variant) {
+    if (arnType == Arn::DataType::Variant) {
         QVariant value = toVariant();
         QByteArray  typeName( value.typeName());
         int  type = QMetaType::type( typeName.constData());
@@ -518,7 +518,7 @@ QByteArray  ArnItemB::arnExport()  const
             }
         }
     }
-    else if (arnType == ArnLink::Type::ByteArray) {
+    else if (arnType == Arn::DataType::ByteArray) {
         retVal = char( ExportCode::ByteArray) + toByteArray();
     }
     else {  // Expect only normal printable (could also be \n etc)
@@ -588,22 +588,22 @@ void  ArnItemB::setValue( const ArnItemB& other, int ignoreSame)
 
     if (link) {
         switch (link->type()) {
-        case ArnLink::Type::Int:
+        case Arn::DataType::Int:
             this->setValue( link->toInt(), ignoreSame);
             break;
-        case ArnLink::Type::Double:
+        case Arn::DataType::Double:
             this->setValue( link->toDouble(), ignoreSame);
             break;
-        case ArnLink::Type::String:
+        case Arn::DataType::String:
             this->setValue( link->toString(), ignoreSame);
             break;
-        case ArnLink::Type::ByteArray:
+        case Arn::DataType::ByteArray:
             this->setValue( link->toByteArray(), ignoreSame);
             break;
-        case ArnLink::Type::Variant:
+        case Arn::DataType::Variant:
             this->setValue( link->toVariant(), ignoreSame);
             break;
-        case ArnLink::Type::Null:
+        case Arn::DataType::Null:
             //cerr << "Attempt to assign null value from "
             //        << other._link->linkPath() << " to "
             //        << this->_link->linkPath() << endl;
@@ -854,7 +854,7 @@ void  ArnItemB::arnLinkCreatedBelow( ArnLink* link)
 
 void  ArnItemB::arnModeChangedBelow( QString path, uint linkId)
 {
-    ArnLink::Flags  flags;
+    Arn::LinkFlags  flags;
     ArnLink*  link = ArnM::link( path, flags.SilentError);
     if (!link)  return;  // Item has been lost (deleted?)
 

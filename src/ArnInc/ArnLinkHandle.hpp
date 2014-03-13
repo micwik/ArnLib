@@ -42,6 +42,7 @@
 #include <QMap>
 
 
+//! \cond ADV
 class ArnLinkHandle
 {
 public:
@@ -83,6 +84,7 @@ private:
     typedef QMap<int,QVariant>  HandleData;
     HandleData*  _data;
 };
+//! \endcond
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( ArnLinkHandle::Codes)
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnLinkHandle::Flags)

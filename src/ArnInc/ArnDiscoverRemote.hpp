@@ -86,10 +86,12 @@ signals:
 public slots:
     virtual void  setService( QString service);
 
+    //! \cond ADV
 protected:
     //// Handle Service This
     virtual void  postSetupThis();
     virtual void  serviceRegistered( QString serviceName);
+    //! \endcond
 
 private slots:
     //// Handle Service This

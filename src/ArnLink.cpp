@@ -174,16 +174,16 @@ int ArnLink::toInt()
 
     if (!_haveInt) {
         switch (_type.e) {
-        case Type::Double:
+        case Arn::DataType::Double:
             _valueInt = (int)_valueDouble;
             break;
-        case Type::String:
+        case Arn::DataType::String:
             _valueInt = _valueString.toInt();
             break;
-        case Type::ByteArray:
+        case Arn::DataType::ByteArray:
             _valueInt = _valueByteArray.toInt();
             break;
-        case Type::Variant:
+        case Arn::DataType::Variant:
             _valueInt = _valueVariant.toInt();
             break;
         default:
@@ -207,16 +207,16 @@ double ArnLink::toDouble()
 
     if (!_haveDouble) {
         switch (_type.e) {
-        case Type::Int:
+        case Arn::DataType::Int:
             _valueDouble = (double)_valueInt;
             break;
-        case Type::String:
+        case Arn::DataType::String:
             _valueDouble = _valueString.toDouble();
             break;
-        case Type::ByteArray:
+        case Arn::DataType::ByteArray:
             _valueDouble = _valueByteArray.toDouble();
             break;
-        case Type::Variant:
+        case Arn::DataType::Variant:
             _valueDouble = _valueVariant.toDouble();
             break;
         default:
@@ -241,16 +241,16 @@ QString ArnLink::toString()
     if (!_haveString) {
         _valueString.resize(0);     // Avoid heap defragmentation
         switch (_type.e) {
-        case Type::Int:
+        case Arn::DataType::Int:
             _valueString += QString::number(_valueInt, 10);
             break;
-        case Type::Double:
+        case Arn::DataType::Double:
             _valueString += QString::number(_valueDouble, 'g', std::numeric_limits<double>::digits10);
             break;
-        case Type::ByteArray:
+        case Arn::DataType::ByteArray:
             _valueString += QString::fromUtf8( _valueByteArray.constData(), _valueByteArray.size());
             break;
-        case Type::Variant:
+        case Arn::DataType::Variant:
             _valueString += _valueVariant.toString();
             break;
         default:;
@@ -274,16 +274,16 @@ QByteArray ArnLink::toByteArray()
     if (!_haveByteArray) {
         _valueByteArray.resize(0);     // Avoid heap defragmentation
         switch (_type.e) {
-        case Type::Int:
+        case Arn::DataType::Int:
             _valueByteArray += QByteArray::number( _valueInt, 10);
             break;
-        case Type::Double:
+        case Arn::DataType::Double:
             _valueByteArray += QByteArray::number( _valueDouble, 'g', std::numeric_limits<double>::digits10);
             break;
-        case Type::String:
+        case Arn::DataType::String:
             _valueByteArray += _valueString.toUtf8();
             break;
-        case Type::Variant:
+        case Arn::DataType::Variant:
             _valueByteArray += _valueVariant.toString().toUtf8();
             break;
         default:;
@@ -306,16 +306,16 @@ QVariant ArnLink::toVariant( void)
 
     if (!_haveVariant) {
         switch (_type.e) {
-        case Type::Int:
+        case Arn::DataType::Int:
             _valueVariant = _valueInt;
             break;
-        case Type::Double:
+        case Arn::DataType::Double:
             _valueVariant = _valueDouble;
             break;
-        case Type::String:
+        case Arn::DataType::String:
             _valueVariant = _valueString;
             break;
-        case Type::ByteArray:
+        case Arn::DataType::ByteArray:
             _valueVariant = _valueByteArray;
             break;
         default:
@@ -333,10 +333,10 @@ QVariant ArnLink::toVariant( void)
 }
 
 
-ArnLink::Type  ArnLink::type()
+Arn::DataType  ArnLink::type()
 {
     if (_isThreaded)  _mutex.lock();
-    Type  retVal = Type( _type.e);
+    Arn::DataType  retVal = Arn::DataType( _type.e);
     if (_isThreaded)  _mutex.unlock();
 
     return retVal;
@@ -375,7 +375,7 @@ QString ArnLink::linkName( Arn::NameF nameF)
 }
 
 
-ArnLink::ArnLink( ArnLink *parent, const QString& name, Flags flags)
+ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
         : QObject(0)
 {
     QString  name_ = Arn::convertBaseName( name, Arn::NameF());
@@ -390,7 +390,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Flags flags)
     _valueString    = "";
     _valueByteArray = "";
     _valueVariant   = QVariant();
-    _type.e         = Type::Null;
+    _type.e         = Arn::DataType::Null;
     _twin           = 0;
     _isPipeMode     = false;
     _isSaveMode     = false;
