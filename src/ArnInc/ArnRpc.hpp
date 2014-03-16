@@ -319,8 +319,10 @@ private slots:
     void  timeoutHeartBeatSend();
     void  timeoutHeartBeatCheck();
 
+    //! \cond ADV
 protected:
     void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
+    //! \endcond
 
 private:
     bool  xsmAddArg( Arn::XStringMap& xsm, const MQGenericArgument& arg, uint index, int& nArg);

@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Usage of ARN Discover</title>
+</head>
+<body>
+<h2>Usage of ARN Discover</h2>
+
+<p>This is the ArnLib discover functionality, implemented by using
+ZeroConfig. It can be used with or without remote control of advertised
+service and needed connections.<br />
+&nbsp;</p>
+<h3>Connect</h3>
+<p>Is the remote control for the connections made by the host.</p>
+<p>Each connection has a logic id that identifies the needed service /
+functionality. For each connection there can be a list&nbsp; <br />
+with many&nbsp; direct addressed hosts to try.&nbsp; Each connection can also have one resolved host to try.<br />
+By default a resolved host has precedence before a direct host when trying to connect.<br />
+</p>
+<table border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr><th style="vertical-align: top;">Parameter path</th><th style="vertical-align: top;">Editable</th><th style="vertical-align: top;"><span style="font-weight: bold;">Description</span></th></tr>
+<tr>
+<td style="vertical-align: top;">DirectHosts/Host-&lt;i&gt;</td>
+<td style="vertical-align: top;"><em>Yes</em></td>
+<td style="vertical-align: top;">Trying direct connection to host &lt;i&gt; address.<br />
+Example: DirectHosts/Host-0 = "localhost"</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">DirectHosts/Host-&lt;i&gt;/Port</td>
+<td style="vertical-align: top;">Yes</td>
+<td style="vertical-align: top;">Trying direct connection to host &lt;i&gt; port.<br />
+Example: DirectHosts/Host-0/Port = "2022</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">DiscoverHost/Service</td>
+<td style="vertical-align: top;">Yes</td>
+<td style="vertical-align: top;">Trying discover connection to service.<br />
+Example: DiscoverHost/Service = "My bean counter"</td>
+</tr><tr>
+<td style="vertical-align: top;">DiscoverHost/Status</td>
+<td style="vertical-align: top;">&nbsp;</td>
+<td style="vertical-align: top;">Resolv status.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">DiscoverHost/Host</td>
+<td style="vertical-align: top;">&nbsp;</td>
+<td style="vertical-align: top;">Address and port of the resolved Host.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Request</td>
+<td style="vertical-align: top;">Yes</td>
+<td style="vertical-align: top;">Connection request, normally is "idle".<br />
+Use combobox to select wanted request.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Status</td>
+<td style="vertical-align: top;">&nbsp;</td>
+<td style="vertical-align: top;">Connection status</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">UsingHost</td>
+<td style="vertical-align: top;">&nbsp;</td>
+<td style="vertical-align: top;">Address and port of the connected Host.</td>
+</tr>
+
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h3>This</h3>
+<p>Is the remote control for the advertised host.<br />
+</p>
+<table border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr><th style="vertical-align: top; text-align: left;">Parameter path</th><th style="vertical-align: top; text-align: left;">Editable</th><th style="vertical-align: top; text-align: left;"><span>Description</span></th></tr>
+<tr>
+<td style="vertical-align: top;">Service</td>
+<td style="vertical-align: top;"><em>Yes</em></td>
+<td style="vertical-align: top;">Requested advertise service name. Changing this will also update current advertise.<br />
+Example: Service = "My bean counter"</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">UsingService</td>
+<td style="vertical-align: top;">&nbsp;</td>
+<td style="vertical-align: top;">Currently advertised service name.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Host</td>
+<td style="vertical-align: top;">&nbsp;</td>
+<td style="vertical-align: top;">Address and port of the advertised host</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Interfaces</td>
+<td style="vertical-align: top;">&nbsp;</td>
+<td style="vertical-align: top;">List of network interfaces in this host.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Interfaces/Listen</td>
+<td style="vertical-align: top;">&nbsp;</td>
+<td style="vertical-align: top;">Can be "Any" or the specific interface this host listen to.</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 10px;">&nbsp;</span></p>
+<p><br />&nbsp;</p>
+</body>
+</html>

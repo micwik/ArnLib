@@ -33,20 +33,24 @@
 #ifndef ARNLIB_HPP
 #define ARNLIB_HPP
 
+#include <QString>
+
 
 namespace Arn {
 
-extern bool debugThreading;
-extern bool debugLinkRef;
-extern bool debugLinkDestroy;
-extern bool debugRecInOut;
-extern bool debugMonitor;
-extern bool debugRPC;
-extern bool debugDiscover;
-extern bool debugZeroConf;
-extern bool debugMDNS;
-extern bool warningMDNS;
+extern bool  debugThreading;
+extern bool  debugLinkRef;
+extern bool  debugLinkDestroy;
+extern bool  debugRecInOut;
+extern bool  debugMonitor;
+extern bool  debugRPC;
+extern bool  debugDiscover;
+extern bool  debugZeroConf;
+extern bool  debugMDNS;
+extern bool  warningMDNS;
 
+extern const QString  resourceArnLib;
+extern const QString  resourceArnRoot;
 }  // Arn::
 
 #endif // ARNLIB_HPP

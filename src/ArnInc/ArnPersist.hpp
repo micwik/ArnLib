@@ -251,7 +251,7 @@ private:
     ArnItemPersist*  getPersistItem( QString path);
     ArnItemPersist*  setupMandatory( QString path, bool isMandatory);
     void  removeFilePersistItem( QString path);
-    void  fileList( QStringList& flist, const QDir& dir, const QDir* baseDir = 0);
+    void  getFileList( QStringList& flist, const QDir& dir, const QDir* baseDir = 0);
     void  loadFile( QString relPath);
     void  doLoadMandatory();
     void  doLoadFiles();

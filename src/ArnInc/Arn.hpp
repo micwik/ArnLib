@@ -34,6 +34,7 @@
 #define ARN_HPP
 
 #include "MQFlags.hpp"
+#include <QString>
 
 #define DATASTREAM_VER  QDataStream::Qt_4_6
 
@@ -44,6 +45,7 @@ namespace Arn {
 
     extern const QString  pathLocal;
     extern const QString  pathLocalSys;
+    extern const QString  pathDiscover;
     extern const QString  pathDiscoverThis;
     extern const QString  pathDiscoverConnect;
 
@@ -93,6 +95,16 @@ struct NameF {
         Relative     = 0x04
     };
     MQ_DECLARE_FLAGS( NameF)
+};
+
+struct Coding {
+    enum E {
+        //! No special coding, can be anything
+        Binary  = 0x0000,
+        //! Text coding, can be any character set
+        Text    = 0x1000
+    };
+    MQ_DECLARE_FLAGS( Coding)
 };
 
 QString  convertName( const QString& name, Arn::NameF nameF = Arn::NameF());
@@ -213,5 +225,6 @@ QString  hostFromHostWithInfo( const QString& hostWithInfo);
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::LinkFlags)
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::NameF)
+MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::Coding)
 
 #endif // ARN_HPP

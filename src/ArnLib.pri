@@ -32,6 +32,9 @@ HEADERS += \
     $$PWD/ArnInc/ArnLib.hpp \
     $$PWD/ArnInc/MQFlags.hpp
 
+RESOURCES += \
+    $$PWD/../resource/ArnLib.qrc
+
 
 contains(ARN, server) {
     ARN += client
@@ -155,3 +158,6 @@ contains(ARN, zeroconf) {
 }
 
 }  # ARNLIB_PRI_INCLUDED
+
+RESOURCES += \
+    legal/ArnLicences.qrc

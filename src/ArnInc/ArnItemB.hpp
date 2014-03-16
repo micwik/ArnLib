@@ -61,6 +61,8 @@ make any of them public.
 
 See ArnItem.
 */
+//! \cond ADV
+//! \endcond
 class ARNLIBSHARED_EXPORT ArnItemB : public QObject
 {
     Q_OBJECT

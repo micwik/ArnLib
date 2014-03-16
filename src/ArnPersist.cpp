@@ -774,7 +774,7 @@ void  ArnPersist::doLoadMandatory()
 void  ArnPersist::doLoadFiles()
 {
     QStringList  flist;
-    fileList( flist, *_persistDir);
+    getFileList( flist, *_persistDir);
     foreach (const QString& relPath, flist) {
         loadFile( relPath);
     }
@@ -803,11 +803,11 @@ void  ArnPersist::loadFile( QString relPath)
     file.open( QIODevice::ReadOnly);
     QByteArray  data = file.readAll();
     // qDebug() << "Persist loadFile: absPath=" << file.fileName();
-    item->setValue( data, true);
+    item->setValue( data, Arn::SameValue::Accept);
 }
 
 
-void  ArnPersist::fileList(QStringList& flist, const QDir& dir, const QDir* baseDir)
+void  ArnPersist::getFileList(QStringList& flist, const QDir& dir, const QDir* baseDir)
 {
     if (!baseDir)
         baseDir = &dir;
@@ -820,7 +820,7 @@ void  ArnPersist::fileList(QStringList& flist, const QDir& dir, const QDir* base
         }
         else if (finfo.isDir()) {
             QString  fname = finfo.fileName();
-            fileList( flist, QDir(finfo.absoluteFilePath()), baseDir);
+            getFileList( flist, QDir(finfo.absoluteFilePath()), baseDir);
         }
     }
 }
@@ -879,7 +879,7 @@ void  ArnPersist::sapiLoad()
 void  ArnPersist::sapiLs( QString path)
 {
     QStringList  flist;
-    fileList( flist, *_persistDir);
+    getFileList( flist, *_persistDir);
     convertFileList( flist, Arn::NameF::EmptyOk);
 
     if (path.isEmpty())

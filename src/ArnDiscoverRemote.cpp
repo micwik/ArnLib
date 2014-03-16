@@ -39,6 +39,7 @@
 #include <QMetaObject>
 #include <QHostInfo>
 #include <QNetworkInterface>
+#include <QDir>
 
 
 ///////// ArnDiscoverRemote
@@ -63,6 +64,7 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
     ArnM::setValue( Arn::pathDiscoverThis + "Interfaces/Listen/value", listenAddr);
     ArnM::setValue( Arn::pathDiscoverThis + "Host/value", QHostInfo::localHostName());
     ArnM::setValue( Arn::pathDiscoverThis + "Host/Port/value", hostPort);
+    ArnM::loadFromDirRoot( Arn::pathDiscover + "help.xhtml", QDir( Arn::resourceArnRoot), Arn::Coding::Text);
 
     //// Publish static list of network interfaces in Arn
     int  i = 0;

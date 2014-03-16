@@ -46,6 +46,8 @@ bool debugZeroConf    = false;
 bool debugMDNS        = false;
 bool warningMDNS      = false;
 
+const QString  resourceArnLib  = ":/ArnLib/";
+const QString  resourceArnRoot = ":/ArnLib/ArnRoot/";
 }  // Arn::
 
 

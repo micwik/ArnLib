@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/ArnLib">
+        <file>ArnRoot/Local/Sys/Discover/help.xhtml</file>
+    </qresource>
+</RCC>

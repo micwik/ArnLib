@@ -38,6 +38,7 @@
 #include "Arn.hpp"
 #include "ArnError.hpp"
 #include "ArnItem.hpp"
+#include <QIODevice>
 #include <QStringList>
 #include <QVector>
 #include <QMetaType>
@@ -45,9 +46,10 @@
 #include <QMutex>
 #include <QWaitCondition>
 
-//! \cond ADV
 class ArnThreadComStorage;
+class QDir;
 
+//! \cond ADV
 class ArnThreadCom
 {
     friend class ArnThreadComCaller;
@@ -215,6 +217,30 @@ public:
      *  \param[in] value to be assigned
      */
     static void  setValue( const QString& path, const char* value);
+
+    //! Load from a file to an _Arn Data Object_ at _path_
+    /*! \param[in] path is the path of the _Arn Data Object_
+     *  \param[in] fileName is the file to be loaded
+     *  \param[in] coding indicates if text or binary mode will be used
+     *  \retval true if loading from file is successful
+     */
+    static bool  loadFromFile( const QString& path, const QString& fileName, Arn::Coding coding);
+
+    //! Load from a directory to an _Arn Data Object_ at _path_
+    /*! \param[in] path is the path of the _Arn Data Object_ and also path relative to _dirRoot_
+     *  \param[in] dirRoot is the file directory to be used as root for the _path_
+     *  \param[in] coding indicates if text or binary mode will be used
+     *  \retval true if loading from file is successful
+     */
+    static bool  loadFromDirRoot( const QString& path, const QDir& dirRoot, Arn::Coding coding);
+
+    //! Save to a file from an _Arn Data Object_ at _path_
+    /*! \param[in] path is the path of the _Arn Data Object_
+     *  \param[in] fileName is the file to be saved
+     *  \param[in] coding indicates if text or binary mode will be used
+     *  \retval true if saving to file is successful
+     */
+    static bool  saveToFile( const QString& path, const QString& fileName, Arn::Coding coding);
 
     static void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
     static QString  errorSysName();

@@ -33,10 +33,6 @@
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include "ArnLink.hpp"
-#include <iostream>
-#include <QStringList>
-#include <QVector>
-#include <QDebug>
 #include <QEvent>
 #include <QMutex>
 #include <QWaitCondition>
@@ -44,6 +40,12 @@
 #include <QThread>
 #include <QCoreApplication>
 #include <QMetaType>
+#include <QFile>
+#include <QDir>
+#include <iostream>
+#include <QStringList>
+#include <QVector>
+#include <QDebug>
 
 
 /////////////// ArnThreadCom
@@ -342,6 +344,46 @@ void  ArnM::setValue( const QString& path, const QVariant& value)
 void ArnM::setValue(const QString& path, const char* value)
 {
     setValue( path, QString::fromUtf8( value));
+}
+
+
+bool  ArnM::loadFromFile( const QString& path, const QString& fileName, Arn::Coding coding)
+{
+    bool  isText = coding.is( coding.Text);
+
+    QFile  file( fileName);
+    if (!file.open( QIODevice::ReadOnly))  return false;
+    file.setTextModeEnabled( isText);
+    QByteArray  data = file.readAll();
+
+    if (isText)
+        ArnM::setValue( path, QString::fromUtf8( data.constData(), data.size()));
+    else
+        ArnM::setValue( path, data);
+
+    return true;
+}
+
+
+bool  ArnM::loadFromDirRoot( const QString& path, const QDir& dirRoot, Arn::Coding coding)
+{
+    QString  arnFullPath = Arn::fullPath( path);
+    QString  fileAbsPath = dirRoot.absoluteFilePath( Arn::convertPath( arnFullPath, Arn::NameF::Relative));
+
+    return  loadFromFile( arnFullPath, fileAbsPath, coding);
+}
+
+
+bool  ArnM::saveToFile( const QString& path, const QString& fileName, Arn::Coding coding)
+{
+    bool  isText = coding.is( coding.Text);
+
+    QFile  file( fileName);
+    if (!file.open( QIODevice::WriteOnly))  return false;
+    file.setTextModeEnabled( isText);
+
+    QByteArray  data = ArnM::valueByteArray( path);
+    return (file.write( data) >= 0);
 }
 
 
