@@ -44,14 +44,14 @@ bool  ArnSapi::open( QString pipePath, Mode mode,
                           const char *providerPrefix, const char *requesterPrefix)
 {
     if (mode.is( mode.Provider)) {
-        setMethodPrefix( providerPrefix ? providerPrefix : "pv_");
-        addSenderSignals( this, requesterPrefix ? requesterPrefix : "rq_");
+        ArnRpc::setMethodPrefix( providerPrefix ? providerPrefix : "pv_");
+        ArnRpc::addSenderSignals( this, requesterPrefix ? requesterPrefix : "rq_");
     }
     else {
-        setMethodPrefix( requesterPrefix ? requesterPrefix : "rq_");
-        addSenderSignals( this, providerPrefix ? providerPrefix : "pv_");
+        ArnRpc::setMethodPrefix( requesterPrefix ? requesterPrefix : "rq_");
+        ArnRpc::addSenderSignals( this, providerPrefix ? providerPrefix : "pv_");
     }
-    setReceiver( this);
-    setMode( mode);
+    ArnRpc::setReceiver( this);
+    ArnRpc::setMode( mode);
     return ArnRpc::open( pipePath);
 }

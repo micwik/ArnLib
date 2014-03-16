@@ -121,22 +121,16 @@ public:
     bool  open( QString pipePath, Mode mode = Mode(),
                 const char* providerPrefix = 0, const char* requesterPrefix = 0);
 
-    using ArnRpc::pipePath;
-    using ArnRpc::mode;
-    using ArnRpc::setHeartBeatSend;
-    using ArnRpc::setHeartBeatCheck;
-    using ArnRpc::isHeartBeatOk;
-    using ArnRpc::invoke;
-    using ArnRpc::batchConnect;
-
 private:
-    using ArnRpc::setPipe;
-    using ArnRpc::setReceiver;
-    using ArnRpc::setMethodPrefix;
-    using ArnRpc::setIncludeSender;
-    using ArnRpc::setMode;
-    using ArnRpc::addSenderSignals;
-    using ArnRpc::rpcSender;
+    //// Hide these from SAPI base interface
+    void  setPipe( ArnPipe* pipe);
+    void  setReceiver( QObject* receiver);
+    void  setMethodPrefix( QString prefix);
+    void  setIncludeSender( bool v);
+    void  setMode( Mode mode);
+    void  addSenderSignals( QObject* sender, QString prefix);
+    ArnRpc*  rpcSender();
+    static ArnRpc*  rpcSender( QObject* receiver);
 };
 
 
