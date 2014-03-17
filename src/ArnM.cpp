@@ -781,6 +781,7 @@ void  ArnM::errorLog( QString errText, ArnError err, void* reference )
 ArnM::ArnM()
 {
     _defaultIgnoreSameValue = false;
+    _skipLocalSysLoading    = false;
     _isThreadedApp          = false;
     _mainThread             = QThread::currentThread();
     _root                   = new ArnLink( 0, "", Arn::LinkFlags::Folder);
@@ -817,6 +818,8 @@ ArnM::ArnM()
 
 void  ArnM::postSetup()
 {
+    if (_skipLocalSysLoading)  return;
+
     //// Loading Licence files
     QString  licensesPath = Arn::pathLocalSys + "Licenses/";
     QDir  dirArnRoot( Arn::resourceArnRoot);
@@ -858,4 +861,16 @@ void  ArnM::setDefaultIgnoreSameValue( bool isIgnore)
 bool  ArnM::defaultIgnoreSameValue()
 {
     return instance()._defaultIgnoreSameValue;
+}
+
+
+bool  ArnM::skipLocalSysLoading()  const
+{
+    return _skipLocalSysLoading;
+}
+
+
+void  ArnM::setSkipLocalSysLoading( bool skipLocalSysLoading)
+{
+    _skipLocalSysLoading = skipLocalSysLoading;
 }

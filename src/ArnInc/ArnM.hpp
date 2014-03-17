@@ -250,6 +250,11 @@ public:
      */
     static QByteArray  info();
 
+    //! \cond ADV
+    bool  skipLocalSysLoading()  const;
+    void  setSkipLocalSysLoading( bool skipLocalSysLoading);
+    //! \endcond
+
 public slots:
     //! Destroy the _Arn Data Object_ at _path_
     /*! The link (_Arn Data Object_) will be removed locally, from server and all
@@ -306,6 +311,7 @@ private:
     QVector<QString>  _errTextTab;
     bool  _consoleError;
     bool  _defaultIgnoreSameValue;
+    bool  _skipLocalSysLoading;
     QObject*  _errorLogger;
 
     volatile bool  _isThreadedApp;
