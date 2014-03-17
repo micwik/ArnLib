@@ -43,6 +43,7 @@
 #include <QFile>
 #include <QDir>
 #include <iostream>
+#include <QTimer>
 #include <QStringList>
 #include <QVector>
 #include <QDebug>
@@ -809,6 +810,22 @@ ArnM::ArnM()
     _errTextTab[ ArnError::ScriptError]     = QString(tr("Script"));
     _errTextTab[ ArnError::RpcInvokeError]  = QString(tr("Rpc Invoke error"));
     _errTextTab[ ArnError::RpcReceiveError] = QString(tr("Rpc Receive error"));
+
+    QTimer::singleShot( 0, this, SLOT(postSetup()));
+}
+
+
+void  ArnM::postSetup()
+{
+    //// Loading Licence files
+    QString  licensesPath = Arn::pathLocalSys + "Licenses/";
+    QDir  dirArnRoot( Arn::resourceArnRoot);
+    loadFromDirRoot( licensesPath + "LICENSE_ARNLIB.txt",  dirArnRoot, Arn::Coding::Text);
+    loadFromDirRoot( licensesPath + "LICENSE_LGPL.txt",    dirArnRoot, Arn::Coding::Text);
+    loadFromDirRoot( licensesPath + "LGPL_EXCEPTION.txt",  dirArnRoot, Arn::Coding::Text);
+    loadFromDirRoot( licensesPath + "LICENSE_GPL3.txt",    dirArnRoot, Arn::Coding::Text);
+    loadFromDirRoot( licensesPath + "LICENSE_MDNS.txt",    dirArnRoot, Arn::Coding::Text);
+    loadFromDirRoot( licensesPath + "LICENSE_APACHE2.txt", dirArnRoot, Arn::Coding::Text);
 }
 
 

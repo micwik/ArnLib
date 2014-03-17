@@ -275,6 +275,7 @@ protected:
 #endif
 
 private slots:
+    void  postSetup();
     static void  linkProxy( ArnThreadCom* threadCom, const QString& path,
                             int flagValue, int syncMode = 0);
     static void  itemsProxy( ArnThreadCom* threadCom, const QString& path);

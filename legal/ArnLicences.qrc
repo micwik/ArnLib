@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/ArnLib/ArnRoot/Local/Sys/Licenses">
+        <file>LICENSE_ARNLIB.txt</file>
+        <file>LICENSE_LGPL.txt</file>
+        <file>LGPL_EXCEPTION.txt</file>
+        <file>LICENSE_GPL3.txt</file>
+        <file>LICENSE_MDNS.txt</file>
+        <file>LICENSE_APACHE2.txt</file>
+    </qresource>
+</RCC>
