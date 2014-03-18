@@ -3,31 +3,30 @@
 // Contact: arnlib@wiklunden.se
 //
 // This file is part of the ArnLib - Active Registry Network.
-// Parts of ArnLib depend on Qt 4 and/or other libraries that have their own
-// licenses. ArnLib is independent of these licenses; however, use of these other
-// libraries is subject to their respective license agreements.
+// Parts of ArnLib depend on Qt and/or other libraries that have their own
+// licenses. ArnLib is independent of these licenses; however, use of these
+// other libraries is subject to their respective license agreements.
 //
 // GNU Lesser General Public License Usage
 // This file may be used under the terms of the GNU Lesser General Public
 // License version 2.1 as published by the Free Software Foundation and
-// appearing in the file LICENSE.LGPL included in the packaging of this file.
-// In addition, as a special exception, you may use the rights described
+// appearing in the file LICENSE_LGPL.txt included in the packaging of this
+// file. In addition, as a special exception, you may use the rights described
 // in the Nokia Qt LGPL Exception version 1.1, included in the file
 // LGPL_EXCEPTION.txt in this package.
 //
 // GNU General Public License Usage
-// Alternatively, this file may be used under the terms of the GNU General
-// Public License version 3.0 as published by the Free Software Foundation
-// and appearing in the file LICENSE.GPL included in the packaging of this file.
+// Alternatively, this file may be used under the terms of the GNU General Public
+// License version 3.0 as published by the Free Software Foundation and appearing
+// in the file LICENSE_GPL.txt included in the packaging of this file.
 //
 // Other Usage
-// Alternatively, this file may be used in accordance with the terms and
-// conditions contained in a signed written agreement between you and Michael Wiklund.
+// Alternatively, this file may be used in accordance with the terms and conditions
+// contained in a signed written agreement between you and Michael Wiklund.
 //
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
 #ifndef ARN_HPP
@@ -107,8 +106,22 @@ struct Coding {
     MQ_DECLARE_FLAGS( Coding)
 };
 
+//! Convert a name to a specific format
+/*! Name is a sub part from a _path_.
+ *  Example: _name_ = "value/", nameF = NoFolderMark
+ *  ==> return = "value"
+ *  \param[in] name
+ *  \param[in] nameF is the path naming format
+ *  \return The converted _name_
+ */
 QString  convertName( const QString& name, Arn::NameF nameF = Arn::NameF());
-QString  convertBaseName( const QString& name, Arn::NameF nameF);
+
+//! Convert a path to a full absolute path
+/*! Example: _path_ = "Measure/depth/value"
+ *  ==> return = "/Local/Measure/depth/value"
+ *  \param[in] path
+ *  \return The converted _path_ full path
+ */
 QString  fullPath( const QString& path);
 
 //! Test if _path_ is a _folder path_
@@ -221,6 +234,9 @@ QString  makeHostWithInfo( const QString& host, const QString& info);
  */
 QString  hostFromHostWithInfo( const QString& hostWithInfo);
 
+//! \cond ADV
+QString  convertBaseName( const QString& name, Arn::NameF nameF);
+//! \endcond
 }  // Arn::
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::LinkFlags)

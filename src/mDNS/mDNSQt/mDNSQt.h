@@ -11,7 +11,7 @@
 // GNU Lesser General Public License Usage
 // This file may be used under the terms of the GNU Lesser General Public
 // License version 2.1 as published by the Free Software Foundation and
-// appearing in the file LICENSE.LGPL included in the packaging of this file.
+// appearing in the file LICENSE_LGPL.txt included in the packaging of this file.
 // In addition, as a special exception, you may use the rights described
 // in the Nokia Qt LGPL Exception version 1.1, included in the file
 // LGPL_EXCEPTION.txt in this package.
@@ -19,7 +19,7 @@
 // GNU General Public License Usage
 // Alternatively, this file may be used under the terms of the GNU General
 // Public License version 3.0 as published by the Free Software Foundation
-// and appearing in the file LICENSE.GPL included in the packaging of this file.
+// and appearing in the file LICENSE_GPL.txt included in the packaging of this file.
 //
 // Other Usage
 // Alternatively, this file may be used in accordance with the terms and
@@ -31,7 +31,7 @@
 // GNU Lesser General Public License for more details.
 //
 // This file contain modified code, originating from:
-// Copyright (c) 2002-2004 Apple Computer, Inc. All rights reserved.
+// Copyright (c) 2004 Apple Computer, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at

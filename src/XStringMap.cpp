@@ -3,32 +3,30 @@
 // Contact: arnlib@wiklunden.se
 //
 // This file is part of the ArnLib - Active Registry Network.
-// Parts of ArnLib depend on Qt 4 and/or other libraries that have their own
-// licenses. ArnLib is independent of these licenses; however, use of these other
-// libraries is subject to their respective license agreements.
+// Parts of ArnLib depend on Qt and/or other libraries that have their own
+// licenses. ArnLib is independent of these licenses; however, use of these
+// other libraries is subject to their respective license agreements.
 //
-// The MIT License (MIT)
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of the software in this file (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
+// GNU Lesser General Public License Usage
+// This file may be used under the terms of the GNU Lesser General Public
+// License version 2.1 as published by the Free Software Foundation and
+// appearing in the file LICENSE_LGPL.txt included in the packaging of this
+// file. In addition, as a special exception, you may use the rights described
+// in the Nokia Qt LGPL Exception version 1.1, included in the file
+// LGPL_EXCEPTION.txt in this package.
 //
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
+// GNU General Public License Usage
+// Alternatively, this file may be used under the terms of the GNU General Public
+// License version 3.0 as published by the Free Software Foundation and appearing
+// in the file LICENSE_GPL.txt included in the packaging of this file.
 //
 // Other Usage
-// Alternatively, this file may be used in accordance with the terms and
-// conditions contained in a signed written agreement between you and Michael Wiklund.
+// Alternatively, this file may be used in accordance with the terms and conditions
+// contained in a signed written agreement between you and Michael Wiklund.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
-// THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
 #include "ArnInc/XStringMap.hpp"
