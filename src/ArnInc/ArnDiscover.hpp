@@ -59,6 +59,12 @@ struct Type {
 }
 
 
+//! Class for holding current discover info of one service.
+/*!
+[About Arn Discover](\ref gen_discover)
+
+This class holds the service info and its discover state.
+*/
 class ArnDiscoverInfo
 {
     friend class ArnDiscoverBrowserB;
@@ -84,7 +90,16 @@ public:
 
     ArnDiscoverInfo();
 
+    //! Is discover in progress for this service
+    /*! \retval true, if discover is in progress
+     *  \see state()
+     */
     bool  inProgress()  const;
+
+    //! Is discover in progress for this service
+    /*! \retval true, if discover is in progress
+     *  \see state()
+     */
     bool  isError()  const;
     State  state()  const;
     State  stopState()  const;
@@ -121,6 +136,7 @@ private:
     Arn::XStringMap  _properties;
     int  _resolvCode;
 };
+
 
 /// Browse() and resolve() together, may never be used to the same instance.
 class ArnDiscoverBrowserB : public QObject

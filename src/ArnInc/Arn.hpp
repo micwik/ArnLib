@@ -137,7 +137,9 @@ bool  isFolderPath( const QString& path);
  */
 bool  isProviderPath( const QString& path);
 
-/*! \return The itemName, i.e. the last part of the path after last "/"
+//! The last part of a _path_
+/*! Example: path = "//Measure/depth/value" ==> return = "value"
+ *  \return The itemName, i.e. the last part of the path after last "/"
  */
 QString  itemName( const QString& path);
 
@@ -234,9 +236,12 @@ QString  makeHostWithInfo( const QString& host, const QString& info);
  */
 QString  hostFromHostWithInfo( const QString& hostWithInfo);
 
-//! \cond ADV
+    //! \cond ADV
+
 QString  convertBaseName( const QString& name, Arn::NameF nameF);
-//! \endcond
+
+    //! \endcond
+
 }  // Arn::
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::LinkFlags)

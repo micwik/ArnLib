@@ -178,7 +178,11 @@ private:
     QByteArray  _nullValue;
 };
 
+    //! \cond ADV
+
 void XStringMapTest();
+
+    //! \endcond
 
 }  // Arn::
 

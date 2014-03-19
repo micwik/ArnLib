@@ -83,8 +83,8 @@ public:
     ArnItem( const QString& path, QObject* parent = 0);
 
     //! Construction of a handle to a path with a template for _modes_
-    /*! \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
-     *  \param[in] folder_template The template for setting _modes_
+    /*! \param[in] itemTemplate The template for setting _modes_
+     *  \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
      */
     ArnItem( const ArnItem& itemTemplate, const QString& path, QObject* parent = 0);
 
@@ -129,7 +129,7 @@ public:
     Arn::DataType  type()  const
     {return ArnItemB::type();}
 
-    //! Set skipping of equal value
+    //! Set skipping assignment of equal value
     /*! \param[in] isIgnore If true, assignment of equal value don't give a changed signal.
      */
     void  setIgnoreSameValue( bool isIgnore = true)

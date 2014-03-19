@@ -149,8 +149,13 @@ public:
     ConnectStat  connectStatus()  const;
 
     //! Set automatic reconnect
-    /*! \param[in] isAuto true if using auto reconnect
-     *  \param[in] retryTime is the time between reconnection attempts in seconds
+    /*! If connectToArnList() is used, this auto connect funtionality starts every time
+     *  after the last host in the Arn connection list has failed. The connection list is
+     *  retried after _retryTime_.
+     *  When using connectToArn(), there will be a _retryTime_ delay between each reConnect
+     *  to the host.
+     *  \param[in] isAuto true if using auto reconnect
+     *  \param[in] retryTime is the time between attempts in seconds
      */
     void  setAutoConnect( bool isAuto, int retryTime = 2);
 
