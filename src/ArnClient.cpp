@@ -168,6 +168,18 @@ void  ArnClient::setAutoConnect( bool isAuto, int retryTime)
 }
 
 
+void  ArnClient::setId( QString id)
+{
+    _id = id;
+}
+
+
+QString  ArnClient::id()  const
+{
+    return _id;
+}
+
+
 int ArnClient::curPrio() const
 {
     return _curPrio;

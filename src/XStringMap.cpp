@@ -689,6 +689,18 @@ void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)
 }
 
 
+XStringMap&  XStringMap::operator+=( const QVariantMap& other)
+{
+    return add( other);
+}
+
+
+XStringMap&  XStringMap::operator+=( const XStringMap& other)
+{
+    return add( other);
+}
+
+
 void  XStringMap::checkSpace()
 {
     if (_size >= _keyList.size()) {     // If out of space allocate more

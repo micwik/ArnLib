@@ -99,8 +99,7 @@ public:
      */
     void  setValue( const QByteArray& value);
 
-    ArnPipe&  operator=( const QByteArray& value)
-    {setValue( value); return *this;}
+    ArnPipe&  operator=( const QByteArray& value);
 
     //! Assign a _QByteArray_ to a _Pipe_ by overwrite Regexp match in sendqueue
     /*! This is used to limit the filling of sendqueue with recuring messages during

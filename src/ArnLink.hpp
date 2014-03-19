@@ -70,7 +70,7 @@ public:
 
     QString  linkPath( Arn::NameF nameF = Arn::NameF::EmptyOk);
     QString  linkName( Arn::NameF nameF = Arn::NameF());
-    uint  linkId()  const { return _id;}
+    uint  linkId()  const;
     bool  isFolder();
 
     void  addSyncMode( int syncMode);
@@ -80,8 +80,8 @@ public:
     bool  isPipeMode();
     void  setSaveMode( bool isSaveMode);
     bool  isSaveMode();
-    bool  isProvider()  const { return _isProvider;}
-    bool  isThreaded()  const { return _isThreaded;}
+    bool  isProvider()  const;
+    bool  isThreaded()  const;
     bool  isRetired();
     ArnLink*  twinLink();
     ArnLink*  valueLink();

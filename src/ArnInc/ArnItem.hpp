@@ -46,7 +46,6 @@
 class QTimer;
 
 
-
 //! Handle for an _Arn Data Object_.
 /*!
 [About Arn Data Object](\ref gen_arnobj)

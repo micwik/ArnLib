@@ -204,6 +204,24 @@ void  ArnItemB::addSyncMode( SyncMode syncMode, bool linkShare)
 }
 
 
+void  ArnItemB::resetOnlyEcho()
+{
+    _isOnlyEcho = true;
+}
+
+
+bool  ArnItemB::isOnlyEcho() const
+{
+    return _isOnlyEcho;
+}
+
+
+void  ArnItemB::setBlockEcho( bool blockEcho)
+{
+    _blockEcho = blockEcho;
+}
+
+
 ArnItemB::SyncMode  ArnItemB::syncMode()  const
 {
     if (_syncModeLinkShare  &&  _link) {
@@ -753,6 +771,39 @@ void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
         errorLog( QString(tr("Assigning variant")),
                   ArnError::ItemNotOpen);
     }
+}
+
+
+void  ArnItemB::itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value)
+{
+    Q_UNUSED(handleData);
+    Q_UNUSED(value);
+}
+
+
+void  ArnItemB::itemCreatedBelow( QString path)
+{
+    Q_UNUSED(path);
+}
+
+
+void  ArnItemB::itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode)
+{
+    Q_UNUSED(path);
+    Q_UNUSED(linkId);
+    Q_UNUSED(mode);
+}
+
+
+void  ArnItemB::setForceKeep( bool fk)
+{
+    _useForceKeep = fk;
+}
+
+
+bool  ArnItemB::isForceKeep()  const
+{
+    return _useForceKeep;
 }
 
 

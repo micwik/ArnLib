@@ -132,6 +132,12 @@ ArnScript::ArnScript( QObject* parent) :
 }
 
 
+QScriptEngine&  ArnScript::engine()  const
+{
+    return *_engine;
+}
+
+
 bool  ArnScript::evaluate( QByteArray script, QString idName)
 {
     _idName = idName;
@@ -165,6 +171,12 @@ bool  ArnScript::logUncaughtError( QScriptValue& scriptValue)
         return true;
     }
     return false;
+}
+
+
+QString  ArnScript::idName()  const
+{
+    return _idName;
 }
 
 

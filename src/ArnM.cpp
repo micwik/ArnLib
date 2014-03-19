@@ -86,6 +86,12 @@ void  ArnThreadComCaller::waitCommandEnd()
 }
 
 
+ArnThreadCom*  ArnThreadComCaller::p()
+{
+    return _p;
+}
+
+
 ArnThreadComProxyLock::ArnThreadComProxyLock( ArnThreadCom* threadCom) :
         _p( threadCom)
 {

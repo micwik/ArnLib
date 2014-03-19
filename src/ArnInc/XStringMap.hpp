@@ -163,10 +163,8 @@ public:
     inline void  append( const QVariantMap& other)
     {add( other);}
 
-    inline XStringMap&  operator+=( const XStringMap& other)
-    {return add( other);}
-    inline XStringMap&  operator+=( const QVariantMap& other)
-    {return add( other);}
+    XStringMap&  operator+=( const XStringMap& other);
+    XStringMap&  operator+=( const QVariantMap& other);
 
 private:
     void  init();

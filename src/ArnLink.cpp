@@ -374,6 +374,12 @@ QString ArnLink::linkName( Arn::NameF nameF)
 }
 
 
+uint  ArnLink::linkId()  const
+{
+    return _id;
+}
+
+
 ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
         : QObject(0)
 {
@@ -531,6 +537,18 @@ bool  ArnLink::isSaveMode()
     bool  retVal = _isSaveMode;
     if (_isThreaded)  _mutex.unlock();
     return retVal;
+}
+
+
+bool  ArnLink::isProvider()  const
+{
+    return _isProvider;
+}
+
+
+bool  ArnLink::isThreaded()  const
+{
+    return _isThreaded;
 }
 
 

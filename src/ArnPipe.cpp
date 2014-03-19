@@ -78,6 +78,13 @@ void  ArnPipe::setValue( const QByteArray& value)
 }
 
 
+ArnPipe&  ArnPipe::operator=( const QByteArray& value)
+{
+    setValue( value);
+    return *this;
+}
+
+
 void  ArnPipe::setValueOverwrite( const QByteArray& value, const QRegExp& rx)
 {
     if (isOpen()) {

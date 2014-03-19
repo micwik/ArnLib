@@ -45,24 +45,24 @@ Q_OBJECT
 public:
     explicit ArnItemNet( QObject *parent = 0);
     explicit ArnItemNet( const QString& path, QObject *parent = 0);
-    void  setNetId( uint netId)  { _netId = netId;}
-    uint  netId()  const { return _netId;}
+    void  setNetId( uint netId);
+    uint  netId()  const;
     void  addSyncModeString( const QByteArray& smode, bool linkShare);
     QByteArray  getSyncModeString()  const;
     void  setModeString( const QByteArray& mode);
     QByteArray  getModeString()  const;
     void  emitNewItemEvent( QString path, bool isOld = 0);
 
-    void  setDisable( bool disable = true)  { _disable = disable;}
-    bool  isDisable()  const { return _disable;}
-    bool  isMonitor() const;
+    void  setDisable( bool disable = true);
+    bool  isDisable()  const;
+    bool  isMonitor()  const;
     void  setMonitor( bool isMonitor);
 
-    void  setQueueNum( int num)  {_queueNum = num;}
-    int  queueNum()  const {return _queueNum;}
+    void  setQueueNum( int num);
+    int  queueNum()  const;
     void  submitted();
     void  submittedMode();
-    bool  isDirtyMode()  const { return _dirtyMode;}
+    bool  isDirtyMode()  const;
 
     virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  itemCreatedBelow( QString path);

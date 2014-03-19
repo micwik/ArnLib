@@ -60,6 +60,18 @@ ArnItemNet::ArnItemNet( const QString& path, QObject *parent) :
 }
 
 
+void  ArnItemNet::setNetId( uint netId)
+{
+    _netId = netId;
+}
+
+
+uint  ArnItemNet::netId()  const
+{
+    return _netId;
+}
+
+
 void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
 {
     ArnItemB::SyncMode  syncMode;
@@ -115,6 +127,18 @@ void  ArnItemNet::emitNewItemEvent( QString path, bool isOld)
 }
 
 
+void  ArnItemNet::setDisable( bool disable)
+{
+    _disable = disable;
+}
+
+
+bool  ArnItemNet::isDisable()  const
+{
+    return _disable;
+}
+
+
 bool  ArnItemNet::isMonitor() const
 {
     return _isMonitor;
@@ -124,6 +148,18 @@ bool  ArnItemNet::isMonitor() const
 void  ArnItemNet::setMonitor( bool isMonitor)
 {
     _isMonitor = isMonitor;
+}
+
+
+void  ArnItemNet::setQueueNum( int num)
+{
+    _queueNum = num;
+}
+
+
+int  ArnItemNet::queueNum()  const
+{
+    return _queueNum;
 }
 
 
@@ -137,6 +173,12 @@ void  ArnItemNet::submitted()
 void  ArnItemNet::submittedMode()
 {
     _dirtyMode = false;
+}
+
+
+bool  ArnItemNet::isDirtyMode()  const
+{
+    return _dirtyMode;
 }
 
 

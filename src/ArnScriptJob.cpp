@@ -491,6 +491,12 @@ void  ArnScriptJobControl::addConfig( QObject* obj)
 }
 
 
+void  ArnScriptJobControl::setThreaded( bool isThreaded)
+{
+    _isThreaded = isThreaded;
+}
+
+
 /// Not threadsafe, only run in same thread as script
 void  ArnScriptJobControl::doSetupJob( ArnScriptJob* job, ArnScriptJobFactory* jobFactory)
 {

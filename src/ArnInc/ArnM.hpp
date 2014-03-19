@@ -81,7 +81,7 @@ public:
     ArnThreadComCaller();
     ~ArnThreadComCaller();
     void  waitCommandEnd();
-    ArnThreadCom*  p()  {return _p;}
+    ArnThreadCom*  p();
 };
 
 

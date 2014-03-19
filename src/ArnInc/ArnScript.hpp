@@ -199,11 +199,11 @@ class ARNLIBSHARED_EXPORT ArnScript : public QObject
     Q_OBJECT
 public:
     explicit  ArnScript( QObject* parent = 0);
-    QScriptEngine&  engine()  const {return *_engine;}
+    QScriptEngine&  engine()  const;
     bool  evaluate( QByteArray script, QString idName);
     bool  evaluateFile( QString fileName);
     bool  logUncaughtError( QScriptValue& scriptValue);
-    QString  idName()  const {return _idName;}
+    QString  idName()  const;
 
     // To be reimplemented for accessing higher layer info
     virtual ArnClient*  getClient( QString clientId);

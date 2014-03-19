@@ -160,8 +160,8 @@ public:
     void  setAutoConnect( bool isAuto, int retryTime = 2);
 
     //! \cond ADV
-    void  setId( QString id)  {_id = id;}
-    QString  id()  const {return _id;}
+    void  setId( QString id);
+    QString  id()  const;
     int  curPrio()  const;
 
     void  commandGet( const QString& path);

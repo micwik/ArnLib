@@ -406,21 +406,18 @@ protected:
     void  setValue( const QVariant& value, int ignoreSame = Arn::SameValue::DefaultAction);
 
     //// To be reimplemented
-    virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0)
-        {Q_UNUSED(handleData); Q_UNUSED(value);}
-    virtual void  itemCreatedBelow( QString path)
-        {Q_UNUSED(path);}
-    virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode)
-        {Q_UNUSED(path); Q_UNUSED(linkId); Q_UNUSED(mode);}
+    virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemCreatedBelow( QString path);
+    virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode);
 
     //// Methods not to be public
-    void  setForceKeep( bool fk = true)  {_useForceKeep = fk;}
-    bool  isForceKeep()  const {return _useForceKeep;}
+    void  setForceKeep( bool fk = true);
+    bool  isForceKeep()  const;
     Mode  getMode( ArnLink* link)  const;
     void  addSyncMode( SyncMode syncMode, bool linkShare);
-    void  resetOnlyEcho()  {_isOnlyEcho = true;}
-    bool  isOnlyEcho()  const {return _isOnlyEcho;}
-    void  setBlockEcho( bool blockEcho)  {_blockEcho = blockEcho;}
+    void  resetOnlyEcho();
+    bool  isOnlyEcho()  const;
+    void  setBlockEcho( bool blockEcho);
     void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
     void  trfValue( const QByteArray& value, int sendId, bool forceKeep,
                     const ArnLinkHandle& handleData);

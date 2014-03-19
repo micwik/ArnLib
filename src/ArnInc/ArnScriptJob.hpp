@@ -185,7 +185,7 @@ public:
     bool  setConfig( const char* name, const QVariant& value);
     void  addConfig( QObject* obj);
 
-    void  setThreaded( bool isThreaded)  {_isThreaded = isThreaded;}
+    void  setThreaded( bool isThreaded);
     void  doSetupJob( ArnScriptJob* job, ArnScriptJobFactory* jobFactory);
 
 signals:
