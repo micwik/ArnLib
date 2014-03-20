@@ -51,8 +51,9 @@ public:
     //! Standard constructor of a closed handle
     ArnPipe( QObject* parent = 0);
 
-    //! Construction of a handle to a path
-    /*! \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
+    //! Construction of a pipe handle to a _path_
+    /*! The mode for this handle is set to
+     *  \param[in] path The _Arn Data Object_ path e.g. "//Pipes/myPipe/value"
      *  \see open()
      */
     ArnPipe( const QString& path, QObject* parent = 0);

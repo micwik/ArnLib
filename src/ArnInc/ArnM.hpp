@@ -111,12 +111,12 @@ public:
 
     static void  setConsoleError( bool isConsoleError);
 
-    //! Set system default skipping of equal value
+    //! Set system default skipping of equal assignment value
     /*! \param[in] isIgnore If true, assignment of equal value don't give a changed signal.
      */
     static void  setDefaultIgnoreSameValue( bool isIgnore = true);
 
-    /*! \retval true if default skipping equal values
+    /*! \retval true if default skipping equal assignment value
      *  \see setDefaultIgnoreSameValue()
      */
     static bool  defaultIgnoreSameValue();
@@ -225,8 +225,10 @@ public:
      */
     static bool  loadFromFile( const QString& path, const QString& fileName, Arn::Coding coding);
 
-    //! Load from a directory to an _Arn Data Object_ at _path_
-    /*! \param[in] path is the path of the _Arn Data Object_ and also path relative to _dirRoot_
+    //! Load relative a directory root to an _Arn Data Object_ at _path_
+    /*! Example: _path_ = "//Doc/help.txt", _dirRoot_ = "/usr/local", will load file from
+     *  "/usr/local/@/Doc/help.txt" to _Arn_ path at "//Doc/help.txt".
+     *  \param[in] path is the path of the _Arn Data Object_ and also path relative to _dirRoot_
      *  \param[in] dirRoot is the file directory to be used as root for the _path_
      *  \param[in] coding indicates if text or binary mode will be used
      *  \retval true if loading from file is successful

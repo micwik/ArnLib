@@ -125,11 +125,14 @@ signals:
     //! Signal emitted for present and newly created childs in the monitor folder
     /*! The ArnMonitor monitors a folder. Present and newly created objects in this
      *  folder will give this signal.
-     *  For newly created childs, the origin comes from the arnItemCreated() signal,
+     *  For newly created objects, the origin comes from the arnItemCreated() signal,
      *  so only non folder objects will then give this signal.
      *
-     *  Example: monitorPath = "//Sensors/", created object = "//Sensors/Temp1/value"
+     *  Example 1: monitorPath = "//Sensors/", created object = "//Sensors/Temp1/value"
      *  ==> path to child = "//Sensors/Temp1/"
+     *
+     *  Example 2: monitorPath = "//Sensors/", created object = "//Sensors/Temp2/folder/"
+     *  ==> will not give this signal as the created object is a folder.
      *  \param[in] path to the child
      *  \see arnItemCreated()
      */

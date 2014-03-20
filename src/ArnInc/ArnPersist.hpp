@@ -166,9 +166,12 @@ public:
      */
     bool  setMountPoint( const QString& path);
 
-    //! Set the VCS persistent file directory _root_
-    /*! In this directory and below, all VCS persistent files are stored.
+    //! Set the persistent file directory _root_
+    /*! In this directory and below, all persistent files are stored.
      *  The _path_ correspond to the _root_ in Arn.
+     *
+     *  This file directory can optionally be managed by a _version control system_,
+     *  set by using setVcs().
      *
      *  Example: _path_ is set to "/usr/local/arn_persist". There is a file stored at
      *  "/usr/local/arn_persist/@/doc/help.html". This file will be mapped to Arn at
@@ -222,7 +225,7 @@ public slots:
     //! Do a persistent database backup
     /*! By default the backup file will be marked by date and clock. Optionally a
      *  custom name can be set for the backup file.
-     *  \param[in] name is the file name of the backup. QString() is default name.
+     *  \param[in] name is the file name of the backup. QString() gives default name.
      *  \see setArchiveDir()
      */
     bool  doArchive( QString name = QString());
