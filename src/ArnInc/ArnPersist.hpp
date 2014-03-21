@@ -244,7 +244,7 @@ private slots:
 
     void  vcsCheckoutR();
 
-    void  doArnModeChanged( QString path, uint linkId, ArnItem::Mode mode);
+    void  doArnModeChanged( QString path, uint linkId, Arn::ObjectMode mode);
     void  doArnUpdate();
     void  doArnDestroy();
     void  destroyRpc();

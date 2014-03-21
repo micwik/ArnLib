@@ -48,6 +48,7 @@ namespace Arn {
     extern const QString  pathDiscoverThis;
     extern const QString  pathDiscoverConnect;
 
+//! Action when assigning same value to an ArnItem
 struct SameValue {
     enum E {
         //! Assigning same value generates an update of the _Arn Data Object_
@@ -60,6 +61,7 @@ struct SameValue {
     MQ_DECLARE_ENUM( SameValue)
 };
 
+//! Data type of an _Arn Data Object_
 struct DataType {
     enum E {
         Null       = 0,
@@ -73,6 +75,35 @@ struct DataType {
     MQ_DECLARE_ENUM( DataType)
 };
 
+//! General global mode of an _Arn Data Object_
+struct ObjectMode {
+    enum E {
+        //! A two way object, typically for validation or pipe
+        BiDir = 0x01,
+        //! Implies _BiDir_ and all data is preserved as a stream
+        Pipe  = 0x02,
+        //! Data is persistent and will be saved
+        Save  = 0x04
+    };
+    MQ_DECLARE_FLAGS( ObjectMode)
+};
+
+//! The client session sync mode of an _Arn Data Object_
+struct ObjectSyncMode {  // This mode is sent with sync-command
+    enum E {
+        //! default
+        Normal      = 0x000,
+        //! Monitor of server object for client
+        Monitor     = 0x001,
+        //! The client is default generator of data
+        Master      = 0x100,
+        //! Destroy this _Arn Data Object_ when client (tcp/ip) closes
+        AutoDestroy = 0x200
+    };
+    MQ_DECLARE_FLAGS( ObjectSyncMode)
+};
+
+//! Link flags when accessing an _Arn Data Object_
 struct LinkFlags {
     enum E {
         Folder        = 0x01,
@@ -245,6 +276,8 @@ QString  convertBaseName( const QString& name, Arn::NameF nameF);
 }  // Arn::
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::LinkFlags)
+MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::ObjectMode)
+MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::ObjectSyncMode)
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::NameF)
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::Coding)
 

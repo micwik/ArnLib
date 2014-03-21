@@ -149,21 +149,21 @@ public:
      *  \see getMode()
      *  \see \ref gen_arnobjModes
      */
-    void  addMode( Mode mode)
+    void  addMode( Arn::ObjectMode mode)
     {return ArnItemB::addMode( mode);}
 
     /*! \return The _general mode_ of the _Arn Data Object_
      *  \see addMode()
      *  \see \ref gen_arnobjModes
      */
-    Mode  getMode()  const
+    Arn::ObjectMode  getMode()  const
     {return ArnItemB::getMode();}
 
     /*! \return The client session _sync mode_ of an _Arn Data Object_
      *  \see addSyncMode()
      *  \see \ref gen_arnobjModes
      */
-    SyncMode  syncMode()  const
+    Arn::ObjectSyncMode  syncMode()  const
     {return ArnItemB::syncMode();}
 
     //! Mark this ArnItem as a template
@@ -434,7 +434,7 @@ signals:
      *  \param[in] mode is the new _general mode_
      *  \see \ref gen_arnobjModes
      */
-    void  modeChanged( ArnItem::Mode mode);
+    void  modeChanged( Arn::ObjectMode mode);
 
     //! Signal emitted when an _Arn Data Object_ is created in the tree below.
     /*! The ArnItem is a folder. Created objects in this folder or its children
@@ -453,14 +453,14 @@ signals:
      *  \see linkId()
      *  \see \ref gen_arnobjModes
      */
-    void  arnModeChanged( QString path, uint linkId, ArnItem::Mode mode);
+    void  arnModeChanged( QString path, uint linkId, Arn::ObjectMode mode);
 
     //! \cond ADV
 protected:
     virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  modeUpdate( bool isSetup = false);
     virtual void  itemCreatedBelow( QString path);
-    virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode);
+    virtual void  itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode);
     //! \endcond
 
 private slots:

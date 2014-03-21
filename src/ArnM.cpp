@@ -407,12 +407,12 @@ void  ArnM::linkProxy( ArnThreadCom* threadCom, const QString& path, int flagVal
 
     if (Arn::debugThreading)  qDebug() << "linkProxy: path=" << path;
     threadCom->_retObj = linkMain( path, Arn::LinkFlags::fromInt( flagValue),
-                                    ArnItem::SyncMode::F( syncMode));
+                                   Arn::ObjectSyncMode::fromInt( syncMode));
     if (Arn::debugThreading)  qDebug() << "linkProxy: waking thread";
 }
 
 
-ArnLink*  ArnM::link( const QString& path, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
+ArnLink*  ArnM::link( const QString& path, Arn::LinkFlags flags, Arn::ObjectSyncMode syncMode)
 {
     if (isMainThread())  return linkMain(   path, flags, syncMode);
     else                 return linkThread( path, flags, syncMode);
@@ -420,7 +420,7 @@ ArnLink*  ArnM::link( const QString& path, Arn::LinkFlags flags, ArnItem::SyncMo
 
 
 /// Threaded - must be threadsafe
-ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
+ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, Arn::ObjectSyncMode syncMode)
 {
     flags.set( flags.Threaded);
 
@@ -433,7 +433,7 @@ ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, ArnItem::
                                Qt::QueuedConnection,
                                Q_ARG( ArnThreadCom*, threadCom.p()),
                                Q_ARG( QString, path), Q_ARG( int, flags.toInt()),
-                               Q_ARG( int, syncMode.f));
+                               Q_ARG( int, syncMode.toInt()));
     threadCom.waitCommandEnd();  // Wait main-thread gives retLink
     ArnLink*  retLink = qobject_cast<ArnLink*>( threadCom.p()->_retObj);
     if (retLink)  if (Arn::debugThreading)  qDebug() << "link-thread: end path=" << retLink->linkPath();
@@ -442,12 +442,12 @@ ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, ArnItem::
 }
 
 
-ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
+ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, Arn::ObjectSyncMode syncMode)
 {
     // qDebug() << "### link-main: path=" << path;
     QString  pathNorm = Arn::fullPath( path);
     if (pathNorm.endsWith("/")) {
-        flags.f |= flags.Folder;
+        flags.set( flags.Folder);
         pathNorm.resize( pathNorm.size() - 1);  // Remove '/' at end  (Also root become "")
     }
 
@@ -473,7 +473,8 @@ ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, ArnItem::Sy
 }
 
 
-ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags flags, ArnItem::SyncMode syncMode)
+ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags flags,
+                          Arn::ObjectSyncMode syncMode)
 {
     if (!parent) {  // No parent (folder) error
         if (!flags.is( flags.SilentError)) {
@@ -501,12 +502,12 @@ ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags f
         addTwinMain( child, syncMode, flags);
     }
 
-    child->setupEnd( syncMode.f);
+    child->setupEnd( syncMode);
     return child;
 }
 
 
-ArnLink*  ArnM::addTwin( ArnLink* link, ArnItem::SyncMode syncMode, Arn::LinkFlags flags)
+ArnLink*  ArnM::addTwin( ArnLink* link, Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags)
 {
     if (!link)  return 0;
 
@@ -528,7 +529,7 @@ ArnLink*  ArnM::addTwin( ArnLink* link, ArnItem::SyncMode syncMode, Arn::LinkFla
 }
 
 
-ArnLink*  ArnM::addTwinMain( ArnLink* link, ArnItem::SyncMode syncMode, Arn::LinkFlags flags)
+ArnLink*  ArnM::addTwinMain( ArnLink* link, Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags)
 {
     if (!link) {
         return 0;
@@ -545,7 +546,7 @@ ArnLink*  ArnM::addTwinMain( ArnLink* link, ArnItem::SyncMode syncMode, Arn::Lin
             twinLink->_twin = link;
             link->_twin = twinLink;
             if (link->isThreaded())  link->_mutex.unlock();
-            twinLink->setupEnd( syncMode.f);
+            twinLink->setupEnd( syncMode);
             emit link->modeChanged( link->linkPath(), link->linkId());   // This is now Bidirectional mode
         }
     }

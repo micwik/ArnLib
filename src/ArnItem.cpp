@@ -107,7 +107,7 @@ void  ArnItem::itemCreatedBelow( QString path)
 }
 
 
-void  ArnItem::itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode)
+void  ArnItem::itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode)
 {
     emit arnModeChanged( path, linkId, mode);
 }

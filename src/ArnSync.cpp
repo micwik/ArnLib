@@ -109,7 +109,7 @@ void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
 
 
 /// Client ...
-ArnItemNet*  ArnSync::newNetItem( const QString& path, ArnItem::SyncMode syncMode, bool* isNewPtr)
+ArnItemNet*  ArnSync::newNetItem( const QString& path, Arn::ObjectSyncMode syncMode, bool* isNewPtr)
 {
     ArnItemNet*  itemNet = new ArnItemNet( this);
     if (!itemNet->open( path))  return 0;
@@ -249,7 +249,7 @@ uint  ArnSync::doCommandSync()
     setupItemNet( itemNet, netId);
     itemNet->addSyncModeString( smode, false);  // SyncMode is only for the item (session), not the link
 
-    ArnItemB::SyncMode  syncMode = itemNet->syncMode();
+    Arn::ObjectSyncMode  syncMode = itemNet->syncMode();
     if (syncMode.is( syncMode.Monitor)) {
         setupMonitorItem( itemNet);
     }
@@ -341,7 +341,7 @@ uint  ArnSync::doCommandFlux()
     }
 
     bool  isIgnoreSame = isOnlyEcho;
-    if (!isOnlyEcho || !itemNet->getMode().is( ArnItem::Mode::Pipe))  // Echo to Pipe is ignored
+    if (!isOnlyEcho || !itemNet->getMode().is( Arn::ObjectMode::Pipe))  // Echo to Pipe is ignored
         itemNet->arnImport( data, isIgnoreSame, handleData);
     return ArnError::Ok;
 }
@@ -437,7 +437,7 @@ void  ArnSync::connected()
         }
         if ((itemNet->type() != Arn::DataType::Null)            // Only send non Null Value ...
         && (!itemNet->isPipeMode())                                      // from non pipe ..
-        && (itemNet->syncMode().is( ArnItem::SyncMode::Master))) {  // which is master
+        && (itemNet->syncMode().is( Arn::ObjectSyncMode::Master))) {  // which is master
             itemNet->itemUpdate( ArnLinkHandle());  // Make client send the current value to server
         }
     }
@@ -456,7 +456,7 @@ void  ArnSync::disConnected()
         // Make a list of netId to AutoDestroy
         QList<uint>  destroyList;
         foreach (ArnItemNet* itemNet, _itemNetMap) {
-            if (itemNet->syncMode().is( ArnItem::SyncMode::AutoDestroy)) {
+            if (itemNet->syncMode().is( Arn::ObjectSyncMode::AutoDestroy)) {
                 destroyList += itemNet->netId();
                 // qDebug() << "Server-disconnect: destroyList path=" << itemNet->path();
             }
@@ -519,7 +519,7 @@ void  ArnSync::doArnEvent( QByteArray type, QByteArray data, bool isLocal)
     if (type == "monitorStart") {
         if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: monitorStart Event";
 
-        ArnItem::SyncMode  syncMode = itemNet->syncMode();
+        Arn::ObjectSyncMode  syncMode = itemNet->syncMode();
         if (isLocal && _isClientSide) {  // Client Side
             itemNet->addSyncMode( syncMode.Monitor, true);  // Will demand monitor if resynced (server restart)
         }

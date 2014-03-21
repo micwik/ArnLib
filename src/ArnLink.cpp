@@ -417,7 +417,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
 }
 
 
-void  ArnLink::setupEnd( int syncMode)
+void  ArnLink::setupEnd( Arn::ObjectSyncMode syncMode)
 {
     if (!_hasBeenSetup) {
         _hasBeenSetup = true;
@@ -462,20 +462,20 @@ bool ArnLink::isFolder( void)
 }
 
 
-void  ArnLink::addSyncMode( int syncMode)
+void  ArnLink::addSyncMode( Arn::ObjectSyncMode syncMode)
 {
     if (_isThreaded)  _mutex.lock();
-    _syncMode |= syncMode;
+    _syncMode |= syncMode.toInt();
     if (_isThreaded)  _mutex.unlock();
 }
 
 
-int   ArnLink::syncMode()
+Arn::ObjectSyncMode  ArnLink::syncMode()
 {
     if (_isThreaded)  _mutex.lock();
     int  retVal = _syncMode;
     if (_isThreaded)  _mutex.unlock();
-    return retVal;
+    return Arn::ObjectSyncMode::fromInt( retVal);
 }
 
 

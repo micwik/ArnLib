@@ -170,7 +170,8 @@ public:
     void  commandVersion();
     void  commandExit();
     ArnItemNet*  newNetItem( QString path,
-                             ArnItem::SyncMode syncMode = ArnItem::SyncMode::Normal, bool* isNewPtr = 0);
+                             Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
+                             bool* isNewPtr = 0);
     //! \endcond
 
 

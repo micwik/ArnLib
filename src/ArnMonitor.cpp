@@ -68,9 +68,8 @@ void  ArnMonitor::setMonitorPath( QString path, ArnClient *client)
     if (_arnClient) {
         // No recursion due to no emit of arnItemCreated as this is a folder
         // ItemNet is not threadsafe, only use in connect etc
-        //_itemNet = _arnClient->newNetItem( _monitorPath, ArnItem::SyncMode::Monitor);
         bool isNew;
-        _itemNet = _arnClient->newNetItem( _monitorPath, ArnItem::SyncMode::Normal, &isNew);
+        _itemNet = _arnClient->newNetItem( _monitorPath, Arn::ObjectSyncMode::Normal, &isNew);
         if (!_itemNet)  return;
 
         connect( _itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,bool)),

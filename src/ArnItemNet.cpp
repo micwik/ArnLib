@@ -74,7 +74,7 @@ uint  ArnItemNet::netId()  const
 
 void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
 {
-    ArnItemB::SyncMode  syncMode;
+    Arn::ObjectSyncMode  syncMode;
 
     syncMode.set( syncMode.Master,      smode.contains("master"));
     syncMode.set( syncMode.AutoDestroy, smode.contains("autodestroy"));
@@ -87,7 +87,7 @@ void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
 QByteArray  ArnItemNet::getSyncModeString()  const
 {
     QByteArray  smode;
-    SyncMode  syncMode = ArnItemB::syncMode();
+    Arn::ObjectSyncMode  syncMode = Arn::ObjectSyncMode();
 
     if (syncMode.is( syncMode.Master))       smode += "master ";
     if (syncMode.is( syncMode.AutoDestroy))  smode += "autodestroy ";
@@ -99,7 +99,7 @@ QByteArray  ArnItemNet::getSyncModeString()  const
 
 void  ArnItemNet::setModeString( const QByteArray& modeString)
 {
-    Mode  mode;
+    Arn::ObjectMode  mode;
     if (modeString.contains('P'))  mode.set( mode.Pipe);
     if (modeString.contains('V'))  mode.set( mode.BiDir);  // Legacy
     if (modeString.contains('B'))  mode.set( mode.BiDir);
@@ -111,7 +111,7 @@ void  ArnItemNet::setModeString( const QByteArray& modeString)
 
 QByteArray  ArnItemNet::getModeString()  const
 {
-    Mode  mode = getMode();
+    Arn::ObjectMode  mode = getMode();
     QByteArray  modeString;
     if (mode.is( mode.Pipe))   modeString += "P";
     if (mode.is( mode.BiDir))  modeString += "B";

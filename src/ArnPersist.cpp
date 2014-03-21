@@ -245,7 +245,7 @@ ArnItemPersist*  ArnPersist::setupMandatory( QString path, bool isMandatory)
         item->setMandatory(true);
         if ((item->storeType() == st.DataBase) && !_pathPersistMap.contains( path)) {
             _pathPersistMap.insert( path, item->linkId());
-            item->addMode( ArnItem::Mode::Save);
+            item->addMode( Arn::ObjectMode::Save);
         }
     }
     else {
@@ -257,7 +257,7 @@ ArnItemPersist*  ArnPersist::setupMandatory( QString path, bool isMandatory)
         item->setMandatory(false);
         if (item->storeType() != st.File) {  // Not persist file
             _pathPersistMap.remove( path);  // Map only needed for mandatory & file
-            if (!item->getMode().is( ArnItem::Mode::Save)) {
+            if (!item->getMode().is( Arn::ObjectMode::Save)) {
                 _itemPersistMap.remove( linkId);
                 delete item;
             }
@@ -294,7 +294,7 @@ void  ArnPersist::doArnDestroy()
 }
 
 
-void  ArnPersist::doArnModeChanged( QString path, uint linkId, ArnItem::Mode mode)
+void  ArnPersist::doArnModeChanged( QString path, uint linkId, Arn::ObjectMode mode)
 {
     // qDebug() << "Persist modeChanged: path=" << path << " mode=" << mode.f;
     if (!mode.is( mode.Save))  return;  // Not save-mode
@@ -376,8 +376,8 @@ bool  ArnPersist::setMountPoint( const QString& path)
     _arnMountPoint = new ArnItem( this);
     bool  isOk = _arnMountPoint->openFolder( path);
     if (isOk) {
-        connect( _arnMountPoint, SIGNAL(arnModeChanged(QString,uint,ArnItem::Mode)),
-                 this, SLOT(doArnModeChanged(QString,uint,ArnItem::Mode)));
+        connect( _arnMountPoint, SIGNAL(arnModeChanged(QString,uint,Arn::ObjectMode)),
+                 this, SLOT(doArnModeChanged(QString,uint,Arn::ObjectMode)));
 
         // Load all persist files & mandatory into arn
         doLoadFiles();

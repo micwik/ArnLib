@@ -73,8 +73,8 @@ public:
     uint  linkId()  const;
     bool  isFolder();
 
-    void  addSyncMode( int syncMode);
-    int   syncMode();
+    void  addSyncMode( Arn::ObjectSyncMode syncMode);
+    Arn::ObjectSyncMode  syncMode();
     bool  isBiDirMode();
     void  setPipeMode( bool isPipeMode, bool alsoSetTwin = true);
     bool  isPipeMode();
@@ -105,7 +105,7 @@ signals:
 
 protected:
     ArnLink( ArnLink* parent, const QString& name, Arn::LinkFlags flags);
-    void  setupEnd( int syncMode);
+    void  setupEnd( Arn::ObjectSyncMode syncMode);
     ArnLink*  findLink(const QString& name);
     void  ref();
     int  refCount();

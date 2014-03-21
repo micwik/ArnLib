@@ -236,8 +236,8 @@ void  ArnDiscoverConnector::postSetupClient()
         ArnItem*  hostPort = new ArnItem( path + "Port/value", _directHosts);
         *hostAddr = host.addr;  // Default addr
         *hostPort = host.port;  // Default port
-        hostAddr->addMode( ArnItem::Mode::Save);  // Save mode after default set, will not save default value
-        hostPort->addMode( ArnItem::Mode::Save);
+        hostAddr->addMode( Arn::ObjectMode::Save);  // Save mode after default set, will not save default value
+        hostPort->addMode( Arn::ObjectMode::Save);
         connect( hostAddr, SIGNAL(changed()), this, SLOT(doClientDirHostChanged()));
         connect( hostPort, SIGNAL(changed()), this, SLOT(doClientDirHostChanged()));
         ++i;
@@ -306,7 +306,7 @@ void  ArnDiscoverConnector::postSetupResolver()
                     .arg(Err::UDnsFail));
 
     *_arnDisHostServicePv = _resolver->defaultService(); // Use this default if no active persistent service
-    _arnDisHostService->addMode( ArnItem::Mode::Save);   // Save mode after default set, will not save default value
+    _arnDisHostService->addMode( Arn::ObjectMode::Save); // Save mode after default set, will not save default value
     if (_service.isEmpty())                              // Non empty _service is always used
         _service = _arnDisHostService->toString();       // Otherwise persistent/deafult value will be used as request
     *_arnDisHostService = _service;

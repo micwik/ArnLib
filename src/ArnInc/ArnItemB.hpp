@@ -67,32 +67,6 @@ class ARNLIBSHARED_EXPORT ArnItemB : public QObject
     Q_OBJECT
 
 public:
-    //! General global mode of an _Arn Data Object_
-    struct Mode{
-        enum E {
-            //! A two way object, typically for validation or pipe
-            BiDir = 0x01,
-            //! Implies _BiDir_ and all data is preserved as a stream
-            Pipe  = 0x02,
-            //! Data is persistent and will be saved
-            Save  = 0x04
-        };
-        MQ_DECLARE_FLAGS( Mode)
-    };
-    //! The client session sync mode of an _Arn Data Object_
-    struct SyncMode{     // This mode is sent with sync-command
-        enum E {
-            //! default
-            Normal      = 0x000,
-            //! Monitor of server object for client
-            Monitor     = 0x001,
-            //! The client is default generator of data
-            Master      = 0x100,
-            //! Destroy this _Arn Data Object_ when client (tcp/ip) closes
-            AutoDestroy = 0x200
-        };
-        MQ_DECLARE_FLAGS( SyncMode)
-    };
     //! Code used in blob for arnExport() and arnImport()
     struct ExportCode {
         enum E {
@@ -241,19 +215,19 @@ protected:
      *  \see getMode()
      *  \see \ref gen_arnobjModes
      */
-    void  addMode( Mode mode);
+    void  addMode( Arn::ObjectMode mode);
 
     /*! \return The _general mode_ of the _Arn Data Object_
      *  \see addMode()
      *  \see \ref gen_arnobjModes
      */
-    Mode  getMode()  const;
+    Arn::ObjectMode  getMode()  const;
 
     /*! \return The client session _sync mode_ of an _Arn Data Object_
      *  \see addSyncMode()
      *  \see \ref gen_arnobjModes
      */
-    SyncMode  syncMode()  const;
+    Arn::ObjectSyncMode  syncMode()  const;
 
     //! Set _general mode_ as Bidirectional for this _Arn Data Object_
     /*! A two way object, typically for validation or pipe
@@ -408,13 +382,13 @@ protected:
     //// To be reimplemented
     virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  itemCreatedBelow( QString path);
-    virtual void  itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode);
+    virtual void  itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode);
 
     //// Methods not to be public
     void  setForceKeep( bool fk = true);
     bool  isForceKeep()  const;
-    Mode  getMode( ArnLink* link)  const;
-    void  addSyncMode( SyncMode syncMode, bool linkShare);
+    Arn::ObjectMode  getMode( ArnLink* link)  const;
+    void  addSyncMode( Arn::ObjectSyncMode syncMode, bool linkShare);
     void  resetOnlyEcho();
     bool  isOnlyEcho()  const;
     void  setBlockEcho( bool blockEcho);
@@ -442,8 +416,8 @@ private:
     static QAtomicInt  _idCount;
 
     ArnLink*  _link;
-    SyncMode  _syncMode;
-    Mode  _mode;
+    Arn::ObjectSyncMode  _syncMode;
+    Arn::ObjectMode  _mode;
     bool  _syncModeLinkShare;
     bool  _useForceKeep;
     bool  _blockEcho;
@@ -452,8 +426,5 @@ private:
     uint  _id;
     void*  _reference;
 };
-
-MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnItemB::Mode)
-MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnItemB::SyncMode)
 
 #endif // ARNITEMB_HPP

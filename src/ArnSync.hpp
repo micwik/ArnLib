@@ -56,7 +56,8 @@ public:
     ArnSync( QTcpSocket* socket, bool clientSide = 0, QObject *parent = 0);
     ~ArnSync();
     ArnItemNet*  newNetItem( const QString& path,
-                             ArnItem::SyncMode syncMode = ArnItem::SyncMode::Normal, bool* isNewPtr = 0);
+                             Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
+                             bool* isNewPtr = 0);
     void  sendXSMap( const Arn::XStringMap& xsMap);
     void  send( const QByteArray& xString);
 

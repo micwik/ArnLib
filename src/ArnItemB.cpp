@@ -53,8 +53,8 @@ void  ArnItemB::init()
     _ignoreSameValue = ArnM::defaultIgnoreSameValue();
     _isOnlyEcho      = true;  // Nothing else yet ...
 
-    _syncMode = SyncMode();
-    _mode     = Mode();
+    _syncMode = Arn::ObjectSyncMode();
+    _mode     = Arn::ObjectMode();
     _syncModeLinkShare = true;
 }
 
@@ -91,7 +91,7 @@ void  ArnItemB::setupOpenItem( bool isFolder)
 
 bool  ArnItemB::open( const QString& path)
 {
-    SyncMode  syncMode = _syncModeLinkShare ? _syncMode : SyncMode();
+    Arn::ObjectSyncMode  syncMode = _syncModeLinkShare ? _syncMode : Arn::ObjectSyncMode();
     _link = ArnM::link( path,  Arn::LinkFlags::CreateAllowed, syncMode);
     if (!_link)  return false;
 
@@ -135,8 +135,8 @@ void  ArnItemB::close()
 
     _link->deref();
     _link     = 0;
-    _syncMode = SyncMode();
-    _mode     = Mode();
+    _syncMode = Arn::ObjectSyncMode();
+    _mode     = Arn::ObjectMode();
 }
 
 
@@ -194,12 +194,12 @@ void  ArnItemB::modeUpdate( bool isSetup)
 }
 
 
-void  ArnItemB::addSyncMode( SyncMode syncMode, bool linkShare)
+void  ArnItemB::addSyncMode( Arn::ObjectSyncMode syncMode, bool linkShare)
 {
     _syncModeLinkShare = linkShare;
     _syncMode.f |= syncMode.f;
     if (_syncModeLinkShare  &&  _link) {
-        _link->addSyncMode( _syncMode.f);
+        _link->addSyncMode( _syncMode);
     }
 }
 
@@ -222,10 +222,10 @@ void  ArnItemB::setBlockEcho( bool blockEcho)
 }
 
 
-ArnItemB::SyncMode  ArnItemB::syncMode()  const
+Arn::ObjectSyncMode  ArnItemB::syncMode()  const
 {
     if (_syncModeLinkShare  &&  _link) {
-        return ArnItemB::SyncMode::fromInt( _link->syncMode());
+        return Arn::ObjectSyncMode::fromInt( _link->syncMode());
     }
     return _syncMode;
 }
@@ -233,7 +233,7 @@ ArnItemB::SyncMode  ArnItemB::syncMode()  const
 
 ArnItemB&  ArnItemB::setBiDirMode()
 {
-    _mode.f |= _mode.BiDir;
+    _mode.set( _mode.BiDir);
     if (!_link)  return *this;
 
     if (_link->isBiDirMode())  return *this;  // Already is bidirectional mode
@@ -256,7 +256,7 @@ bool  ArnItemB::isBiDirMode()  const
 
 ArnItemB&  ArnItemB::setPipeMode()
 {
-    _mode.f |= _mode.Pipe | _mode.BiDir;
+    _mode.set( _mode.Pipe).set( _mode.BiDir);
     if (!_link)  return *this;
 
     if (_link->isPipeMode())  return *this;  // Already is pipe mode
@@ -281,7 +281,7 @@ bool  ArnItemB::isPipeMode()  const
 
 ArnItemB&  ArnItemB::setSaveMode()
 {
-    _mode.f |= _mode.Save;
+    _mode.set( _mode.Save);
     if (!_link)  return *this;
 
     _link->setSaveMode( true);
@@ -303,14 +303,14 @@ ArnItemB&  ArnItemB::setMaster()
         ArnM::errorLog( QString(tr("Setting item/link as master")),
                             ArnError::AlreadyOpen);
     }
-    addSyncMode( SyncMode::Master, true);
+    addSyncMode( Arn::ObjectSyncMode::Master, true);
     return *this;
 }
 
 
 bool  ArnItemB::isMaster()  const
 {
-    return syncMode().is( SyncMode::Master);
+    return syncMode().is( Arn::ObjectSyncMode::Master);
 }
 
 
@@ -320,18 +320,18 @@ ArnItemB&  ArnItemB::setAutoDestroy()
         ArnM::errorLog( QString(tr("Setting item/link to autoDestroy")),
                             ArnError::AlreadyOpen);
     }
-    addSyncMode( SyncMode::AutoDestroy, true);
+    addSyncMode( Arn::ObjectSyncMode::AutoDestroy, true);
     return *this;
 }
 
 
 bool  ArnItemB::isAutoDestroy()  const
 {
-    return syncMode().is( SyncMode::AutoDestroy);
+    return syncMode().is( Arn::ObjectSyncMode::AutoDestroy);
 }
 
 
-void  ArnItemB::addMode( Mode mode)
+void  ArnItemB::addMode( Arn::ObjectMode mode)
 {
     _mode.f |= mode.f;  // Just in case, transfer all modes
 
@@ -347,21 +347,21 @@ void  ArnItemB::addMode( Mode mode)
 }
 
 
-ArnItemB::Mode  ArnItemB::getMode()  const
+Arn::ObjectMode  ArnItemB::getMode()  const
 {
     return getMode( _link);
 }
 
 
 /// Use with care, link must be "referenced" before use, otherwise it might have been deleted
-ArnItemB::Mode  ArnItemB::getMode( ArnLink* link)  const
+Arn::ObjectMode  ArnItemB::getMode( ArnLink* link)  const
 {
     if (!link)  return _mode;
 
-    Mode  mode;
-    if (link->isPipeMode())   mode.f |= mode.Pipe;
-    if (link->isBiDirMode())  mode.f |= mode.BiDir;
-    if (link->isSaveMode())   mode.f |= mode.Save;
+    Arn::ObjectMode  mode;
+    if (link->isPipeMode())   mode.set( mode.Pipe);
+    if (link->isBiDirMode())  mode.set( mode.BiDir);
+    if (link->isSaveMode())   mode.set( mode.Save);
 
     return mode;
 }
@@ -787,7 +787,7 @@ void  ArnItemB::itemCreatedBelow( QString path)
 }
 
 
-void  ArnItemB::itemModeChangedBelow( QString path, uint linkId, ArnItemB::Mode mode)
+void  ArnItemB::itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode)
 {
     Q_UNUSED(path);
     Q_UNUSED(linkId);

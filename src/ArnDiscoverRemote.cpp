@@ -124,7 +124,7 @@ void  ArnDiscoverRemote::postSetupThis()
     connect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
     QString  servicePath = Arn::pathDiscoverThis + "Service/value";
     _arnServicePv.open( Arn::twinPath( servicePath));
-    _arnService.addMode( ArnItem::Mode::Save);
+    _arnService.addMode( Arn::ObjectMode::Save);
     _arnService.open( servicePath);
     // Any loaded persistent service name has now been sent to firstServiceSetup()
 
