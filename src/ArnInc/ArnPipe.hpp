@@ -38,7 +38,7 @@
 
 //! ArnItem specialized as a pipe.
 /*!
-[About Arn Data Object](\ref gen_arnobj)
+[About Pipes](\ref gen_pipeArnobj)
 
 This class is not thread-safe, but the _Arn Data object_ is, so each thread should
 have it's own handles i.e ArnItem instances.
@@ -52,7 +52,7 @@ public:
     ArnPipe( QObject* parent = 0);
 
     //! Construction of a pipe handle to a _path_
-    /*! The mode for this handle is set to
+    /*! The mode for this handle is set to Arn::ObjectMode::Pipe.
      *  \param[in] path The _Arn Data Object_ path e.g. "//Pipes/myPipe/value"
      *  \see open()
      */
@@ -95,34 +95,71 @@ public:
     bool  isAutoDestroy()  const
     {return ArnItemB::isAutoDestroy();}
 
-    //! Assign a _QByteArray_ to a _Pipe_.
+    //! Assign a _QByteArray_ to a _Pipe_
     /*! \param[in] value to be assigned
      */
     void  setValue( const QByteArray& value);
 
     ArnPipe&  operator=( const QByteArray& value);
 
-    //! Assign a _QByteArray_ to a _Pipe_ by overwrite Regexp match in sendqueue
+    //! Assign a _QByteArray_ to a _Pipe_ by using _Anti congest_ logic
     /*! This is used to limit the filling of sendqueue with recuring messages during
-     *  some kind of disconnection. Matched message in sendqueue is instead overwritten
-     *  by the new message (value).
+     *  some kind of client disconnection. Matched message in sendqueue is overwritten
+     *  by the new message _value_. Unmatched message is added to send queue as usual.
+     *
+     *  Example:
+     *  > // Messages starts with a function name  <Br>
+     *  > // We want message with equal function name to overwrite   <Br>
+     *  > QRegExp rx("^" + funcName + "\\b");      <Br>
+     *  > _pipe->setValueOverwrite( message, rx);  <Br>
      *  \param[in] value to be assigned
      *  \param[in] rx is regexp to be matched with items in send queue.
+     *  \see \ref gen_pipeAntiCongest
      */
     void  setValueOverwrite( const QByteArray& value, const QRegExp& rx);
 
+    //! Returns true if sending sequence numbers
+    /*! \retval true if sending sequence numbers
+     *  \see setUseSendSeq()
+     */
     bool  useSendSeq()  const;
+
+    //! Change usage of sending sequence numbers
+    /*! \param[in] useSendSeq is true for activation
+     *  \see useSendSeq()
+     *  \see setUseCheckSeq()
+     *  \see outOfSequence()
+     *  \see \ref gen_pipeSeqCheck
+     */
     void  setUseSendSeq( bool useSendSeq);
+
+    //! Returns true if checking received sequence numbers
+    /*! \retval true if checking received sequence numbers
+     *  \see setUseCheckSeq()
+     */
     bool  useCheckSeq()  const;
+
+    //! Change usage of checking received sequence numbers
+    /*! \param[in] useSendSeq is true for activation
+     *  \see useCheckSeq()
+     *  \see setUseSendSeq()
+     *  \see outOfSequence()
+     *  \see \ref gen_pipeSeqCheck
+     */
     void  setUseCheckSeq( bool useCheckSeq);
 
 signals:
-    //! Signal emitted when _Pipe_ _Arn Data Object_ is changed.
-    /*!
-     *
+    //! Signal emitted when _Pipe_ has received data
+    /*! This is implied by the _Arn Data Object_ is changed.
+     *  \param[in] value is the received bytes
      */
     void  changed( QByteArray value);
 
+    //! Signal emitted when the received sequence numbers are "out of sequence"
+    /*! \see setUseCheckSeq()
+     *  \see setUseSendSeq()
+     *  \see \ref gen_pipeSeqCheck
+     */
     void  outOfSequence();
 
     //! \cond ADV

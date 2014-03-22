@@ -98,10 +98,57 @@ This way the result will end up in the normal "official" part.
 This functionality can typically be used for data validation and limiting.
 <Br><Br>
 
-### Pipes ###    {#gen_pipeArnobj}
-_Pipes_ also use the [bidirectional](#gen_bidirArnobj) functionality. The two (twin) parts are then named _requester_ and _provider_.
 
-All data put into a pipe are part of a stream and as such will be fully transfered (syncronized) if they are [shared](#gen_shareArnobj) with a server and other clients.
+Pipe Arn Data Objects    {#gen_pipeArnobj}
+---------------------
+_Pipes_ also use the [bidirectional](#gen_bidirArnobj) functionality. The two (twin) parts
+are then named _requester_ and _provider_.
+
+All data put into a pipe are part of a stream and as such will be fully transfered
+(syncronized) if they are [shared](#gen_shareArnobj) with a server and other clients.
+
+ArnPipe is a specialized class for handling pipes. <Br>
+It contains logic for handling [sequence check](#gen_pipeSeqCheck) and
+[anti congest](#gen_pipeAntiCongest).
+<Br><Br>
+
+### Pipe sequence check ###    {#gen_pipeSeqCheck}
+Sequence check is used to make sure everything is received and nothing is lost or comes twice.
+This can happen when a tcp/ip connection goes up and down.
+
+The sequence check uses a hidden sequence number not visible in the pipe stream.
+The sequence number is increased for each assignment to the pipe. The sending and checking of
+this sequence number is activated at each end of the pipe.
+
+When checking is activated and the received sequence number is unexpected, a signal will be
+generated.
+
+See also ArnPipe::setUseSendSeq(), ArnPipe::setUseCheckSeq(), ArnPipe::outOfSequence().
+<Br><Br>
+
+### Pipe anti congest ###    {#gen_pipeAntiCongest}
+When the pipe is a [shared oject](#gen_shareArnobj), all assignment to the pipe is queued up
+in a send queue. If there is a disconnect in the tcp/ip, an ArnServer will drop the send queue.
+But in an ArnClient, this send queue will grow out of control if assignments to the pipe keeps
+coming. This problem can also arise with a fast rate of status messages on a slow network.
+
+One possibility is to keep track of the connection status, but this involves knowing about
+which ArnClient (if many) to get status from. It also doesn't handle the problem with a slow
+network.
+
+A probably better way is to use the _Pipe anti congest_ logic. <Br>
+We identify _messages_ that can be sent any number of times and are used to check the data flow,
+resending, status and alike. Typically this can be _Heart beat_, _ping_, _request update_,
+_current time_ etc.
+These _async messages_ are assigned using ArnPipe::setValueOverwrite().
+
+A regular expression is needed to identify "equal" _async messages_, that can be overwritten
+in the send queue. If _async messages_ are repeatedly assigned to a pipe by
+ArnPipe::setValueOverwrite(), the send queue will then not grow.
+
+All other _messages_ will be normally assigned to the pipe. But these _messages_ will only be
+assigned when normal data flow is present. Typically there is some expected _feedback message_
+from the receiving part to block uncontrolled assignment from one side of the pipe.
 <Br><Br>
 
 
@@ -113,8 +160,8 @@ objects are stored in a SQLite database. It's also possible to store each object
 Any connected _client_ or the _server_ can make an _Arn Data Object_ persistent.
 It's just to open an ArnItem to the object and change _mode_ to _Save_.
 > ArnItem  arnMaxLevel; <Br>
-> arnMaxLevel.addMode( ArnItem::Mode::Save); <Br>
-> arnmaxLevel.open("//config/Level/Max/value"); <Br>
+> arnMaxLevel.addMode( Arn::ObjectMode::Save); <Br>
+> arnMaxLevel.open("//config/Level/Max/value"); <Br>
 
 When the _Arn Data Object_ is set to _Save_ mode, it's automatically loaded by the
 ArnPersist. At the _server_ this is instantly done. A _client_ has to wait for the value
