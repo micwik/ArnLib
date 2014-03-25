@@ -108,25 +108,25 @@ void  ArnPipe::setupSeq( ArnLinkHandle& handleData)
 }
 
 
-bool  ArnPipe::useSendSeq()  const
+bool  ArnPipe::isSendSeq()  const
 {
     return _useSendSeq;
 }
 
 
-void  ArnPipe::setUseSendSeq( bool useSeq)
+void  ArnPipe::setSendSeq( bool useSeq)
 {
     _useSendSeq = useSeq;
 }
 
 
-bool  ArnPipe::useCheckSeq()  const
+bool  ArnPipe::isCheckSeq()  const
 {
     return _useCheckSeq;
 }
 
 
-void  ArnPipe::setUseCheckSeq( bool useCheckSeq)
+void  ArnPipe::setCheckSeq( bool useCheckSeq)
 {
     _useCheckSeq = useCheckSeq;
 }

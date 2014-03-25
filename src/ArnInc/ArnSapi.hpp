@@ -55,6 +55,12 @@ It should be derived to a custom class that descibe a specific _SAPI_.
 By default all _provider_ services are prefixed by "pv_" and all _requester_
 "services" are prefixed by "rq_". This standard can be changed.
 
+The meta prefix _no_queue_ is used limit the filling of sendqueue with recuring RPC
+calls during some kind of client disconnection. Matched function name in sendqueue is
+overwritten by the last call. This functionality uses
+[pipe anti congest](\ref gen_pipeAntiCongest). This is internally used for _heart beat_,
+but other typical usages can be _ping_, _request update_ etc.
+
 <b>Example usage</b> \n \code
 class ChatSapi : public ArnSapi
 {
@@ -65,7 +71,7 @@ public:
 signals:
 MQ_PUBLIC_ACCESS
     //// Provider API
-    void  pv_list();
+    no_queue void  pv_list();
     void  pv_newMsg( QString name, QString msg);
     void  pv_infoQ();
 

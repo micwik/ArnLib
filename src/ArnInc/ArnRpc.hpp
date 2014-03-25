@@ -244,7 +244,11 @@ public:
                                Mode mode = Mode());
 
     //! Make batch connection from this ArnRpc:s signals to another receivers slots
-    /*! Example: `_commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");`
+    /*! Used when there is a pattern in the naming of the signals and slots.
+     *  It's assumed that naming for slots are unique regardless of its case i.e.
+     *  using both test() and tesT() are not allowed.
+     *
+     *  Example: `_commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");`
      *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
      *
      *  \param[in] rgx is the regular expression for selecting signals.
@@ -261,7 +265,11 @@ public:
     }
 
     //! Make batch connection from one senders signals to this ArnRpc:s slots
-    /*! Example: `_commonSapi.batchConnect( _commonSapi, QRegExp("^rq_(.+)"), "chat\\1");`
+    /*! Used when there is a pattern in the naming of the signals and slots.
+     *  It's assumed that naming for slots are unique regardless of its case i.e.
+     *  using both test() and tesT() are not allowed.
+     *
+     *  Example: `_commonSapi.batchConnect( _commonSapi, QRegExp("^rq_(.+)"), "chat\\1");`
      *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
      *
      *  \param[in] sender is the sending QObject.

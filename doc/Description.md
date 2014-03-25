@@ -123,7 +123,7 @@ this sequence number is activated at each end of the pipe.
 When checking is activated and the received sequence number is unexpected, a signal will be
 generated.
 
-See also ArnPipe::setUseSendSeq(), ArnPipe::setUseCheckSeq(), ArnPipe::outOfSequence().
+See also ArnPipe::setSendSeq(), ArnPipe::setCheckSeq(), ArnPipe::outOfSequence().
 <Br><Br>
 
 ### Pipe anti congest ###    {#gen_pipeAntiCongest}
@@ -242,7 +242,7 @@ The _custom SAPI_ class by itself doesn't implement any _services_. It's merely 
 connections to _external signals and slots_.
 The base ArnSapi class automatically transfers all _custom signal_ (SAPI) calls to the
 remote connected ends, which also have the ArnSapi derived class and that emits the
-transfered signal.
+transfered signal. See example in ArnSapi Detailed Description.
 
 The provider connects the signals from custom SAPI that are prefixed with "pv_"
 (as default) to each external slot that implements the services.
@@ -266,18 +266,19 @@ QObject::sender() functionality.
 <Br><Br>
 
 ### RPC and SAPI communication format ###    {#gen_rpcformat}
-The RPC calling has a basic format as XString (see XStringMap). The most generic form
+The RPC calling has a basic format as XString (see Arn::XStringMap). The most generic form
 is seen below. The type mark _T_ is "t" for writeable types and "tb" for binary
 (non writeable) types.
-> _funcname_ _T_=_type1_ a._label1_=_arg1_ _T_=_type2_ a._label2_=_arg2_ ... <Br> 
+> _funcname  T_ = _type1_  a. _label1_ = _arg1_  _T_ = _type2_  a. _label2_ = _arg2_ ... <Br>
 > Example: put t=QString a.id=level t=int a.value=123 <Br>
 > For calling: put( QString("level"), 123)
 
 Commonly used _types_ have a shorter form. The _types_ are:
-> _int_, _uint_, _bool_, _ba (QByteArray), list (QStringList), and default is QString
+> _int_, _uint_, _bool_, _double_, _bytes_ (QByteArray), _date_ (QDate), _time_ (QTime),
+> _datetime_ (QDateTime), _list_ (QStringList), and _string_ (QString) as default.
 
 This can be used in previous example: 
-> put a.id=level int.value=123
+> put string.id=level int.value=123
 
 Or even shorter, skipping labels, when typed by hand:
 > put level int=123
