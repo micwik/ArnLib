@@ -43,7 +43,7 @@ public:
 signals:
 MQ_PUBLIC_ACCESS
     //// Provider API
-    void  pv_list();
+    no_queue void  pv_list();
     void  pv_newMsg( QString name, QString msg);
     void  pv_infoQ();
 
