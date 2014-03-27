@@ -493,10 +493,14 @@ QStringList  XStringMap::keys()  const
 }
 
 
-QStringList  XStringMap::values()  const
+QStringList  XStringMap::values( const char* keyPrefix)  const
 {
+    if (!keyPrefix)  keyPrefix = "";
+
     QStringList  retList;
     for (int i = 0; i < _size; ++i) {
+        if (*keyPrefix && !_keyList.at(i).startsWith( keyPrefix))  continue;
+
         const QByteArray&  value = _valList.at(i);
         retList += QString::fromUtf8( value.constData(), value.size());
     }

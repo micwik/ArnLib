@@ -136,7 +136,7 @@ public:
 
     void  setEmptyKeysToValue();
     QStringList  keys()  const;
-    QStringList  values()  const;
+    QStringList  values( const char* keyPrefix = 0)  const;
     QVariantMap  toVariantMap()  const;
 
     static void  stringCode( QByteArray& dst, const QByteArray& src);
