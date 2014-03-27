@@ -196,6 +196,7 @@ protected:
     /*! \param[in] subTypes The new list of subtypes, e.g. ("myGroup1", "myGroup2")
      *  \see subTypes()
      *  \see addSubType()
+     *  \see ArnZeroConfBrowser::setSubType()
      */
     void  setSubTypes( const QStringList& subTypes);
 
@@ -303,8 +304,12 @@ protected:
      */
     void  setTxtRecord( const QByteArray& txt);
 
-    void  parseFullDomain( const QByteArray& domainName);
+    //! Return the next id number for zero config objects.
+    /*! \return id number
+     */
     static int  getNextId();
+
+    void  parseFullDomain( const QByteArray& domainName);
 
     static QByteArray  escapedName( const QByteArray& name);
 
@@ -403,6 +408,7 @@ public:
     /*! \param[in] subTypes The new list of subtypes, e.g. ("myGroup1", "myGroup2")
      *  \see subTypes()
      *  \see addSubType()
+     *  \see ArnZeroConfBrowser::setSubType()
      */
     void  setSubTypes( const QStringList& subtypes)
     {ArnZeroConfB::setSubTypes( subtypes);}
@@ -875,7 +881,8 @@ public:
 
     //! Constructor of an ArnZeroConfBrowser object
     /*! All needed parameters for browsing a service.
-     *  The service type can be a name or the standard format used by the Zeroconf specification, e.g. "_arn._tcp".
+     *  The service type can be a name or the standard format used by the
+     *  Zeroconf specification, e.g. "_arn._tcp".
      *  \param[in] serviceType the service type, e.g. "arn" or "_arn._tcp".
      */
     ArnZeroConfBrowser( const QString& serviceType, QObject* parent = 0);
@@ -886,29 +893,98 @@ public:
     virtual ~ArnZeroConfBrowser();
 
     //! Set subtype (filter)
-    /*! If passing empy subtype, this is taken as subtype (filter) disabled
+    /*! If passing empy subtype, this is taken as subtype (filter) disabled.
+     *  When subtype (filter) is enabled, only services that have the same subtype
+     *  is discovered.
      *  \param[in] subtype the filter
+     *  \see subType()
+     *  \see browse()
+     *  \see ArnZeroConfRegister::setSubTypes()
      */
     void  setSubType( const QString& subtype);
 
+    //! Return current subtype (filter)
+    /*! Empy subtype, is taken as subtype (filter) disabled.
+     *  \return subtype
+     *  \see setSubType()
+     */
     QString  subType();
 
+    //! Return current list of active service names
+    /*! \retval the active service names
+     *  \see serviceAdded()
+     */
     QStringList  activeServiceNames()  const;
+
+    //! Return the id for a service by its service name
+    /*! \param[in] name the service name, e.g. "My House Registry"
+     *  \return the id for the service
+     *  \see serviceAdded()
+     */
     int  serviceNameToId( const QString& name);
+
+    //! Return the status of the browsing
+    /*! \retval true if browsing is started
+     *  \see browse()
+     */
     bool  isBrowsing()  const;
 
+    //! Return the next id number for zero config objects.
+    /*! \return id number
+     */
     static int  getNextId()
     {return ArnZeroConfB::getNextId();}
 
 public slots:
+    //! Change state of browsing
+    /*! When browsing is started, services will be discovered.
+     *  \param[in] enable if true browsing is started, otherwise it is stopped
+     *  \see stopBrowse()
+     */
     void  browse( bool enable = true);
+
+    //! Stop browsing
+    /*! \see browse()
+     */
     void  stopBrowse();
 
 signals:
-    void  browseError( int errorCode);
+    //! Indicate service has been added / removed
+    /*! _id_ will not be reused for any other service, it is unique within this program.
+     *  \param[in] isAdded is true when service has been added, otherwise false
+     *  \param[in] id is the id number for the service
+     *  \param[in] serviceName e.g. "My House Registry"
+     *  \param[in] domain  e.g. "local."
+     *  \see serviceAdded()
+     *  \see serviceRemoved()
+     *  \see browse()
+     */
     void  serviceChanged( bool isAdded, int id, const QString& serviceName, const QString& domain);
+
+    //! Indicate service has been added (discovered)
+    /*! _id_ will not be reused for any other service, it is unique within this program.
+     *  \param[in] id is the id number for the service
+     *  \param[in] serviceName e.g. "My House Registry"
+     *  \param[in] domain  e.g. "local."
+     *  \see serviceRemoved()
+     *  \see serviceChanged()
+     */
     void  serviceAdded( int id, const QString& serviceName, const QString& domain);
+
+    //! Indicate service has been removed
+    /*! \param[in] id is the id number for the service
+     *  \param[in] serviceName e.g. "My House Registry"
+     *  \param[in] domain  e.g. "local."
+     *  \see serviceAdded()
+     *  \see serviceChanged()
+     */
     void  serviceRemoved( int id, const QString& serviceName, const QString& domain);
+
+    //! Indicate unsuccessfull browsing
+    /*! \param[in] code error code.
+     *  \see browse()
+     */
+    void  browseError( int errorCode);
 
 private:
     void  init();

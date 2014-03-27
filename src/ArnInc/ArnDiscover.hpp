@@ -96,23 +96,81 @@ public:
      */
     bool  inProgress()  const;
 
-    //! Is discover in progress for this service
-    /*! \retval true, if discover is in progress
+    //! Is in an error state for this service
+    /*! \retval true, if in error state
      *  \see state()
      */
     bool  isError()  const;
+
+    //! Return the state for this service
+    /*! \return state
+     *  \see State
+     */
     State  state()  const;
+
+    //! Return the stop state for this service
+    /*! The discover logic will stop when reaching the stop state for a service.
+     *  \return stop state
+     *  \see ArnDiscoverBrowserB::setDefaultStopState()
+     *  \see ArnDiscoverBrowserB::goTowardState()
+     *  \see State
+     */
     State  stopState()  const;
+
+    //! Return the discover type for this service
+    /*! \return discover type
+     *  \see Type
+     *  \see ArnDiscoverAdvertise::advertiseService()
+     */
     ArnDiscover::Type type()  const;
-    QString  group()  const;
+
+    //! Return the groups for this service
+    /*! Groups are used for filtering discovered services. They will also be availabe
+     *  as properties with naming as "group0", "group1" ...
+     *  \return groups, e.g. ("mydomain.se", "mydomain.se/House", "Any Group ID")
+     *  \see ArnDiscoverAdvertise::setGroups()
+     */
+    QStringList  groups()  const;
+
+    //! Return the service name for this service
+    /*! \return service name, e.g. "My House Registry"
+     *  \see ArnDiscoverAdvertise::advertiseService()
+     *  \see ArnDiscoverAdvertise::setService()
+     */
     QString  serviceName()  const;
+
+    //! Return the domain for this service
+    /*! \return domain, e.g. "local."
+     */
     QString  domain()  const;
+
+    //! Return the host name for this service
+    /*! \return host name, e.g. "myHost.local"
+     *  \see ArnDiscoverAdvertise::advertiseService()
+     */
     QString  hostName()  const;
+
+    //! Return the port for this service
+    /*! \return port
+     *  \see ArnDiscoverAdvertise::advertiseService()
+     */
     quint16  hostPort()  const;
+
+    //! Return the host ip-address for this service
+    /*! \return host ip-address
+     */
     QHostAddress  hostIp()  const;
+
+    //! Return the properties for this service
+    /*! \return properties
+     *  \see ArnDiscoverAdvertise::setCustomProperties()
+     */
     Arn::XStringMap  properties()  const;
+
     QString  typeString()  const;
+
     QString  hostPortString()  const;
+
     QString  hostIpString()  const;
 
     //! Get the the _HostWithInfo_ string
@@ -121,6 +179,7 @@ public:
      *  \see Arn::makeHostWithInfo()
      */
     QString  hostWithInfo()  const;
+
     int  resolvCode()  const;
 
 private:

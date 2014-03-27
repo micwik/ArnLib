@@ -80,9 +80,9 @@ ArnDiscover::Type  ArnDiscoverInfo::type()  const
 }
 
 
-QString  ArnDiscoverInfo::group()  const
+QStringList  ArnDiscoverInfo::groups()  const
 {
-    return _properties.valueString("group");
+    return _properties.values("group");
 }
 
 
