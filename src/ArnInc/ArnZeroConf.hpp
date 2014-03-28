@@ -896,7 +896,7 @@ public:
     /*! If passing empy subtype, this is taken as subtype (filter) disabled.
      *  When subtype (filter) is enabled, only services that have the same subtype
      *  is discovered.
-     *  \param[in] subtype the filter
+     *  \param[in] subtype the filter, e.g. "myGroup1"
      *  \see subType()
      *  \see browse()
      *  \see ArnZeroConfRegister::setSubTypes()
@@ -905,7 +905,7 @@ public:
 
     //! Return current subtype (filter)
     /*! Empy subtype, is taken as subtype (filter) disabled.
-     *  \return subtype
+     *  \return subtype, e.g. "myGroup1"
      *  \see setSubType()
      */
     QString  subType();
