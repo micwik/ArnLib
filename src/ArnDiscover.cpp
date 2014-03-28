@@ -191,7 +191,8 @@ QString  ArnDiscoverResolver::defaultService()  const
 
 void  ArnDiscoverResolver::setDefaultService( const QString& defaultService)
 {
-    _defaultService = defaultService;
+    if (!defaultService.isEmpty())
+        _defaultService = defaultService;
 }
 
 
@@ -209,6 +210,12 @@ ArnDiscoverBrowserB::ArnDiscoverBrowserB( QObject* parent) :
             this, SLOT(onServiceAdded(int,QString,QString)));
     connect(_serviceBrowser, SIGNAL(serviceRemoved(int,QString,QString)),
             this, SLOT(onServiceRemoved(int,QString,QString)));
+}
+
+
+int  ArnDiscoverBrowserB::serviceCount()  const
+{
+    return _activeServInfos.size();
 }
 
 
@@ -365,8 +372,8 @@ void  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
     Q_ASSERT(info && (index >= 0));
     if (info->inProgress()) {
         info->_resolvCode = ArnZeroConf::Error::Running;
-        emit infoUpdated( index, info->_state);
     }
+    emit infoUpdated( index, info->_state);
 }
 
 
