@@ -440,15 +440,20 @@ public:
     //! Returns the service name for this Zero Config
     /*! Service names can be any human readable id. It should be easy to understand, without
      *  any cryptic coding, and can usually be modified by the end user.
+     *  The service name is internally updated with real name when registered() signal is
+     *  emitted.
      *  \return current service name, e.g. "My House Registry"
      *  \see setServiceName()
+     *  \see registered()
      */
     QString  serviceName()  const
     {return ArnZeroConfB::serviceName();}
 
     //! Set the service name for this Zero Config
     /*! Service names can be any human readable id. It should be easy to understand, without
-     *  any cryptic coding, and can usually be modified by the end user.
+     *  any cryptic coding, and can usually be modified by the end user. The requested service
+     *  name is not guaranted to be registered, as it has to be unique within this local
+     *  network. The realy used name comes with the registered() signal.
      *  \param[in] name is service name, e.g. "My House Registry"
      *  \see serviceName()
      */
@@ -534,7 +539,11 @@ public:
 
 signals:
     //! Indicate successfull registration of service
-    /*! \see registerService()
+    /*! The service name will also be internally updated, it can be accesed via serviceName().
+     *  \param[in] serviceName is the realy registered name e.g. "My House Registry (2)"
+     *  \see registerService()
+     *  \see setServiceName()
+     *  \see serviceName()
      */
     void  registered( QString serviceName);
 

@@ -162,7 +162,10 @@ public:
     QHostAddress  hostIp()  const;
 
     //! Return the properties for this service
-    /*! \return properties
+    /*! Will return booth Arn system properties and custom (application) properties.
+     *  System properties will always have a key starting with a lower case letter
+     *  e.g. "protovers".
+     *  \return properties
      *  \see ArnDiscoverAdvertise::setCustomProperties()
      */
     Arn::XStringMap  properties()  const;
@@ -391,9 +394,11 @@ protected:
      *  \param[in] serviceName is the service to be resolved
      *  \param[in] forceUpdate when true, a new resolve is always done, otherwise
      *                         a service name that already is resolved will not be resolved again.
+     *  \return _index_ to service info
+     *  \see indexToId()
      *  \see infoUpdated()
      */
-    void  resolve( QString serviceName, bool forceUpdate = true);
+    int  resolve( QString serviceName, bool forceUpdate = true);
     //! \endcond
 
 private slots:
@@ -503,9 +508,11 @@ public slots:
      *  \param[in] serviceName is the service to be resolved
      *  \param[in] forceUpdate when true, a new resolve is always done, otherwise
      *                         a service name that already is resolved will not be resolved again.
+     *  \return _index_ to service info
+     *  \see indexToId()
      *  \see infoUpdated()
      */
-    void  resolve( QString serviceName, bool forceUpdate = true);
+    int  resolve( QString serviceName, bool forceUpdate = true);
 
 private:
     QString  _defaultService;
@@ -534,31 +541,116 @@ public:
 
     explicit ArnDiscoverAdvertise( QObject *parent = 0);
 
+    //! Return service discover groups used for filter browsing
+    /*! \return groups e.g. ("mydomain.se", "mydomain.se/House", "Any Group ID")
+     *  \see setGroups()
+     */
     QStringList groups() const;
+
+    //! Set service discover groups used for filter browsing
+    /*! Groups are used for filtering discovered services. They will also be availabe
+     *  as properties with naming as "group0", "group1" ...
+     *  Groups must be set before calling advertiseService().
+     *  \param[in] groups e.g. ("mydomain.se", "mydomain.se/House", "Any Group ID")
+     *  \see groups()
+     *  \see ArnDiscoverBrowser::setFilter()
+     */
     void setGroups( const QStringList& groups);
+
+    //! Add a service discover group
+    /*! \param[in] group e.g. "Any Group ID"
+     *  \see setGroups()
+     */
     void  addGroup( const QString& group);
 
+    //! Returns the service name for this Advertise
+    /*! This is always the requested service name, the realy used name comes with the
+     *  serviceChanged() signal.
+     *  \return requested service name, e.g. "My House Registry"
+     *  \see setService()
+     *  \see advertiseService()
+     */
     QString  service() const;
+
+    //! Returns the state for this Advertise
+    /*! \return current state
+     *  \see State
+     */
     State  state()  const;
 
+    //! Start advertising the service
+    /*! Tries to advertise the service on the local network.
+     *  Result is indicated by serviceChanged() and serviceChangeError() signals.
+     *  Empty _serviceName_ will be ignored, no advertising until using setService() with
+     *  non empty name.
+     *  \param[in] discoverType is used for discover filtering
+     *  \param[in] serviceName is requested name e.g. "My House Registry"
+     *  \param[in] port is the port of the service, -1 gives default Arn port number
+     *  \param[in] hostName is the host doing the service, empty gives this advertising host
+     *  \see setService()
+     *  \see serviceChanged()
+     *  \see serviceChangeError()
+     */
     void  advertiseService( ArnDiscover::Type discoverType, QString serviceName,
                             int port = -1, const QString& hostName = QString());
 
+    //! Return service custom properties
+    /*! This is only the customer (application) properties, as there also are some
+     *  Arn system properties.
+     *  \return custom properties
+     *  \see setCustomProperties()
+     */
     Arn::XStringMap  customProperties()  const;
+
+    //! Set service custom properties
+    /*! This is only the customer (application) properties, as there also are some
+     *  Arn system properties. These custom properties are advised to have a key starting
+     *  with a capital letter to avoid name collision with the system.
+     *  Properties must be set before calling advertiseService().
+     *  \param[in] customProperties e.g. Arn::XStringMap().add("MyProp", "my data")
+     *  \see customProperties()
+     *  \see addCustomProperty()
+     *  \see ArnDiscoverInfo::properties()
+     */
     void  setCustomProperties( const Arn::XStringMap& customProperties);
+
+    //! Add service custom property
+    /*! The custom property are advised to have a _key_ starting with a capital letter to
+     *  avoid name collision with the system.
+     *  \param[in] key property key (Start with capital letter) e.g. "MyProp"
+     *  \param[in] val property value kan be any text e.g. "my data"
+     *  \see setCustomProperties()
+     */
     void  addCustomProperty( const QString& key, const QString& val);
 
 signals:
+    //! Indicate successfull advertise of service
+    /*! \param[in] serviceName is the realy advertised name e.g. "My House Registry (2)"
+     *  \see advertiseService()
+     *  \see setService()
+     */
     void  serviceChanged( QString serviceName);
+
+    //! Indicate unsuccessfull advertise of service
+    /*! \param[in] code error code.
+     *  \see advertiseService()
+     */
     void  serviceChangeError( int code);
 
 public slots:
     //! Set the service name
     /*! Will update current advertised service name if this advertiser has been setup,
      *  otherwise the service name is stored for future use.
+     *  Service names can be any human readable id. It should be easy to understand,
+     *  without any cryptic coding, and can usually be modified by the end user.
+     *  Empty name is ignored. The requested service name is not guaranted to be used
+     *  for advertise, as it has to be unique within this local network. The realy used
+     *  name comes with the serviceChanged() signal.
      *  Note: This base member must be called from derived member.
-     *  \param[in] service is the service name.
+     *  \param[in] service is the requested service name e.g. "My House Registry"
      *  \see advertiseService()
+     *  \see serviceChanged()
+     *  \see serviceChangeError()
      */
     virtual void  setService( QString service);
 

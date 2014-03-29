@@ -177,9 +177,9 @@ ArnDiscoverResolver::ArnDiscoverResolver( QObject* parent) :
 }
 
 
-void  ArnDiscoverResolver::resolve( QString serviceName, bool forceUpdate)
+int  ArnDiscoverResolver::resolve( QString serviceName, bool forceUpdate)
 {
-    ArnDiscoverBrowserB::resolve( serviceName.isEmpty() ? _defaultService : serviceName, forceUpdate);
+    return ArnDiscoverBrowserB::resolve( serviceName.isEmpty() ? _defaultService : serviceName, forceUpdate);
 }
 
 
@@ -342,7 +342,7 @@ void  ArnDiscoverBrowserB::stopBrowse()
 }
 
 
-void  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
+int  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
 {
     if (Arn::debugDiscover)  qDebug() << "Man resolve Service: name=" << serviceName;
 
@@ -370,10 +370,13 @@ void  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
             doNextState( *info);
     }
     Q_ASSERT(info && (index >= 0));
+
     if (info->inProgress()) {
         info->_resolvCode = ArnZeroConf::Error::Running;
     }
     emit infoUpdated( index, info->_state);
+
+    return index;
 }
 
 
@@ -585,8 +588,8 @@ ArnDiscoverAdvertise::ArnDiscoverAdvertise( QObject *parent) :
 }
 
 
-void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QString serviceName,
-                                             int port, const QString& hostName)
+void  ArnDiscoverAdvertise::advertiseService( ArnDiscover::Type discoverType, QString serviceName,
+                                              int port, const QString& hostName)
 {
     if (Arn::debugDiscover)  qDebug() << "Discover advertise setup: serviceName=" << serviceName
                                       << " port=" << port << " hostName=" << hostName;
@@ -603,9 +606,11 @@ void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QSt
         xsm.add("group", i, _groups.at(i));
     }
     xsm += _customProperties;
+
     _arnZCReg->setTxtRecordMap( xsm);
     _arnZCReg->setHost( hostName);
-    _arnZCReg->setPort( port);
+    _arnZCReg->setPort( port >= 0 ? port : Arn::defaultTcpPort);
+
     connect( _arnZCReg, SIGNAL(registered(QString)), this, SLOT(serviceRegistered(QString)));
     connect( _arnZCReg, SIGNAL(registrationError(int)), this, SLOT(serviceRegistrationError(int)));
 
