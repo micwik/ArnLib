@@ -565,12 +565,23 @@ public:
 
     //! Returns the service name for this Advertise
     /*! This is always the requested service name, the realy used name comes with the
-     *  serviceChanged() signal.
+     *  serviceChanged() signal and currentService().
      *  \return requested service name, e.g. "My House Registry"
      *  \see setService()
+     *  \see currentService()
      *  \see advertiseService()
      */
     QString  service() const;
+
+    //! Returns the current service name for this Advertise
+    /*! This is the realy advertised name when it's available otherwise it's the requested
+     *  service name.
+     *  \return service namen (se above) e.g. "My House Registry (2)"
+     *  \see setService()
+     *  \see service()
+     *  \see advertiseService()
+     */
+    QString  currentService() const;
 
     //! Returns the state for this Advertise
     /*! \return current state
@@ -645,9 +656,10 @@ public slots:
      *  without any cryptic coding, and can usually be modified by the end user.
      *  Empty name is ignored. The requested service name is not guaranted to be used
      *  for advertise, as it has to be unique within this local network. The realy used
-     *  name comes with the serviceChanged() signal.
-     *  Note: This base member must be called from derived member.
+     *  name comes with the serviceChanged() signal and currentService().
      *  \param[in] service is the requested service name e.g. "My House Registry"
+     *  \see service()
+     *  \see currentService()
      *  \see advertiseService()
      *  \see serviceChanged()
      *  \see serviceChangeError()

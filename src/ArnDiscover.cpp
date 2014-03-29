@@ -673,6 +673,12 @@ QString  ArnDiscoverAdvertise::service()  const
 }
 
 
+QString  ArnDiscoverAdvertise::currentService()  const
+{
+    return _hasSetupAdvertise ? _arnZCReg->currentServiceName() : _service;
+}
+
+
 ArnDiscoverAdvertise::State  ArnDiscoverAdvertise::state()  const
 {
     return State::fromInt( _arnZCReg->state());

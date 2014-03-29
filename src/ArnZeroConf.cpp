@@ -406,6 +406,19 @@ ArnZeroConfRegister::~ArnZeroConfRegister()
 }
 
 
+QString  ArnZeroConfRegister::currentServiceName()  const
+{
+    return _currentServiceName;
+}
+
+
+void  ArnZeroConfRegister::setServiceName( const QString& name)
+{
+    ArnZeroConfB::setServiceName( name);
+    _currentServiceName = name;
+}
+
+
 void  ArnZeroConfRegister::registerService( bool noAutoRename)
 {
     if (state() != ArnZeroConf::State::None) {
@@ -480,7 +493,7 @@ void DNSSD_API  ArnZeroConfIntern::registerServiceCallback(
     ArnZeroConfRegister*  self = reinterpret_cast<ArnZeroConfRegister*>(context);
     if (errCode == kDNSServiceErr_NoError) {
         QString  servName = QString::fromUtf8( name);
-        self->setServiceName( servName);
+        self->_currentServiceName = servName;
         self->setDomain( QString::fromUtf8( domain));
         self->_state = ArnZeroConf::State::Registered;
         emit self->registered( servName);

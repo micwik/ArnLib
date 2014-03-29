@@ -438,27 +438,38 @@ public:
     {ArnZeroConfB::setPort( port);}
 
     //! Returns the service name for this Zero Config
-    /*! Service names can be any human readable id. It should be easy to understand, without
-     *  any cryptic coding, and can usually be modified by the end user.
-     *  The service name is internally updated with real name when registered() signal is
-     *  emitted.
+    /*! The returned service name is always the requested name. For real name use
+     *  currentServiceName().
      *  \return current service name, e.g. "My House Registry"
      *  \see setServiceName()
+     *  \see currentServiceName()
      *  \see registered()
      */
     QString  serviceName()  const
     {return ArnZeroConfB::serviceName();}
 
+    //! Returns the current service name for this Zero Config
+    /*! This service name is internally updated with real name when registered() signal is
+     *  emitted.
+     *  \return current service name, e.g. "My House Registry (2)"
+     *  \see setServiceName()
+     *  \see serviceName()
+     *  \see registered()
+     */
+    QString  currentServiceName()  const;
+
     //! Set the service name for this Zero Config
     /*! Service names can be any human readable id. It should be easy to understand, without
      *  any cryptic coding, and can usually be modified by the end user. The requested service
      *  name is not guaranted to be registered, as it has to be unique within this local
-     *  network. The realy used name comes with the registered() signal.
+     *  network. The realy used name comes with the registered() signal and can be accessed
+     *  via currentServiceName().
      *  \param[in] name is service name, e.g. "My House Registry"
      *  \see serviceName()
+     *  \see currentServiceName()
+     *  \see registered()
      */
-    void  setServiceName( const QString& name)
-    {ArnZeroConfB::setServiceName( name);}
+    void  setServiceName( const QString& name);
 
     //! Returns the host name for this Zero Config
     /*! Usually hostname is empty, automatically using the computers name, but it can
@@ -555,6 +566,8 @@ signals:
 
 private:
     void  init();
+
+    QString  _currentServiceName;
 };
 
 
