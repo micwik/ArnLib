@@ -563,7 +563,7 @@ public:
      */
     void  addGroup( const QString& group);
 
-    //! Returns the service name for this Advertise
+    //! Returns the requested service name for this Advertise
     /*! This is always the requested service name, the realy used name comes with the
      *  serviceChanged() signal and currentService().
      *  \return requested service name, e.g. "My House Registry"

@@ -46,7 +46,7 @@ class QTime;
 /*!
 [About Arn Discover Remote](\ref gen_discoverRemote)
 
-This class handles is the main class for handling discover with remote setting.
+This class is the main class for handling discover with remote setting.
 
 Following rules apply:
 
@@ -59,8 +59,8 @@ Following rules apply:
 * * After initial advertise of the service, it can be changed by any method and the changed
     service will be used.
 * * The used service will also be saved if using persist.
-* * Methods to change service are ArnDiscoverAdvertise::setService() and corresponding
-    _arnObject_ which can be changed locally or remote.
+* * Methods to change service are ArnDiscoverRemote::setService() and corresponding
+    _Arn Data Objects_ which can be changed locally or remote.
 
 <b>Example usage</b> \n \code
 \endcode
@@ -102,7 +102,7 @@ public:
     //! Start advertising the ArnServer as a service
     /*! Handle advertising of an existing ArnServer as a service on the local network.
      *  Everything is fully automatic, including remote setting service name and support
-     *  for persistent storage of the name. Any status is accessed via arnobjects.
+     *  for persistent storage of the name. Status can be accessed via _Arn Data Objects_.
      *  \param[in] arnServer is the ArnServer to be advertised
      *  \param[in] discoverType is used for discover filtering
      *  \see setService()
@@ -113,9 +113,9 @@ public:
 
     //! Start a new ArnServer and advertise as a service
     /*! Handle advertising an internally created ArnServer as a service on the local
-     *  network. This method is typically used when there is no need to access and control
-     *  the ArnServer, which usually is the case in an client application. The ArnServer is
-     *  then mostly used to make the discover functionaly remote controlled.
+     *  network. This method is typically used when there is no need to access the
+     *  ArnServer class, which usually is the case in an client application. The ArnServer
+     *  is then mostly used to make the discover functionaly remote controlled.
      *
      *  All the functionaly from startUseServer() do apply.
      *  \param[in] arnServer is the ArnServer to be advertised
@@ -128,12 +128,45 @@ public:
      */
     void  startUseNewServer( ArnDiscover::Type discoverType, int port = -1);
 
+    //! Create and return an ArnDiscoverConnector for handling remote client
+    /*! The ArnDiscoverConnector is internally connected to this ArnDiscoverRemote.
+     *  The _id_ should be chosen to describe the client target or its purpose. It's not
+     *  a host address or necessarily a specific host, as there can be many possible
+     *  addresses assigned to the ArnDiscoverConnector. The _id_ will appear as an
+     *  _Arn folder_, e.g. when _id_ is "WeatherData-XYZ" the folder path will be
+     *  "Sys/Discover/Connect/WeatherData-XYZ/".
+     *  \param[in] client
+     *  \param[in] id identifies the target of the client connection, e.g "WeatherData-XYZ"
+     *  \return The ArnDiscoverConnector
+     */
     ArnDiscoverConnector*  newConnector( ArnClient& client, const QString& id);
 
 signals:
+    //! Central signal for external client connection
+    /*! When activated external client connection by the connector method
+     *  ArnDiscoverConnector::setExternalClientConnect(), this signal will be emitted
+     *  when the client has been prepared to connect. It's the responsibility of the
+     *  receiver to do the actual client connect by ArnClient::connectToArnList().
+     *  \param[in] client being ready for connection
+     *  \param[in] id is the identifier used in newConnector()
+     *  \see newConnector()
+     *  \see ArnDiscoverConnector::setExternalClientConnect()
+     */
     void  clientReadyToConnect( ArnClient* arnClient, const QString& id);
 
 public slots:
+    //! Set the service name
+    /*! Will update current advertised service name if this advertiser has been setup,
+     *  otherwise the service name is stored for future use.
+     *  For remote control the service name is also available as an _Arn Data Object_ at
+     *  local path "Sys/Discover/This/Service".
+     *
+     *  All the functionaly from ArnDiscoverAdvertise::setService() apply.
+     *  \param[in] service is the requested service name e.g. "My House Registry"
+     *  \see ArnDiscoverAdvertise::setService()
+     *  \see currentService()
+     *  \see advertiseService()
+     */
     virtual void  setService( QString service);
 
     //! \cond ADV
@@ -150,6 +183,10 @@ private slots:
     void  doServiceChanged( QString val);
 
 private:
+    //// Hide
+    void  advertiseService( ArnDiscover::Type discoverType, QString serviceName,
+                            int port = -1, const QString& hostName = QString());
+
     ArnServer*  _arnInternalServer;
     ArnDiscoverResolver*  _arnDResolver;
     ArnItem  _arnServicePv;
