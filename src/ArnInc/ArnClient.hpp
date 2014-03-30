@@ -111,7 +111,7 @@ public:
 
     //! Add an _Arn Server_ to the Arn connection list
     /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
-     *  \param[in] port is the port number (default 2022).
+     *  \param[in] port is the host port, 0 gives Arn::defaultTcpPort.
      *  \param[in] prio gives the sorting (connection) order and can be used for selection filter.
      *  \see clearArnList()
      *  \see arnList()
@@ -127,7 +127,7 @@ public:
 
     //! Connect to an _Arn Server_
     /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
-     *  \param[in] port is the port number (default 2022).
+     *  \param[in] port is the host port, 0 gives Arn::defaultTcpPort.
      *  \see Arn::makeHostWithInfo()
      */
     void  connectToArn( const QString& arnHost, quint16 port = 0);
@@ -184,9 +184,9 @@ signals:
 
     //! Signal emitted when the tcp connection is successfull.
     /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
-     *  \param[in] port is the port number (default 2022).
+     *  \param[in] port is the host port, e.g. 2022.
      */
-    void  tcpConnected( QString arnHost = QString(), quint16 port = 0);
+    void  tcpConnected( QString arnHost, quint16 port);
 
     //! Signal emitted when the tcp connection is broken (has been successfull).
     void  tcpDisConnected();

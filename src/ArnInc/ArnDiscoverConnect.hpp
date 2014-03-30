@@ -64,7 +64,7 @@ public:
 
     //! Add an _Arn Server_ to the DirectHost connection list
     /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
-     *  \param[in] port is the port number (default 2022).
+     *  \param[in] port is the host port, 0 gives Arn::defaultTcpPort.
      *  \see clearDirectHosts()
      */
     void  addToDirectHosts( const QString& arnHost, quint16 port = 0);

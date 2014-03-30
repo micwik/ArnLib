@@ -185,7 +185,7 @@ void  ArnDiscoverRemote::setService( QString service)
         bool  isAdvertise = state().isAny( State::Advertise);
         _arnService.setValue( service, isAdvertise ? Arn::SameValue::Ignore
                                                    : Arn::SameValue::Accept);
-        // If advertising not yet has started, any value will be tried as service name
+        // If advertising not yet has started, any value must trigger the "service changed logic"
     }
     else
         ArnDiscoverAdvertise::setService( service);
@@ -200,7 +200,8 @@ QString  ArnDiscoverRemote::defaultService()  const
 
 void  ArnDiscoverRemote::setDefaultService( const QString& defaultService)
 {
-    _defaultService = defaultService;
+    if (!defaultService.isEmpty())
+        _defaultService = defaultService;
 }
 
 
