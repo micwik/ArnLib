@@ -113,9 +113,11 @@ public:
 
     //! Start a new ArnServer and advertise as a service
     /*! Handle advertising an internally created ArnServer as a service on the local
-     *  network. This method is typically used when there is no need to access the
-     *  ArnServer class, which usually is the case in an client application. The ArnServer
-     *  is then mostly used to make the discover functionaly remote controlled.
+     *  network.
+     *
+     *  This method is typically used when there is no need to access the ArnServer class,
+     *  which usually is the case in an client application. The ArnServer is then mostly
+     *  used to make the discover functionaly remote controlled.
      *
      *  All the functionaly from startUseServer() do apply.
      *  \param[in] arnServer is the ArnServer to be advertised
@@ -130,11 +132,13 @@ public:
 
     //! Create and return an ArnDiscoverConnector for handling remote client
     /*! The ArnDiscoverConnector is internally connected to this ArnDiscoverRemote.
+     *
      *  The _id_ should be chosen to describe the client target or its purpose. It's not
      *  a host address or necessarily a specific host, as there can be many possible
-     *  addresses assigned to the ArnDiscoverConnector. The _id_ will appear as an
-     *  _Arn folder_, e.g. when _id_ is "WeatherData-XYZ" the folder path will be
-     *  "Sys/Discover/Connect/WeatherData-XYZ/".
+     *  addresses assigned to the ArnDiscoverConnector.
+     *
+     *  The _id_ will appear as an _Arn folder_, e.g. when _id_ is "WeatherData-XYZ" the
+     *  folder path will be "Sys/Discover/Connect/WeatherData-XYZ/".
      *  \param[in] client
      *  \param[in] id identifies the target of the client connection, e.g "WeatherData-XYZ"
      *  \return The ArnDiscoverConnector
@@ -145,10 +149,12 @@ signals:
     //! Central signal for external client connection
     /*! When activated external client connection by the connector method
      *  ArnDiscoverConnector::setExternalClientConnect(), this signal will be emitted
-     *  when the client has been prepared to connect. It's the responsibility of the
-     *  receiver to do the actual client connect by ArnClient::connectToArnList().
-     *  \param[in] client being ready for connection
-     *  \param[in] id is the identifier used in newConnector()
+     *  when the client has been prepared to connect.
+     *
+     *  It's the responsibility of the receiver to do the actual client connect by
+     *  ArnClient::connectToArnList().
+     *  \param[in] arnClient being ready for connection
+     *  \param[in] id is the identifier used in newConnector(), e.g "WeatherData-XYZ"
      *  \see newConnector()
      *  \see ArnDiscoverConnector::setExternalClientConnect()
      */
@@ -158,6 +164,7 @@ public slots:
     //! Set the service name
     /*! Will update current advertised service name if this advertiser has been setup,
      *  otherwise the service name is stored for future use.
+     *
      *  For remote control the service name is also available as an _Arn Data Object_ at
      *  local path "Sys/Discover/This/Service".
      *

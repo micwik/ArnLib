@@ -117,10 +117,11 @@ public:
     virtual ~ArnZeroConfB();
 
     //! Returns the socket type for this Zero Config.
-    /*! Socket type can be: QAbstractSocket::TcpSocket, QAbstractSocket::UdpSocket,
-     *  QAbstractSocket::UnknownSocketType.
-     *  Default set by this class is QAbstractSocket::TcpSocket.
-     *  QAbstractSocket::UnknownSocketType is only used when socket type can't be determined.
+    /*!
+     *  * Socket type can be: QAbstractSocket::TcpSocket, QAbstractSocket::UdpSocket,
+     *    QAbstractSocket::UnknownSocketType.
+     *  * Default set by this class is QAbstractSocket::TcpSocket.
+     *  * QAbstractSocket::UnknownSocketType is only used when socket type can't be determined.
      *  \return current socket type.
      *  \see setSocketType()
      */
@@ -128,21 +129,20 @@ public:
 
     //! Sets the socket type for this Zero Config.
     /*! Allowed Socket type is: QAbstractSocket::TcpSocket, QAbstractSocket::UdpSocket.
-     *  Default set by this class is QAbstractSocket::TcpSocket.
      *  \param[in] type is one of the allowed types.
      *  \see socketType()
      */
     void  setSocketType( QAbstractSocket::SocketType type);
 
     //! Returns the service type for this Zero Config
-    /*! Service types are standardized by IANA.
-     *  \return current service type, e.g. "arn", "ftp" ...
+    /*! \return current service type, e.g. "arn", "ftp" ...
      *  \see setServiceType()
      */
     QString  serviceType()  const;
 
     //! Returns the service type for this Zero Config
     /*! Service types are standardized by IANA.
+     *
      *  The service type used here can be a name, like "arn", or the standard format used
      *  by the Zeroconf specification, e.g. "_arn._tcp".
      *  \param[in] type is the service type (se above).
@@ -151,8 +151,7 @@ public:
     void  setServiceType( const QString& type);
 
     //! Returns the domain for this Zero Config.
-    /*! Default set by this class is "local.".
-     *  \return current domain.
+    /*! \return current domain.
      *  \see setDomain()
      */
     QString  domain()  const;
@@ -171,6 +170,7 @@ public:
 
     //! Returns the full service type for this Zero Config
     /*! Service types are standardized by IANA.
+     *
      *  The full service type is the standard format used by the Zeroconf specification,
      *  e.g. "_arn._tcp".
      *  \return current full service type (see above)
@@ -222,9 +222,7 @@ protected:
     void  setPort( quint16 port);
 
     //! Returns the service name for this Zero Config
-    /*! Service names can be any human readable id. It should be easy to understand, without
-     *  any cryptic coding, and can usually be modified by the end user.
-     *  \return current service name, e.g. "My House Registry"
+    /*! \return current service name, e.g. "My House Registry"
      *  \see setServiceName()
      */
     QString  serviceName()  const;
@@ -255,6 +253,7 @@ protected:
 
     //! Load a XStringMap with parameters from the Txt Record
     /*! It is assumed that the Txt Record has already been received.
+     *
      *  After loading XStringMap is successfull it contains the parameters from the Txt Record,
      *  e.g. Arn::XStringMap::toXString() can return "protovers=1.0 MyParam=xyz".
      *  \param[out] xsm is the loaded XStringMap if successfull, otherwise undefined.
@@ -288,6 +287,7 @@ protected:
     
     //! Return the Txt Record for this Zero Config
     /*! It is assumed that the Txt Record has already been received.
+     *
      *  The binary format should be the standardized from the Zeroconfig specification.
      *  \return The Txt Record (in binary format)
      *  \see setTxtRecord()
@@ -381,6 +381,7 @@ public:
 
     //! Constructor of an ArnZeroConfRegister object
     /*! All needed parameters for a service at this computer.
+     *
      *  The service type can be a name or the standard format used by the Zeroconf
      *  specification, e.g. "_arn._tcp".
      *  \param[in] serviceName the human readable naming of the service,
@@ -449,8 +450,8 @@ public:
     {return ArnZeroConfB::serviceName();}
 
     //! Returns the current service name for this Zero Config
-    /*! This service name is internally updated with real name when registered() signal is
-     *  emitted.
+    /*! At first, the requested service name is returned. Later the service name is
+     *  internally updated with real name when registered() signal is emitted.
      *  \return current service name, e.g. "My House Registry (2)"
      *  \see setServiceName()
      *  \see serviceName()
@@ -460,10 +461,11 @@ public:
 
     //! Set the service name for this Zero Config
     /*! Service names can be any human readable id. It should be easy to understand, without
-     *  any cryptic coding, and can usually be modified by the end user. The requested service
-     *  name is not guaranted to be registered, as it has to be unique within this local
-     *  network. The realy used name comes with the registered() signal and can be accessed
-     *  via currentServiceName().
+     *  any cryptic coding, and can usually be modified by the end user.
+     *
+     *  The requested service name is not guaranted to be registered, as it has to be unique
+     *  within the local network. The realy used name comes with the registered() signal and
+     *  can be accessed via currentServiceName().
      *  \param[in] name is service name, e.g. "My House Registry"
      *  \see serviceName()
      *  \see currentServiceName()
@@ -491,6 +493,7 @@ public:
 
     //! Load a XStringMap with parameters from the Txt Record
     /*! It is assumed that the Txt Record has already been received.
+     *
      *  After loading XStringMap is successfull it contains the parameters from the Txt Record,
      *  e.g. Arn::XStringMap::toXString() can return "protovers=1.0 MyParam=xyz".
      *  \param[out] xsm is the loaded XStringMap if successfull, otherwise undefined.
@@ -513,6 +516,7 @@ public:
 
     //! Return the Txt Record for this Zero Config
     /*! It is assumed that the Txt Record has already been received.
+     *
      *  The binary format should be the standardized from the Zeroconfig specification.
      *  \return The Txt Record (in binary format)
      *  \see setTxtRecord()
@@ -533,6 +537,7 @@ public:
 
     //! Register the service
     /*! Tries to register the service on the local network.
+     *
      *  Result is indicated by registered() and registrationError() signals.
      *  \param[in] noAutoRename when true, registration will fail if another service
      *                          with the same service type already is registered with
@@ -550,7 +555,8 @@ public:
 
 signals:
     //! Indicate successfull registration of service
-    /*! The service name will also be internally updated, it can be accesed via serviceName().
+    /*! The service name will also be internally updated, it can be accesed via
+     *  currentServiceName().
      *  \param[in] serviceName is the realy registered name e.g. "My House Registry (2)"
      *  \see registerService()
      *  \see setServiceName()
@@ -618,6 +624,7 @@ public:
 
     //! Constructor of an ArnZeroConfResolv object
     /*! All needed parameters for a service.
+     *
      *  The service type can be a name or the standard format used by the Zeroconf
      *  specification, e.g. "_arn._tcp".
      *  \param[in] serviceName the human readable naming of the service,
@@ -639,6 +646,7 @@ public:
 
     //! Sets the id number for this this resolv
     /*! This id can be used to identify different resolves when using a common handler.
+     *
      *  When not set, it will be automatically assigned during resolve().
      *  \param[in] id the id number
      *  \see id()
@@ -659,8 +667,7 @@ public:
     {return ArnZeroConfB::port();}
 
     //! Returns the service name used for this resolv
-    /*! Service names can be any human readable id.
-     *  \return current service name, e.g. "My House Registry"
+    /*! \return current service name, e.g. "My House Registry"
      */
     QString  serviceName()  const
     {return ArnZeroConfB::serviceName();}
@@ -676,6 +683,7 @@ public:
 
     //! Load a XStringMap with parameters from the Txt Record
     /*! It is assumed that the Txt Record has already been received.
+     *
      *  After loading XStringMap is successfull it contains the parameters from the Txt Record,
      *  e.g. Arn::XStringMap::toXString() can return "protovers=1.0 MyParam=xyz".
      *  \param[out] xsm is the loaded XStringMap if successfull, otherwise undefined.
@@ -687,6 +695,7 @@ public:
 
     //! Return the Txt Record for this Zero Config
     /*! It is assumed that the Txt Record has already been received.
+     *
      *  The binary format should be the standardized from the Zeroconfig specification.
      *  \return The Txt Record (in binary format)
      *  \see getTxtRecordMap()
@@ -697,6 +706,7 @@ public:
     //! Resolve the service
     /*! Tries to resolve the service to determine the host and port necessary to establish
      *  a connection.
+     *
      *  Result is indicated by resolved() and resolveError() signals.
      *  \param[in] forceMulticast when true, ArnZeroConfResolv will use a multicast request
      *                            to resolve the service, even if the host name is a unicast
@@ -771,6 +781,7 @@ public:
 
     //! Sets the id number for this this lookup
     /*! This id can be used to identify different lookup:s when using a common handler.
+     *
      *  When not set, it will be automatically asigned during lookup().
      *  \param[in] id the id number
      *  \see id()
@@ -778,8 +789,7 @@ public:
     void setId(int id);
 
     //! Returns the host name for this Lookup
-    /*! Usually hostname contain domain, e.g. "myserver.local" but it can also be "myserver".
-     *  \return current host name (se above)
+    /*! \return current host name
      *  \see setHost()
      */
     QString  host()  const
@@ -801,6 +811,7 @@ public:
 
     //! Lookup the host address
     /*! Tries to lookup the host address necessary to establish a connection.
+     *
      *  Result is indicated by lookuped() and lookupError() signals.
      *  \param[in] forceMulticast when true, ArnZeroConfLookup will use a mDns request
      *                            to lookup the host address, even if the host name is a
@@ -823,7 +834,9 @@ public:
 
     //! Set Force using Qt for DNS lookup
     /*! If mDns lookup doesn't work for a platform, try force using Qt:s built
-     *  in DNS-lookup. This is a global setting for all instances of ArnZeroConfLookup.
+     *  in DNS-lookup.
+     *
+     *  This is a global setting for all instances of ArnZeroConfLookup.
      *  \param[in] isForceQtDnsLookup
      *  \see isForceQtDnsLookup()
      */
@@ -903,6 +916,7 @@ public:
 
     //! Constructor of an ArnZeroConfBrowser object
     /*! All needed parameters for browsing a service.
+     *
      *  The service type can be a name or the standard format used by the
      *  Zeroconf specification, e.g. "_arn._tcp".
      *  \param[in] serviceType the service type, e.g. "arn" or "_arn._tcp".

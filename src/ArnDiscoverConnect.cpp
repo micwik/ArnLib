@@ -113,15 +113,15 @@ void  ArnDiscoverConnector::setResolveRefreshTimeout( int resolveRefreshTimeout)
 }
 
 
-int  ArnDiscoverConnector::resolvHostPrio()  const
+int  ArnDiscoverConnector::discoverHostPrio()  const
 {
     return _discoverHostPrio;
 }
 
 
-void  ArnDiscoverConnector::setResolvHostPrio( int resolvHostPrio)
+void  ArnDiscoverConnector::setDiscoverHostPrio( int discoverHostPrio)
 {
-    _discoverHostPrio = resolvHostPrio;
+    _discoverHostPrio = discoverHostPrio;
 }
 
 

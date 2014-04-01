@@ -673,22 +673,22 @@ protected:
 protected slots:
     //! Post setup routine called from base class
     /*! Can be derived for special setup.
-     *  Note: This base method must be called from derived method.
      *  \param[in] service is the service name.
+     *  \note This base method must be called from derived method.
      */
     virtual void  postSetupThis();
 
     //! Service registration callback
     /*! Can be derived for special notifying.
-     *  Note: This base method must be called from derived method.
      *  \param[in] serviceName is the service name registered.
+     *  \note This base method must be called from derived method.
      */
     virtual void  serviceRegistered( QString serviceName);
 
     //! Service registration error callback
     /*! Can be derived for special notifying.
-     *  Note: This base method must be called from derived method.
      *  \param[in] code is the error code.
+     *  \note This base method must be called from derived method.
      */
     virtual void  serviceRegistrationError( int code);
     //! \endcond
