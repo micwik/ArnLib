@@ -550,8 +550,8 @@ public:
     //! Set service discover groups used for filter browsing
     /*! Groups are used for filtering discovered services. They will also be availabe
      *  as properties with naming as "group0", "group1" ...
-     *  Groups must be set before calling advertiseService().
      *  \param[in] groups e.g. ("mydomain.se", "mydomain.se/House", "Any Group ID")
+     *  \note Groups must be set before calling advertiseService().
      *  \see groups()
      *  \see ArnDiscoverBrowser::setFilter()
      */
@@ -559,6 +559,7 @@ public:
 
     //! Add a service discover group
     /*! \param[in] group e.g. "Any Group ID"
+     *  \note Groups must be set before calling advertiseService().
      *  \see setGroups()
      */
     void  addGroup( const QString& group);
@@ -592,6 +593,7 @@ public:
     //! Start advertising the service
     /*! Tries to advertise the service on the local network.
      *  Result is indicated by serviceChanged() and serviceChangeError() signals.
+     *
      *  Empty _serviceName_ will be ignored, no advertising until using setService() with
      *  non empty name.
      *  \param[in] discoverType is used for discover filtering
@@ -615,10 +617,12 @@ public:
 
     //! Set service custom properties
     /*! This is only the customer (application) properties, as there also are some
-     *  Arn system properties. These custom properties are advised to have a key starting
+     *  Arn system properties.
+     *
+     *  These custom properties are advised to have a key starting
      *  with a capital letter to avoid name collision with the system.
-     *  Properties must be set before calling advertiseService().
      *  \param[in] customProperties e.g. Arn::XStringMap().add("MyProp", "my data")
+     *  \note Properties must be set before calling advertiseService().
      *  \see customProperties()
      *  \see addCustomProperty()
      *  \see ArnDiscoverInfo::properties()
@@ -630,6 +634,7 @@ public:
      *  avoid name collision with the system.
      *  \param[in] key property key (Start with capital letter) e.g. "MyProp"
      *  \param[in] val property value kan be any text e.g. "my data"
+     *  \note Properties must be set before calling advertiseService().
      *  \see setCustomProperties()
      */
     void  addCustomProperty( const QString& key, const QString& val);
@@ -652,8 +657,10 @@ public slots:
     //! Set the service name
     /*! Will update current advertised service name if this advertiser has been setup,
      *  otherwise the service name is stored for future use.
+     *
      *  Service names can be any human readable id. It should be easy to understand,
-     *  without any cryptic coding, and can usually be modified by the end user.
+     *  without any cryptic coding, and can usually be modified by the end user
+     *.
      *  Empty name is ignored. The requested service name is not guaranted to be used
      *  for advertise, as it has to be unique within this local network. The realy used
      *  name comes with the serviceChanged() signal and currentService().

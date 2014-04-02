@@ -215,6 +215,16 @@ The client can then decide the exact objects of interest. <Br>
 Note: Normally "//" is used for global (shared). See [naming conventions](#gen_naming).
 <Br><Br>
 
+### Dynamic port ###    {#gen_dynamicPort}
+An ArnServer can be created with _port_ set to 0. This will be handled as a _dynamic port_
+and the system will assign a free _port number_ to the server. The _port number_ will be
+taken from a range specified by IANA.
+
+This can typically be used to skip configuring static port numbers and be able to have
+multiple instanses of the ArnServer on the same machine. As an ArnClient must find its
+ArnServer, this can be used together with ArnDiscoverRemote / ArnDiscover.
+<Br><Br>
+
 
 RPC and SAPI    {#gen_rpc}
 ------------
@@ -295,29 +305,104 @@ For special cases, like empty elements, the _le_ (list element) is needed. The e
 below has a first empty element followed by "green".
 > test list= le= green blue int=2
 
-The built-in call "$help" will give an automatically generated list of the present SAPI with the syntax for each available service.
+The built-in call "$help" will give an automatically generated list of the present SAPI
+with the syntax for each available service.
 <Br><Br>
 
 
 ZeroConfig    {#gen_zeroconf}
 ----------
-tbd
+For getting a basic understanding of ZeroConfig and further references to relevant
+documentation, see: http://zeroconf.org/
+
+_Arn ZeroConfig_ is the lowest level support for advertising and discovering services on
+an local network. The implementation has very few dependences to the rest of the ArnLib.
+
+_Arn ZeroConfig_ can use a built in implementation of Apple (R) _mDns_ / _DNS_SD_ that has no
+further dependences to external libraries. For _mDns_ the low end system abstraction layer
+has been written to use Qt for portability. The higher level _DNS_SD_ has wrappers written
+to give a good c++ / Qt API.
+
+It's also possible to use an external _DNS_SD_ library, like _Avahi_. This gives better
+performance when many applications uses ZeroConfig on the same machine, as they share
+cashing etc with a common daemon. However you have to deal with this external dependency.
+
+_Arn ZeroConfig_ implementation has two parts. The ArnZeroConfRegister can be used to
+advertise any _service_ given a _host address_ and a _port number_. The other part is the
+ArnZeroConfBrowser / ArnZeroConfResolve / ArnZeroConfLookup. The browser is used to get a
+realtime list of available _services_ on the network. The resolver takes a given _service_
+and resolves it into its _host name_ and _port number_. Finally ArnZeroConfLookup takes
+a given _host name_ and makes a DNS (mDNS) lookup to get its ip-address. Each of these
+classes are stand alone and has to be combined with glue logic for the complete process.
+
+A service has a _service type_, that preferably should be registered at IANA. Examples of
+_service types_ are "http", "ftp" and "arn". This type is mandatory when advertising a
+_service_. Also the _service_ must have a _service name_.
+<Br><Br>
+
+### Service name ###    {#gen_zeroconfServiceName}
+_Service names_ can be any human readable id. It should be easy to understand, without
+any cryptic coding. There should not be any attempts to make the _service name_ unique
+as this is taken care of by the ZeroConfig system. It's common that the _service name_
+can be modified by the end user. The default starting name could be some system or product
+name. Example of _service name_: "My House Registry".
+<Br><Br>
+
+### Sub types ###    {#gen_zeroconfSubTypes}
+_Services_ can also have _sub types_. These are identifiers that can be used to filter out
+some sub group from a specific _service type_. All _services_ having the same _service type_
+must still have some common protocol even if they belong to different _sub types_.
+A _service_ can be advertised with many _sub types_, but browsing can only be filtered
+with one _sub type_ or with no filter.
+<Br><Br>
+
+### Text record ###    {#gen_zeroconfTextRecord}
+It's possible to add a _text record_ to a _service_. The format of this record is specified
+by IANA. The purpose is to store properties by a _key_ / _value_ -pair. For convenience
+this can be done with ArnZeroConfRegister::setTxtRecordMap() using an Arn::XStringMap.
 <Br><Br>
 
 
 Discover    {#gen_discover}
 --------
-tbd
+_Arn Discover_ is the mid level support for advertising and discovering services on
+an local network. This implementation is only for the "arn" _service type_, heavily
+dependent on the ArnLib. The "arn" _service type_ is approved and registered by IANA.
+
+_Arn ZeroConfig_ implementation has two parts. The ArnDiscoverAdvertise can be used to
+advertise an Arn _service_ given a _host address_ and a _port number_. The other part is
+the ArnDiscoverBrowser / ArnDiscoverResolver. The browser is used to get a realtime list
+of available Arn _services_ on the network. The resolver is for taking a manual resolve
+when a _service name_ is known in advance.
+
+_Arn Discover_ is designed to minimize external glue logic as these classes do all the
+common processing. Internally _Arn ZeroConfig_ is used, but focus is on solving Arn
+specific needs in a flexible manner.
+
+An _Arn service_ needs a ArnDiscover::Type and  a [service name](\ref gen_zeroconfServiceName).
+The ArnDiscover::Type sets up a coarse division of the applications into the _groups_
+"server" and "client". The "client" typically only offer the service of ArnDiscoverRemote.
+
+_Arn services_ can also have _groups_. These are identifiers that can be used to filter out
+some sub group. An _Arn service_ can be advertised with many _groups_, but browsing can only be
+filtered with one _group_ or with no filter.
+
+It's possible to add a _custom property_ to an _Arn service_. this can be done with
+ArnDiscoverAdvertise::setCustomProperties() using an Arn::XStringMap. The propertie has a
+_key_ / _value_ -pair. The custom property are advised to have a _key_ starting with a
+capital letter to avoid name collision with the system.
+The added _groups_ will be set as properties with naming as "group0", "group1" ...
 <Br><Br>
 
 ### Discover remote ###    {#gen_discoverRemote}
 Connecting via resolver uses logic:
-* If connection fails for a resolved host, resolving is forced to be refreshed for the target service name.
-  Host for the service name might have changed since last resolved and doing a refresh can get the new host.
+* If connection fails for a resolved host, resolving is forced to be refreshed for the target
+  service name. Host for the service name might have changed since last resolved and doing a
+  refresh can get the new host.
 
-* If connection continues to fail for a resolved host, refreshing the resolv will have a blocking time to
-  avoid spamming the net. Typically this time is 60 seconds, but it can be changed by
-  ArnDiscoverConnector::setResolveRefreshTimeout().
+* If connection continues to fail for a resolved host, refreshing the resolv will have a
+  blocking time to avoid spamming the net. Typically this time is 60 seconds, but it can be
+  changed by ArnDiscoverConnector::setResolveRefreshTimeout().
 <Br><Br>
 
 

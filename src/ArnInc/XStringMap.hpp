@@ -52,10 +52,10 @@ storing, i.e. its not sorted like QMaps.
 
 The stored data can be ascii as well as binary.
 
-Following mapping is done when serialized to the XString.
-Special codes below 32: code 0 -> "\0",  code 10 -> "\n", code 13 -> "\r"
-General codes below 32: code 1 -> "^A", code 2 -> "^B" and so on to code 31
-code 32 (space) -> "_", "_" -> "\_", "^" -> "\^", "\" -> "\\"
+Following mapping is done when serialized to the XString:
+> Special codes below 32: code 0 -> "\0",   code 10 -> "\n",  code 13 -> "\r"    <Br>
+> General codes below 32: code 1 -> "^A",  code 2 -> "^B"  and so on to code 31  <Br>
+> code 32 (space) -> "_",  "_" -> "\\_",  "^" -> "\^",  "\" -> "\\"              <Br>
 
 The XString can be imported to the XStringMap. To get back stored values,
 XStringMap is Queried with the keys or by index.
