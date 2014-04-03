@@ -366,10 +366,10 @@ this can be done with ArnZeroConfRegister::setTxtRecordMap() using an Arn::XStri
 Discover    {#gen_discover}
 --------
 _Arn Discover_ is the mid level support for advertising and discovering services on
-an local network. This implementation is only for the "arn" _service type_, heavily
+an local network. This implementation is only for the "arn" _service type_ and is heavily
 dependent on the ArnLib. The "arn" _service type_ is approved and registered by IANA.
 
-_Arn ZeroConfig_ implementation has two parts. The ArnDiscoverAdvertise can be used to
+_Arn Discover_ implementation has two parts. The ArnDiscoverAdvertise can be used to
 advertise an Arn _service_ given a _host address_ and a _port number_. The other part is
 the ArnDiscoverBrowser / ArnDiscoverResolver. The browser is used to get a realtime list
 of available Arn _services_ on the network. The resolver is for taking a manual resolve
@@ -377,9 +377,9 @@ when a _service name_ is known in advance.
 
 _Arn Discover_ is designed to minimize external glue logic as these classes do all the
 common processing. Internally _Arn ZeroConfig_ is used, but focus is on solving Arn
-specific needs in a flexible manner.
+specific needs in a powerful, yet flexible manner.
 
-An _Arn service_ needs a ArnDiscover::Type and  a [service name](\ref gen_zeroconfServiceName).
+An _Arn service_ needs an ArnDiscover::Type and a [service name](\ref gen_zeroconfServiceName).
 The ArnDiscover::Type sets up a coarse division of the applications into the _groups_
 "server" and "client". The "client" typically only offer the service of ArnDiscoverRemote.
 
@@ -387,14 +387,42 @@ _Arn services_ can also have _groups_. These are identifiers that can be used to
 some sub group. An _Arn service_ can be advertised with many _groups_, but browsing can only be
 filtered with one _group_ or with no filter.
 
-It's possible to add a _custom property_ to an _Arn service_. this can be done with
+It's possible to add a _custom property_ to an _Arn service_. This can be done with
 ArnDiscoverAdvertise::setCustomProperties() using an Arn::XStringMap. The propertie has a
 _key_ / _value_ -pair. The custom property are advised to have a _key_ starting with a
 capital letter to avoid name collision with the system.
 The added _groups_ will be set as properties with naming as "group0", "group1" ...
+
+ArnDiscoverBrowser collects found Arn _services_. Each of these _services_ can automatically
+be further examined. This is chosen by calling ArnDiscoverBrowserB::setDefaultStopState(),
+which e.g. tells examination to stop after _host name_ has been found. The _service_ can
+then manually be ordered for further examination by ArnDiscoverBrowserB::goTowardState(),
+e.g. examination should now stop after _host ip_ is found.
+
+All the information about a _service_ is stored in ArnDiscoverInfo. Found _services_ can
+be accessed by index, id or _service name_. Increasing index, starting at 0, gives a list
+of _services_ alfabetically sorted by _service name_. The index is kind of volatile and
+should be used instantly, not be stored. The id gives a unique number for each service and
+can be stored. However the _service_ given by the id might dissapear.
 <Br><Br>
 
 ### Discover remote ###    {#gen_discoverRemote}
+_Arn Discover Remote_ is the highest level support for advertising and discovering services
+on an local network.
+**** This implementation is only for the "arn" _service type_ and is heavily
+dependent on the ArnLib. The "arn" _service type_ is approved and registered by IANA.
+
+_Arn Discover Remote_ implementation has two parts. The ArnDiscoverAdvertise can be used to
+advertise an Arn _service_ given a _host address_ and a _port number_. The other part is
+the ArnDiscoverBrowser / ArnDiscoverResolver. The browser is used to get a realtime list
+of available Arn _services_ on the network. The resolver is for taking a manual resolve
+when a _service name_ is known in advance.
+
+_Arn Discover_ is designed to minimize external glue logic as these classes do all the
+common processing. Internally _Arn ZeroConfig_ is used, but focus is on solving Arn
+specific needs in a powerful, yet flexible manner.
+
+
 Connecting via resolver uses logic:
 * If connection fails for a resolved host, resolving is forced to be refreshed for the target
   service name. Host for the service name might have changed since last resolved and doing a
