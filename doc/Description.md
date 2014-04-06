@@ -20,6 +20,9 @@ The empty folder name can also be referred as "@". Again, the example can equall
 "/@/Measure/Water/Temperature/value". This "@" is typically used when an empty name is
 unacceptable, e.g. in the tree viewer of ArnBrowser.
 
+A relative path is also called the [local path](#gen_localPath), e.g.
+"Sys/Discover/This/Service/value".
+
 Each part in a given path is dynamically added as needed, i.e. any path can be used without
 explicitly creating each folder in advance.
 <Br><Br>
@@ -64,20 +67,41 @@ Note: It's convenient to always set all the needed modes before an ArnItem is op
 an ArnItem is used as a template. See ArnItem::setTemplate().
 <Br><Br>
 
+### Local path ###    {#gen_localPath}
+A relative path is also called the _local path_, e.g. the
+[Discover remote](#gen_discoverRemote) _service name_ at path
+"Sys/Discover/This/Service/value". The _local path_ is mapped to the absolute path
+"/Local/". The example is then equal to "/local/Sys/Discover/This/Service/value". The
+_local path_ should not be [shared](#gen_shareArnobj) as it will contain specific data
+for its running program.
+
+The exception to not sharing _local path_ is for some kind of remote client that must
+be able to change an _Arn Data Object_ in the _local path_ at the remoted target.
+For example this is used to change the [Discover remote](#gen_discoverRemote) _service name_
+for a target host.
+
+Following must be observed at remote client when sharing _local path_:
+
+* use ArnM::setSkipLocalSysLoading()
+* Don't put anything in _local path_, that should't end up in the shared target host.
+* Don't use ArnDiscoverRemote or ArnDiscoverConnector.
+* This unwanted exception design will be addressed in a future version of ArnLib.
+<Br><Br>
+
 ### Naming conventions ###    {#gen_naming}
 These rules must not be obeyed, but are recommended, to get the most benefits of the
 Arn echo system, like ArnBrowser.
 
-* First level folder not empty, e.g "/MyLocalFolder/Key/value", is a local path and is
-  not [shared](#gen_shareArnobj).
 * First level folder empty, e.g. "//MyGlobalFolder/Date/value", is a global path and is
   [shared](#gen_shareArnobj) to server and clients.
+* First level folder not empty, e.g "/MyLocalFolder/Key/value", is a local path and is
+  not [shared](#gen_shareArnobj).
 * When a leaf is used as an attribute, the following names are reserved:
     + **value** the value of the above closest folder denotation, e.g. "Temperature".
     + **set** allowed values and conversion to a more descriptive form, e.g. "0=Off 1=On".
     + **property** like precision and unit, e.g. "prec=1 unit=°C".
     + **info** like tool tips, e.g. "<tt\>Standard UV radiation index</tt\>".
-    + **help.**XXX like "help.html" contains help in xhtml format.
+    + **help.**XXX like "help.xhtml" contains help in xhtml format.
 <Br><Br>
 
 
@@ -154,8 +178,15 @@ from the receiving part to block uncontrolled assignment from one side of the pi
 
 Persistent Arn Data Objects    {#gen_persistArnobj}
 ---------------------------
-The _server_ must use ArnPersist to support the persistance service. As a standard,
-objects are stored in a SQLite database. It's also possible to store each object as a file.
+The _server_ must use ArnPersist to support the persistance service. As a standard
+_persist storage_, _Arn Data Objects_ are stored in a SQLite database. It's also possible to
+store each object as a file.
+
+The _mount point_ (path) for collecting the persistent _Arn Data objects_ is set by
+ArnPersist::setMountPoint(). For server applications this is typically set to "/", which
+makes all _Arn Data Objects_ potential persistent. In client applications the _mount point_
+is typically restricted to Arn::pathLocal, which only saves local _Arn Data Objects_ in the
+local _persist storage_.
 
 Any connected _client_ or the _server_ can make an _Arn Data Object_ persistent.
 It's just to open an ArnItem to the object and change _mode_ to _Save_.
@@ -406,30 +437,64 @@ should be used instantly, not be stored. The id gives a unique number for each s
 can be stored. However the _service_ given by the id might dissapear.
 <Br><Br>
 
-### Discover remote ###    {#gen_discoverRemote}
+
+Discover remote    {#gen_discoverRemote}
+---------------
 _Arn Discover Remote_ is the highest level support for advertising and discovering services
-on an local network.
-**** This implementation is only for the "arn" _service type_ and is heavily
-dependent on the ArnLib. The "arn" _service type_ is approved and registered by IANA.
+on an local network. Its implementation is based on _Arn Discover_. The added functionality
+is to have a remote control for both advertising an ArnServer and multiple ArnClient
+connections. The remote control is done via _Arn Data Objects_ in [local path](#gen_localPath)
+"Sys/Discover/".
 
-_Arn Discover Remote_ implementation has two parts. The ArnDiscoverAdvertise can be used to
-advertise an Arn _service_ given a _host address_ and a _port number_. The other part is
-the ArnDiscoverBrowser / ArnDiscoverResolver. The browser is used to get a realtime list
-of available Arn _services_ on the network. The resolver is for taking a manual resolve
-when a _service name_ is known in advance.
+_Arn Discover Remote_ has one main class, ArnDiscoverRemote which act as a central point.
+The ArnDiscoverRemote class also takes an ArnServer and advertises it as a _service_. For
+remote control the _service name_ is available at [local path](#gen_localPath)
+"Sys/Discover/This/Service/value".
 
-_Arn Discover_ is designed to minimize external glue logic as these classes do all the
-common processing. Internally _Arn ZeroConfig_ is used, but focus is on solving Arn
-specific needs in a powerful, yet flexible manner.
+ArnDiscoverRemote can make an internal ArnServer, when there is no need to access the
+ArnServer class. This is usually the case in an client application. The ArnServer is then
+merely used to make the discover functionality remote controlled.
 
+Remote controlled client connections can be added. Each ArnClient is handled by an
+ArnDiscoverConnector instance, which is made by ArnDiscoverRemote::newConnector().
+Connections can be added to ArnDiscoverConnector, both as a _direct host_ list and a
+_discover host_.
 
-Connecting via resolver uses logic:
-* If connection fails for a resolved host, resolving is forced to be refreshed for the target
-  service name. Host for the service name might have changed since last resolved and doing a
-  refresh can get the new host.
+The _discover host_ is indirerctly set, by adding an ArnDiscoverResolver to
+ArnDiscoverConnector. A _service name_ can then be resolved into the _discover host_.
 
-* If connection continues to fail for a resolved host, refreshing the resolv will have a
-  blocking time to avoid spamming the net. Typically this time is 60 seconds, but it can be
+The two connection methods can coexist and as standard the _discover host_ has lower
+priority number than _direct host_, i.e. _discover host_ is tried first.
+
+The ArnDiscoverConnector is associated with an _id_, which should be chosen to describe the
+client target or its purpose. It's not a host address or necessarily a specific host, as
+there can be many possible addresses assigned to the ArnDiscoverConnector.
+
+The _id_ will appear as an _Arn folder_ in [local path](#gen_localPath), e.g. when _id_ is
+"WeatherData-XYZ" the folder path will be "Sys/Discover/Connect/WeatherData-XYZ/". The
+folder and its sub folders will contain _Arn Data Objects_ to remote control the ArnClient.
+For a more comprehensive description of these objects, see
+[help discover description](@ref helpDiscDiscover).
+
+In the above example, a _discover host_ can be remote controlled by setting the
+_service name_ in [local path](#gen_localPath)
+"Sys/Discover/Connect/WeatherData-XYZ/DiscoverHost/Service/value", e.g. to
+"Region Weather XYZ".
+
+Also in the above example, the first _direct host_ can be remote controlled by setting the
+_host name_ in [local path](#gen_localPath)
+"Sys/Discover/Connect/WeatherData-XYZ/DirectHosts/Host-0/value", e.g. to "localhost".
+
+Normally it's wanted that any remote set values in the [local path](#gen_localPath) remains
+after power cycling. This is supported by the [Arn persist system](#gen_persistArnobj).
+
+Connecting via resolver uses the logic:
+* If connection fails for a _discover host_, resolving is forced to be refreshed for the
+  target _service name_. The Host for the _service name_ might have changed since last
+  resolved and doing a refresh can get the new _discover host_.
+
+* If connection continues to fail for a _discover host_, refreshing the resolv will have a
+  blocking time to avoid spamming the net. Typically this time is 30 seconds, but it can be
   changed by ArnDiscoverConnector::setResolveRefreshTimeout().
 <Br><Br>
 

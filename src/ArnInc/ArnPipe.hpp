@@ -49,11 +49,14 @@ class ARNLIBSHARED_EXPORT ArnPipe : public ArnItemB
 
 public:
     //! Standard constructor of a closed handle
+    /*! \param[in] parent
+     */
     ArnPipe( QObject* parent = 0);
 
     //! Construction of a pipe handle to a _path_
     /*! The mode for this handle is set to Arn::ObjectMode::Pipe.
      *  \param[in] path The _Arn Data Object_ path e.g. "//Pipes/myPipe/value"
+     *  \param[in] parent
      *  \see open()
      */
     ArnPipe( const QString& path, QObject* parent = 0);

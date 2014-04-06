@@ -660,7 +660,7 @@ public slots:
      *
      *  Service names can be any human readable id. It should be easy to understand,
      *  without any cryptic coding, and can usually be modified by the end user
-     *.
+     *
      *  Empty name is ignored. The requested service name is not guaranted to be used
      *  for advertise, as it has to be unique within this local network. The realy used
      *  name comes with the serviceChanged() signal and currentService().

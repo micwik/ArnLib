@@ -67,6 +67,7 @@ public:
 
     //! Create an Arn _server_ object
     /*! \param[in] serverType For now only _NetSync_ is available.
+     *  \param[in] parent
      */
     ArnServer( Type serverType, QObject *parent = 0);
 

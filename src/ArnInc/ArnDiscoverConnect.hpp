@@ -180,8 +180,8 @@ public slots:
      *  service name is only stored for future use.
      *
      *  For remote control the service name is also available as an _Arn Data Object_ at
-     *  local path: _connector folder path_ + "Service",
-     *  e.g. "Sys/Discover/Connect/WeatherData-XYZ/Service".
+     *  [local path](\ref gen_localPath): _connector folder path_ + "Service/value",
+     *  e.g. "Sys/Discover/Connect/WeatherData-XYZ/Service/value".
      *  \param[in] service is the requested connection service name e.g. "My House Registry"
      *  \see ArnDiscoverAdvertise::setService()
      */

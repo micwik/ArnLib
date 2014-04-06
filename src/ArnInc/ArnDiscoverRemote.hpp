@@ -116,11 +116,10 @@ public:
      *  network.
      *
      *  This method is typically used when there is no need to access the ArnServer class,
-     *  which usually is the case in an client application. The ArnServer is then mostly
-     *  used to make the discover functionaly remote controlled.
+     *  which usually is the case in an client application. The ArnServer is then merely
+     *  used to make the discover functionality remote controlled.
      *
      *  All the functionaly from startUseServer() do apply.
-     *  \param[in] arnServer is the ArnServer to be advertised
      *  \param[in] discoverType is used for discover filtering
      *  \param[in] port is the port of the service,
      *                  -1 gives Arn::defaultTcpPort, 0 gives [dynamic port](\ref gen_dynamicPort)
@@ -166,7 +165,7 @@ public slots:
      *  otherwise the service name is stored for future use.
      *
      *  For remote control the service name is also available as an _Arn Data Object_ at
-     *  local path "Sys/Discover/This/Service".
+     *  [local path](\ref gen_localPath) "Sys/Discover/This/Service/value".
      *
      *  All the functionaly from ArnDiscoverAdvertise::setService() apply.
      *  \param[in] service is the requested service name e.g. "My House Registry"

@@ -85,7 +85,7 @@ For example MSVC with nmake:
 > nmake install
 
 The examples is built this way:
-> cd examples\ArnDemoChat <Br>
+> cd examples\\ArnDemoChat <Br>
 > qmake ArnDemoChat.pro <Br>
 > nmake
 
@@ -109,7 +109,7 @@ Check if you can execute "make" or something like "mingw32-make".
 > make install
 
 The examples is built this way:
-> cd examples\ArnDemoChat <Br>
+> cd examples\\ArnDemoChat <Br>
 > qmake ArnDemoChat.pro <Br>
 > make
 

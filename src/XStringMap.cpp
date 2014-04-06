@@ -717,6 +717,7 @@ void  XStringMap::checkSpace()
 }
 
 
+#ifndef DOXYGEN_SKIP
 void  XStringMapTest()
 {
     XStringMap  xsm;
@@ -742,5 +743,6 @@ void  XStringMapTest()
         qDebug() << xsm2.key( i) << " = " << xsm2.value( i);
     }
 }
+#endif
 
 }  // Arn::

@@ -157,6 +157,7 @@ class ARNLIBSHARED_EXPORT ArnPersist : public QObject
 public:
     explicit ArnPersist( QObject* parent = 0);
     ~ArnPersist();
+
     //! Set the persistent enabled tree path
     /*! Mountpoint is a folder. When an _Arn Data Object_ change to _Save_ mode in this
      *  folder or anywhere below in the tree, it will be treated as a persistent object.

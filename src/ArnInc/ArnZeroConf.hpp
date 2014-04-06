@@ -368,6 +368,7 @@ class ARNLIBSHARED_EXPORT ArnZeroConfRegister : public ArnZeroConfB
 public:
     //! Standard constructor of an ArnZeroConfRegister object
     /*! The service name can be automatically generated based on the system's hostname.
+     *  \param[in] parent
      */
     ArnZeroConfRegister( QObject* parent = 0);
 
@@ -376,6 +377,7 @@ public:
      *  this computer.
      *  \param[in] serviceName the human readable naming of the service,
      *                         e.g. "My fantastic service".
+     *  \param[in] parent
      */
     ArnZeroConfRegister( const QString& serviceName, QObject* parent = 0);
 
@@ -388,6 +390,7 @@ public:
      *                         e.g. "My fantastic service".
      *  \param[in] serviceType the service type, e.g. "arn" or "_arn._tcp".
      *  \param[in] port the service port num
+     *  \param[in] parent
      */
     ArnZeroConfRegister( const QString& serviceName, const QString& serviceType, quint16 port,
                          QObject* parent = 0);
@@ -406,7 +409,7 @@ public:
     {return ArnZeroConfB::subTypes();}
 
     //! Sets the list of current subtypes
-    /*! \param[in] subTypes The new list of subtypes, e.g. ("myGroup1", "myGroup2")
+    /*! \param[in] subtypes The new list of subtypes, e.g. ("myGroup1", "myGroup2")
      *  \see subTypes()
      *  \see addSubType()
      *  \see ArnZeroConfBrowser::setSubType()
@@ -415,7 +418,7 @@ public:
     {ArnZeroConfB::setSubTypes( subtypes);}
 
     //! Add a subtype to the list of current subtypes
-    /*! \param[in] subType the subtype to add, e.g. "myGroup1"
+    /*! \param[in] subtype the subtype to add, e.g. "myGroup1"
      *  \see subTypes()
      *  \see setSubTypes()
      */
@@ -611,7 +614,7 @@ class ARNLIBSHARED_EXPORT ArnZeroConfResolve : public ArnZeroConfB
     Q_OBJECT
 public:
     //! Standard constructor of an ArnZeroConfResolv object
-    /*!
+    /*! \param[in] parent
      */
     ArnZeroConfResolve( QObject* parent = 0);
 
@@ -619,6 +622,7 @@ public:
     /*! All needed parameters for an "arn" service type.
      *  \param[in] serviceName the human readable naming of the service,
      *                         e.g. "My fantastic service".
+     *  \param[in] parent
      */
     ArnZeroConfResolve( const QString& serviceName, QObject* parent = 0);
 
@@ -630,6 +634,7 @@ public:
      *  \param[in] serviceName the human readable naming of the service,
      *                         e.g. "My fantastic service".
      *  \param[in] serviceType the service type, e.g. "arn" or "_arn._tcp".
+     *  \param[in] parent
      */
     ArnZeroConfResolve( const QString& serviceName, const QString& serviceType, QObject* parent = 0);
 
@@ -759,12 +764,15 @@ class ARNLIBSHARED_EXPORT ArnZeroConfLookup : public ArnZeroConfB
     friend class ArnZeroConfIntern;
     Q_OBJECT
 public:
-    //! Standard constructor of an ArnZeroConfLookup object
+    //! Standard constructor of an ArnZeroConfLookup object    
+     /*! \param[in] parent
+      */
     ArnZeroConfLookup( QObject* parent = 0);
 
     //! Constructor of an ArnZeroConfLookup object
     /*! All needed parameters for a lookup of a host.
      *  \param[in] hostName the name of the host.
+     *  \param[in] parent
      */
     ArnZeroConfLookup( const QString& hostName, QObject* parent = 0);
 
@@ -911,6 +919,7 @@ class  ARNLIBSHARED_EXPORT ArnZeroConfBrowser : public ArnZeroConfB
 public:
     //! Standard constructor of an ArnZeroConfBrowser object
     /*! All needed for browsing an "arn" service type.
+     *  \param[in] parent
      */
     ArnZeroConfBrowser( QObject* parent = 0);
 
@@ -920,6 +929,7 @@ public:
      *  The service type can be a name or the standard format used by the
      *  Zeroconf specification, e.g. "_arn._tcp".
      *  \param[in] serviceType the service type, e.g. "arn" or "_arn._tcp".
+     *  \param[in] parent
      */
     ArnZeroConfBrowser( const QString& serviceType, QObject* parent = 0);
 
@@ -1017,7 +1027,7 @@ signals:
     void  serviceRemoved( int id, const QString& serviceName, const QString& domain);
 
     //! Indicate unsuccessfull browsing
-    /*! \param[in] code error code.
+    /*! \param[in] errorCode
      *  \see browse()
      */
     void  browseError( int errorCode);

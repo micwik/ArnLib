@@ -73,10 +73,13 @@ class ARNLIBSHARED_EXPORT ArnItem : public ArnItemB
 
 public:
     //! Standard constructor of a closed handle
+    /*! \param[in] parent
+     */
     ArnItem( QObject* parent = 0);
 
     //! Construction of a handle to a path
     /*! \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
+     *  \param[in] parent
      *  \see open()
      */
     ArnItem( const QString& path, QObject* parent = 0);
@@ -84,6 +87,7 @@ public:
     //! Construction of a handle to a path with a template for _modes_
     /*! \param[in] itemTemplate The template for setting _modes_
      *  \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
+     *  \param[in] parent
      */
     ArnItem( const ArnItem& itemTemplate, const QString& path, QObject* parent = 0);
 

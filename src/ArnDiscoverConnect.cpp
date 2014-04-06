@@ -47,7 +47,7 @@ ArnDiscoverConnector::ArnDiscoverConnector( ArnClient& client, const QString& id
     _id     = id;
     _discoverHostPrio      = 1;
     _directHostPrio        = 2;
-    _resolveRefreshTimeout = 60;
+    _resolveRefreshTimeout = 30;
     _directHosts           = new QObject( this);
     _directHosts->setObjectName("dirHosts");
     _hasBeenSetupClient    = false;

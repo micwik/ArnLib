@@ -176,11 +176,10 @@ private:
     QByteArray  _nullValue;
 };
 
-    //! \cond ADV
 
+#ifndef DOXYGEN_SKIP
 void XStringMapTest();
-
-    //! \endcond
+#endif
 
 }  // Arn::
 

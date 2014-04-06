@@ -181,7 +181,6 @@ public:
                              bool* isNewPtr = 0);
     //! \endcond
 
-
 signals:
     //! Signal emitted when a connection tcp error occur.
     /*! \param[in] errorText is the human readable description of the error.
