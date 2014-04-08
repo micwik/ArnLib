@@ -57,6 +57,7 @@ QString  convertName( const QString& name, NameF nameF)
 }
 
 
+#ifndef DOXYGEN_SKIP
 QString  convertBaseName( const QString& name, NameF nameF)
 {
     QString  retVal("");
@@ -68,6 +69,7 @@ QString  convertBaseName( const QString& name, NameF nameF)
 
     return retVal;
 }
+#endif
 
 
 QString  fullPath( const QString& path)

@@ -91,28 +91,100 @@ public:
     ArnDiscoverInfo();
 
     //! Is discover in progress for this service
-    /*! \retval true, if discover is in progress
+    /*! \retval true if discover is in progress
      *  \see state()
      */
     bool  inProgress()  const;
 
-    //! Is discover in progress for this service
-    /*! \retval true, if discover is in progress
+    //! Is in an error state for this service
+    /*! \retval true if in error state
      *  \see state()
      */
     bool  isError()  const;
+
+    //! Return the state for this service
+    /*! \return state
+     *  \see State
+     */
     State  state()  const;
+
+    //! Return the stop state for this service
+    /*! The discover logic will stop when reaching the stop state for a service.
+     *  \return stop state
+     *  \see ArnDiscoverBrowserB::setDefaultStopState()
+     *  \see ArnDiscoverBrowserB::goTowardState()
+     *  \see State
+     */
     State  stopState()  const;
+
+    //! Return the discover type for this service
+    /*! \return discover type
+     *  \see Type
+     *  \see ArnDiscoverAdvertise::advertiseService()
+     */
     ArnDiscover::Type type()  const;
-    QString  group()  const;
+
+    //! Return the groups for this service
+    /*! Groups are used for filtering discovered services. They will also be availabe
+     *  as properties with naming as "group0", "group1" ...
+     *  \return groups, e.g. ("mydomain.se", "mydomain.se/House", "Any Group ID")
+     *  \see ArnDiscoverAdvertise::setGroups()
+     */
+    QStringList  groups()  const;
+
+    //! Return the service name for this service
+    /*! \return service name, e.g. "My House Registry"
+     *  \see ArnDiscoverAdvertise::advertiseService()
+     *  \see ArnDiscoverAdvertise::setService()
+     */
     QString  serviceName()  const;
+
+    //! Return the domain for this service
+    /*! \return domain, e.g. "local."
+     */
     QString  domain()  const;
+
+    //! Return the host name for this service
+    /*! \return host name, e.g. "myHost.local"
+     *  \see ArnDiscoverAdvertise::advertiseService()
+     */
     QString  hostName()  const;
+
+    //! Return the port for this service
+    /*! \return port
+     *  \see ArnDiscoverAdvertise::advertiseService()
+     */
     quint16  hostPort()  const;
+
+    //! Return the host ip-address for this service
+    /*! \return host ip-address
+     */
     QHostAddress  hostIp()  const;
+
+    //! Return the properties for this service
+    /*! Will return booth Arn system properties and custom (application) properties.
+     *  System properties will always have a key starting with a lower case letter
+     *  e.g. "protovers".
+     *  \return properties
+     *  \see ArnDiscoverAdvertise::setCustomProperties()
+     */
     Arn::XStringMap  properties()  const;
+
+    //! Return the printable type for this service
+    /*! \return type, e.g. "Client"
+     */
     QString  typeString()  const;
+
+    //! Return the printable host port for this service
+    /*! Will return empty string if no valid port available
+     *  \return host port, e.g. "2022", "" etc
+     */
     QString  hostPortString()  const;
+
+    //! Return the printable host ip-address for this service
+    /*! Will return empty string if no valid ip available
+     *  \return host ip-address, e.g. "192.168.1.1", "" etc
+     */
     QString  hostIpString()  const;
 
     //! Get the the _HostWithInfo_ string
@@ -121,6 +193,12 @@ public:
      *  \see Arn::makeHostWithInfo()
      */
     QString  hostWithInfo()  const;
+
+    //! Return the latest resolv error code for this service
+    /*! This code can come from booth resolving a service and lookup ip-address.
+     *  \return error code
+     *  \see ArnZeroConf::Error
+     */
     int  resolvCode()  const;
 
 private:
@@ -145,33 +223,182 @@ class ArnDiscoverBrowserB : public QObject
 public:
     explicit ArnDiscoverBrowserB( QObject *parent = 0);
 
+    //! Return the number of active discover services
+    /*! \return number of services
+     */
+    int serviceCount()  const;
+
+    //! Return the discover service info by its index
+    /*! The index for a service info is only valid valid for a given moment, it can change
+     *  as services are added and removed. If given an invalid index, a Null discover info
+     *  will be returned.
+     *  \param[in] index
+     *  \return selected service discover info
+     *  \see infoById()
+     *  \see infoByName()
+     *  \see indexToId()
+     */
     const ArnDiscoverInfo&  infoByIndex( int index);
+
+    //! Return the discover service info by its id
+    /*! The id for a service info is unique and stays same over time, but the service
+     *  can have been removed. If given a non existent service id, a Null discover info
+     *  will be returned.
+     *  \param[in] id
+     *  \return selected service discover info
+     *  \see infoByIndex()
+     */
     const ArnDiscoverInfo&  infoById( int id);
+
+    //! Return the discover service info by its name
+    /*! The service name is unique for a given moment, but the service can be removed
+     *  and then reappear with a different service name. Also non used service names
+     *  can be reused for a different service. If given a non existent service name,
+     *  a Null discover info will be returned.
+     *  \param[in] serviceName
+     *  \return selected service discover info
+     *  \see serviceNameToId()
+     */
     const ArnDiscoverInfo&  infoByName( QString serviceName);
+
+    //! Return the discover service id by its index
+    /*! The index for a service info is only valid valid for a given moment, it can change
+     *  as services are added and removed. If given an invalid index, -1 will be returned.
+     *  \param[in] index
+     *  \return selected service discover id
+     *  \see IdToIndex()
+     *  \see infoById()
+     */
     int  indexToId( int index);
+
+    //! Return the discover service index by its id
+    /*! The index for a service info is only valid valid for a given moment, it can change
+     *  as services are added and removed. If given a non existent id, -1 will be returned.
+     *  \param[in] id
+     *  \return selected service discover index
+     *  \see indexToId()
+     *  \see infoByIndex()
+     */
     int  IdToIndex( int id);
+
+    //! Return the discover service id by its name
+    /*! The service name is unique for a given moment. If given a non existent service name,
+     *  -1 will be returned.
+     *  \param[in] name
+     *  \return selected service discover id
+     *  \see IdToIndex()
+     *  \see infoByName()
+     */
     int  serviceNameToId( const QString& name);
 
+    //! Return the default stop state for this service discover browser
+    /*! This default stop state will be used for all services discovered by this browser.
+     *  \return default stop state
+     *  \see setDefaultStopState()
+     *  \see goTowardState()
+     *  \see ArnDiscoverInfo::stopState()
+     *  \see State
+     */
     ArnDiscoverInfo::State  defaultStopState()  const;
+
+    //! Set the default stop state for this service discover browser
+    /*! This default stop state will be used for all services discovered by this browser.
+     *  \param[in] defaultStopState
+     *  \see defaultStopState()
+     *  \see goTowardState()
+     *  \see ArnDiscoverInfo::stopState()
+     *  \see State
+     */
     void  setDefaultStopState( ArnDiscoverInfo::State defaultStopState);
+
+    //! Command a service to go towards a stop state
+    /*! The service is specified by its index. The wanted final state must be forward,
+     *  otherwise it is ignored.
+     *  \param[in] index for the service
+     *  \param[in] state is the wanted final state
+     *  \see defaultStopState()
+     *  \see infoUpdated()
+     *  \see ArnDiscoverInfo::stopState()
+     *  \see State
+     */
     bool  goTowardState( int index, ArnDiscoverInfo::State state);
 
 signals:
+    //! Indicate service has been added (discovered)
+    /*! The service has been added to a list sorted by ascending service names.
+     *  The index is a reference to this sorted list.
+     *  \param[in] index for the service
+     *  \param[in] name is the service name e.g. "My House Registry"
+     *  \see serviceRemoved()
+     *  \see infoUpdated()
+     */
     void  serviceAdded( int index, QString name);
-    void  serviceRemoved( int index);
-    void  infoUpdated( int index, ArnDiscoverInfo::State state);
 
-public slots:
+    //! Indicate service has been removed
+    /*! \param[in] index for the service
+     *  \see serviceAdded()
+     */
+    void  serviceRemoved( int index);
+
+    //! Indicate service has been updated
+    /*! \param[in] index for the service
+     *  \param[in] state is the current state of the service info
+     *  \see goTowardState()
+     *  \see serviceAdded()
+     */
+    void  infoUpdated( int index, ArnDiscoverInfo::State state);
 
     //! \cond ADV
 protected:
+    //! Return the status of the browsing
+    /*! \retval true if browsing is started
+     *  \see browse()
+     */
     bool  isBrowsing()  const;
+
+    //! Set service discover filter using predefined types
+    /*! When filter is enabled, only services that have the same type
+     *  is discovered.
+     *  \param[in] typeFilter
+     *  \see ArnDiscoverAdvertise::advertiseService()
+     */
     void  setFilter( ArnDiscover::Type typeFilter);
+
+    //! Set service discover filter using group name
+    /*! If passing empy group, this is taken as subtype (filter) disabled.
+     *  When subtype (filter) is enabled, only services that have the same group
+     *  is discovered.
+     *  \param[in] group the filter group name
+     *  \see ArnDiscoverAdvertise::setGroups()
+     */
     void  setFilter( QString group);
 
+    //! Change state of browsing
+    /*! When browsing is started, services will be discovered.
+     *  \param[in] enable if true browsing is started, otherwise it is stopped
+     *  \see stopBrowse()
+     *  \see serviceAdded()
+     */
     void  browse( bool enable = true);
+
+    //! Stop browsing
+    /*! \see browse()
+     */
     void  stopBrowse();
-    void  resolve( QString serviceName, bool forceUpdate = true);
+
+    //! Resolve a specific service name
+    /*! Only the specified service will be resolved, but there can be many ongoing resolves
+     *  by calling this method multiple times with different service names. The infoUpdated()
+     *  signal will always be emitted when calling this method. The signal can also be emitted
+     *  multiple times later regarding the same service.
+     *  \param[in] serviceName is the service to be resolved
+     *  \param[in] forceUpdate when true, a new resolve is always done, otherwise
+     *                         a service name that already is resolved will not be resolved again.
+     *  \return _index_ to service info
+     *  \see indexToId()
+     *  \see infoUpdated()
+     */
+    int  resolve( QString serviceName, bool forceUpdate = true);
     //! \endcond
 
 private slots:
@@ -204,19 +431,45 @@ class ArnDiscoverBrowser : public ArnDiscoverBrowserB
 public:
     explicit ArnDiscoverBrowser( QObject *parent = 0);
 
+    //! Return the status of the browsing
+    /*! \retval true if browsing is started
+     *  \see browse()
+     */
     bool  isBrowsing()  const
     {return ArnDiscoverBrowserB::isBrowsing();}
 
+    //! Set service discover filter using predefined types
+    /*! When filter is enabled, only services that have the same type
+     *  is discovered.
+     *  \param[in] typeFilter
+     *  \see ArnDiscoverAdvertise::advertiseService()
+     */
     void  setFilter( ArnDiscover::Type typeFilter)
     {ArnDiscoverBrowserB::setFilter( typeFilter);}
 
+    //! Set service discover filter using group name
+    /*! If passing empy group, this is taken as subtype (filter) disabled.
+     *  When subtype (filter) is enabled, only services that have the same group
+     *  is discovered.
+     *  \param[in] group the filter group name, e.g. "myGroup1"
+     *  \see ArnDiscoverAdvertise::setGroups()
+     */
     void  setFilter( QString group)
     {ArnDiscoverBrowserB::setFilter( group);}
 
 public slots:
+    //! Change state of browsing
+    /*! When browsing is started, services will be discovered.
+     *  \param[in] enable if true browsing is started, otherwise it is stopped
+     *  \see stopBrowse()
+     *  \see serviceAdded()
+     */
     void  browse( bool enable = true)
     {ArnDiscoverBrowserB::browse( enable);}
 
+    //! Stop browsing
+    /*! \see browse()
+     */
     void  stopBrowse()
     {ArnDiscoverBrowserB::stopBrowse();}
 };
@@ -228,11 +481,38 @@ class ArnDiscoverResolver : public ArnDiscoverBrowserB
 public:
     explicit ArnDiscoverResolver( QObject *parent = 0);
 
+    //! Return the default service name
+    /*! This default service name will be used when resolve() is called with empty
+     *  service name.
+     *  \return default service name, e.g. "Arn Default Service"
+     *  \see setDefaultService()
+     *  \see resolve()
+     */
     QString  defaultService()  const;
+
+    //! Set the default service name
+    /*! This default service name will be used when resolve() is called with empty
+     *  service name. If calling with _defaultService_ empty, it is ignored.
+     *  \param[in] defaultService e.g. "My Default Service"
+     *  \see defaultService()
+     *  \see resolve()
+     */
     void  setDefaultService( const QString& defaultService);
 
 public slots:
-    void  resolve( QString serviceName, bool forceUpdate = true);
+    //! Resolve a specific service name
+    /*! Only the specified service will be resolved, but there can be many ongoing resolves
+     *  by calling this method multiple times with different service names. The infoUpdated()
+     *  signal will always be emitted when calling this method. The signal can also be emitted
+     *  multiple times later regarding the same service.
+     *  \param[in] serviceName is the service to be resolved
+     *  \param[in] forceUpdate when true, a new resolve is always done, otherwise
+     *                         a service name that already is resolved will not be resolved again.
+     *  \return _index_ to service info
+     *  \see indexToId()
+     *  \see infoUpdated()
+     */
+    int  resolve( QString serviceName, bool forceUpdate = true);
 
 private:
     QString  _defaultService;
@@ -261,31 +541,135 @@ public:
 
     explicit ArnDiscoverAdvertise( QObject *parent = 0);
 
+    //! Return service discover groups used for filter browsing
+    /*! \return groups e.g. ("mydomain.se", "mydomain.se/House", "Any Group ID")
+     *  \see setGroups()
+     */
     QStringList groups() const;
+
+    //! Set service discover groups used for filter browsing
+    /*! Groups are used for filtering discovered services. They will also be availabe
+     *  as properties with naming as "group0", "group1" ...
+     *  \param[in] groups e.g. ("mydomain.se", "mydomain.se/House", "Any Group ID")
+     *  \note Groups must be set before calling advertiseService().
+     *  \see groups()
+     *  \see ArnDiscoverBrowser::setFilter()
+     */
     void setGroups( const QStringList& groups);
+
+    //! Add a service discover group
+    /*! \param[in] group e.g. "Any Group ID"
+     *  \note Groups must be set before calling advertiseService().
+     *  \see setGroups()
+     */
     void  addGroup( const QString& group);
 
+    //! Returns the requested service name for this Advertise
+    /*! This is always the requested service name, the realy used name comes with the
+     *  serviceChanged() signal and currentService().
+     *  \return requested service name, e.g. "My House Registry"
+     *  \see setService()
+     *  \see currentService()
+     *  \see advertiseService()
+     */
     QString  service() const;
+
+    //! Returns the current service name for this Advertise
+    /*! This is the realy advertised name when it's available otherwise it's the requested
+     *  service name.
+     *  \return service namen (se above) e.g. "My House Registry (2)"
+     *  \see setService()
+     *  \see service()
+     *  \see advertiseService()
+     */
+    QString  currentService() const;
+
+    //! Returns the state for this Advertise
+    /*! \return current state
+     *  \see State
+     */
     State  state()  const;
 
+    //! Start advertising the service
+    /*! Tries to advertise the service on the local network.
+     *  Result is indicated by serviceChanged() and serviceChangeError() signals.
+     *
+     *  Empty _serviceName_ will be ignored, no advertising until using setService() with
+     *  non empty name.
+     *  \param[in] discoverType is used for discover filtering
+     *  \param[in] serviceName is requested name e.g. "My House Registry"
+     *  \param[in] port is the port of the service, -1 gives default Arn port number
+     *  \param[in] hostName is the host doing the service, empty gives this advertising host
+     *  \see setService()
+     *  \see serviceChanged()
+     *  \see serviceChangeError()
+     */
     void  advertiseService( ArnDiscover::Type discoverType, QString serviceName,
                             int port = -1, const QString& hostName = QString());
 
+    //! Return service custom properties
+    /*! This is only the customer (application) properties, as there also are some
+     *  Arn system properties.
+     *  \return custom properties
+     *  \see setCustomProperties()
+     */
     Arn::XStringMap  customProperties()  const;
+
+    //! Set service custom properties
+    /*! This is only the customer (application) properties, as there also are some
+     *  Arn system properties.
+     *
+     *  These custom properties are advised to have a key starting
+     *  with a capital letter to avoid name collision with the system.
+     *  \param[in] customProperties e.g. Arn::XStringMap().add("MyProp", "my data")
+     *  \note Properties must be set before calling advertiseService().
+     *  \see customProperties()
+     *  \see addCustomProperty()
+     *  \see ArnDiscoverInfo::properties()
+     */
     void  setCustomProperties( const Arn::XStringMap& customProperties);
+
+    //! Add service custom property
+    /*! The custom property are advised to have a _key_ starting with a capital letter to
+     *  avoid name collision with the system.
+     *  \param[in] key property key (Start with capital letter) e.g. "MyProp"
+     *  \param[in] val property value kan be any text e.g. "my data"
+     *  \note Properties must be set before calling advertiseService().
+     *  \see setCustomProperties()
+     */
     void  addCustomProperty( const QString& key, const QString& val);
 
 signals:
+    //! Indicate successfull advertise of service
+    /*! \param[in] serviceName is the realy advertised name e.g. "My House Registry (2)"
+     *  \see advertiseService()
+     *  \see setService()
+     */
     void  serviceChanged( QString serviceName);
+
+    //! Indicate unsuccessfull advertise of service
+    /*! \param[in] code error code.
+     *  \see advertiseService()
+     */
     void  serviceChangeError( int code);
 
 public slots:
     //! Set the service name
     /*! Will update current advertised service name if this advertiser has been setup,
      *  otherwise the service name is stored for future use.
-     *  Note: This base member must be called from derived member.
-     *  \param[in] service is the service name.
+     *
+     *  Service names can be any human readable id. It should be easy to understand,
+     *  without any cryptic coding, and can usually be modified by the end user
+     *
+     *  Empty name is ignored. The requested service name is not guaranted to be used
+     *  for advertise, as it has to be unique within this local network. The realy used
+     *  name comes with the serviceChanged() signal and currentService().
+     *  \param[in] service is the requested service name e.g. "My House Registry"
+     *  \see service()
+     *  \see currentService()
      *  \see advertiseService()
+     *  \see serviceChanged()
+     *  \see serviceChangeError()
      */
     virtual void  setService( QString service);
 
@@ -296,22 +680,22 @@ protected:
 protected slots:
     //! Post setup routine called from base class
     /*! Can be derived for special setup.
-     *  Note: This base method must be called from derived method.
      *  \param[in] service is the service name.
+     *  \note This base method must be called from derived method.
      */
     virtual void  postSetupThis();
 
     //! Service registration callback
     /*! Can be derived for special notifying.
-     *  Note: This base method must be called from derived method.
      *  \param[in] serviceName is the service name registered.
+     *  \note This base method must be called from derived method.
      */
     virtual void  serviceRegistered( QString serviceName);
 
     //! Service registration error callback
     /*! Can be derived for special notifying.
-     *  Note: This base method must be called from derived method.
      *  \param[in] code is the error code.
+     *  \note This base method must be called from derived method.
      */
     virtual void  serviceRegistrationError( int code);
     //! \endcond

@@ -67,11 +67,13 @@ public:
 
     //! Create an Arn _server_ object
     /*! \param[in] serverType For now only _NetSync_ is available.
+     *  \param[in] parent
      */
     ArnServer( Type serverType, QObject *parent = 0);
 
     //! Start the Arn _server_
-    /*! \param[in] port is the port number (default 2022).
+    /*! \param[in] port is the server port,
+     *                  -1 gives Arn::defaultTcpPort, 0 gives [dynamic port](\ref gen_dynamicPort)
      *  \param[in] listenAddr is the interface address to listen for connections (default any)
      */
     void  start( int port = -1, QHostAddress listenAddr = QHostAddress::Any);

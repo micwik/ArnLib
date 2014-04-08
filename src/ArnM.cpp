@@ -393,7 +393,7 @@ bool  ArnM::saveToFile( const QString& path, const QString& fileName, Arn::Codin
 }
 
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SKIP
 // Must onlty be called fronm main thread (application)
 ArnLink*  ArnM::root()
 {

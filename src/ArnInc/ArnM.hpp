@@ -251,10 +251,21 @@ public:
      */
     static QByteArray  info();
 
-    //! \cond ADV
+    //! Return mode skip "/Local/Sys/" loading
+    /*! \return mode skipLocalSysLoading
+     *  \see setSkipLocalSysLoading()
+     */
     bool  skipLocalSysLoading()  const;
+
+    //! Set mode skip "/Local/Sys/" loading
+    /*! Use this in a remote client that must access target
+     *  [Local path](\ref gen_localPath).
+     *  \param[in] skipLocalSysLoading
+     *  \note Must be called before entering the Qt event loop
+     *  \note Check the rules for [Local path](\ref gen_localPath)
+     *  \see skipLocalSysLoading()
+     */
     void  setSkipLocalSysLoading( bool skipLocalSysLoading);
-    //! \endcond
 
 public slots:
     //! Destroy the _Arn Data Object_ at _path_
@@ -270,7 +281,7 @@ signals:
     void  errorLogSig( QString errText, uint errCode, void* reference);
 
 protected:
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SKIP
     static ArnLink*  root();
     static ArnLink*  link( const QString& path, Arn::LinkFlags flags,
                            Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode());

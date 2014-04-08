@@ -80,9 +80,9 @@ ArnDiscover::Type  ArnDiscoverInfo::type()  const
 }
 
 
-QString  ArnDiscoverInfo::group()  const
+QStringList  ArnDiscoverInfo::groups()  const
 {
-    return _properties.valueString("group");
+    return _properties.values("group");
 }
 
 
@@ -177,9 +177,9 @@ ArnDiscoverResolver::ArnDiscoverResolver( QObject* parent) :
 }
 
 
-void  ArnDiscoverResolver::resolve( QString serviceName, bool forceUpdate)
+int  ArnDiscoverResolver::resolve( QString serviceName, bool forceUpdate)
 {
-    ArnDiscoverBrowserB::resolve( serviceName.isEmpty() ? _defaultService : serviceName, forceUpdate);
+    return ArnDiscoverBrowserB::resolve( serviceName.isEmpty() ? _defaultService : serviceName, forceUpdate);
 }
 
 
@@ -191,7 +191,8 @@ QString  ArnDiscoverResolver::defaultService()  const
 
 void  ArnDiscoverResolver::setDefaultService( const QString& defaultService)
 {
-    _defaultService = defaultService;
+    if (!defaultService.isEmpty())
+        _defaultService = defaultService;
 }
 
 
@@ -209,6 +210,12 @@ ArnDiscoverBrowserB::ArnDiscoverBrowserB( QObject* parent) :
             this, SLOT(onServiceAdded(int,QString,QString)));
     connect(_serviceBrowser, SIGNAL(serviceRemoved(int,QString,QString)),
             this, SLOT(onServiceRemoved(int,QString,QString)));
+}
+
+
+int  ArnDiscoverBrowserB::serviceCount()  const
+{
+    return _activeServInfos.size();
 }
 
 
@@ -335,7 +342,7 @@ void  ArnDiscoverBrowserB::stopBrowse()
 }
 
 
-void  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
+int  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
 {
     if (Arn::debugDiscover)  qDebug() << "Man resolve Service: name=" << serviceName;
 
@@ -363,10 +370,13 @@ void  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
             doNextState( *info);
     }
     Q_ASSERT(info && (index >= 0));
+
     if (info->inProgress()) {
         info->_resolvCode = ArnZeroConf::Error::Running;
-        emit infoUpdated( index, info->_state);
     }
+    emit infoUpdated( index, info->_state);
+
+    return index;
 }
 
 
@@ -578,8 +588,8 @@ ArnDiscoverAdvertise::ArnDiscoverAdvertise( QObject *parent) :
 }
 
 
-void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QString serviceName,
-                                             int port, const QString& hostName)
+void  ArnDiscoverAdvertise::advertiseService( ArnDiscover::Type discoverType, QString serviceName,
+                                              int port, const QString& hostName)
 {
     if (Arn::debugDiscover)  qDebug() << "Discover advertise setup: serviceName=" << serviceName
                                       << " port=" << port << " hostName=" << hostName;
@@ -596,9 +606,11 @@ void  ArnDiscoverAdvertise::advertiseService(ArnDiscover::Type discoverType, QSt
         xsm.add("group", i, _groups.at(i));
     }
     xsm += _customProperties;
+
     _arnZCReg->setTxtRecordMap( xsm);
     _arnZCReg->setHost( hostName);
-    _arnZCReg->setPort( port);
+    _arnZCReg->setPort( port >= 0 ? port : Arn::defaultTcpPort);
+
     connect( _arnZCReg, SIGNAL(registered(QString)), this, SLOT(serviceRegistered(QString)));
     connect( _arnZCReg, SIGNAL(registrationError(int)), this, SLOT(serviceRegistrationError(int)));
 
@@ -658,6 +670,12 @@ bool  ArnDiscoverAdvertise::hasSetupAdvertise()  const
 QString  ArnDiscoverAdvertise::service()  const
 {
     return _service;
+}
+
+
+QString  ArnDiscoverAdvertise::currentService()  const
+{
+    return _hasSetupAdvertise ? _arnZCReg->currentServiceName() : _service;
 }
 
 

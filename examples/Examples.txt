@@ -24,9 +24,12 @@
     Demonstration with a simple chat program. It consists of a server and a client part.
     After starting the server, any number of clients can be started.
     
-    This demo is focused on the Service API (RPC) functionalty of ArnLib. Slots are remotely
+    This demo is focused on the _Service API_ (RPC) functionalty of ArnLib. Slots are remotely
     called from clients to server and the other way back. All is done with standard function calls
     without any visual serializing.
+
+    It's also a demo of _Discover Remote_, althou client side is as simple as possible without
+    any remote control.
     
     **Chat Server**
     \ref ChatSapi_hpp, \ref ServerMain_hpp, \ref ServerMain_cpp, \ref s_main_cpp

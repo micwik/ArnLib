@@ -1,0 +1,17 @@
+/*!
+\page helpDiscIndex Help descriptions
+
+    Here are some help descriptions included in ArnLib
+
+    + \subpage helpDiscDiscover
+ */
+    
+/*!
+\page helpDiscDiscover Discover
+
+    The "parameter path" in the table have stripped the "value" attribute,
+    e.g. "Service/value".
+    
+    \section desc Description    
+        \htmlinclude Local/Sys/Discover/help.xhtml        
+ */

@@ -182,8 +182,8 @@ bool  ArnRpc::open( QString pipePath)
         stat = pipe->open( pipePath);
 
     if (stat) {
-        pipe->setUseSendSeq( _mode.is(_mode.SendSequence));
-        pipe->setUseCheckSeq( _mode.is(_mode.CheckSequence));
+        pipe->setSendSeq( _mode.is(_mode.SendSequence));
+        pipe->setCheckSeq( _mode.is(_mode.CheckSequence));
     }
     else {
         delete pipe;

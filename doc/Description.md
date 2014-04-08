@@ -20,6 +20,9 @@ The empty folder name can also be referred as "@". Again, the example can equall
 "/@/Measure/Water/Temperature/value". This "@" is typically used when an empty name is
 unacceptable, e.g. in the tree viewer of ArnBrowser.
 
+A relative path is also called the [local path](#gen_localPath), e.g.
+"Sys/Discover/This/Service/value".
+
 Each part in a given path is dynamically added as needed, i.e. any path can be used without
 explicitly creating each folder in advance.
 <Br><Br>
@@ -64,20 +67,41 @@ Note: It's convenient to always set all the needed modes before an ArnItem is op
 an ArnItem is used as a template. See ArnItem::setTemplate().
 <Br><Br>
 
+### Local path ###    {#gen_localPath}
+A relative path is also called the _local path_, e.g. the
+[Discover remote](#gen_discoverRemote) _service name_ at path
+"Sys/Discover/This/Service/value". The _local path_ is mapped to the absolute path
+"/Local/". The example is then equal to "/local/Sys/Discover/This/Service/value". The
+_local path_ should not be [shared](#gen_shareArnobj) as it will contain specific data
+for its running program.
+
+The exception to not sharing _local path_ is for some kind of remote client that must
+be able to change an _Arn Data Object_ in the _local path_ at the remoted target.
+For example this is used to change the [Discover remote](#gen_discoverRemote) _service name_
+for a target host.
+
+Following must be observed at remote client when sharing _local path_:
+
+* use ArnM::setSkipLocalSysLoading()
+* Don't put anything in _local path_, that should't end up in the shared target host.
+* Don't use ArnDiscoverRemote or ArnDiscoverConnector.
+* This unwanted exception design will be addressed in a future version of ArnLib.
+<Br><Br>
+
 ### Naming conventions ###    {#gen_naming}
 These rules must not be obeyed, but are recommended, to get the most benefits of the
 Arn echo system, like ArnBrowser.
 
-* First level folder not empty, e.g "/MyLocalFolder/Key/value", is a local path and is
-  not [shared](#gen_shareArnobj).
 * First level folder empty, e.g. "//MyGlobalFolder/Date/value", is a global path and is
   [shared](#gen_shareArnobj) to server and clients.
+* First level folder not empty, e.g "/MyLocalFolder/Key/value", is a local path and is
+  not [shared](#gen_shareArnobj).
 * When a leaf is used as an attribute, the following names are reserved:
     + **value** the value of the above closest folder denotation, e.g. "Temperature".
     + **set** allowed values and conversion to a more descriptive form, e.g. "0=Off 1=On".
     + **property** like precision and unit, e.g. "prec=1 unit=°C".
     + **info** like tool tips, e.g. "<tt\>Standard UV radiation index</tt\>".
-    + **help.**XXX like "help.html" contains help in xhtml format.
+    + **help.**XXX like "help.xhtml" contains help in xhtml format.
 <Br><Br>
 
 
@@ -123,7 +147,7 @@ this sequence number is activated at each end of the pipe.
 When checking is activated and the received sequence number is unexpected, a signal will be
 generated.
 
-See also ArnPipe::setUseSendSeq(), ArnPipe::setUseCheckSeq(), ArnPipe::outOfSequence().
+See also ArnPipe::setSendSeq(), ArnPipe::setCheckSeq(), ArnPipe::outOfSequence().
 <Br><Br>
 
 ### Pipe anti congest ###    {#gen_pipeAntiCongest}
@@ -154,8 +178,15 @@ from the receiving part to block uncontrolled assignment from one side of the pi
 
 Persistent Arn Data Objects    {#gen_persistArnobj}
 ---------------------------
-The _server_ must use ArnPersist to support the persistance service. As a standard,
-objects are stored in a SQLite database. It's also possible to store each object as a file.
+The _server_ must use ArnPersist to support the persistance service. As a standard
+_persist storage_, _Arn Data Objects_ are stored in a SQLite database. It's also possible to
+store each object as a file.
+
+The _mount point_ (path) for collecting the persistent _Arn Data objects_ is set by
+ArnPersist::setMountPoint(). For server applications this is typically set to "/", which
+makes all _Arn Data Objects_ potential persistent. In client applications the _mount point_
+is typically restricted to Arn::pathLocal, which only saves local _Arn Data Objects_ in the
+local _persist storage_.
 
 Any connected _client_ or the _server_ can make an _Arn Data Object_ persistent.
 It's just to open an ArnItem to the object and change _mode_ to _Save_.
@@ -215,6 +246,16 @@ The client can then decide the exact objects of interest. <Br>
 Note: Normally "//" is used for global (shared). See [naming conventions](#gen_naming).
 <Br><Br>
 
+### Dynamic port ###    {#gen_dynamicPort}
+An ArnServer can be created with _port_ set to 0. This will be handled as a _dynamic port_
+and the system will assign a free _port number_ to the server. The _port number_ will be
+taken from a range specified by IANA.
+
+This can typically be used to skip configuring static port numbers and be able to have
+multiple instanses of the ArnServer on the same machine. As an ArnClient must find its
+ArnServer, this can be used together with ArnDiscoverRemote / ArnDiscover.
+<Br><Br>
+
 
 RPC and SAPI    {#gen_rpc}
 ------------
@@ -242,7 +283,7 @@ The _custom SAPI_ class by itself doesn't implement any _services_. It's merely 
 connections to _external signals and slots_.
 The base ArnSapi class automatically transfers all _custom signal_ (SAPI) calls to the
 remote connected ends, which also have the ArnSapi derived class and that emits the
-transfered signal.
+transfered signal. See example in ArnSapi Detailed Description.
 
 The provider connects the signals from custom SAPI that are prefixed with "pv_"
 (as default) to each external slot that implements the services.
@@ -266,18 +307,19 @@ QObject::sender() functionality.
 <Br><Br>
 
 ### RPC and SAPI communication format ###    {#gen_rpcformat}
-The RPC calling has a basic format as XString (see XStringMap). The most generic form
+The RPC calling has a basic format as XString (see Arn::XStringMap). The most generic form
 is seen below. The type mark _T_ is "t" for writeable types and "tb" for binary
 (non writeable) types.
-> _funcname_ _T_=_type1_ a._label1_=_arg1_ _T_=_type2_ a._label2_=_arg2_ ... <Br> 
+> _funcname  T_ = _type1_  a. _label1_ = _arg1_  _T_ = _type2_  a. _label2_ = _arg2_ ... <Br>
 > Example: put t=QString a.id=level t=int a.value=123 <Br>
 > For calling: put( QString("level"), 123)
 
 Commonly used _types_ have a shorter form. The _types_ are:
-> _int_, _uint_, _bool_, _ba (QByteArray), list (QStringList), and default is QString
+> _int_, _uint_, _bool_, _double_, _bytes_ (QByteArray), _date_ (QDate), _time_ (QTime),
+> _datetime_ (QDateTime), _list_ (QStringList), and _string_ (QString) as default.
 
 This can be used in previous example: 
-> put a.id=level int.value=123
+> put string.id=level int.value=123
 
 Or even shorter, skipping labels, when typed by hand:
 > put level int=123
@@ -294,29 +336,166 @@ For special cases, like empty elements, the _le_ (list element) is needed. The e
 below has a first empty element followed by "green".
 > test list= le= green blue int=2
 
-The built-in call "$help" will give an automatically generated list of the present SAPI with the syntax for each available service.
+The built-in call "$help" will give an automatically generated list of the present SAPI
+with the syntax for each available service.
 <Br><Br>
 
 
 ZeroConfig    {#gen_zeroconf}
 ----------
-tbd
+For getting a basic understanding of ZeroConfig and further references to relevant
+documentation, see: http://zeroconf.org/
+
+_Arn ZeroConfig_ is the lowest level support for advertising and discovering services on
+an local network. The implementation has very few dependences to the rest of the ArnLib.
+
+_Arn ZeroConfig_ can use a built in implementation of Apple (R) _mDns_ / _DNS_SD_ that has no
+further dependences to external libraries. For _mDns_ the low end system abstraction layer
+has been written to use Qt for portability. The higher level _DNS_SD_ has wrappers written
+to give a good c++ / Qt API.
+
+It's also possible to use an external _DNS_SD_ library, like _Avahi_. This gives better
+performance when many applications uses ZeroConfig on the same machine, as they share
+cashing etc with a common daemon. However you have to deal with this external dependency.
+
+_Arn ZeroConfig_ implementation has two parts. The ArnZeroConfRegister can be used to
+advertise any _service_ given a _host address_ and a _port number_. The other part is the
+ArnZeroConfBrowser / ArnZeroConfResolve / ArnZeroConfLookup. The browser is used to get a
+realtime list of available _services_ on the network. The resolver takes a given _service_
+and resolves it into its _host name_ and _port number_. Finally ArnZeroConfLookup takes
+a given _host name_ and makes a DNS (mDNS) lookup to get its ip-address. Each of these
+classes are stand alone and has to be combined with glue logic for the complete process.
+
+A service has a _service type_, that preferably should be registered at IANA. Examples of
+_service types_ are "http", "ftp" and "arn". This type is mandatory when advertising a
+_service_. Also the _service_ must have a _service name_.
+<Br><Br>
+
+### Service name ###    {#gen_zeroconfServiceName}
+_Service names_ can be any human readable id. It should be easy to understand, without
+any cryptic coding. There should not be any attempts to make the _service name_ unique
+as this is taken care of by the ZeroConfig system. It's common that the _service name_
+can be modified by the end user. The default starting name could be some system or product
+name. Example of _service name_: "My House Registry".
+<Br><Br>
+
+### Sub types ###    {#gen_zeroconfSubTypes}
+_Services_ can also have _sub types_. These are identifiers that can be used to filter out
+some sub group from a specific _service type_. All _services_ having the same _service type_
+must still have some common protocol even if they belong to different _sub types_.
+A _service_ can be advertised with many _sub types_, but browsing can only be filtered
+with one _sub type_ or with no filter.
+<Br><Br>
+
+### Text record ###    {#gen_zeroconfTextRecord}
+It's possible to add a _text record_ to a _service_. The format of this record is specified
+by IANA. The purpose is to store properties by a _key_ / _value_ -pair. For convenience
+this can be done with ArnZeroConfRegister::setTxtRecordMap() using an Arn::XStringMap.
 <Br><Br>
 
 
 Discover    {#gen_discover}
 --------
-tbd
+_Arn Discover_ is the mid level support for advertising and discovering services on
+an local network. This implementation is only for the "arn" _service type_ and is heavily
+dependent on the ArnLib. The "arn" _service type_ is approved and registered by IANA.
+
+_Arn Discover_ implementation has two parts. The ArnDiscoverAdvertise can be used to
+advertise an Arn _service_ given a _host address_ and a _port number_. The other part is
+the ArnDiscoverBrowser / ArnDiscoverResolver. The browser is used to get a realtime list
+of available Arn _services_ on the network. The resolver is for taking a manual resolve
+when a _service name_ is known in advance.
+
+_Arn Discover_ is designed to minimize external glue logic as these classes do all the
+common processing. Internally _Arn ZeroConfig_ is used, but focus is on solving Arn
+specific needs in a powerful, yet flexible manner.
+
+An _Arn service_ needs an ArnDiscover::Type and a [service name](\ref gen_zeroconfServiceName).
+The ArnDiscover::Type sets up a coarse division of the applications into the _groups_
+"server" and "client". The "client" typically only offer the service of ArnDiscoverRemote.
+
+_Arn services_ can also have _groups_. These are identifiers that can be used to filter out
+some sub group. An _Arn service_ can be advertised with many _groups_, but browsing can only be
+filtered with one _group_ or with no filter.
+
+It's possible to add a _custom property_ to an _Arn service_. This can be done with
+ArnDiscoverAdvertise::setCustomProperties() using an Arn::XStringMap. The propertie has a
+_key_ / _value_ -pair. The custom property are advised to have a _key_ starting with a
+capital letter to avoid name collision with the system.
+The added _groups_ will be set as properties with naming as "group0", "group1" ...
+
+ArnDiscoverBrowser collects found Arn _services_. Each of these _services_ can automatically
+be further examined. This is chosen by calling ArnDiscoverBrowserB::setDefaultStopState(),
+which e.g. tells examination to stop after _host name_ has been found. The _service_ can
+then manually be ordered for further examination by ArnDiscoverBrowserB::goTowardState(),
+e.g. examination should now stop after _host ip_ is found.
+
+All the information about a _service_ is stored in ArnDiscoverInfo. Found _services_ can
+be accessed by index, id or _service name_. Increasing index, starting at 0, gives a list
+of _services_ alfabetically sorted by _service name_. The index is kind of volatile and
+should be used instantly, not be stored. The id gives a unique number for each service and
+can be stored. However the _service_ given by the id might dissapear.
 <Br><Br>
 
-### Discover remote ###    {#gen_discoverRemote}
-Connecting via resolver uses logic:
-* If connection fails for a resolved host, resolving is forced to be refreshed for the target service name.
-  Host for the service name might have changed since last resolved and doing a refresh can get the new host.
 
-* If connection continues to fail for a resolved host, refreshing the resolv will have a blocking time to
-  avoid spamming the net. Typically this time is 60 seconds, but it can be changed by
-  ArnDiscoverConnector::setResolveRefreshTimeout().
+Discover remote    {#gen_discoverRemote}
+---------------
+_Arn Discover Remote_ is the highest level support for advertising and discovering services
+on an local network. Its implementation is based on _Arn Discover_. The added functionality
+is to have a remote control for both advertising an ArnServer and multiple ArnClient
+connections. The remote control is done via _Arn Data Objects_ in [local path](#gen_localPath)
+"Sys/Discover/".
+
+_Arn Discover Remote_ has one main class, ArnDiscoverRemote which act as a central point.
+The ArnDiscoverRemote class also takes an ArnServer and advertises it as a _service_. For
+remote control the _service name_ is available at [local path](#gen_localPath)
+"Sys/Discover/This/Service/value".
+
+ArnDiscoverRemote can make an internal ArnServer, when there is no need to access the
+ArnServer class. This is usually the case in an client application. The ArnServer is then
+merely used to make the discover functionality remote controlled.
+
+Remote controlled client connections can be added. Each ArnClient is handled by an
+ArnDiscoverConnector instance, which is made by ArnDiscoverRemote::newConnector().
+Connections can be added to ArnDiscoverConnector, both as a _direct host_ list and a
+_discover host_.
+
+The _discover host_ is indirerctly set, by adding an ArnDiscoverResolver to
+ArnDiscoverConnector. A _service name_ can then be resolved into the _discover host_.
+
+The two connection methods can coexist and as standard the _discover host_ has lower
+priority number than _direct host_, i.e. _discover host_ is tried first.
+
+The ArnDiscoverConnector is associated with an _id_, which should be chosen to describe the
+client target or its purpose. It's not a host address or necessarily a specific host, as
+there can be many possible addresses assigned to the ArnDiscoverConnector.
+
+The _id_ will appear as an _Arn folder_ in [local path](#gen_localPath), e.g. when _id_ is
+"WeatherData-XYZ" the folder path will be "Sys/Discover/Connect/WeatherData-XYZ/". The
+folder and its sub folders will contain _Arn Data Objects_ to remote control the ArnClient.
+For a more comprehensive description of these objects, see
+[help discover description](@ref helpDiscDiscover).
+
+In the above example, a _discover host_ can be remote controlled by setting the
+_service name_ in [local path](#gen_localPath)
+"Sys/Discover/Connect/WeatherData-XYZ/DiscoverHost/Service/value", e.g. to
+"Region Weather XYZ".
+
+Also in the above example, the first _direct host_ can be remote controlled by setting the
+_host name_ in [local path](#gen_localPath)
+"Sys/Discover/Connect/WeatherData-XYZ/DirectHosts/Host-0/value", e.g. to "localhost".
+
+Normally it's wanted that any remote set values in the [local path](#gen_localPath) remains
+after power cycling. This is supported by the [Arn persist system](#gen_persistArnobj).
+
+Connecting via resolver uses the logic:
+* If connection fails for a _discover host_, resolving is forced to be refreshed for the
+  target _service name_. The Host for the _service name_ might have changed since last
+  resolved and doing a refresh can get the new _discover host_.
+
+* If connection continues to fail for a _discover host_, refreshing the resolv will have a
+  blocking time to avoid spamming the net. Typically this time is 30 seconds, but it can be
+  changed by ArnDiscoverConnector::setResolveRefreshTimeout().
 <Br><Br>
 
 

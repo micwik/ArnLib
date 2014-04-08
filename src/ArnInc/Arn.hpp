@@ -156,20 +156,21 @@ QString  convertName( const QString& name, Arn::NameF nameF = Arn::NameF());
 QString  fullPath( const QString& path);
 
 //! Test if _path_ is a _folder path_
-/*! \param[in] path.
+/*! \param[in] path
  *  \retval true if _path_ is a _folder path_, i.e. ends with a "/".
  */
 bool  isFolderPath( const QString& path);
 
 //! Test if _path_ is a _provider path_
 /*! [About Bidirectional Arn Data Objects](\ref gen_bidirArnobj)
- *  \param[in] path.
+ *  \param[in] path
  *  \retval true if _path_ is a _provider path_, i.e. ends with a "!".
  */
 bool  isProviderPath( const QString& path);
 
 //! The last part of a _path_
 /*! Example: path = "//Measure/depth/value" ==> return = "value"
+ *  \param[in] path
  *  \return The itemName, i.e. the last part of the path after last "/"
  */
 QString  itemName( const QString& path);
@@ -267,11 +268,9 @@ QString  makeHostWithInfo( const QString& host, const QString& info);
  */
 QString  hostFromHostWithInfo( const QString& hostWithInfo);
 
-    //! \cond ADV
-
+#ifndef DOXYGEN_SKIP
 QString  convertBaseName( const QString& name, Arn::NameF nameF);
-
-    //! \endcond
+#endif
 
 }  // Arn::
 

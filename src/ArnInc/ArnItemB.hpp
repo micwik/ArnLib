@@ -60,8 +60,6 @@ make any of them public.
 
 See ArnItem.
 */
-//! \cond ADV
-//! \endcond
 class ARNLIBSHARED_EXPORT ArnItemB : public QObject
 {
     Q_OBJECT
@@ -80,6 +78,8 @@ public:
     };
 
     //! Standard constructor of a closed handle
+    /*! \param[in] parent
+     */
     ArnItemB( QObject* parent = 0);
 
     virtual  ~ArnItemB();

@@ -49,8 +49,6 @@
     inline operator int()  const {return f;} \
     inline bool  operator!()  const {return !f;}
 
-//inline bool testFlag(Enum f) const { return (i & f) == f && (f != 0 || i == 0 ); }
-
 #define MQ_DECLARE_OPERATORS_FOR_FLAGS( FEStruct) \
     Q_DECLARE_OPERATORS_FOR_FLAGS( FEStruct::F)
 

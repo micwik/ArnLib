@@ -49,11 +49,14 @@ class ARNLIBSHARED_EXPORT ArnPipe : public ArnItemB
 
 public:
     //! Standard constructor of a closed handle
+    /*! \param[in] parent
+     */
     ArnPipe( QObject* parent = 0);
 
     //! Construction of a pipe handle to a _path_
     /*! The mode for this handle is set to Arn::ObjectMode::Pipe.
      *  \param[in] path The _Arn Data Object_ path e.g. "//Pipes/myPipe/value"
+     *  \param[in] parent
      *  \see open()
      */
     ArnPipe( const QString& path, QObject* parent = 0);
@@ -120,33 +123,33 @@ public:
 
     //! Returns true if sending sequence numbers
     /*! \retval true if sending sequence numbers
-     *  \see setUseSendSeq()
+     *  \see setSendSeq()
      */
-    bool  useSendSeq()  const;
+    bool  isSendSeq()  const;
 
     //! Change usage of sending sequence numbers
     /*! \param[in] useSendSeq is true for activation
-     *  \see useSendSeq()
-     *  \see setUseCheckSeq()
+     *  \see isSendSeq()
+     *  \see setCheckSeq()
      *  \see outOfSequence()
      *  \see \ref gen_pipeSeqCheck
      */
-    void  setUseSendSeq( bool useSendSeq);
+    void  setSendSeq( bool useSendSeq);
 
     //! Returns true if checking received sequence numbers
     /*! \retval true if checking received sequence numbers
-     *  \see setUseCheckSeq()
+     *  \see setCheckSeq()
      */
-    bool  useCheckSeq()  const;
+    bool  isCheckSeq()  const;
 
     //! Change usage of checking received sequence numbers
-    /*! \param[in] useSendSeq is true for activation
-     *  \see useCheckSeq()
-     *  \see setUseSendSeq()
+    /*! \param[in] useCheckSeq is true for activation
+     *  \see isCheckSeq()
+     *  \see setSendSeq()
      *  \see outOfSequence()
      *  \see \ref gen_pipeSeqCheck
      */
-    void  setUseCheckSeq( bool useCheckSeq);
+    void  setCheckSeq( bool useCheckSeq);
 
 signals:
     //! Signal emitted when _Pipe_ has received data
@@ -156,8 +159,8 @@ signals:
     void  changed( QByteArray value);
 
     //! Signal emitted when the received sequence numbers are "out of sequence"
-    /*! \see setUseCheckSeq()
-     *  \see setUseSendSeq()
+    /*! \see setCheckSeq()
+     *  \see setSendSeq()
      *  \see \ref gen_pipeSeqCheck
      */
     void  outOfSequence();

@@ -137,6 +137,7 @@ public:
         };
         MQ_DECLARE_FLAGS( Mode)
     };
+
     struct Invoke {
         enum E {
             //! This invoke is not queued, multiple calls to same method might overwrite
@@ -199,7 +200,13 @@ public:
      *
      *  \param[in] funcName is the name of the called procedure.
      *  \param[in] val0 first arg.
-     *  \param[in] val1 second arg.
+     *  \param[in] val1
+     *  \param[in] val2
+     *  \param[in] val3
+     *  \param[in] val4
+     *  \param[in] val5
+     *  \param[in] val6
+     *  \param[in] val7
      */
     bool invoke( const QString& funcName,
                  MQGenericArgument val0 = MQGenericArgument(0),
@@ -211,8 +218,29 @@ public:
                  MQGenericArgument val6 = MQGenericArgument(),
                  MQGenericArgument val7 = MQGenericArgument());
 
+    //! Calls a named remote procedure using invoke flags
+    /*! This is the low level way to call a remote procedure. It can freely call
+     *  anything without declaring it. For high level calls use ArnSapi.
+     *
+     *  This function works similar to QMetaObject::invokeMethod().
+     *  The called name is prefixed before the final call is made.
+     *  Using the label in MQ_ARG() makes dubugging easier, as the parameter is named.
+     *
+     *  Example: `rpc->invoke("myfunc", ArnRpc::Invoke::NoQueue, MQ_ARG( QString, mypar, "Test XYZ"));`
+     *
+     *  \param[in] funcName is the name of the called procedure.
+     *  \param[in] invokeFlags is flags for controlling the invoke
+     *  \param[in] val0 first arg.
+     *  \param[in] val1
+     *  \param[in] val2
+     *  \param[in] val3
+     *  \param[in] val4
+     *  \param[in] val5
+     *  \param[in] val6
+     *  \param[in] val7
+     */
     bool invoke( const QString& funcName,
-                 Invoke  InvokeFlags,
+                 Invoke  invokeFlags,
                  MQGenericArgument val0 = MQGenericArgument(0),
                  MQGenericArgument val1 = MQGenericArgument(),
                  MQGenericArgument val2 = MQGenericArgument(),
@@ -244,7 +272,11 @@ public:
                                Mode mode = Mode());
 
     //! Make batch connection from this ArnRpc:s signals to another receivers slots
-    /*! Example: `_commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");`
+    /*! Used when there is a pattern in the naming of the signals and slots.
+     *  It's assumed that naming for slots are unique regardless of its case i.e.
+     *  using both test() and tesT() are not allowed.
+     *
+     *  Example: `_commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");`
      *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
      *
      *  \param[in] rgx is the regular expression for selecting signals.
@@ -261,7 +293,11 @@ public:
     }
 
     //! Make batch connection from one senders signals to this ArnRpc:s slots
-    /*! Example: `_commonSapi.batchConnect( _commonSapi, QRegExp("^rq_(.+)"), "chat\\1");`
+    /*! Used when there is a pattern in the naming of the signals and slots.
+     *  It's assumed that naming for slots are unique regardless of its case i.e.
+     *  using both test() and tesT() are not allowed.
+     *
+     *  Example: `_commonSapi.batchConnect( _commonSapi, QRegExp("^rq_(.+)"), "chat\\1");`
      *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
      *
      *  \param[in] sender is the sending QObject.
