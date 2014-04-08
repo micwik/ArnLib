@@ -63,7 +63,7 @@ void  ArnDependOffer::advertise( QString serviceName)
     _arnStateName  = "Start";
     _arnStateId    = 0;
 
-    connect( &_arnEchoPipeFB, SIGNAL(changed(QString)), this, SLOT(requestReceived(QString)));
+    connect( &_arnEchoPipeFB, SIGNAL(changed(QByteArray)), this, SLOT(requestReceived(QByteArray)));
 }
 
 
@@ -91,9 +91,10 @@ int  ArnDependOffer::stateId()  const
 }
 
 
-void  ArnDependOffer::requestReceived( QString req)
+void  ArnDependOffer::requestReceived( QByteArray req)
 {
-    // qDebug() << "DepOffer request: service=" << _serviceName << " req=" << req;
+    if (Arn::debugDepend)  qDebug() << "DepOffer request: service=" << _serviceName << " req=" << req
+                                    << "itemId=" << _arnEchoPipeFB.itemId();
     _arnEchoPipeFB = req;
 }
 
@@ -208,7 +209,7 @@ void  ArnDepend::echoRefresh()
 
 void  ArnDepend::echoCheck( QString echo, DepSlot* slot)
 {
-    // qDebug() << "echoCheck: monitorName=" << _name;
+    if (Arn::debugDepend)  qDebug() << "echoCheck: monitorName=" << _name;
     if (slot == 0) {
         ArnItem* arnItem = qobject_cast<ArnItem*>( sender());
         if (arnItem)  slot = static_cast<DepSlot*>( arnItem->reference());
@@ -221,7 +222,7 @@ void  ArnDepend::echoCheck( QString echo, DepSlot* slot)
     if (slot->isEchoOk)  return;  // Echo already ok, test just in case ...
 
     if (echo.isEmpty()) {
-        // qDebug() << "echoCheck: Send request monitorName=" << _name << " req=" << _uuid;
+        if (Arn::debugDepend)  qDebug() << "echoCheck: Send request monitorName=" << _name << " req=" << _uuid;
         slot->arnEchoPipe = _uuid;  // Dependency request
     }
     else {
@@ -268,7 +269,7 @@ void  ArnDepend::stateCheck( DepSlot* slot)
 
 void  ArnDepend::doDepOk( DepSlot* slot)
 {
-    // qDebug() << "depOk monitorName=" << _name;
+    if (Arn::debugDepend)  qDebug() << "depOk monitorName=" << _name;
     QMetaObject::invokeMethod( this,
                                "deleteSlot",
                                Qt::QueuedConnection,  // Delete later
@@ -279,7 +280,7 @@ void  ArnDepend::doDepOk( DepSlot* slot)
 void  ArnDepend::deleteSlot( void* slot_)
 {
     DepSlot*  slot = reinterpret_cast<DepSlot*>( slot_);
-    // qDebug() << "deleteSlot monitorName=" << _name;
+    if (Arn::debugDepend)  qDebug() << "deleteSlot monitorName=" << _name;
     if (!_depTab.removeOne( slot)) {
         ArnM::errorLog( QString(tr("Can't get slot for delete Depend monitor=")) + _name,
                             ArnError::Undef);

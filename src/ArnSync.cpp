@@ -549,9 +549,16 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
     }
 
     if (itemNet->isPipeMode()) {
+        if (itemNet->isOnlyEcho()) {
+            // qDebug() << "Flux skip pipe echo: path=" << itemNet->path() << " data=" << itemNet->arnExport()
+            //          << "itemId=" << itemNet->itemId();
+            itemNet->resetDirty();  // Arm for more updates
+            return;  // Don't send any echo to a Pipe
+        }
+
         FluxRec*  fluxRec = getFreeFluxRec();
         fluxRec->xString += makeFluxString( itemNet, handleData);
-        itemNet->submitted();
+        itemNet->resetDirty();
         if (handleData.has( ArnLinkHandle::QueueFindRegexp)) {
             QRegExp  rx = handleData.valueRef( ArnLinkHandle::QueueFindRegexp).toRegExp();
             // qDebug() << "AddFluxQueue Pipe QOW: rx=" << rx.pattern();
@@ -582,9 +589,15 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
         }
     }
     else {  // Normal Item
+        if (itemNet->syncMode().is( Arn::ObjectSyncMode::Master)
+        &&  itemNet->isOnlyEcho())
+        {
+            itemNet->resetDirty();  // Arm for more updates
+            return;  // Don't send any echo to a Master
+        }
+
         itemNet->setQueueNum( ++_queueNumCount);
         _fluxItemQueue.enqueue( itemNet);
-        // cout << "EnQueue (id): " << itemNet->netId() << endl;
     }
 
     if (!_isSending) {
@@ -683,7 +696,7 @@ void  ArnSync::sendNext()
     else if (!_modeQueue.isEmpty()) {
         itemNet = _modeQueue.dequeue();
         sendModeItem( itemNet);
-        itemNet->submittedMode();
+        itemNet->resetDirtyMode();
         _isSending = true;
     }
     else {  // Flux queues - send entity with lowest queue number
@@ -698,7 +711,7 @@ void  ArnSync::sendNext()
 
                 itemNet = _fluxItemQueue.dequeue();
                 sendFluxItem( itemNet);
-                itemNet->submitted();
+                itemNet->resetDirty();
             }
             else {  // Pipe flux queue
                 _queueNumDone = pipeQueueNum;
@@ -716,7 +729,7 @@ void  ArnSync::sendNext()
 QByteArray  ArnSync::makeFluxString(const ArnItemNet* itemNet, const ArnLinkHandle& handleData)
 {
     QByteArray  type;
-    if( itemNet->isOnlyEcho())  type += "E";
+    if (itemNet->isOnlyEcho())  type += "E";
 
     _syncMap.clear();
     _syncMap.add(ARNRECNAME, "flux").add("id", QByteArray::number( itemNet->netId()));

@@ -91,7 +91,7 @@ public:
     int  stateId() const;
 
 private slots:
-    void  requestReceived( QString req);
+    void  requestReceived( QByteArray req);
 
 private:
     QString  _serviceName;

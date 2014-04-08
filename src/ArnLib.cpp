@@ -40,6 +40,7 @@ bool debugLinkDestroy = false;
 bool debugRecInOut    = false;
 bool debugMonitor     = false;
 bool debugRPC         = false;
+bool debugDepend      = false;
 bool debugDiscover    = false;
 bool debugZeroConf    = false;
 bool debugMDNS        = false;

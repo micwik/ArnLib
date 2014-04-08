@@ -163,14 +163,14 @@ int  ArnItemNet::queueNum()  const
 }
 
 
-void  ArnItemNet::submitted()
+void  ArnItemNet::resetDirty()
 {
     _dirty = false;
     resetOnlyEcho();
 }
 
 
-void  ArnItemNet::submittedMode()
+void  ArnItemNet::resetDirtyMode()
 {
     _dirtyMode = false;
 }

@@ -43,6 +43,7 @@ extern bool  debugLinkDestroy;
 extern bool  debugRecInOut;
 extern bool  debugMonitor;
 extern bool  debugRPC;
+extern bool  debugDepend;
 extern bool  debugDiscover;
 extern bool  debugZeroConf;
 extern bool  debugMDNS;

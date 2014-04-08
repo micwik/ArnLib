@@ -26,7 +26,7 @@ include(src/ArnLib.pri)
 
 win32 {
 } else {
-DEFINES += DUMMY=\\\"$$system(rm tmp/Arn.o)\\\"
+DEFINES += DUMMY=\\\"$$system(rm tmp/ArnM.o)\\\"
 }
 
 greaterThan(QT_MAJOR_VERSION, 4) {

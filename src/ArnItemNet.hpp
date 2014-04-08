@@ -60,8 +60,8 @@ public:
 
     void  setQueueNum( int num);
     int  queueNum()  const;
-    void  submitted();
-    void  submittedMode();
+    void  resetDirty();
+    void  resetDirtyMode();
     bool  isDirtyMode()  const;
 
     virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
