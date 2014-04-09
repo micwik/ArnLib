@@ -87,7 +87,7 @@ void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
 QByteArray  ArnItemNet::getSyncModeString()  const
 {
     QByteArray  smode;
-    Arn::ObjectSyncMode  syncMode = Arn::ObjectSyncMode();
+    Arn::ObjectSyncMode  syncMode = ArnItemB::syncMode();
 
     if (syncMode.is( syncMode.Master))       smode += "master ";
     if (syncMode.is( syncMode.AutoDestroy))  smode += "autodestroy ";
