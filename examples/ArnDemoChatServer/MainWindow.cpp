@@ -27,20 +27,28 @@
 // THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //! [code]
-#include "ServerMain.hpp"
+#include "MainWindow.hpp"
+#include "tmp/ui_MainWindow.h"
 #include <ArnInc/ArnItem.hpp>
 #include <ArnInc/ArnDiscoverRemote.hpp>
 #include <QTime>
 #include <QSocketNotifier>
+#include <QFile>
+#include <QTextStream>
 #include <QCoreApplication>
 #include <QDebug>
 
 
-ServerMain::ServerMain( QObject* parent) :
-    QObject( parent)
+MainWindow::MainWindow( QWidget *parent) :
+    QMainWindow( parent),
+    _ui( new Ui::MainWindow)
 {
-    _timer.start(1000);
-    connect( &_timer, SIGNAL(timeout()), this, SLOT(doTimeUpdate()));
+    _ui->setupUi( this);
+    _connectCount = 0;
+    doUpdateView();
+
+    _timer1s.start(1000);
+    connect( &_timer1s, SIGNAL(timeout()), this, SLOT(doTimeUpdate()));
 
     _server = new ArnServer( ArnServer::Type::NetSync, this);
     _server->start(0);  // Start server on dynamic port
@@ -62,16 +70,10 @@ ServerMain::ServerMain( QObject* parent) :
     //// Monitor pipe folder for new connecting requesters
     ArnItem*  arnPipes = new ArnItem("//Chat/Pipes/", this);
     connect( arnPipes, SIGNAL(arnItemCreated(QString)), this, SLOT(doNewSession(QString)));
-
-    //// Setup shutdown logic
-    qWarning() << "\nPress <Enter> to quit.\n";
-    QSocketNotifier*  stdinNotifier = new QSocketNotifier( 0, QSocketNotifier::Read, this);
-    connect( stdinNotifier, SIGNAL(activated(int)), this, SLOT(shutdown()), Qt::QueuedConnection);
-    _isShuttingDown = false;
 }
 
 
-void  ServerMain::doNewSession( QString path)
+void  MainWindow::doNewSession( QString path)
 {
     if (!Arn::isProviderPath( path))  return;  // Only provider pipe is used
 
@@ -79,26 +81,42 @@ void  ServerMain::doNewSession( QString path)
     soleSapi->open( path, ArnSapi::Mode::Provider);
     soleSapi->batchConnect( QRegExp("^pv_(.+)"), this, "chat\\1");
     connect( soleSapi, SIGNAL(pipeClosed()), soleSapi, SLOT(deleteLater()));
+    
+    connect( soleSapi, SIGNAL(pipeClosed()), this, SLOT(doSessionClosed()));    
+    ++_connectCount;
+    doUpdateView();
 }
 
 
-void  ServerMain::doTimeUpdate()
+void MainWindow::doSessionClosed()
+{
+    --_connectCount;
+    doUpdateView();
+}
+
+
+void  MainWindow::doTimeUpdate()
 {
     _arnTime = QTime::currentTime().toString();
 }
 
 
-void  ServerMain::shutdown()
+void  MainWindow::doUpdateView()
 {
-    if (_isShuttingDown)  return;  // Guard against multiple shutdowns
-
-    _isShuttingDown = true;
-    delete _discoverRemote;  // Must be deleted while still in the main eventloop
-    QCoreApplication::quit();
+    _ui->connectCount->setText( QString::number( _connectCount));
 }
 
 
-void  ServerMain::chatList()
+void  MainWindow::on_shutDownButton_clicked()
+{
+    qWarning() << "About to shut down.";
+    delete _discoverRemote;  // Must be deleted while still in the main eventloop
+    _discoverRemote = 0;
+    QApplication::quit();
+}
+
+
+void  MainWindow::chatList()
 {
     //// Get calling service-api, to give a private "answer" (the list)
     ChatSapi*  sapi = qobject_cast<ChatSapi*>( sender());
@@ -109,7 +127,7 @@ void  ServerMain::chatList()
 }
 
 
-void  ServerMain::chatNewMsg( QString name, QString msg)
+void  MainWindow::chatNewMsg( QString name, QString msg)
 {
     _chatNameList += name;
     _chatMsgList  += msg;
@@ -120,11 +138,11 @@ void  ServerMain::chatNewMsg( QString name, QString msg)
 }
 
 
-void  ServerMain::chatInfoQ()
+void  MainWindow::chatInfoQ()
 {
     //// Get calling service-api, to give a private "answer" (the info)
     ChatSapi*  sapi = qobject_cast<ChatSapi*>( sender());
     Q_ASSERT(sapi);
-    sapi->rq_info("Arn Chat Demo", "1.0");
+    sapi->rq_info("Arn Chat Demo", "1.1");
 }
 //! [code]

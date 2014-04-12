@@ -38,7 +38,6 @@ ArnLibCompile {
     ARN += client
     //ARN += server
     ARN += discover
-    CONFIG += mDnsIntern
     include(../../src/ArnLib.pri)
 } else {
     win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../release/ -l$${ARNLIB}

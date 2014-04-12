@@ -27,33 +27,35 @@
 // THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //! [code]
-#ifndef SERVERMAIN_HPP
-#define SERVERMAIN_HPP
+#ifndef MAINWINDOW_HPP
+#define MAINWINDOW_HPP
 
 #include "ChatSapi.hpp"
 #include <ArnInc/ArnItem.hpp>
 #include <ArnInc/ArnServer.hpp>
 #include <QTimer>
 #include <QStringList>
-#include <QObject>
+#include <QMainWindow>
+
+namespace Ui {
+class MainWindow;
+}
 
 class ArnDiscoverRemote;
 
 
-class ServerMain : public QObject
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit ServerMain( QObject* parent = 0);
-
-signals:
-
-public slots:
+    explicit MainWindow( QWidget *parent = 0);
 
 private slots:
     void  doNewSession( QString path);
+    void  doSessionClosed();
     void  doTimeUpdate();
-    void  shutdown();
+    void  doUpdateView();
+    void  on_shutDownButton_clicked();
 
     // Chat Provider routines
     void  chatList();
@@ -61,16 +63,17 @@ private slots:
     void  chatInfoQ();
 
 private:
+    Ui::MainWindow *_ui;
     QStringList  _chatNameList;
     QStringList  _chatMsgList;
-    QTimer  _timer;
+    QTimer  _timer1s;
+    int  _connectCount;
 
     ArnItem  _arnTime;
     ArnServer*  _server;
     ChatSapi*  _commonSapi;
     ArnDiscoverRemote*  _discoverRemote;
-    bool  _isShuttingDown;
 };
 
-#endif // SERVERMAIN_HPP
+#endif // MAINWINDOW_HPP
 //! [code]

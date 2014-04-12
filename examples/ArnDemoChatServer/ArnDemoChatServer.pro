@@ -9,24 +9,25 @@ CONFIG += ArnLibCompile
 # Usage of internal mDNS code (no external dependency)
 CONFIG += mDnsIntern
 
-QT       += core
+QT       += core gui
 QT       += network
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ArnDemoChatServer
-CONFIG   += console
-CONFIG   -= app_bundle
-
-TEMPLATE = app
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
+UI_DIR = tmp
 
 
 SOURCES += main.cpp \
-    ServerMain.cpp
+    MainWindow.cpp
 
 HEADERS += \
-    ServerMain.hpp \
-    ChatSapi.hpp
+    ChatSapi.hpp \
+    MainWindow.hpp
+
+FORMS += \
+    MainWindow.ui
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     ARNLIB = Arn5
@@ -37,7 +38,6 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 ArnLibCompile {
     ARN += server
     ARN += discover
-    CONFIG += mDnsIntern
     include(../../src/ArnLib.pri)
 } else {
     win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../release/ -l$${ARNLIB}
