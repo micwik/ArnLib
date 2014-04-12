@@ -32,10 +32,6 @@
 #include <ArnInc/ArnItem.hpp>
 #include <ArnInc/ArnDiscoverRemote.hpp>
 #include <QTime>
-#include <QSocketNotifier>
-#include <QFile>
-#include <QTextStream>
-#include <QCoreApplication>
 #include <QDebug>
 
 
