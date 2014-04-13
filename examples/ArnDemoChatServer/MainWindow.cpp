@@ -36,7 +36,7 @@
 
 
 MainWindow::MainWindow( QWidget *parent) :
-    QMainWindow( parent),
+    QMainWindow( parent, Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint),
     _ui( new Ui::MainWindow)
 {
     _ui->setupUi( this);
