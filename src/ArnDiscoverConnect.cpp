@@ -338,7 +338,7 @@ void  ArnDiscoverConnector::doClientResolvChanged( int index, ArnDiscoverInfo::S
     Q_ASSERT(_arnDisHostAddress);
     Q_ASSERT(_arnDisHostPort);
 
-    ArnDiscoverInfo  info = _resolver->infoByIndex( index);
+    const ArnDiscoverInfo&  info = _resolver->infoByIndex( index);
     if (info.serviceName() != _arnDisHostService->toString())  return;  // Not the current service
 
     *_arnDisHostAddress = info.hostWithInfo();

@@ -62,7 +62,32 @@ Following rules apply:
 * * Methods to change service are ArnDiscoverRemote::setService() and corresponding
     _Arn Data Objects_ which can be changed locally or remote.
 
+For a complete example of advertisng a server, see the project ArnServer in ServerMain.hpp
+and ServerMain.cpp files.
+
 <b>Example usage</b> \n \code
+    // In class declare
+    ArnDiscoverRemote*  _discoverRemote;
+    ArnClient*  _client;
+
+    // In class code
+    _client = new ArnClient;
+    _client->setMountPoint("//");
+    _client->setAutoConnect( true);
+
+    _discoverRemote = new ArnDiscoverRemote( this);
+    _discoverRemote->setDefaultService("My default service");
+    _discoverRemote->addGroup("myId/myProduct");
+    _discoverRemote->addCustomProperty("MyProtoVer", "1.0");
+    _discoverRemote->startUseNewServer( ArnDiscover::Type::Client, 0);  // Dynamic server
+
+    ArnDiscoverConnector*  connector = _discoverRemote->newConnector( *_client, "House");
+    connector->setResolver( new ArnDiscoverResolver());
+    connector->start();
+
+    ArnPersist*  persist = new ArnPersist( this);
+    persist->setupDataBase();
+    persist->setMountPoint( Arn::pathLocal);
 \endcode
 */
 class ArnDiscoverRemote : public ArnDiscoverAdvertise

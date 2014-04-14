@@ -304,6 +304,8 @@ void  ArnDiscoverBrowserB::setDefaultStopState( ArnDiscoverInfo::State defaultSt
 
 bool  ArnDiscoverBrowserB::goTowardState( int index, ArnDiscoverInfo::State state)
 {
+    if ((index < 0) || (index >= _activeServInfos.size()))  return false;  // Out of index
+
     ArnDiscoverInfo&  info = _activeServInfos[ index];
     if (state <= info._state)  return false;  // Can only go forward
 

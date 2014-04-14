@@ -425,6 +425,49 @@ private:
 };
 
 
+//! Browsing for Arn services.
+/*!
+[About Arn Discover](\ref gen_discover)
+
+For a more complete example see the project ArnBrowser in DiscoverWindow.hpp and
+DiscoverWindow.cpp files.
+
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnDiscoverBrowser*  _serviceBrowser;
+    QListWidget*  _serviceTabView;
+    QLabel*  _hostNameValue;
+
+    // In class code
+    _serviceBrowser = new ArnDiscoverBrowser( this);
+    connect(_serviceBrowser, SIGNAL(serviceAdded(int,QString)),
+            this, SLOT(onServiceAdded(int,QString)));
+    connect(_serviceBrowser, SIGNAL(serviceRemoved(int)), this, SLOT(onServiceRemoved(int)));
+    connect(_serviceBrowser, SIGNAL(infoUpdated(int,ArnDiscoverInfo::State)),
+            this, SLOT(onInfoUpdated(int,ArnDiscoverInfo::State)));
+
+void  XXX::onServiceAdded( int index, QString name)
+{
+    _serviceTabView->insertItem( index, name);
+}
+
+void  XXX::onServiceRemoved( int index)
+{
+    QListWidgetItem*  item = _serviceTabView->takeItem( index);
+    if (item)
+        delete item;
+}
+
+void  XXX::onInfoUpdated( int index, ArnDiscoverInfo::State state)
+{
+    int  curIndex = _serviceTabView->currentRow();
+    if (index != curIndex)  return;  // The updated info is not for selected row
+
+    const ArnDiscoverInfo&  info = _serviceBrowser->infoByIndex( curIndex);
+    _hostNameValue->setText( info.hostName());
+}
+\endcode
+*/
 class ArnDiscoverBrowser : public ArnDiscoverBrowserB
 {
     Q_OBJECT
@@ -475,6 +518,35 @@ public slots:
 };
 
 
+//! Resolv an Arn service.
+/*!
+[About Arn Discover](\ref gen_discover)
+
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnDiscoverResolver*  _resolver;
+
+    // In class code
+    _resolver = new ArnDiscoverResolver( this);
+    connect( _resolver, SIGNAL(infoUpdated(int,ArnDiscoverInfo::State)),
+             this, SLOT(doClientResolvChanged(int,ArnDiscoverInfo::State)));
+    _resolver->resolve("My service");
+
+void  XXX::doClientResolvChanged( int index, ArnDiscoverInfo::State state)
+{
+    const ArnDiscoverInfo&  info = _resolver->infoByIndex( index);
+
+    if (state == state.HostIp) {
+        qDebug() << "Resolved service:" << info.serviceName()
+                 << " into host:" << info.hostWithInfo();
+    }
+    else if (info.isError()) {
+        qDebug() << "Error resolving service:" << info.serviceName()
+                 << " code:" << info.resolvCode();
+    }
+}
+\endcode
+*/
 class ArnDiscoverResolver : public ArnDiscoverBrowserB
 {
     Q_OBJECT
@@ -519,6 +591,29 @@ private:
 };
 
 
+//! Advertise an Arn service.
+/*!
+[About Arn Discover](\ref gen_discover)
+
+_Arn Discover_ is the mid level support for advertising services on an local network.
+For higher level support, use ArnDiscoverRemote.
+
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnDiscoverAdvertise*  _serviceAdvertiser;
+    ArnServer*  _server;
+
+    // In class code
+    _server = new ArnServer( ArnServer::Type::NetSync, this);
+    _server->start(0);  // Start server on dynamic port
+    int  serverPort = _server->port();
+
+    _serviceAdvertiser = new ArnDiscoverAdvertise( this);
+    _serviceAdvertiser->addGroup("myId/myProduct");
+    _serviceAdvertiser->addCustomProperty("MyProtoVer", "1.0");
+    _serviceAdvertiser->advertiseService( ArnDiscover::Type::Server, "My service", serverPort);
+\endcode
+*/
 class ArnDiscoverAdvertise : public QObject
 {
     Q_OBJECT

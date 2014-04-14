@@ -54,7 +54,7 @@ class QTimer;
 Connection can be made to a specific Host by connectToArn(). It's also possible to define
 an _Arn Connection List_. Each host address is added to the list with a priority. The
 priority is used to control the order at which the host addresses will be tried for
-connection. Lowest priority is tried first. Connection trials are started with
+connection. Lowest priority number is tried first. Connection trials are started with
 connectToArnlList(). The priority can also be used for selction in clearArnList() and
 arnList().
 

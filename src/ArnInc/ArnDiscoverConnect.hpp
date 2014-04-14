@@ -42,7 +42,7 @@ class QTime;
 
 //! An automatic client discover connector.
 /*!
-[About Discover Remote](\ref gen_discoverRemote)
+[About Arn Discover Remote](\ref gen_discoverRemote)
 
 This connector class manages client connections. Both as a list of possible _direct host_
 addresses and using a service name for reolving into a _discover host_. The two methods can
@@ -56,7 +56,19 @@ The _id_ will appear as an _Arn folder_, e.g. when _id_ is "WeatherData-XYZ" the
 _connector folder path_ will be "Sys/Discover/Connect/WeatherData-XYZ/".
 
 <b>Example usage</b> \n \code
-tbd
+    // In class declare
+    ArnDiscoverConnector*  _connector
+    ArnClient  _arnClient;
+
+    // In class code
+    _arnClient.setMountPoint("//");
+    _arnClient.setAutoConnect(true);
+
+    _connector = new ArnDiscoverConnector( _arnClient, "MyConnectionId");
+    _connector->setResolver( new ArnDiscoverResolver());
+    _connector->setService("My Service");
+    _connector->addToDirectHosts("localhost");
+    _connector->start();
 \endcode
 */
 class ArnDiscoverConnector : public QObject
