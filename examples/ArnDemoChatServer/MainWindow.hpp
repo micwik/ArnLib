@@ -49,13 +49,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 public:
     explicit MainWindow( QWidget *parent = 0);
+    ~MainWindow();
 
 private slots:
     void  doNewSession( QString path);
     void  doSessionClosed();
-    void  doTimeUpdate();
     void  doUpdateView();
     void  on_shutDownButton_clicked();
+    void  doTimeUpdate();
 
     // Chat Provider routines
     void  chatList();

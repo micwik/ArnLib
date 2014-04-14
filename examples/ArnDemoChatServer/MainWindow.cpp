@@ -69,6 +69,12 @@ MainWindow::MainWindow( QWidget *parent) :
 }
 
 
+MainWindow::~MainWindow()
+{
+    delete _ui;
+}
+
+
 void  MainWindow::doNewSession( QString path)
 {
     if (!Arn::isProviderPath( path))  return;  // Only provider pipe is used
@@ -91,12 +97,6 @@ void MainWindow::doSessionClosed()
 }
 
 
-void  MainWindow::doTimeUpdate()
-{
-    _arnTime = QTime::currentTime().toString();
-}
-
-
 void  MainWindow::doUpdateView()
 {
     _ui->connectCount->setText( QString::number( _connectCount));
@@ -109,6 +109,12 @@ void  MainWindow::on_shutDownButton_clicked()
     delete _discoverRemote;  // Must be deleted while still in the main eventloop
     _discoverRemote = 0;
     QApplication::quit();
+}
+
+
+void  MainWindow::doTimeUpdate()
+{
+    _arnTime = QTime::currentTime().toString();
 }
 
 
