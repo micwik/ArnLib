@@ -63,6 +63,7 @@ it is called DYLD_LIBRARY_PATH) environment variable.
 If you only want to check the library examples without installing something,
 you can set the LD_LIBRARY_PATH to the lib directory 
 of your local build. 
+it's also possible to compile the sources together by ArnLibCompile (see Using ArnLib below).
 
 The examples is built this way:
 > cd examples/ArnDemoChat <Br>
