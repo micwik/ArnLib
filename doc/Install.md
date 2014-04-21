@@ -53,10 +53,10 @@ When using IDE, don't forget the "make install" step.
 > make install
 
 The easiest way of installing this library, is to let it be placed in a standard location 
-for librarys and includes, e.g. /usr/lib and /usr/include/ArnLib.
+for librarys and includes, e.g. /usr/lib and /usr/include/ArnInc.
 When using a shared library it's path has to be known to 
 the run-time linker of your operating system. On Linux systems read
-"man ldconfig" ( or google for it ). Another option is to use
+"man ldconfig" (or google for it). Another option is to use
 the LD_LIBRARY_PATH (on some systems LIBPATH is used instead, on MacOSX
 it is called DYLD_LIBRARY_PATH) environment variable.
 
@@ -91,7 +91,8 @@ The examples is built this way:
 
 Windows doesn't like mixing of debug and release binaries.
 
-In windows it's possible to install the dll files together with the application binary, as the application directory always is included in the search path for dll.
+In windows it's possible to install the dll files together with the application binary,
+as the application directory always is included in the search path for dll.
 
 
 ### C) Win32/MinGW 
@@ -100,7 +101,7 @@ Using Qt Creator for windows, will give you the needed tools for building a Qt p
 
 Check that your Qt version has been built with MinGW - not with MSVC !
 
-Start a Shell, where Qt4 is initialized. (e.g. with
+Start a Shell, where Qt is initialized. (e.g. with
 "Programs->Qt by Trolltech ...->Qt 4.x.x Command Prompt" ).
 Check if you can execute "make" or something like "mingw32-make".
 
@@ -115,7 +116,8 @@ The examples is built this way:
 
 Windows doesn't like mixing of debug and release binaries.
 
-In windows it's possible to install the dll files together with the application binary, as the application directory always is included in the search path for dll.
+In windows it's possible to install the dll files together with the application binary,
+as the application directory always is included in the search path for dll.
 
 
 ### D) MacOSX
@@ -132,21 +134,53 @@ following:
 
 ### E) Qt Embedded
 
-ArnLib has been built with Qt Embedded using a Raspberry Pi. To build was as simple as for a regular Unix build.
+ArnLib has been built with Qt Embedded using a Raspberry Pi. To build was as simple as
+for a regular Unix build.
 <Br><Br>
 
 
 Using ArnLib    {#ins_usage}
 ------------
+In the *.pro file of the application the below lines can be used.
 
-In the *.pro file of the application the follwing can be used:
-> win32:CONFIG(release, debug|release): LIBS += L$$OUT_PWD/../ArnLib/release/ -lArn <Br>
-> else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -lArn <Br>
-> else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -lArn <Br>
-> 
-> INCLUDEPATH += $$PWD/..
+This will give a starting point for the configuration. It works well when using the same
+base directory for ArnLib as the application, e.g. basedir/ArnLib and basedir/myApp. In Unix
+alike systems it's also needed to install the library files in a path known by the system,
+see a) Unix.
 
-This will give a starting point for the configuration. It works well when using the same base directory for ArnLib as the application, e.g. basedir/ArnLib and basedir/myApp. In Unix alike systems it's also needed to install the library files in a path known by the system, see a) Unix.
+It's possible to include the ArnLib source in the application compiling by adding
+ArnLibCompile to CONFIG. The included part of the source can be selected by addings to ARN,
+e.g. ARN += server.
+
+Internal mDNS (ZeroConfig) is selected by adding mDnsIntern to CONFIG.
+
+    CONFIG += ArnLibCompile
+    CONFIG += mDnsIntern
+
+    greaterThan(QT_MAJOR_VERSION, 4) {
+        ARNLIB = Arn5
+    } else {
+        ARNLIB = Arn4
+    }
+
+    ArnLibCompile {
+        #ARN += client
+        ARN += server
+        ARN += discover
+        include(../ArnLib/src/ArnLib.pri)
+        INCLUDEPATH += $$PWD/../ArnLib/src
+    } else {
+        win32: INCLUDEPATH += $$PWD/../ArnLib/src
+        win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/release/ -l$${ARNLIB}
+        else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -l$${ARNLIB}
+        else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -l$${ARNLIB}
+    }
+
+    !mDnsIntern {
+        win32:CONFIG(release, debug|release): LIBS +=  -ldns_sd
+        else:win32:CONFIG(debug, debug|release): LIBS +=  -ldns_sd
+        else:unix: LIBS += -ldns_sd
+    }
 
 If you don't use qmake you have to add the include path to find the ArnLib 
 headers to your compiler flags and the ArnLib library to your linker list.

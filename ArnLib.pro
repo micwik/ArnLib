@@ -48,7 +48,8 @@ OTHER_FILES += \
     README.md \
     doc/Description.md \
     examples/Examples.txt \
-    ArnLib.pri
+    ArnLib.pri \
+    doc/Install.md
 
 
 ### Install

@@ -32,7 +32,7 @@ _Mode_ change is a one direction process. Once a specific _mode_ is set, it can'
 
 If the ArnItem is in a closed state when the _mode_ change is done, the added modes will
 be stored and the real _mode_ change is done when the ArnItem is opened to an
-_Arn Data Object_. This implies that ArnItems can benefit from _mode_ settings before
+_ARN Data Object_. This implies that ArnItems can benefit from _mode_ settings before
 being opened.
 
 If the _general mode_ change is done to a [shared](#gen_shareArnobj) object, the change
@@ -45,22 +45,23 @@ The following _general modes_ are available:
 * **Pipe** Implies _BiDir_ and all data is preserved as a stream during
   [sharing](#gen_shareArnobj). Without _Pipe mode_, [sharing](#gen_shareArnobj) is
   optimized to sync latest value and not all values in a stream.
-* **Save** Sets the _Arn Data Object_ as persistent and any data assigned to it will be
+* **Save** Sets the _ARN Data Object_ as persistent and any data assigned to it will be
   saved. The persistent service must be started at the server.
   See [persistent](#gen_persistArnobj) objects.
 
 Additionally there are some _sync modes_. These modes are used by the local client session
 and are not shared with others.
-The _sync modes_ must be set before the ArnItem is opened to an _Arn Data Object_.
+The _sync modes_ must be set before the ArnItem is opened to an _ARN Data Object_.
 
 Following _sync_modes_ are available:
 
-* **Master** The _Arn Data Object_ (at client side) is set as _default generator_ of data.
+* **Master** The _ARN Data Object_ (at client side) is set as _default generator_ of data.
   Normally the server is the _default generator_ of data.
   This makes difference when client connects or reconnects to the server.
-  The data from the _default generator_ is then used and synced.
-* **AutoDestroy** The _Arn Data Object_ (at client side) is set up for auto destruction.
-  When the client closes tcp/ip, the server side will destroy the _Arn Data Object_ and
+  The data from the _default generator_ is then used and synced. Also echo of data to
+  the client side _ARN data object_ is prohibited.
+* **AutoDestroy** The _ARN Data Object_ (at client side) is set up for auto destruction.
+  When the client closes tcp/ip, the server side will destroy the _ARN Data Object_ and
   this will also be done at any connected clients.
 
 Note: It's convenient to always set all the needed modes before an ArnItem is opened or
@@ -76,7 +77,7 @@ _local path_ should not be [shared](#gen_shareArnobj) as it will contain specifi
 for its running program.
 
 The exception to not sharing _local path_ is for some kind of remote client that must
-be able to change an _Arn Data Object_ in the _local path_ at the remoted target.
+be able to change an _ARN Data Object_ in the _local path_ at the remoted target.
 For example this is used to change the [Discover remote](#gen_discoverRemote) _service name_
 for a target host.
 
@@ -90,12 +91,14 @@ Following must be observed at remote client when sharing _local path_:
 
 ### Naming conventions ###    {#gen_naming}
 These rules must not be obeyed, but are recommended, to get the most benefits of the
-Arn echo system, like ArnBrowser.
+%Arn echo system, like ArnBrowser.
 
 * First level folder empty, e.g. "//MyGlobalFolder/Date/value", is a global path and is
   [shared](#gen_shareArnobj) to server and clients.
-* First level folder not empty, e.g "/MyLocalFolder/Key/value", is a local path and is
-  not [shared](#gen_shareArnobj).
+* First level folder is "/Local", e.g "/Local/Key/value", is a [local path](#gen_localPath)
+  and is not [shared](#gen_shareArnobj).
+* Path is relative, e.g "Key/value", is a [local path](#gen_localPath)
+  and is not [shared](#gen_shareArnobj).
 * When a leaf is used as an attribute, the following names are reserved:
     + **value** the value of the above closest folder denotation, e.g. "Temperature".
     + **set** allowed values and conversion to a more descriptive form, e.g. "0=Off 1=On".
@@ -107,7 +110,7 @@ Arn echo system, like ArnBrowser.
 
 Bidirectional Arn Data Objects    {#gen_bidirArnobj}
 ------------------------------
-A bidirectional _Arn Data Object_ is actually a double object, a twin.
+A bidirectional _ARN Data Object_ is actually a double object, a twin.
 Each part has its own path but their life span is depending on each other.
 
 One part is the normal "official" and the other part is _provider_.
@@ -138,7 +141,7 @@ It contains logic for handling [sequence check](#gen_pipeSeqCheck) and
 
 ### Pipe sequence check ###    {#gen_pipeSeqCheck}
 Sequence check is used to make sure everything is received and nothing is lost or comes twice.
-This can happen when a tcp/ip connection goes up and down.
+This might happen when a tcp/ip connection goes up and down.
 
 The sequence check uses a hidden sequence number not visible in the pipe stream.
 The sequence number is increased for each assignment to the pipe. The sending and checking of
@@ -179,49 +182,49 @@ from the receiving part to block uncontrolled assignment from one side of the pi
 Persistent Arn Data Objects    {#gen_persistArnobj}
 ---------------------------
 The _server_ must use ArnPersist to support the persistance service. As a standard
-_persist storage_, _Arn Data Objects_ are stored in a SQLite database. It's also possible to
+_persist storage_, _ARN Data Objects_ are stored in a SQLite database. It's also possible to
 store each object as a file.
 
-The _mount point_ (path) for collecting the persistent _Arn Data objects_ is set by
+The _mount point_ (path) for collecting the persistent _ARN Data objects_ is set by
 ArnPersist::setMountPoint(). For server applications this is typically set to "/", which
-makes all _Arn Data Objects_ potential persistent. In client applications the _mount point_
-is typically restricted to Arn::pathLocal, which only saves local _Arn Data Objects_ in the
+makes all _ARN Data Objects_ potential persistent. In client applications the _mount point_
+is typically restricted to Arn::pathLocal, which only saves local _ARN Data Objects_ in the
 local _persist storage_.
 
-Any connected _client_ or the _server_ can make an _Arn Data Object_ persistent.
+Any connected _client_ or the _server_ can make an _ARN Data Object_ persistent.
 It's just to open an ArnItem to the object and change _mode_ to _Save_.
 > ArnItem  arnMaxLevel; <Br>
 > arnMaxLevel.addMode( Arn::ObjectMode::Save); <Br>
 > arnMaxLevel.open("//config/Level/Max/value"); <Br>
 
-When the _Arn Data Object_ is set to _Save_ mode, it's automatically loaded by the
+When the _ARN Data Object_ is set to _Save_ mode, it's automatically loaded by the
 ArnPersist. At the _server_ this is instantly done. A _client_ has to wait for the value
 to get synced from the _server_. It's convenient to use ArnDepend to get a signal
 when the value is loaded and ready to use.
 
-When the _Arn Data Object_ is changed, it will be automatically saved by ArnPersist.
+When the _ARN Data Object_ is changed, it will be automatically saved by ArnPersist.
 There is a delay from first change of the object until the saving is done,
 see ArnItem::setDelay(). This allows for intensive updates of the object without choking
 down the server with saving operations.
 
 It's possible to mark an object in the SQLite data base as _mandatory_. In this way the
-_Arn Data Object_ is set as _persistent_ and gets loaded at start of ArnPersist.
+_ARN Data Object_ is set as _persistent_ and gets loaded at start of ArnPersist.
 <Br><Br>
 
 ### Saving objects in files ###    {#gen_fileArnobj}
-To use the _persistent_ storing of _Arn Data Objects_ in files, the _root_ directory is
+To use the _persistent_ storing of _ARN Data Objects_ in files, the _root_ directory is
 set by: ArnPersist::setPersistDir(). This can also be combined with support of VCS
-(version control system).See ArnPersist::setVcs(). Currently there is a support module
+(version control system). See ArnPersist::setVcs(). Currently there is a support module
 for _git_.
 
 In the _root_ directory and below, all (VCS) persistent files are stored.
-The _root_ directory corresponds to the _root_ in Arn tree.
+The _root_ directory corresponds to the _root_ in %Arn tree.
 
-> Example: _root_ directory is set to "/usr/local/arn_persist". There > is a file stored
-  at "/usr/local/arn_persist/@/doc/help.html". This > file will be mapped to Arn at
-  "//doc/help.html".
+> Example: _root_ directory is set to "/usr/local/arn_persist". There is a file stored
+> at "/usr/local/arn_persist/@/doc/help.xhtml". This file will be mapped to %Arn at
+> "//doc/help.xhtml".
 
-Any files stored in the _root_ directory and below, get loaded into their _Arn Data Object_
+Any files stored in the _root_ directory and below, get loaded into their _ARN Data Object_
 with _mode_ set as _persistent_ at start of ArnPersist.
 
 The files get updated in a similar way to the data base update. 
@@ -230,16 +233,16 @@ The files get updated in a similar way to the data base update.
 
 Sharing Arn Data Objects    {#gen_shareArnobj}
 ------------------------
-A fundamental aspect of _Arn_ is that _Arn Data Objects_ can be shared. This is
-centralized to the _Arn Server_, which stores all shared objects. It's still a
-distributed model as each client and server has their own set of _Arn Data Objects_ that
+A fundamental aspect of %Arn is that _ARN Data Objects_ can be shared. This is
+centralized to the _ARN Server_, which stores all shared objects. It's still a
+distributed model as each client and server has their own set of _ARN Data Objects_ that
 operate independent of any connection.
 
-Each _Arn Client_ connects to the _Arn Server_ and decides which part of the
-_Arn Data Object_ tree to be shared. <Br>
+Each _ARN Client_ connects to the _ARN Server_ and decides which part of the
+_ARN Data Object_ tree to be shared. <Br>
 `ArnClient::setMountPoint("/share/")` will make the tree"/share/" shared. <Br>
 This doesn't mean that everything in the shared tree at the server now will be available
-at the client. The client has to create an _Arn Data Object_ in the shared tree.
+at the client. The client has to create an _ARN Data Object_ in the shared tree.
 The client can then decide the exact objects of interest. <Br>
 `ArnItem::Open("/share/Test/value")` will open a shared object (in previous example).
 
@@ -268,11 +271,11 @@ The _provider_ is usually assumed to wait for a _requester_ to initiate the sess
 and then react to different remote calls from the _requester_.
 However, this is full duplex, so any side can make a remote call at any time.
 
-A good example of the usage of SAPI is the _Arn Demo Chat_, which is included in the
-source package of the _ArnLib_.
+A good example of the usage of SAPI is the "Arn Demo Chat", which is included in the
+source package of the ArnLib.
 
 ArnRpc uses [pipes](\ref gen_pipeArnobj) to communicate. The _pipes_ can be monitored 
-and receive test stimuli from the _Arn Browser_ program. The used
+and receive test stimuli from the "Arn Browser" program. The used
 [protocol](#gen_rpcformat) is XString based and quite easy to handtype when common data
 types are used. "$help" will give the syntax for the actual custom SAPI.
 
@@ -316,7 +319,8 @@ is seen below. The type mark _T_ is "t" for writeable types and "tb" for binary
 
 Commonly used _types_ have a shorter form. The _types_ are:
 > _int_, _uint_, _bool_, _double_, _bytes_ (QByteArray), _date_ (QDate), _time_ (QTime),
-> _datetime_ (QDateTime), _list_ (QStringList), and _string_ (QString) as default.
+> _datetime_ (QDateTime), _list_ (QStringList) and _string_ (QString). The default, when no
+> type is specified, is _string_.
 
 This can be used in previous example: 
 > put string.id=level int.value=123
@@ -346,10 +350,10 @@ ZeroConfig    {#gen_zeroconf}
 For getting a basic understanding of ZeroConfig and further references to relevant
 documentation, see: http://zeroconf.org/
 
-_Arn ZeroConfig_ is the lowest level support for advertising and discovering services on
-an local network. The implementation has very few dependences to the rest of the ArnLib.
+_ARN ZeroConfig_ is the lowest level support for advertising and discovering services on
+a local network. The implementation has very few dependences to the rest of the ArnLib.
 
-_Arn ZeroConfig_ can use a built in implementation of Apple (R) _mDns_ / _DNS_SD_ that has no
+_ARN ZeroConfig_ can use a built in implementation of Apple (R) _mDns_ / _DNS_SD_ that has no
 further dependences to external libraries. For _mDns_ the low end system abstraction layer
 has been written to use Qt for portability. The higher level _DNS_SD_ has wrappers written
 to give a good c++ / Qt API.
@@ -358,7 +362,7 @@ It's also possible to use an external _DNS_SD_ library, like _Avahi_. This gives
 performance when many applications uses ZeroConfig on the same machine, as they share
 cashing etc with a common daemon. However you have to deal with this external dependency.
 
-_Arn ZeroConfig_ implementation has two parts. The ArnZeroConfRegister can be used to
+_ARN ZeroConfig_ implementation has two parts. The ArnZeroConfRegister can be used to
 advertise any _service_ given a _host address_ and a _port number_. The other part is the
 ArnZeroConfBrowser / ArnZeroConfResolve / ArnZeroConfLookup. The browser is used to get a
 realtime list of available _services_ on the network. The resolver takes a given _service_
@@ -396,35 +400,35 @@ this can be done with ArnZeroConfRegister::setTxtRecordMap() using an Arn::XStri
 
 Discover    {#gen_discover}
 --------
-_Arn Discover_ is the mid level support for advertising and discovering services on
-an local network. This implementation is only for the "arn" _service type_ and is heavily
+_ARN Discover_ is the mid level support for advertising and discovering services on
+a local network. This implementation is only for the "arn" _service type_ and is heavily
 dependent on the ArnLib. The "arn" _service type_ is approved and registered by IANA.
 
-_Arn Discover_ implementation has two parts. The ArnDiscoverAdvertise can be used to
-advertise an Arn _service_ given a _host address_ and a _port number_. The other part is
+_ARN Discover_ implementation has two parts. The ArnDiscoverAdvertise can be used to
+advertise an %Arn _service_ given a _host address_ and a _port number_. The other part is
 the ArnDiscoverBrowser / ArnDiscoverResolver. The browser is used to get a realtime list
-of available Arn _services_ on the network. The resolver is for taking a manual resolve
+of available %Arn _services_ on the network. The resolver is for taking a manual resolve
 when a _service name_ is known in advance.
 
-_Arn Discover_ is designed to minimize external glue logic as these classes do all the
-common processing. Internally _Arn ZeroConfig_ is used, but focus is on solving Arn
+_ARN Discover_ is designed to minimize external glue logic as these classes do all the
+common processing. Internally _ARN ZeroConfig_ is used, but focus is on solving %Arn
 specific needs in a powerful, yet flexible manner.
 
-An _Arn service_ needs an ArnDiscover::Type and a [service name](\ref gen_zeroconfServiceName).
+An _ARN service_ needs an ArnDiscover::Type and a [service name](\ref gen_zeroconfServiceName).
 The ArnDiscover::Type sets up a coarse division of the applications into the _groups_
 "server" and "client". The "client" typically only offer the service of ArnDiscoverRemote.
 
-_Arn services_ can also have _groups_. These are identifiers that can be used to filter out
-some sub group. An _Arn service_ can be advertised with many _groups_, but browsing can only be
+_ARN services_ can also have _groups_. These are identifiers that can be used to filter out
+some sub group. An _ARN service_ can be advertised with many _groups_, but browsing can only be
 filtered with one _group_ or with no filter.
 
-It's possible to add a _custom property_ to an _Arn service_. This can be done with
+It's possible to add a _custom property_ to an _ARN service_. This can be done with
 ArnDiscoverAdvertise::setCustomProperties() using an Arn::XStringMap. The propertie has a
 _key_ / _value_ -pair. The custom property are advised to have a _key_ starting with a
 capital letter to avoid name collision with the system.
 The added _groups_ will be set as properties with naming as "group0", "group1" ...
 
-ArnDiscoverBrowser collects found Arn _services_. Each of these _services_ can automatically
+ArnDiscoverBrowser collects found %Arn _services_. Each of these _services_ can automatically
 be further examined. This is chosen by calling ArnDiscoverBrowserB::setDefaultStopState(),
 which e.g. tells examination to stop after _host name_ has been found. The _service_ can
 then manually be ordered for further examination by ArnDiscoverBrowserB::goTowardState(),
@@ -440,13 +444,13 @@ can be stored. However the _service_ given by the id might dissapear.
 
 Discover remote    {#gen_discoverRemote}
 ---------------
-_Arn Discover Remote_ is the highest level support for advertising and discovering services
-on an local network. Its implementation is based on _Arn Discover_. The added functionality
+_ARN Discover Remote_ is the highest level support for advertising and discovering services
+on a local network. Its implementation is based on _ARN Discover_. The added functionality
 is to have a remote control for both advertising an ArnServer and multiple ArnClient
-connections. The remote control is done via _Arn Data Objects_ in [local path](#gen_localPath)
+connections. The remote control is done via _ARN Data Objects_ in [local path](#gen_localPath)
 "Sys/Discover/".
 
-_Arn Discover Remote_ has one main class, ArnDiscoverRemote which act as a central point.
+_ARN Discover Remote_ has one main class, ArnDiscoverRemote which act as a central point.
 The ArnDiscoverRemote class also takes an ArnServer and advertises it as a _service_. For
 remote control the _service name_ is available at [local path](#gen_localPath)
 "Sys/Discover/This/Service/value".
@@ -470,9 +474,9 @@ The ArnDiscoverConnector is associated with an _id_, which should be chosen to d
 client target or its purpose. It's not a host address or necessarily a specific host, as
 there can be many possible addresses assigned to the ArnDiscoverConnector.
 
-The _id_ will appear as an _Arn folder_ in [local path](#gen_localPath), e.g. when _id_ is
+The _id_ will appear as an _ARN folder_ in [local path](#gen_localPath), e.g. when _id_ is
 "WeatherData-XYZ" the folder path will be "Sys/Discover/Connect/WeatherData-XYZ/". The
-folder and its sub folders will contain _Arn Data Objects_ to remote control the ArnClient.
+folder and its sub folders will contain _ARN Data Objects_ to remote control the ArnClient.
 For a more comprehensive description of these objects, see
 [help discover description](@ref helpDiscDiscover).
 
@@ -503,5 +507,8 @@ Application notations    {#gen_appnote}
 ---------------------
 * If any graphics are used, Gui must be included.
 
-* If only using QImage, Windowing system can be off, like:
+* Qt4: For console application only using QImage, Windowing system can be off, like:
   QApplication a(argc, argv, false);
+
+* Qt5: For console application needing QImage, use QApplication a(argc, argv) and
+  start application with flags "-platform offscreen".

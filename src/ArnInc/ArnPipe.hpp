@@ -41,7 +41,22 @@
 [About Pipes](\ref gen_pipeArnobj)
 
 This class is not thread-safe, but the _Arn Data object_ is, so each thread should
-have it's own handles i.e ArnItem instances.
+have it's own handles i.e ArnPipe instances.
+
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnPipe  _arnPipe;
+
+    // In class code
+    _arnPipe.open("//Pipes/Pipe/value");
+    _arnPipe.setSendSeq( true);
+    _arnPipe.setCheckSeq( true);
+    connect( &_arnPipe., SIGNAL(outOfSequence()), this, SLOT(doOutOfSequence()));
+    connect( &_arnPipe, SIGNAL(changed(QByteArray)), this, SLOT(doPipeInput(QByteArray)));
+
+    QRegExp rx("^ping\\b");
+    _arnPipe.setValueOverwrite( "ping new", rx);
+\endcode
 */
 class ARNLIBSHARED_EXPORT ArnPipe : public ArnItemB
 {

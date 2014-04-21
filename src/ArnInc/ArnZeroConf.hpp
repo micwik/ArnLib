@@ -340,6 +340,8 @@ private:
 
 //! Registering a ZeroConfig service.
 /*!
+[About Zero Config](\ref gen_zeroconf)
+
 This class handles registration of a ZeroConfig service.
 The service name can be any string, giving a clear human readable naming of the service.
 If the given service name is already in use, it will have a number added to make it unique.
@@ -582,19 +584,22 @@ private:
 
 //! Resolv a ZeroConfig service.
 /*!
+[About Zero Config](\ref gen_zeroconf)
+
 This class handles resolving of a ZeroConfig service.
 The service name can be given directly if known, but typically it comes from ArnZeroConfBrowser.
 
 <b>Example usage</b> \n \code
     // In class code
-    ArnZeroConfResolv*  ds = new ArnZeroConfResolv("My TestService. In the attic", this);
+    ArnZeroConfResolve*  ds = new ArnZeroConfResolve("My TestService. In the attic", this);
+    ds->setId( myId);  // Optional id, later used in the signals
     connect( ds, SIGNAL(resolveError(int,int)), this, SLOT(onResolveError(int,int)));
     connect( ds, SIGNAL(resolved(int,QByteArray)), this, SLOT(onResolved(int,QByteArray)));
     ds->resolve();
 
 void XXX::onResolved( int id, QByteArray escFullDomain)
 {
-    ArnZeroConfResolv*  ds = qobject_cast<ArnZeroConfResolv*>( sender());
+    ArnZeroConfResolve*  ds = qobject_cast<ArnZeroConfResolve*>( sender());
     Arn::XStringMap  xsmPar;
     ds->getTxtRecordMap( xsmPar);
     QString  info = QString()
@@ -602,7 +607,7 @@ void XXX::onResolved( int id, QByteArray escFullDomain)
                   +  " Host="   + ds->host()
                   +  " Port="   + QString::number( ds->port())
                   +  " Txt: "   + QString::fromUtf8( xsmPar.toXString().constData());
-    QString  ver = xsmPar.valueString("ver");
+    QString  ver = xsmPar.valueString("MyVers");
     ds->releaseService();
     ds->deleteLater();
 }
@@ -754,9 +759,25 @@ private:
 
 //! Lookup a host.
 /*!
+[About Zero Config](\ref gen_zeroconf)
+
 This class handles lookup of a host. It can be booth Multicast and Unicast DNS lookup.
 
 <b>Example usage</b> \n \code
+    ArnZeroConfLookup*  ds = new ArnZeroConfLookup("myhost.local", this);
+    ds->setId( myId);  // Optional id, later used in the signals
+    connect( ds, SIGNAL(lookupError(int,int)), this, SLOT(onLookupError(int,int)));
+    connect( ds, SIGNAL(lookuped(int)), this, SLOT(onLookuped(int)));
+    ds->lookup();
+
+void  XXX::onLookuped( int id)
+{
+    ArnZeroConfLookup*  ds = qobject_cast<ArnZeroConfLookup*>( sender());
+    QString  hostName = ds->host();
+    QHostAddress  hostIp = ds->hostAddr();
+    ds->releaseLookup();
+    ds->deleteLater();
+}
 \endcode
 */
 class ARNLIBSHARED_EXPORT ArnZeroConfLookup : public ArnZeroConfB
@@ -880,12 +901,13 @@ private:
 
 //! Browsing for ZeroConfig services.
 /*!
+[About Zero Config](\ref gen_zeroconf)
+
 This class handles browsing of ZeroConfig services.
 
 <b>Example usage</b> \n \code
     // In class declare
     ArnZeroConfBrowser*  _serviceBrowser;
-    QMap<QString,QString>  _activeServices;
 
     // In class code
     _serviceBrowser = new ArnZeroConfBrowser( this);
@@ -895,12 +917,12 @@ This class handles browsing of ZeroConfig services.
             this, SLOT(onServiceAdded(int,QString,QString)));
     connect(_serviceBrowser, SIGNAL(serviceRemoved(int,QString,QString)),
             this, SLOT(onServiceRemoved(int,QString,QString)));
-    _serviceBrowser->browse();
 
 void  XXX::onServiceAdded( int id, QString name, QString domain)
 {
-    _activeServices.insert( name, "Some associeated service info ...");
-    ArnZeroConfResolv*  ds = new ArnZeroConfResolv( name, this);
+    //// Resolve the found service
+    ArnZeroConfResolve*  ds = new ArnZeroConfResolve( name, this);
+    ds->setId( id);
     connect( ds, SIGNAL(resolveError(int,int)), this, SLOT(onResolveError(int,int)));
     connect( ds, SIGNAL(resolved(int,QByteArray)), this, SLOT(onResolved(int,QByteArray)));
     ds->resolve();
@@ -908,7 +930,6 @@ void  XXX::onServiceAdded( int id, QString name, QString domain)
 
 void  XXX::onServiceRemoved( int id, QString name, QString domain)
 {
-    _activeServices.remove( name);
 }
 \endcode
 */
