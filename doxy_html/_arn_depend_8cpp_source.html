@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnDepend.cpp (1.0.0-3-gf59259b) Source File</title>
+<title>ArnLib: src/ArnDepend.cpp (2.0.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_arn_depend_8cpp.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -105,102 +106,102 @@ $(document).ready(function(){initNavTree('_arn_depend_8cpp.html','');});
 <div class="title">ArnDepend.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_depend_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2013 Michael Wiklund.</span></div>
+<a href="_arn_depend_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2014 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// This file is part of the ArnLib - Active Registry Network.</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Parts of ArnLib depend on Qt 4 and/or other libraries that have their own</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// licenses. ArnLib is independent of these licenses; however, use of these other</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// libraries is subject to their respective license agreements.</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Parts of ArnLib depend on Qt and/or other libraries that have their own</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// licenses. ArnLib is independent of these licenses; however, use of these</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// other libraries is subject to their respective license agreements.</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// GNU Lesser General Public License Usage</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// This file may be used under the terms of the GNU Lesser General Public</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// License version 2.1 as published by the Free Software Foundation and</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// appearing in the file LICENSE.LGPL included in the packaging of this file.</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// In addition, as a special exception, you may use the rights described</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// appearing in the file LICENSE_LGPL.txt included in the packaging of this</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// file. In addition, as a special exception, you may use the rights described</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// in the Nokia Qt LGPL Exception version 1.1, included in the file</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// LGPL_EXCEPTION.txt in this package.</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// GNU General Public License Usage</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// Alternatively, this file may be used under the terms of the GNU General</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Public License version 3.0 as published by the Free Software Foundation</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// and appearing in the file LICENSE.GPL included in the packaging of this file.</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// Alternatively, this file may be used under the terms of the GNU General Public</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// License version 3.0 as published by the Free Software Foundation and appearing</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// in the file LICENSE_GPL.txt included in the packaging of this file.</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// Other Usage</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// Alternatively, this file may be used in accordance with the terms and</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// conditions contained in a signed written agreement between you and Michael Wiklund.</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// Alternatively, this file may be used in accordance with the terms and conditions</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// contained in a signed written agreement between you and Michael Wiklund.</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// This program is distributed in the hope that it will be useful,</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// GNU Lesser General Public License for more details.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_depend_8hpp.html">ArnDepend.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_8hpp.html">Arn.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;QUuid&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;QTimer&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;QtAlgorithms&gt;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;QDebug&gt;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="_arn_depend_8cpp.html#a4fa2e82c7cbbac000bfcd48ef3915a8a">   40</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span>*  <a class="code" href="_arn_depend_8cpp.html#a4fa2e82c7cbbac000bfcd48ef3915a8a">ArnDependPath</a> = <span class="stringliteral">&quot;//.sys/Depend/&quot;</span>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// This program is distributed in the hope that it will be useful, but WITHOUT ANY</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_depend_8hpp.html">ArnInc/ArnDepend.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_m_8hpp.html">ArnInc/ArnM.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;QUuid&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;QTimer&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;QtAlgorithms&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;QDebug&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="_arn_depend_8cpp.html#a4fa2e82c7cbbac000bfcd48ef3915a8a">   39</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span>*  <a class="code" href="_arn_depend_8cpp.html#a4fa2e82c7cbbac000bfcd48ef3915a8a">ArnDependPath</a> = <span class="stringliteral">&quot;//.sys/Depend/&quot;</span>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#a679ea59f8c2c9875cd7014053b7d16e4">   45</a></span>&#160;<a class="code" href="class_arn_depend_offer.html#a679ea59f8c2c9875cd7014053b7d16e4">ArnDependOffer::ArnDependOffer</a>( QObject* parent) :</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    QObject( parent)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#a679ea59f8c2c9875cd7014053b7d16e4">   44</a></span>&#160;<a class="code" href="class_arn_depend_offer.html#a679ea59f8c2c9875cd7014053b7d16e4">ArnDependOffer::ArnDependOffer</a>( QObject* parent) :</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    QObject( parent)</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#ad6e77bc45148794730f7c32a40f03997">   51</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_depend_offer.html#ad6e77bc45148794730f7c32a40f03997" title="Advertise an available service">ArnDependOffer::advertise</a>( QString serviceName)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    _serviceName = serviceName;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    QString  basePath = QString( <a class="code" href="_arn_depend_8cpp.html#a4fa2e82c7cbbac000bfcd48ef3915a8a">ArnDependPath</a>) + serviceName + <span class="stringliteral">&quot;/&quot;</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    _arnEchoPipeFB.<a class="code" href="class_arn_item.html#a0f1b81445573dbeaf64d8cf51d82e105" title="Set general mode as Pipe for this Arn Data Object">setPipeMode</a>().<a class="code" href="class_arn_item.html#a59252460af76f07c5830e5c48c868774" title="Set client session sync mode as Master for this ArnItem.">setMaster</a>();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    _arnStateName.<a class="code" href="class_arn_item.html#a59252460af76f07c5830e5c48c868774" title="Set client session sync mode as Master for this ArnItem.">setMaster</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    _arnStateId.<a class="code" href="class_arn_item.html#a59252460af76f07c5830e5c48c868774" title="Set client session sync mode as Master for this ArnItem.">setMaster</a>();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    _arnEchoPipeFB.<a class="code" href="class_arn_item.html#aad7d66fe3be087dd393328349812a369" title="Open a handle to an Arn Data Object">open</a>( basePath + <span class="stringliteral">&quot;echoPipe!&quot;</span>);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    _arnStateName.<a class="code" href="class_arn_item.html#aad7d66fe3be087dd393328349812a369" title="Open a handle to an Arn Data Object">open</a>(  basePath + <span class="stringliteral">&quot;stateName&quot;</span>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    _arnStateId.<a class="code" href="class_arn_item.html#aad7d66fe3be087dd393328349812a369" title="Open a handle to an Arn Data Object">open</a>(    basePath + <span class="stringliteral">&quot;stateId&quot;</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    _arnEchoPipeFB = <span class="stringliteral">&quot;{}&quot;</span>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    _arnStateName  = <span class="stringliteral">&quot;Start&quot;</span>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    _arnStateId    = 0;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    connect( &amp;_arnEchoPipeFB, SIGNAL(changed(QString)), <span class="keyword">this</span>, SLOT(requestReceived(QString)));</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#ad6e77bc45148794730f7c32a40f03997">   50</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_depend_offer.html#ad6e77bc45148794730f7c32a40f03997" title="Advertise an available service">ArnDependOffer::advertise</a>( QString serviceName)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    _serviceName = serviceName;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    QString  basePath = QString( <a class="code" href="_arn_depend_8cpp.html#a4fa2e82c7cbbac000bfcd48ef3915a8a">ArnDependPath</a>) + serviceName + <span class="stringliteral">&quot;/&quot;</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    _arnEchoPipeFB.<a class="code" href="class_arn_item.html#ad58e3879bda6cd859a561658d3fc34ad" title="Set general mode as Pipe for this Arn Data Object">setPipeMode</a>().<a class="code" href="class_arn_item.html#a22de5dfc89c02245370d5c0a89cee3f6" title="Set client session sync mode as Master for this ArnItem.">setMaster</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    _arnStateName.<a class="code" href="class_arn_item.html#a22de5dfc89c02245370d5c0a89cee3f6" title="Set client session sync mode as Master for this ArnItem.">setMaster</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    _arnStateId.<a class="code" href="class_arn_item.html#a22de5dfc89c02245370d5c0a89cee3f6" title="Set client session sync mode as Master for this ArnItem.">setMaster</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    _arnEchoPipeFB.<a class="code" href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" title="Open a handle to an Arn Data Object">open</a>( basePath + <span class="stringliteral">&quot;echoPipe!&quot;</span>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    _arnStateName.<a class="code" href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" title="Open a handle to an Arn Data Object">open</a>(  basePath + <span class="stringliteral">&quot;stateName&quot;</span>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    _arnStateId.<a class="code" href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" title="Open a handle to an Arn Data Object">open</a>(    basePath + <span class="stringliteral">&quot;stateId&quot;</span>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    _arnEchoPipeFB = <span class="stringliteral">&quot;{}&quot;</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    _arnStateName  = <span class="stringliteral">&quot;Start&quot;</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    _arnStateId    = 0;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    connect( &amp;_arnEchoPipeFB, SIGNAL(changed(QByteArray)), <span class="keyword">this</span>, SLOT(requestReceived(QByteArray)));</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#a6946894879c4a58f44475bbd2ea92fe6">   71</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_depend_offer.html#a6946894879c4a58f44475bbd2ea92fe6" title="Set the state of the service by a logic name.">ArnDependOffer::setStateName</a>( <span class="keyword">const</span> QString&amp; name)</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;{</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    _arnStateName = name;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#a6946894879c4a58f44475bbd2ea92fe6">   70</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_depend_offer.html#a6946894879c4a58f44475bbd2ea92fe6" title="Set the state of the service by a logic name.">ArnDependOffer::setStateName</a>( <span class="keyword">const</span> QString&amp; name)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;{</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    _arnStateName = name;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#af361db4e9aacd374e62317324c7b29a3">   77</a></span>&#160;QString  <a class="code" href="class_arn_depend_offer.html#af361db4e9aacd374e62317324c7b29a3">ArnDependOffer::stateName</a>()<span class="keyword">  const</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">return</span> _arnStateName.<a class="code" href="class_arn_item.html#a244767ed8c21477994640c5d4d3c1ecf">toString</a>();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#af361db4e9aacd374e62317324c7b29a3">   76</a></span>&#160;QString  <a class="code" href="class_arn_depend_offer.html#af361db4e9aacd374e62317324c7b29a3">ArnDependOffer::stateName</a>()<span class="keyword">  const</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">return</span> _arnStateName.<a class="code" href="class_arn_item.html#a244767ed8c21477994640c5d4d3c1ecf">toString</a>();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#a9ed15d255bbfc69889e08e9c0c562c63">   83</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_depend_offer.html#a9ed15d255bbfc69889e08e9c0c562c63" title="Set the state of the service by an id number.">ArnDependOffer::setStateId</a>( <span class="keywordtype">int</span> <span class="keywordtype">id</span>)</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;{</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    _arnStateId = id;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#a9ed15d255bbfc69889e08e9c0c562c63">   82</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_depend_offer.html#a9ed15d255bbfc69889e08e9c0c562c63" title="Set the state of the service by an id number.">ArnDependOffer::setStateId</a>( <span class="keywordtype">int</span> <span class="keywordtype">id</span>)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    _arnStateId = id;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#a551ea010da61189fac9bb27d954045fc">   89</a></span>&#160;<span class="keywordtype">int</span>  <a class="code" href="class_arn_depend_offer.html#a551ea010da61189fac9bb27d954045fc">ArnDependOffer::stateId</a>()<span class="keyword">  const</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordflow">return</span> _arnStateId.<a class="code" href="class_arn_item.html#aaf0db948f0bad93acec951253055c347">toInt</a>();</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="code" href="class_arn_depend_offer.html#a551ea010da61189fac9bb27d954045fc">   88</a></span>&#160;<span class="keywordtype">int</span>  <a class="code" href="class_arn_depend_offer.html#a551ea010da61189fac9bb27d954045fc">ArnDependOffer::stateId</a>()<span class="keyword">  const</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> _arnStateId.<a class="code" href="class_arn_item.html#aaf0db948f0bad93acec951253055c347">toInt</a>();</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keywordtype">void</span>  ArnDependOffer::requestReceived( QString req)</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;{</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="comment">// qDebug() &lt;&lt; &quot;DepOffer request: service=&quot; &lt;&lt; _serviceName &lt;&lt; &quot; req=&quot; &lt;&lt; req;</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keywordtype">void</span>  ArnDependOffer::requestReceived( QByteArray req)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;{</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2">Arn::debugDepend</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;DepOffer request: service=&quot;</span> &lt;&lt; _serviceName &lt;&lt; <span class="stringliteral">&quot; req=&quot;</span> &lt;&lt; req</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                                    &lt;&lt; <span class="stringliteral">&quot;itemId=&quot;</span> &lt;&lt; _arnEchoPipeFB.<a class="code" href="class_arn_item_b.html#ada67d832add9a20158d71ec17273c010" title="Get the id for this ArnItem.">itemId</a>();</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    _arnEchoPipeFB = req;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
@@ -312,10 +313,10 @@ $(document).ready(function(){initNavTree('_arn_depend_8cpp.html','');});
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="keywordtype">void</span>  ArnDepend::echoCheck( QString echo, DepSlot* slot)</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;{</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="comment">// qDebug() &lt;&lt; &quot;echoCheck: monitorName=&quot; &lt;&lt; _name;</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2">Arn::debugDepend</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;echoCheck: monitorName=&quot;</span> &lt;&lt; _name;</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordflow">if</span> (slot == 0) {</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>* arnItem = qobject_cast&lt;<a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>*&gt;( sender());</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keywordflow">if</span> (arnItem)  slot = <span class="keyword">static_cast&lt;</span><a class="code" href="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5">DepSlot</a>*<span class="keyword">&gt;</span>( arnItem-&gt;<a class="code" href="class_arn_item.html#abd4e240d4e7002078f6597510843b679" title="Get the stored external reference.">reference</a>());</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keywordflow">if</span> (arnItem)  slot = <span class="keyword">static_cast&lt;</span><a class="code" href="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5">DepSlot</a>*<span class="keyword">&gt;</span>( arnItem-&gt;<a class="code" href="class_arn_item_b.html#a1db4c145def37dafca17d47a075fe1a1" title="Get the stored external reference.">reference</a>());</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    }</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keywordflow">if</span> (slot == 0) {</div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Can&#39;t get slot for DependEchoCheck monitor=&quot;</span>)) + _name,</div>
@@ -325,7 +326,7 @@ $(document).ready(function(){initNavTree('_arn_depend_8cpp.html','');});
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordflow">if</span> (slot-&gt;isEchoOk)  <span class="keywordflow">return</span>;  <span class="comment">// Echo already ok, test just in case ...</span></div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordflow">if</span> (echo.isEmpty()) {</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="comment">// qDebug() &lt;&lt; &quot;echoCheck: Send request monitorName=&quot; &lt;&lt; _name &lt;&lt; &quot; req=&quot; &lt;&lt; _uuid;</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2">Arn::debugDepend</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;echoCheck: Send request monitorName=&quot;</span> &lt;&lt; _name &lt;&lt; <span class="stringliteral">&quot; req=&quot;</span> &lt;&lt; _uuid;</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        slot-&gt;arnEchoPipe = _uuid;  <span class="comment">// Dependency request</span></div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    }</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">else</span> {</div>
@@ -350,7 +351,7 @@ $(document).ready(function(){initNavTree('_arn_depend_8cpp.html','');});
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;{</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <span class="keywordflow">if</span> (slot == 0) {</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>* arnItem = qobject_cast&lt;<a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>*&gt;( sender());</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keywordflow">if</span> (arnItem)  slot = <span class="keyword">static_cast&lt;</span><a class="code" href="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5">DepSlot</a>*<span class="keyword">&gt;</span>( arnItem-&gt;<a class="code" href="class_arn_item.html#abd4e240d4e7002078f6597510843b679" title="Get the stored external reference.">reference</a>());</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="keywordflow">if</span> (arnItem)  slot = <span class="keyword">static_cast&lt;</span><a class="code" href="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5">DepSlot</a>*<span class="keyword">&gt;</span>( arnItem-&gt;<a class="code" href="class_arn_item_b.html#a1db4c145def37dafca17d47a075fe1a1" title="Get the stored external reference.">reference</a>());</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    }</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keywordflow">if</span> (slot == 0) {</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Can&#39;t get slot for DependStateCheck monitor=&quot;</span>)) + _name,</div>
@@ -372,7 +373,7 @@ $(document).ready(function(){initNavTree('_arn_depend_8cpp.html','');});
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="keywordtype">void</span>  ArnDepend::doDepOk( DepSlot* slot)</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;{</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="comment">// qDebug() &lt;&lt; &quot;depOk monitorName=&quot; &lt;&lt; _name;</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2">Arn::debugDepend</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;depOk monitorName=&quot;</span> &lt;&lt; _name;</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    QMetaObject::invokeMethod( <span class="keyword">this</span>,</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                               <span class="stringliteral">&quot;deleteSlot&quot;</span>,</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                               Qt::QueuedConnection,  <span class="comment">// Delete later</span></div>
@@ -383,7 +384,7 @@ $(document).ready(function(){initNavTree('_arn_depend_8cpp.html','');});
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="keywordtype">void</span>  ArnDepend::deleteSlot( <span class="keywordtype">void</span>* slot_)</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;{</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <a class="code" href="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5">DepSlot</a>*  slot = <span class="keyword">reinterpret_cast&lt;</span><a class="code" href="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5">DepSlot</a>*<span class="keyword">&gt;</span>( slot_);</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="comment">// qDebug() &lt;&lt; &quot;deleteSlot monitorName=&quot; &lt;&lt; _name;</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2">Arn::debugDepend</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;deleteSlot monitorName=&quot;</span> &lt;&lt; _name;</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keywordflow">if</span> (!_depTab.removeOne( slot)) {</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Can&#39;t get slot for delete Depend monitor=&quot;</span>)) + _name,</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                            <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afaef7eeb5d30b5dd20d6d37cf6b9954484">ArnError::Undef</a>);</div>
@@ -403,7 +404,7 @@ $(document).ready(function(){initNavTree('_arn_depend_8cpp.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_depend_8cpp.html">ArnDepend.cpp</a></li>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:49 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:23 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

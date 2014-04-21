@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -85,7 +86,7 @@ $(document).ready(function(){initNavTree('md__install.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -141,8 +142,8 @@ Building ArnLib    </h1>
  make install</p>
 <p></p>
 </blockquote>
-<p>The easiest way of installing this library, is to let it be placed in a standard location for librarys and includes, e.g. /usr/lib and /usr/include/ArnLib. When using a shared library it's path has to be known to the run-time linker of your operating system. On Linux systems read "man ldconfig" ( or google for it ). Another option is to use the LD_LIBRARY_PATH (on some systems LIBPATH is used instead, on MacOSX it is called DYLD_LIBRARY_PATH) environment variable.</p>
-<p>If you only want to check the library examples without installing something, you can set the LD_LIBRARY_PATH to the lib directory of your local build.</p>
+<p>The easiest way of installing this library, is to let it be placed in a standard location for librarys and includes, e.g. /usr/lib and /usr/include/ArnInc. When using a shared library it's path has to be known to the run-time linker of your operating system. On Linux systems read "man ldconfig" (or google for it). Another option is to use the LD_LIBRARY_PATH (on some systems LIBPATH is used instead, on MacOSX it is called DYLD_LIBRARY_PATH) environment variable.</p>
+<p>If you only want to check the library examples without installing something, you can set the LD_LIBRARY_PATH to the lib directory of your local build. it's also possible to compile the sources together by ArnLibCompile (see Using ArnLib below).</p>
 <p>The examples is built this way: </p>
 <blockquote class="doxtable">
 <p>cd examples/ArnDemoChat <br/>
@@ -163,7 +164,7 @@ Building ArnLib    </h1>
 </blockquote>
 <p>The examples is built this way: </p>
 <blockquote class="doxtable">
-<p>cd examples <br/>
+<p>cd examples\ArnDemoChat <br/>
  qmake ArnDemoChat.pro <br/>
  nmake</p>
 <p></p>
@@ -173,7 +174,7 @@ Building ArnLib    </h1>
 <h2>C) Win32/MinGW</h2>
 <p>Using Qt Creator for windows, will give you the needed tools for building a Qt project.</p>
 <p>Check that your Qt version has been built with MinGW - not with MSVC !</p>
-<p>Start a Shell, where Qt4 is initialized. (e.g. with "Programs-&gt;Qt by Trolltech ...-&gt;Qt 4.x.x Command Prompt" ). Check if you can execute "make" or something like "mingw32-make".</p>
+<p>Start a Shell, where Qt is initialized. (e.g. with "Programs-&gt;Qt by Trolltech ...-&gt;Qt 4.x.x Command Prompt" ). Check if you can execute "make" or something like "mingw32-make".</p>
 <blockquote class="doxtable">
 <p>qmake ArnLib.pro <br/>
  make <br/>
@@ -182,7 +183,7 @@ Building ArnLib    </h1>
 </blockquote>
 <p>The examples is built this way: </p>
 <blockquote class="doxtable">
-<p>cd examples <br/>
+<p>cd examples\ArnDemoChat <br/>
  qmake ArnDemoChat.pro <br/>
  make</p>
 <p></p>
@@ -203,17 +204,38 @@ Building ArnLib    </h1>
 </p>
 <h1><a class="anchor" id="ins_usage"></a>
 Using ArnLib    </h1>
-<p>In the *.pro file of the application the follwing can be used: </p>
-<blockquote class="doxtable">
-<p>win32:CONFIG(release, debug|release): LIBS += L$$OUT_PWD/../ArnLib/release/ -lArn <br/>
- else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -lArn <br/>
- else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -lArn <br/>
-</p>
-<p>INCLUDEPATH += $$PWD/..</p>
-<p></p>
-</blockquote>
+<p>In the *.pro file of the application the below lines can be used.</p>
 <p>This will give a starting point for the configuration. It works well when using the same base directory for ArnLib as the application, e.g. basedir/ArnLib and basedir/myApp. In Unix alike systems it's also needed to install the library files in a path known by the system, see a) Unix.</p>
-<p>If you don't use qmake you have to add the include path to find the ArnLib headers to your compiler flags and the ArnLib library to your linker list. <br/>
+<p>It's possible to include the ArnLib source in the application compiling by adding ArnLibCompile to CONFIG. The included part of the source can be selected by addings to ARN, e.g. ARN += server.</p>
+<p>Internal mDNS (ZeroConfig) is selected by adding mDnsIntern to CONFIG. </p>
+<pre class="fragment">CONFIG += ArnLibCompile
+CONFIG += mDnsIntern
+
+greaterThan(QT_MAJOR_VERSION, 4) {
+    ARNLIB = Arn5
+} else {
+    ARNLIB = Arn4
+}
+
+ArnLibCompile {
+    #ARN += client
+    ARN += server
+    ARN += discover
+    include(../ArnLib/src/ArnLib.pri)
+    INCLUDEPATH += $$PWD/../ArnLib/src
+} else {
+    win32: INCLUDEPATH += $$PWD/../ArnLib/src
+    win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/release/ -l$${ARNLIB}
+    else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -l$${ARNLIB}
+    else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -l$${ARNLIB}
+}
+
+!mDnsIntern {
+    win32:CONFIG(release, debug|release): LIBS +=  -ldns_sd
+    else:win32:CONFIG(debug, debug|release): LIBS +=  -ldns_sd
+    else:unix: LIBS += -ldns_sd
+}
+</pre><p>If you don't use qmake you have to add the include path to find the ArnLib headers to your compiler flags and the ArnLib library to your linker list. <br/>
 <br/>
  </p>
 <pre class="fragment">This Install.md file is based on documentation in the Qwt project.</pre> </div></div><!-- contents -->
@@ -221,7 +243,7 @@ Using ArnLib    </h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:50 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:24 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

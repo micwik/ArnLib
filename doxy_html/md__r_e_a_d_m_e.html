@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -85,7 +86,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -99,17 +100,17 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><pre class="fragment">Copyright (C) 2010-2013 Michael Wiklund.
+<div class="textblock"><pre class="fragment">Copyright (C) 2010-2014 Michael Wiklund.
 All rights reserved.
 Contact: arnlib@wiklunden.se
 </pre><h1>ArnLib - Active Registry Network.</h1>
-<p>This Qt based library makes it easy to distribute changing data objects. It also gives a central place to find all your systems current data. By using the ArnBrowser, all data objects are real time presented in a tree view.</p>
+<p>This Qt based library makes it easy to distribute changing data objects. It also gives a central place to find all your systems' current data. By using the ArnBrowser, all data objects are real time presented in a tree view.</p>
 <h3>Comparison to similar concepts</h3>
 <ul>
 <li><b>Data mart:</b> Statistical data gathered from different systems. This makes it possible to run cross system analysis.</li>
 </ul>
 <ul>
-<li><b>Windows Registry:</b> Centralized configuration data. All in one place easily shared.</li>
+<li><b>Windows Registry &amp; AD:</b> Centralized configuration data. All in one place easily shared.</li>
 </ul>
 <ul>
 <li><b>ArnLib:</b> Hot changing data from different systems. Enables easy cross system data exchange, debugging, etc. <br/>
@@ -117,34 +118,55 @@ Contact: arnlib@wiklunden.se
 </li>
 </ul>
 <h2>Installation and usage</h2>
-<p>Read <a class="el" href="md__install.html#ins_build">doc/Install.md</a> how to build, install and use. <br/>
+<p>Read <a class="el" href="md__install.html#ins_build">doc/Install.md</a> how to build, install and use.</p>
+<p>ArnLib could be beneficial in a lot of projects. It should be well suited to the following conditions:</p>
+<ul>
+<li><em>A lot of configurations and changing values.</em> <br/>
+ ArnLib helps giving out-of-the-box diagnostics and ability to change values not yet available in the custom application user interface.</li>
+</ul>
+<ul>
+<li><em>Hardware with a lot of sensors and controls.</em> <br/>
+ Arnlib helps giving a common interface and diagnostic.</li>
+</ul>
+<ul>
+<li><em>Distributed systems.</em> <br/>
+ ArnLib helps giving an out-of-the-box data sharing system that replicates <a class="el" href="namespace_arn.html">Arn</a> objects.</li>
+</ul>
+<ul>
+<li><em>Networked services by RPC (remote procedure call).</em> <br/>
+ Will be quite the same as setting up signals and slots for local calls. You can find an easy example in the ArnLib package, showing a simple chat Client and Server.</li>
+</ul>
+<ul>
+<li><em>ZeroConfig detection of present services.</em> <br/>
+ Helps advertise and browse a service (ftp, http, arn, ...) on a local network. This is similar to UPNP discovery of units. <br/>
 <br/>
-</p>
+</li>
+</ul>
 <h2>Main features</h2>
 <ul>
-<li>Based on QT, multiple platform and OS support.</li>
-<li>QT based Arn browser available. Allows you to access all data objects in a tree view (see ArnBrowser).</li>
-<li>Web based Arn browser available, allowing you to use a standard web browser (see WebArnBrowser).</li>
+<li>Based on Qt (4 &amp; 5), multiple platform and OS support.</li>
+<li>Qt based <a class="el" href="namespace_arn.html">Arn</a> browser available. Allows you to access all data objects in a tree view (see ArnBrowser).</li>
+<li>Web based <a class="el" href="namespace_arn.html">Arn</a> browser available, allowing you to use a standard web browser (see WebArnBrowser).</li>
 </ul>
-<h4>Arn Data Objects</h4>
+<h4><a class="el" href="namespace_arn.html">Arn</a> Data Objects</h4>
 <ul>
-<li>Hierarchical storage of "hot" changing data objects.</li>
-</ul>
-<ul>
-<li><em>Arn Data objects</em> can be: integers, floats, strings, byte arrays and variants (most QT data types, e.g. QImage).</li>
+<li>Hierarchical storage of hot changing data objects.</li>
 </ul>
 <ul>
-<li>Data objects can typically be: measures, settings, data streams, documents, scripts (js), ...</li>
+<li><em><a class="el" href="namespace_arn.html">Arn</a> Data objects</em> can be: integers, floats, strings, byte arrays and variants (most Qt data types, e.g. QImage).</li>
 </ul>
 <ul>
-<li><em>Arn Data objects</em> are thread-safe.</li>
+<li>Data objects can typically be: measures, settings, data streams, documents, scripts (js), etc.</li>
 </ul>
 <ul>
-<li>Native support for data validation and double direction pipes.</li>
+<li><em><a class="el" href="namespace_arn.html">Arn</a> Data objects</em> are thread-safe.</li>
+</ul>
+<ul>
+<li>Native support for data validation and double direction pipes (streams).</li>
 </ul>
 <h4>Sharing</h4>
 <ul>
-<li>Data objects can be shared in a single program, among threads or between programs at different computers. This division of program modules can be changed and is transparent to usage of ArnLib.</li>
+<li>Data objects can be shared in a single program, among threads or between programs, at different computers. This division of program modules can be changed and is transparent to usage of ArnLib.</li>
 </ul>
 <ul>
 <li>Support for temporary session data objects. Optional auto-delete of objects when tcp/ip closes and unique uuid names.</li>
@@ -164,7 +186,7 @@ Contact: arnlib@wiklunden.se
 </ul>
 <h4>Java Script</h4>
 <ul>
-<li>Native support in JavaScript for: <em>Arn Data Objects</em>, Dependency system and Monitoring of changed objects.</li>
+<li>Native support in JavaScript for: <em><a class="el" href="namespace_arn.html">Arn</a> Data Objects</em>, Dependency system and Monitoring of changed objects.</li>
 </ul>
 <ul>
 <li>Java Script jobstack with preemptive and cooperative scripts running at different priorities.</li>
@@ -177,17 +199,30 @@ Contact: arnlib@wiklunden.se
 <li>All data streams (pipes) can easily be monitored and manual test data can be inserted (see ArnBrowser).</li>
 </ul>
 <ul>
-<li>Service Api, for calling routines anywhere in connected Arn. <em>Remote Procedure call</em> (RPC) made simple as "remote signal slots".</li>
+<li>Service Api, for calling routines anywhere in connected <a class="el" href="namespace_arn.html">Arn</a>. <em>Remote Procedure Call</em> (RPC) simple to use as "remote signal slots".</li>
 </ul>
 <ul>
-<li>Service Api has an automatically generated help for giving syntax when doing debug manual typed calls to a RPC service. </li>
+<li>Service Api has an automatically generated help for giving syntax when doing debug manual typed calls to a RPC service.</li>
+</ul>
+<h4>ZeroConfig and Discover</h4>
+<ul>
+<li>Any service (ftp, http, arn, etc) can be advertised, browsed and resolved for its host address and port number.</li>
+</ul>
+<ul>
+<li>High level, fully automatic support specialised for <em>arn</em> service, can e.g. remotely change the advertised <em>service name</em>.</li>
+</ul>
+<ul>
+<li>Simple integration together with a custom GUI for browsing, etc.</li>
+</ul>
+<ul>
+<li>Optional internal DNS_SD/mDNS routines for no dependency to any extra library. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:50 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:24 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

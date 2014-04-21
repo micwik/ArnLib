@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arn_item.html#a08c9f2a007c2331aa9f3d879a08453a6" title="Import data to an Arn Data Object" alt="" coords="185,5,314,32"/>
-<area shape="rect" id="node5" href="$class_arn_item.html#acb0438c8a0640e221509cbb45c390251" title="ArnItem::operator=" alt="" coords="184,56,315,83"/>
-<area shape="rect" id="node7" href="$class_arn_item.html#ab140f9d0b6fdc7f684a0045a9a82c1f8" title="Assign a char* to an Arn Data Object" alt="" coords="186,107,313,133"/>
-<area shape="rect" id="node9" href="$class_arn_item.html#afb85abf3355fe939286080e91e431431" title="Toggle the bool at the Arn Data Object" alt="" coords="181,157,317,184"/>
-</map>

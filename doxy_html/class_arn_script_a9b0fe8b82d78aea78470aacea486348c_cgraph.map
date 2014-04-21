@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arn_script.html#a55168dc6f30fbca04c8caa64b4e4c848" title="ArnScript::evaluate" alt="" coords="205,31,336,57"/>
-<area shape="rect" id="node5" href="$class_arn_script.html#a30dbc244eb0ea34e54529335fae4326b" title="ArnScript::idName" alt="" coords="412,5,540,32"/>
-<area shape="rect" id="node7" href="$class_arn_script.html#ae7388bb2411ca0a39e10333a6b7cfb66" title="ArnScript::logUncaughtError" alt="" coords="384,56,568,83"/>
-<area shape="rect" id="node9" href="$class_arn_script.html#ac67449503cda62150240d9db074e9d41" title="ArnScript::errorLog" alt="" coords="616,56,747,83"/>
-<area shape="rect" id="node11" href="$class_arn_script.html#a1bff0263e23177f618f088b12030b851" title="ArnScript::errorText" alt="" coords="795,56,930,83"/>
-</map>

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/Arn.hpp (1.0.0-3-gf59259b) Source File</title>
+<title>ArnLib: src/ArnInc/Arn.hpp (2.0.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_arn_8hpp.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -105,252 +106,181 @@ $(document).ready(function(){initNavTree('_arn_8hpp.html','');});
 <div class="title">Arn.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2013 Michael Wiklund.</span></div>
+<a href="_arn_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2014 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// This file is part of the ArnLib - Active Registry Network.</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Parts of ArnLib depend on Qt 4 and/or other libraries that have their own</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// licenses. ArnLib is independent of these licenses; however, use of these other</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// libraries is subject to their respective license agreements.</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Parts of ArnLib depend on Qt and/or other libraries that have their own</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// licenses. ArnLib is independent of these licenses; however, use of these</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// other libraries is subject to their respective license agreements.</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// GNU Lesser General Public License Usage</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// This file may be used under the terms of the GNU Lesser General Public</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// License version 2.1 as published by the Free Software Foundation and</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// appearing in the file LICENSE.LGPL included in the packaging of this file.</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// In addition, as a special exception, you may use the rights described</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// appearing in the file LICENSE_LGPL.txt included in the packaging of this</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// file. In addition, as a special exception, you may use the rights described</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// in the Nokia Qt LGPL Exception version 1.1, included in the file</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// LGPL_EXCEPTION.txt in this package.</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// GNU General Public License Usage</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// Alternatively, this file may be used under the terms of the GNU General</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Public License version 3.0 as published by the Free Software Foundation</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// and appearing in the file LICENSE.GPL included in the packaging of this file.</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// Alternatively, this file may be used under the terms of the GNU General Public</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// License version 3.0 as published by the Free Software Foundation and appearing</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// in the file LICENSE_GPL.txt included in the packaging of this file.</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// Other Usage</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// Alternatively, this file may be used in accordance with the terms and</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// conditions contained in a signed written agreement between you and Michael Wiklund.</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// Alternatively, this file may be used in accordance with the terms and conditions</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// contained in a signed written agreement between you and Michael Wiklund.</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// This program is distributed in the hope that it will be useful,</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// GNU Lesser General Public License for more details.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifndef ARN_HPP</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ARN_HPP</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_lib_8hpp.html">ArnLib.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_lib__global_8hpp.html">ArnLib_global.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_error_8hpp.html">ArnError.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_link_8hpp.html">ArnLink.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_item_8hpp.html">ArnItem.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;QStringList&gt;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;QVector&gt;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;QObject&gt;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;QMutex&gt;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;QWaitCondition&gt;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">class </span>ArnThreadComStorage;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">class </span>ArnThreadCom</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span>ArnThreadComCaller;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span>ArnThreadComProxyLock;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    ArnThreadCom() {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        _retObj = 0;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    QObject*  _retObj;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    QStringList  _retStringList;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">static</span> ArnThreadCom*  getThreadCom();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">static</span> ArnThreadComStorage* _threadStorage;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    QWaitCondition  _commandEnd;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    QMutex  _mutex;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;};</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;Q_DECLARE_METATYPE(ArnThreadCom*)</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;class ArnThreadComCaller</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    ArnThreadCom*  _p;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    ArnThreadComCaller();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    ~ArnThreadComCaller();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span>  waitCommandEnd();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    ArnThreadCom*  p()  {<span class="keywordflow">return</span> _p;}</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">class </span>ArnThreadComProxyLock</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;{</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    ArnThreadCom*  _p;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    ArnThreadComProxyLock( ArnThreadCom* threadCom);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    ~ArnThreadComProxyLock();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;};</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="code" href="class_arn_m.html">  101</a></span>&#160;<span class="keyword">class </span><a class="code" href="_arn_lib__global_8hpp.html#a532d70375b2662bf8bcf50072d70b8a5">ARNLIBSHARED_EXPORT</a> <a class="code" href="class_arn_m.html">ArnM</a> : <span class="keyword">public</span> QObject</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;Q_OBJECT</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="code" href="class_arn_m.html#a3186b09a0a1c8b12a5c8866dc8a7de5b">  104</a></span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// This program is distributed in the hope that it will be useful, but WITHOUT ANY</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#ifndef ARN_HPP</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ARN_HPP</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_m_q_flags_8hpp.html">MQFlags.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;QString&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="_arn_8hpp.html#af5ae3f693fc5aea910733fbbceb24ad8">   38</a></span>&#160;<span class="preprocessor">#define DATASTREAM_VER  QDataStream::Qt_4_6</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">namespace </span>Arn {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="code" href="namespace_arn.html#a7dc869a2e500fff4982652f576c9207a">   43</a></span>&#160;    <span class="keyword">const</span> quint16  <a class="code" href="namespace_arn.html#a7dc869a2e500fff4982652f576c9207a">defaultTcpPort</a> = 2022;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">extern</span> <span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#a690f9202c122418e5dfd8784529da8d9">pathLocal</a>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">extern</span> <span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#a668d00708a3b3c4d9943465b7cb21590">pathLocalSys</a>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">extern</span> <span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#aac20bdfa60a3d566d6000e333724aa44">pathDiscover</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">extern</span> <span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#a04a2b2fe19cd660f18316a9e66f65056">pathDiscoverThis</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">extern</span> <span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#a556d0c5ce01a0b3146a929137c7b786d">pathDiscoverConnect</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="code" href="struct_arn_1_1_same_value.html">   52</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_arn_1_1_same_value.html" title="Action when assigning same value to an ArnItem.">SameValue</a> {</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="struct_arn_1_1_same_value.html#a9d6ffee16928f190d49dcbbc6d556f4b">   53</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="struct_arn_1_1_same_value.html#a9d6ffee16928f190d49dcbbc6d556f4b">E</a> {</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="struct_arn_1_1_same_value.html#a9d6ffee16928f190d49dcbbc6d556f4ba662063fd42e59e861deed0ff5d9df8b8">   55</a></span>&#160;        <a class="code" href="struct_arn_1_1_same_value.html#a9d6ffee16928f190d49dcbbc6d556f4ba662063fd42e59e861deed0ff5d9df8b8" title="Assigning same value generates an update of the Arn Data Object">Accept</a> = 0,</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="code" href="struct_arn_1_1_same_value.html#a9d6ffee16928f190d49dcbbc6d556f4bab3c9fa9c7d379a4a05905e4d99da4516">   57</a></span>&#160;        <a class="code" href="struct_arn_1_1_same_value.html#a9d6ffee16928f190d49dcbbc6d556f4bab3c9fa9c7d379a4a05905e4d99da4516" title="Assigning same value is ignored.">Ignore</a> = 1,</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="code" href="struct_arn_1_1_same_value.html#a9d6ffee16928f190d49dcbbc6d556f4baa782e6cce2fe39f320baf742956547a6">   59</a></span>&#160;        <a class="code" href="struct_arn_1_1_same_value.html#a9d6ffee16928f190d49dcbbc6d556f4baa782e6cce2fe39f320baf742956547a6" title="Assigning same value gives default action set in ArnM or ArnItem.">DefaultAction</a> = -1</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    };</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="_m_q_flags_8hpp.html#a88a584b9515204489a33c68905054f2c" title="Enums.">MQ_DECLARE_ENUM</a>( <a class="code" href="struct_arn_1_1_same_value.html" title="Action when assigning same value to an ArnItem.">SameValue</a>)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="code" href="struct_arn_1_1_data_type.html">   65</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_arn_1_1_data_type.html" title="Data type of an Arn Data Object">DataType</a> {</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6">   66</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6">E</a> {</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a6e266a6b14caf2a6ee6a4c73c91767d2">   67</a></span>&#160;        <a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a6e266a6b14caf2a6ee6a4c73c91767d2">Null</a>       = 0,</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a677eb2516916276597459bdf0b6c0c9a">   68</a></span>&#160;        <a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a677eb2516916276597459bdf0b6c0c9a">Int</a>        = 1,</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a944f43543cf0f47195f0e6da7cedcb1c">   69</a></span>&#160;        <a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a944f43543cf0f47195f0e6da7cedcb1c">Double</a>     = 2,</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a92fe4984959fc38c2bf97ba8598ec652">   70</a></span>&#160;        <a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a92fe4984959fc38c2bf97ba8598ec652">ByteArray</a>  = 3,</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6aac266c6f6c73702d49d8ee4f82a8b0bd">   71</a></span>&#160;        <a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6aac266c6f6c73702d49d8ee4f82a8b0bd">String</a>     = 4,</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a0c532dac543d4847ae595809945b22b4">   72</a></span>&#160;        <a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a0c532dac543d4847ae595809945b22b4">Variant</a>    = 5</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="comment">// 16 and above is reserved by ArnItemB::ExportCode</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    };</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="_m_q_flags_8hpp.html#a88a584b9515204489a33c68905054f2c" title="Enums.">MQ_DECLARE_ENUM</a>( <a class="code" href="struct_arn_1_1_data_type.html" title="Data type of an Arn Data Object">DataType</a>)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;};</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_mode.html">   79</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_arn_1_1_object_mode.html" title="General global mode of an Arn Data Object">ObjectMode</a> {</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155">   80</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155">E</a> {</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155af0251c882746336fb7a89473cc2898e8">   82</a></span>&#160;        <a class="code" href="struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155af0251c882746336fb7a89473cc2898e8" title="A two way object, typically for validation or pipe.">BiDir</a> = 0x01,</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155a9a9685b7b382be8d1732635493250496">   84</a></span>&#160;        <a class="code" href="struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155a9a9685b7b382be8d1732635493250496" title="Implies BiDir and all data is preserved as a stream.">Pipe</a>  = 0x02,</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155aa1a11a93f3421a36c42c54910d4e7c0b">   86</a></span>&#160;        <a class="code" href="struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155aa1a11a93f3421a36c42c54910d4e7c0b" title="Data is persistent and will be saved.">Save</a>  = 0x04</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    };</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="_m_q_flags_8hpp.html#aa2cee9d1cb3c0c9f88905783dcb498cb" title="Flags.">MQ_DECLARE_FLAGS</a>( <a class="code" href="struct_arn_1_1_object_mode.html" title="General global mode of an Arn Data Object">ObjectMode</a>)</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;};</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_sync_mode.html">   92</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">ObjectSyncMode</a> {  <span class="comment">// This mode is sent with sync-command</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027b">   93</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027b">E</a> {</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027bafcb26656bd481892e119f8cdf8cb1c81">   95</a></span>&#160;        <a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027bafcb26656bd481892e119f8cdf8cb1c81" title="default">Normal</a>      = 0x000,</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba63870f55d4657d2f1c3ecc7c2e39dde3">   97</a></span>&#160;        <a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba63870f55d4657d2f1c3ecc7c2e39dde3" title="Monitor of server object for client.">Monitor</a>     = 0x001,</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba007bef1fb81b23cf43aa9c64a54bbbff">   99</a></span>&#160;        <a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba007bef1fb81b23cf43aa9c64a54bbbff" title="The client is default generator of data.">Master</a>      = 0x100,</div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba5c3f0bd3a6780f5b2a45b0b1f147dc7a">  101</a></span>&#160;        <a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba5c3f0bd3a6780f5b2a45b0b1f147dc7a" title="Destroy this Arn Data Object when client (tcp/ip) closes.">AutoDestroy</a> = 0x200</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    };</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <a class="code" href="_m_q_flags_8hpp.html#aa2cee9d1cb3c0c9f88905783dcb498cb" title="Flags.">MQ_DECLARE_FLAGS</a>( <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">ObjectSyncMode</a>)</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_arn_m.html">ArnM</a>&amp;  instance();</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="code" href="class_arn_m.html#af6db745123f78784af30d3f7825e7a53">  110</a></span>&#160;    <span class="keyword">static</span> <a class="code" href="class_arn_m.html">ArnM</a>&amp;  <a class="code" href="class_arn_m.html#af6db745123f78784af30d3f7825e7a53">getInstance</a>()  {<span class="keywordflow">return</span> instance();}  <span class="comment">// For compatibility ... (do not use)</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  setConsoleError( <span class="keywordtype">bool</span> isConsoleError);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  setDefaultIgnoreSameValue( <span class="keywordtype">bool</span> isIgnore = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span>  defaultIgnoreSameValue();</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span>  isMainThread();</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span>  isThreadedApp();</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span>  isProviderPath( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keyword">static</span> QString  itemName( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keyword">static</span> QString  childPath( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; posterityPath);</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="code" href="struct_arn_1_1_link_flags.html">  107</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">LinkFlags</a> {</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="code" href="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610">  108</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610">E</a> {</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="code" href="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610aefc92334f64f27af70748bfc38580884">  109</a></span>&#160;        <a class="code" href="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610aefc92334f64f27af70748bfc38580884">Folder</a>        = 0x01,</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="code" href="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610abe23162b8a0f1c218980e39c9e68b3bf">  110</a></span>&#160;        <a class="code" href="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610abe23162b8a0f1c218980e39c9e68b3bf">CreateAllowed</a> = 0x02,</div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="code" href="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610a709766e24eae1cf229d8898d1d2836ee">  111</a></span>&#160;        <a class="code" href="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610a709766e24eae1cf229d8898d1d2836ee">SilentError</a>   = 0x04,</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="code" href="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610a390687f99d558c56d2d4f6a9837f200b">  112</a></span>&#160;        <a class="code" href="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610a390687f99d558c56d2d4f6a9837f200b">Threaded</a>      = 0x08</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    };</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <a class="code" href="_m_q_flags_8hpp.html#aa2cee9d1cb3c0c9f88905783dcb498cb" title="Flags.">MQ_DECLARE_FLAGS</a>( <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">LinkFlags</a>)</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;};</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="code" href="struct_arn_1_1_name_f.html">  117</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_arn_1_1_name_f.html">NameF</a> {</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40">  119</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40" title="Selects a format for path or item name.">E</a> {</div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a449768cd68241ca0054fb02877de2973">  121</a></span>&#160;        <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a449768cd68241ca0054fb02877de2973" title="Only on discrete names, no effect on path. &quot;test/&quot; ==&gt; &quot;test&quot;.">NoFolderMark</a> = 0x01,</div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776">  123</a></span>&#160;        <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">EmptyOk</a>      = 0x02,</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40add0d4f2215d5e30f295fbfd0d27d39a1">  125</a></span>&#160;        <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40add0d4f2215d5e30f295fbfd0d27d39a1" title="Only on path, no effect on discrete names. &quot;/test/value&quot; ==&gt; &quot;test/value&quot;.">Relative</a>     = 0x04</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    };</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <a class="code" href="_m_q_flags_8hpp.html#aa2cee9d1cb3c0c9f88905783dcb498cb" title="Flags.">MQ_DECLARE_FLAGS</a>( <a class="code" href="struct_arn_1_1_name_f.html">NameF</a>)</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;};</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="code" href="struct_arn_1_1_coding.html">  130</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_arn_1_1_coding.html">Coding</a> {</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="code" href="struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163">  131</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163">E</a> {</div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="code" href="struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163aa38b66c8fd42a93a992919ebdd2cd6d1">  133</a></span>&#160;        <a class="code" href="struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163aa38b66c8fd42a93a992919ebdd2cd6d1" title="No special coding, can be anything.">Binary</a>  = 0x0000,</div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="code" href="struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163a905ec2383ef46c82dc382b75eabba242">  135</a></span>&#160;        <a class="code" href="struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163a905ec2383ef46c82dc382b75eabba242" title="Text coding, can be any character set.">Text</a>    = 0x1000</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    };</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <a class="code" href="_m_q_flags_8hpp.html#aa2cee9d1cb3c0c9f88905783dcb498cb" title="Flags.">MQ_DECLARE_FLAGS</a>( <a class="code" href="struct_arn_1_1_coding.html">Coding</a>)</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;};</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;QString  <a class="code" href="namespace_arn.html#a75a3c4519469a93271186abe52bb810e" title="Convert a name to a specific format.">convertName</a>( <span class="keyword">const</span> QString&amp; name, <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a>());</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;QString  <a class="code" href="namespace_arn.html#a1217c8d6b0195b60ef72fc6757480893" title="Convert a path to a full absolute path.">fullPath</a>( <span class="keyword">const</span> QString&amp; path);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">static</span> QString  makePath( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; itemName);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keyword">static</span> QString  addPath( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; childRelPath,</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                             <a class="code" href="struct_arn_link_1_1_name_f.html">ArnLink::NameF</a> nameF = <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">ArnLink::NameF::EmptyOk</a>);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keyword">static</span> QString  convertPath( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>,</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                                 <a class="code" href="struct_arn_link_1_1_name_f.html">ArnLink::NameF</a> nameF = <a class="code" href="struct_arn_link_1_1_name_f.html#a5d5dad17db9507bc6af6183fc78a67a6a8284956f7e1e57618c50688e1a2b3fc8" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">ArnLink::NameF::EmptyOk</a>);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="namespace_arn.html#a3a3f57fa61cdb0b8408df49466e1ca87" title="Test if path is a folder path">isFolderPath</a>( <span class="keyword">const</span> QString&amp; path);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="namespace_arn.html#a9a27c8dda4cc88176c941cc53f6c2426" title="Test if path is a provider path">isProviderPath</a>( <span class="keyword">const</span> QString&amp; path);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;QString  <a class="code" href="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c" title="The last part of a path">itemName</a>( <span class="keyword">const</span> QString&amp; path);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;QString  <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path.">childPath</a>( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; posterityPath);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keyword">static</span> QString  twinPath( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">int</span>   valueInt( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">double</span>   valueDouble( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keyword">static</span> QString  valueString( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keyword">static</span> QByteArray  valueByteArray( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keyword">static</span> QVariant  valueVariant( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keyword">static</span> QStringList  items( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;QString  <a class="code" href="namespace_arn.html#af7033a4ea5ac45c0bbc136000fd2ccca" title="Make a path from a parent and an item name.">makePath</a>( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; <a class="code" href="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c" title="The last part of a path">itemName</a>);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;QString  <a class="code" href="namespace_arn.html#abf5062a3262fb12eef2feedf03c8b4ae" title="Make a path from a parent and an additional relative path.">addPath</a>( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; childRelPath,</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                         <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">Arn::NameF::EmptyOk</a>);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;QString  <a class="code" href="namespace_arn.html#a67789049b85129fdd4f238d57e9f71bc" title="Convert a path to a specific format.">convertPath</a>( <span class="keyword">const</span> QString&amp; path,</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                             <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">Arn::NameF::EmptyOk</a>);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;QString  <a class="code" href="namespace_arn.html#a4de17e4c5a7e225b5d0cbd974c3fd794" title="Get the bidirectional twin to a given path">twinPath</a>( <span class="keyword">const</span> QString&amp; path);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span>  exist(<span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span>  <a class="code" href="class_arn_item.html#a12671bff7e6af1d832c75933bca9e058">isFolder</a>( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span>  isLeaf( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item.html#a41836f035c0a35b062a75a477c396a52" title="Assign an integer to an Arn Data Object">setValue</a>( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>, <span class="keywordtype">int</span> value);</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item.html#a41836f035c0a35b062a75a477c396a52" title="Assign an integer to an Arn Data Object">setValue</a>( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>, <span class="keywordtype">double</span> value);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item.html#a41836f035c0a35b062a75a477c396a52" title="Assign an integer to an Arn Data Object">setValue</a>( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>, <span class="keyword">const</span> QString&amp; value);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item.html#a41836f035c0a35b062a75a477c396a52" title="Assign an integer to an Arn Data Object">setValue</a>( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>, <span class="keyword">const</span> QByteArray&amp; value);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item.html#a41836f035c0a35b062a75a477c396a52" title="Assign an integer to an Arn Data Object">setValue</a>( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>, <span class="keyword">const</span> QVariant&amp; value);</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  errorLog( QString errText, <a class="code" href="struct_arn_error.html">ArnError</a> err = <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afaef7eeb5d30b5dd20d6d37cf6b9954484">ArnError::Undef</a>, <span class="keywordtype">void</span>* <a class="code" href="class_arn_item.html#abd4e240d4e7002078f6597510843b679" title="Get the stored external reference.">reference</a> = 0);</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keyword">static</span> QString  errorSysName();</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keyword">static</span> QByteArray  info();</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item.html#adf22d9550ea2e62eb4b3d81b75daf7b6" title="Destroy the Arn Data Object">destroyLink</a>( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  setupErrorlog( QObject* errLog);</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;signals:</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordtype">void</span>  errorLogSig( QString errText, uint errCode, <span class="keywordtype">void</span>* <a class="code" href="class_arn_item.html#abd4e240d4e7002078f6597510843b679" title="Get the stored external reference.">reference</a>);</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="preprocessor">#ifndef DOXYGEN_SHOULD_SKIP_THIS</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="preprocessor"></span>    <span class="keyword">static</span> <a class="code" href="class_arn_link.html">ArnLink</a>*  root();</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_arn_link.html">ArnLink</a>*  link( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a11687c0abd1096de31ae23c37fa65903" title="Path of the Arn Data Object">path</a>, <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a> flags,</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                           <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a> <a class="code" href="class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5">syncMode</a> = <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a>());</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_arn_link.html">ArnLink</a>*  link( <a class="code" href="class_arn_link.html">ArnLink</a> *parent, <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item.html#a8c0063483fb2b446b65ce34c9a3b4e08" title="Name of the Arn Data Object">name</a>, <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a> flags,</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                           <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a> <a class="code" href="class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5">syncMode</a> = <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a>());</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_arn_link.html">ArnLink</a>*  addTwin( <a class="code" href="class_arn_link.html">ArnLink</a>* child, <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a> <a class="code" href="class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5">syncMode</a> = <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a>(),</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                              <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a> flags = <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a>());</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item.html#adf22d9550ea2e62eb4b3d81b75daf7b6" title="Destroy the Arn Data Object">destroyLink</a>( <a class="code" href="class_arn_link.html">ArnLink</a>* link);</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  destroyLinkMain( <a class="code" href="class_arn_link.html">ArnLink</a>* link);</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  linkProxy( ArnThreadCom* threadCom, <span class="keyword">const</span> QString&amp; path,</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                            <span class="keywordtype">int</span> flagValue, <span class="keywordtype">int</span> <a class="code" href="class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5">syncMode</a> = 0);</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  itemsProxy( ArnThreadCom* threadCom, <span class="keyword">const</span> QString&amp; path);</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  doZeroRefLink( QObject* obj = 0);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <a class="code" href="class_arn_m.html">ArnM</a>();</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <a class="code" href="class_arn_m.html">ArnM</a>( <span class="keyword">const</span> <a class="code" href="class_arn_m.html">ArnM</a>&amp;);</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    ~<a class="code" href="class_arn_m.html">ArnM</a>();</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <a class="code" href="class_arn_m.html">ArnM</a>&amp;  <a class="code" href="class_arn_item.html#acb0438c8a0640e221509cbb45c390251">operator=</a>( <span class="keyword">const</span> <a class="code" href="class_arn_m.html">ArnM</a>&amp;);</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_arn_link.html">ArnLink</a>*  linkMain( <span class="keyword">const</span> QString&amp; path, <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a> flags,</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                               <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a> <a class="code" href="class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5">syncMode</a> = <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a>());</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_arn_link.html">ArnLink</a>*  linkThread( <span class="keyword">const</span> QString&amp; path, <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a> flags,</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;                                 <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a> <a class="code" href="class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5">syncMode</a> = <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a>());</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_arn_link.html">ArnLink</a>*  linkMain( <a class="code" href="class_arn_link.html">ArnLink</a> *parent, <span class="keyword">const</span> QString&amp; name, <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a> flags,</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;                               <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a> <a class="code" href="class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5">syncMode</a> = <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a>());</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_arn_link.html">ArnLink</a>*  addTwinMain( <a class="code" href="class_arn_link.html">ArnLink</a>* child, <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a> <a class="code" href="class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5">syncMode</a> = <a class="code" href="struct_arn_item_1_1_sync_mode.html" title="The client session sync mode of an Arn Data Object">ArnItem::SyncMode</a>(),</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;                                  <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a> flags = ArnLink::Flags::F(0));</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <span class="keyword">static</span> <a class="code" href="class_arn_link.html">ArnLink</a>*  getRawLink( <a class="code" href="class_arn_link.html">ArnLink</a> *parent, <span class="keyword">const</span> QString&amp; name, <a class="code" href="struct_arn_link_1_1_flags.html">ArnLink::Flags</a> flags);</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keyword">static</span> QStringList  itemsMain( <span class="keyword">const</span> <a class="code" href="class_arn_link.html">ArnLink</a> *parent);</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    <span class="keyword">static</span> QStringList  itemsMain( <span class="keyword">const</span> QString&amp; path);</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <span class="comment">// The root object of all other arn data</span></div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <a class="code" href="class_arn_link.html">ArnLink</a>*  _root;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    QVector&lt;QString&gt;  _errTextTab;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="keywordtype">bool</span>  _consoleError;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keywordtype">bool</span>  _defaultIgnoreSameValue;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    QObject*  _errorLogger;</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isThreadedApp;</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    QThread* _mainThread;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;};</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="preprocessor">#endif // ARN_HPP</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;QString  <a class="code" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" title="Make a combined host and info string, i.e. HostWithInfo">makeHostWithInfo</a>( <span class="keyword">const</span> QString&amp; host, <span class="keyword">const</span> QString&amp; info);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;QString  <a class="code" href="namespace_arn.html#aa5388e7414b06aa7c8e1c0af4fe549a7" title="Get the host from the HostWithInfo string.">hostFromHostWithInfo</a>( <span class="keyword">const</span> QString&amp; hostWithInfo);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="preprocessor">#ifndef DOXYGEN_SKIP</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="preprocessor"></span>QString  convertBaseName( <span class="keyword">const</span> QString&amp; name, <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF);</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;}  <span class="comment">// Arn::</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a>)</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::ObjectMode)</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::ObjectSyncMode)</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::NameF)</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::Coding)</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="preprocessor">#endif // ARN_HPP</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_8hpp.html">Arn.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:49 for ArnLib by
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4d586402499cc8c8cfffbed14854e74f.html">ArnInc</a></li><li class="navelem"><a class="el" href="_arn_8hpp.html">Arn.hpp</a></li>
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:23 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

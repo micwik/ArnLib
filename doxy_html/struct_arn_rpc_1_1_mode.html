@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -93,7 +94,7 @@ $(document).ready(function(){initNavTree('struct_arn_rpc_1_1_mode.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -122,14 +123,16 @@ Public Types</h2></td></tr>
 <a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a30f9cd3cab247dc33931e4eeda08df92">UuidPipe</a> =  0x04, 
 <a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aee954e4308c5635281eb32d43b8af990">NoDefaultArgs</a> =  0x08, 
 <br/>
-&#160;&#160;<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a0450d7b70eaf255864e138ddf558c507">Debug</a> =  0x10, 
+&#160;&#160;<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57ab1cf0b7733a1074a5d2dbc31b49459ad">SendSequence</a> =  0x10, 
+<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a01da0fe2f6896f4b5af2d1cc1abe4823">CheckSequence</a> =  0x20, 
+<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a0450d7b70eaf255864e138ddf558c507">Debug</a> =  0x40, 
 <a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57acf07d732ddd9af3b3ae07bb277c4aca0">UuidAutoDestroy</a> =  UuidPipe | AutoDestroy
 <br/>
  }</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00116">116</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00119">119</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 </div><hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="ae20fe345c26e14c3805658cc52793c57"></a>
 <div class="memitem">
@@ -153,6 +156,12 @@ Public Types</h2></td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57aee954e4308c5635281eb32d43b8af990"></a>NoDefaultArgs</em>&nbsp;</td><td>
 <p>If guarantied no default arguments, member name overload is ok. </p>
 </td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57ab1cf0b7733a1074a5d2dbc31b49459ad"></a>SendSequence</em>&nbsp;</td><td>
+<p>Send sequence order information to pipe. </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57a01da0fe2f6896f4b5af2d1cc1abe4823"></a>CheckSequence</em>&nbsp;</td><td>
+<p>Check sequence order information from pipe. Can generate signal <a class="el" href="class_arn_rpc.html#a00aa03b83806c25ca39d82d111dcc064" title="Signal emitted when checked sequence order is wrong.">outOfSequence()</a>. </p>
+</td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57a0450d7b70eaf255864e138ddf558c507"></a>Debug</em>&nbsp;</td><td>
 <p>Debug mode, dumping done batch connections. </p>
 </td></tr>
@@ -163,12 +172,12 @@ Public Types</h2></td></tr>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00117">117</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00120">120</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp (1.0.0-3-gf59259b)</a></li>
+<li>src/ArnInc/<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp (2.0.0)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -176,7 +185,7 @@ Public Types</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_rpc.html">ArnRpc</a></li><li class="navelem"><a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a></li>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:51 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:25 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_arn_8cpp.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -102,104 +103,73 @@ $(document).ready(function(){initNavTree('_arn_8cpp.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">Arn.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<h3 class="version">(1.0.0-3-gf59259b)</h3><div class="textblock"><code>#include &lt;iostream&gt;</code><br/>
+<h3 class="version">(2.0.0)</h3><div class="textblock"><code>#include &quot;<a class="el" href="_arn_8hpp_source.html">ArnInc/Arn.hpp</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_arn_lib_8hpp_source.html">ArnInc/ArnLib.hpp</a>&quot;</code><br/>
+<code>#include &lt;QRegExp&gt;</code><br/>
 <code>#include &lt;QStringList&gt;</code><br/>
-<code>#include &lt;QVector&gt;</code><br/>
-<code>#include &lt;QDebug&gt;</code><br/>
-<code>#include &lt;QEvent&gt;</code><br/>
-<code>#include &lt;QMutex&gt;</code><br/>
-<code>#include &lt;QWaitCondition&gt;</code><br/>
-<code>#include &lt;QThreadStorage&gt;</code><br/>
-<code>#include &lt;QThread&gt;</code><br/>
-<code>#include &lt;QCoreApplication&gt;</code><br/>
-<code>#include &lt;QMetaType&gt;</code><br/>
-<code>#include &quot;<a class="el" href="_arn_8hpp_source.html">Arn.hpp</a>&quot;</code><br/>
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Arn.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="_arn_8cpp__incl.png" border="0" usemap="#src_2_arn_8cpp" alt=""/></div>
 <map name="src_2_arn_8cpp" id="src_2_arn_8cpp">
-<area shape="rect" id="node25" href="_arn_8hpp.html" title="Arn.hpp" alt="" coords="764,80,831,107"/><area shape="rect" id="node27" href="_arn_lib_8hpp.html" title="ArnLib.hpp" alt="" coords="850,304,933,331"/><area shape="rect" id="node29" href="_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="700,304,825,331"/><area shape="rect" id="node33" href="_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="5,229,99,256"/><area shape="rect" id="node39" href="_arn_link_8hpp.html" title="ArnLink.hpp" alt="" coords="665,229,756,256"/><area shape="rect" id="node53" href="_arn_item_8hpp.html" title="ArnItem.hpp" alt="" coords="441,155,532,181"/><area shape="rect" id="node35" href="_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="109,304,208,331"/></map>
+<area shape="rect" id="node3" href="_arn_8hpp.html" title="ArnInc/Arn.hpp" alt="" coords="5,80,112,107"/><area shape="rect" id="node11" href="_arn_lib_8hpp.html" title="ArnInc/ArnLib.hpp" alt="" coords="137,80,263,107"/><area shape="rect" id="node5" href="_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="9,155,108,181"/></map>
 </div>
 </div>
 <p><a href="_arn_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespace_arn"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html">Arn</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a75a3c4519469a93271186abe52bb810e"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a75a3c4519469a93271186abe52bb810e">Arn::convertName</a> (const QString &amp;name, <a class="el" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF=<a class="el" href="struct_arn_1_1_name_f.html">Arn::NameF</a>())</td></tr>
+<tr class="memdesc:a75a3c4519469a93271186abe52bb810e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a name to a specific format.  <a href="#a75a3c4519469a93271186abe52bb810e"></a><br/></td></tr>
+<tr class="memitem:a1217c8d6b0195b60ef72fc6757480893"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a1217c8d6b0195b60ef72fc6757480893">Arn::fullPath</a> (const QString &amp;path)</td></tr>
+<tr class="memdesc:a1217c8d6b0195b60ef72fc6757480893"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a path to a full absolute path.  <a href="#a1217c8d6b0195b60ef72fc6757480893"></a><br/></td></tr>
+<tr class="memitem:a0edc95f31e49e60899a7be23888c556c"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c">Arn::itemName</a> (const QString &amp;path)</td></tr>
+<tr class="memdesc:a0edc95f31e49e60899a7be23888c556c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last part of a <em>path</em>  <a href="#a0edc95f31e49e60899a7be23888c556c"></a><br/></td></tr>
+<tr class="memitem:af01d6dbc5fac8a0b66830c0fff375bdf"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf">Arn::childPath</a> (const QString &amp;parentPath, const QString &amp;posterityPath)</td></tr>
+<tr class="memdesc:af01d6dbc5fac8a0b66830c0fff375bdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get substring for child from a path.  <a href="#af01d6dbc5fac8a0b66830c0fff375bdf"></a><br/></td></tr>
+<tr class="memitem:af7033a4ea5ac45c0bbc136000fd2ccca"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#af7033a4ea5ac45c0bbc136000fd2ccca">Arn::makePath</a> (const QString &amp;parentPath, const QString &amp;itemName)</td></tr>
+<tr class="memdesc:af7033a4ea5ac45c0bbc136000fd2ccca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a path from a parent and an item name.  <a href="#af7033a4ea5ac45c0bbc136000fd2ccca"></a><br/></td></tr>
+<tr class="memitem:abf5062a3262fb12eef2feedf03c8b4ae"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#abf5062a3262fb12eef2feedf03c8b4ae">Arn::addPath</a> (const QString &amp;parentPath, const QString &amp;childRelPath, <a class="el" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF=<a class="el" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776">Arn::NameF::EmptyOk</a>)</td></tr>
+<tr class="memdesc:abf5062a3262fb12eef2feedf03c8b4ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a path from a parent and an additional relative path.  <a href="#abf5062a3262fb12eef2feedf03c8b4ae"></a><br/></td></tr>
+<tr class="memitem:a67789049b85129fdd4f238d57e9f71bc"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a67789049b85129fdd4f238d57e9f71bc">Arn::convertPath</a> (const QString &amp;path, <a class="el" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF=<a class="el" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776">Arn::NameF::EmptyOk</a>)</td></tr>
+<tr class="memdesc:a67789049b85129fdd4f238d57e9f71bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a path to a specific format.  <a href="#a67789049b85129fdd4f238d57e9f71bc"></a><br/></td></tr>
+<tr class="memitem:a4de17e4c5a7e225b5d0cbd974c3fd794"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a4de17e4c5a7e225b5d0cbd974c3fd794">Arn::twinPath</a> (const QString &amp;path)</td></tr>
+<tr class="memdesc:a4de17e4c5a7e225b5d0cbd974c3fd794"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the bidirectional twin to a given <em>path</em>  <a href="#a4de17e4c5a7e225b5d0cbd974c3fd794"></a><br/></td></tr>
+<tr class="memitem:a3a3f57fa61cdb0b8408df49466e1ca87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a3a3f57fa61cdb0b8408df49466e1ca87">Arn::isFolderPath</a> (const QString &amp;path)</td></tr>
+<tr class="memdesc:a3a3f57fa61cdb0b8408df49466e1ca87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test if <em>path</em> is a <em>folder path</em>  <a href="#a3a3f57fa61cdb0b8408df49466e1ca87"></a><br/></td></tr>
+<tr class="memitem:a9a27c8dda4cc88176c941cc53f6c2426"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a9a27c8dda4cc88176c941cc53f6c2426">Arn::isProviderPath</a> (const QString &amp;path)</td></tr>
+<tr class="memdesc:a9a27c8dda4cc88176c941cc53f6c2426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test if <em>path</em> is a <em>provider path</em>  <a href="#a9a27c8dda4cc88176c941cc53f6c2426"></a><br/></td></tr>
+<tr class="memitem:a98e3dfc1fa4eea1a945d25b2ebd5616a"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a">Arn::makeHostWithInfo</a> (const QString &amp;host, const QString &amp;info)</td></tr>
+<tr class="memdesc:a98e3dfc1fa4eea1a945d25b2ebd5616a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a combined host and info string, i.e. <em>HostWithInfo</em>  <a href="#a98e3dfc1fa4eea1a945d25b2ebd5616a"></a><br/></td></tr>
+<tr class="memitem:aa5388e7414b06aa7c8e1c0af4fe549a7"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#aa5388e7414b06aa7c8e1c0af4fe549a7">Arn::hostFromHostWithInfo</a> (const QString &amp;hostWithInfo)</td></tr>
+<tr class="memdesc:aa5388e7414b06aa7c8e1c0af4fe549a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the host from the <em>HostWithInfo</em> string.  <a href="#aa5388e7414b06aa7c8e1c0af4fe549a7"></a><br/></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ae2c249e30d7e7c9dbe3331b274502684"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_arn_8cpp.html#ae2c249e30d7e7c9dbe3331b274502684">gDebugThreading</a> = 0</td></tr>
-<tr class="memitem:af56c12949f1445d9fc273011332b7241"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_arn_8cpp.html#af56c12949f1445d9fc273011332b7241">gDebugLinkRef</a> = 0</td></tr>
-<tr class="memitem:a6bf22da00889ed1fcf2bdb9a968216df"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_arn_8cpp.html#a6bf22da00889ed1fcf2bdb9a968216df">gDebugRecInOut</a> = 0</td></tr>
-<tr class="memitem:a59cdd80f5e6deb5d074c222842a4d9ca"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_arn_8cpp.html#a59cdd80f5e6deb5d074c222842a4d9ca">gDebugMonitor</a> = 0</td></tr>
+<tr class="memitem:a690f9202c122418e5dfd8784529da8d9"><td class="memItemLeft" align="right" valign="top">const QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a690f9202c122418e5dfd8784529da8d9">Arn::pathLocal</a> = &quot;/Local/&quot;</td></tr>
+<tr class="memitem:a668d00708a3b3c4d9943465b7cb21590"><td class="memItemLeft" align="right" valign="top">const QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a668d00708a3b3c4d9943465b7cb21590">Arn::pathLocalSys</a> = &quot;Sys/&quot;</td></tr>
+<tr class="memitem:aac20bdfa60a3d566d6000e333724aa44"><td class="memItemLeft" align="right" valign="top">const QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#aac20bdfa60a3d566d6000e333724aa44">Arn::pathDiscover</a> = &quot;Sys/Discover/&quot;</td></tr>
+<tr class="memitem:a04a2b2fe19cd660f18316a9e66f65056"><td class="memItemLeft" align="right" valign="top">const QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a04a2b2fe19cd660f18316a9e66f65056">Arn::pathDiscoverThis</a> = &quot;Sys/Discover/This/&quot;</td></tr>
+<tr class="memitem:a556d0c5ce01a0b3146a929137c7b786d"><td class="memItemLeft" align="right" valign="top">const QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a556d0c5ce01a0b3146a929137c7b786d">Arn::pathDiscoverConnect</a> = &quot;Sys/Discover/Connect/&quot;</td></tr>
 </table>
-<hr/><h2>Variable Documentation</h2>
-<a class="anchor" id="af56c12949f1445d9fc273011332b7241"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const bool gDebugLinkRef = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00049">49</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a59cdd80f5e6deb5d074c222842a4d9ca"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const bool gDebugMonitor = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00051">51</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a6bf22da00889ed1fcf2bdb9a968216df"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const bool gDebugRecInOut = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00050">50</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae2c249e30d7e7c9dbe3331b274502684"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const bool gDebugThreading = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00048">48</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_8cpp.html">Arn.cpp</a></li>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:50 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:24 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

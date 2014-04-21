@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -96,6 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_0x65.html#index_e"><span>e</span></a></li>
       <li><a href="functions_0x66.html#index_f"><span>f</span></a></li>
       <li><a href="functions_0x67.html#index_g"><span>g</span></a></li>
+      <li><a href="functions_0x68.html#index_h"><span>h</span></a></li>
       <li><a href="functions_0x69.html#index_i"><span>i</span></a></li>
       <li><a href="functions_0x6b.html#index_k"><span>k</span></a></li>
       <li><a href="functions_0x6c.html#index_l"><span>l</span></a></li>
@@ -134,7 +136,7 @@ $(document).ready(function(){initNavTree('functions_0x7e.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -153,14 +155,35 @@ $(document).ready(function(){initNavTree('functions_0x7e.html','');});
 <li>~ArnItem()
 : <a class="el" href="class_arn_item.html#afe04ee3f1f785a5521e9f7968d1adb1e">ArnItem</a>
 </li>
+<li>~ArnItemB()
+: <a class="el" href="class_arn_item_b.html#af2fdc6b17d74046c9853d2989b0668c6">ArnItemB</a>
+</li>
 <li>~ArnPersist()
 : <a class="el" href="class_arn_persist.html#a342f50eada045776139013f988b60ce2">ArnPersist</a>
+</li>
+<li>~ArnPipe()
+: <a class="el" href="class_arn_pipe.html#a6579a18766067f352c0c74d38f89319c">ArnPipe</a>
 </li>
 <li>~ArnScriptJobFactory()
 : <a class="el" href="class_arn_script_job_factory.html#a2e359628a7bce0b6c439b5c36891a2bd">ArnScriptJobFactory</a>
 </li>
+<li>~ArnZeroConfB()
+: <a class="el" href="class_arn_zero_conf_b.html#a860987be3d72efa673851e72ad46d7e5">ArnZeroConfB</a>
+</li>
+<li>~ArnZeroConfBrowser()
+: <a class="el" href="class_arn_zero_conf_browser.html#a3cbdced21364d1829d0c428d0ac2f456">ArnZeroConfBrowser</a>
+</li>
+<li>~ArnZeroConfLookup()
+: <a class="el" href="class_arn_zero_conf_lookup.html#a1bd3d1b6983baf4087a790a6a7fe03ed">ArnZeroConfLookup</a>
+</li>
+<li>~ArnZeroConfRegister()
+: <a class="el" href="class_arn_zero_conf_register.html#a717b8c57e0bf5d36024225bdcbdc57e8">ArnZeroConfRegister</a>
+</li>
+<li>~ArnZeroConfResolve()
+: <a class="el" href="class_arn_zero_conf_resolve.html#a7abf83f91a5793accf4a899afd8c81f8">ArnZeroConfResolve</a>
+</li>
 <li>~XStringMap()
-: <a class="el" href="class_x_string_map.html#a787bd025fbdc50412980bac9b2d4abf2">XStringMap</a>
+: <a class="el" href="class_arn_1_1_x_string_map.html#a99f84ff3111a71399a384c450161879f">Arn::XStringMap</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -168,7 +191,7 @@ $(document).ready(function(){initNavTree('functions_0x7e.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:51 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:25 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

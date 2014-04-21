@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_arn_rpc_8cpp.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -107,9 +108,11 @@ $(document).ready(function(){initNavTree('_arn_rpc_8cpp.html','');});
 <div class="title">ArnRpc.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<h3 class="version">(1.0.0-3-gf59259b)</h3><div class="textblock"><code>#include &quot;<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>&quot;</code><br/>
+<h3 class="version">(2.0.0)</h3><div class="textblock"><code>#include &quot;<a class="el" href="_arn_rpc_8hpp_source.html">ArnInc/ArnRpc.hpp</a>&quot;</code><br/>
+<code>#include &quot;<a class="el" href="_arn_m_8hpp_source.html">ArnInc/ArnM.hpp</a>&quot;</code><br/>
 <code>#include &lt;QMetaType&gt;</code><br/>
 <code>#include &lt;QMetaMethod&gt;</code><br/>
+<code>#include &lt;QTimer&gt;</code><br/>
 <code>#include &lt;QRegExp&gt;</code><br/>
 <code>#include &lt;QVariant&gt;</code><br/>
 <code>#include &lt;QDebug&gt;</code><br/>
@@ -118,7 +121,7 @@ Include dependency graph for ArnRpc.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="_arn_rpc_8cpp__incl.png" border="0" usemap="#src_2_arn_rpc_8cpp" alt=""/></div>
 <map name="src_2_arn_rpc_8cpp" id="src_2_arn_rpc_8cpp">
-<area shape="rect" id="node3" href="_arn_rpc_8hpp.html" title="ArnRpc.hpp" alt="" coords="269,80,360,107"/><area shape="rect" id="node5" href="_arn_8hpp.html" title="Arn.hpp" alt="" coords="614,155,681,181"/><area shape="rect" id="node9" href="_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="421,379,546,405"/><area shape="rect" id="node15" href="_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="1095,379,1194,405"/><area shape="rect" id="node56" href="_x_string_map_8hpp.html" title="XStringMap.hpp" alt="" coords="258,155,370,181"/><area shape="rect" id="node7" href="_arn_lib_8hpp.html" title="ArnLib.hpp" alt="" coords="890,379,973,405"/><area shape="rect" id="node13" href="_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="1098,304,1192,331"/><area shape="rect" id="node19" href="_arn_link_8hpp.html" title="ArnLink.hpp" alt="" coords="830,304,921,331"/><area shape="rect" id="node34" href="_arn_item_8hpp.html" title="ArnItem.hpp" alt="" coords="711,229,802,256"/></map>
+<area shape="rect" id="node3" href="_arn_rpc_8hpp.html" title="ArnInc/ArnRpc.hpp" alt="" coords="455,80,584,107"/><area shape="rect" id="node80" href="_arn_m_8hpp.html" title="ArnInc/ArnM.hpp" alt="" coords="1202,155,1320,181"/><area shape="rect" id="node5" href="_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="245,379,371,405"/><area shape="rect" id="node9" href="_arn_8hpp.html" title="Arn.hpp" alt="" coords="951,453,1017,480"/><area shape="rect" id="node11" href="_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="813,528,912,555"/><area shape="rect" id="node17" href="_arn_pipe_8hpp.html" title="ArnPipe.hpp" alt="" coords="655,155,748,181"/><area shape="rect" id="node65" href="_x_string_map_8hpp.html" title="XStringMap.hpp" alt="" coords="365,155,477,181"/><area shape="rect" id="node20" href="_arn_item_8hpp.html" title="ArnItem.hpp" alt="" coords="706,229,797,256"/><area shape="rect" id="node23" href="_arn_item_b_8hpp.html" title="ArnItemB.hpp" alt="" coords="869,304,971,331"/><area shape="rect" id="node40" href="_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="734,379,828,405"/><area shape="rect" id="node26" href="_arn_link_handle_8hpp.html" title="ArnLinkHandle.hpp" alt="" coords="1005,379,1135,405"/><area shape="rect" id="node28" href="_arn_lib_8hpp.html" title="ArnLib.hpp" alt="" coords="1175,453,1259,480"/></map>
 </div>
 </div>
 <p><a href="_arn_rpc_8cpp_source.html">Go to the source code of this file.</a></p>
@@ -138,7 +141,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00040">40</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00043">43</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -148,7 +151,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_rpc_8cpp.html">ArnRpc.cpp</a></li>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:50 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:24 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_x_string_map.html#a951e966323051d1f74eaf41e35126586" title="XStringMap::indexOfValue" alt="" coords="179,56,352,83"/>
-<area shape="rect" id="node11" href="$class_x_string_map.html#ad9e3e56e05a517f2249a91dd8d1963d0" title="XStringMap::value" alt="" coords="203,107,328,133"/>
-<area shape="rect" id="node13" href="$class_x_string_map.html#a54f5b4784bf5f15bd7fe07bb1e2c068a" title="XStringMap::values" alt="" coords="199,157,331,184"/>
-<area shape="rect" id="node15" href="$_x_string_map_8hpp.html#aedd6e8fa4ab989dc7f2ea54c76773578" title="XStringMapTest" alt="" coords="209,208,321,235"/>
-<area shape="rect" id="node5" href="$class_x_string_map.html#a95eeb7ae503e89a47fae1df35e62bfd9" title="XStringMap::indexOfValue" alt="" coords="400,5,573,32"/>
-<area shape="rect" id="node7" href="$class_x_string_map.html#a0e01faedfc2015cee291d968df3f3a4d" title="XStringMap::key" alt="" coords="428,56,545,83"/>
-<area shape="rect" id="node9" href="$class_x_string_map.html#af5aae3257e037ac0fcd2e4cca731efdf" title="XStringMap::keyString" alt="" coords="411,107,562,133"/>
-</map>

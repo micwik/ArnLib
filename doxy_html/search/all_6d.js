@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['makepath',['makePath',['../class_arn_m.html#a67c8f9212714d655d7a352d297e45228',1,'ArnM']]],
-  ['master',['Master',['../struct_arn_item_1_1_sync_mode.html#aefe7627fb0db4f1c36f4676b184b257faa55fcc83d39e6d5a3d61faa3bd4326c5',1,'ArnItem::SyncMode']]],
-  ['maxenumof',['maxEnumOf',['../class_x_string_map.html#a4c9be72dc9a8dad17bf7287188372172',1,'XStringMap']]],
+  ['makehostwithinfo',['makeHostWithInfo',['../namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a',1,'Arn']]],
+  ['makepath',['makePath',['../namespace_arn.html#af7033a4ea5ac45c0bbc136000fd2ccca',1,'Arn']]],
+  ['master',['Master',['../struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba007bef1fb81b23cf43aa9c64a54bbbff',1,'Arn::ObjectSyncMode']]],
+  ['maxenumof',['maxEnumOf',['../class_arn_1_1_x_string_map.html#ac0962af8c2356aa5f8b95ddb514545b9',1,'Arn::XStringMap']]],
   ['mode',['Mode',['../struct_arn_rpc_1_1_mode.html',1,'ArnRpc']]],
   ['mode',['mode',['../class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0',1,'ArnRpc']]],
-  ['mode',['Mode',['../struct_arn_item_1_1_mode.html',1,'ArnItem']]],
-  ['monitor',['Monitor',['../struct_arn_item_1_1_sync_mode.html#aefe7627fb0db4f1c36f4676b184b257faca182dd95c8d51aa908d13c99748eec6',1,'ArnItem::SyncMode']]],
+  ['modechanged',['modeChanged',['../class_arn_item.html#ae67a140f231ad957f80b7dae24146e7a',1,'ArnItem']]],
+  ['monitor',['Monitor',['../struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba63870f55d4657d2f1c3ecc7c2e39dde3',1,'Arn::ObjectSyncMode']]],
   ['monitorpath',['monitorPath',['../class_arn_monitor.html#a204697cdbefdc68c6cdadf563df83810',1,'ArnMonitor']]],
   ['mq_5farg',['MQ_ARG',['../_arn_rpc_8hpp.html#aa477dc265a51dcb0136ec6f87fd271ff',1,'ArnRpc.hpp']]],
   ['mq_5fdeclare_5fenum',['MQ_DECLARE_ENUM',['../_m_q_flags_8hpp.html#a88a584b9515204489a33c68905054f2c',1,'MQFlags.hpp']]],

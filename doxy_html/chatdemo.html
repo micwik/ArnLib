@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -85,7 +86,7 @@ $(document).ready(function(){initNavTree('chatdemo.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -100,9 +101,10 @@ $(document).ready(function(){initNavTree('chatdemo.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>Demonstration with a simple chat program. It consists of a server and a client part. After starting the server, any number of clients can be started.</p>
-<p>This demo is focused on the Service API (RPC) functionalty of ArnLib. Slots are remotely called from clients to server and the other way back. All is done with standard function calls without any visual serializing.</p>
-<p><b>Chat Server</b> <a class="el" href="chatdemo.html#ChatSapi_hpp">ChatSapi.hpp</a>, <a class="el" href="chatdemo.html#ServerMain_hpp">ServerMain.hpp</a>, <a class="el" href="chatdemo.html#ServerMain_cpp">ServerMain.cpp</a>, <a class="el" href="chatdemo.html#s_main_cpp">main.cpp</a></p>
-<p><b>Chat Client</b> <a class="el" href="chatdemo.html#MainWindow_hpp">MainWindow.hpp</a>, <a class="el" href="chatdemo.html#MainWindow_cpp">MainWindow.cpp</a>, <a class="el" href="chatdemo.html#c_main_cpp">main.cpp</a></p>
+<p>This demo is focused on the <em>Service API</em> (RPC) functionalty of ArnLib. Slots are remotely called from clients to server and the other way back. All is done with standard function calls without any visual serializing.</p>
+<p>It's also a demo of <em>Discover Remote</em>, althou client side is as simple as possible without any remote control.</p>
+<p><b>Chat Server</b> <a class="el" href="chatdemo.html#ChatSapi_hpp">ChatSapi.hpp</a>, <a class="el" href="chatdemo.html#s_MainWindow_hpp">MainWindow.hpp</a>, <a class="el" href="chatdemo.html#s_MainWindow_cpp">MainWindow.cpp</a>, <a class="el" href="chatdemo.html#s_main_cpp">main.cpp</a></p>
+<p><b>Chat Client</b> <a class="el" href="chatdemo.html#c_MainWindow_hpp">MainWindow.hpp</a>, <a class="el" href="chatdemo.html#c_MainWindow_cpp">MainWindow.cpp</a>, <a class="el" href="chatdemo.html#c_main_cpp">main.cpp</a></p>
 <h1><a class="anchor" id="chatserver"></a>
 Chat Server</h1>
 <h2><a class="anchor" id="ChatSapi_hpp"></a>
@@ -110,7 +112,7 @@ ChatSapi.hpp</h2>
 <div class="fragment"><div class="line"><span class="preprocessor">#ifndef CHATSAPI_HPP</span></div>
 <div class="line"><span class="preprocessor"></span><span class="preprocessor">#define CHATSAPI_HPP</span></div>
 <div class="line"><span class="preprocessor"></span></div>
-<div class="line"><span class="preprocessor">#include &lt;ArnLib/ArnSapi.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_arn_sapi_8hpp.html">ArnInc/ArnSapi.hpp</a>&gt;</span></div>
 <div class="line"></div>
 <div class="line"></div>
 <div class="line"><span class="keyword">class </span>ChatSapi : <span class="keyword">public</span> <a class="code" href="class_arn_sapi.html" title="Service API.">ArnSapi</a></div>
@@ -121,7 +123,7 @@ ChatSapi.hpp</h2>
 <div class="line"></div>
 <div class="line">signals:</div>
 <div class="line"><a class="code" href="_arn_sapi_8hpp.html#a03570a0d36179506ffe4ce9fb442218a">MQ_PUBLIC_ACCESS</a></div>
-<div class="line">    <span class="keywordtype">void</span>  pv_list();</div>
+<div class="line">    <a class="code" href="_arn_rpc_8hpp.html#a121b857f28842b8fec92fced43bd43d3">no_queue</a> <span class="keywordtype">void</span>  pv_list();</div>
 <div class="line">    <span class="keywordtype">void</span>  pv_newMsg( QString name, QString msg);</div>
 <div class="line">    <span class="keywordtype">void</span>  pv_infoQ();</div>
 <div class="line"></div>
@@ -130,31 +132,37 @@ ChatSapi.hpp</h2>
 <div class="line">};</div>
 <div class="line"></div>
 <div class="line"><span class="preprocessor">#endif // CHATSAPI_HPP</span></div>
-</div><!-- fragment --> <h2><a class="anchor" id="ServerMain_hpp"></a>
-ServerMain.hpp</h2>
-<div class="fragment"><div class="line"><span class="preprocessor">#ifndef SERVERMAIN_HPP</span></div>
-<div class="line"><span class="preprocessor"></span><span class="preprocessor">#define SERVERMAIN_HPP</span></div>
+</div><!-- fragment --> <h2><a class="anchor" id="s_MainWindow_hpp"></a>
+MainWindow.hpp</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#ifndef MAINWINDOW_HPP</span></div>
+<div class="line"><span class="preprocessor"></span><span class="preprocessor">#define MAINWINDOW_HPP</span></div>
 <div class="line"><span class="preprocessor"></span></div>
 <div class="line"><span class="preprocessor">#include &quot;ChatSapi.hpp&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;ArnLib/ArnItem.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;ArnLib/ArnServer.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_arn_item_8hpp.html">ArnInc/ArnItem.hpp</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_arn_server_8hpp.html">ArnInc/ArnServer.hpp</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;QTimer&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;QStringList&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;QObject&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;QMainWindow&gt;</span></div>
+<div class="line"></div>
+<div class="line"><span class="keyword">namespace </span>Ui {</div>
+<div class="line"><span class="keyword">class </span>MainWindow;</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keyword">class </span><a class="code" href="class_arn_discover_remote.html" title="Discover with remote setting.">ArnDiscoverRemote</a>;</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line"><span class="keyword">class </span>ServerMain : <span class="keyword">public</span> QObject</div>
+<div class="line"><span class="keyword">class </span>MainWindow : <span class="keyword">public</span> QMainWindow</div>
 <div class="line">{</div>
 <div class="line">    Q_OBJECT</div>
 <div class="line"><span class="keyword">public</span>:</div>
-<div class="line">    <span class="keyword">explicit</span> ServerMain( QObject* parent = 0);</div>
-<div class="line"></div>
-<div class="line">signals:</div>
-<div class="line"></div>
-<div class="line"><span class="keyword">public</span> slots:</div>
+<div class="line">    <span class="keyword">explicit</span> MainWindow( QWidget *parent = 0);</div>
+<div class="line">    ~MainWindow();</div>
 <div class="line"></div>
 <div class="line"><span class="keyword">private</span> slots:</div>
 <div class="line">    <span class="keywordtype">void</span>  doNewSession( QString path);</div>
+<div class="line">    <span class="keywordtype">void</span>  doSessionClosed();</div>
+<div class="line">    <span class="keywordtype">void</span>  doUpdateView();</div>
+<div class="line">    <span class="keywordtype">void</span>  on_shutDownButton_clicked();</div>
 <div class="line">    <span class="keywordtype">void</span>  doTimeUpdate();</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// Chat Provider routines</span></div>
@@ -163,36 +171,50 @@ ServerMain.hpp</h2>
 <div class="line">    <span class="keywordtype">void</span>  chatInfoQ();</div>
 <div class="line"></div>
 <div class="line"><span class="keyword">private</span>:</div>
+<div class="line">    Ui::MainWindow *_ui;</div>
 <div class="line">    QStringList  _chatNameList;</div>
 <div class="line">    QStringList  _chatMsgList;</div>
-<div class="line">    QTimer  _timer;</div>
+<div class="line">    QTimer  _timer1s;</div>
+<div class="line">    <span class="keywordtype">int</span>  _connectCount;</div>
 <div class="line"></div>
 <div class="line">    <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>  _arnTime;</div>
 <div class="line">    <a class="code" href="class_arn_server.html" title="Class for making an Arn Server.">ArnServer</a>*  _server;</div>
 <div class="line">    ChatSapi*  _commonSapi;</div>
+<div class="line">    <a class="code" href="class_arn_discover_remote.html" title="Discover with remote setting.">ArnDiscoverRemote</a>*  _discoverRemote;</div>
 <div class="line">};</div>
 <div class="line"></div>
-<div class="line"><span class="preprocessor">#endif // SERVERMAIN_HPP</span></div>
-</div><!-- fragment --> <h2><a class="anchor" id="ServerMain_cpp"></a>
-ServerMain.cpp</h2>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;ServerMain.hpp&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;ArnLib/ArnItem.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#endif // MAINWINDOW_HPP</span></div>
+</div><!-- fragment --> <h2><a class="anchor" id="s_MainWindow_cpp"></a>
+MainWindow.cpp</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;MainWindow.hpp&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;tmp/ui_MainWindow.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_arn_item_8hpp.html">ArnInc/ArnItem.hpp</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_arn_discover_remote_8hpp.html">ArnInc/ArnDiscoverRemote.hpp</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;QTime&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;QCoreApplication&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;QDebug&gt;</span></div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line">ServerMain::ServerMain( QObject* parent) :</div>
-<div class="line">    QObject( parent)</div>
+<div class="line">MainWindow::MainWindow( QWidget *parent) :</div>
+<div class="line">    QMainWindow( parent, Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint),</div>
+<div class="line">    _ui( new Ui::MainWindow)</div>
 <div class="line">{</div>
-<div class="line">    _timer.start(1000);</div>
-<div class="line">    connect( &amp;_timer, SIGNAL(timeout()), <span class="keyword">this</span>, SLOT(doTimeUpdate()));</div>
+<div class="line">    _ui-&gt;setupUi( <span class="keyword">this</span>);</div>
+<div class="line">    _connectCount = 0;</div>
+<div class="line">    doUpdateView();</div>
+<div class="line"></div>
+<div class="line">    _timer1s.start(1000);</div>
+<div class="line">    connect( &amp;_timer1s, SIGNAL(timeout()), <span class="keyword">this</span>, SLOT(doTimeUpdate()));</div>
 <div class="line"></div>
 <div class="line">    _server = <span class="keyword">new</span> <a class="code" href="class_arn_server.html" title="Class for making an Arn Server.">ArnServer</a>( <a class="code" href="struct_arn_server_1_1_type.html#ae4fba4a82a463c288561b107362dde41abe95db1db12eebabf0398f1eb47a69bb">ArnServer::Type::NetSync</a>, <span class="keyword">this</span>);</div>
-<div class="line">    _server-&gt;start();</div>
+<div class="line">    _server-&gt;start(0);  <span class="comment">// Start server on dynamic port</span></div>
+<div class="line"></div>
+<div class="line">    _discoverRemote = <span class="keyword">new</span> <a class="code" href="class_arn_discover_remote.html" title="Discover with remote setting.">ArnDiscoverRemote</a>( <span class="keyword">this</span>);</div>
+<div class="line">    _discoverRemote-&gt;setService(<span class="stringliteral">&quot;Demo Chat Server&quot;</span>);</div>
+<div class="line">    _discoverRemote-&gt;addGroup(<span class="stringliteral">&quot;arndemo/chat&quot;</span>);</div>
+<div class="line">    _discoverRemote-&gt;addCustomProperty(<span class="stringliteral">&quot;ChatProtoVer&quot;</span>, <span class="stringliteral">&quot;1.0&quot;</span>);</div>
+<div class="line">    _discoverRemote-&gt;startUseServer( _server);</div>
 <div class="line"></div>
 <div class="line">    _arnTime.open(<span class="stringliteral">&quot;//Chat/Time/value&quot;</span>);</div>
-<div class="line"></div>
 <div class="line"></div>
 <div class="line">    _commonSapi = <span class="keyword">new</span> ChatSapi( <span class="keyword">this</span>);</div>
 <div class="line">    _commonSapi-&gt;open(<span class="stringliteral">&quot;//Chat/Pipes/pipeCommon!&quot;</span>, <a class="code" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a90ec424cb525bbcce0c60a666bb1c4d4" title="Provider side (opposed to requester)">ArnSapi::Mode::Provider</a>);</div>
@@ -203,24 +225,56 @@ ServerMain.cpp</h2>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>  ServerMain::doNewSession( QString path)</div>
+<div class="line">MainWindow::~MainWindow()</div>
 <div class="line">{</div>
-<div class="line">    <span class="keywordflow">if</span> (!<a class="code" href="class_arn_m.html#a309011deedd9b73151d82ed9b1e9ac06" title="Test if path is a provider path">ArnM::isProviderPath</a>( path))  <span class="keywordflow">return</span>;  <span class="comment">// Only provider pipe is used</span></div>
+<div class="line">    <span class="keyword">delete</span> _ui;</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::doNewSession( QString path)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keywordflow">if</span> (!<a class="code" href="namespace_arn.html#a9a27c8dda4cc88176c941cc53f6c2426" title="Test if path is a provider path">Arn::isProviderPath</a>( path))  <span class="keywordflow">return</span>;  <span class="comment">// Only provider pipe is used</span></div>
 <div class="line"></div>
 <div class="line">    ChatSapi*  soleSapi = <span class="keyword">new</span> ChatSapi( <span class="keyword">this</span>);</div>
 <div class="line">    soleSapi-&gt;open( path, <a class="code" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a90ec424cb525bbcce0c60a666bb1c4d4" title="Provider side (opposed to requester)">ArnSapi::Mode::Provider</a>);</div>
 <div class="line">    soleSapi-&gt;batchConnect( QRegExp(<span class="stringliteral">&quot;^pv_(.+)&quot;</span>), <span class="keyword">this</span>, <span class="stringliteral">&quot;chat\\1&quot;</span>);</div>
 <div class="line">    connect( soleSapi, SIGNAL(pipeClosed()), soleSapi, SLOT(deleteLater()));</div>
+<div class="line">    </div>
+<div class="line">    connect( soleSapi, SIGNAL(pipeClosed()), <span class="keyword">this</span>, SLOT(doSessionClosed()));    </div>
+<div class="line">    ++_connectCount;</div>
+<div class="line">    doUpdateView();</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>  ServerMain::doTimeUpdate()</div>
+<div class="line"><span class="keywordtype">void</span> MainWindow::doSessionClosed()</div>
+<div class="line">{</div>
+<div class="line">    --_connectCount;</div>
+<div class="line">    doUpdateView();</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::doUpdateView()</div>
+<div class="line">{</div>
+<div class="line">    _ui-&gt;connectCount-&gt;setText( QString::number( _connectCount));</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::on_shutDownButton_clicked()</div>
+<div class="line">{</div>
+<div class="line">    qWarning() &lt;&lt; <span class="stringliteral">&quot;About to shut down.&quot;</span>;</div>
+<div class="line">    <span class="keyword">delete</span> _discoverRemote;  <span class="comment">// Must be deleted while still in the main eventloop</span></div>
+<div class="line">    _discoverRemote = 0;</div>
+<div class="line">    QApplication::quit();</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::doTimeUpdate()</div>
 <div class="line">{</div>
 <div class="line">    _arnTime = QTime::currentTime().toString();</div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>  ServerMain::chatList()</div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::chatList()</div>
 <div class="line">{</div>
 <div class="line">    ChatSapi*  sapi = qobject_cast&lt;ChatSapi*&gt;( sender());</div>
 <div class="line">    Q_ASSERT(sapi);</div>
@@ -230,7 +284,7 @@ ServerMain.cpp</h2>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>  ServerMain::chatNewMsg( QString name, QString msg)</div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::chatNewMsg( QString name, QString msg)</div>
 <div class="line">{</div>
 <div class="line">    _chatNameList += name;</div>
 <div class="line">    _chatMsgList  += msg;</div>
@@ -240,38 +294,37 @@ ServerMain.cpp</h2>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>  ServerMain::chatInfoQ()</div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::chatInfoQ()</div>
 <div class="line">{</div>
 <div class="line">    ChatSapi*  sapi = qobject_cast&lt;ChatSapi*&gt;( sender());</div>
 <div class="line">    Q_ASSERT(sapi);</div>
-<div class="line">    sapi-&gt;rq_info(<span class="stringliteral">&quot;Arn Chat Demo&quot;</span>, <span class="stringliteral">&quot;1.0&quot;</span>);</div>
+<div class="line">    sapi-&gt;rq_info(<span class="stringliteral">&quot;Arn Chat Demo&quot;</span>, <span class="stringliteral">&quot;1.1&quot;</span>);</div>
 <div class="line">}</div>
 </div><!-- fragment --> <h2><a class="anchor" id="s_main_cpp"></a>
 main.cpp</h2>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;ServerMain.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;MainWindow.hpp&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;QApplication&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;QDebug&gt;</span></div>
 <div class="line"></div>
 <div class="line"></div>
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])</div>
 <div class="line">{</div>
-<div class="line">    QApplication a(argc, argv, <span class="keyword">false</span>);</div>
-<div class="line"></div>
-<div class="line">    qDebug() &lt;&lt; <span class="stringliteral">&quot;Startar Arn Chat Server ...&quot;</span>;</div>
-<div class="line">    <span class="keyword">new</span> ServerMain;</div>
-<div class="line"></div>
+<div class="line">    QApplication a(argc, argv);</div>
+<div class="line">    MainWindow w;</div>
+<div class="line">    w.show();</div>
+<div class="line">    </div>
 <div class="line">    <span class="keywordflow">return</span> a.exec();</div>
 <div class="line">}</div>
 </div><!-- fragment --> <h1><a class="anchor" id="chatclient"></a>
 Chat Client</h1>
-<h2><a class="anchor" id="MainWindow_hpp"></a>
+<h2><a class="anchor" id="c_MainWindow_hpp"></a>
 MainWindow.hpp</h2>
 <div class="fragment"><div class="line"><span class="preprocessor">#ifndef MAINWINDOW_HPP</span></div>
 <div class="line"><span class="preprocessor"></span><span class="preprocessor">#define MAINWINDOW_HPP</span></div>
 <div class="line"><span class="preprocessor"></span></div>
 <div class="line"><span class="preprocessor">#include &quot;../ArnDemoChatServer/ChatSapi.hpp&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;ArnLib/ArnClient.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;ArnLib/ArnItem.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_arn_client_8hpp.html">ArnInc/ArnClient.hpp</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_arn_item_8hpp.html">ArnInc/ArnItem.hpp</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;QMainWindow&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;QVector&gt;</span></div>
 <div class="line"></div>
@@ -285,7 +338,7 @@ MainWindow.hpp</h2>
 <div class="line">    Q_OBJECT</div>
 <div class="line">    </div>
 <div class="line"><span class="keyword">public</span>:</div>
-<div class="line">    <span class="keyword">explicit</span> MainWindow(QWidget *parent = 0);</div>
+<div class="line">    <span class="keyword">explicit</span> MainWindow( QWidget *parent = 0);</div>
 <div class="line">    ~MainWindow();</div>
 <div class="line"></div>
 <div class="line"><span class="keyword">private</span> slots:</div>
@@ -308,10 +361,11 @@ MainWindow.hpp</h2>
 <div class="line">};</div>
 <div class="line"></div>
 <div class="line"><span class="preprocessor">#endif // MAINWINDOW_HPP</span></div>
-</div><!-- fragment --> <h2><a class="anchor" id="MainWindow_cpp"></a>
+</div><!-- fragment --> <h2><a class="anchor" id="c_MainWindow_cpp"></a>
 MainWindow.cpp</h2>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;MainWindow.hpp&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;tmp/ui_MainWindow.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_arn_discover_remote_8hpp.html">ArnInc/ArnDiscoverRemote.hpp</a>&gt;</span></div>
 <div class="line"></div>
 <div class="line"></div>
 <div class="line">MainWindow::MainWindow( QWidget* parent) :</div>
@@ -322,8 +376,13 @@ MainWindow.cpp</h2>
 <div class="line">    _ui-&gt;userEdit-&gt;setFocus();</div>
 <div class="line">    connect( _ui-&gt;lineEdit, SIGNAL(returnPressed()), <span class="keyword">this</span>, SLOT(doSendLine()));</div>
 <div class="line"></div>
-<div class="line">    _arnClient.connectToArn(<span class="stringliteral">&quot;localhost&quot;</span>);</div>
 <div class="line">    _arnClient.setMountPoint(<span class="stringliteral">&quot;//&quot;</span>);</div>
+<div class="line">    _arnClient.setAutoConnect(<span class="keyword">true</span>);</div>
+<div class="line"></div>
+<div class="line">    <a class="code" href="class_arn_discover_connector.html" title="An automatic client discover connector.">ArnDiscoverConnector</a>*  connector = <span class="keyword">new</span> <a class="code" href="class_arn_discover_connector.html" title="An automatic client discover connector.">ArnDiscoverConnector</a>( _arnClient, <span class="stringliteral">&quot;DemoChat&quot;</span>);</div>
+<div class="line">    connector-&gt;<a class="code" href="class_arn_discover_connector.html#a401ad11e2a91216753faca195a62311a" title="Set the ArnDiscoverResolver to be used.">setResolver</a>( <span class="keyword">new</span> <a class="code" href="class_arn_discover_resolver.html" title="Resolv an Arn service.">ArnDiscoverResolver</a>());</div>
+<div class="line">    connector-&gt;<a class="code" href="class_arn_discover_connector.html#a66eccd756cc98272082066a7dd1a4181" title="Set the service name for the connection.">setService</a>(<span class="stringliteral">&quot;Demo Chat Server&quot;</span>);</div>
+<div class="line">    connector-&gt;<a class="code" href="class_arn_discover_connector.html#a9a105ff70a59ad36fb0126cdd0a8837a" title="Start connector.">start</a>();</div>
 <div class="line"></div>
 <div class="line">    _arnTime.open(<span class="stringliteral">&quot;//Chat/Time/value&quot;</span>);</div>
 <div class="line">    connect( &amp;_arnTime, SIGNAL(changed(QString)), <span class="keyword">this</span>, SLOT(doTimeUpdate(QString)));</div>
@@ -407,7 +466,7 @@ Pictures</h1>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="exampleindex.html">Example Collection</a></li>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:50 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:24 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

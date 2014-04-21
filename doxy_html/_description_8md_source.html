@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: doc/Description.md (1.0.0-3-gf59259b) Source File</title>
+<title>ArnLib: doc/Description.md (2.0.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -91,7 +92,7 @@ $(document).ready(function(){initNavTree('_description_8md.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -102,7 +103,7 @@ $(document).ready(function(){initNavTree('_description_8md.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">doc/Description.md (1.0.0-3-gf59259b)</div>  </div>
+<div class="title">doc/Description.md (2.0.0)</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="_description_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;General Description</div>
@@ -127,250 +128,505 @@ $(document).ready(function(){initNavTree('_description_8md.html','');});
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="stringliteral">&quot;/@/Measure/Water/Temperature/value&quot;</span>. This <span class="stringliteral">&quot;@&quot;</span> is typically used when an empty name is</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;unacceptable, e.g. in the tree viewer of ArnBrowser.</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;Each part in a given path is dynamically added as needed, i.e. any path can be used without</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;explicitly creating each folder in advance.</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">### Modes ###    {#gen_arnobjModes}</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span>_Mode_ change is a one direction process. Once a specific _mode_ is <span class="keyword">set</span>, it can<span class="stringliteral">&#39;t be reset.</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="stringliteral">If the ArnItem is in a closed state when the _mode_ change is done, the added modes will</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="stringliteral">be stored and the real _mode_ change is done when the ArnItem is opened to an</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="stringliteral">_Arn Data Object_. This implies that ArnItems can benefit from _mode_ settings before</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="stringliteral">being opened.</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="stringliteral">If the _general mode_ change is done to a [shared](#gen_shareArnobj) object, the change</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="stringliteral">of _general mode_ is also done at the server and any connected clients.</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;A relative path is also called the [local path](#gen_localPath), e.g.</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="stringliteral">&quot;Sys/Discover/This/Service/value&quot;</span>.</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;Each part in a given path is dynamically added as needed, i.e. any path can be used without</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;explicitly creating each folder in advance.</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;### Modes ###    {#gen_arnobjModes}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;_Mode_ change is a one direction process. Once a specific _mode_ is <span class="keyword">set</span>, it can<span class="stringliteral">&#39;t be reset.</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="stringliteral">If the ArnItem is in a closed state when the _mode_ change is done, the added modes will</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="stringliteral">be stored and the real _mode_ change is done when the ArnItem is opened to an</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="stringliteral">_ARN Data Object_. This implies that ArnItems can benefit from _mode_ settings before</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="stringliteral">being opened.</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="stringliteral">The following _general modes_ are available:</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="stringliteral">* **BiDir** A two-way object, typically for validation or pipe.</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="stringliteral">  See [bidirectional](#gen_bidirArnobj) objects.</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="stringliteral">* **Pipe** Implies _BiDir_ and all data is preserved as a stream during</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="stringliteral">  [sharing](#gen_shareArnobj). Without _Pipe mode_, [sharing](#gen_shareArnobj) is</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="stringliteral">  optimized to sync latest value and not all values in a stream.</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="stringliteral">* **Save** Sets the _Arn Data Object_ as persistent and any data assigned to it will be</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="stringliteral">  saved. The persistent service must be started at the server.</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="stringliteral">  See [persistent](#gen_persistArnobj) objects.</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="stringliteral">Additionally there are some _sync modes_. These modes are used by the local client session</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="stringliteral">and are not shared with others.</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="stringliteral">The _sync modes_ must be set before the ArnItem is opened to an _Arn Data Object_.</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="stringliteral">Following _sync_modes_ are available:</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="stringliteral">* **Master** The _Arn Data Object_ (at client side) is set as _default generator_ of data.</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="stringliteral">  Normally the server is the _default generator_ of data.</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="stringliteral">  This makes difference when client connects or reconnects to the server.</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="stringliteral">  The data from the _default generator_ is then used and synced.</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="stringliteral">* **AutoDestroy** The _Arn Data Object_ (at client side) is set up for auto destruction.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="stringliteral">  When the client closes tcp/ip, the server side will destroy the _Arn Data Object_ and</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="stringliteral">  this will also be done at any connected clients.</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="stringliteral">Note: It&#39;</span>s convenient to always <span class="keyword">set</span> all the needed modes before an <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a> is opened or</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;an <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a> is used as a <span class="keyword">template</span>. See <a class="code" href="class_arn_item.html#ad0abf36e61104c113f46503bfcf4f39a" title="Mark this ArnItem as a template.">ArnItem::setTemplate</a>().</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">### Naming conventions ###    {#gen_naming}</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor"></span>These rules must not be obeyed, but are recommended, to <span class="keyword">get</span> the most benefits of the</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;Arn echo system, like ArnBrowser.</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="stringliteral">If the _general mode_ change is done to a [shared](#gen_shareArnobj) object, the change</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="stringliteral">of _general mode_ is also done at the server and any connected clients.</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="stringliteral">The following _general modes_ are available:</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="stringliteral">* **BiDir** A two-way object, typically for validation or pipe.</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="stringliteral">  See [bidirectional](#gen_bidirArnobj) objects.</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="stringliteral">* **Pipe** Implies _BiDir_ and all data is preserved as a stream during</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="stringliteral">  [sharing](#gen_shareArnobj). Without _Pipe mode_, [sharing](#gen_shareArnobj) is</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="stringliteral">  optimized to sync latest value and not all values in a stream.</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="stringliteral">* **Save** Sets the _ARN Data Object_ as persistent and any data assigned to it will be</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="stringliteral">  saved. The persistent service must be started at the server.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="stringliteral">  See [persistent](#gen_persistArnobj) objects.</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="stringliteral">Additionally there are some _sync modes_. These modes are used by the local client session</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="stringliteral">and are not shared with others.</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="stringliteral">The _sync modes_ must be set before the ArnItem is opened to an _ARN Data Object_.</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="stringliteral">Following _sync_modes_ are available:</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="stringliteral">* **Master** The _ARN Data Object_ (at client side) is set as _default generator_ of data.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="stringliteral">  Normally the server is the _default generator_ of data.</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="stringliteral">  This makes difference when client connects or reconnects to the server.</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="stringliteral">  The data from the _default generator_ is then used and synced. Also echo of data to</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="stringliteral">  the client side _ARN data object_ is prohibited.</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="stringliteral">* **AutoDestroy** The _ARN Data Object_ (at client side) is set up for auto destruction.</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="stringliteral">  When the client closes tcp/ip, the server side will destroy the _ARN Data Object_ and</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="stringliteral">  this will also be done at any connected clients.</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="stringliteral">Note: It&#39;</span>s convenient to always <span class="keyword">set</span> all the needed modes before an <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a> is opened or</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;an <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a> is used as a <span class="keyword">template</span>. See <a class="code" href="class_arn_item.html#ad0abf36e61104c113f46503bfcf4f39a" title="Mark this ArnItem as a template.">ArnItem::setTemplate</a>().</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;* First level folder not empty, e.g <span class="stringliteral">&quot;/MyLocalFolder/Key/value&quot;</span>, is a local path and is</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  not [shared](#gen_shareArnobj).</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;* First level folder empty, e.g. <span class="stringliteral">&quot;//MyGlobalFolder/Date/value&quot;</span>, is a global path and is</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  [shared](#gen_shareArnobj) to server and clients.</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;* When a leaf is used as an attribute, the following names are reserved:</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    + **value** the value of the above closest folder denotation, e.g. <span class="stringliteral">&quot;Temperature&quot;</span>.</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    + **<span class="keyword">set</span>** allowed values and conversion to a more descriptive form, e.g. <span class="stringliteral">&quot;0=Off 1=On&quot;</span>.</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    + **<span class="keyword">property</span>** like precision and unit, e.g. <span class="stringliteral">&quot;prec=1 unit=°C&quot;</span>.</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    + **info** like tool tips, e.g. <span class="stringliteral">&quot;&lt;tt&gt;Standard UV radiation index&lt;/tt&gt;&quot;</span>.</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    + **help.**XXX like <span class="stringliteral">&quot;help.html&quot;</span> contains help in xhtml format.</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">### Local path ###    {#gen_localPath}</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span>A relative path is also called the _local path_, e.g. the</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;[Discover remote](#gen_discoverRemote) _service name_ at path</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="stringliteral">&quot;Sys/Discover/This/Service/value&quot;</span>. The _local path_ is mapped to the absolute path</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="stringliteral">&quot;/Local/&quot;</span>. The example is then equal to <span class="stringliteral">&quot;/local/Sys/Discover/This/Service/value&quot;</span>. The</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;_local path_ should not be [shared](#gen_shareArnobj) as it will contain specific data</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;for its running program.</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;The exception to not sharing _local path_ is for some kind of remote client that must</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;be able to change an _ARN Data Object_ in the _local path_ at the remoted target.</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;For example this is used to change the [Discover remote](<span class="preprocessor">#gen_discoverRemote) _service name_</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor"></span><span class="keywordflow">for</span> a target host.</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;Bidirectional Arn Data Objects    {#gen_bidirArnobj}</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;------------------------------</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;A bidirectional _Arn Data Object_ is actually a <span class="keywordtype">double</span> object, a twin.</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;Each part has its own path but their life span is depending on each other.</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;One part is the normal <span class="stringliteral">&quot;official&quot;</span> and the other part is _provider_.</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;The provider has an added <span class="stringliteral">&quot;!&quot;</span> to the normal path, e.g. normal = <span class="stringliteral">&quot;//Measure/Depth/value&quot;</span>,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;provider = <span class="stringliteral">&quot;//Measure/Depth/value!&quot;</span>.</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;Data written to one part ends up in the other. When a provider slot is connected to the</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;provider part (<a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>), the slot will receive <span class="stringliteral">&quot;request&quot;</span> data from the normal part.</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;The provider slot processes the request data and writes the result to the same provider part.</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;This way the result will end up in the normal <span class="stringliteral">&quot;official&quot;</span> part.</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;This functionality can typically be used <span class="keywordflow">for</span> data validation and limiting.</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">### Pipes ###    {#gen_pipeArnobj}</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor"></span>_Pipes_ also use the [bidirectional](#gen_bidirArnobj) functionality. The two (twin) parts are then named _requester_ and _provider_.</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;All data put into a pipe are part of a stream and as such will be fully transfered (syncronized) if they are [shared](<span class="preprocessor">#gen_shareArnobj) with a server and other clients.</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor"></span>&lt;Br&gt;&lt;Br&gt;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;Persistent Arn Data Objects    {#gen_persistArnobj}</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;---------------------------</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;The _server_ must use <a class="code" href="class_arn_persist.html">ArnPersist</a> to support the persistance service. As a standard,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;objects are stored in a SQLite database. It<span class="stringliteral">&#39;s also possible to store each object as a file.</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="stringliteral">Any connected _client_ or the _server_ can make an _Arn Data Object_ persistent.</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="stringliteral">It&#39;</span>s just to open an <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a> to the <span class="keywordtype">object</span> and change _mode_ to _Save_.</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;&gt; <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>  arnMaxLevel; &lt;Br&gt;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;&gt; arnMaxLevel.<a class="code" href="class_arn_item.html#a2a6dbdb8ccc20629acb7e85b8da5caf4" title="Add general mode settings for this Arn Data Object">addMode</a>( <a class="code" href="struct_arn_item_1_1_mode.html#abd82ba851c2618469a5a0269da528569a47c0f66f3367757cc743afc63a45e3be" title="Data is persistent and will be saved.">ArnItem::Mode::Save</a>); &lt;Br&gt;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;&gt; arnmaxLevel.open(<span class="stringliteral">&quot;//config/Level/Max/value&quot;</span>); &lt;Br&gt;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;When the _Arn Data Object_ is <span class="keyword">set</span> to _Save_ mode, it<span class="stringliteral">&#39;s automatically loaded by the</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="stringliteral">ArnPersist. At the _server_ this is instantly done. A _client_ has to wait for the value</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="stringliteral">to get synced from the _server_. It&#39;</span>s convenient to use <a class="code" href="class_arn_depend.html" title="Class for setting up dependencis to needed services.">ArnDepend</a> to <span class="keyword">get</span> a signal</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;when the value is loaded and ready to use.</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;When the _Arn Data Object_ is changed, it will be automatically saved by <a class="code" href="class_arn_persist.html">ArnPersist</a>.</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;There is a delay from first change of the <span class="keywordtype">object</span> until the saving is done,</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;see <a class="code" href="class_arn_item.html#a2487337c3924ea323ec6462b8b0aee08" title="Set delay of data changed signal.">ArnItem::setDelay</a>(). This allows <span class="keywordflow">for</span> intensive updates of the <span class="keywordtype">object</span> without choking</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;down the server with saving operations.</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;It<span class="stringliteral">&#39;s possible to mark an object in the SQLite data base as _mandatory_. In this way the</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="stringliteral">_Arn Data Object_ is set as _persistent_ and gets loaded at start of ArnPersist.</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="stringliteral">### Saving objects in files ###    {#gen_fileArnobj}</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="stringliteral">To use the _persistent_ storing of _Arn Data Objects_ in files, the _root_ directory is</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="stringliteral">set by: ArnPersist::setPersistDir(). This can also be combined with support of VCS</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="stringliteral">(version control system).See ArnPersist::setVcs(). Currently there is a support module</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="stringliteral">for _git_.</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="stringliteral">In the _root_ directory and below, all (VCS) persistent files are stored.</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="stringliteral">The _root_ directory corresponds to the _root_ in Arn tree.</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;Following must be observed at remote client when sharing _local path_:</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;* use <a class="code" href="class_arn_m.html#abc447a51aa5624f960832762f74bdc35" title="Set mode skip &quot;/Local/Sys/&quot; loading.">ArnM::setSkipLocalSysLoading</a>()</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;* Don<span class="stringliteral">&#39;t put anything in _local path_, that should&#39;</span>t end up in the shared target host.</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;* Don<span class="stringliteral">&#39;t use ArnDiscoverRemote or ArnDiscoverConnector.</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="stringliteral">* This unwanted exception design will be addressed in a future version of ArnLib.</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="stringliteral">### Naming conventions ###    {#gen_naming}</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="stringliteral">These rules must not be obeyed, but are recommended, to get the most benefits of the</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="stringliteral">%Arn echo system, like ArnBrowser.</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="stringliteral">* First level folder empty, e.g. &quot;//MyGlobalFolder/Date/value&quot;, is a global path and is</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="stringliteral">  [shared](#gen_shareArnobj) to server and clients.</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="stringliteral">* First level folder is &quot;/Local&quot;, e.g &quot;/Local/Key/value&quot;, is a [local path](#gen_localPath)</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="stringliteral">  and is not [shared](#gen_shareArnobj).</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="stringliteral">* Path is relative, e.g &quot;Key/value&quot;, is a [local path](#gen_localPath)</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="stringliteral">  and is not [shared](#gen_shareArnobj).</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="stringliteral">* When a leaf is used as an attribute, the following names are reserved:</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="stringliteral">    + **value** the value of the above closest folder denotation, e.g. &quot;Temperature&quot;.</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="stringliteral">    + **set** allowed values and conversion to a more descriptive form, e.g. &quot;0=Off 1=On&quot;.</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="stringliteral">    + **property** like precision and unit, e.g. &quot;prec=1 unit=°C&quot;.</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="stringliteral">    + **info** like tool tips, e.g. &quot;&lt;tt&gt;Standard UV radiation index&lt;/tt&gt;&quot;.</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="stringliteral">    + **help.**XXX like &quot;help.xhtml&quot; contains help in xhtml format.</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="stringliteral">Bidirectional Arn Data Objects    {#gen_bidirArnobj}</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="stringliteral">------------------------------</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="stringliteral">A bidirectional _ARN Data Object_ is actually a double object, a twin.</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="stringliteral">Each part has its own path but their life span is depending on each other.</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="stringliteral">One part is the normal &quot;official&quot; and the other part is _provider_.</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="stringliteral">The provider has an added &quot;!&quot; to the normal path, e.g. normal = &quot;//Measure/Depth/value&quot;,</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="stringliteral">provider = &quot;//Measure/Depth/value!&quot;.</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="stringliteral">Data written to one part ends up in the other. When a provider slot is connected to the</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="stringliteral">provider part (ArnItem), the slot will receive &quot;request&quot; data from the normal part.</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="stringliteral">The provider slot processes the request data and writes the result to the same provider part.</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="stringliteral">This way the result will end up in the normal &quot;official&quot; part.</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="stringliteral">This functionality can typically be used for data validation and limiting.</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="stringliteral">Pipe Arn Data Objects    {#gen_pipeArnobj}</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="stringliteral">---------------------</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="stringliteral">_Pipes_ also use the [bidirectional](#gen_bidirArnobj) functionality. The two (twin) parts</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="stringliteral">are then named _requester_ and _provider_.</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="stringliteral">All data put into a pipe are part of a stream and as such will be fully transfered</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="stringliteral">(syncronized) if they are [shared](#gen_shareArnobj) with a server and other clients.</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="stringliteral">ArnPipe is a specialized class for handling pipes. &lt;Br&gt;</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="stringliteral">It contains logic for handling [sequence check](#gen_pipeSeqCheck) and</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="stringliteral">[anti congest](#gen_pipeAntiCongest).</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="stringliteral">&gt; Example: _root_ directory is set to &quot;/usr/local/arn_persist&quot;. There &gt; is a file stored</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="stringliteral">  at &quot;/usr/local/arn_persist/@/doc/help.html&quot;. This &gt; file will be mapped to Arn at</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="stringliteral">  &quot;//doc/help.html&quot;.</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="stringliteral">### Pipe sequence check ###    {#gen_pipeSeqCheck}</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="stringliteral">Sequence check is used to make sure everything is received and nothing is lost or comes twice.</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="stringliteral">This might happen when a tcp/ip connection goes up and down.</span></div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="stringliteral">Any files stored in the _root_ directory and below, get loaded into their _Arn Data Object_</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="stringliteral">with _mode_ set as _persistent_ at start of ArnPersist.</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="stringliteral">The files get updated in a similar way to the data base update. </span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="stringliteral">The sequence check uses a hidden sequence number not visible in the pipe stream.</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="stringliteral">The sequence number is increased for each assignment to the pipe. The sending and checking of</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="stringliteral">this sequence number is activated at each end of the pipe.</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="stringliteral">When checking is activated and the received sequence number is unexpected, a signal will be</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="stringliteral">generated.</span></div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="stringliteral">Sharing Arn Data Objects    {#gen_shareArnobj}</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="stringliteral">------------------------</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="stringliteral">A fundamental aspect of _Arn_ is that _Arn Data Objects_ can be shared. This is</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="stringliteral">centralized to the _Arn Server_, which stores all shared objects. It&#39;</span>s still a</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;distributed model as each client and server has their own <span class="keyword">set</span> of _Arn Data Objects_ that</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;operate independent of any connection.</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;Each _Arn Client_ connects to the _Arn Server_ and decides which part of the</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;_Arn Data Object_ tree to be shared. &lt;Br&gt;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;`<a class="code" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548" title="Set the sharing tree path.">ArnClient::setMountPoint</a>(<span class="stringliteral">&quot;/share/&quot;</span>)` will make the tree<span class="stringliteral">&quot;/share/&quot;</span> shared. &lt;Br&gt;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;This doesn<span class="stringliteral">&#39;t mean that everything in the shared tree at the server now will be available</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="stringliteral">at the client. The client has to create an _Arn Data Object_ in the shared tree.</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="stringliteral">The client can then decide the exact objects of interest. &lt;Br&gt;</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="stringliteral">`ArnItem::Open(&quot;/share/Test/value&quot;)` will open a shared object (in previous example).</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="stringliteral">Note: Normally &quot;//&quot; is used for global (shared). See [naming conventions](#gen_naming).</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="stringliteral">RPC and SAPI    {#gen_rpc}</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="stringliteral">------------</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="stringliteral">ArnRpc is the basic functionality of RPC (Remote Procedure Call). ArnSapi implements SAPI</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="stringliteral">(Service Application Programming Interface) and is using ArnRpc as its base.</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="stringliteral">It&#39;</span>s recommended to use <a class="code" href="class_arn_sapi.html" title="Service API.">ArnSapi</a> which has a higher level model.</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;The SAPI works by a model which can be described as RPC by _remote signal slots_.</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;The _provider_ is usually assumed to wait <span class="keywordflow">for</span> a _requester_ to initiate the session</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;and then react to different remote calls from the _requester_.</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;However, <span class="keyword">this</span> is full duplex, so any side can make a remote call at any time.</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;A good example of the usage of SAPI is the _Arn Demo Chat_, which is included in the</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;source <span class="keyword">package </span>of the _ArnLib_.</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;ArnRpc uses [pipes](\ref gen_pipeArnobj) to communicate. The _pipes_ can be monitored </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;and receive test stimuli from the _Arn Browser_ program. The used</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;[protocol](#gen_rpcformat) is XString based and quite easy to handtype when common data</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;types are used. &quot;$help&quot; will give the syntax for the actual custom SAPI.</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;A SAPI is setup by deriving the ArnSapi class to a new class that defines the</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;_custom SAPI_. This custom-declared class is included at both the _provider_ and</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;_requester_ ends.</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;The _custom SAPI_ class by itself doesn&#39;t implement any _services_. It&#39;s merely a hub for</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;connections to _external signals and slots_.</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;The base ArnSapi class automatically transfers all _custom signal_ (SAPI) calls to the</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;remote connected ends, which also have the ArnSapi derived class and that emits the</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;transfered signal.</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="stringliteral">See also ArnPipe::setSendSeq(), ArnPipe::setCheckSeq(), ArnPipe::outOfSequence().</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="stringliteral">### Pipe anti congest ###    {#gen_pipeAntiCongest}</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="stringliteral">When the pipe is a [shared oject](#gen_shareArnobj), all assignment to the pipe is queued up</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="stringliteral">in a send queue. If there is a disconnect in the tcp/ip, an ArnServer will drop the send queue.</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="stringliteral">But in an ArnClient, this send queue will grow out of control if assignments to the pipe keeps</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="stringliteral">coming. This problem can also arise with a fast rate of status messages on a slow network.</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="stringliteral">One possibility is to keep track of the connection status, but this involves knowing about</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="stringliteral">which ArnClient (if many) to get status from. It also doesn&#39;</span>t handle the problem with a slow</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;network.</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;A probably better way is to use the _Pipe anti congest_ logic. &lt;Br&gt;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;We identify _messages_ that can be sent any number of times and are used to check the data flow,</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;resending, status and alike. Typically <span class="keyword">this</span> can be _Heart beat_, _ping_, _request update_,</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;_current time_ etc.</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;These _async messages_ are assigned <span class="keyword">using</span> <a class="code" href="class_arn_pipe.html#ac3225595492e733603de24dd09ddb005" title="Assign a QByteArray to a Pipe by using Anti congest logic.">ArnPipe::setValueOverwrite</a>().</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;A regular expression is needed to identify <span class="stringliteral">&quot;equal&quot;</span> _async messages_, that can be overwritten</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;in the send queue. If _async messages_ are repeatedly assigned to a pipe by</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<a class="code" href="class_arn_pipe.html#ac3225595492e733603de24dd09ddb005" title="Assign a QByteArray to a Pipe by using Anti congest logic.">ArnPipe::setValueOverwrite</a>(), the send queue will then not grow.</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;All other _messages_ will be normally assigned to the pipe. But these _messages_ will only be</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;assigned when normal data flow is present. Typically there is some expected _feedback message_</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;from the receiving part to block uncontrolled assignment from one side of the pipe.</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;Persistent Arn Data Objects    {#gen_persistArnobj}</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;---------------------------</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;The _server_ must use <a class="code" href="class_arn_persist.html">ArnPersist</a> to support the persistance service. As a standard</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;_persist storage_, _ARN Data Objects_ are stored in a SQLite database. It<span class="stringliteral">&#39;s also possible to</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="stringliteral">store each object as a file.</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="stringliteral">The _mount point_ (path) for collecting the persistent _ARN Data objects_ is set by</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="stringliteral">ArnPersist::setMountPoint(). For server applications this is typically set to &quot;/&quot;, which</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="stringliteral">makes all _ARN Data Objects_ potential persistent. In client applications the _mount point_</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="stringliteral">is typically restricted to Arn::pathLocal, which only saves local _ARN Data Objects_ in the</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="stringliteral">local _persist storage_.</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="stringliteral">Any connected _client_ or the _server_ can make an _ARN Data Object_ persistent.</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="stringliteral">It&#39;</span>s just to open an <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a> to the <span class="keywordtype">object</span> and change _mode_ to _Save_.</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;&gt; <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>  arnMaxLevel; &lt;Br&gt;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;&gt; arnMaxLevel.<a class="code" href="class_arn_item.html#a9b05c84369d7a5d3c68f113f79189b1a" title="Add general mode settings for this Arn Data Object">addMode</a>( <a class="code" href="struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155aa1a11a93f3421a36c42c54910d4e7c0b" title="Data is persistent and will be saved.">Arn::ObjectMode::Save</a>); &lt;Br&gt;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;&gt; arnMaxLevel.<a class="code" href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" title="Open a handle to an Arn Data Object">open</a>(<span class="stringliteral">&quot;//config/Level/Max/value&quot;</span>); &lt;Br&gt;</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;The provider connects the signals from custom SAPI that are prefixed with &quot;pv_&quot;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;(as default) to each external slot that implements the services.</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;In the same way the _requester_ connects the signals prefixed with &quot;rq_&quot; to its external</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;&quot;service&quot; slots.</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;When the _ARN Data Object_ is <span class="keyword">set</span> to _Save_ mode, it<span class="stringliteral">&#39;s automatically loaded by the</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="stringliteral">ArnPersist. At the _server_ this is instantly done. A _client_ has to wait for the value</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="stringliteral">to get synced from the _server_. It&#39;</span>s convenient to use <a class="code" href="class_arn_depend.html" title="Class for setting up dependencis to needed services.">ArnDepend</a> to <span class="keyword">get</span> a signal</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;when the value is loaded and ready to use.</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;When there is a naming pattern between the _SAPI services_ and the</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;_external signals and slots_, it&#39;s a great convenience to use ArnRpc::BatchConnect().</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;This saves a lot of QObject::connect() calls.</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;Also newly added services in the SAPI, that obey the naming scheme, will automaically be</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;connected to the newly matching _external signals and slots_ for implementation of the</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;_service_.</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;An extended feature comparing to normal _signals_ is that the _SAPI</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;signals_ are _public_ and can be called by non-derived classes.</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;This makes it optional to use both _signal to signal_ connections or direct _signal_ calls</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;when issuing a RPC to the remote side.</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;The _service_ slot can get the emitting _custom SAPI_ object by using normal</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;QObject::sender() functionality.</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;### RPC and SAPI communication format ###    {#gen_rpcformat}</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;The RPC calling has a basic format as XString (see XStringMap). The most generic form</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;is seen below. The type mark _T_ is &quot;t&quot; for writeable types and &quot;tb&quot; for binary</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;(non writeable) types.</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;&gt; _funcname_ _T_=_type1_ a._label1_=_arg1_ _T_=_type2_ a._label2_=_arg2_ ... &lt;Br&gt; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;&gt; Example: put t=QString a.id=level t=int a.value=123 &lt;Br&gt;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;&gt; For calling: put( QString(&quot;level&quot;), 123)</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;Commonly used _types_ have a shorter form. The _types_ are:</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;&gt; _int_, _uint_, _bool_, _ba (QByteArray), list (QStringList), and default is QString</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;This can be used in previous example: </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;&gt; put a.id=level int.value=123</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;Or even shorter, skipping labels, when typed by hand:</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;&gt; put level int=123</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;List (QStringList) can be used. The _le_ is _list element_. All examples below will get</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;same resulting call.</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;&gt; For a function: void test( QStringList lst, int num) &lt;Br&gt;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;&gt; test list=red green blu int=3 &lt;Br&gt;</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;&gt; test list.lst=red green blu int.num=3 &lt;Br&gt;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;&gt; test list= le=red le=green le=blu int=3 &lt;Br&gt;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;&gt; test list=red le=green blu int=3 &lt;Br&gt;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;For special cases, like empty elements, the _le_ (list element) is needed. The example</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;below has a first empty element followed by &quot;green&quot;.</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;&gt; test list= le= green blue int=2</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;The built-in call &quot;$help&quot; will give an automatically generated list of the present SAPI with the syntax for each available service.</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;Application notations    {#gen_appnote}</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;---------------------</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;* If any graphics are used, Gui must be included.</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;* If only using QImage, Windowing system can be off, like:</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  QApplication a(argc, argv, false);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;When the _ARN Data Object_ is changed, it will be automatically saved by <a class="code" href="class_arn_persist.html">ArnPersist</a>.</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;There is a delay from first change of the <span class="keywordtype">object</span> until the saving is done,</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;see <a class="code" href="class_arn_item.html#a2487337c3924ea323ec6462b8b0aee08" title="Set delay of data changed signal.">ArnItem::setDelay</a>(). This allows <span class="keywordflow">for</span> intensive updates of the <span class="keywordtype">object</span> without choking</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;down the server with saving operations.</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;It<span class="stringliteral">&#39;s possible to mark an object in the SQLite data base as _mandatory_. In this way the</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="stringliteral">_ARN Data Object_ is set as _persistent_ and gets loaded at start of ArnPersist.</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="stringliteral">### Saving objects in files ###    {#gen_fileArnobj}</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="stringliteral">To use the _persistent_ storing of _ARN Data Objects_ in files, the _root_ directory is</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="stringliteral">set by: ArnPersist::setPersistDir(). This can also be combined with support of VCS</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="stringliteral">(version control system). See ArnPersist::setVcs(). Currently there is a support module</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="stringliteral">for _git_.</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="stringliteral">In the _root_ directory and below, all (VCS) persistent files are stored.</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="stringliteral">The _root_ directory corresponds to the _root_ in %Arn tree.</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="stringliteral">&gt; Example: _root_ directory is set to &quot;/usr/local/arn_persist&quot;. There is a file stored</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="stringliteral">&gt; at &quot;/usr/local/arn_persist/@/doc/help.xhtml&quot;. This file will be mapped to %Arn at</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="stringliteral">&gt; &quot;//doc/help.xhtml&quot;.</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="stringliteral">Any files stored in the _root_ directory and below, get loaded into their _ARN Data Object_</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="stringliteral">with _mode_ set as _persistent_ at start of ArnPersist.</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="stringliteral">The files get updated in a similar way to the data base update. </span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="stringliteral">Sharing Arn Data Objects    {#gen_shareArnobj}</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="stringliteral">------------------------</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="stringliteral">A fundamental aspect of %Arn is that _ARN Data Objects_ can be shared. This is</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="stringliteral">centralized to the _ARN Server_, which stores all shared objects. It&#39;</span>s still a</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;distributed model as each client and server has their own <span class="keyword">set</span> of _ARN Data Objects_ that</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;operate independent of any connection.</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;Each _ARN Client_ connects to the _ARN Server_ and decides which part of the</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;_ARN Data Object_ tree to be shared. &lt;Br&gt;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;`<a class="code" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548" title="Set the sharing tree path.">ArnClient::setMountPoint</a>(<span class="stringliteral">&quot;/share/&quot;</span>)` will make the tree<span class="stringliteral">&quot;/share/&quot;</span> shared. &lt;Br&gt;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;This doesn<span class="stringliteral">&#39;t mean that everything in the shared tree at the server now will be available</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="stringliteral">at the client. The client has to create an _ARN Data Object_ in the shared tree.</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="stringliteral">The client can then decide the exact objects of interest. &lt;Br&gt;</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="stringliteral">`ArnItem::Open(&quot;/share/Test/value&quot;)` will open a shared object (in previous example).</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="stringliteral">Note: Normally &quot;//&quot; is used for global (shared). See [naming conventions](#gen_naming).</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="stringliteral">### Dynamic port ###    {#gen_dynamicPort}</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="stringliteral">An ArnServer can be created with _port_ set to 0. This will be handled as a _dynamic port_</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="stringliteral">and the system will assign a free _port number_ to the server. The _port number_ will be</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="stringliteral">taken from a range specified by IANA.</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="stringliteral">This can typically be used to skip configuring static port numbers and be able to have</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="stringliteral">multiple instanses of the ArnServer on the same machine. As an ArnClient must find its</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="stringliteral">ArnServer, this can be used together with ArnDiscoverRemote / ArnDiscover.</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="stringliteral">&lt;Br&gt;&lt;Br&gt;</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="stringliteral">RPC and SAPI    {#gen_rpc}</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="stringliteral">------------</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="stringliteral">ArnRpc is the basic functionality of RPC (Remote Procedure Call). ArnSapi implements SAPI</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="stringliteral">(Service Application Programming Interface) and is using ArnRpc as its base.</span></div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="stringliteral">It&#39;</span>s recommended to use <a class="code" href="class_arn_sapi.html" title="Service API.">ArnSapi</a> which has a higher level model.</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;The SAPI works by a model which can be described as RPC by _remote signal slots_.</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;The _provider_ is usually assumed to wait <span class="keywordflow">for</span> a _requester_ to initiate the session</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;and then react to different remote calls from the _requester_.</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;However, <span class="keyword">this</span> is full duplex, so any side can make a remote call at any time.</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;A good example of the usage of SAPI is the <span class="stringliteral">&quot;Arn Demo Chat&quot;</span>, which is included in the</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;source <span class="keyword">package </span>of the ArnLib.</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;ArnRpc uses [pipes](\ref gen_pipeArnobj) to communicate. The _pipes_ can be monitored </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;and receive test stimuli from the &quot;Arn Browser&quot; program. The used</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;[protocol](#gen_rpcformat) is XString based and quite easy to handtype when common data</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;types are used. &quot;$help&quot; will give the syntax for the actual custom SAPI.</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;A SAPI is setup by deriving the ArnSapi class to a new class that defines the</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;_custom SAPI_. This custom-declared class is included at both the _provider_ and</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;_requester_ ends.</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;The _custom SAPI_ class by itself doesn&#39;t implement any _services_. It&#39;s merely a hub for</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;connections to _external signals and slots_.</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;The base ArnSapi class automatically transfers all _custom signal_ (SAPI) calls to the</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;remote connected ends, which also have the ArnSapi derived class and that emits the</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;transfered signal. See example in ArnSapi Detailed Description.</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;The provider connects the signals from custom SAPI that are prefixed with &quot;pv_&quot;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;(as default) to each external slot that implements the services.</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;In the same way the _requester_ connects the signals prefixed with &quot;rq_&quot; to its external</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;&quot;service&quot; slots.</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;When there is a naming pattern between the _SAPI services_ and the</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;_external signals and slots_, it&#39;s a great convenience to use ArnRpc::BatchConnect().</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;This saves a lot of QObject::connect() calls.</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;Also newly added services in the SAPI, that obey the naming scheme, will automaically be</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;connected to the newly matching _external signals and slots_ for implementation of the</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;_service_.</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;An extended feature comparing to normal _signals_ is that the _SAPI</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;signals_ are _public_ and can be called by non-derived classes.</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;This makes it optional to use both _signal to signal_ connections or direct _signal_ calls</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;(emit), when issuing a RPC to the remote side.</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;The _service_ slot can get the emitting _custom SAPI_ object by using normal</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;QObject::sender() functionality.</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;### RPC and SAPI communication format ###    {#gen_rpcformat}</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;The RPC calling has a basic format as XString (see Arn::XStringMap). The most generic form</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;is seen below. The type mark _T_ is &quot;t&quot; for writeable types and &quot;tb&quot; for binary</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;(non writeable) types.</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;&gt; _funcname  T_ = _type1_  a. _label1_ = _arg1_  _T_ = _type2_  a. _label2_ = _arg2_ ... &lt;Br&gt;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;&gt; Example: put t=QString a.id=level t=int a.value=123 &lt;Br&gt;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;&gt; For calling: put( QString(&quot;level&quot;), 123)</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;Commonly used _types_ have a shorter form. The _types_ are:</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;&gt; _int_, _uint_, _bool_, _double_, _bytes_ (QByteArray), _date_ (QDate), _time_ (QTime),</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;&gt; _datetime_ (QDateTime), _list_ (QStringList) and _string_ (QString). The default, when no</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;&gt; type is specified, is _string_.</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;This can be used in previous example: </div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;&gt; put string.id=level int.value=123</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;Or even shorter, skipping labels, when typed by hand:</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;&gt; put level int=123</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;List (QStringList) can be used. The _le_ is _list element_. All examples below will get</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;same resulting call.</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;&gt; For a function: void test( QStringList lst, int num) &lt;Br&gt;</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;&gt; test list=red green blu int=3 &lt;Br&gt;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;&gt; test list.lst=red green blu int.num=3 &lt;Br&gt;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;&gt; test list= le=red le=green le=blu int=3 &lt;Br&gt;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;&gt; test list=red le=green blu int=3 &lt;Br&gt;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;For special cases, like empty elements, the _le_ (list element) is needed. The example</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;below has a first empty element followed by &quot;green&quot;.</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;&gt; test list= le= green blue int=2</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;The built-in call &quot;$help&quot; will give an automatically generated list of the present SAPI</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;with the syntax for each available service.</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;ZeroConfig    {#gen_zeroconf}</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;----------</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;For getting a basic understanding of ZeroConfig and further references to relevant</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;documentation, see: http:<span class="comment">//zeroconf.org/</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;_ARN ZeroConfig_ is the lowest level support for advertising and discovering services on</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;a local network. The implementation has very few dependences to the rest of the ArnLib.</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;_ARN ZeroConfig_ can use a built in implementation of Apple (R) _mDns_ / _DNS_SD_ that has no</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;further dependences to external libraries. For _mDns_ the low end system abstraction layer</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;has been written to use Qt for portability. The higher level _DNS_SD_ has wrappers written</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;to give a good c++ / Qt API.</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;It&#39;s also possible to use an external _DNS_SD_ library, like _Avahi_. This gives better</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;performance when many applications uses ZeroConfig on the same machine, as they share</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;cashing etc with a common daemon. However you have to deal with this external dependency.</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;_ARN ZeroConfig_ implementation has two parts. The ArnZeroConfRegister can be used to</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;advertise any _service_ given a _host address_ and a _port number_. The other part is the</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;ArnZeroConfBrowser / ArnZeroConfResolve / ArnZeroConfLookup. The browser is used to get a</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;realtime list of available _services_ on the network. The resolver takes a given _service_</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;and resolves it into its _host name_ and _port number_. Finally ArnZeroConfLookup takes</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;a given _host name_ and makes a DNS (mDNS) lookup to get its ip-address. Each of these</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;classes are stand alone and has to be combined with glue logic for the complete process.</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;A service has a _service type_, that preferably should be registered at IANA. Examples of</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;_service types_ are &quot;http&quot;, &quot;ftp&quot; and &quot;arn&quot;. This type is mandatory when advertising a</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;_service_. Also the _service_ must have a _service name_.</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;### Service name ###    {#gen_zeroconfServiceName}</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;_Service names_ can be any human readable id. It should be easy to understand, without</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;any cryptic coding. There should not be any attempts to make the _service name_ unique</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;as this is taken care of by the ZeroConfig system. It&#39;s common that the _service name_</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;can be modified by the end user. The default starting name could be some system or product</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;name. Example of _service name_: &quot;My House Registry&quot;.</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;### Sub types ###    {#gen_zeroconfSubTypes}</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;_Services_ can also have _sub types_. These are identifiers that can be used to filter out</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;some sub group from a specific _service type_. All _services_ having the same _service type_</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;must still have some common protocol even if they belong to different _sub types_.</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;A _service_ can be advertised with many _sub types_, but browsing can only be filtered</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;with one _sub type_ or with no filter.</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;### Text record ###    {#gen_zeroconfTextRecord}</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;It&#39;s possible to add a _text record_ to a _service_. The format of this record is specified</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;by IANA. The purpose is to store properties by a _key_ / _value_ -pair. For convenience</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;this can be done with ArnZeroConfRegister::setTxtRecordMap() using an Arn::XStringMap.</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;Discover    {#gen_discover}</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;--------</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;_ARN Discover_ is the mid level support for advertising and discovering services on</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;a local network. This implementation is only for the &quot;arn&quot; _service type_ and is heavily</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;dependent on the ArnLib. The &quot;arn&quot; _service type_ is approved and registered by IANA.</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;_ARN Discover_ implementation has two parts. The ArnDiscoverAdvertise can be used to</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;advertise an %Arn _service_ given a _host address_ and a _port number_. The other part is</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;the ArnDiscoverBrowser / ArnDiscoverResolver. The browser is used to get a realtime list</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;of available %Arn _services_ on the network. The resolver is for taking a manual resolve</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;when a _service name_ is known in advance.</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;_ARN Discover_ is designed to minimize external glue logic as these classes do all the</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;common processing. Internally _ARN ZeroConfig_ is used, but focus is on solving %Arn</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;specific needs in a powerful, yet flexible manner.</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;An _ARN service_ needs an ArnDiscover::Type and a [service name](\ref gen_zeroconfServiceName).</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;The ArnDiscover::Type sets up a coarse division of the applications into the _groups_</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;&quot;server&quot; and &quot;client&quot;. The &quot;client&quot; typically only offer the service of ArnDiscoverRemote.</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;_ARN services_ can also have _groups_. These are identifiers that can be used to filter out</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;some sub group. An _ARN service_ can be advertised with many _groups_, but browsing can only be</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;filtered with one _group_ or with no filter.</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;It&#39;s possible to add a _custom property_ to an _ARN service_. This can be done with</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;ArnDiscoverAdvertise::setCustomProperties() using an Arn::XStringMap. The propertie has a</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;_key_ / _value_ -pair. The custom property are advised to have a _key_ starting with a</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;capital letter to avoid name collision with the system.</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;The added _groups_ will be set as properties with naming as &quot;group0&quot;, &quot;group1&quot; ...</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;ArnDiscoverBrowser collects found %Arn _services_. Each of these _services_ can automatically</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;be further examined. This is chosen by calling ArnDiscoverBrowserB::setDefaultStopState(),</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;which e.g. tells examination to stop after _host name_ has been found. The _service_ can</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;then manually be ordered for further examination by ArnDiscoverBrowserB::goTowardState(),</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;e.g. examination should now stop after _host ip_ is found.</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;All the information about a _service_ is stored in ArnDiscoverInfo. Found _services_ can</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;be accessed by index, id or _service name_. Increasing index, starting at 0, gives a list</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;of _services_ alfabetically sorted by _service name_. The index is kind of volatile and</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;should be used instantly, not be stored. The id gives a unique number for each service and</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;can be stored. However the _service_ given by the id might dissapear.</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;Discover remote    {#gen_discoverRemote}</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;---------------</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;_ARN Discover Remote_ is the highest level support for advertising and discovering services</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;on a local network. Its implementation is based on _ARN Discover_. The added functionality</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;is to have a remote control for both advertising an ArnServer and multiple ArnClient</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;connections. The remote control is done via _ARN Data Objects_ in [local path](#gen_localPath)</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;&quot;Sys/Discover/&quot;.</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;_ARN Discover Remote_ has one main class, ArnDiscoverRemote which act as a central point.</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;The ArnDiscoverRemote class also takes an ArnServer and advertises it as a _service_. For</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;remote control the _service name_ is available at [local path](#gen_localPath)</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;&quot;Sys/Discover/This/Service/value&quot;.</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;ArnDiscoverRemote can make an internal ArnServer, when there is no need to access the</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;ArnServer class. This is usually the case in an client application. The ArnServer is then</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;merely used to make the discover functionality remote controlled.</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;Remote controlled client connections can be added. Each ArnClient is handled by an</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;ArnDiscoverConnector instance, which is made by ArnDiscoverRemote::newConnector().</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;Connections can be added to ArnDiscoverConnector, both as a _direct host_ list and a</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;_discover host_.</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;The _discover host_ is indirerctly set, by adding an ArnDiscoverResolver to</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;ArnDiscoverConnector. A _service name_ can then be resolved into the _discover host_.</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;The two connection methods can coexist and as standard the _discover host_ has lower</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;priority number than _direct host_, i.e. _discover host_ is tried first.</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;The ArnDiscoverConnector is associated with an _id_, which should be chosen to describe the</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;client target or its purpose. It&#39;s not a host address or necessarily a specific host, as</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;there can be many possible addresses assigned to the ArnDiscoverConnector.</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;The _id_ will appear as an _ARN folder_ in [local path](#gen_localPath), e.g. when _id_ is</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;&quot;WeatherData-XYZ&quot; the folder path will be &quot;Sys/Discover/Connect/WeatherData-XYZ/&quot;. The</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;folder and its sub folders will contain _ARN Data Objects_ to remote control the ArnClient.</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;For a more comprehensive description of these objects, see</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;[help discover description](@ref helpDiscDiscover).</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;In the above example, a _discover host_ can be remote controlled by setting the</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;_service name_ in [local path](#gen_localPath)</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;&quot;Sys/Discover/Connect/WeatherData-XYZ/DiscoverHost/Service/value&quot;, e.g. to</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;&quot;Region Weather XYZ&quot;.</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;</div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;Also in the above example, the first _direct host_ can be remote controlled by setting the</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;_host name_ in [local path](#gen_localPath)</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;&quot;Sys/Discover/Connect/WeatherData-XYZ/DirectHosts/Host-0/value&quot;, e.g. to &quot;localhost&quot;.</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;Normally it&#39;s wanted that any remote set values in the [local path](#gen_localPath) remains</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;after power cycling. This is supported by the [Arn persist system](#gen_persistArnobj).</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;Connecting via resolver uses the logic:</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;* If connection fails for a _discover host_, resolving is forced to be refreshed for the</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;  target _service name_. The Host for the _service name_ might have changed since last</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;  resolved and doing a refresh can get the new _discover host_.</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;</div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;* If connection continues to fail for a _discover host_, refreshing the resolv will have a</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;  blocking time to avoid spamming the net. Typically this time is 30 seconds, but it can be</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;  changed by ArnDiscoverConnector::setResolveRefreshTimeout().</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;&lt;Br&gt;&lt;Br&gt;</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;Application notations    {#gen_appnote}</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;---------------------</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;* If any graphics are used, Gui must be included.</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;</div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;* Qt4: For console application only using QImage, Windowing system can be off, like:</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;  QApplication a(argc, argv, false);</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;* Qt5: For console application needing QImage, use QApplication a(argc, argv) and</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;  start application with flags &quot;-platform offscreen&quot;.</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="_description_8md.html">Description.md</a></li>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:49 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:23 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

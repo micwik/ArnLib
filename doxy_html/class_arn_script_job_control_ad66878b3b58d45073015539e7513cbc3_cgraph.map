@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arn_script_job_control.html#a4c85ffb037ae733410353f3a075e6399" title="ArnScriptJobControl\l::setName" alt="" coords="193,5,330,46"/>
-<area shape="rect" id="node7" href="$class_arn_script_job_control.html#afab2f7d23706a66876011a2e53c31b21" title="ArnScriptJobControl\l::setScript" alt="" coords="193,70,330,111"/>
-<area shape="rect" id="node5" href="$class_arn_script_job_control.html#a272d1f57eb4494f633f50211933ca465" title="ArnScriptJobControl\l::name" alt="" coords="379,5,517,46"/>
-<area shape="rect" id="node9" href="$class_arn_script_job_control.html#a2c637c7a52c52bc9b31e83938f0793de" title="ArnScriptJobControl\l::script" alt="" coords="379,70,517,111"/>
-<area shape="rect" id="node11" href="$class_arn_script_job_control.html#adf1dc2ca2d030c5885fb4cf96a50851c" title="ArnScriptJobControl\l::scriptChanged" alt="" coords="379,135,517,177"/>
-</map>

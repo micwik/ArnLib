@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arn_depend_offer.html#ad6e77bc45148794730f7c32a40f03997" title="Advertise an available service" alt="" coords="187,5,359,32"/>
-<area shape="rect" id="node7" href="$class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea" title="ArnRpc::open" alt="" coords="223,56,324,83"/>
-<area shape="rect" id="node5" href="$class_arn_persist.html#a5a5df6121afbf16f1980093001aafdd4" title="Set the persistent enabled tree path." alt="" coords="409,5,583,32"/>
-</map>

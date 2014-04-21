@@ -1,13 +1,15 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$_arn_client_8hpp.html" title="ArnClient.hpp" alt="" coords="757,155,856,181"/>
-<area shape="rect" id="node68" href="$_arn_sync_8hpp.html" title="ArnSync.hpp" alt="" coords="963,80,1060,107"/>
-<area shape="rect" id="node5" href="$_arn_8hpp.html" title="Arn.hpp" alt="" coords="491,229,557,256"/>
-<area shape="rect" id="node9" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="789,453,915,480"/>
-<area shape="rect" id="node57" href="$_x_string_map_8hpp.html" title="XStringMap.hpp" alt="" coords="1123,229,1236,256"/>
-<area shape="rect" id="node7" href="$_arn_lib_8hpp.html" title="ArnLib.hpp" alt="" coords="97,453,180,480"/>
-<area shape="rect" id="node13" href="$_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="127,379,221,405"/>
-<area shape="rect" id="node19" href="$_arn_link_8hpp.html" title="ArnLink.hpp" alt="" coords="348,379,439,405"/>
-<area shape="rect" id="node34" href="$_arn_item_8hpp.html" title="ArnItem.hpp" alt="" coords="478,304,569,331"/>
-<area shape="rect" id="node15" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="205,453,304,480"/>
-<area shape="rect" id="node70" href="$_arn_item_net_8hpp.html" title="ArnItemNet.hpp" alt="" coords="987,229,1097,256"/>
+<area shape="rect" id="node3" href="$_arn_client_8hpp.html" title="ArnInc/ArnClient.hpp" alt="" coords="911,155,1051,181"/>
+<area shape="rect" id="node16" href="$_arn_8hpp.html" title="Arn.hpp" alt="" coords="516,528,583,555"/>
+<area shape="rect" id="node94" href="$_arn_sync_8hpp.html" title="ArnSync.hpp" alt="" coords="1259,80,1356,107"/>
+<area shape="rect" id="node5" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="1464,453,1589,480"/>
+<area shape="rect" id="node9" href="$_arn_m_8hpp.html" title="ArnM.hpp" alt="" coords="615,229,693,256"/>
+<area shape="rect" id="node18" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="429,603,528,629"/>
+<area shape="rect" id="node79" href="$_x_string_map_8hpp.html" title="XStringMap.hpp" alt="" coords="1321,229,1433,256"/>
+<area shape="rect" id="node12" href="$_arn_lib_8hpp.html" title="ArnLib.hpp" alt="" coords="823,528,907,555"/>
+<area shape="rect" id="node23" href="$_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="246,453,340,480"/>
+<area shape="rect" id="node26" href="$_arn_item_8hpp.html" title="ArnItem.hpp" alt="" coords="693,304,784,331"/>
+<area shape="rect" id="node29" href="$_arn_item_b_8hpp.html" title="ArnItemB.hpp" alt="" coords="743,379,844,405"/>
+<area shape="rect" id="node32" href="$_arn_link_handle_8hpp.html" title="ArnLinkHandle.hpp" alt="" coords="880,453,1009,480"/>
+<area shape="rect" id="node99" href="$_arn_item_net_8hpp.html" title="ArnItemNet.hpp" alt="" coords="1133,229,1244,256"/>
 </map>

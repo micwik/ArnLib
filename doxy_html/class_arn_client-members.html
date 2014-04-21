@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -93,7 +94,7 @@ $(document).ready(function(){initNavTree('class_arn_client.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -110,19 +111,26 @@ $(document).ready(function(){initNavTree('class_arn_client.html','');});
 
 <p>This is the complete list of members for <a class="el" href="class_arn_client.html">ArnClient</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a5b34e108640a9308afff44bd95c63862">ArnClient</a>(QObject *parent=0)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057">connectToArn</a>(const QString &amp;arnHost, quint16 port=0)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60">setAutoConnect</a>(bool isAuto, int retryTime=2)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548">setMountPoint</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#ad9425c4a02d458105fa608537610eb6e">tcpConnected</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd">tcpDisConnected</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a27858277134c9fa0240cf4b18fffdb28">tcpError</a>(QString errorText, QAbstractSocket::SocketError socketError)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#adcd16d9e9e4712de5b9b4d5ef5837272">addToArnList</a>(const QString &amp;arnHost, quint16 port=0, int prio=0)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#a5b34e108640a9308afff44bd95c63862">ArnClient</a>(QObject *parent=0)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#aa40570b93de2cdbea9ecd53cf28f57ef">arnList</a>(int prioFilter=-1) const </td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#a612e42fe9c9859f446f715499635730b">clearArnList</a>(int prioFilter=-1)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a6f50ffe0617a72432e8b7dab17388554">connectionStatusChanged</a>(int status, int curPrio)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#a4dcd34da7a9b9458055389746d0557f3">connectStatus</a>() const </td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057">connectToArn</a>(const QString &amp;arnHost, quint16 port=0)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#abb3b70b54670be547e87118c60c685dc">connectToArnList</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53">HostList</a> typedef</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60">setAutoConnect</a>(bool isAuto, int retryTime=2)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548">setMountPoint</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#ad4b15b43e125a4f40d9deee316c1ee1c">tcpConnected</a>(QString arnHost, quint16 port)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd">tcpDisConnected</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#a27858277134c9fa0240cf4b18fffdb28">tcpError</a>(QString errorText, QAbstractSocket::SocketError socketError)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:50 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:24 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

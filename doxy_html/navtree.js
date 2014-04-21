@@ -5,18 +5,30 @@ var NAVTREE =
     [ "General Description", "md__description.html", [
       [ "Arn Data Objects    ", "md__description.html#gen_arnobj", [
         [ "Modes", "md__description.html#gen_arnobjModes", null ],
+        [ "Local path", "md__description.html#gen_localPath", null ],
         [ "Naming conventions", "md__description.html#gen_naming", null ]
       ] ],
-      [ "Bidirectional Arn Data Objects    ", "md__description.html#gen_bidirArnobj", [
-        [ "Pipes", "md__description.html#gen_pipeArnobj", null ]
+      [ "Bidirectional Arn Data Objects    ", "md__description.html#gen_bidirArnobj", null ],
+      [ "Pipe Arn Data Objects    ", "md__description.html#gen_pipeArnobj", [
+        [ "Pipe sequence check", "md__description.html#gen_pipeSeqCheck", null ],
+        [ "Pipe anti congest", "md__description.html#gen_pipeAntiCongest", null ]
       ] ],
       [ "Persistent Arn Data Objects    ", "md__description.html#gen_persistArnobj", [
         [ "Saving objects in files", "md__description.html#gen_fileArnobj", null ]
       ] ],
-      [ "Sharing Arn Data Objects    ", "md__description.html#gen_shareArnobj", null ],
+      [ "Sharing Arn Data Objects    ", "md__description.html#gen_shareArnobj", [
+        [ "Dynamic port", "md__description.html#gen_dynamicPort", null ]
+      ] ],
       [ "RPC and SAPI    ", "md__description.html#gen_rpc", [
         [ "RPC and SAPI communication format", "md__description.html#gen_rpcformat", null ]
       ] ],
+      [ "ZeroConfig    ", "md__description.html#gen_zeroconf", [
+        [ "Service name", "md__description.html#gen_zeroconfServiceName", null ],
+        [ "Sub types", "md__description.html#gen_zeroconfSubTypes", null ],
+        [ "Text record", "md__description.html#gen_zeroconfTextRecord", null ]
+      ] ],
+      [ "Discover    ", "md__description.html#gen_discover", null ],
+      [ "Discover remote    ", "md__description.html#gen_discoverRemote", null ],
       [ "Application notations    ", "md__description.html#gen_appnote", null ]
     ] ],
     [ "Installation and usage", "md__install.html", [
@@ -31,7 +43,15 @@ var NAVTREE =
       [ "Destroy    ", "md__internals.html#int_destroy", null ]
     ] ],
     [ "Example Collection", "exampleindex.html", "exampleindex" ],
-    [ "Deprecated List", "deprecated.html", null ],
+    [ "Help descriptions", "help_disc_index.html", "help_disc_index" ],
+    [ "Namespaces", null, [
+      [ "Namespace List", "namespaces.html", "namespaces" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Variables", "namespacemembers_vars.html", null ]
+      ] ]
+    ] ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
       [ "Class Index", "classes.html", "classes" ],
@@ -53,6 +73,7 @@ var NAVTREE =
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ],

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['master',['Master',['../struct_arn_item_1_1_sync_mode.html#aefe7627fb0db4f1c36f4676b184b257faa55fcc83d39e6d5a3d61faa3bd4326c5',1,'ArnItem::SyncMode']]],
-  ['monitor',['Monitor',['../struct_arn_item_1_1_sync_mode.html#aefe7627fb0db4f1c36f4676b184b257faca182dd95c8d51aa908d13c99748eec6',1,'ArnItem::SyncMode']]]
+  ['master',['Master',['../struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba007bef1fb81b23cf43aa9c64a54bbbff',1,'Arn::ObjectSyncMode']]],
+  ['monitor',['Monitor',['../struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba63870f55d4657d2f1c3ecc7c2e39dde3',1,'Arn::ObjectSyncMode']]]
 ];

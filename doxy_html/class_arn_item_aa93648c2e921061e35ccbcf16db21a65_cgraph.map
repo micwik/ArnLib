@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arn_item.html#aad7d66fe3be087dd393328349812a369" title="Open a handle to an Arn Data Object" alt="" coords="233,5,335,32"/>
-<area shape="rect" id="node5" href="$class_arn_item.html#a0f1b81445573dbeaf64d8cf51d82e105" title="Set general mode as Pipe for this Arn Data Object" alt="" coords="209,56,359,83"/>
-<area shape="rect" id="node7" href="$class_arn_item.html#abc7ba30751cb6e5c35bb0ff9d71cd9d5" title="ArnItem::syncMode" alt="" coords="409,56,543,83"/>
-</map>

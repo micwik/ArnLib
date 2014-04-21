@@ -1,8 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$_arn_lib_8hpp.html" title="ArnLib.hpp" alt="" coords="5,229,88,256"/>
-<area shape="rect" id="node5" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="113,229,239,256"/>
-<area shape="rect" id="node9" href="$_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="869,155,963,181"/>
-<area shape="rect" id="node15" href="$_arn_link_8hpp.html" title="ArnLink.hpp" alt="" coords="313,155,404,181"/>
-<area shape="rect" id="node30" href="$_arn_item_8hpp.html" title="ArnItem.hpp" alt="" coords="561,80,652,107"/>
-<area shape="rect" id="node11" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="658,229,757,256"/>
+<area shape="rect" id="node3" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="5,80,104,107"/>
 </map>

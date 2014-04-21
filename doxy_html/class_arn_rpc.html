@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -93,7 +94,7 @@ $(document).ready(function(){initNavTree('class_arn_rpc.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -108,8 +109,7 @@ $(document).ready(function(){initNavTree('class_arn_rpc.html','');});
 <a href="#pub-slots">Public Slots</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a>  </div>
+<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">ArnRpc Class Reference</div>  </div>
 </div><!--header-->
@@ -131,6 +131,7 @@ Inheritance diagram for ArnRpc:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_arn_rpc_1_1_invoke.html">Invoke</a></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-slots"></a>
@@ -144,6 +145,12 @@ Signals</h2></td></tr>
 <tr class="memdesc:af20b8270d7043673c9d9d3906efb7dac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the used pipe is closed.  <a href="#af20b8270d7043673c9d9d3906efb7dac"></a><br/></td></tr>
 <tr class="memitem:a094d3683c8a62b66b1631ccdca5a4a9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a094d3683c8a62b66b1631ccdca5a4a9f">textReceived</a> (QString text)</td></tr>
 <tr class="memdesc:a094d3683c8a62b66b1631ccdca5a4a9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when a general text message is received.  <a href="#a094d3683c8a62b66b1631ccdca5a4a9f"></a><br/></td></tr>
+<tr class="memitem:a00aa03b83806c25ca39d82d111dcc064"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a00aa03b83806c25ca39d82d111dcc064">outOfSequence</a> ()</td></tr>
+<tr class="memdesc:a00aa03b83806c25ca39d82d111dcc064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when checked sequence order is wrong.  <a href="#a00aa03b83806c25ca39d82d111dcc064"></a><br/></td></tr>
+<tr class="memitem:a1d250a29557cdcba950437cd41eacfd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0">heartBeatChanged</a> (bool isOk)</td></tr>
+<tr class="memdesc:a1d250a29557cdcba950437cd41eacfd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when Heart beat changes state.  <a href="#a1d250a29557cdcba950437cd41eacfd0"></a><br/></td></tr>
+<tr class="memitem:a9534d3737bf93fb9511c1f33a2f09967"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a9534d3737bf93fb9511c1f33a2f09967">heartBeatReceived</a> ()</td></tr>
+<tr class="memdesc:a9534d3737bf93fb9511c1f33a2f09967"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when Heart beat message is received.  <a href="#a9534d3737bf93fb9511c1f33a2f09967"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -151,16 +158,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9034a54433ff006762da0ccc2b45526b"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b">pipePath</a> () const </td></tr>
 <tr class="memdesc:a9034a54433ff006762da0ccc2b45526b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the path for the used <em>pipe</em>  <a href="#a9034a54433ff006762da0ccc2b45526b"></a><br/></td></tr>
 <tr class="memitem:a69eb9b2f7b694e41bc349560854597ea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea">open</a> (QString <a class="el" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b">pipePath</a>)</td></tr>
-<tr class="memitem:aef5cf7f423813fbc1876249ce9b8236a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#aef5cf7f423813fbc1876249ce9b8236a">setPipe</a> (<a class="el" href="class_arn_item.html">ArnItem</a> *pipe)</td></tr>
+<tr class="memitem:ae3f5ce01e8f0bc61bb04a4aa9d840b40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#ae3f5ce01e8f0bc61bb04a4aa9d840b40">setPipe</a> (<a class="el" href="class_arn_pipe.html">ArnPipe</a> *pipe)</td></tr>
 <tr class="memitem:a0e4dbd55242a36d63b4b1f9f76ed2df9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a0e4dbd55242a36d63b4b1f9f76ed2df9">setReceiver</a> (QObject *receiver)</td></tr>
 <tr class="memitem:acb14a8cd274f112f806cdd28db426614"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#acb14a8cd274f112f806cdd28db426614">setMethodPrefix</a> (QString prefix)</td></tr>
 <tr class="memitem:aeab85c18f1744d1c8790e1010a9f4c6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#aeab85c18f1744d1c8790e1010a9f4c6d">setIncludeSender</a> (bool v)</td></tr>
 <tr class="memitem:a162f91fef9e07ea71b52611de26341db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a162f91fef9e07ea71b52611de26341db">setMode</a> (<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>)</td></tr>
 <tr class="memitem:a61df3306cfe2f97286967118bda69eb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a> () const </td></tr>
 <tr class="memdesc:a61df3306cfe2f97286967118bda69eb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mode.  <a href="#a61df3306cfe2f97286967118bda69eb0"></a><br/></td></tr>
+<tr class="memitem:a0c135a403fc7c22ecc5e869872e6758c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a0c135a403fc7c22ecc5e869872e6758c">setHeartBeatSend</a> (int time)</td></tr>
+<tr class="memdesc:a0c135a403fc7c22ecc5e869872e6758c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set period time for sending heart beat message.  <a href="#a0c135a403fc7c22ecc5e869872e6758c"></a><br/></td></tr>
+<tr class="memitem:a5e5309bf47720f9bbe3442b804314e5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a5e5309bf47720f9bbe3442b804314e5f">setHeartBeatCheck</a> (int time)</td></tr>
+<tr class="memdesc:a5e5309bf47720f9bbe3442b804314e5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set max time period for receiving heart beat message.  <a href="#a5e5309bf47720f9bbe3442b804314e5f"></a><br/></td></tr>
+<tr class="memitem:aba3b50c527ee01eda8955d7590afbf6c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#aba3b50c527ee01eda8955d7590afbf6c">isHeartBeatOk</a> () const </td></tr>
+<tr class="memdesc:aba3b50c527ee01eda8955d7590afbf6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the state of heart beat.  <a href="#aba3b50c527ee01eda8955d7590afbf6c"></a><br/></td></tr>
 <tr class="memitem:aa735fedd853fecb5d5744f3435f12893"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#aa735fedd853fecb5d5744f3435f12893">addSenderSignals</a> (QObject *sender, QString prefix)</td></tr>
 <tr class="memitem:ab84c845961e86b52f698d4a81912f35d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#ab84c845961e86b52f698d4a81912f35d">invoke</a> (const QString &amp;funcName, <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val0=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(0), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val1=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val2=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val3=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val4=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val5=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val6=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val7=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>())</td></tr>
 <tr class="memdesc:ab84c845961e86b52f698d4a81912f35d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls a named remote procedure.  <a href="#ab84c845961e86b52f698d4a81912f35d"></a><br/></td></tr>
+<tr class="memitem:add5f77c6c330a42d1666f966d12f2f20"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#add5f77c6c330a42d1666f966d12f2f20">invoke</a> (const QString &amp;funcName, <a class="el" href="struct_arn_rpc_1_1_invoke.html">Invoke</a> invokeFlags, <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val0=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(0), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val1=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val2=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val3=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val4=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val5=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val6=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val7=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>())</td></tr>
+<tr class="memdesc:add5f77c6c330a42d1666f966d12f2f20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls a named remote procedure using invoke flags.  <a href="#add5f77c6c330a42d1666f966d12f2f20"></a><br/></td></tr>
 <tr class="memitem:a19a34d163bd3550495c01c6b4bbd20aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_arn_rpc.html">ArnRpc</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a19a34d163bd3550495c01c6b4bbd20aa">rpcSender</a> ()</td></tr>
 <tr class="memitem:a7f999b9eedac4890fbc5bed8a6e618ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a7f999b9eedac4890fbc5bed8a6e618ab">batchConnect</a> (const QRegExp &amp;rgx, const QObject *receiver, const QString &amp;replace, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>())</td></tr>
 <tr class="memdesc:a7f999b9eedac4890fbc5bed8a6e618ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s signals to another receivers slots.  <a href="#a7f999b9eedac4890fbc5bed8a6e618ab"></a><br/></td></tr>
@@ -172,10 +187,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a90adbfc92cf41e431401d33e835d99c5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_arn_rpc.html">ArnRpc</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a90adbfc92cf41e431401d33e835d99c5">rpcSender</a> (QObject *receiver)</td></tr>
 <tr class="memitem:ab6f9ac5d65a3c538ee628372f32c14de"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de">batchConnect</a> (const QObject *sender, const QRegExp &amp;rgx, const QObject *receiver, const QString &amp;replace, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>())</td></tr>
 <tr class="memdesc:ab6f9ac5d65a3c538ee628372f32c14de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from one senders signals to another receivers slots.  <a href="#ab6f9ac5d65a3c538ee628372f32c14de"></a><br/></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:abc34d2047b005072ce281626927a7f07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#abc34d2047b005072ce281626927a7f07">errorLog</a> (QString errText, <a class="el" href="struct_arn_error.html">ArnError</a> err=<a class="el" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afaef7eeb5d30b5dd20d6d37cf6b9954484">ArnError::Undef</a>, void *reference=0)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Remote Procedure Call. </p>
@@ -207,7 +218,7 @@ Protected Member Functions</h2></td></tr>
 <div class="line">    sender-&gt;<a class="code" href="class_arn_rpc.html#ab84c845961e86b52f698d4a81912f35d" title="Calls a named remote procedure.">invoke</a>(<span class="stringliteral">&quot;ver&quot;</span>, <a class="code" href="_arn_rpc_8hpp.html#aa477dc265a51dcb0136ec6f87fd271ff" title="Similar to Q_ARG but with added argument label (parameter name)">MQ_ARG</a>( QString, verText, <span class="stringliteral">&quot;MySytem Version 1.0&quot;</span>));</div>
 <div class="line">}</div>
 </div><!-- fragment --> 
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00112">112</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00115">115</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a993650db0c8235fff42e0909b410610c"></a>
 <div class="memitem">
@@ -231,7 +242,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00134">134</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00142">142</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -260,7 +271,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00232">232</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00275">275</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -328,7 +339,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00734">734</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00923">923</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -377,6 +388,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Make batch connection from this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s signals to another receivers slots. </p>
+<p>Used when there is a pattern in the naming of the signals and slots. It's assumed that naming for slots are unique regardless of its case i.e. using both test() and tesT() are not allowed.</p>
 <p>Example: <code>_commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\\\1");</code> connects signal: <code>rq_info(QString,QString)</code> to slot: <code>chatInfo(QString,QString)</code></p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
@@ -389,7 +401,7 @@ Protected Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" title="Make batch connection from one senders signals to another receivers slots.">batchConnect</a>(const QObject*, const QRegExp&amp;, const QObject*, const QString&amp;, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>) </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00211">211</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00289">289</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 
 </div>
 </div>
@@ -438,6 +450,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Make batch connection from one senders signals to this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s slots. </p>
+<p>Used when there is a pattern in the naming of the signals and slots. It's assumed that naming for slots are unique regardless of its case i.e. using both test() and tesT() are not allowed.</p>
 <p>Example: <code>_commonSapi.batchConnect( _commonSapi, QRegExp("^rq_(.+)"), "chat\\\\1");</code> connects signal: <code>rq_info(QString,QString)</code> to slot: <code>chatInfo(QString,QString)</code></p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
@@ -450,11 +463,11 @@ Protected Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" title="Make batch connection from one senders signals to another receivers slots.">batchConnect</a>(const QObject*, const QRegExp&amp;, const QObject*, const QString&amp;, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>) </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00228">228</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00310">310</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="abc34d2047b005072ce281626927a7f07"></a>
+<a class="anchor" id="a1d250a29557cdcba950437cd41eacfd0"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -462,37 +475,53 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ArnRpc::errorLog </td>
+          <td class="memname">void ArnRpc::heartBeatChanged </td>
           <td>(</td>
-          <td class="paramtype">QString&#160;</td>
-          <td class="paramname"><em>errText</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isOk</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="struct_arn_error.html">ArnError</a>&#160;</td>
-          <td class="paramname"><em>err</em> = <code><a class="el" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afaef7eeb5d30b5dd20d6d37cf6b9954484">ArnError::Undef</a></code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>reference</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00724">724</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Signal emitted when Heart beat changes state. </p>
+<p>Heart beat messages are detected and expected within a check time. If this is satisfied, the state of heart beat is ok. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">isOk</td><td>is the Heart beat state, false = Not received. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a9534d3737bf93fb9511c1f33a2f09967"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnRpc::heartBeatReceived </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Signal emitted when Heart beat message is received. </p>
 
 </div>
 </div>
@@ -570,12 +599,140 @@ Protected Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">funcName</td><td>is the name of the called procedure. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">val0</td><td>first arg. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">val1</td><td>second arg. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val1</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val2</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val3</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val4</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val5</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val6</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val7</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00278">278</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00321">321</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="add5f77c6c330a42d1666f966d12f2f20"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ArnRpc::invoke </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>funcName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_arn_rpc_1_1_invoke.html">Invoke</a>&#160;</td>
+          <td class="paramname"><em>invokeFlags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>&#160;</td>
+          <td class="paramname"><em>val0</em> = <code><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(0)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>&#160;</td>
+          <td class="paramname"><em>val1</em> = <code><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>&#160;</td>
+          <td class="paramname"><em>val2</em> = <code><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>&#160;</td>
+          <td class="paramname"><em>val3</em> = <code><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>&#160;</td>
+          <td class="paramname"><em>val4</em> = <code><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>&#160;</td>
+          <td class="paramname"><em>val5</em> = <code><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>&#160;</td>
+          <td class="paramname"><em>val6</em> = <code><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>&#160;</td>
+          <td class="paramname"><em>val7</em> = <code><a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calls a named remote procedure using invoke flags. </p>
+<p>This is the low level way to call a remote procedure. It can freely call anything without declaring it. For high level calls use <a class="el" href="class_arn_sapi.html" title="Service API.">ArnSapi</a>.</p>
+<p>This function works similar to QMetaObject::invokeMethod(). The called name is prefixed before the final call is made. Using the label in <a class="el" href="_arn_rpc_8hpp.html#aa477dc265a51dcb0136ec6f87fd271ff" title="Similar to Q_ARG but with added argument label (parameter name)">MQ_ARG()</a> makes dubugging easier, as the parameter is named.</p>
+<p>Example: <code>rpc-&gt;invoke("myfunc", <a class="el" href="struct_arn_rpc_1_1_invoke.html#a1c1ed4aa72375daeb0d951c12f52548ba2abcbf96583e7362396a842143b709c6" title="This invoke is not queued, multiple calls to same method might overwrite.">ArnRpc::Invoke::NoQueue</a>, MQ_ARG( QString, mypar, "Test XYZ"));</code></p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">funcName</td><td>is the name of the called procedure. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">invokeFlags</td><td>is flags for controlling the invoke </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val0</td><td>first arg. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val1</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val2</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val3</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val4</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val5</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val6</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val7</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00358">358</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aba3b50c527ee01eda8955d7590afbf6c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ArnRpc::isHeartBeatOk </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the state of heart beat. </p>
+<dl class="retval"><dt>Return values:</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">false</td><td>if not getting heart beat in time </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0" title="Signal emitted when Heart beat changes state.">heartBeatChanged()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00269">269</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -595,7 +752,7 @@ Protected Member Functions</h2></td></tr>
 <p>Get the mode. </p>
 <dl class="section return"><dt>Returns:</dt><dd>current <em>mode</em> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00226">226</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00245">245</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -613,7 +770,32 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00154">154</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00167">167</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a00aa03b83806c25ca39d82d111dcc064"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnRpc::outOfSequence </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Signal emitted when checked sequence order is wrong. </p>
 
 </div>
 </div>
@@ -639,7 +821,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Signal emitted when the used pipe is closed. </p>
-<p>The <em>pipe</em> closes when its <em>Arn Data Object</em> is destroyed, i.e. the session is considered ended. </p>
+<p>The <em>pipe</em> closes when its <em><a class="el" href="namespace_arn.html">Arn</a> Data Object</em> is destroyed, i.e. the session is considered ended. </p>
 
 </div>
 </div>
@@ -665,7 +847,7 @@ Protected Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="md__description.html#gen_bidirArnobj">Bidirectional Arn Data Objects </a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00146">146</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00159">159</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -682,7 +864,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00259">259</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00302">302</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -708,7 +890,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00267">267</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00310">310</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -744,7 +926,63 @@ Protected Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#a094d3683c8a62b66b1631ccdca5a4a9f" title="Signal emitted when a general text message is received.">textReceived()</a>; </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00718">718</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00906">906</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5e5309bf47720f9bbe3442b804314e5f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnRpc::setHeartBeatCheck </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set max time period for receiving heart beat message. </p>
+<p>Setting time to zero will turn off checking. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">time</td><td>is the time period in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#a0c135a403fc7c22ecc5e869872e6758c" title="Set period time for sending heart beat message.">setHeartBeatSend()</a>; </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00260">260</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0c135a403fc7c22ecc5e869872e6758c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnRpc::setHeartBeatSend </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set period time for sending heart beat message. </p>
+<p>Setting time to zero will turn off sending. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">time</td><td>is the time period in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#a5e5309bf47720f9bbe3442b804314e5f" title="Set max time period for receiving heart beat message.">setHeartBeatCheck()</a>; </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00251">251</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -762,7 +1000,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00214">214</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00233">233</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -780,7 +1018,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00208">208</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00227">227</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -798,25 +1036,25 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00220">220</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00239">239</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aef5cf7f423813fbc1876249ce9b8236a"></a>
+<a class="anchor" id="ae3f5ce01e8f0bc61bb04a4aa9d840b40"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void ArnRpc::setPipe </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_arn_item.html">ArnItem</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="class_arn_pipe.html">ArnPipe</a> *&#160;</td>
           <td class="paramname"><em>pipe</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00180">180</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00198">198</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -834,7 +1072,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00196">196</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00215">215</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -873,8 +1111,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp (1.0.0-3-gf59259b)</a></li>
-<li>src/<a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp (1.0.0-3-gf59259b)</a></li>
+<li>src/ArnInc/<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp (2.0.0)</a></li>
+<li>src/<a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp (2.0.0)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -882,7 +1120,7 @@ Protected Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_rpc.html">ArnRpc</a></li>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:51 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:25 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

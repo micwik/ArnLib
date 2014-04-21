@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arn_item.html#a3bf04aa51990438a639f14e6ed00eb52" title="Standard constructor of a closed handle." alt="" coords="243,5,363,32"/>
-<area shape="rect" id="node5" href="$class_arn_item.html#ab9460dee048f3a07102ac1c47c82a62f" title="Open a handle to an Arn folder." alt="" coords="233,56,372,83"/>
-<area shape="rect" id="node9" href="$class_arn_item.html#a5bf7640d9baeca2a134dd9a576df9f97" title="Signal emitted when an Arn Data Object is created in the tree below." alt="" coords="221,107,384,133"/>
-<area shape="rect" id="node7" href="$class_arn_item.html#aad7d66fe3be087dd393328349812a369" title="Open a handle to an Arn Data Object" alt="" coords="433,56,535,83"/>
-</map>

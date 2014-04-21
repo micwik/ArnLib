@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">1.0.x</span>
+   &#160;<span id="projectnumber">2.0.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -45,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -93,7 +94,7 @@ $(document).ready(function(){initNavTree('class_arn_client.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(11)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(12)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -104,6 +105,8 @@ $(document).ready(function(){initNavTree('class_arn_client.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
@@ -111,34 +114,56 @@ $(document).ready(function(){initNavTree('class_arn_client.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Class for connecting to an <em>Arn Server</em>.  
+<p>Class for connecting to an <em><a class="el" href="namespace_arn.html">Arn</a> Server</em>.  
  <a href="class_arn_client.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_arn_client_8hpp_source.html">ArnClient.hpp</a>&gt;</code></p>
 
 <p><a href="class_arn_client-members.html">List of all members.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_arn_client_1_1_connect_stat.html">ConnectStat</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_arn_client_1_1_host_addr_port.html">HostAddrPort</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a0ef58526ed8f87a1b676eb2db93a5e53"><td class="memItemLeft" align="right" valign="top">typedef QList&lt; <a class="el" href="struct_arn_client_1_1_host_addr_port.html">HostAddrPort</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53">HostList</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="signals"></a>
 Signals</h2></td></tr>
 <tr class="memitem:a27858277134c9fa0240cf4b18fffdb28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a27858277134c9fa0240cf4b18fffdb28">tcpError</a> (QString errorText, QAbstractSocket::SocketError socketError)</td></tr>
-<tr class="memitem:ad9425c4a02d458105fa608537610eb6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#ad9425c4a02d458105fa608537610eb6e">tcpConnected</a> ()</td></tr>
-<tr class="memdesc:ad9425c4a02d458105fa608537610eb6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the tcp connection is successfull.  <a href="#ad9425c4a02d458105fa608537610eb6e"></a><br/></td></tr>
+<tr class="memitem:ad4b15b43e125a4f40d9deee316c1ee1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#ad4b15b43e125a4f40d9deee316c1ee1c">tcpConnected</a> (QString arnHost, quint16 port)</td></tr>
+<tr class="memdesc:ad4b15b43e125a4f40d9deee316c1ee1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the tcp connection is successfull.  <a href="#ad4b15b43e125a4f40d9deee316c1ee1c"></a><br/></td></tr>
 <tr class="memitem:aaa78839f18f6538e838c12704ae05bbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd">tcpDisConnected</a> ()</td></tr>
 <tr class="memdesc:aaa78839f18f6538e838c12704ae05bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the tcp connection is broken (has been successfull).  <a href="#aaa78839f18f6538e838c12704ae05bbd"></a><br/></td></tr>
+<tr class="memitem:a6f50ffe0617a72432e8b7dab17388554"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a6f50ffe0617a72432e8b7dab17388554">connectionStatusChanged</a> (int status, int curPrio)</td></tr>
+<tr class="memdesc:a6f50ffe0617a72432e8b7dab17388554"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the connection status is changed.  <a href="#a6f50ffe0617a72432e8b7dab17388554"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5b34e108640a9308afff44bd95c63862"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a5b34e108640a9308afff44bd95c63862">ArnClient</a> (QObject *parent=0)</td></tr>
+<tr class="memitem:a612e42fe9c9859f446f715499635730b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a612e42fe9c9859f446f715499635730b">clearArnList</a> (int prioFilter=-1)</td></tr>
+<tr class="memdesc:a612e42fe9c9859f446f715499635730b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the <a class="el" href="namespace_arn.html">Arn</a> connection list.  <a href="#a612e42fe9c9859f446f715499635730b"></a><br/></td></tr>
+<tr class="memitem:aa40570b93de2cdbea9ecd53cf28f57ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53">HostList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#aa40570b93de2cdbea9ecd53cf28f57ef">arnList</a> (int prioFilter=-1) const </td></tr>
+<tr class="memdesc:aa40570b93de2cdbea9ecd53cf28f57ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the <a class="el" href="namespace_arn.html">Arn</a> connection list.  <a href="#aa40570b93de2cdbea9ecd53cf28f57ef"></a><br/></td></tr>
+<tr class="memitem:adcd16d9e9e4712de5b9b4d5ef5837272"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#adcd16d9e9e4712de5b9b4d5ef5837272">addToArnList</a> (const QString &amp;arnHost, quint16 port=0, int prio=0)</td></tr>
+<tr class="memdesc:adcd16d9e9e4712de5b9b4d5ef5837272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an <em><a class="el" href="namespace_arn.html">Arn</a> Server</em> to the <a class="el" href="namespace_arn.html">Arn</a> connection list.  <a href="#adcd16d9e9e4712de5b9b4d5ef5837272"></a><br/></td></tr>
+<tr class="memitem:abb3b70b54670be547e87118c60c685dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#abb3b70b54670be547e87118c60c685dc">connectToArnList</a> ()</td></tr>
+<tr class="memdesc:abb3b70b54670be547e87118c60c685dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect to an <em><a class="el" href="namespace_arn.html">Arn</a> Server</em> in the <a class="el" href="namespace_arn.html">Arn</a> connection list.  <a href="#abb3b70b54670be547e87118c60c685dc"></a><br/></td></tr>
 <tr class="memitem:a0fd4daab4ef28a0ab98db7d7e5f3f057"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057">connectToArn</a> (const QString &amp;arnHost, quint16 port=0)</td></tr>
-<tr class="memdesc:a0fd4daab4ef28a0ab98db7d7e5f3f057"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect to an <em>Arn Server</em>  <a href="#a0fd4daab4ef28a0ab98db7d7e5f3f057"></a><br/></td></tr>
+<tr class="memdesc:a0fd4daab4ef28a0ab98db7d7e5f3f057"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect to an <em><a class="el" href="namespace_arn.html">Arn</a> Server</em>  <a href="#a0fd4daab4ef28a0ab98db7d7e5f3f057"></a><br/></td></tr>
 <tr class="memitem:a7eb3feacb7aa1d4fe6b128962c7fc548"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548">setMountPoint</a> (const QString &amp;path)</td></tr>
 <tr class="memdesc:a7eb3feacb7aa1d4fe6b128962c7fc548"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the sharing tree path.  <a href="#a7eb3feacb7aa1d4fe6b128962c7fc548"></a><br/></td></tr>
+<tr class="memitem:a4dcd34da7a9b9458055389746d0557f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_arn_client_1_1_connect_stat.html">ConnectStat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a4dcd34da7a9b9458055389746d0557f3">connectStatus</a> () const </td></tr>
+<tr class="memdesc:a4dcd34da7a9b9458055389746d0557f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the <a class="el" href="namespace_arn.html">Arn</a> connection status.  <a href="#a4dcd34da7a9b9458055389746d0557f3"></a><br/></td></tr>
 <tr class="memitem:aba0318e38f60035bc4c78e89b25a4c60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60">setAutoConnect</a> (bool isAuto, int retryTime=2)</td></tr>
 <tr class="memdesc:aba0318e38f60035bc4c78e89b25a4c60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set automatic reconnect.  <a href="#aba0318e38f60035bc4c78e89b25a4c60"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Class for connecting to an <em>Arn Server</em>. </p>
+<div class="textblock"><p>Class for connecting to an <em><a class="el" href="namespace_arn.html">Arn</a> Server</em>. </p>
 <p><a class="el" href="md__description.html#gen_shareArnobj">About Sharing Arn Data Objects</a></p>
+<p>Connection can be made to a specific Host by <a class="el" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057" title="Connect to an Arn Server">connectToArn()</a>. It's also possible to define an <em><a class="el" href="namespace_arn.html">Arn</a> Connection List</em>. Each host address is added to the list with a priority. The priority is used to control the order at which the host addresses will be tried for connection. Lowest priority number is tried first. Connection trials are started with connectToArnlList(). The priority can also be used for selction in <a class="el" href="class_arn_client.html#a612e42fe9c9859f446f715499635730b" title="Clear the Arn connection list.">clearArnList()</a> and <a class="el" href="class_arn_client.html#aa40570b93de2cdbea9ecd53cf28f57ef" title="Return the Arn connection list.">arnList()</a>.</p>
 <p><b>Example usage</b> <br/>
  </p>
 <div class="fragment"><div class="line">    <span class="comment">// In class declare</span></div>
@@ -148,10 +173,25 @@ Public Member Functions</h2></td></tr>
 <div class="line">    _arnClient.<a class="code" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057" title="Connect to an Arn Server">connectToArn</a>(<span class="stringliteral">&quot;localhost&quot;</span>);</div>
 <div class="line">    _arnClient.<a class="code" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548" title="Set the sharing tree path.">setMountPoint</a>(<span class="stringliteral">&quot;//&quot;</span>);</div>
 <div class="line">    _arnClient.<a class="code" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60" title="Set automatic reconnect.">setAutoConnect</a>( <span class="keyword">true</span>);</div>
-</div><!-- fragment --> <dl><dt><b>Examples: </b></dt><dd><a class="el" href="_main_window_8hpp-example.html#_a0">MainWindow.hpp</a>.</dd>
+</div><!-- fragment --> <dl><dt><b>Examples: </b></dt><dd><a class="el" href="_arn_demo_chat_2_main_window_8hpp-example.html#_a0">ArnDemoChat/MainWindow.hpp</a>.</dd>
 </dl>
-<p>Definition at line <a class="el" href="_arn_client_8hpp_source.html#l00063">63</a> of file <a class="el" href="_arn_client_8hpp_source.html">ArnClient.hpp</a>.</p>
-</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<p>Definition at line <a class="el" href="_arn_client_8hpp_source.html#l00071">71</a> of file <a class="el" href="_arn_client_8hpp_source.html">ArnClient.hpp</a>.</p>
+</div><hr/><h2>Member Typedef Documentation</h2>
+<a class="anchor" id="a0ef58526ed8f87a1b676eb2db93a5e53"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef QList&lt;<a class="el" href="struct_arn_client_1_1_host_addr_port.html">HostAddrPort</a>&gt; <a class="el" href="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53">ArnClient::HostList</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_arn_client_8hpp_source.html#l00101">101</a> of file <a class="el" href="_arn_client_8hpp_source.html">ArnClient.hpp</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a5b34e108640a9308afff44bd95c63862"></a>
 <div class="memitem">
 <div class="memproto">
@@ -174,11 +214,190 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00041">41</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00043">43</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="adcd16d9e9e4712de5b9b4d5ef5837272"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnClient::addToArnList </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>arnHost</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">quint16&#160;</td>
+          <td class="paramname"><em>port</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>prio</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add an <em><a class="el" href="namespace_arn.html">Arn</a> Server</em> to the <a class="el" href="namespace_arn.html">Arn</a> connection list. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">arnHost</td><td>is host name or ip address, e.g. "192.168.1.1". </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">port</td><td>is the host port, 0 gives <a class="el" href="namespace_arn.html#a7dc869a2e500fff4982652f576c9207a">Arn::defaultTcpPort</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">prio</td><td>gives the sorting (connection) order and can be used for selection filter. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_client.html#a612e42fe9c9859f446f715499635730b" title="Clear the Arn connection list.">clearArnList()</a> </dd>
+<dd>
+<a class="el" href="class_arn_client.html#aa40570b93de2cdbea9ecd53cf28f57ef" title="Return the Arn connection list.">arnList()</a> </dd>
+<dd>
+<a class="el" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" title="Make a combined host and info string, i.e. HostWithInfo">Arn::makeHostWithInfo()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00109">109</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa40570b93de2cdbea9ecd53cf28f57ef"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53">ArnClient::HostList</a> ArnClient::arnList </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>prioFilter</em> = <code>-1</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return the <a class="el" href="namespace_arn.html">Arn</a> connection list. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">prioFilter</td><td>selects hosts in the list with this pri. Default -1 selects all. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values:</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">the</td><td>selected <a class="el" href="namespace_arn.html">Arn</a> connection list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_client.html#adcd16d9e9e4712de5b9b4d5ef5837272" title="Add an Arn Server to the Arn connection list.">addToArnList()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00093">93</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a612e42fe9c9859f446f715499635730b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnClient::clearArnList </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>prioFilter</em> = <code>-1</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clear the <a class="el" href="namespace_arn.html">Arn</a> connection list. </p>
+<p>Typically used to start making a new <a class="el" href="namespace_arn.html">Arn</a> connection list. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">prioFilter</td><td>selects hosts in the list with this pri, to be removed. Default -1 removes all. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_client.html#adcd16d9e9e4712de5b9b4d5ef5837272" title="Add an Arn Server to the Arn connection list.">addToArnList()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00072">72</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6f50ffe0617a72432e8b7dab17388554"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnClient::connectionStatusChanged </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>status</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>curPrio</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Signal emitted when the connection status is changed. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">status</td><td>is the new connection status <a class="el" href="struct_arn_client_1_1_connect_stat.html">ArnClient::ConnectStat</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">curPrio</td><td>is the current priority of the connection in ArnList </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd>curPrio() </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4dcd34da7a9b9458055389746d0557f3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_arn_client_1_1_connect_stat.html">ArnClient::ConnectStat</a> ArnClient::connectStatus </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return the <a class="el" href="namespace_arn.html">Arn</a> connection status. </p>
+<dl class="retval"><dt>Return values:</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">the</td><td><a class="el" href="namespace_arn.html">Arn</a> connection status. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00144">144</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a0fd4daab4ef28a0ab98db7d7e5f3f057"></a>
 <div class="memitem">
 <div class="memproto">
@@ -203,16 +422,37 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Connect to an <em>Arn Server</em> </p>
+<p>Connect to an <em><a class="el" href="namespace_arn.html">Arn</a> Server</em> </p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">arnHost</td><td>is host name or ip address, e.g. "192.168.1.1". </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">port</td><td>is the port number (default 2022). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">port</td><td>is the host port, 0 gives <a class="el" href="namespace_arn.html#a7dc869a2e500fff4982652f576c9207a">Arn::defaultTcpPort</a>. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" title="Make a combined host and info string, i.e. HostWithInfo">Arn::makeHostWithInfo()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00068">68</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00135">135</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abb3b70b54670be547e87118c60c685dc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnClient::connectToArnList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Connect to an <em><a class="el" href="namespace_arn.html">Arn</a> Server</em> in the <a class="el" href="namespace_arn.html">Arn</a> connection list. </p>
+<p>Will scan the connection list once until a successful connection is made. If the end of the list is reached without connection, the <a class="el" href="class_arn_client.html#a27858277134c9fa0240cf4b18fffdb28">tcpError()</a> signal </p>
+
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00126">126</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -241,15 +481,16 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set automatic reconnect. </p>
+<p>If <a class="el" href="class_arn_client.html#abb3b70b54670be547e87118c60c685dc" title="Connect to an Arn Server in the Arn connection list.">connectToArnList()</a> is used, this auto connect funtionality starts every time after the last host in the <a class="el" href="namespace_arn.html">Arn</a> connection list has failed. The connection list is retried after <em>retryTime</em>. When using <a class="el" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057" title="Connect to an Arn Server">connectToArn()</a>, there will be a <em>retryTime</em> delay between each reConnect to the host. </p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">isAuto</td><td>true if using auto reconnect </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">retryTime</td><td>is the time between reconnection attempts in seconds </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">retryTime</td><td>is the time between attempts in seconds </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00091">91</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00164">164</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -268,7 +509,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set the sharing tree path. </p>
-<p>Mountpoint is an association to the similarity of mounting a "remote filesystem". In Arn the remote "file system" is at the same sub path as the mountpoint, e.g. a client having mountpoint "/a/b/" and opening an <em>Arn Data Object</em> at "/a/b/c" will have the object <em>c</em> shared with the server at its path "/a/b/c". </p>
+<p>Mountpoint is an association to the similarity of mounting a "remote filesystem". In <a class="el" href="namespace_arn.html">Arn</a> the remote "file system" is at the same sub path as the mountpoint, e.g. a client having mountpoint "/a/b/" and opening an <em><a class="el" href="namespace_arn.html">Arn</a> Data Object</em> at "/a/b/c" will have the object <em>c</em> shared with the server at its path "/a/b/c". </p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>is the sharing tree. </td></tr>
@@ -283,11 +524,11 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="md__description.html#gen_shareArnobj">Sharing Arn Data Objects </a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00077">77</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00150">150</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad9425c4a02d458105fa608537610eb6e"></a>
+<a class="anchor" id="ad4b15b43e125a4f40d9deee316c1ee1c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -297,8 +538,19 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void ArnClient::tcpConnected </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">QString&#160;</td>
+          <td class="paramname"><em>arnHost</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">quint16&#160;</td>
+          <td class="paramname"><em>port</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -309,6 +561,13 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Signal emitted when the tcp connection is successfull. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">arnHost</td><td>is host name or ip address, e.g. "192.168.1.1". </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">port</td><td>is the host port, e.g. 2022. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -380,8 +639,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_arn_client_8hpp_source.html">ArnClient.hpp (1.0.0-3-gf59259b)</a></li>
-<li>src/<a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp (1.0.0-3-gf59259b)</a></li>
+<li>src/ArnInc/<a class="el" href="_arn_client_8hpp_source.html">ArnClient.hpp (2.0.0)</a></li>
+<li>src/<a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp (2.0.0)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -389,7 +648,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_client.html">ArnClient</a></li>
-    <li class="footer">Generated on Tue Apr 9 2013 15:33:50 for ArnLib by
+    <li class="footer">Generated on Mon Apr 21 2014 23:20:24 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

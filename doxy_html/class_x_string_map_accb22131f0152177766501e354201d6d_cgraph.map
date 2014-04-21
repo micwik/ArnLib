@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_x_string_map.html#a680f399fda12c7d1f65cdf0ece7434a4" title="XStringMap::clear" alt="" coords="241,5,365,32"/>
-<area shape="rect" id="node5" href="$class_x_string_map.html#a694dfb3459a5480f7e923e532669a769" title="XStringMap::key" alt="" coords="437,132,555,159"/>
-<area shape="rect" id="node7" href="$class_x_string_map.html#aee5d59b6a34abd7d0c3f00f965493db2" title="XStringMap::size" alt="" coords="243,107,363,133"/>
-<area shape="rect" id="node9" href="$class_x_string_map.html#a2350068bdd77b36d600dff6c4989c70a" title="XStringMap::stringDecode" alt="" coords="217,157,389,184"/>
-<area shape="rect" id="node11" href="$class_x_string_map.html#a114fbf78e50846fe5c5ae222be5472fc" title="XStringMap::add" alt="" coords="244,208,361,235"/>
-</map>

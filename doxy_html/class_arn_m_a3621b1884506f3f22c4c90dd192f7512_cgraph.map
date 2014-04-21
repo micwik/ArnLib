@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arn_m.html#a91db48e0be7abb8a8cc253867662699d" title="ArnM::instance" alt="" coords="395,5,506,32"/>
-<area shape="rect" id="node5" href="$class_arn_m.html#a1e2d6dee03d703ded6b15ffa3b86ef5a" title="ArnM::setConsoleError" alt="" coords="192,31,347,57"/>
-<area shape="rect" id="node8" href="$class_arn_m.html#a6a22b7ba4ec2087701cea178dae2bb54" title="ArnM::errorSysName" alt="" coords="197,81,341,108"/>
-<area shape="rect" id="node10" href="$class_arn_m.html#a0fc991e4c21a3a11390da3b10df6deb4" title="ArnM::errorLogSig" alt="" coords="206,132,333,159"/>
-</map>
