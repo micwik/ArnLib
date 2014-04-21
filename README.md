@@ -1,11 +1,11 @@
-    Copyright (C) 2010-2013 Michael Wiklund.
+    Copyright (C) 2010-2014 Michael Wiklund.
     All rights reserved.
     Contact: arnlib@wiklunden.se
 
 # ArnLib - Active Registry Network.
 
 This Qt based library makes it easy to distribute changing data objects. It also gives a
-central place to find all your systems current data. By using the ArnBrowser, all data
+central place to find all your systems' current data. By using the ArnBrowser, all data
 objects are real time presented in a tree view.
 
 ### Comparison to similar concepts
@@ -38,12 +38,12 @@ Arnlib helps giving a common interface and diagnostic.
 ArnLib helps giving an out-of-the-box data sharing system that replicates Arn objects.
 
 * _Networked services by RPC (remote procedure call)._  <Br>
-Will be quite the same as setting up slots for local calls. Also calling a remote slot
-can be done via a signal or a direct call. You can find an easy example in the ArnLib
-package, showing a simple chat Client and Server.
+Will be quite the same as setting up signals and slots for local calls. You can find an
+easy example in the ArnLib package, showing a simple chat Client and Server.
 
-* _Customization with scripts._  <Br>
-Helps giving integration of Java Script to C++ and objects stored in the Arn Registry.
+* _ZeroConfig detection of present services._  <Br>
+Helps advertise and browse a service (ftp, http, arn, ...) on a local network.
+This is similar to UPNP discovery of units.
 <Br><Br>
 
 
@@ -55,20 +55,20 @@ Helps giving integration of Java Script to C++ and objects stored in the Arn Reg
 
 #### Arn Data Objects
 
-* Hierarchical storage of "hot" changing data objects.
+* Hierarchical storage of hot changing data objects.
 
 * _Arn Data objects_ can be: integers, floats, strings, byte arrays and variants
 (most Qt data types, e.g. QImage).
 
-* Data objects can typically be: measures, settings, data streams, documents, scripts (js), ...
+* Data objects can typically be: measures, settings, data streams, documents, scripts (js), etc.
 
 * _Arn Data objects_ are thread-safe.
 
-* Native support for data validation and double direction pipes.
+* Native support for data validation and double direction pipes (streams).
 
 #### Sharing
 
-* Data objects can be shared in a single program, among threads or between programs at
+* Data objects can be shared in a single program, among threads or between programs, at
 different computers. This division of program modules can be changed and is transparent
 to usage of ArnLib.
 
@@ -101,7 +101,19 @@ Monitoring of changed objects.
 (see ArnBrowser).
 
 * Service Api, for calling routines anywhere in connected Arn.
-_Remote Procedure call_ (RPC) made simple as "remote signal slots".
+_Remote Procedure Call_ (RPC) simple to use as "remote signal slots".
 
 * Service Api has an automatically generated help for giving syntax when doing debug manual
 typed calls to a RPC service.
+
+#### ZeroConfig and Discover
+
+* Any service (ftp, http, arn, etc) can be advertised, browsed and resolved for its host
+address and port number.
+
+* High level, fully automatic support specialised for _arn_ service, can e.g. remotely
+  change the advertised _service name_.
+
+* Simple integration together with a custom GUI for browsing, etc.
+
+* Optional internal DNS_SD/mDNS routines for no dependency to any extra library.
