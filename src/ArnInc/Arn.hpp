@@ -175,7 +175,7 @@ bool  isProviderPath( const QString& path);
  */
 QString  itemName( const QString& path);
 
-//! Get substring for child from a path
+//! Get substring for child from a path (posterityPath)
 /*! _parentPath_ don't have to end with a "/", if missing it's added.
  *
  *  If _posterityPath_ not starts with _parentPath_, QString() is returned.
@@ -191,6 +191,19 @@ QString  itemName( const QString& path);
  *  \return The _child path_
  */
 QString  childPath( const QString& parentPath, const QString& posterityPath);
+
+//! Change the base (start) of a path
+/*! _oldBasePath_ and _newBasePath_ don't have to end with a "/", if missing it's added.
+ *  If _path_ not starts with _oldBasePath_, QString() is returned.
+ *  Otherwise the path is returned with its base changed from _oldBasePath_ to _newBasePath_.
+ *
+ *  Example: _path_ = "//Measure/depth/value", _oldBasePath_ = "//Measure/",
+ *  _newBasePath_ = "/Measure/Tmp/" ==> return = "/Measure/Tmp/depth/value"
+ *  \param[in] parentPath
+ *  \param[in] posterityPath
+ *  \return The _child path_
+ */
+QString  changeBasePath( const QString& oldBasePath, const QString& newBasePath, const QString& path);
 
 //! Make a path from a parent and an item name
 /*! _parentPath_ don't have to end with a "/", if missing it's added.

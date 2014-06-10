@@ -31,6 +31,7 @@
 
 #include "ArnInc/ArnMonitor.hpp"
 #include "ArnInc/ArnClient.hpp"
+#include "ArnSync.hpp"
 #include "ArnItemNet.hpp"
 #include <QDebug>
 #include <QTime>
@@ -58,11 +59,22 @@ QString  ArnMonitor::clientId()  const
 }
 
 
+ArnClient*  ArnMonitor::client()  const
+{
+    return _arnClient;
+}
+
+
 void  ArnMonitor::setMonitorPath( QString path, ArnClient *client)
 {
-    if (client)
-        _arnClient = client;
-    _monitorPath = path;
+    start( path, client ? client : _arnClient.data());
+}
+
+
+bool ArnMonitor::start(const QString& path, ArnClient* client)
+{
+    _arnClient = client;
+    _monitorPath = Arn::fullPath( path);
     if (!_monitorPath.endsWith("/"))  _monitorPath += "/";
 
     if (_arnClient) {
@@ -70,13 +82,14 @@ void  ArnMonitor::setMonitorPath( QString path, ArnClient *client)
         // ItemNet is not threadsafe, only use in connect etc
         bool isNew;
         _itemNet = _arnClient->newNetItem( _monitorPath, Arn::ObjectSyncMode::Normal, &isNew);
-        if (!_itemNet)  return;
+        if (!_itemNet)  return false;
 
         connect( _itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,bool)),
                  this, SLOT(dispatchArnEvent(QByteArray,QByteArray,bool)));
 
+        if (Arn::debugMonitor)  qDebug() << "Monitor start: new=" << isNew << " path=" << _monitorPath;
         if (isNew) {
-            if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorStart Before";
+            if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: Invoke monitorStart Before";
             QMetaObject::invokeMethod( this,
                                        "emitArnEvent",
                                        Qt::QueuedConnection,  // make sure started after all setup is done in this thread
@@ -84,17 +97,38 @@ void  ArnMonitor::setMonitorPath( QString path, ArnClient *client)
             //// Check thread event sequence by big delay
             // QTime  ts = QTime::currentTime();
             // while (QTime::currentTime() < ts.addSecs(5));
-            if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorStart After (delay)";
+            if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: Invoke monitorStart After (delay)";
         }
         else {
-            if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart Before";
+            if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart Before";
             QMetaObject::invokeMethod( this,
                                        "emitArnEvent",
                                        Qt::QueuedConnection,  // make sure restarted after all setup is done in this thread
                                        Q_ARG( QByteArray, "monitorReStart"));
-            if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart After (delay)";
+            if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart After (delay)";
         }
     }
+    else {  // No client, do local monitor
+        _itemNet = new ArnItemNet( this);
+        if (!_itemNet->open( _monitorPath)) {
+            delete _itemNet;
+            _itemNet = 0;
+            return false;
+        }
+        _itemNet->setNetId( _itemNet->linkId());
+
+        connect( _itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,bool)),
+                 this, SLOT(dispatchArnEvent(QByteArray,QByteArray,bool)), Qt::QueuedConnection);
+        //MW: Todo connect( _itemNet, SIGNAL(arnLinkDestroyed()),
+
+        if (Arn::debugMonitor)  qDebug() << "Monitor start (local-items): path="
+                                         << _monitorPath << " id=" << _itemNet->netId();
+        QMetaObject::invokeMethod( this,
+                                   "setupLocalMonitorItem",
+                                   Qt::QueuedConnection  // make sure called after all setup is done in this thread
+                                   );
+    }
+    return true;
 }
 
 
@@ -117,23 +151,53 @@ void  ArnMonitor::emitArnEvent( QByteArray type, QByteArray data)
 }
 
 
+void  ArnMonitor::setupLocalMonitorItem()
+{
+    ArnSync::setupMonitorItem( _itemNet);
+}
+
+
 void  ArnMonitor::dispatchArnEvent( QByteArray type, QByteArray data, bool isLocal)
 {
-    if (isLocal)  return;  // Don't handle local events
+    ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
+    if (!itemNet) {
+        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for dispatchArnEvent")),
+                            ArnError::Undef);
+        return;
+    }
 
-    QString  foundPath;
-    // "created" (new fresh) is special case of "found"
+    if (Arn::debugMonitor && isLocal) {
+        qDebug() << "Dipatch Arn event (local): type=" << type
+                 << " data=" << data << " id=" << itemNet->netId();
+    }
+
+    QString  foundRemotePath = QString::fromUtf8( data.constData(), data.size());
+    QString  foundPath = itemNet->toLocalPath( foundRemotePath);
+
     if (type == "itemCreated") {
-        foundPath = QString::fromUtf8( data.constData(), data.size());
+        //// "created" (new fresh) is special case of "found"
         emit arnItemCreated( foundPath);
     }
     else if (type == "itemFound") {
-        foundPath = QString::fromUtf8( data.constData(), data.size());
+    }
+    else if ((type == "monitorReStart") && !_arnClient) {  // Local monitor event
+        //// Send NewItemEvent for any existing direct children (also folders)
+        ArnSync::doChildsToEvent( itemNet);
+        return;
+    }
+    else {
+        return;  // This event is not handled
+    }
+
+    //// Continue with found items
+    if (Arn::debugMonitor && !isLocal) {
+        qDebug() << "Dipatch Arn event: type=" << type
+                 << " remotePath=" << foundRemotePath << " localPath=" << foundPath;
     }
 
     QString childPath = Arn::childPath( _monitorPath, foundPath);
     // qDebug() << "### arnMon dispArnEv: childPath=" << childPath;
-    if (!childPath.isEmpty()) {
+    if (!childPath.isEmpty()) {  // Should always be none emty ...
         if (!_foundChilds.contains( childPath)) {  // Only send events about unknown items
             _foundChilds += childPath;
             // qDebug() << "### arnMon dispArnEv: Emit chFound childPath=" << childPath;

@@ -36,6 +36,7 @@
 #include "ArnLib_global.hpp"
 #include <QStringList>
 #include <QObject>
+#include <QPointer>
 
 class ArnClient;
 class ArnItemNet;
@@ -67,7 +68,7 @@ public:
     explicit  ArnMonitor( QObject* parent = 0);
 
     //! Set the _client_ to be used
-    /*! \param[in] client
+    /*! \param[in] client to be used. If 0, local monitoring is done.
      *  \param[in] id is an optional name to assign to the client.
      */
     void  setClient( ArnClient* client, QString id = QString());
@@ -78,13 +79,31 @@ public:
      */
     QString  clientId()  const;
 
+    //! Get the used _client_
+    /*! \return The _client_
+     *  \see setClient()
+     */
+    ArnClient*  client()  const;
+
     //! Set the _path_ to be monitored
-    /*! The monitor must be set at a [shared](\ref gen_shareArnobj) _path_.
-     *  This function also starts the monitoring.
+    /*! The monitor must be set at a [shared](\ref gen_shareArnobj) _path_ that is shared
+     *  using client::addMountPoint().
+     *  This function also starts the monitoring using start().
      *  \param[in] path
      *  \param[in] client to be used. If 0, keep previous set client.
+     *  \see start()
+     *  \deprecated Use start() instead, _client_ parameter is changed.
      */
     void  setMonitorPath( QString path, ArnClient* client = 0);
+
+    //! Starts the monitoring
+    /*! The monitor must be set at a [shared](\ref gen_shareArnobj) _path_ that is shared
+     *  using client::addMountPoint(). A none shared path can be used when client is set to
+     *  0, i.e. local monitoring.
+     *  \param[in] path
+     *  \param[in] client to be used. If 0, local monitoring is done.
+     */
+    bool  start( const QString& path, ArnClient* client);
 
     //! Get the monitored _path_
     /*! \return The _path_
@@ -172,7 +191,7 @@ public slots:
     void  foundChildDeleted( QString path);
 
 protected:
-    ArnClient*  _arnClient;
+    QPointer<ArnClient>  _arnClient;
     QString  _monitorPath;
 
 private:
@@ -183,6 +202,7 @@ private:
 private slots:
     void  dispatchArnEvent( QByteArray type, QByteArray data, bool isLocal);
     void  emitArnEvent( QByteArray type, QByteArray data = QByteArray());
+    void  setupLocalMonitorItem();
 };
 
 

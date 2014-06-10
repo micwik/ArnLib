@@ -502,7 +502,7 @@ QString  ArnMonitorProto::clientId()  const
 void  ArnMonitorProto::setMonitorPath( const QString& name)
 {
     ArnMonitor*  arnMon = qscriptvalue_cast<ArnMonitor*>( thisObject());
-    if (arnMon)  arnMon->setMonitorPath( name);
+    if (arnMon)  arnMon->start( name, arnMon->client());
 }
 
 

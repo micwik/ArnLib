@@ -62,10 +62,6 @@ ArnClient::ArnClient( QObject* parent) :
     connect( _socket, SIGNAL(error(QAbstractSocket::SocketError)),
              this, SLOT(tcpError(QAbstractSocket::SocketError)));
     connect( _connectTimer, SIGNAL(timeout()), this, SLOT(reConnectArn()));
-
-    // Special mount point for sys
-    ArnItem* sysMountPoint = new ArnItem("/.sys/", this);
-    connect( sysMountPoint, SIGNAL(arnItemCreated(QString)), this, SLOT(createNewItem(QString)));
 }
 
 
@@ -149,15 +145,65 @@ ArnClient::ConnectStat  ArnClient::connectStatus()  const
 
 bool  ArnClient::setMountPoint( const QString& path)
 {
-    if (_arnMountPoint)  delete _arnMountPoint;
+    if (_mountPoints.size() == 1)
+        removeMountPoint( _mountPoints.at(0).localPath);
 
-    _arnMountPoint = new ArnItem( this);
-    bool  isOk = _arnMountPoint->openFolder( path);
-    if (isOk) {
-        connect( _arnMountPoint, SIGNAL(arnItemCreated(QString)), this, SLOT(createNewItem(QString)));
+    return addMountPoint( path);
+}
+
+
+bool  ArnClient::addMountPoint( const QString& localPath, const QString& remotePath)
+{
+    if (Arn::debugShareObj)  qDebug() << "Adding mount point: localPath=" << localPath
+                                      << " remotePath=" << remotePath;
+    if (localPath.isEmpty()) {
+        return false;
+    }
+    QString  localPath_  = Arn::fullPath( localPath);
+
+    //// Make sure new path isn't within other mount points path and vice verse
+    foreach (const MountPointSlot& mpSlot, _mountPoints) {
+        QString  mplPath = mpSlot.localPath;
+        if (localPath_.startsWith( mplPath) || mplPath.startsWith( localPath_)) {
+            ArnM::errorLog( QString(tr("Mount points not exclusive: new=")) +
+                            localPath + " existing=" + mplPath,
+                            ArnError::Undef);
+            return false;
+        }
     }
 
+    MountPointSlot  mpSlot;
+    mpSlot.arnMountPoint = new ArnItem( this);
+    bool  isOk = mpSlot.arnMountPoint->openFolder( localPath_);
+    if (isOk) {
+        mpSlot.localPath  = localPath_;
+        mpSlot.remotePath = remotePath.isEmpty() ? localPath_ : Arn::fullPath( remotePath);
+        connect( mpSlot.arnMountPoint, SIGNAL(arnItemCreated(QString)), this, SLOT(createNewItem(QString)));
+        _mountPoints += mpSlot;
+        mpSlot.arnMountPoint->setReference( &_mountPoints.last());  // Give a ref to this added slot
+    }
+    else
+        delete mpSlot.arnMountPoint;
+
     return isOk;
+}
+
+
+bool  ArnClient::removeMountPoint( const QString& localPath)
+{
+    QString  localPath_ = Arn::fullPath( localPath);
+
+    int mpSize = _mountPoints.size();
+    for (int i = 0; i < mpSize; ++ i) {
+        const MountPointSlot&  mountPoint = _mountPoints.at(i);
+        if (mountPoint.localPath == localPath_) {
+            if (mountPoint.arnMountPoint)
+                delete mountPoint.arnMountPoint;
+            _mountPoints.removeAt(i);
+            return true;
+        }
+    }
+    return false;
 }
 
 
@@ -246,7 +292,15 @@ void  ArnClient::newNetItemProxy( ArnThreadCom *threadCom,
 ArnItemNet*  ArnClient::newNetItem( QString path, Arn::ObjectSyncMode syncMode, bool* isNewPtr)
 {
     if (ArnM::isMainThread()) {
-        return _arnNetSync->newNetItem( path, syncMode, isNewPtr);
+        QString  path_ = Arn::fullPath( path);
+        MountPointSlot  mpSlot;
+        foreach (const MountPointSlot& mountPoint, _mountPoints) {
+            if (path_.startsWith( mountPoint.localPath)) {
+                mpSlot = mountPoint;
+                break;
+            }
+        }
+        return _arnNetSync->newNetItem( path_, mpSlot.localPath, mpSlot.remotePath, syncMode, isNewPtr);
     }
     else {  // Threaded - must be threadsafe
         ArnThreadComCaller  threadCom;
@@ -272,7 +326,11 @@ ArnItemNet*  ArnClient::newNetItem( QString path, Arn::ObjectSyncMode syncMode, 
 void  ArnClient::createNewItem( QString path)
 {
     // qDebug() << "ArnClient,ArnItem-created: path=" << path;
-    _arnNetSync->newNetItem( path);
+    ArnItem*  item = qobject_cast<ArnItem*>( sender());
+    Q_ASSERT(item);
+    MountPointSlot*  mpSlot = static_cast<MountPointSlot*>( item->reference());
+    Q_ASSERT(mpSlot);
+    _arnNetSync->newNetItem( path, mpSlot->localPath, mpSlot->remotePath);
 }
 
 

@@ -45,8 +45,16 @@ Q_OBJECT
 public:
     explicit ArnItemNet( QObject *parent = 0);
     explicit ArnItemNet( const QString& path, QObject *parent = 0);
+
     void  setNetId( uint netId);
     uint  netId()  const;
+    QString  localMountPath()  const;
+    void  setLocalMountPath( const QString& localMountPath);
+    QString  remoteMountPath()  const;
+    void  setRemoteMountPath( const QString& remoteMountPath);
+    QString  toRemotePath( const QString& localPath = QString())  const;
+    QString  toLocalPath( const QString& remotePath)  const;
+
     void  addSyncModeString( const QByteArray& smode, bool linkShare);
     QByteArray  getSyncModeString()  const;
     void  setModeString( const QByteArray& mode);
@@ -78,6 +86,7 @@ public:
     using ArnItemB::arnExport;
     using ArnItemB::arnImport;
     using ArnItemB::childItemsMain;
+    using ArnItemB::openFolder;
 
 signals:
     void  arnEvent( QByteArray type, QByteArray data, bool isLocal);
@@ -98,6 +107,8 @@ private:
     bool  _dirtyMode;  // item Mode has been updated but not yet sent
     bool  _disable;    // item is defunct and should not send (destroy command)
     bool  _isMonitor;  // item is used as a Monitor
+    QString  _localMountPath;
+    QString  _remoteMountPath;
 
 private slots:
 };

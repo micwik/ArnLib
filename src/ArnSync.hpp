@@ -40,7 +40,6 @@
 #include <QByteArray>
 #include <QMap>
 #include <QQueue>
-#include <QPointer>
 
 #define ARNRECNAME  ""
 
@@ -56,10 +55,14 @@ public:
     ArnSync( QTcpSocket* socket, bool clientSide = 0, QObject *parent = 0);
     ~ArnSync();
     ArnItemNet*  newNetItem( const QString& path,
+                             const QString& localMountPath, const QString& remoteMountPath,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
                              bool* isNewPtr = 0);
     void  sendXSMap( const Arn::XStringMap& xsMap);
     void  send( const QByteArray& xString);
+
+    static void  setupMonitorItem( ArnItemNet* itemNet);
+    static void  doChildsToEvent( ArnItemNet* itemNet);
 
 signals:
     void  replyRecord( Arn::XStringMap& replyMap);
@@ -75,15 +78,12 @@ private slots:
     void  doArnEvent( QByteArray type, QByteArray data, bool isLocal);
 
 private:
-    typedef QPointer<ArnItemNet>  ArnItemNetQPtr;
     struct FluxRec {
         QByteArray  xString;
         int  queueNum;
     };
 
     void  setupItemNet( ArnItemNet* itemNet, uint netId);
-    void  setupMonitorItem( ArnItemNet* itemNet);
-    void  doChildsToEvent( ArnItemNet* itemNet);
     FluxRec*  getFreeFluxRec();
     QByteArray  makeFluxString( const ArnItemNet* itemNet, const ArnLinkHandle& handleData);
     void  sendFluxItem( const ArnItemNet* itemNet);

@@ -140,15 +140,42 @@ public:
     void  connectToArn( const QString& arnHost, quint16 port = 0);
 
     //! Set the sharing tree path
-    /*! Mountpoint is an association to the similarity of mounting a "remote filesystem".
-     *  In Arn the remote "file system" is at the same sub path as the mountpoint,
-     *  e.g. a client having mountpoint "/a/b/" and opening an _Arn Data Object_ at
-     *  "/a/b/c" will have the object _c_ shared with the server at its path "/a/b/c".
+    /*! For campatibility, this can only set one mount point and with same local as remote
+     *  path. If exactly one mount point exist, it will be removed before this new one is
+     *  added.
      *  \param[in] path is the sharing tree.
      *  \retval false if error.
      *  \see \ref gen_shareArnobj
+     *  \deprecated Use addMountPoint() and removeMountPoint()
      */
     bool  setMountPoint( const QString& path);
+
+    //! Add a sharing tree path
+    /*! Mountpoint is an association to the similarity of mounting a "remote filesystem".
+     *  In Arn, the remote "file system" can be at different sub path than the local
+     *  mountpoint, e.g. a client having mountpoint local="/a/b/" remote="/r/" and opening
+     *  an  _Arn Data Object_ at "/a/b/c" will have the object _c_ shared with the server
+     *  at its path "/r/c".
+     *  However if _remotePath_ is not specified, it will be same as _localPath_. In the
+     *  above example, the _c_ object will then be shared with the server at its path
+     *  "/a/b/c".
+     *  \param[in] localPath is the local sharing tree.
+     *  \param[in] remotePath is the remote sharing tree. If empty, same as _localPath_.
+     *  \retval false if error.
+     *  \see \ref gen_shareArnobj
+     */
+    bool  addMountPoint( const QString& localPath, const QString& remotePath = QString());
+
+    //! Remove a sharing tree path
+    /*! Only the mount point will be removed, i.e any new _Arn Data Objects_ created within
+     *  the _localPath_ tree will not be shared with the server. However already existing
+     *  objects will not be affected and is still shared with the server.
+     *  \param[in] localPath is the sharing tree to be removed. Only affects newly created
+     *                       objects.
+     *  \retval false if error.
+     *  \see \ref gen_shareArnobj
+     */
+    bool  removeMountPoint( const QString& localPath);
 
     //! Return the Arn connection status
     /*! \retval the Arn connection status.
@@ -221,6 +248,17 @@ private slots:
     void  doTcpConnected();
 
 private:
+    struct MountPointSlot {
+        ArnItem*  arnMountPoint;
+        QString  localPath;
+        QString  remotePath;
+
+        MountPointSlot()
+        {
+            arnMountPoint = 0;
+        }
+    };
+
     void doConnectArnLogic();
 
     HostList  _hostTab;
@@ -238,6 +276,7 @@ private:
     int  _retryTime;
     QTimer*  _connectTimer;
     ArnItem*  _arnMountPoint;
+    QList<MountPointSlot>  _mountPoints;
     Arn::XStringMap  _commandMap;
     QString  _id;
     HostAddrPort  _curConnectAP;

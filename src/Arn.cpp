@@ -104,6 +104,20 @@ QString  childPath( const QString &parentPath, const QString &posterityPath)
 }
 
 
+QString  changeBasePath( const QString &oldBasePath, const QString& newBasePath, const QString& path)
+{
+    QString  oldBasePath_ = oldBasePath;
+    if (!oldBasePath_.endsWith('/'))  oldBasePath_ += '/';
+    QString  newBasePath_ = newBasePath;
+    if (!newBasePath_.endsWith('/'))  newBasePath_ += '/';
+
+    if (newBasePath_ == oldBasePath_)  return path;
+    if (!path.startsWith( oldBasePath_))  return QString();  // Null, path not belonging tp old base path
+
+    return newBasePath_ + path.mid( oldBasePath_.size());
+}
+
+
 QString  makePath( const QString &parentPath, const QString &itemName)
 {
     QString  parentPath_ = parentPath;

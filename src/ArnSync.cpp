@@ -109,7 +109,9 @@ void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
 
 
 /// Client ...
-ArnItemNet*  ArnSync::newNetItem( const QString& path, Arn::ObjectSyncMode syncMode, bool* isNewPtr)
+ArnItemNet*  ArnSync::newNetItem( const QString& path,
+                                  const QString& localMountPath, const QString& remoteMountPath,
+                                  Arn::ObjectSyncMode syncMode, bool* isNewPtr)
 {
     ArnItemNet*  itemNet = new ArnItemNet( this);
     if (!itemNet->open( path))  return 0;
@@ -132,6 +134,8 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path, Arn::ObjectSyncMode syncM
     if (isNewPtr)
         *isNewPtr = true;
 
+    itemNet->setLocalMountPath( localMountPath);
+    itemNet->setRemoteMountPath( remoteMountPath);
     itemNet->addSyncMode( syncMode, true);
     setupItemNet( itemNet, netId);
     itemNet->setBlockEcho( true);    // Client gives no echo to avoid endless looping
@@ -236,9 +240,9 @@ void  ArnSync::doCommand()
 
 uint  ArnSync::doCommandSync()
 {
-    QByteArray  path = _commandMap.value("path");
+    QByteArray   path = _commandMap.value("path");
     QByteArray  smode = _commandMap.value("smode");
-    uint  netId = _commandMap.value("id").toUInt();
+    uint        netId = _commandMap.value("id").toUInt();
 
     ArnItemNet*  itemNet = new ArnItemNet;
     if (!itemNet->open( path)) {
@@ -265,9 +269,10 @@ uint  ArnSync::doCommandSync()
 }
 
 
+/// Can be called booth for remote and local monitoring
 void  ArnSync::setupMonitorItem(ArnItemNet *itemNet)
 {
-    //// NewItemEvent to be sent for future created posterity (also not direct children)
+    //// Activate NewItemEvent to be sent for future created posterity (also not direct children)
     itemNet->setMonitor( true);
 
     //// Send NewItemEvent for any existing (direct) children (also folders)
@@ -517,11 +522,11 @@ void  ArnSync::doArnEvent( QByteArray type, QByteArray data, bool isLocal)
     }
 
     if (type == "monitorStart") {
-        if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: monitorStart Event";
+        if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: monitorStart Event";
 
         Arn::ObjectSyncMode  syncMode = itemNet->syncMode();
         if (isLocal && _isClientSide) {  // Client Side
-            itemNet->addSyncMode( syncMode.Monitor, true);  // Will demand monitor if resynced (server restart)
+            itemNet->addSyncMode( syncMode.Monitor, true);  // Will demand monitor if resynced (e.g. server restart)
         }
         else if (!isLocal && !_isClientSide && !syncMode.is( syncMode.Monitor)) {  // Server side
             setupMonitorItem( itemNet);  // Item will function as a Monitor
@@ -529,7 +534,7 @@ void  ArnSync::doArnEvent( QByteArray type, QByteArray data, bool isLocal)
         }
     }
     if (type == "monitorReStart") {
-        if (Arn::debugMonitor)  qDebug() << "ArnMonitor-Test: monitorReStart Event";
+        if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: monitorReStart Event";
 
         if (!isLocal && !_isClientSide) {  // Server side
             //// Send NewItemEvent for any existing direct children (also folders)
@@ -768,13 +773,15 @@ void  ArnSync::sendSyncItem( ArnItemNet* itemNet)
 
     _syncMap.clear();
     _syncMap.add(ARNRECNAME, "sync");
-    _syncMap.add("path", itemNet->path());
+    _syncMap.add("path", itemNet->toRemotePath());
     _syncMap.add("id", QByteArray::number( itemNet->netId()));
     QByteArray  smode = itemNet->getSyncModeString();
     if (!smode.isEmpty()) {
         _syncMap.add("smode", smode);
     }
 
+    if (Arn::debugShareObj)  qDebug() << "Send sync: localPath=" << itemNet->path()
+                                      << ", " << _syncMap.toXString();
     sendXSMap( _syncMap);
 }
 

@@ -53,7 +53,7 @@ ArnItemNet::ArnItemNet( QObject *parent) :
 
 
 ArnItemNet::ArnItemNet( const QString& path, QObject *parent) :
-        ArnItemB( parent)
+    ArnItemB( parent)
 {
     open( path);
     init();
@@ -69,6 +69,42 @@ void  ArnItemNet::setNetId( uint netId)
 uint  ArnItemNet::netId()  const
 {
     return _netId;
+}
+
+
+QString  ArnItemNet::remoteMountPath()  const
+{
+    return _remoteMountPath;
+}
+
+void  ArnItemNet::setRemoteMountPath( const QString& remoteMountPath)
+{
+    _remoteMountPath = remoteMountPath;
+}
+
+
+QString  ArnItemNet::localMountPath()  const
+{
+    return _localMountPath;
+}
+
+
+void  ArnItemNet::setLocalMountPath( const QString& localMountPath)
+{
+    _localMountPath = localMountPath;
+}
+
+
+QString  ArnItemNet::toRemotePath( const QString& localPath)  const
+{
+    return Arn::changeBasePath( _localMountPath, _remoteMountPath,
+                                localPath.isNull() ? path() : localPath);
+}
+
+
+QString  ArnItemNet::toLocalPath( const QString& remotePath)  const
+{
+    return Arn::changeBasePath( _remoteMountPath, _localMountPath, remotePath);
 }
 
 

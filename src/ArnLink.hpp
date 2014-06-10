@@ -40,7 +40,6 @@
 #include <QObject>
 #include <QString>
 #include <QVariant>
-#include <QMap>
 #include <QAtomicInt>
 #include <QMutex>
 
