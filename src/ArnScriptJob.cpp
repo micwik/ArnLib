@@ -56,7 +56,7 @@ ArnScriptJ::~ArnScriptJ()
 ArnClient*  ArnScriptJ::getClient( QString clientId)
 {
     ArnScriptJobB*  job = qobject_cast<ArnScriptJobB*>( parent());
-    Q_ASSERT( job || job->jobFactory());
+    Q_ASSERT( job && job->jobFactory());
     return job->jobFactory()->getClient( clientId);
 }
 
