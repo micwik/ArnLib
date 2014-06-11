@@ -41,7 +41,7 @@ MainWindow::MainWindow( QWidget* parent) :
     connect( _ui->lineEdit, SIGNAL(returnPressed()), this, SLOT(doSendLine()));
 
     //// Select Arn tree to sync (//) and auto reconnect
-    _arnClient.setMountPoint("//");
+    _arnClient.addMountPoint("//");
     _arnClient.setAutoConnect(true);
 
     //// Setuo discover connect to the Demo Chat Server

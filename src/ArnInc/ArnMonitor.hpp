@@ -44,7 +44,8 @@ class ArnItemNet;
 
 //! A client remote monitor to detect changes at server.
 /*!
-The monitor must be set at a [shared](\ref gen_shareArnobj) path.
+The monitor must normally be set at a [shared](\ref gen_shareArnobj) path. A none shared
+path can be used when client is set to 0, i.e. local monitoring.
 
 When the monitor is started, all the _arnChildFound_ signals are emmited for present
 childs. Later the signals are emmited for newly created childs.
@@ -56,7 +57,7 @@ childs. Later the signals are emmited for newly created childs.
 
     // In class code
     _arnMon = new ArnMonitor( this);
-    _arnMon->setMonitorPath("//Pipes/", _client);
+    _arnMon->start("//Pipes/", _client);
     connect( _arnMon, SIGNAL(arnChildFound(QString)), this, SLOT(netChildFound(QString)));
 \endcode
 */
@@ -97,9 +98,9 @@ public:
     void  setMonitorPath( QString path, ArnClient* client = 0);
 
     //! Starts the monitoring
-    /*! The monitor must be set at a [shared](\ref gen_shareArnobj) _path_ that is shared
-     *  using client::addMountPoint(). A none shared path can be used when client is set to
-     *  0, i.e. local monitoring.
+    /*! The monitor must normally be set at a [shared](\ref gen_shareArnobj) _path_ that is
+     *  shared using client::addMountPoint(). A none shared path can be used when client is
+     *  set to 0, i.e. local monitoring.
      *  \param[in] path
      *  \param[in] client to be used. If 0, local monitoring is done.
      */
@@ -107,7 +108,7 @@ public:
 
     //! Get the monitored _path_
     /*! \return The _path_
-     *  \see setMonitorPath()
+     *  \see start()
      */
     QString  monitorPath()  const {return _monitorPath;}
 

@@ -199,9 +199,10 @@ QString  childPath( const QString& parentPath, const QString& posterityPath);
  *
  *  Example: _path_ = "//Measure/depth/value", _oldBasePath_ = "//Measure/",
  *  _newBasePath_ = "/Measure/Tmp/" ==> return = "/Measure/Tmp/depth/value"
- *  \param[in] parentPath
- *  \param[in] posterityPath
- *  \return The _child path_
+ *  \param[in] oldBasePath
+ *  \param[in] newBasePath
+ *  \param[in] path
+ *  \return The changed path
  */
 QString  changeBasePath( const QString& oldBasePath, const QString& newBasePath, const QString& path);
 

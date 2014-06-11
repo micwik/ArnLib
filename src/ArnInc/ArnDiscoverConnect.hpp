@@ -61,7 +61,7 @@ _connector folder path_ will be "Sys/Discover/Connect/WeatherData-XYZ/".
     ArnClient  _arnClient;
 
     // In class code
-    _arnClient.setMountPoint("//");
+    _arnClient.addMountPoint("//");
     _arnClient.setAutoConnect(true);
 
     _connector = new ArnDiscoverConnector( _arnClient, "MyConnectionId");

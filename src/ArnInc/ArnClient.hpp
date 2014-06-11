@@ -64,7 +64,7 @@ arnList().
 
     // In class code
     _arnClient.connectToArn("localhost");
-    _arnClient.setMountPoint("//");
+    _arnClient.addMountPoint("//");
     _arnClient.setAutoConnect( true);
 \endcode
 */

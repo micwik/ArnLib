@@ -72,7 +72,7 @@ and ServerMain.cpp files.
 
     // In class code
     _client = new ArnClient;
-    _client->setMountPoint("//");
+    _client->addMountPoint("//");
     _client->setAutoConnect( true);
 
     _discoverRemote = new ArnDiscoverRemote( this);

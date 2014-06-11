@@ -258,8 +258,7 @@ public:
     bool  skipLocalSysLoading()  const;
 
     //! Set mode skip "/Local/Sys/" loading
-    /*! Use this in a remote client that must access target
-     *  [Local path](\ref gen_localPath).
+    /*! Can disable auto loading of _ARN Data Objects_ into "/Local/Sys/ tree".
      *  \param[in] skipLocalSysLoading
      *  \note Must be called before entering the Qt event loop
      *  \note Check the rules for [Local path](\ref gen_localPath)

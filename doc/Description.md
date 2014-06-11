@@ -72,7 +72,7 @@ an ArnItem is used as a template. See ArnItem::setTemplate().
 A relative path is also called the _local path_, e.g. the
 [Discover remote](#gen_discoverRemote) _service name_ at path
 "Sys/Discover/This/Service/value". The _local path_ is mapped to the absolute path
-"/Local/". The example is then equal to "/local/Sys/Discover/This/Service/value". The
+"/Local/". The example is then equal to "/Local/Sys/Discover/This/Service/value". The
 _local path_ should not be [shared](#gen_shareArnobj) as it will contain specific data
 for its running program.
 
@@ -81,12 +81,12 @@ be able to change an _ARN Data Object_ in the _local path_ at the remoted target
 For example this is used to change the [Discover remote](#gen_discoverRemote) _service name_
 for a target host.
 
-Following must be observed at remote client when sharing _local path_:
+Note: Do always mount the _local path_ of the server at a different path at the client.
+This is to avoid collision with the client's own _local path_ data.
 
-* use ArnM::setSkipLocalSysLoading()
-* Don't put anything in _local path_, that should't end up in the shared target host.
-* Don't use ArnDiscoverRemote or ArnDiscoverConnector.
-* This unwanted exception design will be addressed in a future version of ArnLib.
+In the above example, a remote client using ArnClient::addMountPoint("/@HostLocal/", "/Local/")
+will share and access the [Discover remote](#gen_discoverRemote) _service name_ at the path
+"/@HostLocal/Sys/Discover/This/Service/value".
 <Br><Br>
 
 ### Naming conventions ###    {#gen_naming}
@@ -95,6 +95,8 @@ These rules must not be obeyed, but are recommended, to get the most benefits of
 
 * First level folder empty, e.g. "//MyGlobalFolder/Date/value", is a global path and is
   [shared](#gen_shareArnobj) to server and clients.
+* First level folder starts with "@", e.g. "/@SomeServer/MyFolder/Date/value", is a shared
+  path and is [shared](#gen_shareArnobj) to a server (typically with some other remote path).
 * First level folder is "/Local", e.g "/Local/Key/value", is a [local path](#gen_localPath)
   and is not [shared](#gen_shareArnobj).
 * Path is relative, e.g "Key/value", is a [local path](#gen_localPath)
@@ -195,7 +197,7 @@ Any connected _client_ or the _server_ can make an _ARN Data Object_ persistent.
 It's just to open an ArnItem to the object and change _mode_ to _Save_.
 > ArnItem  arnMaxLevel; <Br>
 > arnMaxLevel.addMode( Arn::ObjectMode::Save); <Br>
-> arnMaxLevel.open("//config/Level/Max/value"); <Br>
+> arnMaxLevel.open("//Config/Level/Max/value"); <Br>
 
 When the _ARN Data Object_ is set to _Save_ mode, it's automatically loaded by the
 ArnPersist. At the _server_ this is instantly done. A _client_ has to wait for the value
@@ -240,13 +242,17 @@ operate independent of any connection.
 
 Each _ARN Client_ connects to the _ARN Server_ and decides which part of the
 _ARN Data Object_ tree to be shared. <Br>
-`ArnClient::setMountPoint("/share/")` will make the tree"/share/" shared. <Br>
+`ArnClient::addMountPoint("/Share/")` will make the tree "/Share/" shared. <Br>
 This doesn't mean that everything in the shared tree at the server now will be available
 at the client. The client has to create an _ARN Data Object_ in the shared tree.
 The client can then decide the exact objects of interest. <Br>
-`ArnItem::Open("/share/Test/value")` will open a shared object (in previous example).
+`ArnItem::Open("/Share/Test/value")` will open a shared object in previous example.
 
-Note: Normally "//" is used for global (shared). See [naming conventions](#gen_naming).
+Note: Normally "//" or "/@.../" is used for shared. See [naming conventions](#gen_naming).
+
+The remote tree can be at a different path than the local tree (mount point). <Br>
+> ArnClient::addMountPoint("/@Host/", "/")  will make the server shared at "/@Host/". <Br>
+> ArnItem::open("/@Host/Share/Test/value")  will now open the shared object in previous example.
 <Br><Br>
 
 ### Dynamic port ###    {#gen_dynamicPort}
