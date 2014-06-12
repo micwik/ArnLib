@@ -52,11 +52,11 @@ var classes =
     [ "Arn::ObjectSyncMode", "struct_arn_1_1_object_sync_mode.html", null ],
     [ "Arn::SameValue", "struct_arn_1_1_same_value.html", null ],
     [ "ArnDiscoverInfo::State", "struct_arn_discover_info_1_1_state.html", null ],
-    [ "ArnDiscoverAdvertise::State", "struct_arn_discover_advertise_1_1_state.html", null ],
     [ "ArnZeroConf::State", "struct_arn_zero_conf_1_1_state.html", null ],
+    [ "ArnDiscoverAdvertise::State", "struct_arn_discover_advertise_1_1_state.html", null ],
     [ "ArnError::StdCode", "struct_arn_error_1_1_std_code.html", null ],
-    [ "ArnDiscover::Type", "struct_arn_discover_1_1_type.html", null ],
-    [ "ArnServer::Type", "struct_arn_server_1_1_type.html", null ],
     [ "ArnScriptJobs::Type", "struct_arn_script_jobs_1_1_type.html", null ],
+    [ "ArnServer::Type", "struct_arn_server_1_1_type.html", null ],
+    [ "ArnDiscover::Type", "struct_arn_discover_1_1_type.html", null ],
     [ "Arn::XStringMap", "class_arn_1_1_x_string_map.html", null ]
 ];

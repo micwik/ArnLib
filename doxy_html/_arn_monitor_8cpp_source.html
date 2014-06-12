@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnMonitor.cpp (2.0.0) Source File</title>
+<title>ArnLib: src/ArnMonitor.cpp (2.0.0-2-g7f4b6be) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.0.x</span>
+   &#160;<span id="projectnumber">2.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -139,134 +139,195 @@ $(document).ready(function(){initNavTree('_arn_monitor_8cpp.html','');});
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_monitor_8hpp.html">ArnInc/ArnMonitor.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_client_8hpp.html">ArnInc/ArnClient.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_item_net_8hpp.html">ArnItemNet.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;QDebug&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;QTime&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a5b183d3eb917f16eea2fdcd73a7765bb">   38</a></span>&#160;<a class="code" href="class_arn_monitor.html#a5b183d3eb917f16eea2fdcd73a7765bb">ArnMonitor::ArnMonitor</a>( QObject* parent) :</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    QObject( parent)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da">_arnClient</a> = 0;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    _itemNet = 0;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_sync_8hpp.html">ArnSync.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_arn_item_net_8hpp.html">ArnItemNet.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;QDebug&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;QTime&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a5b183d3eb917f16eea2fdcd73a7765bb">   39</a></span>&#160;<a class="code" href="class_arn_monitor.html#a5b183d3eb917f16eea2fdcd73a7765bb">ArnMonitor::ArnMonitor</a>( QObject* parent) :</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    QObject( parent)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a> = 0;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    _itemNet = 0;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a188d2b01824fa28631736dce391b0ae1">   46</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_monitor.html#a188d2b01824fa28631736dce391b0ae1" title="Set the client to be used.">ArnMonitor::setClient</a>(<a class="code" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a> *client, QString <span class="keywordtype">id</span>)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da">_arnClient</a> = client;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da">_arnClient</a> &amp;&amp; !<span class="keywordtype">id</span>.isNull())</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <a class="code" href="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da">_arnClient</a>-&gt;setId( <span class="keywordtype">id</span>);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a188d2b01824fa28631736dce391b0ae1">   47</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_monitor.html#a188d2b01824fa28631736dce391b0ae1" title="Set the client to be used.">ArnMonitor::setClient</a>(<a class="code" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a> *client, QString <span class="keywordtype">id</span>)</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a> = <a class="code" href="class_arn_monitor.html#a83cd827fcd09ac64f75c2e2ba0b32629" title="Get the used client">client</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a> &amp;&amp; !<span class="keywordtype">id</span>.isNull())</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a>-&gt;setId( <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a2b1604f4fa457f8800534bcf3d8fbba5">   54</a></span>&#160;QString  <a class="code" href="class_arn_monitor.html#a2b1604f4fa457f8800534bcf3d8fbba5" title="Get the id name of the used client">ArnMonitor::clientId</a>()<span class="keyword">  const</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da">_arnClient</a>)  <span class="keywordflow">return</span> QString();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da">_arnClient</a>-&gt;id();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a2b1604f4fa457f8800534bcf3d8fbba5">   55</a></span>&#160;QString  <a class="code" href="class_arn_monitor.html#a2b1604f4fa457f8800534bcf3d8fbba5" title="Get the id name of the used client">ArnMonitor::clientId</a>()<span class="keyword">  const</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a>)  <span class="keywordflow">return</span> QString();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a>-&gt;id();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae">   61</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae" title="Set the path to be monitored.">ArnMonitor::setMonitorPath</a>( QString path, <a class="code" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a> *client)</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;{</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">if</span> (client)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da">_arnClient</a> = client;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a> = path;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a>.endsWith(<span class="stringliteral">&quot;/&quot;</span>))  <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a83cd827fcd09ac64f75c2e2ba0b32629">   62</a></span>&#160;<a class="code" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a>*  <a class="code" href="class_arn_monitor.html#a83cd827fcd09ac64f75c2e2ba0b32629" title="Get the used client">ArnMonitor::client</a>()<span class="keyword">  const</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da">_arnClient</a>) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">// No recursion due to no emit of arnItemCreated as this is a folder</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">// ItemNet is not threadsafe, only use in connect etc</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordtype">bool</span> isNew;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        _itemNet = <a class="code" href="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da">_arnClient</a>-&gt;newNetItem( <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a>, <a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027bafcb26656bd481892e119f8cdf8cb1c81" title="default">Arn::ObjectSyncMode::Normal</a>, &amp;isNew);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">if</span> (!_itemNet)  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        connect( _itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,<span class="keywordtype">bool</span>)),</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                 <span class="keyword">this</span>, SLOT(dispatchArnEvent(QByteArray,QByteArray,<span class="keywordtype">bool</span>)));</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">if</span> (isNew) {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">Arn::debugMonitor</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnMonitor-Test: Invoke monitorStart Before&quot;</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            QMetaObject::invokeMethod( <span class="keyword">this</span>,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                       <span class="stringliteral">&quot;emitArnEvent&quot;</span>,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                       Qt::QueuedConnection,  <span class="comment">// make sure started after all setup is done in this thread</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                                       Q_ARG( QByteArray, <span class="stringliteral">&quot;monitorStart&quot;</span>));</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="comment">// QTime  ts = QTime::currentTime();</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="comment">// while (QTime::currentTime() &lt; ts.addSecs(5));</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">Arn::debugMonitor</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnMonitor-Test: Invoke monitorStart After (delay)&quot;</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">Arn::debugMonitor</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnMonitor-Test: Invoke monitorReStart Before&quot;</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            QMetaObject::invokeMethod( <span class="keyword">this</span>,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                                       <span class="stringliteral">&quot;emitArnEvent&quot;</span>,</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                                       Qt::QueuedConnection,  <span class="comment">// make sure restarted after all setup is done in this thread</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                       Q_ARG( QByteArray, <span class="stringliteral">&quot;monitorReStart&quot;</span>));</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">Arn::debugMonitor</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnMonitor-Test: Invoke monitorReStart After (delay)&quot;</span>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a740f070fa55cbfcbc57f43d877956d9a">  101</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_monitor.html#a740f070fa55cbfcbc57f43d877956d9a" title="The monitor is restarted.">ArnMonitor::reStart</a>()</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    _foundChilds.clear();</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    emitArnEvent(<span class="stringliteral">&quot;monitorReStart&quot;</span>);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keywordtype">void</span>  ArnMonitor::emitArnEvent( QByteArray type, QByteArray data)</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordflow">if</span> (!_itemNet)  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    QMetaObject::invokeMethod( _itemNet,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                               <span class="stringliteral">&quot;emitArnEvent&quot;</span>,</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                               Qt::AutoConnection,</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                               Q_ARG( QByteArray, type),</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                               Q_ARG( QByteArray, data));</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae">   68</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae" title="Set the path to be monitored.">ArnMonitor::setMonitorPath</a>( QString path, <a class="code" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a> *client)</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="class_arn_monitor.html#a28f43c9d2933a92660d93cc5bd3ef6e4" title="Starts the monitoring.">start</a>( path, client ? client : <a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a>.data());</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a28f43c9d2933a92660d93cc5bd3ef6e4">   74</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_arn_monitor.html#a28f43c9d2933a92660d93cc5bd3ef6e4" title="Starts the monitoring.">ArnMonitor::start</a>(<span class="keyword">const</span> QString&amp; path, <a class="code" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a>* client)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a> = <a class="code" href="class_arn_monitor.html#a83cd827fcd09ac64f75c2e2ba0b32629" title="Get the used client">client</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a> = <a class="code" href="namespace_arn.html#a1217c8d6b0195b60ef72fc6757480893" title="Convert a path to a full absolute path.">Arn::fullPath</a>( path);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a>.endsWith(<span class="stringliteral">&quot;/&quot;</span>))  <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a> += <span class="stringliteral">&quot;/&quot;</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a>) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="comment">// No recursion due to no emit of arnItemCreated as this is a folder</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">// ItemNet is not threadsafe, only use in connect etc</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">bool</span> isNew;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        _itemNet = <a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a>-&gt;newNetItem( <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a>, <a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027bafcb26656bd481892e119f8cdf8cb1c81" title="default">Arn::ObjectSyncMode::Normal</a>, &amp;isNew);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">if</span> (!_itemNet)  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        connect( _itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,<span class="keywordtype">bool</span>)),</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                 <span class="keyword">this</span>, SLOT(dispatchArnEvent(QByteArray,QByteArray,<span class="keywordtype">bool</span>)));</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">Arn::debugMonitor</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;Monitor start: new=&quot;</span> &lt;&lt; isNew &lt;&lt; <span class="stringliteral">&quot; path=&quot;</span> &lt;&lt; <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordflow">if</span> (isNew) {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a71d17f04b08b1260cf1ce08f71bf3ebc">Arn::debugMonitorTest</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnMonitor-Test: Invoke monitorStart Before&quot;</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            QMetaObject::invokeMethod( <span class="keyword">this</span>,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                       <span class="stringliteral">&quot;emitArnEvent&quot;</span>,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                                       Qt::QueuedConnection,  <span class="comment">// make sure started after all setup is done in this thread</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                                       Q_ARG( QByteArray, <span class="stringliteral">&quot;monitorStart&quot;</span>));</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="comment">// QTime  ts = QTime::currentTime();</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="comment">// while (QTime::currentTime() &lt; ts.addSecs(5));</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a71d17f04b08b1260cf1ce08f71bf3ebc">Arn::debugMonitorTest</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnMonitor-Test: Invoke monitorStart After (delay)&quot;</span>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a71d17f04b08b1260cf1ce08f71bf3ebc">Arn::debugMonitorTest</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnMonitor-Test: Invoke monitorReStart Before&quot;</span>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            QMetaObject::invokeMethod( <span class="keyword">this</span>,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                                       <span class="stringliteral">&quot;emitArnEvent&quot;</span>,</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                                       Qt::QueuedConnection,  <span class="comment">// make sure restarted after all setup is done in this thread</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                                       Q_ARG( QByteArray, <span class="stringliteral">&quot;monitorReStart&quot;</span>));</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a71d17f04b08b1260cf1ce08f71bf3ebc">Arn::debugMonitorTest</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnMonitor-Test: Invoke monitorReStart After (delay)&quot;</span>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordflow">else</span> {  <span class="comment">// No client, do local monitor</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        _itemNet = <span class="keyword">new</span> ArnItemNet( <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">if</span> (!_itemNet-&gt;open( <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a>)) {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keyword">delete</span> _itemNet;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            _itemNet = 0;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        _itemNet-&gt;setNetId( _itemNet-&gt;linkId());</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keywordtype">void</span>  ArnMonitor::dispatchArnEvent( QByteArray type, QByteArray data, <span class="keywordtype">bool</span> isLocal)</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;{</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordflow">if</span> (isLocal)  <span class="keywordflow">return</span>;  <span class="comment">// Don&#39;t handle local events</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        connect( _itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,<span class="keywordtype">bool</span>)),</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                 <span class="keyword">this</span>, SLOT(dispatchArnEvent(QByteArray,QByteArray,<span class="keywordtype">bool</span>)), Qt::QueuedConnection);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="comment">//MW: Todo connect( _itemNet, SIGNAL(arnLinkDestroyed()),</span></div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    QString  foundPath;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">// &quot;created&quot; (new fresh) is special case of &quot;found&quot;</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">if</span> (type == <span class="stringliteral">&quot;itemCreated&quot;</span>) {</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        foundPath = QString::fromUtf8( data.constData(), data.size());</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        emit <a class="code" href="class_arn_monitor.html#aee1c84df3076e319f3faed532d1a780d" title="Signal emitted when an Arn Data Object is created in the tree below.">arnItemCreated</a>( foundPath);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == <span class="stringliteral">&quot;itemFound&quot;</span>) {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        foundPath = QString::fromUtf8( data.constData(), data.size());</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">Arn::debugMonitor</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;Monitor start (local-items): path=&quot;</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                                         &lt;&lt; <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a> &lt;&lt; <span class="stringliteral">&quot; id=&quot;</span> &lt;&lt; _itemNet-&gt;netId();</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        QMetaObject::invokeMethod( <span class="keyword">this</span>,</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                                   <span class="stringliteral">&quot;setupLocalMonitorItem&quot;</span>,</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                                   Qt::QueuedConnection  <span class="comment">// make sure called after all setup is done in this thread</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                                   );</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;}</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    QString <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path.">childPath</a> = <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path.">Arn::childPath</a>( <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a>, foundPath);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="comment">// qDebug() &lt;&lt; &quot;### arnMon dispArnEv: childPath=&quot; &lt;&lt; childPath;</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordflow">if</span> (!childPath.isEmpty()) {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keywordflow">if</span> (!_foundChilds.contains( childPath)) {  <span class="comment">// Only send events about unknown items</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            _foundChilds += <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path.">childPath</a>;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="comment">// qDebug() &lt;&lt; &quot;### arnMon dispArnEv: Emit chFound childPath=&quot; &lt;&lt; childPath;</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            emit <a class="code" href="class_arn_monitor.html#a783c8066daafd9a266c27662e47106c8" title="Signal emitted for present and newly created childs in the monitor folder.">arnChildFound</a>( childPath);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">if</span> (childPath.endsWith(<span class="charliteral">&#39;/&#39;</span>))  emit <a class="code" href="class_arn_monitor.html#ae067b765e213049c7a2ac5dcf0cc6d67" title="Signal emitted for present and newly created folder childs in the monitor folder.">arnChildFoundFolder</a>( childPath);</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            <span class="keywordflow">else</span>                          emit <a class="code" href="class_arn_monitor.html#a9458cfceef585c85e824b622d0afeb97" title="Signal emitted for present and newly created leaf childs in the monitor folder.">arnChildFoundLeaf</a>( childPath);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        }</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    }</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;}</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#af17594221c0a2f111a0613c90dc4b976">  148</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_monitor.html#af17594221c0a2f111a0613c90dc4b976" title="Help telling the monitor about deletion of a previous found child.">ArnMonitor::foundChildDeleted</a>( QString path)</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;{</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordtype">int</span>  i = _foundChilds.indexOf( path);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="comment">// qDebug() &lt;&lt; &quot;### arnMon foundChDel: path=&quot; &lt;&lt; path &lt;&lt; &quot; i=&quot; &lt;&lt; i;</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordflow">if</span> (i &gt;= 0) {</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        _foundChilds.removeAt(i);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    }</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;}</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#a740f070fa55cbfcbc57f43d877956d9a">  135</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_monitor.html#a740f070fa55cbfcbc57f43d877956d9a" title="The monitor is restarted.">ArnMonitor::reStart</a>()</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;{</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    _foundChilds.clear();</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    emitArnEvent(<span class="stringliteral">&quot;monitorReStart&quot;</span>);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;}</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="keywordtype">void</span>  ArnMonitor::emitArnEvent( QByteArray type, QByteArray data)</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;{</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordflow">if</span> (!_itemNet)  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    QMetaObject::invokeMethod( _itemNet,</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                               <span class="stringliteral">&quot;emitArnEvent&quot;</span>,</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                               Qt::AutoConnection,</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                               Q_ARG( QByteArray, type),</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                               Q_ARG( QByteArray, data));</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;}</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="keywordtype">void</span>  ArnMonitor::setupLocalMonitorItem()</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;{</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    ArnSync::setupMonitorItem( _itemNet);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;}</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="keywordtype">void</span>  ArnMonitor::dispatchArnEvent( QByteArray type, QByteArray data, <span class="keywordtype">bool</span> isLocal)</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;{</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    ArnItemNet*  itemNet = qobject_cast&lt;ArnItemNet*&gt;( sender());</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordflow">if</span> (!itemNet) {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Can&#39;t get ArnItemNet sender for dispatchArnEvent&quot;</span>)),</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                            <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afaef7eeb5d30b5dd20d6d37cf6b9954484">ArnError::Undef</a>);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    }</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">Arn::debugMonitor</a> &amp;&amp; isLocal) {</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        qDebug() &lt;&lt; <span class="stringliteral">&quot;Dipatch Arn event (local): type=&quot;</span> &lt;&lt; type</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot; data=&quot;</span> &lt;&lt; data &lt;&lt; <span class="stringliteral">&quot; id=&quot;</span> &lt;&lt; itemNet-&gt;netId();</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    }</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    QString  foundRemotePath = QString::fromUtf8( data.constData(), data.size());</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    QString  foundPath = itemNet-&gt;toLocalPath( foundRemotePath);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordflow">if</span> (type == <span class="stringliteral">&quot;itemCreated&quot;</span>) {</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        emit <a class="code" href="class_arn_monitor.html#aee1c84df3076e319f3faed532d1a780d" title="Signal emitted when an Arn Data Object is created in the tree below.">arnItemCreated</a>( foundPath);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (type == <span class="stringliteral">&quot;itemFound&quot;</span>) {</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    }</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((type == <span class="stringliteral">&quot;monitorReStart&quot;</span>) &amp;&amp; !<a class="code" href="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c">_arnClient</a>) {  <span class="comment">// Local monitor event</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment"></span>        ArnSync::doChildsToEvent( itemNet);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    }</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        <span class="keywordflow">return</span>;  <span class="comment">// This event is not handled</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    }</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">Arn::debugMonitor</a> &amp;&amp; !isLocal) {</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        qDebug() &lt;&lt; <span class="stringliteral">&quot;Dipatch Arn event: type=&quot;</span> &lt;&lt; type</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                 &lt;&lt; <span class="stringliteral">&quot; remotePath=&quot;</span> &lt;&lt; foundRemotePath &lt;&lt; <span class="stringliteral">&quot; localPath=&quot;</span> &lt;&lt; foundPath;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    }</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    QString <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path (posterityPath)">childPath</a> = <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path (posterityPath)">Arn::childPath</a>( <a class="code" href="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4">_monitorPath</a>, foundPath);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="comment">// qDebug() &lt;&lt; &quot;### arnMon dispArnEv: childPath=&quot; &lt;&lt; childPath;</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordflow">if</span> (!childPath.isEmpty()) {  <span class="comment">// Should always be none emty ...</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordflow">if</span> (!_foundChilds.contains( childPath)) {  <span class="comment">// Only send events about unknown items</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            _foundChilds += <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path (posterityPath)">childPath</a>;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <span class="comment">// qDebug() &lt;&lt; &quot;### arnMon dispArnEv: Emit chFound childPath=&quot; &lt;&lt; childPath;</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            emit <a class="code" href="class_arn_monitor.html#a783c8066daafd9a266c27662e47106c8" title="Signal emitted for present and newly created childs in the monitor folder.">arnChildFound</a>( childPath);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            <span class="keywordflow">if</span> (childPath.endsWith(<span class="charliteral">&#39;/&#39;</span>))  emit <a class="code" href="class_arn_monitor.html#ae067b765e213049c7a2ac5dcf0cc6d67" title="Signal emitted for present and newly created folder childs in the monitor folder.">arnChildFoundFolder</a>( childPath);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;            <span class="keywordflow">else</span>                          emit <a class="code" href="class_arn_monitor.html#a9458cfceef585c85e824b622d0afeb97" title="Signal emitted for present and newly created leaf childs in the monitor folder.">arnChildFoundLeaf</a>( childPath);</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        }</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    }</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;}</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
+<div class="line"><a name="l00212"></a><span class="lineno"><a class="code" href="class_arn_monitor.html#af17594221c0a2f111a0613c90dc4b976">  212</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_monitor.html#af17594221c0a2f111a0613c90dc4b976" title="Help telling the monitor about deletion of a previous found child.">ArnMonitor::foundChildDeleted</a>( QString path)</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;{</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keywordtype">int</span>  i = _foundChilds.indexOf( path);</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="comment">// qDebug() &lt;&lt; &quot;### arnMon foundChDel: path=&quot; &lt;&lt; path &lt;&lt; &quot; i=&quot; &lt;&lt; i;</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">if</span> (i &gt;= 0) {</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        _foundChilds.removeAt(i);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    }</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_monitor_8cpp.html">ArnMonitor.cpp</a></li>
-    <li class="footer">Generated on Mon Apr 21 2014 23:20:23 for ArnLib by
+    <li class="footer">Generated on Wed Jun 11 2014 22:54:12 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

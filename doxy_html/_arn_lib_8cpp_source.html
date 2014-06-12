@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnLib.cpp (2.0.0) Source File</title>
+<title>ArnLib: src/ArnLib.cpp (2.0.0-2-g7f4b6be) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.0.x</span>
+   &#160;<span id="projectnumber">2.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -146,26 +146,28 @@ $(document).ready(function(){initNavTree('_arn_lib_8cpp.html','');});
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="namespace_arn.html#a385273bd359f50b44ab5fec0e9a69225">   38</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a385273bd359f50b44ab5fec0e9a69225">debugLinkRef</a>     = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="namespace_arn.html#aeffb8179d5c1bad4d72a1af04fa08ad2">   39</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#aeffb8179d5c1bad4d72a1af04fa08ad2">debugLinkDestroy</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="namespace_arn.html#a49a3bb4087a4000e9cd479b4e671e600">   40</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a49a3bb4087a4000e9cd479b4e671e600">debugRecInOut</a>    = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">   41</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">debugMonitor</a>     = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="namespace_arn.html#a4dd210c47b1a63da3f7f853f76dbf7c7">   42</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a4dd210c47b1a63da3f7f853f76dbf7c7">debugRPC</a>         = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="code" href="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2">   43</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2">debugDepend</a>      = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="code" href="namespace_arn.html#a4b986939b2f12b23db9cddac286c2f0c">   44</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a4b986939b2f12b23db9cddac286c2f0c">debugDiscover</a>    = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="code" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">   45</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">debugZeroConf</a>    = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="namespace_arn.html#a93deb2830ba06a3fe371c25d07789c99">   46</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a93deb2830ba06a3fe371c25d07789c99">debugMDNS</a>        = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="namespace_arn.html#a6fb271efbd6458b8ec659098deced870">   47</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a6fb271efbd6458b8ec659098deced870">warningMDNS</a>      = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="code" href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">   49</a></span>&#160;<span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">resourceArnLib</a>  = <span class="stringliteral">&quot;:/ArnLib/&quot;</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">   50</a></span>&#160;<span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">resourceArnRoot</a> = <span class="stringliteral">&quot;:/ArnLib/ArnRoot/&quot;</span>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}  <span class="comment">// Arn::</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="namespace_arn.html#a85f1d26d1f1c105abf2478d4957dd2b9">   41</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a85f1d26d1f1c105abf2478d4957dd2b9">debugShareObj</a>    = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">   42</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">debugMonitor</a>     = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="code" href="namespace_arn.html#a71d17f04b08b1260cf1ce08f71bf3ebc">   43</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a71d17f04b08b1260cf1ce08f71bf3ebc">debugMonitorTest</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="code" href="namespace_arn.html#a4dd210c47b1a63da3f7f853f76dbf7c7">   44</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a4dd210c47b1a63da3f7f853f76dbf7c7">debugRPC</a>         = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="code" href="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2">   45</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2">debugDepend</a>      = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="namespace_arn.html#a4b986939b2f12b23db9cddac286c2f0c">   46</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a4b986939b2f12b23db9cddac286c2f0c">debugDiscover</a>    = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">   47</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">debugZeroConf</a>    = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="namespace_arn.html#a93deb2830ba06a3fe371c25d07789c99">   48</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a93deb2830ba06a3fe371c25d07789c99">debugMDNS</a>        = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="code" href="namespace_arn.html#a6fb271efbd6458b8ec659098deced870">   49</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a6fb271efbd6458b8ec659098deced870">warningMDNS</a>      = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">   51</a></span>&#160;<span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">resourceArnLib</a>  = <span class="stringliteral">&quot;:/ArnLib/&quot;</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="code" href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">   52</a></span>&#160;<span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">resourceArnRoot</a> = <span class="stringliteral">&quot;:/ArnLib/ArnRoot/&quot;</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}  <span class="comment">// Arn::</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_lib_8cpp.html">ArnLib.cpp</a></li>
-    <li class="footer">Generated on Mon Apr 21 2014 23:20:23 for ArnLib by
+    <li class="footer">Generated on Wed Jun 11 2014 22:54:11 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

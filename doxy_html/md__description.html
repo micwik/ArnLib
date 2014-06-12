@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.0.x</span>
+   &#160;<span id="projectnumber">2.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -164,22 +164,18 @@ Modes</h2>
 </p>
 <h2><a class="anchor" id="gen_localPath"></a>
 Local path</h2>
-<p>A relative path is also called the <em>local path</em>, e.g. the <a href="#gen_discoverRemote">Discover remote</a> <em>service name</em> at path "Sys/Discover/This/Service/value". The <em>local path</em> is mapped to the absolute path "/Local/". The example is then equal to "/local/Sys/Discover/This/Service/value". The <em>local path</em> should not be <a href="#gen_shareArnobj">shared</a> as it will contain specific data for its running program.</p>
+<p>A relative path is also called the <em>local path</em>, e.g. the <a href="#gen_discoverRemote">Discover remote</a> <em>service name</em> at path "Sys/Discover/This/Service/value". The <em>local path</em> is mapped to the absolute path "/Local/". The example is then equal to "/Local/Sys/Discover/This/Service/value". The <em>local path</em> should not be <a href="#gen_shareArnobj">shared</a> as it will contain specific data for its running program.</p>
 <p>The exception to not sharing <em>local path</em> is for some kind of remote client that must be able to change an <em>ARN Data Object</em> in the <em>local path</em> at the remoted target. For example this is used to change the <a href="#gen_discoverRemote">Discover remote</a> <em>service name</em> for a target host.</p>
-<p>Following must be observed at remote client when sharing <em>local path</em>:</p>
-<ul>
-<li>use <a class="el" href="class_arn_m.html#abc447a51aa5624f960832762f74bdc35" title="Set mode skip &quot;/Local/Sys/&quot; loading.">ArnM::setSkipLocalSysLoading()</a></li>
-<li>Don't put anything in <em>local path</em>, that should't end up in the shared target host.</li>
-<li>Don't use <a class="el" href="class_arn_discover_remote.html" title="Discover with remote setting.">ArnDiscoverRemote</a> or <a class="el" href="class_arn_discover_connector.html" title="An automatic client discover connector.">ArnDiscoverConnector</a>.</li>
-<li>This unwanted exception design will be addressed in a future version of ArnLib. <br/>
+<p>Note: Do always mount the <em>local path</em> of the server at a different path at the client. This is to avoid collision with the client's own <em>local path</em> data.</p>
+<p>In the above example, a remote client using <a class="el" href="class_arn_client.html#ac417b3db210850f4bea8abcf78bf1237" title="Add a sharing tree path.">ArnClient::addMountPoint</a>("/@HostLocal/", "/Local/") will share and access the <a href="#gen_discoverRemote">Discover remote</a> <em>service name</em> at the path "/@HostLocal/Sys/Discover/This/Service/value". <br/>
 <br/>
-</li>
-</ul>
+</p>
 <h2><a class="anchor" id="gen_naming"></a>
 Naming conventions</h2>
 <p>These rules must not be obeyed, but are recommended, to get the most benefits of the Arn echo system, like ArnBrowser.</p>
 <ul>
 <li>First level folder empty, e.g. "//MyGlobalFolder/Date/value", is a global path and is <a href="#gen_shareArnobj">shared</a> to server and clients.</li>
+<li>First level folder starts with "@", e.g. "/@SomeServer/MyFolder/Date/value", is a shared path and is <a href="#gen_shareArnobj">shared</a> to a server (typically with some other remote path).</li>
 <li>First level folder is "/Local", e.g "/Local/Key/value", is a <a href="#gen_localPath">local path</a> and is not <a href="#gen_shareArnobj">shared</a>.</li>
 <li>Path is relative, e.g "Key/value", is a <a href="#gen_localPath">local path</a> and is not <a href="#gen_shareArnobj">shared</a>.</li>
 <li>When a leaf is used as an attribute, the following names are reserved:<ul>
@@ -235,7 +231,7 @@ Persistent Arn Data Objects    </h1>
 <blockquote class="doxtable">
 <p><a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a> arnMaxLevel; <br/>
  arnMaxLevel.addMode( Arn::ObjectMode::Save); <br/>
- arnMaxLevel.open("//config/Level/Max/value"); <br/>
+ arnMaxLevel.open("//Config/Level/Max/value"); <br/>
 </p>
 <p></p>
 </blockquote>
@@ -260,10 +256,18 @@ Saving objects in files</h2>
 Sharing Arn Data Objects    </h1>
 <p>A fundamental aspect of Arn is that <em>ARN Data Objects</em> can be shared. This is centralized to the <em>ARN Server</em>, which stores all shared objects. It's still a distributed model as each client and server has their own set of <em>ARN Data Objects</em> that operate independent of any connection.</p>
 <p>Each <em>ARN Client</em> connects to the <em>ARN Server</em> and decides which part of the <em>ARN Data Object</em> tree to be shared. <br/>
- <code><a class="el" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548" title="Set the sharing tree path.">ArnClient::setMountPoint</a>("/share/")</code> will make the tree"/share/" shared. <br/>
+ <code><a class="el" href="class_arn_client.html#ac417b3db210850f4bea8abcf78bf1237" title="Add a sharing tree path.">ArnClient::addMountPoint</a>("/Share/")</code> will make the tree "/Share/" shared. <br/>
  This doesn't mean that everything in the shared tree at the server now will be available at the client. The client has to create an <em>ARN Data Object</em> in the shared tree. The client can then decide the exact objects of interest. <br/>
- <code>ArnItem::Open("/share/Test/value")</code> will open a shared object (in previous example).</p>
-<p>Note: Normally "//" is used for global (shared). See <a href="#gen_naming">naming conventions</a>. <br/>
+ <code>ArnItem::Open("/Share/Test/value")</code> will open a shared object in previous example.</p>
+<p>Note: Normally "//" or "/@.../" is used for shared. See <a href="#gen_naming">naming conventions</a>.</p>
+<p>The remote tree can be at a different path than the local tree (mount point). <br/>
+ </p>
+<blockquote class="doxtable">
+<p><a class="el" href="class_arn_client.html#ac417b3db210850f4bea8abcf78bf1237" title="Add a sharing tree path.">ArnClient::addMountPoint</a>("/@Host/", "/") will make the server shared at "/@Host/". <br/>
+ <a class="el" href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" title="Open a handle to an Arn Data Object">ArnItem::open</a>("/@Host/Share/Test/value") will now open the shared object in previous example.</p>
+<p></p>
+</blockquote>
+<p><br/>
 <br/>
 </p>
 <h2><a class="anchor" id="gen_dynamicPort"></a>
@@ -402,7 +406,7 @@ Application notations    </h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Apr 21 2014 23:20:24 for ArnLib by
+    <li class="footer">Generated on Wed Jun 11 2014 22:54:12 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

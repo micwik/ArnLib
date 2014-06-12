@@ -1,10 +1,12 @@
 var searchData=
 [
+  ['changebasepath',['changeBasePath',['../namespace_arn.html#a197a8ae8b61ad386b09af26a6f457671',1,'Arn']]],
   ['changed',['changed',['../class_arn_item.html#a0930d9c81b17574c85f0cb91899ed684',1,'ArnItem::changed()'],['../class_arn_item.html#ad4150e3588d51ef290a2555a3a1868e2',1,'ArnItem::changed()'],['../class_arn_item.html#a62977ac2af3c0d08fc673692ab5a6050',1,'ArnItem::changed()'],['../class_arn_item.html#a0c101339e196c0b1fbc6bda621c5c617',1,'ArnItem::changed()'],['../class_arn_item.html#a99a4d07d180b364e95104ab73c4be82f',1,'ArnItem::changed()'],['../class_arn_item.html#a5909c524bccf45cc001f2db7af76781b',1,'ArnItem::changed()'],['../class_arn_item.html#ad433ce7226d38580d93a8d4dc6799f97',1,'ArnItem::changed()'],['../class_arn_pipe.html#a121732850185805eaca00b91c7f75a6e',1,'ArnPipe::changed()']]],
   ['childpath',['childPath',['../namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf',1,'Arn']]],
   ['clear',['clear',['../class_arn_1_1_x_string_map.html#a4ea0ceaea8ce32f3771a5121991be220',1,'Arn::XStringMap']]],
   ['cleararnlist',['clearArnList',['../class_arn_client.html#a612e42fe9c9859f446f715499635730b',1,'ArnClient']]],
   ['cleardirecthosts',['clearDirectHosts',['../class_arn_discover_connector.html#a4cf19bbf5923d4c4a450d8bf0dddb9bd',1,'ArnDiscoverConnector']]],
+  ['client',['client',['../class_arn_monitor.html#a83cd827fcd09ac64f75c2e2ba0b32629',1,'ArnMonitor']]],
   ['clientid',['clientId',['../class_arn_monitor.html#a2b1604f4fa457f8800534bcf3d8fbba5',1,'ArnMonitor']]],
   ['clientreadytoconnect',['clientReadyToConnect',['../class_arn_discover_connector.html#a66421271a852f9bacf9e96dc8c68a215',1,'ArnDiscoverConnector::clientReadyToConnect()'],['../class_arn_discover_remote.html#ac11914e70b4d34650fcd9250fb635601',1,'ArnDiscoverRemote::clientReadyToConnect()']]],
   ['close',['close',['../class_arn_item_b.html#a6c523f9baf84b2f04711c0d81dd10168',1,'ArnItemB']]],

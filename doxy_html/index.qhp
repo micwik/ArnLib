@@ -4,7 +4,7 @@
   <filterSection>
     <filterAttribute>doxygen</filterAttribute>
     <toc>
-      <section title="ArnLib 2.0.x" ref="index.html">
+      <section title="ArnLib 2.1.x" ref="index.html">
         <section title="README" ref="md__r_e_a_d_m_e.html" />
         <section title="General Description" ref="md__description.html">
           <section title="Arn Data Objects    " ref="md__description.html">
@@ -67,6 +67,7 @@
             <section title="Description" ref="help_disc_discover.html" />
           </section>
         </section>
+        <section title="Deprecated List" ref="deprecated.html" />
         <section title="Namespaces">
           <section title="Namespace List" ref="namespaces.html">
             <section title="Arn" ref="namespace_arn.html" />
@@ -201,6 +202,7 @@
               </section>
               <section title="HostList" ref="class_arn_client.html" />
               <section title="ArnClient" ref="class_arn_client.html" />
+              <section title="addMountPoint" ref="class_arn_client.html" />
               <section title="addToArnList" ref="class_arn_client.html" />
               <section title="arnList" ref="class_arn_client.html" />
               <section title="clearArnList" ref="class_arn_client.html" />
@@ -208,6 +210,7 @@
               <section title="connectStatus" ref="class_arn_client.html" />
               <section title="connectToArn" ref="class_arn_client.html" />
               <section title="connectToArnList" ref="class_arn_client.html" />
+              <section title="removeMountPoint" ref="class_arn_client.html" />
               <section title="setAutoConnect" ref="class_arn_client.html" />
               <section title="setMountPoint" ref="class_arn_client.html" />
               <section title="tcpConnected" ref="class_arn_client.html" />
@@ -465,6 +468,7 @@
               <section title="arnChildFoundFolder" ref="class_arn_monitor.html" />
               <section title="arnChildFoundLeaf" ref="class_arn_monitor.html" />
               <section title="arnItemCreated" ref="class_arn_monitor.html" />
+              <section title="client" ref="class_arn_monitor.html" />
               <section title="clientId" ref="class_arn_monitor.html" />
               <section title="foundChildDeleted" ref="class_arn_monitor.html" />
               <section title="monitorPath" ref="class_arn_monitor.html" />
@@ -473,6 +477,7 @@
               <section title="setClient" ref="class_arn_monitor.html" />
               <section title="setMonitorPath" ref="class_arn_monitor.html" />
               <section title="setReference" ref="class_arn_monitor.html" />
+              <section title="start" ref="class_arn_monitor.html" />
               <section title="_arnClient" ref="class_arn_monitor.html" />
               <section title="_monitorPath" ref="class_arn_monitor.html" />
             </section>
@@ -769,12 +774,12 @@
             <section title="Arn::ObjectSyncMode" ref="struct_arn_1_1_object_sync_mode.html" />
             <section title="Arn::SameValue" ref="struct_arn_1_1_same_value.html" />
             <section title="ArnDiscoverInfo::State" ref="struct_arn_discover_info_1_1_state.html" />
-            <section title="ArnDiscoverAdvertise::State" ref="struct_arn_discover_advertise_1_1_state.html" />
             <section title="ArnZeroConf::State" ref="struct_arn_zero_conf_1_1_state.html" />
+            <section title="ArnDiscoverAdvertise::State" ref="struct_arn_discover_advertise_1_1_state.html" />
             <section title="ArnError::StdCode" ref="struct_arn_error_1_1_std_code.html" />
-            <section title="ArnDiscover::Type" ref="struct_arn_discover_1_1_type.html" />
-            <section title="ArnServer::Type" ref="struct_arn_server_1_1_type.html" />
             <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
+            <section title="ArnServer::Type" ref="struct_arn_server_1_1_type.html" />
+            <section title="ArnDiscover::Type" ref="struct_arn_discover_1_1_type.html" />
             <section title="Arn::XStringMap" ref="class_arn_1_1_x_string_map.html" />
           </section>
           <section title="Class Hierarchy" ref="hierarchy.html">
@@ -830,12 +835,12 @@
             <section title="Arn::ObjectSyncMode" ref="struct_arn_1_1_object_sync_mode.html" />
             <section title="Arn::SameValue" ref="struct_arn_1_1_same_value.html" />
             <section title="ArnDiscoverInfo::State" ref="struct_arn_discover_info_1_1_state.html" />
-            <section title="ArnDiscoverAdvertise::State" ref="struct_arn_discover_advertise_1_1_state.html" />
             <section title="ArnZeroConf::State" ref="struct_arn_zero_conf_1_1_state.html" />
+            <section title="ArnDiscoverAdvertise::State" ref="struct_arn_discover_advertise_1_1_state.html" />
             <section title="ArnError::StdCode" ref="struct_arn_error_1_1_std_code.html" />
-            <section title="ArnDiscover::Type" ref="struct_arn_discover_1_1_type.html" />
-            <section title="ArnServer::Type" ref="struct_arn_server_1_1_type.html" />
             <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
+            <section title="ArnServer::Type" ref="struct_arn_server_1_1_type.html" />
+            <section title="ArnDiscover::Type" ref="struct_arn_discover_1_1_type.html" />
             <section title="Arn::XStringMap" ref="class_arn_1_1_x_string_map.html" />
           </section>
           <section title="Class Members" ref="functions.html">
@@ -928,6 +933,7 @@
                   </section>
                   <section title="DATASTREAM_VER" ref="_arn_8hpp.html" />
                   <section title="addPath" ref="_arn_8hpp.html" />
+                  <section title="changeBasePath" ref="_arn_8hpp.html" />
                   <section title="childPath" ref="_arn_8hpp.html" />
                   <section title="convertName" ref="_arn_8hpp.html" />
                   <section title="convertPath" ref="_arn_8hpp.html" />
@@ -953,6 +959,7 @@
                     </section>
                     <section title="HostList" ref="class_arn_client.html" />
                     <section title="ArnClient" ref="class_arn_client.html" />
+                    <section title="addMountPoint" ref="class_arn_client.html" />
                     <section title="addToArnList" ref="class_arn_client.html" />
                     <section title="arnList" ref="class_arn_client.html" />
                     <section title="clearArnList" ref="class_arn_client.html" />
@@ -960,6 +967,7 @@
                     <section title="connectStatus" ref="class_arn_client.html" />
                     <section title="connectToArn" ref="class_arn_client.html" />
                     <section title="connectToArnList" ref="class_arn_client.html" />
+                    <section title="removeMountPoint" ref="class_arn_client.html" />
                     <section title="setAutoConnect" ref="class_arn_client.html" />
                     <section title="setMountPoint" ref="class_arn_client.html" />
                     <section title="tcpConnected" ref="class_arn_client.html" />
@@ -1264,6 +1272,7 @@
                     <section title="arnChildFoundFolder" ref="class_arn_monitor.html" />
                     <section title="arnChildFoundLeaf" ref="class_arn_monitor.html" />
                     <section title="arnItemCreated" ref="class_arn_monitor.html" />
+                    <section title="client" ref="class_arn_monitor.html" />
                     <section title="clientId" ref="class_arn_monitor.html" />
                     <section title="foundChildDeleted" ref="class_arn_monitor.html" />
                     <section title="monitorPath" ref="class_arn_monitor.html" />
@@ -1272,6 +1281,7 @@
                     <section title="setClient" ref="class_arn_monitor.html" />
                     <section title="setMonitorPath" ref="class_arn_monitor.html" />
                     <section title="setReference" ref="class_arn_monitor.html" />
+                    <section title="start" ref="class_arn_monitor.html" />
                     <section title="_arnClient" ref="class_arn_monitor.html" />
                     <section title="_monitorPath" ref="class_arn_monitor.html" />
                   </section>
@@ -1639,6 +1649,7 @@
               </section>
               <section title="Arn.cpp" ref="_arn_8cpp.html">
                 <section title="addPath" ref="_arn_8cpp.html" />
+                <section title="changeBasePath" ref="_arn_8cpp.html" />
                 <section title="childPath" ref="_arn_8cpp.html" />
                 <section title="convertName" ref="_arn_8cpp.html" />
                 <section title="convertPath" ref="_arn_8cpp.html" />
@@ -1676,8 +1687,10 @@
                 <section title="debugLinkRef" ref="_arn_lib_8cpp.html" />
                 <section title="debugMDNS" ref="_arn_lib_8cpp.html" />
                 <section title="debugMonitor" ref="_arn_lib_8cpp.html" />
+                <section title="debugMonitorTest" ref="_arn_lib_8cpp.html" />
                 <section title="debugRecInOut" ref="_arn_lib_8cpp.html" />
                 <section title="debugRPC" ref="_arn_lib_8cpp.html" />
+                <section title="debugShareObj" ref="_arn_lib_8cpp.html" />
                 <section title="debugThreading" ref="_arn_lib_8cpp.html" />
                 <section title="debugZeroConf" ref="_arn_lib_8cpp.html" />
                 <section title="resourceArnLib" ref="_arn_lib_8cpp.html" />
@@ -1735,6 +1748,7 @@
       <keyword name="fullPath" id="Arn.cpp::fullPath" ref="_arn_8cpp.html#a1217c8d6b0195b60ef72fc6757480893" />
       <keyword name="itemName" id="Arn.cpp::itemName" ref="_arn_8cpp.html#a0edc95f31e49e60899a7be23888c556c" />
       <keyword name="childPath" id="Arn.cpp::childPath" ref="_arn_8cpp.html#af01d6dbc5fac8a0b66830c0fff375bdf" />
+      <keyword name="changeBasePath" id="Arn.cpp::changeBasePath" ref="_arn_8cpp.html#a197a8ae8b61ad386b09af26a6f457671" />
       <keyword name="makePath" id="Arn.cpp::makePath" ref="_arn_8cpp.html#af7033a4ea5ac45c0bbc136000fd2ccca" />
       <keyword name="addPath" id="Arn.cpp::addPath" ref="_arn_8cpp.html#abf5062a3262fb12eef2feedf03c8b4ae" />
       <keyword name="convertPath" id="Arn.cpp::convertPath" ref="_arn_8cpp.html#a67789049b85129fdd4f238d57e9f71bc" />
@@ -1756,6 +1770,7 @@
       <keyword name="isProviderPath" id="Arn.hpp::isProviderPath" ref="_arn_8hpp.html#a9a27c8dda4cc88176c941cc53f6c2426" />
       <keyword name="itemName" id="Arn.hpp::itemName" ref="_arn_8hpp.html#a0edc95f31e49e60899a7be23888c556c" />
       <keyword name="childPath" id="Arn.hpp::childPath" ref="_arn_8hpp.html#af01d6dbc5fac8a0b66830c0fff375bdf" />
+      <keyword name="changeBasePath" id="Arn.hpp::changeBasePath" ref="_arn_8hpp.html#a197a8ae8b61ad386b09af26a6f457671" />
       <keyword name="makePath" id="Arn.hpp::makePath" ref="_arn_8hpp.html#af7033a4ea5ac45c0bbc136000fd2ccca" />
       <keyword name="addPath" id="Arn.hpp::addPath" ref="_arn_8hpp.html#abf5062a3262fb12eef2feedf03c8b4ae" />
       <keyword name="convertPath" id="Arn.hpp::convertPath" ref="_arn_8hpp.html#a67789049b85129fdd4f238d57e9f71bc" />
@@ -1777,7 +1792,9 @@
       <keyword name="debugLinkRef" id="ArnLib.cpp::debugLinkRef" ref="_arn_lib_8cpp.html#a385273bd359f50b44ab5fec0e9a69225" />
       <keyword name="debugLinkDestroy" id="ArnLib.cpp::debugLinkDestroy" ref="_arn_lib_8cpp.html#aeffb8179d5c1bad4d72a1af04fa08ad2" />
       <keyword name="debugRecInOut" id="ArnLib.cpp::debugRecInOut" ref="_arn_lib_8cpp.html#a49a3bb4087a4000e9cd479b4e671e600" />
+      <keyword name="debugShareObj" id="ArnLib.cpp::debugShareObj" ref="_arn_lib_8cpp.html#a85f1d26d1f1c105abf2478d4957dd2b9" />
       <keyword name="debugMonitor" id="ArnLib.cpp::debugMonitor" ref="_arn_lib_8cpp.html#a2833fd48b34eafa5c2e082941d5af1d1" />
+      <keyword name="debugMonitorTest" id="ArnLib.cpp::debugMonitorTest" ref="_arn_lib_8cpp.html#a71d17f04b08b1260cf1ce08f71bf3ebc" />
       <keyword name="debugRPC" id="ArnLib.cpp::debugRPC" ref="_arn_lib_8cpp.html#a4dd210c47b1a63da3f7f853f76dbf7c7" />
       <keyword name="debugDepend" id="ArnLib.cpp::debugDepend" ref="_arn_lib_8cpp.html#ace9f4662446429dba2c8a72b4af70aa2" />
       <keyword name="debugDiscover" id="ArnLib.cpp::debugDiscover" ref="_arn_lib_8cpp.html#a4b986939b2f12b23db9cddac286c2f0c" />
@@ -1798,6 +1815,7 @@
       <keyword name="Chat Demo" id="Chat Demo" ref="chatdemo.html" />
       <keyword name="Help descriptions" id="Help descriptions" ref="help_disc_index.html" />
       <keyword name="Discover" id="Discover" ref="help_disc_discover.html" />
+      <keyword name="Deprecated List" id="Deprecated List" ref="deprecated.html" />
       <keyword name="ArnClient" id="ArnClient" ref="class_arn_client.html" />
       <keyword name="HostList" id="ArnClient::HostList" ref="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53" />
       <keyword name="tcpError" id="ArnClient::tcpError" ref="class_arn_client.html#a27858277134c9fa0240cf4b18fffdb28" />
@@ -1811,6 +1829,8 @@
       <keyword name="connectToArnList" id="ArnClient::connectToArnList" ref="class_arn_client.html#abb3b70b54670be547e87118c60c685dc" />
       <keyword name="connectToArn" id="ArnClient::connectToArn" ref="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057" />
       <keyword name="setMountPoint" id="ArnClient::setMountPoint" ref="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548" />
+      <keyword name="addMountPoint" id="ArnClient::addMountPoint" ref="class_arn_client.html#ac417b3db210850f4bea8abcf78bf1237" />
+      <keyword name="removeMountPoint" id="ArnClient::removeMountPoint" ref="class_arn_client.html#ae46eb729558c88cf73941b1c190cd976" />
       <keyword name="connectStatus" id="ArnClient::connectStatus" ref="class_arn_client.html#a4dcd34da7a9b9458055389746d0557f3" />
       <keyword name="setAutoConnect" id="ArnClient::setAutoConnect" ref="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60" />
       <keyword name="ArnClient::ConnectStat" id="ArnClient::ConnectStat" ref="struct_arn_client_1_1_connect_stat.html" />
@@ -2149,12 +2169,14 @@
       <keyword name="ArnMonitor" id="ArnMonitor::ArnMonitor" ref="class_arn_monitor.html#a5b183d3eb917f16eea2fdcd73a7765bb" />
       <keyword name="setClient" id="ArnMonitor::setClient" ref="class_arn_monitor.html#a188d2b01824fa28631736dce391b0ae1" />
       <keyword name="clientId" id="ArnMonitor::clientId" ref="class_arn_monitor.html#a2b1604f4fa457f8800534bcf3d8fbba5" />
+      <keyword name="client" id="ArnMonitor::client" ref="class_arn_monitor.html#a83cd827fcd09ac64f75c2e2ba0b32629" />
       <keyword name="setMonitorPath" id="ArnMonitor::setMonitorPath" ref="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae" />
+      <keyword name="start" id="ArnMonitor::start" ref="class_arn_monitor.html#a28f43c9d2933a92660d93cc5bd3ef6e4" />
       <keyword name="monitorPath" id="ArnMonitor::monitorPath" ref="class_arn_monitor.html#a204697cdbefdc68c6cdadf563df83810" />
       <keyword name="reStart" id="ArnMonitor::reStart" ref="class_arn_monitor.html#a740f070fa55cbfcbc57f43d877956d9a" />
       <keyword name="setReference" id="ArnMonitor::setReference" ref="class_arn_monitor.html#a96ff8e729c7436ba906d8e19a136cf69" />
       <keyword name="reference" id="ArnMonitor::reference" ref="class_arn_monitor.html#aec8712e63229d4bb18e2e179c4da9d3c" />
-      <keyword name="_arnClient" id="ArnMonitor::_arnClient" ref="class_arn_monitor.html#a9d3b91aab73bad4e8cbc073d3b1140da" />
+      <keyword name="_arnClient" id="ArnMonitor::_arnClient" ref="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c" />
       <keyword name="_monitorPath" id="ArnMonitor::_monitorPath" ref="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4" />
       <keyword name="ArnPersist" id="ArnPersist" ref="class_arn_persist.html" />
       <keyword name="doArchive" id="ArnPersist::doArchive" ref="class_arn_persist.html#a96ad5160a30d6149e7ab6a4ba5957eb3" />
@@ -2462,6 +2484,7 @@
       <keyword name="fullPath" id="Arn::fullPath" ref="namespace_arn.html#a1217c8d6b0195b60ef72fc6757480893" />
       <keyword name="itemName" id="Arn::itemName" ref="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c" />
       <keyword name="childPath" id="Arn::childPath" ref="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" />
+      <keyword name="changeBasePath" id="Arn::changeBasePath" ref="namespace_arn.html#a197a8ae8b61ad386b09af26a6f457671" />
       <keyword name="makePath" id="Arn::makePath" ref="namespace_arn.html#af7033a4ea5ac45c0bbc136000fd2ccca" />
       <keyword name="addPath" id="Arn::addPath" ref="namespace_arn.html#abf5062a3262fb12eef2feedf03c8b4ae" />
       <keyword name="convertPath" id="Arn::convertPath" ref="namespace_arn.html#a67789049b85129fdd4f238d57e9f71bc" />
@@ -2479,7 +2502,9 @@
       <keyword name="debugLinkRef" id="Arn::debugLinkRef" ref="namespace_arn.html#a385273bd359f50b44ab5fec0e9a69225" />
       <keyword name="debugLinkDestroy" id="Arn::debugLinkDestroy" ref="namespace_arn.html#aeffb8179d5c1bad4d72a1af04fa08ad2" />
       <keyword name="debugRecInOut" id="Arn::debugRecInOut" ref="namespace_arn.html#a49a3bb4087a4000e9cd479b4e671e600" />
+      <keyword name="debugShareObj" id="Arn::debugShareObj" ref="namespace_arn.html#a85f1d26d1f1c105abf2478d4957dd2b9" />
       <keyword name="debugMonitor" id="Arn::debugMonitor" ref="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1" />
+      <keyword name="debugMonitorTest" id="Arn::debugMonitorTest" ref="namespace_arn.html#a71d17f04b08b1260cf1ce08f71bf3ebc" />
       <keyword name="debugRPC" id="Arn::debugRPC" ref="namespace_arn.html#a4dd210c47b1a63da3f7f853f76dbf7c7" />
       <keyword name="debugDepend" id="Arn::debugDepend" ref="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2" />
       <keyword name="debugDiscover" id="Arn::debugDiscover" ref="namespace_arn.html#a4b986939b2f12b23db9cddac286c2f0c" />
@@ -2957,6 +2982,7 @@
       <file>Arn_chat_demo_1.png</file>
       <file>help_disc_index.html</file>
       <file>help_disc_discover.html</file>
+      <file>deprecated.html</file>
       <file>class_arn_client.html</file>
       <file>class_arn_client-members.html</file>
       <file>struct_arn_client_1_1_connect_stat.html</file>
@@ -3020,8 +3046,6 @@
       <file>class_arn_m.html</file>
       <file>class_arn_m-members.html</file>
       <file>class_arn_monitor.html</file>
-      <file>class_arn_monitor__coll__graph.png</file>
-      <file>class_arn_monitor__coll__graph.png</file>
       <file>class_arn_monitor-members.html</file>
       <file>class_arn_persist.html</file>
       <file>class_arn_persist-members.html</file>

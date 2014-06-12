@@ -20,8 +20,8 @@ var searchData=
   ['twinpath',['twinPath',['../namespace_arn.html#a4de17e4c5a7e225b5d0cbd974c3fd794',1,'Arn']]],
   ['txtrecord',['txtRecord',['../class_arn_zero_conf_register.html#ae7026403345317df9a63ae168e73d26b',1,'ArnZeroConfRegister::txtRecord()'],['../class_arn_zero_conf_resolve.html#a8c80e94b8327250729cc1f4d14ea5b38',1,'ArnZeroConfResolve::txtRecord()']]],
   ['type',['Type',['../struct_arn_server_1_1_type.html',1,'ArnServer']]],
-  ['type',['Type',['../struct_arn_discover_1_1_type.html',1,'ArnDiscover']]],
-  ['type',['type',['../class_arn_discover_info.html#ac026d485ccc11ea079c2e4a71d5da52d',1,'ArnDiscoverInfo::type()'],['../class_arn_item.html#aa26ee32abe7931c875ce76ff85443e01',1,'ArnItem::type()']]],
   ['type',['Type',['../struct_arn_script_jobs_1_1_type.html',1,'ArnScriptJobs']]],
+  ['type',['type',['../class_arn_discover_info.html#ac026d485ccc11ea079c2e4a71d5da52d',1,'ArnDiscoverInfo::type()'],['../class_arn_item.html#aa26ee32abe7931c875ce76ff85443e01',1,'ArnItem::type()']]],
+  ['type',['Type',['../struct_arn_discover_1_1_type.html',1,'ArnDiscover']]],
   ['typestring',['typeString',['../class_arn_discover_info.html#aa99a16996a129175e77a08b2abd519a7',1,'ArnDiscoverInfo']]]
 ];

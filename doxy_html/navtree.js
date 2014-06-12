@@ -44,6 +44,7 @@ var NAVTREE =
     ] ],
     [ "Example Collection", "exampleindex.html", "exampleindex" ],
     [ "Help descriptions", "help_disc_index.html", "help_disc_index" ],
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [

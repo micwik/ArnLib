@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnInc/ArnM.hpp (2.0.0) Source File</title>
+<title>ArnLib: src/ArnInc/ArnM.hpp (2.0.0-2-g7f4b6be) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.0.x</span>
+   &#160;<span id="projectnumber">2.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -281,75 +281,75 @@ $(document).ready(function(){initNavTree('_arn_m_8hpp.html','');});
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keywordtype">bool</span>  skipLocalSysLoading()  <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordtype">void</span>  setSkipLocalSysLoading( <span class="keywordtype">bool</span> skipLocalSysLoading);</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_b.html#a909348cfa790b111e9d7254e7d592955" title="Destroy the Arn Data Object">destroyLink</a>( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item_b.html#a0d5bec5b17b02359178a4bc6c35ffd68" title="Path of the Arn Data Object">path</a>);</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  setupErrorlog( QObject* errLog);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;signals:</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keywordtype">void</span>  errorLogSig( QString errText, uint errCode, <span class="keywordtype">void</span>* <a class="code" href="class_arn_item_b.html#a1db4c145def37dafca17d47a075fe1a1" title="Get the stored external reference.">reference</a>);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="preprocessor">#ifndef DOXYGEN_SKIP</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="preprocessor"></span>    <span class="keyword">static</span> ArnLink*  root();</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keyword">static</span> ArnLink*  link( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item_b.html#a0d5bec5b17b02359178a4bc6c35ffd68" title="Path of the Arn Data Object">path</a>, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags,</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                           <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>());</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="keyword">static</span> ArnLink*  addTwin( ArnLink* child, <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>(),</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                              <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags = <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a>());</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_b.html#a909348cfa790b111e9d7254e7d592955" title="Destroy the Arn Data Object">destroyLink</a>( ArnLink* link);</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  destroyLinkMain( ArnLink* link);</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="keywordtype">void</span>  postSetup();</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  linkProxy( ArnThreadCom* threadCom, <span class="keyword">const</span> QString&amp; path,</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                            <span class="keywordtype">int</span> flagValue, <span class="keywordtype">int</span> syncMode = 0);</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  itemsProxy( ArnThreadCom* threadCom, <span class="keyword">const</span> QString&amp; path);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  doZeroRefLink( QObject* obj = 0);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <a class="code" href="class_arn_m.html">ArnM</a>();</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <a class="code" href="class_arn_m.html">ArnM</a>( <span class="keyword">const</span> <a class="code" href="class_arn_m.html">ArnM</a>&amp;);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    ~<a class="code" href="class_arn_m.html">ArnM</a>();</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <a class="code" href="class_arn_m.html">ArnM</a>&amp;  operator=( <span class="keyword">const</span> <a class="code" href="class_arn_m.html">ArnM</a>&amp;);</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keyword">static</span> ArnLink*  linkMain( <span class="keyword">const</span> QString&amp; path, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags,</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                               <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>());</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keyword">static</span> ArnLink*  linkThread( <span class="keyword">const</span> QString&amp; path, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags,</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                                 <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>());</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keyword">static</span> ArnLink*  linkMain( ArnLink *parent, <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item_b.html#a9fe05e98525f3c7e8b817671f4faaae1" title="Name of the Arn Data Object">name</a>, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags,</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                               <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>());</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keyword">static</span> ArnLink*  addTwinMain( ArnLink* child, <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>(),</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                                  <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags = Arn::LinkFlags::fromInt(0));</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="keyword">static</span> ArnLink*  getRawLink( ArnLink *parent, <span class="keyword">const</span> QString&amp; name, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags);</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keyword">static</span> QStringList  itemsMain( <span class="keyword">const</span> ArnLink *parent);</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="keyword">static</span> QStringList  itemsMain( <span class="keyword">const</span> QString&amp; path);</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="comment">// The root object of all other arn data</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    ArnLink*  _root;</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    QVector&lt;QString&gt;  _errTextTab;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keywordtype">bool</span>  _consoleError;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <span class="keywordtype">bool</span>  _defaultIgnoreSameValue;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="keywordtype">bool</span>  _skipLocalSysLoading;</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    QObject*  _errorLogger;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isThreadedApp;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    QThread*  _mainThread;</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;};</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="preprocessor">#endif // ARNM_HPP</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keywordtype">void</span>  setSkipLocalSysLoading( <span class="keywordtype">bool</span> skipLocalSysLoading);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_b.html#a909348cfa790b111e9d7254e7d592955" title="Destroy the Arn Data Object">destroyLink</a>( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item_b.html#a0d5bec5b17b02359178a4bc6c35ffd68" title="Path of the Arn Data Object">path</a>);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  setupErrorlog( QObject* errLog);</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;signals:</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keywordtype">void</span>  errorLogSig( QString errText, uint errCode, <span class="keywordtype">void</span>* <a class="code" href="class_arn_item_b.html#a1db4c145def37dafca17d47a075fe1a1" title="Get the stored external reference.">reference</a>);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="preprocessor">#ifndef DOXYGEN_SKIP</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="preprocessor"></span>    <span class="keyword">static</span> ArnLink*  root();</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="keyword">static</span> ArnLink*  link( <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item_b.html#a0d5bec5b17b02359178a4bc6c35ffd68" title="Path of the Arn Data Object">path</a>, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags,</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                           <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>());</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keyword">static</span> ArnLink*  addTwin( ArnLink* child, <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>(),</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                              <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags = <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a>());</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  <a class="code" href="class_arn_item_b.html#a909348cfa790b111e9d7254e7d592955" title="Destroy the Arn Data Object">destroyLink</a>( ArnLink* link);</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  destroyLinkMain( ArnLink* link);</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keywordtype">void</span>  postSetup();</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  linkProxy( ArnThreadCom* threadCom, <span class="keyword">const</span> QString&amp; path,</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                            <span class="keywordtype">int</span> flagValue, <span class="keywordtype">int</span> syncMode = 0);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  itemsProxy( ArnThreadCom* threadCom, <span class="keyword">const</span> QString&amp; path);</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span>  doZeroRefLink( QObject* obj = 0);</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <a class="code" href="class_arn_m.html">ArnM</a>();</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <a class="code" href="class_arn_m.html">ArnM</a>( <span class="keyword">const</span> <a class="code" href="class_arn_m.html">ArnM</a>&amp;);</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    ~<a class="code" href="class_arn_m.html">ArnM</a>();</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <a class="code" href="class_arn_m.html">ArnM</a>&amp;  operator=( <span class="keyword">const</span> <a class="code" href="class_arn_m.html">ArnM</a>&amp;);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    <span class="keyword">static</span> ArnLink*  linkMain( <span class="keyword">const</span> QString&amp; path, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags,</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                               <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>());</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keyword">static</span> ArnLink*  linkThread( <span class="keyword">const</span> QString&amp; path, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags,</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                                 <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>());</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="keyword">static</span> ArnLink*  linkMain( ArnLink *parent, <span class="keyword">const</span> QString&amp; <a class="code" href="class_arn_item_b.html#a9fe05e98525f3c7e8b817671f4faaae1" title="Name of the Arn Data Object">name</a>, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags,</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                               <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>());</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keyword">static</span> ArnLink*  addTwinMain( ArnLink* child, <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode = <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>(),</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                                  <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags = Arn::LinkFlags::fromInt(0));</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keyword">static</span> ArnLink*  getRawLink( ArnLink *parent, <span class="keyword">const</span> QString&amp; name, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags);</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="keyword">static</span> QStringList  itemsMain( <span class="keyword">const</span> ArnLink *parent);</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keyword">static</span> QStringList  itemsMain( <span class="keyword">const</span> QString&amp; path);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="comment">// The root object of all other arn data</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    ArnLink*  _root;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    QVector&lt;QString&gt;  _errTextTab;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keywordtype">bool</span>  _consoleError;</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keywordtype">bool</span>  _defaultIgnoreSameValue;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <span class="keywordtype">bool</span>  _skipLocalSysLoading;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    QObject*  _errorLogger;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isThreadedApp;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    QThread*  _mainThread;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;};</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="preprocessor">#endif // ARNM_HPP</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4d586402499cc8c8cfffbed14854e74f.html">ArnInc</a></li><li class="navelem"><a class="el" href="_arn_m_8hpp.html">ArnM.hpp</a></li>
-    <li class="footer">Generated on Mon Apr 21 2014 23:20:23 for ArnLib by
+    <li class="footer">Generated on Wed Jun 11 2014 22:54:11 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnLink.hpp (2.0.0) Source File</title>
+<title>ArnLib: src/ArnLink.hpp (2.0.0-2-g7f4b6be) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.0.x</span>
+   &#160;<span id="projectnumber">2.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -148,121 +148,120 @@ $(document).ready(function(){initNavTree('_arn_link_8hpp.html','');});
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;QObject&gt;</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;QString&gt;</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;QVariant&gt;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;QMap&gt;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;QAtomicInt&gt;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;QMutex&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;QAtomicInt&gt;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;QMutex&gt;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">class </span>ArnLink : <span class="keyword">public</span> QObject</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_arn_m.html">ArnM</a>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( <span class="keywordtype">int</span> value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( <span class="keywordtype">double</span> value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( <span class="keyword">const</span> QString&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    <span class="keyword">const</span> ArnLinkHandle&amp; handleData = ArnLinkHandle());</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( <span class="keyword">const</span> QByteArray&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                    <span class="keyword">const</span> ArnLinkHandle&amp; handleData = ArnLinkHandle());</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( <span class="keyword">const</span> QVariant&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">int</span>  toInt();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">double</span>  toDouble();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    QString  toString();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    QByteArray  toByteArray();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    QVariant  toVariant();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="struct_arn_1_1_data_type.html" title="Data type of an Arn Data Object">Arn::DataType</a>  type();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    QString  linkPath( <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">Arn::NameF::EmptyOk</a>);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    QString  linkName( <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a>());</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    uint  linkId()  <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_m.html#af99dedfe1c888c95832e5f5ad255a147">isFolder</a>();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span>  addSyncMode( <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>  syncMode();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">bool</span>  isBiDirMode();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span>  setPipeMode( <span class="keywordtype">bool</span> isPipeMode, <span class="keywordtype">bool</span> alsoSetTwin = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">bool</span>  isPipeMode();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span>  setSaveMode( <span class="keywordtype">bool</span> isSaveMode);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">bool</span>  isSaveMode();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">bool</span>  isProvider()  <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">bool</span>  isThreaded()  <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">bool</span>  isRetired();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    ArnLink*  twinLink();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    ArnLink*  valueLink();</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    ArnLink*  providerLink();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    ArnLink*  holderLink( <span class="keywordtype">bool</span> forceKeep);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    QString  twinName();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span>  deref();</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    ~ArnLink();</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">public</span> slots:</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">void</span>  trfValue( QByteArray value, <span class="keywordtype">int</span> sendId, <span class="keywordtype">bool</span> forceKeep, ArnLinkHandle handleData);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;signals:</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">void</span>  changed( uint sendId, <span class="keyword">const</span> ArnLinkHandle&amp; handleData);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">void</span>  changed( uint sendId, QByteArray value, ArnLinkHandle handleData);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">void</span>  modeChanged( QString path, uint linkId);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">void</span>  modeChangedBelow( QString path, uint linkId);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">void</span>  linkCreatedBelow( ArnLink* link);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">void</span>  zeroRef();</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordtype">void</span>  retired();</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    ArnLink( ArnLink* parent, <span class="keyword">const</span> QString&amp; name, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordtype">void</span>  setupEnd( <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    ArnLink*  findLink(<span class="keyword">const</span> QString&amp; name);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">void</span>  ref();</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">int</span>  refCount();</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">void</span>  setRefCount( <span class="keywordtype">int</span> count);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordtype">void</span>  setRetired();</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">void</span>  resetHave();</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordtype">void</span>  emitChanged( <span class="keywordtype">int</span> sendId, <span class="keyword">const</span> ArnLinkHandle&amp; handleData = ArnLinkHandle());</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="comment">// Source for unique id to all ArnLink ..</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">static</span> QAtomicInt  _idCount;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    uint  _id;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordtype">bool</span>  _isFolder;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">bool</span>  _isProvider;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">bool</span>  _isThreaded;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    QMutex  _mutex;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    QAtomicInt  _refCount;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isRetired;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">int</span>  _valueInt;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">double</span>  _valueDouble;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    QString  _valueString;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    QByteArray  _valueByteArray;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    QVariant  _valueVariant;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveInt;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveDouble;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveString;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveByteArray;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveVariant;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keyword">volatile</span> <a class="code" href="struct_arn_1_1_data_type.html" title="Data type of an Arn Data Object">Arn::DataType</a>  _type;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    ArnLink*  _twin;   <span class="comment">// Used for bidirectional functionality</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">int</span>   _syncMode;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isPipeMode;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isSaveMode;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordtype">bool</span>  _hasBeenSetup;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;};</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">#endif // ARNLINK_HPP</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">class </span>ArnLink : <span class="keyword">public</span> QObject</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_arn_m.html">ArnM</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( <span class="keywordtype">int</span> value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( <span class="keywordtype">double</span> value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( <span class="keyword">const</span> QString&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    <span class="keyword">const</span> ArnLinkHandle&amp; handleData = ArnLinkHandle());</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( <span class="keyword">const</span> QByteArray&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    <span class="keyword">const</span> ArnLinkHandle&amp; handleData = ArnLinkHandle());</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span>  <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( <span class="keyword">const</span> QVariant&amp; value, <span class="keywordtype">int</span> sendId = 0, <span class="keywordtype">bool</span> forceKeep = 0);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">int</span>  toInt();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">double</span>  toDouble();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    QString  toString();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    QByteArray  toByteArray();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    QVariant  toVariant();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="struct_arn_1_1_data_type.html" title="Data type of an Arn Data Object">Arn::DataType</a>  type();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    QString  linkPath( <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">Arn::NameF::EmptyOk</a>);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    QString  linkName( <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a>());</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    uint  linkId()  <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">bool</span>  <a class="code" href="class_arn_m.html#af99dedfe1c888c95832e5f5ad255a147">isFolder</a>();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span>  addSyncMode( <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a>  syncMode();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">bool</span>  isBiDirMode();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span>  setPipeMode( <span class="keywordtype">bool</span> isPipeMode, <span class="keywordtype">bool</span> alsoSetTwin = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">bool</span>  isPipeMode();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span>  setSaveMode( <span class="keywordtype">bool</span> isSaveMode);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">bool</span>  isSaveMode();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">bool</span>  isProvider()  <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">bool</span>  isThreaded()  <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">bool</span>  isRetired();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    ArnLink*  twinLink();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    ArnLink*  valueLink();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    ArnLink*  providerLink();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    ArnLink*  holderLink( <span class="keywordtype">bool</span> forceKeep);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    QString  twinName();</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span>  deref();</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    ~ArnLink();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">void</span>  trfValue( QByteArray value, <span class="keywordtype">int</span> sendId, <span class="keywordtype">bool</span> forceKeep, ArnLinkHandle handleData);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;signals:</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">void</span>  changed( uint sendId, <span class="keyword">const</span> ArnLinkHandle&amp; handleData);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">void</span>  changed( uint sendId, QByteArray value, ArnLinkHandle handleData);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">void</span>  modeChanged( QString path, uint linkId);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">void</span>  modeChangedBelow( QString path, uint linkId);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">void</span>  linkCreatedBelow( ArnLink* link);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">void</span>  zeroRef();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">void</span>  retired();</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    ArnLink( ArnLink* parent, <span class="keyword">const</span> QString&amp; name, <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a> flags);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordtype">void</span>  setupEnd( <a class="code" href="struct_arn_1_1_object_sync_mode.html" title="The client session sync mode of an Arn Data Object">Arn::ObjectSyncMode</a> syncMode);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    ArnLink*  findLink(<span class="keyword">const</span> QString&amp; name);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordtype">void</span>  ref();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">int</span>  refCount();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">void</span>  setRefCount( <span class="keywordtype">int</span> count);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">void</span>  setRetired();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordtype">void</span>  resetHave();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">void</span>  emitChanged( <span class="keywordtype">int</span> sendId, <span class="keyword">const</span> ArnLinkHandle&amp; handleData = ArnLinkHandle());</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">// Source for unique id to all ArnLink ..</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">static</span> QAtomicInt  _idCount;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    uint  _id;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordtype">bool</span>  _isFolder;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordtype">bool</span>  _isProvider;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">bool</span>  _isThreaded;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    QMutex  _mutex;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    QAtomicInt  _refCount;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isRetired;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">int</span>  _valueInt;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">double</span>  _valueDouble;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    QString  _valueString;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    QByteArray  _valueByteArray;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    QVariant  _valueVariant;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveInt;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveDouble;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveString;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveByteArray;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _haveVariant;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keyword">volatile</span> <a class="code" href="struct_arn_1_1_data_type.html" title="Data type of an Arn Data Object">Arn::DataType</a>  _type;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    ArnLink*  _twin;   <span class="comment">// Used for bidirectional functionality</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">int</span>   _syncMode;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isPipeMode;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keyword">volatile</span> <span class="keywordtype">bool</span>  _isSaveMode;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordtype">bool</span>  _hasBeenSetup;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;};</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="preprocessor">#endif // ARNLINK_HPP</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_link_8hpp.html">ArnLink.hpp</a></li>
-    <li class="footer">Generated on Mon Apr 21 2014 23:20:23 for ArnLib by
+    <li class="footer">Generated on Wed Jun 11 2014 22:54:12 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

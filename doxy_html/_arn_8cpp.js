@@ -1,6 +1,7 @@
 var _arn_8cpp =
 [
     [ "addPath", "_arn_8cpp.html#abf5062a3262fb12eef2feedf03c8b4ae", null ],
+    [ "changeBasePath", "_arn_8cpp.html#a197a8ae8b61ad386b09af26a6f457671", null ],
     [ "childPath", "_arn_8cpp.html#af01d6dbc5fac8a0b66830c0fff375bdf", null ],
     [ "convertName", "_arn_8cpp.html#a75a3c4519469a93271186abe52bb810e", null ],
     [ "convertPath", "_arn_8cpp.html#a67789049b85129fdd4f238d57e9f71bc", null ],

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnInc/ArnScript.hpp (2.0.0) Source File</title>
+<title>ArnLib: src/ArnInc/ArnScript.hpp (2.0.0-2-g7f4b6be) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.0.x</span>
+   &#160;<span id="projectnumber">2.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -290,8 +290,8 @@ $(document).ready(function(){initNavTree('_arn_script_8hpp.html','');});
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">void</span>  setNum( <span class="keyword">const</span> QString&amp; path, <span class="keywordtype">double</span> value)</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                                                {<a class="code" href="class_arn_m.html#a91db48e0be7abb8a8cc253867662699d">ArnM::instance</a>().<a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path">setValue</a>( path, value);}</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    QString  <a class="code" href="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c" title="The last part of a path">itemName</a>( <span class="keyword">const</span> QString&amp; path)     {<span class="keywordflow">return</span> <a class="code" href="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c" title="The last part of a path">Arn::itemName</a>( path);}</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    QString  <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path.">childPath</a>( <span class="keyword">const</span> QString &amp;parentPath, <span class="keyword">const</span> QString &amp;posterityPath)</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                                                {<span class="keywordflow">return</span> <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path.">Arn::childPath</a>( parentPath, posterityPath);}</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    QString  <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path (posterityPath)">childPath</a>( <span class="keyword">const</span> QString &amp;parentPath, <span class="keyword">const</span> QString &amp;posterityPath)</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                                                {<span class="keywordflow">return</span> <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path (posterityPath)">Arn::childPath</a>( parentPath, posterityPath);}</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    QString  <a class="code" href="namespace_arn.html#af7033a4ea5ac45c0bbc136000fd2ccca" title="Make a path from a parent and an item name.">makePath</a>( <span class="keyword">const</span> QString &amp;parentPath, <span class="keyword">const</span> QString &amp;<a class="code" href="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c" title="The last part of a path">itemName</a>)</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                                                {<span class="keywordflow">return</span> <a class="code" href="namespace_arn.html#af7033a4ea5ac45c0bbc136000fd2ccca" title="Make a path from a parent and an item name.">Arn::makePath</a>( parentPath, itemName);}</div>
@@ -342,7 +342,7 @@ $(document).ready(function(){initNavTree('_arn_script_8hpp.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4d586402499cc8c8cfffbed14854e74f.html">ArnInc</a></li><li class="navelem"><a class="el" href="_arn_script_8hpp.html">ArnScript.hpp</a></li>
-    <li class="footer">Generated on Mon Apr 21 2014 23:20:23 for ArnLib by
+    <li class="footer">Generated on Wed Jun 11 2014 22:54:11 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

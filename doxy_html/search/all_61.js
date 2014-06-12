@@ -10,6 +10,7 @@ var searchData=
   ['addinterfacelist',['addInterfaceList',['../class_arn_script_job_control.html#ae1ee4fe1a2f2878f7867247b8ec59d0c',1,'ArnScriptJobControl']]],
   ['addjob',['addJob',['../class_arn_script_jobs.html#a10c18c36ff2c497682019bfda2845e11',1,'ArnScriptJobs']]],
   ['addmode',['addMode',['../class_arn_item.html#a9b05c84369d7a5d3c68f113f79189b1a',1,'ArnItem']]],
+  ['addmountpoint',['addMountPoint',['../class_arn_client.html#ac417b3db210850f4bea8abcf78bf1237',1,'ArnClient']]],
   ['addpath',['addPath',['../namespace_arn.html#abf5062a3262fb12eef2feedf03c8b4ae',1,'Arn']]],
   ['addr',['addr',['../struct_arn_client_1_1_host_addr_port.html#a03a47477bf6a263f5393262d7352c094',1,'ArnClient::HostAddrPort']]],
   ['addsendersignals',['addSenderSignals',['../class_arn_rpc.html#aa735fedd853fecb5d5744f3435f12893',1,'ArnRpc']]],

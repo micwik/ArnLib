@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnInc/Arn.hpp (2.0.0) Source File</title>
+<title>ArnLib: src/ArnInc/Arn.hpp (2.0.0-2-g7f4b6be) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.0.x</span>
+   &#160;<span id="projectnumber">2.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -240,47 +240,50 @@ $(document).ready(function(){initNavTree('_arn_8hpp.html','');});
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;QString  <a class="code" href="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c" title="The last part of a path">itemName</a>( <span class="keyword">const</span> QString&amp; path);</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;QString  <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path.">childPath</a>( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; posterityPath);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;QString  <a class="code" href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf" title="Get substring for child from a path (posterityPath)">childPath</a>( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; posterityPath);</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;QString  <a class="code" href="namespace_arn.html#af7033a4ea5ac45c0bbc136000fd2ccca" title="Make a path from a parent and an item name.">makePath</a>( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; <a class="code" href="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c" title="The last part of a path">itemName</a>);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;QString  <a class="code" href="namespace_arn.html#a197a8ae8b61ad386b09af26a6f457671" title="Change the base (start) of a path.">changeBasePath</a>( <span class="keyword">const</span> QString&amp; oldBasePath, <span class="keyword">const</span> QString&amp; newBasePath, <span class="keyword">const</span> QString&amp; path);</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;QString  <a class="code" href="namespace_arn.html#abf5062a3262fb12eef2feedf03c8b4ae" title="Make a path from a parent and an additional relative path.">addPath</a>( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; childRelPath,</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                         <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">Arn::NameF::EmptyOk</a>);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;QString  <a class="code" href="namespace_arn.html#af7033a4ea5ac45c0bbc136000fd2ccca" title="Make a path from a parent and an item name.">makePath</a>( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; <a class="code" href="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c" title="The last part of a path">itemName</a>);</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;QString  <a class="code" href="namespace_arn.html#a67789049b85129fdd4f238d57e9f71bc" title="Convert a path to a specific format.">convertPath</a>( <span class="keyword">const</span> QString&amp; path,</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                             <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">Arn::NameF::EmptyOk</a>);</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;QString  <a class="code" href="namespace_arn.html#a4de17e4c5a7e225b5d0cbd974c3fd794" title="Get the bidirectional twin to a given path">twinPath</a>( <span class="keyword">const</span> QString&amp; path);</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;QString  <a class="code" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" title="Make a combined host and info string, i.e. HostWithInfo">makeHostWithInfo</a>( <span class="keyword">const</span> QString&amp; host, <span class="keyword">const</span> QString&amp; info);</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;QString  <a class="code" href="namespace_arn.html#aa5388e7414b06aa7c8e1c0af4fe549a7" title="Get the host from the HostWithInfo string.">hostFromHostWithInfo</a>( <span class="keyword">const</span> QString&amp; hostWithInfo);</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;QString  <a class="code" href="namespace_arn.html#abf5062a3262fb12eef2feedf03c8b4ae" title="Make a path from a parent and an additional relative path.">addPath</a>( <span class="keyword">const</span> QString&amp; parentPath, <span class="keyword">const</span> QString&amp; childRelPath,</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                         <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">Arn::NameF::EmptyOk</a>);</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;QString  <a class="code" href="namespace_arn.html#a67789049b85129fdd4f238d57e9f71bc" title="Convert a path to a specific format.">convertPath</a>( <span class="keyword">const</span> QString&amp; path,</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                             <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF = <a class="code" href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776" title="Path: &quot;/@/test&quot; ==&gt; &quot;//test&quot;, Item: &quot;@&quot; ==&gt; &quot;&quot;.">Arn::NameF::EmptyOk</a>);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;QString  <a class="code" href="namespace_arn.html#a4de17e4c5a7e225b5d0cbd974c3fd794" title="Get the bidirectional twin to a given path">twinPath</a>( <span class="keyword">const</span> QString&amp; path);</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;QString  <a class="code" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" title="Make a combined host and info string, i.e. HostWithInfo">makeHostWithInfo</a>( <span class="keyword">const</span> QString&amp; host, <span class="keyword">const</span> QString&amp; info);</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="preprocessor">#ifndef DOXYGEN_SKIP</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="preprocessor"></span>QString  convertBaseName( <span class="keyword">const</span> QString&amp; name, <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;}  <span class="comment">// Arn::</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a>)</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::ObjectMode)</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::ObjectSyncMode)</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::NameF)</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::Coding)</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="preprocessor">#endif // ARN_HPP</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;QString  <a class="code" href="namespace_arn.html#aa5388e7414b06aa7c8e1c0af4fe549a7" title="Get the host from the HostWithInfo string.">hostFromHostWithInfo</a>( <span class="keyword">const</span> QString&amp; hostWithInfo);</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="preprocessor">#ifndef DOXYGEN_SKIP</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="preprocessor"></span>QString  convertBaseName( <span class="keyword">const</span> QString&amp; name, <a class="code" href="struct_arn_1_1_name_f.html">Arn::NameF</a> nameF);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;}  <span class="comment">// Arn::</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( <a class="code" href="struct_arn_1_1_link_flags.html" title="Link flags when accessing an Arn Data Object">Arn::LinkFlags</a>)</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::ObjectMode)</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::ObjectSyncMode)</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::NameF)</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<a class="code" href="_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd">MQ_DECLARE_OPERATORS_FOR_FLAGS</a>( Arn::Coding)</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="preprocessor">#endif // ARN_HPP</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4d586402499cc8c8cfffbed14854e74f.html">ArnInc</a></li><li class="navelem"><a class="el" href="_arn_8hpp.html">Arn.hpp</a></li>
-    <li class="footer">Generated on Mon Apr 21 2014 23:20:23 for ArnLib by
+    <li class="footer">Generated on Wed Jun 11 2014 22:54:11 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

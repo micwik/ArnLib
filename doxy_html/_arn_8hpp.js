@@ -9,6 +9,7 @@ var _arn_8hpp =
     [ "Coding", "struct_arn_1_1_coding.html", "struct_arn_1_1_coding" ],
     [ "DATASTREAM_VER", "_arn_8hpp.html#af5ae3f693fc5aea910733fbbceb24ad8", null ],
     [ "addPath", "_arn_8hpp.html#abf5062a3262fb12eef2feedf03c8b4ae", null ],
+    [ "changeBasePath", "_arn_8hpp.html#a197a8ae8b61ad386b09af26a6f457671", null ],
     [ "childPath", "_arn_8hpp.html#af01d6dbc5fac8a0b66830c0fff375bdf", null ],
     [ "convertName", "_arn_8hpp.html#a75a3c4519469a93271186abe52bb810e", null ],
     [ "convertPath", "_arn_8hpp.html#a67789049b85129fdd4f238d57e9f71bc", null ],

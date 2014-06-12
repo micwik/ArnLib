@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.0.x</span>
+   &#160;<span id="projectnumber">2.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('_arn_demo_chat_2_main_window_8cpp-exam
 <div class="line">    _ui-&gt;userEdit-&gt;setFocus();</div>
 <div class="line">    connect( _ui-&gt;lineEdit, SIGNAL(returnPressed()), <span class="keyword">this</span>, SLOT(doSendLine()));</div>
 <div class="line"></div>
-<div class="line">    _arnClient.setMountPoint(<span class="stringliteral">&quot;//&quot;</span>);</div>
+<div class="line">    _arnClient.addMountPoint(<span class="stringliteral">&quot;//&quot;</span>);</div>
 <div class="line">    _arnClient.setAutoConnect(<span class="keyword">true</span>);</div>
 <div class="line"></div>
 <div class="line">    <a name="_a0"></a><a class="code" href="class_arn_discover_connector.html" title="An automatic client discover connector.">ArnDiscoverConnector</a>*  connector = <span class="keyword">new</span> <a class="code" href="class_arn_discover_connector.html" title="An automatic client discover connector.">ArnDiscoverConnector</a>( _arnClient, <span class="stringliteral">&quot;DemoChat&quot;</span>);</div>
@@ -213,7 +213,7 @@ $(document).ready(function(){initNavTree('_arn_demo_chat_2_main_window_8cpp-exam
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Apr 21 2014 23:20:23 for ArnLib by
+    <li class="footer">Generated on Wed Jun 11 2014 22:54:11 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>
