@@ -42,6 +42,23 @@ using Arn::XStringMap;
 
 #define RPC_STORAGE_NAME "_ArnRpcStorage"
 
+ArnRpc::TypeInfo  ArnRpc::_typeInfoTab[] = {
+//  rpcTypeName  qtTypeName     typeId                  isList
+    {"int",      "int",         QMetaType::Int,         false},
+    {"uint",     "uint",        QMetaType::UInt,        false},
+    {"int64",    "qint64",      QMetaType::LongLong,    false},
+    {"uint64",   "quint64",     QMetaType::ULongLong,   false},
+    {"bool",     "bool",        QMetaType::Bool,        false},
+    {"double",   "double",      QMetaType::Double,      false},
+    {"bytes",    "QByteArray",  QMetaType::QByteArray,  false},
+    {"date",     "QDate",       QMetaType::QDate,       false},
+    {"time",     "QTime",       QMetaType::QTime,       false},
+    {"datetime", "QDateTime",   QMetaType::QDateTime,   false},
+    {"list",     "QStringList", QMetaType::QStringList, true },
+    {"string",   "QString",     QMetaType::QString,     false},
+    {"",         "",            QMetaType::Void,        false}  // End marker & Null case
+};
+
 
 //! \cond ADV
 class ArnRpcReceiverStorage : public QObject
@@ -411,6 +428,7 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
                   ArnError::RpcInvokeError);
         return false;
     }
+    const TypeInfo&  typeInfo = typeInfofromId( type);
 
     //// Get arg label
     QByteArray  argLabel = arg.label();
@@ -418,12 +436,10 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
     //// Export data from arg
     QByteArray  argDataDump;
     QStringList  argDataList;
-    bool  isListType = false;
     bool  isBinaryType = false;
     QVariant  varArg( type, arg.data());
     if (type == QMetaType::QStringList) {
         argDataList = varArg.toStringList();
-        isListType = true;
     }
     else if (type == QMetaType::QByteArray) {
         argDataDump = varArg.toByteArray();
@@ -444,44 +460,26 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
         isBinaryType = true;
     }
 
-    //// Make arg prefix and/or type
-    QByteArray  argPrefix;
-    if (typeName == "int")
-        argPrefix = "int";
-    else if (typeName == "uint")
-        argPrefix = "uint";
-    else if (typeName == "bool")
-        argPrefix = "bool";
-    else if (typeName == "double")
-        argPrefix = "double";
-    else if (typeName == "QByteArray")
-        argPrefix = "bytes";
-    else if (typeName == "QDate")
-        argPrefix = "date";
-    else if (typeName == "QTime")
-        argPrefix = "time";
-    else if (typeName == "QDateTime")
-        argPrefix = "datetime";
-    else if (typeName == "QStringList")
-        argPrefix = "list";
-    else if (typeName == "QString")
-        argPrefix = "string";
-    else
+    //// Make arg key with rpcType or Qt-type
+    QByteArray  argKey;
+    if (typeInfo.typeId != QMetaType::Void)
+        argKey = typeInfo.rpcTypeName;
+    else {
+        argKey = "a";
         xsm.add((isBinaryType ? "tb" : "t"), typeName);
+    }
+    if (!argLabel.isEmpty())
+        argKey += "." + argLabel;
 
     //// Output argument to xsm
-    if (argPrefix.isEmpty())
-        argPrefix = "a";
-    if (!argLabel.isEmpty())
-        argPrefix += ".";
-    if (isListType) {  // Handle list (QStringList)
+    if (typeInfo.isList) {  // Handle list (QStringList)
         int i = 0;
         QString  argData;
         if (!argDataList.isEmpty() && !argDataList.at(0).isEmpty()) {
             argData = argDataList.at(0);
             ++i;
         }
-        xsm.add( argPrefix + argLabel, argData);
+        xsm.add( argKey, argData);
         // Output each element in list
         for(; i < argDataList.size(); ++i) {
             argData = argDataList.at(i);
@@ -492,7 +490,7 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
         }
     }
     else {
-        xsm.add( argPrefix + argLabel, argDataDump);
+        xsm.add( argKey, argDataDump);
     }
 
     ++nArg;
@@ -581,81 +579,36 @@ void  ArnRpc::pipeInput( QByteArray data)
 bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &index,
                                const QByteArray& methodName)
 {
-    static const QByteArray  intName     = "int";
-    static const QByteArray  uintName    = "uint";
-    static const QByteArray  boolName    = "bool";
-    static const QByteArray  doubleName  = "double";
-    static const QByteArray  qbaName     = "QByteArray";
-    static const QByteArray  qstringName = "QString";
-    static const QByteArray  qdateName   = "QDate";
-    static const QByteArray  qtimeName   = "QTime";
-    static const QByteArray  qdtmName    = "QDateTime";
-    static const QByteArray  qlistName   = "QStringList";
-
     //// Get arg type info
-    const QByteArray*  typeName = &qstringName;  // Default type
-    bool  isBinaryType = false;
-    bool  isListType   = false;
-    bool  argInType    = false;
-
     const QByteArray&  typeKey = xsm.keyRef( index);
-    if (typeKey == "tb") {
+    QByteArray  rpcTypeName = typeKey;
+    QByteArray  rpcArgName;
+    int  dotPos = typeKey.indexOf('.');
+    if (dotPos >=0) {
+        rpcTypeName = typeKey.left( dotPos);
+        rpcArgName  = typeKey.mid( dotPos + 1);
+    }
+
+    const char*  typeName = "QString";  // Default type
+    bool  isBinaryType = false;
+    const TypeInfo&  typeInfo = typeInfofromRpc( rpcTypeName);
+    if (typeInfo.typeId != QMetaType::Void) {
+        typeName   = typeInfo.qtTypeName;
+
+    }
+    else if (typeKey == "tb") {
         isBinaryType = true;
-        typeName = &xsm.valueRef( index);
+        typeName = xsm.valueRef( index).constData();
         ++index;
     }
     else if (typeKey.startsWith("t")) {
-        typeName = &xsm.valueRef( index);
+        typeName = xsm.valueRef( index).constData();
         ++index;
     }
-    else if (typeKey.startsWith("in")) {
-        typeName  = &intName;
-        argInType = true;
-    }
-    else if (typeKey.startsWith("ui")) {
-        typeName  = &uintName;
-        argInType = true;
-    }
-    else if (typeKey.startsWith("bo")) {
-        typeName  = &boolName;
-        argInType = true;
-    }
-    else if (typeKey.startsWith("do")) {
-        typeName  = &doubleName;
-        argInType = true;
-    }
-    else if (typeKey.startsWith("by")) {
-        typeName  = &qbaName;
-        argInType = true;
-    }
-    else if (typeKey.startsWith("st")) {
-        typeName  = &qstringName;
-        argInType = true;
-    }
-    else if (typeKey.startsWith("da")) {
-        typeName  = &qdateName;
-        argInType = true;
-    }
-    else if (typeKey.startsWith("ti")) {
-        typeName  = &qtimeName;
-        argInType = true;
-    }
-    else if (typeKey.startsWith("datet")) {
-        typeName  = &qdtmName;
-        argInType = true;
-    }
-    else if (typeKey.startsWith("li")) {
-        typeName   = &qlistName;
-        isListType = true;
-        argInType  = true;
-    }
-    else if (typeKey.startsWith("ba")) {  // legacy
-        typeName  = &qbaName;
-        argInType = true;
-    }
-    int  type = QMetaType::type( typeName->constData());
+
+    int  type = QMetaType::type( typeName);
     if (!type) {
-        errorLog( QString(tr("Unknown type:") + typeName->constData())
+        errorLog( QString(tr("Unknown type:") + typeName)
                   + tr(" method:") + methodName.constData(),
                   ArnError::RpcReceiveError);
         return false;
@@ -669,13 +622,13 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
             return true;
         }
         const QByteArray  key = xsm.keyRef( index);
-        if ( argInType || (key == "") || key.startsWith("a"))
+        if ((typeInfo.typeId != QMetaType::Void) || (key == "") || key.startsWith("a"))
             break;  // Found arg
         ++index;
     }
     const QByteArray&  argDataDump = xsm.valueRef( index);
     QStringList  argDataList;
-    if (isListType) {  // Handle list (QStringList)
+    if (typeInfo.isList) {  // Handle list (QStringList)
         if (!argDataDump.isEmpty())
             argDataList += QString::fromUtf8( argDataDump.constData(), argDataDump.size());
         ++index;
@@ -683,7 +636,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
             const QByteArray  key = xsm.keyRef( index);
             if ((key != "") && (key != "le"))
                 break;
-            const QByteArray  arg = xsm.valueRef( index);
+            const QByteArray&  arg = xsm.valueRef( index);
             argDataList += QString::fromUtf8( arg.constData(), arg.size());
             ++index;
         }
@@ -693,19 +646,13 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
     }
 
     //// Import data to arg
-    if (isListType) {
-        QVariant  varArg( argDataList);
-#if QT_VERSION >= 0x050000
-        void*  argData = QMetaType::create( type, varArg.constData());
-#else
-        void*  argData = QMetaType::construct( type, varArg.constData());
-#endif
-        Q_ASSERT( argData);
-        arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
+    if (typeInfo.isList) {
+        QStringList*  argData = new QStringList( argDataList);
+        arg = QGenericArgument( typeName, argData);  // Assign arg as it has been allocated
     }
     else if (type == QMetaType::QByteArray) {
         QByteArray*  argData = new QByteArray( argDataDump);
-        arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
+        arg = QGenericArgument( typeName, argData);  // Assign arg as it has been allocated
     }
     else if (isBinaryType) {
         if ((argDataDump.size() < 2) || (argDataDump.at(1) != DATASTREAM_VER)) {
@@ -719,12 +666,12 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
         void*  argData = QMetaType::construct( type);
 #endif
         Q_ASSERT( argData);
-        arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
+        arg = QGenericArgument( typeName, argData);  // Assign arg as it has been allocated
         QDataStream  stream( argDataDump);
         stream.setVersion( DATASTREAM_VER);
         stream.skipRawData(2);
         if (!QMetaType::load( stream, type, argData)) {
-            errorLog( QString(tr("Can't' import bin type:") + typeName->constData())
+            errorLog( QString(tr("Can't' import bin type:") + typeName)
                       + tr(" method:") + methodName.constData(),
                       ArnError::RpcReceiveError);
             return false;
@@ -733,7 +680,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
     else {  // Textual type
         QVariant  varArg( QString::fromUtf8( argDataDump.constData(), argDataDump.size()));
         if (!varArg.convert( QVariant::Type( type))) {
-            errorLog( QString(tr("Can't' import str type:") + typeName->constData())
+            errorLog( QString(tr("Can't' import str type:") + typeName)
                       + tr(" method:") + methodName.constData(),
                       ArnError::RpcReceiveError);
             return false;
@@ -744,7 +691,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, QGenericArgument& arg, int &ind
         void*  argData = QMetaType::construct( type, varArg.constData());
 #endif
         Q_ASSERT( argData);
-        arg = QGenericArgument( typeName->constData(), argData);  // Assign arg as it has been allocated
+        arg = QGenericArgument( typeName, argData);  // Assign arg as it has been allocated
     }
 
     return true;
@@ -835,43 +782,29 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
         int  type = QMetaType::type( typeName.constData());
         QVariant  varPar( type);
         bool  isBinaryType = (type == 0) || !varPar.canConvert( QVariant::String);
-        bool  isListType   = false;
-        QByteArray  parType;
-        if (typeName == "int")
-            parType = "int";
-        else if (typeName == "uint")
-            parType = "uint";
-        else if (typeName == "bool")
-            parType = "bool";
-        else if (typeName == "double")
-            parType = "double";
-        else if (typeName == "QByteArray")
-            parType = "bytes";
-        else if (typeName == "QDate")
-            parType = "date";
-        else if (typeName == "QTime")
-            parType = "time";
-        else if (typeName == "QDateTime")
-            parType = "datetime";
-        else if (typeName == "QStringList") {
-            parType = "list";
-            isListType = true;
+        const char*  rpcType = "";
+        const TypeInfo&  typeInfo = typeInfofromQt( typeName);
+        if (typeInfo.typeId == QMetaType::QString) {
+            rpcType = wasListType ? typeInfo.rpcTypeName : "";
         }
-        else if (typeName == "QString")
-            parType = wasListType ? "string" : "";
+        else if (typeInfo.typeId != QMetaType::Void) {
+            rpcType = typeInfo.rpcTypeName;
+        }
         else {
-            parType = "a";
+            rpcType = "a";
             param += (isBinaryType ? "tb" : "t") + QByteArray("=") + typeName + " ";
         }
 
-        if (!parType.isEmpty())
-            param += parType + "=";
+        if (*rpcType) {
+            param += rpcType;
+            param += "=";
+        }
         param += "<" + parName + ">";
         if (i >= parNumMin)
             param = "[" + param + "]";
         line += " " + QString::fromLatin1( param);
 
-        wasListType = isListType;
+        wasListType = typeInfo.isList;
     }
     sendText( line);
 }
@@ -1002,3 +935,41 @@ QByteArray  ArnRpc::methodSignature( const QMetaMethod &method)
 #endif
 }
 
+
+const ArnRpc::TypeInfo&  ArnRpc::typeInfofromRpc( const QByteArray& rpcTypeName)
+{
+    TypeInfo*  typeInfo = _typeInfoTab;
+    while (typeInfo->typeId != QMetaType::Void) {
+        if (rpcTypeName == typeInfo->rpcTypeName)
+            break;
+        ++typeInfo;
+    }
+
+    return *typeInfo;
+}
+
+
+const ArnRpc::TypeInfo&  ArnRpc::typeInfofromQt( const QByteArray& qtTypeName)
+{
+    TypeInfo*  typeInfo = _typeInfoTab;
+    while (typeInfo->typeId != QMetaType::Void) {
+        if (qtTypeName == typeInfo->qtTypeName)
+            break;
+        ++typeInfo;
+    }
+
+    return *typeInfo;
+}
+
+
+const ArnRpc::TypeInfo&  ArnRpc::typeInfofromId( int typeId)
+{
+    TypeInfo*  typeInfo = _typeInfoTab;
+    while (typeInfo->typeId != QMetaType::Void) {
+        if (typeId == typeInfo->typeId)
+            break;
+        ++typeInfo;
+    }
+
+    return *typeInfo;
+}

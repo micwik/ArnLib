@@ -360,12 +360,22 @@ protected:
     //! \endcond
 
 private:
+    struct TypeInfo {
+        const char*  rpcTypeName;
+        const char*  qtTypeName;
+        int  typeId;
+        bool  isList;
+    };
+
     bool  xsmAddArg( Arn::XStringMap& xsm, const MQGenericArgument& arg, uint index, int& nArg);
     bool  xsmLoadArg( const Arn::XStringMap& xsm, QGenericArgument& arg, int &index, const QByteArray& methodName);
     void  funcHeartBeat( const Arn::XStringMap& xsm);
     void  funcHelp( const Arn::XStringMap& xsm);
     void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin);
     static QByteArray  methodSignature( const QMetaMethod& method);
+    static const TypeInfo& typeInfofromRpc( const QByteArray& rpcTypeName);
+    static const TypeInfo& typeInfofromQt( const QByteArray& qtTypeName);
+    static const TypeInfo& typeInfofromId( int typeId);
 
     ArnDynamicSignals*  _dynamicSignals;
     ArnRpcReceiverStorage*  _receiverStorage;
@@ -377,6 +387,8 @@ private:
     bool  _isHeartBeatOk;
     QTimer*  _timerHeartBeatSend;
     QTimer*  _timerHeartBeatCheck;
+
+    static TypeInfo _typeInfoTab[];
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnRpc::Mode)
