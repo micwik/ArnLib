@@ -360,22 +360,48 @@ protected:
     //! \endcond
 
 private:
-    struct TypeInfo {
+    struct RpcTypeInfo {
         const char*  rpcTypeName;
         const char*  qtTypeName;
         int  typeId;
-        bool  isList;
+    };
+    struct ArgInfo {
+        QGenericArgument  arg;
+        QByteArray  name;
+        QByteArray  rpcType;
+        const char*  qtType;
+        int  typeId;
+        const void*  data;
+        bool  hasName;
+        bool  hasType;
+        bool  dataAsArg;
+        bool  isBinary;
+        bool  isDataAlloc;
+        bool  isArgAlloc;
+        ArgInfo() {
+            qtType      = "";
+            typeId      = QMetaType::Void;
+            data        = 0;
+            hasName     = false;
+            hasType     = false;
+            dataAsArg   = false;
+            isBinary    = false;
+            isDataAlloc = false;
+            isArgAlloc  = false;
+        }
     };
 
     bool  xsmAddArg( Arn::XStringMap& xsm, const MQGenericArgument& arg, uint index, int& nArg);
-    bool  xsmLoadArg( const Arn::XStringMap& xsm, QGenericArgument& arg, int &index, const QByteArray& methodName);
+    bool  xsmLoadArg( const Arn::XStringMap& xsm, ArgInfo& argInfo, int &index, const QByteArray& methodName);
+    bool  argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByteArray& methodName);
+    bool  importArgData( ArgInfo& argInfo, const QByteArray& methodName);
     void  funcHeartBeat( const Arn::XStringMap& xsm);
     void  funcHelp( const Arn::XStringMap& xsm);
     void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin);
     static QByteArray  methodSignature( const QMetaMethod& method);
-    static const TypeInfo& typeInfofromRpc( const QByteArray& rpcTypeName);
-    static const TypeInfo& typeInfofromQt( const QByteArray& qtTypeName);
-    static const TypeInfo& typeInfofromId( int typeId);
+    static const RpcTypeInfo& typeInfofromRpc( const QByteArray& rpcTypeName);
+    static const RpcTypeInfo& typeInfofromQt( const QByteArray& qtTypeName);
+    static const RpcTypeInfo& typeInfofromId( int typeId);
 
     ArnDynamicSignals*  _dynamicSignals;
     ArnRpcReceiverStorage*  _receiverStorage;
@@ -388,7 +414,7 @@ private:
     QTimer*  _timerHeartBeatSend;
     QTimer*  _timerHeartBeatCheck;
 
-    static TypeInfo _typeInfoTab[];
+    static RpcTypeInfo _rpcTypeInfoTab[];
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnRpc::Mode)
