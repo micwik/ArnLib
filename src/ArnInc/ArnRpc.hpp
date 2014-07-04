@@ -130,8 +130,10 @@ public:
             SendSequence  = 0x10,
             //! Check sequence order information from pipe. Can generate signal outOfSequence().
             CheckSequence = 0x20,
-            //! Debug mode, dumping done batch connections
-            Debug         = 0x40,
+            //! Allow calling with named argument (without type)
+            AllowNamedArg = 0x40,
+            //! Debug mode, dumping info for the batch connections
+            Debug         = 0x80,
             //! Convenience, combined _UuidPipe_ and _AutoDestroy_
             UuidAutoDestroy = UuidPipe | AutoDestroy
         };
@@ -369,39 +371,41 @@ private:
         QGenericArgument  arg;
         QByteArray  name;
         QByteArray  rpcType;
-        const char*  qtType;
+        QByteArray  qtType;
         int  typeId;
         const void*  data;
         bool  hasName;
         bool  hasType;
         bool  dataAsArg;
+        bool  isPositional;
         bool  isBinary;
         bool  isDataAlloc;
         bool  isArgAlloc;
         ArgInfo() {
-            qtType      = "";
-            typeId      = QMetaType::Void;
-            data        = 0;
-            hasName     = false;
-            hasType     = false;
-            dataAsArg   = false;
-            isBinary    = false;
-            isDataAlloc = false;
-            isArgAlloc  = false;
+            typeId       = QMetaType::Void;
+            data         = 0;
+            hasName      = false;
+            hasType      = false;
+            dataAsArg    = false;
+            isPositional = false;
+            isBinary     = false;
+            isDataAlloc  = false;
+            isArgAlloc   = false;
         }
     };
 
     bool  xsmAddArg( Arn::XStringMap& xsm, const MQGenericArgument& arg, uint index, int& nArg);
-    bool  xsmLoadArg( const Arn::XStringMap& xsm, ArgInfo& argInfo, int &index, const QByteArray& methodName);
+    bool  xsmLoadArg( const Arn::XStringMap& xsm, ArgInfo& argInfo, int& index, const QByteArray& methodName);
     bool  argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByteArray& methodName);
     bool  importArgData( ArgInfo& argInfo, const QByteArray& methodName);
     void  funcHeartBeat( const Arn::XStringMap& xsm);
     void  funcHelp( const Arn::XStringMap& xsm);
     void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin);
     static QByteArray  methodSignature( const QMetaMethod& method);
-    static const RpcTypeInfo& typeInfofromRpc( const QByteArray& rpcTypeName);
-    static const RpcTypeInfo& typeInfofromQt( const QByteArray& qtTypeName);
-    static const RpcTypeInfo& typeInfofromId( int typeId);
+    static const RpcTypeInfo&  typeInfoFromRpc( const QByteArray& rpcTypeName);
+    static const RpcTypeInfo&  typeInfoFromQt( const QByteArray& qtTypeName);
+    static const RpcTypeInfo&  typeInfoFromId( int typeId);
+    static const RpcTypeInfo&  typeInfoNull();
 
     ArnDynamicSignals*  _dynamicSignals;
     ArnRpcReceiverStorage*  _receiverStorage;
