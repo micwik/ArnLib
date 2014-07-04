@@ -297,7 +297,7 @@ const QByteArray&  XStringMap::keyRef( int i)  const
 {
     if ((i < 0) || (i >= _size))  return _nullValue;
 
-    return _keyList[i];
+    return _keyList.at(i);
 }
 
 
@@ -344,7 +344,7 @@ const QByteArray&  XStringMap::valueRef( int i)  const
 {
     if ((i < 0) || (i >= _size))  return _nullValue;
 
-    return _valList[i];
+    return _valList.at(i);
 }
 
 
