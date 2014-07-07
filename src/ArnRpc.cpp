@@ -160,14 +160,15 @@ bool  ArnDynamicSignals::addSignal( QObject *sender, int signalId, QByteArray fu
 ArnRpc::ArnRpc( QObject* parent) :
     QObject( parent)
 {
-    _pipe                = 0;
-    _receiver            = 0;
-    _receiverStorage     = 0;
-    _isIncludeSender     = false;
-    _dynamicSignals      = new ArnDynamicSignals( this);
-    _isHeartBeatOk       = true;
-    _timerHeartBeatSend  = new QTimer( this);
-    _timerHeartBeatCheck = new QTimer( this);
+    _pipe                 = 0;
+    _receiver             = 0;
+    _receiverStorage      = 0;
+    _receiverMethodsParam = 0;
+    _isIncludeSender      = false;
+    _dynamicSignals       = new ArnDynamicSignals( this);
+    _isHeartBeatOk        = true;
+    _timerHeartBeatSend   = new QTimer( this);
+    _timerHeartBeatCheck  = new QTimer( this);
 
     connect( _timerHeartBeatSend, SIGNAL(timeout()), this, SLOT(timeoutHeartBeatSend()));
     connect( _timerHeartBeatCheck, SIGNAL(timeout()), this, SLOT(timeoutHeartBeatCheck()));
@@ -233,6 +234,7 @@ void  ArnRpc::setPipe( ArnPipe* pipe)
 void  ArnRpc::setReceiver( QObject *receiver)
 {
     _receiver = receiver;
+    deleteReceiverMethodsParam();
 
     _receiverStorage = _receiver->findChild<ArnRpcReceiverStorage*>( RPC_STORAGE_NAME);
     if (!_receiverStorage) {
@@ -245,6 +247,7 @@ void  ArnRpc::setReceiver( QObject *receiver)
 void  ArnRpc::setMethodPrefix( QString prefix)
 {
     _methodPrefix = prefix.toLatin1();
+    deleteReceiverMethodsParam();
 }
 
 
@@ -519,7 +522,7 @@ void  ArnRpc::pipeInput( QByteArray data)
         return funcHelp( xsmCall);
     }
 
-    ArgInfo  argInfo[10];
+    ArgInfo  argInfo[20];
     int argc = 0;
 
     // qDebug() << "rpc pipeInput: data=" << data;
@@ -535,7 +538,7 @@ void  ArnRpc::pipeInput( QByteArray data)
     while (index > 0) {
         if (index >= xsmCall.size())
             break;  // End of args
-        if (argc > 9) {
+        if (argc > 10) {
             errorLog( QString(tr("To many args:") + QString::number( argc))
                       + tr(" method=") + methodName.constData(),
                       ArnError::RpcReceiveError);
@@ -557,13 +560,14 @@ void  ArnRpc::pipeInput( QByteArray data)
 
     if (stat) {
         for (int i = _isIncludeSender; i < argc; ++i) {
-            stat = importArgData( argInfo[i], methodName);
+            stat = importArgData( argInfo[ int(argOrder[i])], methodName);
             if (!stat)  break;
         }
     }
 
     if (stat) {
-        _receiverStorage->_rpcSender = this;
+        if (_receiverStorage)
+            _receiverStorage->_rpcSender = this;
         stat = QMetaObject::invokeMethod( _receiver,
                                           methodName.constData(),
                                           Qt::AutoConnection,
@@ -577,7 +581,8 @@ void  ArnRpc::pipeInput( QByteArray data)
                                           argInfo[ int(argOrder[7])].arg,
                                           argInfo[ int(argOrder[8])].arg,
                                           argInfo[ int(argOrder[9])].arg);
-        _receiverStorage->_rpcSender = 0;
+        if (_receiverStorage)
+            _receiverStorage->_rpcSender = 0;
         if(!stat) {
             errorLog( QString(tr("Can't invoke method:")) + methodName.constData(),
                       ArnError::RpcReceiveError);
@@ -586,14 +591,15 @@ void  ArnRpc::pipeInput( QByteArray data)
     }
 
     //// Clean up - destroy allocated argument data
-    for (int i = _isIncludeSender; i < argc; ++i) {
-        if (argInfo[i].isArgAlloc && argInfo[i].arg.data()) {
-            int  type = QMetaType::type( argInfo[i].arg.name());
-            QMetaType::destroy( type, argInfo[i].arg.data());
+    for (int i = _isIncludeSender; i < 20; ++i) {
+        ArgInfo&  aiSlot = argInfo[i];
+        if (aiSlot.isArgAlloc && aiSlot.arg.data()) {
+            int  type = QMetaType::type( aiSlot.arg.name());
+            QMetaType::destroy( type, aiSlot.arg.data());
         }
-        if (argInfo[i].isDataAlloc) {
-            void*  data = const_cast<void*>( argInfo[i].data);
-            QMetaType::destroy( argInfo[i].typeId, data);
+        if (aiSlot.isDataAlloc) {
+            void*  data = const_cast<void*>( aiSlot.data);
+            QMetaType::destroy( aiSlot.typeId, data);
         }
     }
 }
@@ -604,6 +610,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
 {
     //// Get arg type and name
     const QByteArray&  typeKey = xsm.keyRef( index);  // MW: Why ref &typeKey not working in debugger?
+    QByteArray  rpcType;
     argInfo.isPositional = true;  // Default
     int  sepPos = typeKey.indexOf(':');
     if (sepPos >=0)
@@ -613,31 +620,31 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
     if (sepPos >=0) {
         QByteArray  t1  = typeKey.left( sepPos);
         QByteArray  t2  = typeKey.mid( sepPos + 1);
-        argInfo.rpcType = argInfo.isPositional ? t1 : t2;
+        rpcType         = argInfo.isPositional ? t1 : t2;
         argInfo.name    = argInfo.isPositional ? t2 : t1;
-        argInfo.hasType = !argInfo.rpcType.isEmpty();
+        argInfo.hasType = !rpcType.isEmpty();
         argInfo.hasName = !argInfo.name.isEmpty();
     }
     else {
-        argInfo.rpcType = typeKey;  // Assume type (can also be name)
+        rpcType = typeKey;  // Assume type (can also be name)
     }
 
     //// Check for typeArg  e.g "t<QImage>"
     bool  isTypeArg = false;
-    if (argInfo.rpcType.startsWith("t<"))
+    if (rpcType.startsWith("t<"))
         isTypeArg = true;
-    else if (argInfo.rpcType.startsWith("tb<")) {
+    else if (rpcType.startsWith("tb<")) {
         isTypeArg = true;
         argInfo.isBinary = true;
     }
 
     //// Setup Arg info
-    const RpcTypeInfo&  rpcTypeInfo = isTypeArg ? typeInfoNull() : typeInfoFromRpc( argInfo.rpcType);
+    const RpcTypeInfo&  rpcTypeInfo = isTypeArg ? typeInfoNull() : typeInfoFromRpc( rpcType);
     bool  isListFormat = rpcTypeInfo.typeId == QMetaType::QStringList;
     if (isTypeArg) {
-        int  posStart = argInfo.rpcType.indexOf('<') + 1;
-        int  posEnd   =  argInfo.rpcType.lastIndexOf('>');
-        argInfo.qtType  = argInfo.rpcType.mid( posStart, (posEnd < 0 ? -1 : posEnd - posStart));
+        int  posStart = rpcType.indexOf('<') + 1;
+        int  posEnd   = rpcType.lastIndexOf('>');
+        argInfo.qtType  = rpcType.mid( posStart, (posEnd < 0 ? -1 : posEnd - posStart));
         argInfo.typeId  = QMetaType::type( argInfo.qtType.constData());
         argInfo.hasType = true;
     }
@@ -645,13 +652,13 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
         argInfo.qtType = rpcTypeInfo.qtTypeName;
         argInfo.typeId = rpcTypeInfo.typeId;
     }
-    else if (argInfo.rpcType.isEmpty() && argInfo.name.isEmpty()) {
+    else if (rpcType.isEmpty() && argInfo.name.isEmpty()) {
         argInfo.qtType = "QString";  // Default type;
         argInfo.typeId = QMetaType::QString;
     }
     else {
         if (!argInfo.hasType)
-            argInfo.rpcType.clear();  // No type given
+            rpcType.clear();  // No type given
         if (!argInfo.hasName) {
             argInfo.name         = typeKey;  // This must be a name
             argInfo.isPositional = false;
@@ -664,7 +671,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
     if ((argInfo.typeId == QMetaType::Void)
     &&  (argInfo.hasType || argInfo.isPositional || !possibleNameArg)) {
         errorLog( QString(tr("Unknown type:"))
-                  + (argInfo.qtType.isEmpty() ? argInfo.rpcType.constData() : argInfo.qtType.constData())
+                  + (argInfo.qtType.isEmpty() ? rpcType.constData() : argInfo.qtType.constData())
                   + (argInfo.hasName ? (tr(" name=") + argInfo.name.constData()) : QString())
                   + tr(" method=") + methodName.constData(),
                   ArnError::RpcReceiveError);
@@ -712,65 +719,200 @@ bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByte
     if (!_mode.is( Mode::AllowNamedArg))  return true;  // Only allowed call by argument type
 
     bool  isOnlyPositional = true;
+    bool  isOnlyNamed      = true;
     for (int i = _isIncludeSender; i < argc; ++i) {
-        if ( !argInfo[i].isPositional) {
+        if ( argInfo[i].isPositional)
+            isOnlyNamed = false;
+        else
             isOnlyPositional = false;
-            break;
-        }
     }
     if (isOnlyPositional)  return true;  // Only positional arguments in call has been used
 
+    if (!isOnlyNamed) {
+        errorLog( QString(tr("Mixed positional & named arg call not supported, method="))
+                  + methodName.constData(),
+                  ArnError::RpcReceiveError);
+        return false;
+    }
+
+    if (_isIncludeSender) {
+        errorLog( QString(tr("includeSender not supported for named arg call, method="))
+                  + methodName.constData(),
+                  ArnError::RpcReceiveError);
+        return false;
+    }
+
+    int  methodIndex = argLogicFindMethod( argInfo, argc, methodName);
+    if (methodIndex < 0)  return false;  // Failed finding a method
+
+    const QMetaObject*  metaObject = _receiver->metaObject();
+    const QMetaMethod&  method = metaObject->method( methodIndex);
+    QList<QByteArray>  parNames = method.parameterNames();
+    QList<QByteArray>  parTypes = method.parameterTypes();
+    int  parCount = parNames.size();
+    int  defArgIndex = 10;
+    for (int parIndex = 0; parIndex < parCount; ++parIndex) {
+        bool  match = false;
+        for (int argIndex = 0; argIndex < argc; ++argIndex) {
+            ArgInfo&  aiSlot = argInfo[ argIndex];
+            if (aiSlot.name == parNames.at( parIndex)) {  // Found arg name
+                if (!aiSlot.qtType.isEmpty()) {  // Type already known for arg
+                    if (parTypes.at( parIndex) != aiSlot.qtType) {
+                        errorLog( QString(tr("Type mismatch, arg=")) + parNames.at( parIndex)
+                                  + tr(" in method=") + methodName.constData(),
+                                  ArnError::RpcReceiveError);
+                        return false;
+                    }
+                }
+                else {  // Type for arg is defined by the method parameter
+                    aiSlot.qtType = parTypes.at( parIndex);
+                    aiSlot.typeId = QMetaType::type( aiSlot.qtType.constData());
+                }
+                argOrder[ parIndex] = char( argIndex);
+                match = true;
+                break;
+            }
+        }
+        if (!match) {  // Parameter not given by arg, use default constructor
+            ArgInfo&  aiSlot = argInfo[ defArgIndex];
+            aiSlot.name   = parNames.at( parIndex);
+            aiSlot.qtType = parTypes.at( parIndex);
+            aiSlot.typeId = QMetaType::type( aiSlot.qtType.constData());
+#if QT_VERSION >= 0x050000
+            aiSlot.data   = QMetaType::create( aiSlot.typeId);
+#else
+            aiSlot.data   = QMetaType::construct( aiSlot.typeId);
+#endif
+            aiSlot.isDataAlloc = true;
+            aiSlot.dataAsArg   = true;
+
+            argOrder[ parIndex] = char( defArgIndex);
+            ++defArgIndex;
+        }
+    }
+    argc = parCount;  // New argc will be exactly as number of parameters
+
+    return true;
+}
+
+
+int  ArnRpc::argLogicFindMethod( const ArnRpc::ArgInfo* argInfo, int argc, const QByteArray& methodName)
+{
+    setupReceiverMethodsParam();  // Setup searching method data structure
+
+    int  pslotIndex = _receiverMethodsParam->methodNames.indexOf( methodName);
+    if (pslotIndex < 0) {
+        errorLog( QString(tr("Not found, method=")) + methodName.constData(),
+                  ArnError::RpcReceiveError);
+        return -1;
+    }
+
+    const MethodsParam::Params&  pslot = _receiverMethodsParam->paramTab.at( pslotIndex);
+
+    // Only 1 method with zero parameters, use it
+    if ((pslot.paramNames.size() == 1) && pslot.paramNames.at(0).isEmpty())
+        return pslot.methodIdsTab.at(0).at(0);
+
+    int  foundArgCount = 0;
+    QList<int>  methodCand = pslot.allMethodIds;  // Start with all methods as candidates (same name)
+    for (int argIndex = 0; argIndex < argc; ++argIndex) {
+        int  parIndex = pslot.paramNames.indexOf( (argInfo[ argIndex].name));
+        if (parIndex < 0)  // arg not used at all, Ok (unneeded)
+            continue;
+
+        //// This arg is found as parameter in at least 1 method
+        ++foundArgCount;
+
+        //// Intersect method candidates with list of methods using the parameter (=arg)
+        const QList<int>&  methodIds = pslot.methodIdsTab.at( parIndex);
+        for (int i = 0; i < methodCand.size();) {
+            if (methodIds.contains( methodCand.at(i))) {
+                ++i;
+                continue;
+            }
+            methodCand.removeAt(i);  // Remove method not using the parameter
+        }
+    }
+
+    if (methodCand.isEmpty()) {
+        errorLog( QString(tr("Not found method with matching parameters, method=")) + methodName.constData(),
+                  ArnError::RpcReceiveError);
+        return -1;
+    }
+
+    if (methodCand.size() == 1)
+        return methodCand.at(0);  // Match with exactly 1 method
+
+    //// Filter candidates to only have same number of params as the found args
+    const QMetaObject*  metaObject = _receiver->metaObject();
+    for (int i = 0; i < methodCand.size();) {
+        const QMetaMethod&  method = metaObject->method( methodCand.at(i));
+        if (method.parameterNames().size() == foundArgCount) {
+            ++i;
+            continue;
+        }
+        methodCand.removeAt(i);  // Remove method with not same number of params
+    }
+
+    if (methodCand.size() == 1)
+        return methodCand.at(0);  // Match with exactly 1 method having same number of params
+
+    errorLog( QString(tr("Many methods with matching parameters, method=")) + methodName.constData(),
+              ArnError::RpcReceiveError);
+    return -1;
+}
+
+
+void  ArnRpc::setupReceiverMethodsParam()
+{
+    if (_receiverMethodsParam)  return;  // Already done
+
+    MethodsParam*  mpar = new MethodsParam;
+    _receiverMethodsParam = mpar;
+
     const QMetaObject*  metaObject = _receiver->metaObject();
     int  methodCount = metaObject->methodCount();
+    QByteArray  lastMethodName;
     for (int methodIndex = 0; methodIndex < methodCount; ++methodIndex) {
         const QMetaMethod&  method = metaObject->method( methodIndex);
         QByteArray  methodSign = methodSignature( method);
-        QByteArray  methodNameChk = methodSign.left( methodSign.indexOf('('));
-        if (methodNameChk != methodName)  continue;
+        if (!methodSign.startsWith( _methodPrefix))  continue;
 
-        //// Found method
+        //// Found a method
+        QByteArray  methodName = methodSign.left( methodSign.indexOf('('));
+        if (methodName != lastMethodName) {
+            mpar->methodNames += methodName;
+            mpar->paramTab    += MethodsParam::Params();
+            lastMethodName = methodName;
+        }
+        MethodsParam::Params&  pslot = mpar->paramTab[ mpar->paramTab.size() - 1];
+
+        pslot.allMethodIds += methodIndex;
+
         QList<QByteArray>  parNames = method.parameterNames();
-        QList<QByteArray>  parTypes = method.parameterTypes();
         int  parCount = parNames.size();
-        if (parCount != argc) {
-            errorLog( QString(tr("Wrong num of arg, method=")) + methodName.constData(),
-                      ArnError::RpcReceiveError);
-            return false;
-        }
-        int  parIndex;
-        for (parIndex = _isIncludeSender; parIndex < argc; ++parIndex) {
-            bool  match = false;
-            for (int argIndex = _isIncludeSender; argIndex < argc; ++argIndex) {
-                if (argInfo[ argIndex].name == parNames.at( parIndex)) {  // Found arg name
-                    if (!argInfo[ argIndex].qtType.isEmpty()) {  // Type already known for arg
-                        if (parTypes.at( parIndex) != argInfo[ argIndex].qtType) {
-                            errorLog( QString(tr("Type mismatch, arg=")) + parNames.at( parIndex)
-                                      + tr(" in method=") + methodName.constData(),
-                                      ArnError::RpcReceiveError);
-                            return false;
-                        }
-                    }
-                    else {  // Type for arg is defined by the method parameter
-                        argInfo[ argIndex].qtType = parTypes.at( parIndex);
-                        argInfo[ argIndex].typeId = QMetaType::type( argInfo[ argIndex].qtType.constData());
-                    }
-                    argOrder[ parIndex] = char( argIndex);
-                    match = true;
-                    break;
-                }
+        int  parIndexStart = parCount == 0 ? -1 : 0;
+        for (int parIndex = parIndexStart; parIndex < parCount; ++parIndex) {
+            // method with no parameters will store using parName="" (parIndex=-1)
+            const char*  parName = parIndex < 0 ? "" : parNames.at( parIndex).constData();
+            int  parI = pslot.paramNames.indexOf( parName);
+            if (parI < 0) {
+                pslot.paramNames   += parName;
+                pslot.methodIdsTab += QList<int>();
+                parI = pslot.paramNames.size() - 1;
             }
-            if (!match) {
-                errorLog( QString(tr("Not found, arg=")) + parNames.at( parIndex)
-                          + tr(" in method=") + methodName.constData(),
-                          ArnError::RpcReceiveError);
-                return false;
-            }
+            pslot.methodIdsTab[ parI] += methodIndex;
         }
-        return true;
     }
-    errorLog( QString(tr("Not found, method=")) + methodName.constData(),
-              ArnError::RpcReceiveError);
-    return false;
+}
+
+
+void ArnRpc::deleteReceiverMethodsParam()
+{
+    if (!_receiverMethodsParam)  return;  // Already done
+
+    delete _receiverMethodsParam;
+    _receiverMethodsParam = 0;
 }
 
 

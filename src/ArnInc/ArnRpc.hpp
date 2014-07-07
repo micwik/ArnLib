@@ -370,7 +370,6 @@ private:
     struct ArgInfo {
         QGenericArgument  arg;
         QByteArray  name;
-        QByteArray  rpcType;
         QByteArray  qtType;
         int  typeId;
         const void*  data;
@@ -393,14 +392,27 @@ private:
             isArgAlloc   = false;
         }
     };
+    struct MethodsParam {
+        QList<QByteArray>  methodNames;
+        struct Params {
+            QList<QByteArray>  paramNames;
+            QList< QList<int> >  methodIdsTab;
+            QList<int>  allMethodIds;
+        };
+        QList<Params>  paramTab;
+    };
 
     bool  xsmAddArg( Arn::XStringMap& xsm, const MQGenericArgument& arg, uint index, int& nArg);
     bool  xsmLoadArg( const Arn::XStringMap& xsm, ArgInfo& argInfo, int& index, const QByteArray& methodName);
     bool  argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByteArray& methodName);
+    int  argLogicFindMethod( const ArgInfo* argInfo, int argc, const QByteArray& methodName);
     bool  importArgData( ArgInfo& argInfo, const QByteArray& methodName);
     void  funcHeartBeat( const Arn::XStringMap& xsm);
     void  funcHelp( const Arn::XStringMap& xsm);
     void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin);
+
+    void  setupReceiverMethodsParam();
+    void  deleteReceiverMethodsParam();
     static QByteArray  methodSignature( const QMetaMethod& method);
     static const RpcTypeInfo&  typeInfoFromRpc( const QByteArray& rpcTypeName);
     static const RpcTypeInfo&  typeInfoFromQt( const QByteArray& qtTypeName);
@@ -409,8 +421,9 @@ private:
 
     ArnDynamicSignals*  _dynamicSignals;
     ArnRpcReceiverStorage*  _receiverStorage;
-    ArnPipe*  _pipe;
+    MethodsParam*  _receiverMethodsParam;
     QObject*  _receiver;
+    ArnPipe*  _pipe;
     QByteArray  _methodPrefix;
     bool  _isIncludeSender;
     Mode  _mode;
