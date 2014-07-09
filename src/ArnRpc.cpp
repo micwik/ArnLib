@@ -387,6 +387,8 @@ bool  ArnRpc::invoke( const QString& funcName,
                       MQGenericArgument arg7,
                       MQGenericArgument arg8)
 {
+    _mode.set( Mode::NamedArg);  //MW: test
+
     if (!_pipe || !_pipe->isOpen()) {
         errorLog( QString(tr("Pipe not open")),
                   ArnError::RpcInvokeError);
@@ -466,13 +468,18 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
 
     //// Make arg key with rpcType or Qt-type
     QByteArray  argKey;
-    if (rpcTypeInfo.typeId != QMetaType::Void)
-        argKey = rpcTypeInfo.rpcTypeName;
-    else {
+    if (rpcTypeInfo.typeId == QMetaType::Void)
         argKey = (isBinaryType ? "tb<" : "t<") + typeName + ">";
+    else
+        argKey = rpcTypeInfo.rpcTypeName;
+    if (!argLabel.isEmpty()) {
+        if (_mode.is(Mode::NamedArg) && (rpcTypeInfo.typeId != QMetaType::Void))
+            argKey = argLabel;
+        else if (_mode.is(Mode::NamedArg) || _mode.is(Mode::NamedTypedArg))
+            argKey = argLabel + ":" + argKey;
+        else
+            argKey += "." + argLabel;
     }
-    if (!argLabel.isEmpty())
-        argKey += "." + argLabel;
 
     //// Output argument to xsm
     if (type == QMetaType::QStringList) {  // Handle list
@@ -503,8 +510,6 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
 
 void  ArnRpc::pipeInput( QByteArray data)
 {
-    _mode.set( Mode::AllowNamedArg);  //MW: test
-
     if (data.startsWith('"')) {  // Text is received
         int  endSize = data.endsWith('"') ? (data.size() - 1) : data.size();
         if (endSize < 1)
@@ -665,21 +670,13 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
         }
     }
 
-    bool  possibleNameArg = _mode.is( Mode::AllowNamedArg) && !argInfo.name.isEmpty();
+    bool  possibleNameArg = !_mode.is( Mode::OnlyPosArg) && !argInfo.name.isEmpty();
 
     //// Check type (not for pure nameArg)
     if ((argInfo.typeId == QMetaType::Void)
     &&  (argInfo.hasType || argInfo.isPositional || !possibleNameArg)) {
         errorLog( QString(tr("Unknown type:"))
                   + (argInfo.qtType.isEmpty() ? rpcType.constData() : argInfo.qtType.constData())
-                  + (argInfo.hasName ? (tr(" name=") + argInfo.name.constData()) : QString())
-                  + tr(" method=") + methodName.constData(),
-                  ArnError::RpcReceiveError);
-        return false;
-    }
-    if (argInfo.isBinary && !argInfo.isPositional) {
-        errorLog( QString(tr("Binary type must be positional: type="))
-                  + argInfo.qtType.constData()
                   + (argInfo.hasName ? (tr(" name=") + argInfo.name.constData()) : QString())
                   + tr(" method=") + methodName.constData(),
                   ArnError::RpcReceiveError);
@@ -716,7 +713,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
 
 bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByteArray& methodName)
 {
-    if (!_mode.is( Mode::AllowNamedArg))  return true;  // Only allowed call by argument type
+    if (_mode.is( Mode::OnlyPosArg))  return true;  // Only allowed call by positional argument
 
     bool  isOnlyPositional = true;
     bool  isOnlyNamed      = true;
@@ -1035,7 +1032,7 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
     }
     if (methodIndexHead >= 0)
         funcHelpMethod( metaObject->method( methodIndexHead), methodNameHead, parCountMin);
-    sendText("$heartbeat [<time>|off|off1]");
+    sendText("$heartbeat [`time`|off|off1]");
     sendText("$help");
 }
 

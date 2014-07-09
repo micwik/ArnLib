@@ -119,21 +119,25 @@ public:
     struct Mode {
         enum E {
             //! Provider side (opposed to requester)
-            Provider      = 0x01,
+            Provider       = 0x0001,
             //! Use _AutoDestroy_ for the pipe, i.e. it is closed when tcp/ip is broken
-            AutoDestroy   = 0x02,
+            AutoDestroy    = 0x0002,
             //! Use an unique uuid in the pipe name
-            UuidPipe      = 0x04,
+            UuidPipe       = 0x0004,
             //! If guarantied no default arguments, member name overload is ok
-            NoDefaultArgs = 0x08,
+            NoDefaultArgs  = 0x0008,
             //! Send sequence order information to pipe
-            SendSequence  = 0x10,
+            SendSequence   = 0x0010,
             //! Check sequence order information from pipe. Can generate signal outOfSequence().
-            CheckSequence = 0x20,
-            //! Allow calling with named argument (without type)
-            AllowNamedArg = 0x40,
+            CheckSequence  = 0x0020,
+            //! Only allow calling with positional argument (typed)
+            OnlyPosArg     = 0x0040,
+            //! When calling, using named argument e.g "myFunc count=123"
+            NamedArg       = 0x0080,
+            //! When calling, using named argument with type e.g "myFunc count:int=123"
+            NamedTypedArg  = 0x0100,
             //! Debug mode, dumping info for the batch connections
-            Debug         = 0x80,
+            Debug          = 0x8000,
             //! Convenience, combined _UuidPipe_ and _AutoDestroy_
             UuidAutoDestroy = UuidPipe | AutoDestroy
         };
