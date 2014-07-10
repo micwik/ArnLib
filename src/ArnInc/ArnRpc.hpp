@@ -130,11 +130,11 @@ public:
             SendSequence   = 0x0010,
             //! Check sequence order information from pipe. Can generate signal outOfSequence().
             CheckSequence  = 0x0020,
-            //! Only allow calling with positional argument (typed)
-            OnlyPosArg     = 0x0040,
-            //! When calling, using named argument e.g "myFunc count=123"
+            //! Only allow calling in with positional argument (typed)
+            OnlyPosArgIn   = 0x0040,
+            //! When calling out, uses named argument e.g "myFunc count=123"
             NamedArg       = 0x0080,
-            //! When calling, using named argument with type e.g "myFunc count:int=123"
+            //! When calling out, uses named argument with type e.g "myFunc count:int=123"
             NamedTypedArg  = 0x0100,
             //! Debug mode, dumping info for the batch connections
             Debug          = 0x8000,
@@ -413,7 +413,8 @@ private:
     bool  importArgData( ArgInfo& argInfo, const QByteArray& methodName);
     void  funcHeartBeat( const Arn::XStringMap& xsm);
     void  funcHelp( const Arn::XStringMap& xsm);
-    void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin);
+    void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin, int flags);
+    void  funcArg( const Arn::XStringMap& xsm);
 
     void  setupReceiverMethodsParam();
     void  deleteReceiverMethodsParam();

@@ -387,8 +387,6 @@ bool  ArnRpc::invoke( const QString& funcName,
                       MQGenericArgument arg7,
                       MQGenericArgument arg8)
 {
-    _mode.set( Mode::NamedArg);  //MW: test
-
     if (!_pipe || !_pipe->isOpen()) {
         errorLog( QString(tr("Pipe not open")),
                   ArnError::RpcInvokeError);
@@ -466,7 +464,7 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
         isBinaryType = true;
     }
 
-    //// Make arg key with rpcType or Qt-type
+    //// Make arg key with rpcType or typeGen e.g "t<QImage>"
     QByteArray  argKey;
     if (rpcTypeInfo.typeId == QMetaType::Void)
         argKey = (isBinaryType ? "tb<" : "t<") + typeName + ">";
@@ -510,6 +508,7 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
 
 void  ArnRpc::pipeInput( QByteArray data)
 {
+    //// Handle received text message
     if (data.startsWith('"')) {  // Text is received
         int  endSize = data.endsWith('"') ? (data.size() - 1) : data.size();
         if (endSize < 1)
@@ -519,14 +518,17 @@ void  ArnRpc::pipeInput( QByteArray data)
     }
 
     XStringMap  xsmCall( data);
-    QByteArray  rpcFunc = xsmCall.value(0);
-    if (rpcFunc == "$heartbeat") {  // Built in Heart beat support
-        return funcHeartBeat( xsmCall);
-    }
-    if (rpcFunc == "$help") {  // Built in Help
-        return funcHelp( xsmCall);
-    }
 
+    //// Handle built in commands
+    QByteArray  rpcFunc = xsmCall.value(0);
+    if (rpcFunc == "$heartbeat")  // Built in Heart beat support
+        return funcHeartBeat( xsmCall);
+    if (rpcFunc == "$arg")
+        return funcArg( xsmCall);
+    if (rpcFunc == "$help")  // Built in Help
+        return funcHelp( xsmCall);
+
+    //// Start processing normal rpc function call
     ArgInfo  argInfo[20];
     int argc = 0;
 
@@ -634,19 +636,19 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
         rpcType = typeKey;  // Assume type (can also be name)
     }
 
-    //// Check for typeArg  e.g "t<QImage>"
-    bool  isTypeArg = false;
+    //// Check for typeGen  e.g "t<QImage>"
+    bool  isTypeGen = false;
     if (rpcType.startsWith("t<"))
-        isTypeArg = true;
+        isTypeGen = true;
     else if (rpcType.startsWith("tb<")) {
-        isTypeArg = true;
+        isTypeGen = true;
         argInfo.isBinary = true;
     }
 
     //// Setup Arg info
-    const RpcTypeInfo&  rpcTypeInfo = isTypeArg ? typeInfoNull() : typeInfoFromRpc( rpcType);
+    const RpcTypeInfo&  rpcTypeInfo = isTypeGen ? typeInfoNull() : typeInfoFromRpc( rpcType);
     bool  isListFormat = rpcTypeInfo.typeId == QMetaType::QStringList;
-    if (isTypeArg) {
+    if (isTypeGen) {
         int  posStart = rpcType.indexOf('<') + 1;
         int  posEnd   = rpcType.lastIndexOf('>');
         argInfo.qtType  = rpcType.mid( posStart, (posEnd < 0 ? -1 : posEnd - posStart));
@@ -670,7 +672,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
         }
     }
 
-    bool  possibleNameArg = !_mode.is( Mode::OnlyPosArg) && !argInfo.name.isEmpty();
+    bool  possibleNameArg = !_mode.is( Mode::OnlyPosArgIn) && !argInfo.name.isEmpty();
 
     //// Check type (not for pure nameArg)
     if ((argInfo.typeId == QMetaType::Void)
@@ -713,7 +715,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
 
 bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByteArray& methodName)
 {
-    if (_mode.is( Mode::OnlyPosArg))  return true;  // Only allowed call by positional argument
+    if (_mode.is( Mode::OnlyPosArgIn))  return true;  // Only allowed call by positional argument
 
     bool  isOnlyPositional = true;
     bool  isOnlyNamed      = true;
@@ -1000,44 +1002,59 @@ void  ArnRpc::funcHeartBeat( const XStringMap& xsm)
 
 void  ArnRpc::funcHelp( const XStringMap& xsm)
 {
-    Q_UNUSED(xsm)
+    QByteArray  modePar = xsm.value(1);
+    int  flags = -1;  // Default is faulty parameter
 
-    const QMetaObject*  metaObject = _receiver->metaObject();
-    int  methodIndexHead = -1;
-    int  parCountMin = 10;
-    QByteArray  methodNameHead;
-    QByteArray  methodSignHead;
-    int  methodCount = metaObject->methodCount();
-    for (int i = 0; i < methodCount; ++i) {
-        const QMetaMethod&  method = metaObject->method(i);
-        QByteArray  methodSign = methodSignature( method);
-        if (!methodSign.startsWith( _methodPrefix))  continue;
-
-        methodSign.chop(1);  // Remove last ")"
-        QList<QByteArray>  parNames = method.parameterNames();
-        int  parCount = parNames.size();
-
-        if (methodSignHead.startsWith( methodSign)) {  // Same method with less param
-            parCountMin = parCount;
-        }
-        else {
-            if (methodIndexHead >= 0)
-                funcHelpMethod( metaObject->method( methodIndexHead),
-                                methodNameHead, parCountMin);
-            methodIndexHead = i;
-            methodSignHead  = methodSign;
-            methodNameHead  = methodSign.left( methodSign.indexOf('('));
-            parCountMin     = parCount;
-        }
+    if (modePar.isEmpty()) {
+        flags = 0;  // Ok, standard
     }
-    if (methodIndexHead >= 0)
-        funcHelpMethod( metaObject->method( methodIndexHead), methodNameHead, parCountMin);
+    else if (modePar.startsWith("n")) {  // Named
+        flags = Mode::NamedArg;
+    }
+    else {
+        sendText("$help: Unknown mode");
+    }
+
+    if (flags >= 0) {
+        const QMetaObject*  metaObject = _receiver->metaObject();
+        int  methodIndexHead = -1;
+        int  parCountMin = 10;
+        QByteArray  methodNameHead;
+        QByteArray  methodSignHead;
+        int  methodCount = metaObject->methodCount();
+        for (int i = 0; i < methodCount; ++i) {
+            const QMetaMethod&  method = metaObject->method(i);
+            QByteArray  methodSign = methodSignature( method);
+            if (!methodSign.startsWith( _methodPrefix))  continue;
+
+            methodSign.chop(1);  // Remove last ")"
+            QList<QByteArray>  parNames = method.parameterNames();
+            int  parCount = parNames.size();
+
+            if (methodSignHead.startsWith( methodSign)) {  // Same method with less param
+                parCountMin = parCount;
+            }
+            else {
+                if (methodIndexHead >= 0)
+                    funcHelpMethod( metaObject->method( methodIndexHead),
+                                    methodNameHead, parCountMin, flags);
+                methodIndexHead = i;
+                methodSignHead  = methodSign;
+                methodNameHead  = methodSign.left( methodSign.indexOf('('));
+                parCountMin     = parCount;
+            }
+        }
+        if (methodIndexHead >= 0)
+            funcHelpMethod( metaObject->method( methodIndexHead), methodNameHead, parCountMin, flags);
+    }
+
+    sendText("$arg pos|named|typed");
     sendText("$heartbeat [`time`|off|off1]");
-    sendText("$help");
+    sendText("$help [named]");
 }
 
 
-void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int parNumMin)
+void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int parNumMin, int flags)
 {
     QString  line = QString::fromLatin1( name.mid( _methodPrefix.size()));
 
@@ -1057,6 +1074,7 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
         QByteArray  rpcType;
         const RpcTypeInfo&  rpcTypeInfo = typeInfoFromQt( typeName);
         bool  isList = rpcTypeInfo.typeId == QMetaType::QStringList;
+        bool  isTypeGen = false;
         if (rpcTypeInfo.typeId == QMetaType::QString) {
             rpcType = wasListType ? rpcTypeInfo.rpcTypeName : "";
         }
@@ -1065,13 +1083,24 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
         }
         else {
             rpcType = (isBinaryType ? "tb<" : "t<") + typeName + ">";
+            isTypeGen = true;
         }
 
-        if (!rpcType.isEmpty()) {
-            param += rpcType;
-            param += "=";
+        if ((flags & Mode::NamedArg) && !parName.isEmpty()) {
+            param += parName;
+            if (isTypeGen)
+                param += ":" + rpcType + "=`data`";
+            else
+                param += "=`" + QByteArray( rpcTypeInfo.rpcTypeName) + "`";
         }
-        param += "`" + parName + "`";
+        else {
+            if (!rpcType.isEmpty()) {
+                param += rpcType;
+                param += "=";
+            }
+            param += "`" + parName + "`";
+        }
+
         if (i >= parNumMin)
             param = "[" + param + "]";
         line += " " + QString::fromLatin1( param);
@@ -1079,6 +1108,28 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
         wasListType = isList;
     }
     sendText( line);
+}
+
+
+void  ArnRpc::funcArg( const Arn::XStringMap& xsm)
+{
+    QByteArray  modePar = xsm.value(1);
+
+    if (modePar.startsWith("p")) {  // Positional
+        _mode.set( Mode::NamedArg,      false);
+        _mode.set( Mode::NamedTypedArg, false);
+    }
+    else if (modePar.startsWith("n")) {  // Named
+        _mode.set( Mode::NamedArg,      true);
+        _mode.set( Mode::NamedTypedArg, false);
+    }
+    else if (modePar.startsWith("t")) {  // NamedTyped
+        _mode.set( Mode::NamedArg,      false);
+        _mode.set( Mode::NamedTypedArg, true);
+    }
+    else {
+        sendText("$arg: Unknown mode, use $help");
+    }
 }
 
 
