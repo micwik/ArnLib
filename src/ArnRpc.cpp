@@ -725,7 +725,8 @@ bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByte
         else
             isOnlyPositional = false;
     }
-    if (isOnlyPositional)  return true;  // Only positional arguments in call has been used
+    if (isOnlyPositional && (argc > int(_isIncludeSender)))
+        return true;  // Only positional arguments in call has been used
 
     if (!isOnlyNamed) {
         errorLog( QString(tr("Mixed positional & named arg call not supported, method="))
