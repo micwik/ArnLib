@@ -766,6 +766,16 @@ bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByte
                 else {  // Type for arg is defined by the method parameter
                     aiSlot.qtType = parTypes.at( parIndex);
                     aiSlot.typeId = QMetaType::type( aiSlot.qtType.constData());
+
+                    const RpcTypeInfo&  typeInfo = typeInfoFromId( aiSlot.typeId);
+                    if ((typeInfo.typeId == QMetaType::Void)
+                    || typeInfo.typeId == QMetaType::QStringList) {
+                        errorLog( QString(tr("Type mandatory, arg=")) + parNames.at( parIndex)
+                                  + tr(" type=") + aiSlot.qtType.constData()
+                                  + tr(" in method=") + methodName.constData(),
+                                  ArnError::RpcReceiveError);
+                        return false;
+                    }
                 }
                 argOrder[ parIndex] = char( argIndex);
                 match = true;
