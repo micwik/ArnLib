@@ -187,8 +187,12 @@ bool  ArnRpc::open( QString pipePath)
 {
     setPipe(0);  // Remove any existing pipe
 
+    //// Make path allways in accordance with provider / requester mode
+    QString  path = pipePath;
+    if (_mode.is(_mode.Provider) != Arn::isProviderPath( path))
+        path = Arn::twinPath( path);
+
     ArnPipe*  pipe = new ArnPipe;
-    //pipe->setPipeMode();
     if (!_mode.is(_mode.Provider))
         pipe->setMaster();
     if (_mode.is(_mode.AutoDestroy))
@@ -196,9 +200,9 @@ bool  ArnRpc::open( QString pipePath)
 
     bool  stat;
     if (_mode.is(_mode.UuidPipe))
-        stat = pipe->openUuid( pipePath);
+        stat = pipe->openUuid( path);
     else
-        stat = pipe->open( pipePath);
+        stat = pipe->open( path);
 
     if (stat) {
         pipe->setSendSeq( _mode.is(_mode.SendSequence));

@@ -79,7 +79,8 @@ public:
     virtual  ~ArnPipe();
 
     //! Open a handle to an Arn Pipe Object with a unique uuid name
-    /*! \param[in] path The prefix for Arn uuid pipe path e.g. "//Pipes/pipe"
+    /*! If _path_ is marked as provider, the "!" marker will be moved to after uuid.
+     *  \param[in] path The prefix for Arn uuid pipe path e.g. "//Pipes/pipe"
      *  \retval false if error
      */
     bool  openUuid( const QString& path)

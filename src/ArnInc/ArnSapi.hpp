@@ -112,6 +112,8 @@ public:
     //! Open a new Service API
     /*! The opened Sapi can be either the _provider_ side or the _requester_ side,
      *  which is indicated by _mode_.
+     *  The provider marker "!" in the _pipePath_ will automatically be set/removed in
+     *  accordance to the _mode_.
      *
      *  Typically the _provider_ is only using _mode_ _Provider_.
      *  The _requester_ can use default _mode_ for a static _pipe_ and typically use

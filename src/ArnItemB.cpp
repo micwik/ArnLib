@@ -103,9 +103,14 @@ bool  ArnItemB::open( const QString& path)
 bool  ArnItemB::openUuid( const QString& path)
 {
     QUuid  uuid = QUuid::createUuid();
-    QString  fullPath = path + uuid.toString();
-    bool  stat = open( fullPath);
+    bool  isProvider = Arn::isProviderPath( path);
 
+    QString  uuidPath = isProvider ? Arn::twinPath( path) : path;  // Allways Requester path (no "!")
+    uuidPath += uuid.toString();
+    if (isProvider)
+        uuidPath = Arn::twinPath( uuidPath);  // Restore original "!"
+
+    bool  stat = open( uuidPath);
     return stat;
 }
 
