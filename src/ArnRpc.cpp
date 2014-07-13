@@ -139,14 +139,14 @@ int  ArnDynamicSignals::qt_metacall( QMetaObject::Call call, int id, void **argu
 bool  ArnDynamicSignals::addSignal( QObject *sender, int signalId, QByteArray funcName)
 {
     const QMetaObject*  metaObject = sender->metaObject();
-    const QMetaMethod&  method = metaObject->method( signalId);
+    QMetaMethod  method = metaObject->method( signalId);
 
     Slot  slot;
     slot.funcName    = funcName;
     slot.typeNames   = method.parameterTypes();
     slot.parNames    = method.parameterNames();
     ArnRpc::Invoke  ivf;
-    ivf.set( ivf.NoQueue, QByteArray( method.tag()) == "no_queue");
+    ivf.set( ivf.NoQueue, QByteArray( method.tag()).contains("no_queue"));
     slot.invokeFlags = ivf;
     _slotTab += slot;
 
@@ -302,8 +302,9 @@ void  ArnRpc::addSenderSignals( QObject* sender, QString prefix)
     const QMetaObject*  metaObject = sender->metaObject();
     int  methodCount = metaObject->methodCount();
     QByteArray  methodSignCompHead;
-    for (int i = 0; i < methodCount; ++i) {
-        const QMetaMethod&  method = metaObject->method(i);
+    int  methodIdCompHead = -1;
+    for (int methodId = 0; methodId < methodCount; ++methodId) {
+        QMetaMethod  method = metaObject->method( methodId);
         if (method.methodType() != QMetaMethod::Signal)  continue;
 
         QByteArray  methodSign = methodSignature( method);
@@ -314,12 +315,15 @@ void  ArnRpc::addSenderSignals( QObject* sender, QString prefix)
 
         QByteArray  methodSignComp = methodSign;
         methodSignComp.chop(1);  // Remove last ")"
+
         if (!_mode.is( Mode::NoDefaultArgs)  // When using Default args ...
-        && methodSignCompHead.startsWith( methodSignComp))  // Same method with less param
-            continue;  // Skip it, otherwise multiple rpc calls.
+        && methodSignCompHead.startsWith( methodSignComp)  // Starts with same signatur ...
+        && hasSameParamNames( method, metaObject->method( methodIdCompHead)))  // and same param names
+            continue;  // Skip it, to prohibit multiple rpc calls.
 
         methodSignCompHead = methodSignComp;
-        _dynamicSignals->addSignal( sender, i, funcName);
+        methodIdCompHead   = methodId;
+        _dynamicSignals->addSignal( sender, methodId, funcName);
     }
 }
 
@@ -750,7 +754,7 @@ bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByte
     if (methodIndex < 0)  return false;  // Failed finding a method
 
     const QMetaObject*  metaObject = _receiver->metaObject();
-    const QMetaMethod&  method = metaObject->method( methodIndex);
+    QMetaMethod  method = metaObject->method( methodIndex);
     QList<QByteArray>  parNames = method.parameterNames();
     QList<QByteArray>  parTypes = method.parameterTypes();
     int  parCount = parNames.size();
@@ -860,7 +864,7 @@ int  ArnRpc::argLogicFindMethod( const ArnRpc::ArgInfo* argInfo, int argc, const
     //// Filter candidates to only have same number of params as the found args
     const QMetaObject*  metaObject = _receiver->metaObject();
     for (int i = 0; i < methodCand.size();) {
-        const QMetaMethod&  method = metaObject->method( methodCand.at(i));
+        QMetaMethod  method = metaObject->method( methodCand.at(i));
         if (method.parameterNames().size() == foundArgCount) {
             ++i;
             continue;
@@ -888,7 +892,7 @@ void  ArnRpc::setupReceiverMethodsParam()
     int  methodCount = metaObject->methodCount();
     QByteArray  lastMethodName;
     for (int methodIndex = 0; methodIndex < methodCount; ++methodIndex) {
-        const QMetaMethod&  method = metaObject->method( methodIndex);
+        QMetaMethod  method = metaObject->method( methodIndex);
         QByteArray  methodSign = methodSignature( method);
         if (!methodSign.startsWith( _methodPrefix))  continue;
 
@@ -927,6 +931,19 @@ void ArnRpc::deleteReceiverMethodsParam()
 
     delete _receiverMethodsParam;
     _receiverMethodsParam = 0;
+}
+
+
+bool  ArnRpc::hasSameParamNames( const QMetaMethod& method1, const QMetaMethod& method2)
+{
+    QList<QByteArray>  parNames1 = method1.parameterNames();
+    QList<QByteArray>  parNames2 = method2.parameterNames();
+    int  parCount = qMin( parNames1.size(), parNames2.size());
+    for (int i = 0; i < parCount; ++i) {
+        if (parNames2.at(i) != parNames1.at(i))
+            return false;
+    }
+    return true;
 }
 
 
@@ -1032,13 +1049,13 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
 
     if (flags >= 0) {
         const QMetaObject*  metaObject = _receiver->metaObject();
-        int  methodIndexHead = -1;
+        int  methodIdHead = -1;
         int  parCountMin = 10;
         QByteArray  methodNameHead;
         QByteArray  methodSignHead;
         int  methodCount = metaObject->methodCount();
-        for (int i = 0; i < methodCount; ++i) {
-            const QMetaMethod&  method = metaObject->method(i);
+        for (int methodId = 0; methodId < methodCount; ++methodId) {
+            QMetaMethod  method = metaObject->method(methodId);
             QByteArray  methodSign = methodSignature( method);
             if (!methodSign.startsWith( _methodPrefix))  continue;
 
@@ -1046,21 +1063,22 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
             QList<QByteArray>  parNames = method.parameterNames();
             int  parCount = parNames.size();
 
-            if (methodSignHead.startsWith( methodSign)) {  // Same method with less param
-                parCountMin = parCount;
-            }
+            if (!_mode.is( Mode::NoDefaultArgs)  // When using Default args ...
+            && methodSignHead.startsWith( methodSign)  // Starts with same signatur ...
+            && hasSameParamNames( method, metaObject->method( methodIdHead)))  // and same param names
+                parCountMin = parCount;  // Same method with less param
             else {
-                if (methodIndexHead >= 0)
-                    funcHelpMethod( metaObject->method( methodIndexHead),
+                if (methodIdHead >= 0)
+                    funcHelpMethod( metaObject->method( methodIdHead),
                                     methodNameHead, parCountMin, flags);
-                methodIndexHead = i;
-                methodSignHead  = methodSign;
-                methodNameHead  = methodSign.left( methodSign.indexOf('('));
-                parCountMin     = parCount;
+                methodIdHead   = methodId;
+                methodSignHead = methodSign;
+                methodNameHead = methodSign.left( methodSign.indexOf('('));
+                parCountMin    = parCount;
             }
         }
-        if (methodIndexHead >= 0)
-            funcHelpMethod( metaObject->method( methodIndexHead), methodNameHead, parCountMin, flags);
+        if (methodIdHead >= 0)
+            funcHelpMethod( metaObject->method( methodIdHead), methodNameHead, parCountMin, flags);
     }
 
     sendText("$arg pos|named|typed");
@@ -1205,7 +1223,7 @@ void  ArnRpc::batchConnect( const QObject *sender, const QRegExp &rgx,
     QList<QByteArray>  doneMethodSignTab;
     int  methodCount = metaObject->methodCount();
     for (int i = 0; i < methodCount; ++i) {
-        const QMetaMethod&  method = metaObject->method(i);
+        QMetaMethod  method = metaObject->method(i);
         if (method.methodType() != QMetaMethod::Signal)  continue;  // Must be a Signal
 
         QByteArray  signalSign = methodSignature( method);
@@ -1235,18 +1253,23 @@ void  ArnRpc::batchConnect( const QObject *sender, const QRegExp &rgx,
     methodCount = metaObject->methodCount();
     doneMethodSignTab.clear();
     QByteArray  methodSignCompHead;
-    for (int i = 0; i < methodCount; ++i) {
-        const QMetaMethod&  method = metaObject->method(i);
+    int  methodIdCompHead = -1;
+    for (int methodId = 0; methodId < methodCount; ++methodId) {
+        QMetaMethod  method = metaObject->method(methodId);
         QByteArray  methodSign = methodSignature( method);
         if (doneMethodSignTab.contains( methodSign))  continue;  // Already done (inherited)
         doneMethodSignTab += methodSign;
 
         QByteArray  methodSignComp = methodSign;
         methodSignComp.chop(1);  // Remove last ")"
-        if (!mode.is( mode.NoDefaultArgs)  // When using Default args ...
-        && methodSignCompHead.startsWith( methodSignComp))  // Same method with less param
-            continue;  // Skip it, otherwise multiple calls.
+
+        if (!mode.is( Mode::NoDefaultArgs)  // When using Default args ...
+        && methodSignCompHead.startsWith( methodSignComp)  // Starts with same signatur ...
+        && hasSameParamNames( method, metaObject->method( methodIdCompHead)))  // and same param names
+            continue;  // Skip it, to prohibit multiple calls.
+
         methodSignCompHead = methodSignComp;
+        methodIdCompHead   = methodId;
 
         QByteArray  methodSignLow = methodSign.toLower();
         int index = methodSignLowTab.indexOf( methodSignLow);

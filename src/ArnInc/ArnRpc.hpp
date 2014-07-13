@@ -418,6 +418,7 @@ private:
 
     void  setupReceiverMethodsParam();
     void  deleteReceiverMethodsParam();
+    static bool  hasSameParamNames( const QMetaMethod& method1, const QMetaMethod& method2);
     static QByteArray  methodSignature( const QMetaMethod& method);
     static const RpcTypeInfo&  typeInfoFromRpc( const QByteArray& rpcTypeName);
     static const RpcTypeInfo&  typeInfoFromQt( const QByteArray& qtTypeName);
