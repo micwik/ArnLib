@@ -57,14 +57,14 @@ class QTimer;
 class ARNLIBSHARED_EXPORT MQGenericArgument : public QGenericArgument
 {
 public:
-    inline  MQGenericArgument( const char *aName = 0, const char *aLabel = 0, const void *aData = 0)
+    inline  MQGenericArgument( const char* aName = 0, const char* aLabel = 0, const void* aData = 0)
         : QGenericArgument( aName, aData), _label(aLabel) {}
     inline  MQGenericArgument( const QGenericArgument& qgenArg)
         : QGenericArgument( qgenArg), _label("") {}
     inline const char*  label()  const {return _label;}
 
 private:
-    const char *_label;
+    const char* _label;
 };
 
 
@@ -73,8 +73,8 @@ template <class T>
 class MQArgument: public MQGenericArgument
 {
 public:
-    inline MQArgument( const char *aName, const char *aLabel, const T &aData)
-        : MQGenericArgument( aName, aLabel, static_cast<const void *>(&aData))
+    inline MQArgument( const char* aName, const char* aLabel, const T &aData)
+        : MQGenericArgument( aName, aLabel, static_cast<const void*>(&aData))
         {}
 };
 
@@ -164,7 +164,12 @@ public:
     void  setPipe( ArnPipe* pipe);
     void  setReceiver( QObject* receiver);
     void  setMethodPrefix( QString prefix);
+
+     //! Add sender as argument when calling a rpc method
+     /*! \deprecated Use rpcSender()
+      */
     void  setIncludeSender( bool v);
+
     void  setMode( Mode mode);
 
     //! Get the mode
@@ -259,7 +264,7 @@ public:
     ArnRpc*  rpcSender();
     static ArnRpc*  rpcSender( QObject* receiver);
 
-    //! Make batch connection from one senders signals to another receivers slots
+    //! Make batch connection from one senders signals to another receivers slots/signals
     /*! Used when there is a pattern in the naming of the signals and slots.
      *  It's assumed that naming for slots are unique regardless of its case i.e.
      *  using both test() and tesT() are not allowed.
@@ -268,16 +273,16 @@ public:
      *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
      *
      *  \param[in] sender is the sending QObject.
-     *  \param[in] rgx is the regular expression for selecting signals.
+     *  \param[in] rgx is the regular expression for selecting sender signals.
      *  \param[in] receiver is the receiving QObject.
-     *  \param[in] replace is the conversion for naming the slots.
+     *  \param[in] replace is the conversion for naming the receiver slots/signals.
      *  \param[in] mode Used modes: _Debug_, _NoDefaultArgs_
      */
     static void  batchConnect( const QObject* sender, const QRegExp& rgx,
-                               const QObject* receiver, const QString &replace,
+                               const QObject* receiver, const QString& replace,
                                Mode mode = Mode());
 
-    //! Make batch connection from this ArnRpc:s signals to another receivers slots
+    //! Make batch connection from this ArnRpc:s signals to another receivers slots/signals
     /*! Used when there is a pattern in the naming of the signals and slots.
      *  It's assumed that naming for slots are unique regardless of its case i.e.
      *  using both test() and tesT() are not allowed.
@@ -285,36 +290,36 @@ public:
      *  Example: `_commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");`
      *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
      *
-     *  \param[in] rgx is the regular expression for selecting signals.
+     *  \param[in] rgx is the regular expression for selecting sender signals.
      *  \param[in] receiver is the receiving QObject.
-     *  \param[in] replace is the conversion for naming the slots.
+     *  \param[in] replace is the conversion for naming the receiver slots/signals.
      *  \param[in] mode
      *  \see batchConnect(const QObject*, const QRegExp&, const QObject*,
      *       const QString&, Mode)
      */
     void  batchConnect( const QRegExp& rgx,
-                        const QObject* receiver, const QString &replace,
+                        const QObject* receiver, const QString& replace,
                         Mode mode = Mode()) {
         batchConnect( this, rgx, receiver, replace, mode);
     }
 
-    //! Make batch connection from one senders signals to this ArnRpc:s slots
+    //! Make batch connection from one senders signals to this ArnRpc:s slots/signals
     /*! Used when there is a pattern in the naming of the signals and slots.
      *  It's assumed that naming for slots are unique regardless of its case i.e.
      *  using both test() and tesT() are not allowed.
      *
-     *  Example: `_commonSapi.batchConnect( _commonSapi, QRegExp("^rq_(.+)"), "chat\\1");`
-     *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
+     *  Example: `_commonSapi.batchConnect( _commonSapi, QRegExp("^chat(.+)"), "rq_\\1");`
+     *  connects signal: `chatinfo(QString,QString)` to slot: `rq_Info(QString,QString)`
      *
      *  \param[in] sender is the sending QObject.
-     *  \param[in] rgx is the regular expression for selecting signals.
-     *  \param[in] replace is the conversion for naming the slots.
+     *  \param[in] rgx is the regular expression for selecting sender signals.
+     *  \param[in] replace is the conversion for naming the receiver slots/signals.
      *  \param[in] mode
      *  \see batchConnect(const QObject*, const QRegExp&, const QObject*,
      *       const QString&, Mode)
      */
     void  batchConnect( const QObject* sender, const QRegExp& rgx,
-                        const QString &replace,
+                        const QString& replace,
                         Mode mode = Mode()) {
         batchConnect( sender, rgx, this, replace, mode);
     }

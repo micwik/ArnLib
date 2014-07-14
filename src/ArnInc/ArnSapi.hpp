@@ -128,6 +128,52 @@ public:
     bool  open( QString pipePath, Mode mode = Mode(),
                 const char* providerPrefix = 0, const char* requesterPrefix = 0);
 
+    //! Make batch connection from this ArnSapi:s signals to another receivers slots/signals
+    /*! Used when there is a specific pattern in the naming of the signals and slots.
+     *  It's assumed that naming for slots are unique regardless of its case i.e.
+     *  using both test() and tesT() are not allowed.
+     *
+     *  Example: Provider doing `_commonSapi.batchConnectTo( myReceiver, "sapi");`
+     *  Can connect signal: `pv_newMsg(QString,QString)` to slot: `sapiNewMsg(QString,QString)`
+     *
+     *  \param[in] receiver is the receiving QObject.
+     *  \param[in] prefix is the prefix for receiving slot/signal names.
+     *  \param[in] mode
+     *  \see batchConnect( const QObject*, const QRegExp&, const QObject*,
+     *       const QString&, Mode)
+     */
+    void  batchConnectTo( const QObject* receiver, const QString& prefix = QString(),
+                          Mode mode = Mode()) {
+        batchConnect( this,
+                      QRegExp("^" + _receivePrefix + "(.+)"),
+                      receiver,
+                      prefix + "\\1",
+                      mode);
+    }
+
+    //! Make batch connection from one senders signals to this ArnSapi:s signals
+    /*! Used when there is a specific pattern in the naming of the signals.
+     *  It's assumed that naming for signals are unique regardless of its case i.e.
+     *  using both test() and tesT() are not allowed.
+     *
+     *  Example: Requester doing `_commonSapi.batchConnectFrom( mySender, "sapi");`
+     *  Can connect signal: `sapiNewMsg(QString,QString)` to signal: `pv_newMsg(QString,QString)`
+     *
+     *  \param[in] sender is the sending QObject.
+     *  \param[in] prefix is the prefix for sending signal names.
+     *  \param[in] mode
+     *  \see batchConnect(const QObject*, const QRegExp&, const QObject*,
+     *       const QString&, Mode)
+     */
+    void  batchConnectFrom( const QObject* sender, const QString& prefix = QString(),
+                            Mode mode = Mode()) {
+        batchConnect( sender,
+                      QRegExp("^" + prefix + "(.+)"),
+                      this,
+                      _sendPrefix + "\\1",
+                      mode);
+    }
+
 private:
     //// Hide these from SAPI base interface
     void  setPipe( ArnPipe* pipe);
@@ -138,6 +184,9 @@ private:
     void  addSenderSignals( QObject* sender, QString prefix);
     ArnRpc*  rpcSender();
     static ArnRpc*  rpcSender( QObject* receiver);
+
+    QString  _receivePrefix;
+    QString  _sendPrefix;
 };
 
 
