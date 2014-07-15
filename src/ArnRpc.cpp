@@ -235,16 +235,36 @@ void  ArnRpc::setPipe( ArnPipe* pipe)
 }
 
 
-void  ArnRpc::setReceiver( QObject *receiver)
+void  ArnRpc::setReceiver( QObject* receiver)
 {
+    setReceiver( receiver, true);
+}
+
+
+bool ArnRpc::setReceiver( QObject* receiver, bool useTrackRpcSender)
+{
+    bool stat = true;
+
     _receiver = receiver;
     deleteReceiverMethodsParam();
+    _receiverStorage = 0;  // Default: don't need be able to track rpcSender
+    if (!receiver)  return stat;
 
-    _receiverStorage = _receiver->findChild<ArnRpcReceiverStorage*>( RPC_STORAGE_NAME);
-    if (!_receiverStorage) {
-        _receiverStorage = new ArnRpcReceiverStorage( _receiver);
-        _receiverStorage->setObjectName( RPC_STORAGE_NAME);
+    bool  isSameThread = receiver->thread() == this->thread();
+    if (useTrackRpcSender && isSameThread) {
+        _receiverStorage = _receiver->findChild<ArnRpcReceiverStorage*>( RPC_STORAGE_NAME);
+        if (!_receiverStorage) {
+            _receiverStorage = new ArnRpcReceiverStorage( _receiver);
+            _receiverStorage->setObjectName( RPC_STORAGE_NAME);
+        }
     }
+    else if (useTrackRpcSender) {
+        errorLog( QString(tr("Can't track rpcSender to receiver in other thread")),
+                  ArnError::Warning);
+        stat = false;
+    }
+
+    return stat;
 }
 
 
@@ -516,6 +536,11 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
 
 void  ArnRpc::pipeInput( QByteArray data)
 {
+    if (!_receiver) {
+        errorLog( QString(tr("Can't invoke method: receiver=0")), ArnError::RpcReceiveError);
+        return;
+    }
+
     //// Handle received text message
     if (data.startsWith('"')) {  // Text is received
         int  endSize = data.endsWith('"') ? (data.size() - 1) : data.size();
@@ -1034,6 +1059,11 @@ void  ArnRpc::funcHeartBeat( const XStringMap& xsm)
 
 void  ArnRpc::funcHelp( const XStringMap& xsm)
 {
+    if (!_receiver) {
+        sendText("$help: rpc-receiver = 0");
+        return;
+    }
+
     QByteArray  modePar = xsm.value(1);
     int  flags = -1;  // Default is faulty parameter
 

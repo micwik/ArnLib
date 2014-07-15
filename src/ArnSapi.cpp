@@ -52,7 +52,7 @@ bool  ArnSapi::open( QString pipePath, Mode mode,
     }
     ArnRpc::setMethodPrefix( _receivePrefix);
     ArnRpc::addSenderSignals( this, _sendPrefix);
-    ArnRpc::setReceiver( this);
+    ArnRpc::setReceiver( this, false);
     ArnRpc::setMode( mode);
 
     return ArnRpc::open( pipePath);

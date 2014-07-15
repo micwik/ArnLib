@@ -178,6 +178,7 @@ private:
     //// Hide these from SAPI base interface
     void  setPipe( ArnPipe* pipe);
     void  setReceiver( QObject* receiver);
+    bool  setReceiver( QObject* receiver, bool useTrackRpcSender);
     void  setMethodPrefix( QString prefix);
     void  setIncludeSender( bool v);
     void  setMode( Mode mode);

@@ -40,6 +40,7 @@
 #include "XStringMap.hpp"
 #include "MQFlags.hpp"
 #include <QGenericArgument>
+#include <QPointer>
 #include <QString>
 #include <QByteArray>
 #include <QObject>
@@ -92,21 +93,23 @@ a higher level model. For now the ArnRpc class is more sparsely documented.
 
     // In class code  (MyClass)
     _rpcCommon = new ArnRpc( this);
-    _rpcCommon->setIncludeSender( true);
     _rpcCommon->setMethodPrefix("rpc_");
     _rpcCommon->setReceiver( this);
     _rpcCommon->setMode( ArnRpc::Mode::Provider);
     _rpcCommon->open("//Pipes/pipeCommon");
 .
 .
-void  MyClass::rpc_test( ArnRpc* sender, QByteArray ba, QString str, int i)
+void  MyClass::rpc_test( QByteArray ba, QString str, int i)
 {
+    ArnRpc*  sender = ArnRpc::rpcSender( this);
     if (sender) qDebug() << "RPC sender=" << sender->pipePath();
     qDebug() << "RPC-test ba=" << ba << " str=" << str << " int=" << i;
 }
 
-void  MyClass::rpc_ver( ArnRpc* sender)
+void  MyClass::rpc_ver()
 {
+    ArnRpc*  sender = ArnRpc::rpcSender( this);
+    if (!sender)  return;
     // Reply to requester the version text
     sender->invoke("ver", MQ_ARG( QString, verText, "MySytem Version 1.0"));
 }
@@ -162,7 +165,12 @@ public:
 
     bool  open( QString pipePath);
     void  setPipe( ArnPipe* pipe);
+
+    // Todo: combine with default arg useTrackRpcSender=true
     void  setReceiver( QObject* receiver);
+
+    bool  setReceiver( QObject* receiver, bool useTrackRpcSender);
+
     void  setMethodPrefix( QString prefix);
 
      //! Add sender as argument when calling a rpc method
@@ -433,7 +441,7 @@ private:
     ArnDynamicSignals*  _dynamicSignals;
     ArnRpcReceiverStorage*  _receiverStorage;
     MethodsParam*  _receiverMethodsParam;
-    QObject*  _receiver;
+    QPointer<QObject>  _receiver;
     ArnPipe*  _pipe;
     QByteArray  _methodPrefix;
     bool  _isIncludeSender;
