@@ -1078,6 +1078,9 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
     }
 
     if (flags >= 0) {
+        if (_mode.is( Mode::OnlyPosArgIn))
+            sendText("* Only positional args allowed.");
+
         const QMetaObject*  metaObject = _receiver->metaObject();
         int  methodIdHead = -1;
         int  parCountMin = 10;
