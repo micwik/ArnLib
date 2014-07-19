@@ -33,7 +33,7 @@
 #define ARNPIPE_HPP
 
 #include "ArnLib_global.hpp"
-#include "ArnItem.hpp"
+#include "ArnItemB.hpp"
 
 
 //! ArnItem specialized as a pipe.
@@ -183,7 +183,7 @@ signals:
 
     //! \cond ADV
 protected:
-    virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     //! \endcond
 
 private slots:

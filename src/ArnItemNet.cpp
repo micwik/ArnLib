@@ -218,7 +218,7 @@ bool  ArnItemNet::isDirtyMode()  const
 }
 
 
-void  ArnItemNet::itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value)
+void  ArnItemNet::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
     Q_UNUSED(value);
 

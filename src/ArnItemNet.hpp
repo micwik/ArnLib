@@ -72,7 +72,7 @@ public:
     void  resetDirtyMode();
     bool  isDirtyMode()  const;
 
-    virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  itemCreatedBelow( QString path);
     virtual void  modeUpdate( bool isSetup = false);
 

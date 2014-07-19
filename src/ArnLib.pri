@@ -2,6 +2,7 @@
 isEmpty(ARNL_PRI_INCLUDED) {
 ARNLIB_PRI_INCLUDED = 1
 
+# Don't forget to change in Doxygen config
 ARNLIBVER = 2.1.0
 
 DEFINES += ARNLIBVER=\\\"$${ARNLIBVER}\\\"
@@ -84,6 +85,7 @@ contains(ARN, core) {
     SOURCES += \
         $$PWD/ArnM.cpp \
         $$PWD/ArnItem.cpp \
+        $$PWD/ArnItemValve.cpp \
         $$PWD/ArnLinkHandle.cpp \
         $$PWD/ArnLink.cpp \
         $$PWD/ArnPipe.cpp \
@@ -92,6 +94,7 @@ contains(ARN, core) {
     HEADERS += \
         $$PWD/ArnInc/ArnM.hpp \
         $$PWD/ArnInc/ArnItem.hpp \
+        $$PWD/ArnInc/ArnItemValve.hpp \
         $$PWD/ArnInc/ArnPipe.hpp \
         $$PWD/ArnInc/ArnItemB.hpp \
         $$PWD/ArnInc/ArnLinkHandle.hpp \

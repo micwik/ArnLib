@@ -50,6 +50,8 @@ void  ArnItemB::init()
 
     _useForceKeep    = false;
     _blockEcho       = false;
+    _enableSetValue  = true;
+    _enableUpdNotify = true;
     _ignoreSameValue = ArnM::defaultIgnoreSameValue();
     _isOnlyEcho      = true;  // Nothing else yet ...
 
@@ -224,6 +226,18 @@ bool  ArnItemB::isOnlyEcho() const
 void  ArnItemB::setBlockEcho( bool blockEcho)
 {
     _blockEcho = blockEcho;
+}
+
+
+void  ArnItemB::setEnableSetValue( bool enable)
+{
+    _enableSetValue = enable;
+}
+
+
+void  ArnItemB::setEnableUpdNotify( bool enable)
+{
+    _enableUpdNotify = enable;
 }
 
 
@@ -409,6 +423,8 @@ void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame)
 
 void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData)
 {
+    if (!_enableSetValue)  return;
+
     if (!data.isEmpty()) {
         if (data.at(0) < 32) {  // Assume Export-code
             switch (ExportCode::fromInt( data.at(0))) {
@@ -498,7 +514,6 @@ void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle
     // Normal printable data
     handleData._flags.set( handleData._flags.Text);
     setValue( data, ignoreSame, handleData);
-    //setValue( QString::fromUtf8( data.constData(), data.size()), ignoreSame, handleData);
 }
 
 
@@ -606,6 +621,8 @@ bool  ArnItemB::toBool() const
 
 void  ArnItemB::setValue( const ArnItemB& other, int ignoreSame)
 {
+    if (!_enableSetValue)  return;
+
     ArnLink *link = other._link;
 
     if (link) {
@@ -648,6 +665,8 @@ void  ArnItemB::setValue( const ArnItemB& other, int ignoreSame)
 
 void  ArnItemB::setValue( int value, int ignoreSame)
 {
+    if (!_enableSetValue)  return;
+
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
@@ -670,6 +689,8 @@ void  ArnItemB::setValue( int value, int ignoreSame)
 
 void  ArnItemB::setValue( double value, int ignoreSame)
 {
+    if (!_enableSetValue)  return;
+
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
@@ -692,6 +713,8 @@ void  ArnItemB::setValue( double value, int ignoreSame)
 
 void  ArnItemB::setValue( bool value, int ignoreSame)
 {
+    if (!_enableSetValue)  return;
+
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
@@ -714,6 +737,8 @@ void  ArnItemB::setValue( bool value, int ignoreSame)
 
 void  ArnItemB::setValue( const QString& value, int ignoreSame)
 {
+    if (!_enableSetValue)  return;
+
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
@@ -736,6 +761,8 @@ void  ArnItemB::setValue( const QString& value, int ignoreSame)
 
 void  ArnItemB::setValue( const QByteArray& value, int ignoreSame)
 {
+    if (!_enableSetValue)  return;
+
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
@@ -758,6 +785,8 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame)
 
 void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
 {
+    if (!_enableSetValue)  return;
+
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
@@ -779,7 +808,7 @@ void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
 }
 
 
-void  ArnItemB::itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value)
+void  ArnItemB::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
     Q_UNUSED(handleData);
     Q_UNUSED(value);
@@ -814,6 +843,8 @@ bool  ArnItemB::isForceKeep()  const
 
 void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData)
 {
+    if (!_enableSetValue)  return;
+
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     ArnLinkHandle::Flags&  handleFlags = handleData._flags;
     QString  valueTxt;
@@ -852,6 +883,8 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle
 void  ArnItemB::trfValue( const QByteArray& value, int sendId, bool forceKeep,
                          const ArnLinkHandle& handleData)
 {
+    if (!_enableSetValue)  return;
+
     QMetaObject::invokeMethod( _link, "trfValue", Qt::QueuedConnection,
                                Q_ARG( QByteArray, value),
                                Q_ARG( int, sendId),
@@ -879,23 +912,25 @@ void  ArnItemB::errorLog( QString errText, ArnError err, void* reference)  const
 
 void  ArnItemB::linkValueUpdated( uint sendId, const ArnLinkHandle& handleData)
 {
-    if (_blockEcho  &&  sendId == _id) {  // This update was initiated from this Item, it can be blocked ...
+    if (_blockEcho  &&  sendId == _id)  // This update was initiated from this Item, it can be blocked ...
         return;
-    }
+
     _isOnlyEcho = (sendId == _id) ? _isOnlyEcho : false;
 
-    itemUpdate( handleData);
+    if (_enableUpdNotify)
+        itemUpdated( handleData);
 }
 
 
 void  ArnItemB::linkValueUpdated( uint sendId, QByteArray value, ArnLinkHandle handleData)
 {
-    if (_blockEcho  &&  sendId == _id) {  // This update was initiated from this Item, it can be blocked ...
+    if (_blockEcho  &&  sendId == _id)  // This update was initiated from this Item, it can be blocked ...
         return;
-    }
+
     _isOnlyEcho = (sendId == _id) ? _isOnlyEcho : false;
 
-    itemUpdate( handleData, &value);
+    if (_enableUpdNotify)
+        itemUpdated( handleData, &value);
 }
 
 

@@ -309,7 +309,7 @@ void  ArnItem::disconnectNotify( const char *signal)
 #endif
 
 
-void  ArnItem::itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value)
+void  ArnItem::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
     if (!value) {  // Update of item with no data supplied
         if (_delayTimer) {

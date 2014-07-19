@@ -382,7 +382,7 @@ protected:
     void  setValue( const QVariant& value, int ignoreSame = Arn::SameValue::DefaultAction);
 
     //// To be reimplemented
-    virtual void  itemUpdate( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  itemCreatedBelow( QString path);
     virtual void  itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode);
 
@@ -394,6 +394,8 @@ protected:
     void  resetOnlyEcho();
     bool  isOnlyEcho()  const;
     void  setBlockEcho( bool blockEcho);
+    void  setEnableSetValue( bool enable);
+    void  setEnableUpdNotify( bool enable);
     void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
     void  trfValue( const QByteArray& value, int sendId, bool forceKeep,
                     const ArnLinkHandle& handleData);
@@ -423,6 +425,8 @@ private:
     bool  _syncModeLinkShare;
     bool  _useForceKeep;
     bool  _blockEcho;
+    bool  _enableSetValue;
+    bool  _enableUpdNotify;
     bool  _ignoreSameValue;
     bool  _isOnlyEcho;
     uint  _id;

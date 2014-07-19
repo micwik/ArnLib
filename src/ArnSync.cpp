@@ -262,7 +262,7 @@ uint  ArnSync::doCommandSync()
     }
     if ((itemNet->type() != Arn::DataType::Null)
     && !(itemNet->syncMode().is( syncMode.Master))) {  // Only send non Null Value to non master
-        itemNet->itemUpdate( ArnLinkHandle()); // Make server send the current value to client
+        itemNet->itemUpdated( ArnLinkHandle()); // Make server send the current value to client
     }
 
     return ArnError::Ok;
@@ -443,7 +443,7 @@ void  ArnSync::connected()
         if ((itemNet->type() != Arn::DataType::Null)            // Only send non Null Value ...
         && (!itemNet->isPipeMode())                                      // from non pipe ..
         && (itemNet->syncMode().is( Arn::ObjectSyncMode::Master))) {  // which is master
-            itemNet->itemUpdate( ArnLinkHandle());  // Make client send the current value to server
+            itemNet->itemUpdated( ArnLinkHandle());  // Make client send the current value to server
         }
     }
     sendNext();

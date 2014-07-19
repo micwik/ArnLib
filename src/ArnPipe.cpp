@@ -132,9 +132,9 @@ void  ArnPipe::setCheckSeq( bool useCheckSeq)
 }
 
 
-void  ArnPipe::itemUpdate(const ArnLinkHandle& handleData, const QByteArray* value)
+void  ArnPipe::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
-    ArnItemB::itemUpdate( handleData, value);
+    ArnItemB::itemUpdated( handleData, value);
 
     if (_useCheckSeq && handleData.has( ArnLinkHandle::SeqNo)) {
         int seqNum = handleData.valueRef( ArnLinkHandle::SeqNo).toInt();

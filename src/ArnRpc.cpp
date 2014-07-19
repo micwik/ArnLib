@@ -235,6 +235,12 @@ void  ArnRpc::setPipe( ArnPipe* pipe)
 }
 
 
+ArnPipe*  ArnRpc::pipe()  const
+{
+    return _pipe;
+}
+
+
 void  ArnRpc::setReceiver( QObject* receiver)
 {
     setReceiver( receiver, true);

@@ -158,13 +158,17 @@ public:
     explicit  ArnRpc( QObject* parent = 0);
 
     //! Get the path for the used _pipe_
-    /*! \retval false if error
-     *  \see \ref gen_bidirArnobj
+    /*! \return path
      */
     QString  pipePath() const;
 
     bool  open( QString pipePath);
     void  setPipe( ArnPipe* pipe);
+
+    //! Get the used _pipe_
+    /*! \return pipe
+     */
+    ArnPipe*  pipe()  const;
 
     // Todo: combine with default arg useTrackRpcSender=true
     void  setReceiver( QObject* receiver);
