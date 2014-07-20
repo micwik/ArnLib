@@ -127,7 +127,7 @@ public:
             AutoDestroy    = 0x0002,
             //! Use an unique uuid in the pipe name
             UuidPipe       = 0x0004,
-            //! If guarantied no default arguments, member name overload is ok
+            //! If guarantied no default arguments, full member name overload is ok
             NoDefaultArgs  = 0x0008,
             //! Send sequence order information to pipe
             SendSequence   = 0x0010,
@@ -139,6 +139,8 @@ public:
             NamedArg       = 0x0080,
             //! When calling out, uses named argument with type e.g "myFunc count:int=123"
             NamedTypedArg  = 0x0100,
+            //! When receiver method missing, send defaultCall() signal instead of error
+            UseDefaultCall = 0x0200,
             //! Debug mode, dumping info for the batch connections
             Debug          = 0x8000,
             //! Convenience, combined _UuidPipe_ and _AutoDestroy_
@@ -349,6 +351,13 @@ signals:
      *  \see sendText();
      */
     void  textReceived( QString text);
+
+    //! Signal emitted when receiver method missing.
+    /*! This signal is only emitted if Mode::useDefaultCall is active. Error notification
+     *  is then canceled.
+     *  \param[in] data is the received call message in XString format.
+     */
+    void  defaultCall( const QByteArray& data);
 
     //! Signal emitted when checked sequence order is wrong.
     void  outOfSequence();

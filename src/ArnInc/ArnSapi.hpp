@@ -133,6 +133,10 @@ public:
      *  It's assumed that naming for slots are unique regardless of its case i.e.
      *  using both test() and tesT() are not allowed.
      *
+     *  When Mode::UseDefaultCall is active, then also the defaultCall() signal is connected
+     *  to the receiver. Method name will be using the prefix and end with "Default". E.g.
+     *  prefix is "sapi" will give method name "sapiDefault".
+     *
      *  Example: Provider doing `_commonSapi.batchConnectTo( myReceiver, "sapi");`
      *  Can connect signal: `pv_newMsg(QString,QString)` to slot: `sapiNewMsg(QString,QString)`
      *
@@ -143,13 +147,7 @@ public:
      *       const QString&, Mode)
      */
     void  batchConnectTo( const QObject* receiver, const QString& prefix = QString(),
-                          Mode mode = Mode()) {
-        batchConnect( this,
-                      QRegExp("^" + _receivePrefix + "(.+)"),
-                      receiver,
-                      prefix + "\\1",
-                      mode);
-    }
+                          Mode mode = Mode());
 
     //! Make batch connection from one senders signals to this ArnSapi:s signals
     /*! Used when there is a specific pattern in the naming of the signals.
@@ -166,13 +164,7 @@ public:
      *       const QString&, Mode)
      */
     void  batchConnectFrom( const QObject* sender, const QString& prefix = QString(),
-                            Mode mode = Mode()) {
-        batchConnect( sender,
-                      QRegExp("^" + prefix + "(.+)"),
-                      this,
-                      _sendPrefix + "\\1",
-                      mode);
-    }
+                            Mode mode = Mode());
 
 private:
     //// Hide these from SAPI base interface

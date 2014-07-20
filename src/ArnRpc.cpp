@@ -80,7 +80,7 @@ class ArnDynamicSignals : public QObject
 public:
     explicit  ArnDynamicSignals( ArnRpc* rpc);
     int  qt_metacall( QMetaObject::Call call, int id, void **arguments);
-    bool  addSignal( QObject *sender, int signalId, QByteArray funcName);
+    bool  addSignal( QObject *sender, int signalId, const QByteArray& funcName);
 
 private:
     struct Slot {
@@ -136,15 +136,15 @@ int  ArnDynamicSignals::qt_metacall( QMetaObject::Call call, int id, void **argu
 }
 
 
-bool  ArnDynamicSignals::addSignal( QObject *sender, int signalId, QByteArray funcName)
+bool  ArnDynamicSignals::addSignal( QObject *sender, int signalId, const QByteArray& funcName)
 {
     const QMetaObject*  metaObject = sender->metaObject();
     QMetaMethod  method = metaObject->method( signalId);
 
     Slot  slot;
-    slot.funcName    = funcName;
-    slot.typeNames   = method.parameterTypes();
-    slot.parNames    = method.parameterNames();
+    slot.funcName  = funcName;
+    slot.typeNames = method.parameterTypes();
+    slot.parNames  = method.parameterNames();
     ArnRpc::Invoke  ivf;
     ivf.set( ivf.NoQueue, QByteArray( method.tag()).contains("no_queue"));
     slot.invokeFlags = ivf;
@@ -567,12 +567,22 @@ void  ArnRpc::pipeInput( QByteArray data)
     if (rpcFunc == "$help")  // Built in Help
         return funcHelp( xsmCall);
 
-    //// Start processing normal rpc function call
-    ArgInfo  argInfo[20];
-    int argc = 0;
-
+    //// Check for defaultCall
     // qDebug() << "rpc pipeInput: data=" << data;
     QByteArray  methodName = _methodPrefix + rpcFunc;
+    if (_mode.is( Mode::UseDefaultCall)) {
+        setupReceiverMethodsParam();  // Setup searching method data structure
+
+        int  pslotIndex = _receiverMethodsParam->methodNames.indexOf( methodName);
+        if (pslotIndex < 0) {  // Method not found
+            emit defaultCall( data);
+            return;
+        }
+    }
+
+    //// Start processing normal rpc function call
+    ArgInfo  argInfo[20];
+    int  argc = 0;
 
     if (_isIncludeSender) {
         argInfo[ argc].arg = Q_ARG( ArnRpc*, this);

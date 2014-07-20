@@ -40,7 +40,7 @@ ArnSapi::ArnSapi( QObject* parent) :
 
 
 bool  ArnSapi::open( QString pipePath, Mode mode,
-                          const char *providerPrefix, const char *requesterPrefix)
+                     const char *providerPrefix, const char *requesterPrefix)
 {
     if (mode.is( mode.Provider)) {
         _receivePrefix = providerPrefix ? providerPrefix : "pv_";
@@ -50,10 +50,36 @@ bool  ArnSapi::open( QString pipePath, Mode mode,
         _receivePrefix = requesterPrefix ? requesterPrefix : "rq_";
         _sendPrefix    = providerPrefix ? providerPrefix : "pv_";
     }
+
     ArnRpc::setMethodPrefix( _receivePrefix);
     ArnRpc::addSenderSignals( this, _sendPrefix);
     ArnRpc::setReceiver( this, false);
     ArnRpc::setMode( mode);
 
     return ArnRpc::open( pipePath);
+}
+
+
+void  ArnSapi::batchConnectTo( const QObject* receiver, const QString& prefix, ArnRpc::Mode mode) {
+    batchConnect( this,
+                  QRegExp("^" + _receivePrefix + "(.+)"),
+                  receiver,
+                  prefix + "\\1",
+                  mode);
+    if (ArnRpc::mode().is( ArnRpc::Mode::UseDefaultCall)) {
+        batchConnect( this,
+                      QRegExp("^defaultCall"),
+                      receiver,
+                      prefix + "Default",
+                      mode);
+    }
+}
+
+
+void  ArnSapi::batchConnectFrom( const QObject* sender, const QString& prefix, ArnRpc::Mode mode) {
+    batchConnect( sender,
+                  QRegExp("^" + prefix + "(.+)"),
+                  this,
+                  _sendPrefix + "\\1",
+                  mode);
 }
