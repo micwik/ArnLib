@@ -84,22 +84,29 @@ MQ_PUBLIC_ACCESS
     ChatSapi*  _commonSapi;
 
     // In class code  (MyClass)
+    typedef ArnSapi::Mode  SMode;
     _commonSapi = new ChatSapi( this);
-    _commonSapi->open("//Chat/Pipes/pipeCommon!", ArnSapi::Mode::Provider);
-    _commonSapi->batchConnect( QRegExp("^pv_(.+)"), this, "chat\\1");
+    _commonSapi->open("//Chat/Pipes/pipeCommon", SMode::Provider | SMode::UseDefaultCall);
+    _commonSapi->batchConnectTo( this, "sapi");
 .
 .
-void  ServerMain::chatNewMsg( QString name, QString msg)
+void  ServerMain::sapiNewMsg( QString name, QString msg)
 {
     int  seq = ...;
     _commonSapi->rq_updateMsg( seq, name, msg);
 }
 
-void  MyClass::chatInfoQ()
+void  MyClass::sapiInfoQ()
 {
     ChatSapi*  sapi = qobject_cast<ChatSapi*>( sender());
-    Q_ASSERT(sapi);
     sapi->rq_info("Arn Chat Demo", "1.0");
+}
+
+void  MainWindow::sapiDefault( const QByteArray& data)
+{
+    ChatSapi*  sapi = qobject_cast<ChatSapi*>( sender());
+    qDebug() << "chatDefault:" << data;
+    sapi->sendText("Chat Sapi: Can't find method, use $help.");
 }
 \endcode
 */

@@ -241,12 +241,6 @@ ArnPipe*  ArnRpc::pipe()  const
 }
 
 
-void  ArnRpc::setReceiver( QObject* receiver)
-{
-    setReceiver( receiver, true);
-}
-
-
 bool ArnRpc::setReceiver( QObject* receiver, bool useTrackRpcSender)
 {
     bool stat = true;

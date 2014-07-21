@@ -139,6 +139,9 @@ All data put into a pipe are part of a stream and as such will be fully transfer
 ArnPipe is a specialized class for handling pipes. <Br>
 It contains logic for handling [sequence check](#gen_pipeSeqCheck) and
 [anti congest](#gen_pipeAntiCongest).
+
+Data stream to and from a pipe can be controlled using ArnItemValve class.
+Actually ArnItemValve can controll any ArnItemB derived class.
 <Br><Br>
 
 ### Pipe sequence check ###    {#gen_pipeSeqCheck}
@@ -300,7 +303,8 @@ In the same way the _requester_ connects the signals prefixed with "rq_" to its 
 "service" slots.
 
 When there is a naming pattern between the _SAPI services_ and the
-_external signals and slots_, it's a great convenience to use ArnRpc::BatchConnect().
+_external signals and slots_, it's a great convenience to use ArnRpc::batchConnect(),
+ArnSapi::batchConnectTo() or ArnSapi::batchConnectFrom().
 This saves a lot of QObject::connect() calls.
 Also newly added services in the SAPI, that obey the naming scheme, will automaically be
 connected to the newly matching _external signals and slots_ for implementation of the
@@ -315,39 +319,115 @@ The _service_ slot can get the emitting _custom SAPI_ object by using normal
 QObject::sender() functionality.
 <Br><Br>
 
+### RPC and SAPI method name overload ###    {#gen_rpcoverload}
+Under the hood Qt converts a signal that uses default argument(s) into methods with same
+name and all variation of the arguments. I.e. One method with all arguments, one with
+all but the last default argument, and so on until there is no more default urguments.
+When emitting the signal with some number of arguments, all of the signal methods will
+be exited.
+
+ArnRpc has to deal with this default urgument mechanism, otherwise there would be multiple
+calling messages for just one original signal emit.
+
+The problem arises when there also can be normal signals that are overloaded, i.e. using
+same method name but different arguments. ArnRpc has to be able to differentiate between
+these normal overloaded signals and the default argument signals described earlier.
+
+These are the alternatives, how you can help ArnRpc make your SAPI work:
+
+* Don't overload arguments or make sure they don't have a common start of equal names and
+  types. E.g. its ok with: f( int a, int b); f( int b); f( int c); f( uint a);
+* Set Mode::NoDefaultArgs and never use any default arguments in the SAPI. It's then ok to
+  use any kind of normal overloading.
+<Br><Br>
+
 ### RPC and SAPI communication format ###    {#gen_rpcformat}
-The RPC calling has a basic format as XString (see Arn::XStringMap). The most generic form
-is seen below. The type mark _T_ is "t" for writeable types and "tb" for binary
-(non writeable) types.
-> _funcname  T_ = _type1_  a. _label1_ = _arg1_  _T_ = _type2_  a. _label2_ = _arg2_ ... <Br>
-> Example: put t=QString a.id=level t=int a.value=123 <Br>
-> For calling: put( QString("level"), 123)
+The RPC calling has a basic format as XString (see Arn::XStringMap). A call message can
+have 3 possible argument formats: positional, named and typed. The positional format is
+always possible to use and is most comparable to a standard c++ call.
 
-Commonly used _types_ have a shorter form. The _types_ are:
-> _int_, _uint_, _bool_, _double_, _bytes_ (QByteArray), _date_ (QDate), _time_ (QTime),
-> _datetime_ (QDateTime), _list_ (QStringList) and _string_ (QString). The default, when no
-> type is specified, is _string_.
+The method name always come first in the message. After that comes arguments that have the
+argument data in the value part of its key/value pair. The key part can have the argument
+type and name, but this depends on the used argument format.
 
-This can be used in previous example: 
-> put string.id=level int.value=123
+The following RPC data types are available:
 
-Or even shorter, skipping labels, when typed by hand:
-> put level int=123
+| RPC      | Qt          |
+| int      | int         |
+| uint     | uint        |
+| int64"   | qint64      |
+| uint64   | quint64     |
+| bool     | bool        |
+| float    | float       |
+| double   | double      |
+| bytes    | QByteArray  |
+| date     | QDate       |
+| time     | QTime       |
+| datetime | QDateTime   |
+| list     | QStringList |
+| string   | QString     |
 
-List (QStringList) can be used. The _le_ is _list element_. All examples below will get
+Also generic RPC data types can be formed as:
+> Textual like QColor  t<QColor>
+> Binary like QPoint  tb<QPoint>
+Only textual types, i.e. those that can be converted to/from a string, are reasonable to
+be hand typed.
+
+Lets have an example method to see the message when it is called.
+> Method:  void put( QString id, int value); <Br>
+> Get called by:  put("level", 123);
+
+Alternatives in positional argument format:
+> put t<QString>.id=level t<int>.value=123 <Br>
+> put string.id=level int.value=123 <Br>
+> put string=level int=123 <Br>
+> put level int=123 <Br>
+* Argument names are optional and only for human debuging.
+* When no type is given, "string" is asumed.
+
+Alternatives in named argument format:
+> put id=level value=123 <Br>
+> put value=123 id=level <Br>
+> put value=123 dummy=ABC id=level garbage=321 <Br>
+* Only Argument names are used.
+* Any order of arguments can be used.
+* Extra arguments are discarded.
+* If to few arguments, default constructor is used.
+* The methods data type is used and only textual types are allowed.
+
+Alternatives in typed argument format:
+> put id:t<QString>=level value:t<int>=123 <Br>
+> put id:string=level value:int=123 <Br>
+> put value:int=123 id:string=level <Br>
+> put value:int=123 dummy:bytes=ABC id:string=level <Br>
+* Argument names and types are used.
+* Only the name is used to match method parameter.
+* The type is verified with the matching method parameter for error check.
+* Any order of arguments can be used.
+* Extra arguments are discarded.
+* If to few arguments, default constructor is used.
+
+Named and typed argument format can be mixed, but positional format is never mixed.
+
+List (QStringList) can be used. All examples below will get
 same resulting call.
 > For a function: void test( QStringList lst, int num) <Br>
 > test list=red green blu int=3 <Br>
 > test list.lst=red green blu int.num=3 <Br>
-> test list= le=red le=green le=blu int=3 <Br>
-> test list=red le=green blu int=3 <Br>
+> test list= +=red +==green +=blu int=3 <Br>
+> test list=red +=green blu int=3 <Br>
+> test lst:list=red green blu num=3 <Br>
+> test num=3 lst:list=red green +=blu <Br>
+* list is both a data type and a syntax for defining its data.
+* list is only available for positional and typed argument format.
 
-For special cases, like empty elements, the _le_ (list element) is needed. The example
+For special cases, like empty elements, the += syntax is needed. The example
 below has a first empty element followed by "green".
-> test list= le= green blue int=2
+> test list= += green blue int=2
 
 The built-in call "$help" will give an automatically generated list of the present SAPI
-with the syntax for each available service.
+with the syntax for each available service. The default argument format is positional.
+This can be changed named format by giving "$help named".
 <Br><Br>
 
 

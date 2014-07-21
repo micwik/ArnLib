@@ -172,10 +172,7 @@ public:
      */
     ArnPipe*  pipe()  const;
 
-    // Todo: combine with default arg useTrackRpcSender=true
-    void  setReceiver( QObject* receiver);
-
-    bool  setReceiver( QObject* receiver, bool useTrackRpcSender);
+    bool  setReceiver( QObject* receiver, bool useTrackRpcSender = true);
 
     void  setMethodPrefix( QString prefix);
 
