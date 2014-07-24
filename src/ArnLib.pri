@@ -21,7 +21,7 @@ DEFINES += ARNLIB_COMPILE
 INCLUDEPATH += $$PWD
 
 SOURCES += \
-    $$PWD/XStringMap.cpp \
+    $$PWD/ArnXStringMap.cpp \
     $$PWD/Arn.cpp \
     $$PWD/ArnLib.cpp
 

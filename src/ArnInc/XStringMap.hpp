@@ -29,8 +29,8 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
-#ifndef XSTRINGMAP_HPP
-#define XSTRINGMAP_HPP
+#ifndef ARN_XSTRINGMAP_HPP
+#define ARN_XSTRINGMAP_HPP
 
 #include "ArnLib_global.hpp"
 #include <QVector>
@@ -183,4 +183,4 @@ void XStringMapTest();
 
 }  // Arn::
 
-#endif // XSTRINGMAP_HPP
+#endif // ARN_XSTRINGMAP_HPP

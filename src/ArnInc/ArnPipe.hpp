@@ -114,11 +114,6 @@ public:
     bool  isAutoDestroy()  const
     {return ArnItemB::isAutoDestroy();}
 
-    //! Assign a _QByteArray_ to a _Pipe_
-    /*! \param[in] value to be assigned
-     */
-    void  setValue( const QByteArray& value);
-
     ArnPipe&  operator=( const QByteArray& value);
 
     //! Assign a _QByteArray_ to a _Pipe_ by using _Anti congest_ logic
@@ -166,6 +161,12 @@ public:
      *  \see \ref gen_pipeSeqCheck
      */
     void  setCheckSeq( bool useCheckSeq);
+
+public slots:
+    //! Assign a _QByteArray_ to a _Pipe_
+    /*! \param[in] value to be assigned
+     */
+    void  setValue( const QByteArray& value);
 
 signals:
     //! Signal emitted when _Pipe_ has received data
