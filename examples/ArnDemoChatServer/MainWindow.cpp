@@ -59,9 +59,10 @@ MainWindow::MainWindow( QWidget *parent) :
     _arnTime.open("//Chat/Time/value");
 
     //// Create common service-api, used for calling requesters by "broadcast"
+    typedef ArnSapi::Mode  SMode;
     _commonSapi = new ChatSapi( this);
-    _commonSapi->open("//Chat/Pipes/pipeCommon!", ArnSapi::Mode::Provider);
-    _commonSapi->batchConnect( QRegExp("^pv_(.+)"), this, "chat\\1");
+    _commonSapi->open("//Chat/Pipes/pipeCommon", SMode::Provider | SMode::UseDefaultCall);
+    _commonSapi->batchConnectTo( this, "sapi");
 
     //// Monitor pipe folder for new connecting requesters
     ArnItem*  arnPipes = new ArnItem("//Chat/Pipes/", this);
@@ -79,9 +80,10 @@ void  MainWindow::doNewSession( QString path)
 {
     if (!Arn::isProviderPath( path))  return;  // Only provider pipe is used
 
+    typedef ArnSapi::Mode  SMode;
     ChatSapi*  soleSapi = new ChatSapi( this);
-    soleSapi->open( path, ArnSapi::Mode::Provider);
-    soleSapi->batchConnect( QRegExp("^pv_(.+)"), this, "chat\\1");
+    soleSapi->open( path, SMode::Provider | SMode::UseDefaultCall);
+    soleSapi->batchConnectTo( this, "sapi");
     connect( soleSapi, SIGNAL(pipeClosed()), soleSapi, SLOT(deleteLater()));
     
     connect( soleSapi, SIGNAL(pipeClosed()), this, SLOT(doSessionClosed()));    
@@ -118,7 +120,7 @@ void  MainWindow::doTimeUpdate()
 }
 
 
-void  MainWindow::chatList()
+void  MainWindow::sapiList()
 {
     //// Get calling service-api, to give a private "answer" (the list)
     ChatSapi*  sapi = qobject_cast<ChatSapi*>( sender());
@@ -129,7 +131,7 @@ void  MainWindow::chatList()
 }
 
 
-void  MainWindow::chatNewMsg( QString name, QString msg)
+void  MainWindow::sapiNewMsg( QString name, QString msg)
 {
     _chatNameList += name;
     _chatMsgList  += msg;
@@ -140,11 +142,20 @@ void  MainWindow::chatNewMsg( QString name, QString msg)
 }
 
 
-void  MainWindow::chatInfoQ()
+void  MainWindow::sapiInfoQ()
 {
     //// Get calling service-api, to give a private "answer" (the info)
     ChatSapi*  sapi = qobject_cast<ChatSapi*>( sender());
     Q_ASSERT(sapi);
-    sapi->rq_info("Arn Chat Demo", "1.1");
+    sapi->rq_info("Arn Chat Demo", "1.2");
+}
+
+
+void  MainWindow::sapiDefault( const QByteArray& data)
+{
+    ChatSapi*  sapi = qobject_cast<ChatSapi*>( sender());
+    Q_ASSERT(sapi);
+    qDebug() << "chatDefault:" << data;
+    sapi->sendText("Chat Sapi: Can't find method, use $help.");
 }
 //! [code]

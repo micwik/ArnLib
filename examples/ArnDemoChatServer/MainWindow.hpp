@@ -58,10 +58,11 @@ private slots:
     void  on_shutDownButton_clicked();
     void  doTimeUpdate();
 
-    // Chat Provider routines
-    void  chatList();
-    void  chatNewMsg( QString name, QString msg);
-    void  chatInfoQ();
+    //// Chat sapi provider routines
+    void  sapiList();
+    void  sapiNewMsg( QString name, QString msg);
+    void  sapiInfoQ();
+    void  sapiDefault( const QByteArray& data);
 
 private:
     Ui::MainWindow *_ui;

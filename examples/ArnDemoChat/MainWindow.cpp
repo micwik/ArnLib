@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2013 Michael Wiklund.
+// Copyright (C) 2010-2014 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -55,12 +55,12 @@ MainWindow::MainWindow( QWidget* parent) :
 
     //// Setup common service-api, used for calling requesters by "broadcast"
     _commonSapi.open("//Chat/Pipes/pipeCommon");
-    _commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");
+    _commonSapi.batchConnectTo( this, "sapi");
 
     //// Setup sole service-api, used for 2 point requester provider calls
     //// Pipe is uniquely named (uuid) and auto destroyed when disconnected
     _soleSapi.open("//Chat/Pipes/pipe", ArnSapi::Mode::UuidAutoDestroy);
-    _soleSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");
+    _soleSapi.batchConnectTo( this, "sapi");
 
     //// Request info and listing from provider
     _soleSapi.pv_infoQ();
@@ -90,7 +90,7 @@ void  MainWindow::doSendLine()
 }
 
 
-void  MainWindow::chatUpdateMsg( int seq, QString name, QString msg)
+void  MainWindow::sapiUpdateMsg( int seq, QString name, QString msg)
 {
     if (seq >= _chatNameList.size()) {
         _chatNameList.resize( seq + 1);
@@ -107,7 +107,7 @@ void  MainWindow::chatUpdateMsg( int seq, QString name, QString msg)
 }
 
 
-void  MainWindow::chatInfo( QString name, QString ver)
+void  MainWindow::sapiInfo( QString name, QString ver)
 {
     _ui->appNameLabel->setText( name);
     _ui->verLabel->setText( ver);

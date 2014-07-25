@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2013 Michael Wiklund.
+// Copyright (C) 2010-2014 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -53,9 +53,9 @@ private slots:
     void  doSendLine();
     void  doTimeUpdate( QString timeStr);
 
-    // Chat Requester routines
-    void  chatUpdateMsg( int seq, QString name, QString msg);
-    void  chatInfo( QString name, QString ver);
+    //// Chat sapi requester routines
+    void  sapiUpdateMsg( int seq, QString name, QString msg);
+    void  sapiInfo( QString name, QString ver);
 
 private:
     Ui::MainWindow *_ui;
