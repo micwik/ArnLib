@@ -198,9 +198,11 @@ local _persist storage_.
 
 Any connected _client_ or the _server_ can make an _ARN Data Object_ persistent.
 It's just to open an ArnItem to the object and change _mode_ to _Save_.
-> ArnItem  arnMaxLevel; <Br>
-> arnMaxLevel.addMode( Arn::ObjectMode::Save); <Br>
-> arnMaxLevel.open("//Config/Level/Max/value"); <Br>
+~~~{.cpp}
+ArnItem  arnMaxLevel;
+arnMaxLevel.addMode( Arn::ObjectMode::Save);
+arnMaxLevel.open("//Config/Level/Max/value");
+~~~
 
 When the _ARN Data Object_ is set to _Save_ mode, it's automatically loaded by the
 ArnPersist. At the _server_ this is instantly done. A _client_ has to wait for the value
@@ -253,9 +255,11 @@ The client can then decide the exact objects of interest. <Br>
 
 Note: Normally "//" or "/@.../" is used for shared. See [naming conventions](#gen_naming).
 
-The remote tree can be at a different path than the local tree (mount point). <Br>
-> ArnClient::addMountPoint("/@Host/", "/")  will make the server shared at "/@Host/". <Br>
-> ArnItem::open("/@Host/Share/Test/value")  will now open the shared object in previous example.
+The remote tree can be at a different path than the local tree (mount point).
+~~~{.cpp}
+ArnClient::addMountPoint("/@Host/", "/")  // Makes the server shared at "/@Host/".
+ArnItem::open("/@Host/Share/Test/value")  // Open the shared object in previous example.
+~~~
 <Br><Br>
 
 ### Dynamic port ###    {#gen_dynamicPort}
@@ -336,9 +340,9 @@ these normal overloaded signals and the default argument signals described earli
 These are the alternatives, how you can help ArnRpc make your SAPI work:
 
 * Don't overload arguments or make sure they don't have a common start of equal names and
-  types. E.g. its ok with: f( int a, int b); f( int b); f( int c); f( uint a);
-* Set Mode::NoDefaultArgs and never use any default arguments in the SAPI. It's then ok to
-  use any kind of normal overloading.
+  types. E.g. its ok with: `f( int a, int b);  f( int b);  f( int c);  f( uint a);`
+* Set ArnRpc::Mode::NoDefaultArgs and never use any default arguments in the SAPI. It's
+  then ok to use any kind of normal overloading.
 <Br><Br>
 
 ### RPC and SAPI communication format ###    {#gen_rpcformat}
@@ -353,6 +357,7 @@ type and name, but this depends on the used argument format.
 The following RPC data types are available:
 
 | RPC      | Qt          |
+|----------|-------------|
 | int      | int         |
 | uint     | uint        |
 | int64"   | qint64      |
@@ -368,8 +373,8 @@ The following RPC data types are available:
 | string   | QString     |
 
 Also generic RPC data types can be formed as:
-> Textual like QColor  t<QColor>
-> Binary like QPoint  tb<QPoint>
+> Textual like QColor  t<QColor> <Br>
+> Binary like QPoint  tb<QPoint> <Br>
 Only textual types, i.e. those that can be converted to/from a string, are reasonable to
 be hand typed.
 
@@ -380,10 +385,14 @@ Lets have an example method to see the message when it is called.
 Alternatives in positional argument format:
 > put t<QString>.id=level t<int>.value=123 <Br>
 > put string.id=level int.value=123 <Br>
+> put string.=level int.=123 <Br>
 > put string=level int=123 <Br>
 > put level int=123 <Br>
 * Argument names are optional and only for human debuging.
 * When no type is given, "string" is asumed.
+* When ArnRpc::Mode::NamedArg is active, its not allowed to only use typename, e.g.
+  "int=123" can be "int.=123" to enforce positional format.
+* Both textual and binary arguments can be used.
 
 Alternatives in named argument format:
 > put id=level value=123 <Br>
@@ -392,8 +401,11 @@ Alternatives in named argument format:
 * Only Argument names are used.
 * Any order of arguments can be used.
 * Extra arguments are discarded.
-* If to few arguments, default constructor is used.
-* The methods data type is used and only textual types are allowed.
+* If to few arguments, default constructor is used, e.g. "put value=123" will give id="".
+* The methods parameter data type is used and only textual types are allowed.
+* When ArnRpc::Mode::NamedArg is inactive, its not allowed to use an argument name that
+  also is a RPC data type. See table above. E.g. "list" and "string" are not allowed.
+* Only textual arguments can be used (as stated before).
 
 Alternatives in typed argument format:
 > put id:t<QString>=level value:t<int>=123 <Br>
@@ -405,7 +417,8 @@ Alternatives in typed argument format:
 * The type is verified with the matching method parameter for error check.
 * Any order of arguments can be used.
 * Extra arguments are discarded.
-* If to few arguments, default constructor is used.
+* If to few arguments, default constructor is used, e.g. "put value:int=123" will give id="".
+* Both textual and binary arguments can be used.
 
 Named and typed argument format can be mixed, but positional format is never mixed.
 
@@ -427,7 +440,7 @@ below has a first empty element followed by "green".
 
 The built-in call "$help" will give an automatically generated list of the present SAPI
 with the syntax for each available service. The default argument format is positional.
-This can be changed named format by giving "$help named".
+This can be changed to named format by giving "$help named".
 <Br><Br>
 
 
