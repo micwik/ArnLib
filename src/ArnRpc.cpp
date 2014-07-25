@@ -689,7 +689,8 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
     }
 
     //// Setup Arg info
-    const RpcTypeInfo&  rpcTypeInfo = isTypeGen ? typeInfoNull() : typeInfoFromRpc( rpcType);
+    const RpcTypeInfo&  rpcTypeInfo = (isTypeGen || (!argInfo.hasType && _mode.is( Mode::NamedArg)))
+                                    ? typeInfoNull() : typeInfoFromRpc( rpcType);
     bool  isListFormat = rpcTypeInfo.typeId == QMetaType::QStringList;
     if (isTypeGen) {
         int  posStart = rpcType.indexOf('<') + 1;
@@ -1172,6 +1173,8 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int pa
         else {
             if (!rpcType.isEmpty()) {
                 param += rpcType;
+                if (_mode.is( Mode::NamedArg) && !isTypeGen)
+                    param += ".";
                 param += "=";
             }
             param += "`" + parName + "`";
