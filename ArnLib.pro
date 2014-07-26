@@ -49,7 +49,8 @@ OTHER_FILES += \
     doc/Description.md \
     examples/Examples.txt \
     ArnLib.pri \
-    doc/Install.md
+    doc/Install.md \
+    doc/Todo.md
 
 
 ### Install
