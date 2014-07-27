@@ -760,27 +760,21 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
 bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByteArray& methodName)
 {
     if (_mode.is( Mode::OnlyPosArgIn))  return true;  // Only allowed call by positional argument
+    if (_isIncludeSender)  return true;  // IncludeSender is deprecated and never namedArg
 
     bool  isOnlyPositional = true;
     bool  isOnlyNamed      = true;
-    for (int i = _isIncludeSender; i < argc; ++i) {
+    for (int i = 0; i < argc; ++i) {
         if ( argInfo[i].isPositional)
             isOnlyNamed = false;
         else
             isOnlyPositional = false;
     }
-    if (isOnlyPositional && (argc > int(_isIncludeSender)))
+    if (isOnlyPositional && (argc > 0))
         return true;  // Only positional arguments in call has been used
 
     if (!isOnlyNamed) {
         errorLog( QString(tr("Mixed positional & named arg call not supported, method="))
-                  + methodName.constData(),
-                  ArnError::RpcReceiveError);
-        return false;
-    }
-
-    if (_isIncludeSender) {
-        errorLog( QString(tr("includeSender not supported for named arg call, method="))
                   + methodName.constData(),
                   ArnError::RpcReceiveError);
         return false;
