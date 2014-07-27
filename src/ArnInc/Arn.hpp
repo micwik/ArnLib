@@ -194,7 +194,7 @@ QString  childPath( const QString& parentPath, const QString& posterityPath);
 
 //! Change the base (start) of a path
 /*! _oldBasePath_ and _newBasePath_ don't have to end with a "/", if missing it's added.
- *  If _path_ not starts with _oldBasePath_, QString() is returned.
+ *  If _path_ not starts with _oldBasePath_, _path_ is returned.
  *  Otherwise the path is returned with its base changed from _oldBasePath_ to _newBasePath_.
  *
  *  Example: _path_ = "//Measure/depth/value", _oldBasePath_ = "//Measure/",

@@ -80,7 +80,7 @@ QString  fullPath( const QString& path)
 }
 
 
-QString  itemName( const QString &path)
+QString  itemName( const QString& path)
 {
     int  from = path.endsWith('/') ? -2 : -1;
     int  pos = path.lastIndexOf('/', from);
@@ -90,7 +90,7 @@ QString  itemName( const QString &path)
 }
 
 
-QString  childPath( const QString &parentPath, const QString &posterityPath)
+QString  childPath( const QString& parentPath, const QString& posterityPath)
 {
     QString  parentPath_ = parentPath;
     if (!parentPath_.endsWith('/'))  parentPath_ += '/';
@@ -104,21 +104,21 @@ QString  childPath( const QString &parentPath, const QString &posterityPath)
 }
 
 
-QString  changeBasePath( const QString &oldBasePath, const QString& newBasePath, const QString& path)
+QString  changeBasePath( const QString& oldBasePath, const QString& newBasePath, const QString& path)
 {
     QString  oldBasePath_ = oldBasePath;
     if (!oldBasePath_.endsWith('/'))  oldBasePath_ += '/';
     QString  newBasePath_ = newBasePath;
     if (!newBasePath_.endsWith('/'))  newBasePath_ += '/';
 
-    if (newBasePath_ == oldBasePath_)  return path;
-    if (!path.startsWith( oldBasePath_))  return QString();  // Null, path not belonging tp old base path
+    if (newBasePath_ == oldBasePath_)  return path;  // No change wanted
+    if (!path.startsWith( oldBasePath_))  return path;  // Path not belonging tp old base path
 
     return newBasePath_ + path.mid( oldBasePath_.size());
 }
 
 
-QString  makePath( const QString &parentPath, const QString &itemName)
+QString  makePath( const QString& parentPath, const QString& itemName)
 {
     QString  parentPath_ = parentPath;
     if (!parentPath_.endsWith('/'))  parentPath_ += '/';
@@ -127,7 +127,7 @@ QString  makePath( const QString &parentPath, const QString &itemName)
 }
 
 
-QString  addPath( const QString &parentPath, const QString &childRelPath, Arn::NameF nameF)
+QString  addPath( const QString& parentPath, const QString& childRelPath, Arn::NameF nameF)
 {
     QString  retPath = parentPath;
     if (!retPath.endsWith('/'))
@@ -138,7 +138,7 @@ QString  addPath( const QString &parentPath, const QString &childRelPath, Arn::N
 }
 
 
-QString  convertPath(const QString &path, Arn::NameF nameF)
+QString  convertPath( const QString& path, Arn::NameF nameF)
 {
     nameF.set( nameF.NoFolderMark, false);  // Foldermark '/' must be ...
     if (nameF.is( nameF.Relative))
@@ -194,14 +194,14 @@ bool  isProviderPath( const QString& path)
 }
 
 
-QString  makeHostWithInfo( const QString &host, const QString &info)
+QString  makeHostWithInfo( const QString& host, const QString& info)
 {
     return host + ((info.isEmpty() || info == host) ? QString() 
                                                     : ("  [" + info + "]"));
 }
 
 
-QString  hostFromHostWithInfo( const QString &hostWithInfo)
+QString  hostFromHostWithInfo( const QString& hostWithInfo)
 {
     QString  retVal = hostWithInfo;
     int  pos = retVal.indexOf( QRegExp("\\s*\\[.+\\]"));
