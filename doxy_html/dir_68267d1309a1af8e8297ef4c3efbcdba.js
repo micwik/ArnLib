@@ -11,6 +11,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "ArnItemB.cpp", "_arn_item_b_8cpp.html", null ],
     [ "ArnItemNet.cpp", "_arn_item_net_8cpp.html", null ],
     [ "ArnItemNet.hpp", "_arn_item_net_8hpp.html", null ],
+    [ "ArnItemValve.cpp", "_arn_item_valve_8cpp.html", null ],
     [ "ArnLib.cpp", "_arn_lib_8cpp.html", "_arn_lib_8cpp" ],
     [ "ArnLink.cpp", "_arn_link_8cpp.html", null ],
     [ "ArnLink.hpp", "_arn_link_8hpp.html", null ],
@@ -27,6 +28,6 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "ArnServer.cpp", "_arn_server_8cpp.html", null ],
     [ "ArnSync.cpp", "_arn_sync_8cpp.html", null ],
     [ "ArnSync.hpp", "_arn_sync_8hpp.html", "_arn_sync_8hpp" ],
-    [ "ArnZeroConf.cpp", "_arn_zero_conf_8cpp.html", null ],
-    [ "XStringMap.cpp", "_x_string_map_8cpp.html", null ]
+    [ "ArnXStringMap.cpp", "_arn_x_string_map_8cpp.html", null ],
+    [ "ArnZeroConf.cpp", "_arn_zero_conf_8cpp.html", null ]
 ];

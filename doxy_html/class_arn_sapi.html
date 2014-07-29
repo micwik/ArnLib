@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.1.x</span>
+   &#160;<span id="projectnumber">2.2.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -137,11 +137,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:accd9c189e97a52f0f10d06bb47fac32c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_sapi.html#accd9c189e97a52f0f10d06bb47fac32c">ArnSapi</a> (QObject *parent=0)</td></tr>
 <tr class="memitem:a626b0e6efc688f02a1feacc2bb503b4f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_sapi.html#a626b0e6efc688f02a1feacc2bb503b4f">open</a> (QString <a class="el" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b">pipePath</a>, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>(), const char *providerPrefix=0, const char *requesterPrefix=0)</td></tr>
 <tr class="memdesc:a626b0e6efc688f02a1feacc2bb503b4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a new Service API.  <a href="#a626b0e6efc688f02a1feacc2bb503b4f"></a><br/></td></tr>
+<tr class="memitem:a48fc7203b188b0af970a8fb3625d4cf7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_sapi.html#a48fc7203b188b0af970a8fb3625d4cf7">batchConnectTo</a> (const QObject *receiver, const QString &amp;prefix=QString(), <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>())</td></tr>
+<tr class="memdesc:a48fc7203b188b0af970a8fb3625d4cf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from this <a class="el" href="class_arn_sapi.html" title="Service API.">ArnSapi</a>:s signals to another receivers slots/signals.  <a href="#a48fc7203b188b0af970a8fb3625d4cf7"></a><br/></td></tr>
+<tr class="memitem:a3913bd932c51c56aa3d940d41ee4b72b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_sapi.html#a3913bd932c51c56aa3d940d41ee4b72b">batchConnectFrom</a> (const QObject *sender, const QString &amp;prefix=QString(), <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>())</td></tr>
+<tr class="memdesc:a3913bd932c51c56aa3d940d41ee4b72b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from one senders signals to this <a class="el" href="class_arn_sapi.html" title="Service API.">ArnSapi</a>:s signals.  <a href="#a3913bd932c51c56aa3d940d41ee4b72b"></a><br/></td></tr>
 <tr class="inherit_header pub_methods_class_arn_rpc"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_arn_rpc')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="class_arn_rpc.html">ArnRpc</a></td></tr>
 <tr class="memitem:a993650db0c8235fff42e0909b410610c inherit pub_methods_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a993650db0c8235fff42e0909b410610c">ArnRpc</a> (QObject *parent=0)</td></tr>
 <tr class="memitem:a9034a54433ff006762da0ccc2b45526b inherit pub_methods_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b">pipePath</a> () const </td></tr>
 <tr class="memdesc:a9034a54433ff006762da0ccc2b45526b inherit pub_methods_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the path for the used <em>pipe</em>  <a href="#a9034a54433ff006762da0ccc2b45526b"></a><br/></td></tr>
 <tr class="memitem:a69eb9b2f7b694e41bc349560854597ea inherit pub_methods_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea">open</a> (QString <a class="el" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b">pipePath</a>)</td></tr>
+<tr class="memitem:a73756d72d4d2fd3616ef2ff0e03ca5cb inherit pub_methods_class_arn_rpc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_arn_pipe.html">ArnPipe</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a73756d72d4d2fd3616ef2ff0e03ca5cb">pipe</a> () const </td></tr>
+<tr class="memdesc:a73756d72d4d2fd3616ef2ff0e03ca5cb inherit pub_methods_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the used <em>pipe</em>  <a href="#a73756d72d4d2fd3616ef2ff0e03ca5cb"></a><br/></td></tr>
 <tr class="memitem:a61df3306cfe2f97286967118bda69eb0 inherit pub_methods_class_arn_rpc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a> () const </td></tr>
 <tr class="memdesc:a61df3306cfe2f97286967118bda69eb0 inherit pub_methods_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mode.  <a href="#a61df3306cfe2f97286967118bda69eb0"></a><br/></td></tr>
 <tr class="memitem:a0c135a403fc7c22ecc5e869872e6758c inherit pub_methods_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a0c135a403fc7c22ecc5e869872e6758c">setHeartBeatSend</a> (int time)</td></tr>
@@ -155,9 +161,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:add5f77c6c330a42d1666f966d12f2f20 inherit pub_methods_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#add5f77c6c330a42d1666f966d12f2f20">invoke</a> (const QString &amp;funcName, <a class="el" href="struct_arn_rpc_1_1_invoke.html">Invoke</a> invokeFlags, <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val0=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(0), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val1=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val2=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val3=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val4=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val5=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val6=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>(), <a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a> val7=<a class="el" href="class_m_q_generic_argument.html">MQGenericArgument</a>())</td></tr>
 <tr class="memdesc:add5f77c6c330a42d1666f966d12f2f20 inherit pub_methods_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls a named remote procedure using invoke flags.  <a href="#add5f77c6c330a42d1666f966d12f2f20"></a><br/></td></tr>
 <tr class="memitem:a7f999b9eedac4890fbc5bed8a6e618ab inherit pub_methods_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a7f999b9eedac4890fbc5bed8a6e618ab">batchConnect</a> (const QRegExp &amp;rgx, const QObject *receiver, const QString &amp;replace, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>())</td></tr>
-<tr class="memdesc:a7f999b9eedac4890fbc5bed8a6e618ab inherit pub_methods_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s signals to another receivers slots.  <a href="#a7f999b9eedac4890fbc5bed8a6e618ab"></a><br/></td></tr>
+<tr class="memdesc:a7f999b9eedac4890fbc5bed8a6e618ab inherit pub_methods_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s signals to another receivers slots/signals.  <a href="#a7f999b9eedac4890fbc5bed8a6e618ab"></a><br/></td></tr>
 <tr class="memitem:a75bd3439dec20345813e2bc40a67c166 inherit pub_methods_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a75bd3439dec20345813e2bc40a67c166">batchConnect</a> (const QObject *sender, const QRegExp &amp;rgx, const QString &amp;replace, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>())</td></tr>
-<tr class="memdesc:a75bd3439dec20345813e2bc40a67c166 inherit pub_methods_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from one senders signals to this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s slots.  <a href="#a75bd3439dec20345813e2bc40a67c166"></a><br/></td></tr>
+<tr class="memdesc:a75bd3439dec20345813e2bc40a67c166 inherit pub_methods_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from one senders signals to this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s slots/signals.  <a href="#a75bd3439dec20345813e2bc40a67c166"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -169,6 +175,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memdesc:af20b8270d7043673c9d9d3906efb7dac inherit signals_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the used pipe is closed.  <a href="#af20b8270d7043673c9d9d3906efb7dac"></a><br/></td></tr>
 <tr class="memitem:a094d3683c8a62b66b1631ccdca5a4a9f inherit signals_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a094d3683c8a62b66b1631ccdca5a4a9f">textReceived</a> (QString text)</td></tr>
 <tr class="memdesc:a094d3683c8a62b66b1631ccdca5a4a9f inherit signals_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when a general text message is received.  <a href="#a094d3683c8a62b66b1631ccdca5a4a9f"></a><br/></td></tr>
+<tr class="memitem:a6f380544a22b4171d08a652b676161e9 inherit signals_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a6f380544a22b4171d08a652b676161e9">defaultCall</a> (const QByteArray &amp;data)</td></tr>
+<tr class="memdesc:a6f380544a22b4171d08a652b676161e9 inherit signals_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when receiver method missing.  <a href="#a6f380544a22b4171d08a652b676161e9"></a><br/></td></tr>
 <tr class="memitem:a00aa03b83806c25ca39d82d111dcc064 inherit signals_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a00aa03b83806c25ca39d82d111dcc064">outOfSequence</a> ()</td></tr>
 <tr class="memdesc:a00aa03b83806c25ca39d82d111dcc064 inherit signals_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when checked sequence order is wrong.  <a href="#a00aa03b83806c25ca39d82d111dcc064"></a><br/></td></tr>
 <tr class="memitem:a1d250a29557cdcba950437cd41eacfd0 inherit signals_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0">heartBeatChanged</a> (bool isOk)</td></tr>
@@ -177,7 +185,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memdesc:a9534d3737bf93fb9511c1f33a2f09967 inherit signals_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when Heart beat message is received.  <a href="#a9534d3737bf93fb9511c1f33a2f09967"></a><br/></td></tr>
 <tr class="inherit_header pub_static_methods_class_arn_rpc"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_arn_rpc')"><img src="closed.png" alt="-"/>&nbsp;Static Public Member Functions inherited from <a class="el" href="class_arn_rpc.html">ArnRpc</a></td></tr>
 <tr class="memitem:ab6f9ac5d65a3c538ee628372f32c14de inherit pub_static_methods_class_arn_rpc"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de">batchConnect</a> (const QObject *sender, const QRegExp &amp;rgx, const QObject *receiver, const QString &amp;replace, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>())</td></tr>
-<tr class="memdesc:ab6f9ac5d65a3c538ee628372f32c14de inherit pub_static_methods_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from one senders signals to another receivers slots.  <a href="#ab6f9ac5d65a3c538ee628372f32c14de"></a><br/></td></tr>
+<tr class="memdesc:ab6f9ac5d65a3c538ee628372f32c14de inherit pub_static_methods_class_arn_rpc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from one senders signals to another receivers slots/signals.  <a href="#ab6f9ac5d65a3c538ee628372f32c14de"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Service API. </p>
@@ -207,26 +215,33 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">    ChatSapi*  _commonSapi;</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// In class code  (MyClass)</span></div>
-<div class="line">    &lt;em&gt;commonSapi = <span class="keyword">new</span> ChatSapi( <span class="keyword">this</span>);</div>
-<div class="line">    _commonSapi-&gt;open(<span class="stringliteral">&quot;//Chat/Pipes/pipeCommon!&quot;</span>, <a class="code" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a90ec424cb525bbcce0c60a666bb1c4d4" title="Provider side (opposed to requester)">ArnSapi::Mode::Provider</a>);</div>
-<div class="line">    _commonSapi-&gt;batchConnect( QRegExp(<span class="stringliteral">&quot;^pv&lt;/em&gt;(.+)&quot;</span>), <span class="keyword">this</span>, <span class="stringliteral">&quot;chat\\1&quot;</span>);</div>
+<div class="line">    <span class="keyword">typedef</span> <a class="code" href="struct_arn_rpc_1_1_mode.html">ArnSapi::Mode</a>  SMode;</div>
+<div class="line">    _commonSapi = <span class="keyword">new</span> ChatSapi( <span class="keyword">this</span>);</div>
+<div class="line">    _commonSapi-&gt;open(<span class="stringliteral">&quot;//Chat/Pipes/pipeCommon&quot;</span>, SMode::Provider | SMode::UseDefaultCall);</div>
+<div class="line">    _commonSapi-&gt;batchConnectTo( <span class="keyword">this</span>, <span class="stringliteral">&quot;sapi&quot;</span>);</div>
 <div class="line">.</div>
 <div class="line">.</div>
-<div class="line"><span class="keywordtype">void</span>  ServerMain::chatNewMsg( QString name, QString msg)</div>
+<div class="line"><span class="keywordtype">void</span>  ServerMain::sapiNewMsg( QString name, QString msg)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keywordtype">int</span>  seq = ...;</div>
 <div class="line">    _commonSapi-&gt;rq_updateMsg( seq, name, msg);</div>
 <div class="line">}</div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>  MyClass::chatInfoQ()</div>
+<div class="line"><span class="keywordtype">void</span>  MyClass::sapiInfoQ()</div>
 <div class="line">{</div>
 <div class="line">    ChatSapi*  sapi = qobject_cast&lt;ChatSapi*&gt;( sender());</div>
-<div class="line">    Q_ASSERT(sapi);</div>
 <div class="line">    sapi-&gt;rq_info(<span class="stringliteral">&quot;Arn Chat Demo&quot;</span>, <span class="stringliteral">&quot;1.0&quot;</span>);</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::sapiDefault( <span class="keyword">const</span> QByteArray&amp; data)</div>
+<div class="line">{</div>
+<div class="line">    ChatSapi*  sapi = qobject_cast&lt;ChatSapi*&gt;( sender());</div>
+<div class="line">    qDebug() &lt;&lt; <span class="stringliteral">&quot;chatDefault:&quot;</span> &lt;&lt; data;</div>
+<div class="line">    sapi-&gt;sendText(<span class="stringliteral">&quot;Chat Sapi: Can&#39;t find method, use $help.&quot;</span>);</div>
 <div class="line">}</div>
 </div><!-- fragment --> <dl><dt><b>Examples: </b></dt><dd><a class="el" href="_arn_demo_chat_server_2_chat_sapi_8hpp-example.html#_a0">ArnDemoChatServer/ChatSapi.hpp</a>.</dd>
 </dl>
-<p>Definition at line <a class="el" href="_arn_sapi_8hpp_source.html#l00106">106</a> of file <a class="el" href="_arn_sapi_8hpp_source.html">ArnSapi.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_sapi_8hpp_source.html#l00113">113</a> of file <a class="el" href="_arn_sapi_8hpp_source.html">ArnSapi.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="accd9c189e97a52f0f10d06bb47fac32c"></a>
 <div class="memitem">
@@ -256,6 +271,101 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a3913bd932c51c56aa3d940d41ee4b72b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnSapi::batchConnectFrom </td>
+          <td>(</td>
+          <td class="paramtype">const QObject *&#160;</td>
+          <td class="paramname"><em>sender</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>prefix</em> = <code>QString()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_arn_rpc_1_1_mode.html">ArnRpc::Mode</a>&#160;</td>
+          <td class="paramname"><em>mode</em> = <code><a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Make batch connection from one senders signals to this <a class="el" href="class_arn_sapi.html" title="Service API.">ArnSapi</a>:s signals. </p>
+<p>Used when there is a specific pattern in the naming of the signals. It's assumed that naming for signals are unique regardless of its case i.e. using both test() and tesT() are not allowed.</p>
+<p>Example: Requester doing <code>_commonSapi.batchConnectFrom( mySender, "sapi");</code> Can connect signal: <code>sapiNewMsg(QString,QString)</code> to signal: <code>pv_newMsg(QString,QString)</code></p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">sender</td><td>is the sending QObject. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">prefix</td><td>is the prefix for sending signal names. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" title="Make batch connection from one senders signals to another receivers slots/signals.">ArnRpc::batchConnect</a>(const QObject*, const QRegExp&amp;, const QObject*, const QString&amp;, Mode) </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_sapi_8cpp_source.html#l00079">79</a> of file <a class="el" href="_arn_sapi_8cpp_source.html">ArnSapi.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a48fc7203b188b0af970a8fb3625d4cf7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnSapi::batchConnectTo </td>
+          <td>(</td>
+          <td class="paramtype">const QObject *&#160;</td>
+          <td class="paramname"><em>receiver</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>prefix</em> = <code>QString()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_arn_rpc_1_1_mode.html">ArnRpc::Mode</a>&#160;</td>
+          <td class="paramname"><em>mode</em> = <code><a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Make batch connection from this <a class="el" href="class_arn_sapi.html" title="Service API.">ArnSapi</a>:s signals to another receivers slots/signals. </p>
+<p>Used when there is a specific pattern in the naming of the signals and slots. It's assumed that naming for slots are unique regardless of its case i.e. using both test() and tesT() are not allowed.</p>
+<p>When <a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a949b58be951dea8253a17c0244c1373f" title="When receiver method missing, send defaultCall() signal instead of error.">Mode::UseDefaultCall</a> is active, then also the <a class="el" href="class_arn_rpc.html#a6f380544a22b4171d08a652b676161e9" title="Signal emitted when receiver method missing.">defaultCall()</a> signal is connected to the receiver. Method name will be using the prefix and end with "Default". E.g. prefix is "sapi" will give method name "sapiDefault".</p>
+<p>Example: Provider doing <code>_commonSapi.batchConnectTo( myReceiver, "sapi");</code> Can connect signal: <code>pv_newMsg(QString,QString)</code> to slot: <code>sapiNewMsg(QString,QString)</code></p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">receiver</td><td>is the receiving QObject. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">prefix</td><td>is the prefix for receiving slot/signal names. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" title="Make batch connection from one senders signals to another receivers slots/signals.">ArnRpc::batchConnect</a>( const QObject*, const QRegExp&amp;, const QObject*, const QString&amp;, Mode) </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_sapi_8cpp_source.html#l00063">63</a> of file <a class="el" href="_arn_sapi_8cpp_source.html">ArnSapi.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a626b0e6efc688f02a1feacc2bb503b4f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -293,7 +403,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Open a new Service API. </p>
-<p>The opened Sapi can be either the <em>provider</em> side or the <em>requester</em> side, which is indicated by <em>mode</em>.</p>
+<p>The opened Sapi can be either the <em>provider</em> side or the <em>requester</em> side, which is indicated by <em>mode</em>. The provider marker "!" in the <em>pipePath</em> will automatically be set/removed in accordance to the <em>mode</em>.</p>
 <p>Typically the <em>provider</em> is only using <em>mode</em> <em>Provider</em>. The <em>requester</em> can use default <em>mode</em> for a static <em>pipe</em> and typically use the <em>UuidAutoDestroy</em> <em>mode</em> for dynamic session <em>pipes</em>. </p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
@@ -317,8 +427,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/ArnInc/<a class="el" href="_arn_sapi_8hpp_source.html">ArnSapi.hpp (2.1.0)</a></li>
-<li>src/<a class="el" href="_arn_sapi_8cpp_source.html">ArnSapi.cpp (2.1.0)</a></li>
+<li>src/ArnInc/<a class="el" href="_arn_sapi_8hpp_source.html">ArnSapi.hpp (2.2.0)</a></li>
+<li>src/<a class="el" href="_arn_sapi_8cpp_source.html">ArnSapi.cpp (2.2.0)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -326,7 +436,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_sapi.html">ArnSapi</a></li>
-    <li class="footer">Generated on Thu Jun 12 2014 21:44:41 for ArnLib by
+    <li class="footer">Generated on Tue Jul 29 2014 23:17:17 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

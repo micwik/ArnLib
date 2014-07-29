@@ -4,7 +4,7 @@
   <filterSection>
     <filterAttribute>doxygen</filterAttribute>
     <toc>
-      <section title="ArnLib 2.1.x" ref="index.html">
+      <section title="ArnLib 2.2.x" ref="index.html">
         <section title="README" ref="md__r_e_a_d_m_e.html" />
         <section title="General Description" ref="md__description.html">
           <section title="Arn Data Objects    " ref="md__description.html">
@@ -24,6 +24,7 @@
             <section title="Dynamic port" ref="md__description.html" />
           </section>
           <section title="RPC and SAPI    " ref="md__description.html">
+            <section title="RPC and SAPI method name overload" ref="md__description.html" />
             <section title="RPC and SAPI communication format" ref="md__description.html" />
           </section>
           <section title="ZeroConfig    " ref="md__description.html">
@@ -46,6 +47,7 @@
           <section title="ArnMonitor    " ref="md__internals.html" />
           <section title="Destroy    " ref="md__internals.html" />
         </section>
+        <section title="ArnLib Todo" ref="md__todo.html" />
         <section title="Example Collection" ref="exampleindex.html">
           <section title="Chat Demo" ref="chatdemo.html">
             <section title="Chat Server" ref="chatdemo.html">
@@ -427,6 +429,24 @@
               <section title="reference" ref="class_arn_item_b.html" />
               <section title="setReference" ref="class_arn_item_b.html" />
             </section>
+            <section title="ArnItemValve" ref="class_arn_item_valve.html">
+              <section title="SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html">
+                <section title="E" ref="struct_arn_item_valve_1_1_switch_mode.html" />
+              </section>
+              <section title="ArnItemValve" ref="class_arn_item_valve.html" />
+              <section title="changed" ref="class_arn_item_valve.html" />
+              <section title="isAutoDestroy" ref="class_arn_item_valve.html" />
+              <section title="isMaster" ref="class_arn_item_valve.html" />
+              <section title="isSaveMode" ref="class_arn_item_valve.html" />
+              <section title="operator=" ref="class_arn_item_valve.html" />
+              <section title="setAutoDestroy" ref="class_arn_item_valve.html" />
+              <section title="setMaster" ref="class_arn_item_valve.html" />
+              <section title="setSaveMode" ref="class_arn_item_valve.html" />
+              <section title="setTarget" ref="class_arn_item_valve.html" />
+              <section title="setValue" ref="class_arn_item_valve.html" />
+              <section title="switchMode" ref="class_arn_item_valve.html" />
+              <section title="toBool" ref="class_arn_item_valve.html" />
+            </section>
             <section title="ArnM" ref="class_arn_m.html">
               <section title="defaultIgnoreSameValue" ref="class_arn_m.html" />
               <section title="destroyLink" ref="class_arn_m.html" />
@@ -522,6 +542,7 @@
               <section title="batchConnect" ref="class_arn_rpc.html" />
               <section title="batchConnect" ref="class_arn_rpc.html" />
               <section title="batchConnect" ref="class_arn_rpc.html" />
+              <section title="defaultCall" ref="class_arn_rpc.html" />
               <section title="heartBeatChanged" ref="class_arn_rpc.html" />
               <section title="heartBeatReceived" ref="class_arn_rpc.html" />
               <section title="invoke" ref="class_arn_rpc.html" />
@@ -530,6 +551,7 @@
               <section title="mode" ref="class_arn_rpc.html" />
               <section title="open" ref="class_arn_rpc.html" />
               <section title="outOfSequence" ref="class_arn_rpc.html" />
+              <section title="pipe" ref="class_arn_rpc.html" />
               <section title="pipeClosed" ref="class_arn_rpc.html" />
               <section title="pipePath" ref="class_arn_rpc.html" />
               <section title="rpcSender" ref="class_arn_rpc.html" />
@@ -546,6 +568,8 @@
             </section>
             <section title="ArnSapi" ref="class_arn_sapi.html">
               <section title="ArnSapi" ref="class_arn_sapi.html" />
+              <section title="batchConnectFrom" ref="class_arn_sapi.html" />
+              <section title="batchConnectTo" ref="class_arn_sapi.html" />
               <section title="open" ref="class_arn_sapi.html" />
             </section>
             <section title="ArnScript" ref="class_arn_script.html">
@@ -737,6 +761,7 @@
             <section title="ArnError" ref="struct_arn_error.html" />
             <section title="ArnItemB" ref="class_arn_item_b.html">
               <section title="ArnItem" ref="class_arn_item.html" />
+              <section title="ArnItemValve" ref="class_arn_item_valve.html" />
               <section title="ArnPipe" ref="class_arn_pipe.html" />
             </section>
             <section title="ArnM" ref="class_arn_m.html" />
@@ -772,14 +797,16 @@
             <section title="Arn::NameF" ref="struct_arn_1_1_name_f.html" />
             <section title="Arn::ObjectMode" ref="struct_arn_1_1_object_mode.html" />
             <section title="Arn::ObjectSyncMode" ref="struct_arn_1_1_object_sync_mode.html" />
+            <section title="ArnRpc::MethodsParam::Params" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html" />
             <section title="Arn::SameValue" ref="struct_arn_1_1_same_value.html" />
-            <section title="ArnDiscoverInfo::State" ref="struct_arn_discover_info_1_1_state.html" />
             <section title="ArnZeroConf::State" ref="struct_arn_zero_conf_1_1_state.html" />
             <section title="ArnDiscoverAdvertise::State" ref="struct_arn_discover_advertise_1_1_state.html" />
+            <section title="ArnDiscoverInfo::State" ref="struct_arn_discover_info_1_1_state.html" />
             <section title="ArnError::StdCode" ref="struct_arn_error_1_1_std_code.html" />
-            <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
+            <section title="ArnItemValve::SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html" />
             <section title="ArnServer::Type" ref="struct_arn_server_1_1_type.html" />
             <section title="ArnDiscover::Type" ref="struct_arn_discover_1_1_type.html" />
+            <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
             <section title="Arn::XStringMap" ref="class_arn_1_1_x_string_map.html" />
           </section>
           <section title="Class Hierarchy" ref="hierarchy.html">
@@ -798,6 +825,7 @@
             <section title="ArnError" ref="struct_arn_error.html" />
             <section title="ArnItemB" ref="class_arn_item_b.html">
               <section title="ArnItem" ref="class_arn_item.html" />
+              <section title="ArnItemValve" ref="class_arn_item_valve.html" />
               <section title="ArnPipe" ref="class_arn_pipe.html" />
             </section>
             <section title="ArnM" ref="class_arn_m.html" />
@@ -833,14 +861,16 @@
             <section title="Arn::NameF" ref="struct_arn_1_1_name_f.html" />
             <section title="Arn::ObjectMode" ref="struct_arn_1_1_object_mode.html" />
             <section title="Arn::ObjectSyncMode" ref="struct_arn_1_1_object_sync_mode.html" />
+            <section title="ArnRpc::MethodsParam::Params" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html" />
             <section title="Arn::SameValue" ref="struct_arn_1_1_same_value.html" />
-            <section title="ArnDiscoverInfo::State" ref="struct_arn_discover_info_1_1_state.html" />
             <section title="ArnZeroConf::State" ref="struct_arn_zero_conf_1_1_state.html" />
             <section title="ArnDiscoverAdvertise::State" ref="struct_arn_discover_advertise_1_1_state.html" />
+            <section title="ArnDiscoverInfo::State" ref="struct_arn_discover_info_1_1_state.html" />
             <section title="ArnError::StdCode" ref="struct_arn_error_1_1_std_code.html" />
-            <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
+            <section title="ArnItemValve::SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html" />
             <section title="ArnServer::Type" ref="struct_arn_server_1_1_type.html" />
             <section title="ArnDiscover::Type" ref="struct_arn_discover_1_1_type.html" />
+            <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
             <section title="Arn::XStringMap" ref="class_arn_1_1_x_string_map.html" />
           </section>
           <section title="Class Members" ref="functions.html">
@@ -944,6 +974,7 @@
                   <section title="itemName" ref="_arn_8hpp.html" />
                   <section title="makeHostWithInfo" ref="_arn_8hpp.html" />
                   <section title="makePath" ref="_arn_8hpp.html" />
+                  <section title="providerPath" ref="_arn_8hpp.html" />
                   <section title="twinPath" ref="_arn_8hpp.html" />
                   <section title="defaultTcpPort" ref="_arn_8hpp.html" />
                 </section>
@@ -1223,6 +1254,29 @@
                     <section title="E" ref="struct_arn_item_b_1_1_export_code.html" />
                   </section>
                 </section>
+                <section title="ArnItemValve.hpp" ref="_arn_item_valve_8hpp.html">
+                  <section title="ArnItemValve" ref="class_arn_item_valve.html">
+                    <section title="SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html">
+                      <section title="E" ref="struct_arn_item_valve_1_1_switch_mode.html" />
+                    </section>
+                    <section title="ArnItemValve" ref="class_arn_item_valve.html" />
+                    <section title="changed" ref="class_arn_item_valve.html" />
+                    <section title="isAutoDestroy" ref="class_arn_item_valve.html" />
+                    <section title="isMaster" ref="class_arn_item_valve.html" />
+                    <section title="isSaveMode" ref="class_arn_item_valve.html" />
+                    <section title="operator=" ref="class_arn_item_valve.html" />
+                    <section title="setAutoDestroy" ref="class_arn_item_valve.html" />
+                    <section title="setMaster" ref="class_arn_item_valve.html" />
+                    <section title="setSaveMode" ref="class_arn_item_valve.html" />
+                    <section title="setTarget" ref="class_arn_item_valve.html" />
+                    <section title="setValue" ref="class_arn_item_valve.html" />
+                    <section title="switchMode" ref="class_arn_item_valve.html" />
+                    <section title="toBool" ref="class_arn_item_valve.html" />
+                  </section>
+                  <section title="SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html">
+                    <section title="E" ref="struct_arn_item_valve_1_1_switch_mode.html" />
+                  </section>
+                </section>
                 <section title="ArnLib.hpp" ref="_arn_lib_8hpp.html" />
                 <section title="ArnLib_global.hpp" ref="_arn_lib__global_8hpp.html">
                   <section title="ARNLIBSHARED_EXPORT" ref="_arn_lib__global_8hpp.html" />
@@ -1341,6 +1395,7 @@
                     <section title="batchConnect" ref="class_arn_rpc.html" />
                     <section title="batchConnect" ref="class_arn_rpc.html" />
                     <section title="batchConnect" ref="class_arn_rpc.html" />
+                    <section title="defaultCall" ref="class_arn_rpc.html" />
                     <section title="heartBeatChanged" ref="class_arn_rpc.html" />
                     <section title="heartBeatReceived" ref="class_arn_rpc.html" />
                     <section title="invoke" ref="class_arn_rpc.html" />
@@ -1349,6 +1404,7 @@
                     <section title="mode" ref="class_arn_rpc.html" />
                     <section title="open" ref="class_arn_rpc.html" />
                     <section title="outOfSequence" ref="class_arn_rpc.html" />
+                    <section title="pipe" ref="class_arn_rpc.html" />
                     <section title="pipeClosed" ref="class_arn_rpc.html" />
                     <section title="pipePath" ref="class_arn_rpc.html" />
                     <section title="rpcSender" ref="class_arn_rpc.html" />
@@ -1369,12 +1425,19 @@
                   <section title="Invoke" ref="struct_arn_rpc_1_1_invoke.html">
                     <section title="E" ref="struct_arn_rpc_1_1_invoke.html" />
                   </section>
+                  <section title="Params" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html">
+                    <section title="allMethodIds" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html" />
+                    <section title="methodIdsTab" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html" />
+                    <section title="paramNames" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html" />
+                  </section>
                   <section title="MQ_ARG" ref="_arn_rpc_8hpp.html" />
                   <section title="no_queue" ref="_arn_rpc_8hpp.html" />
                 </section>
                 <section title="ArnSapi.hpp" ref="_arn_sapi_8hpp.html">
                   <section title="ArnSapi" ref="class_arn_sapi.html">
                     <section title="ArnSapi" ref="class_arn_sapi.html" />
+                    <section title="batchConnectFrom" ref="class_arn_sapi.html" />
+                    <section title="batchConnectTo" ref="class_arn_sapi.html" />
                     <section title="open" ref="class_arn_sapi.html" />
                   </section>
                   <section title="MQ_PUBLIC_ACCESS" ref="_arn_sapi_8hpp.html" />
@@ -1660,6 +1723,7 @@
                 <section title="itemName" ref="_arn_8cpp.html" />
                 <section title="makeHostWithInfo" ref="_arn_8cpp.html" />
                 <section title="makePath" ref="_arn_8cpp.html" />
+                <section title="providerPath" ref="_arn_8cpp.html" />
                 <section title="twinPath" ref="_arn_8cpp.html" />
                 <section title="pathDiscover" ref="_arn_8cpp.html" />
                 <section title="pathDiscoverConnect" ref="_arn_8cpp.html" />
@@ -1680,6 +1744,7 @@
               <section title="ArnItemB.cpp" ref="_arn_item_b_8cpp.html" />
               <section title="ArnItemNet.cpp" ref="_arn_item_net_8cpp.html" />
               <section title="ArnItemNet.hpp" ref="_arn_item_net_8hpp.html" />
+              <section title="ArnItemValve.cpp" ref="_arn_item_valve_8cpp.html" />
               <section title="ArnLib.cpp" ref="_arn_lib_8cpp.html">
                 <section title="debugDepend" ref="_arn_lib_8cpp.html" />
                 <section title="debugDiscover" ref="_arn_lib_8cpp.html" />
@@ -1720,8 +1785,8 @@
               <section title="ArnSync.hpp" ref="_arn_sync_8hpp.html">
                 <section title="ARNRECNAME" ref="_arn_sync_8hpp.html" />
               </section>
+              <section title="ArnXStringMap.cpp" ref="_arn_x_string_map_8cpp.html" />
               <section title="ArnZeroConf.cpp" ref="_arn_zero_conf_8cpp.html" />
-              <section title="XStringMap.cpp" ref="_x_string_map_8cpp.html" />
             </section>
           </section>
           <section title="File Members" ref="globals.html">
@@ -1753,6 +1818,7 @@
       <keyword name="addPath" id="Arn.cpp::addPath" ref="_arn_8cpp.html#abf5062a3262fb12eef2feedf03c8b4ae" />
       <keyword name="convertPath" id="Arn.cpp::convertPath" ref="_arn_8cpp.html#a67789049b85129fdd4f238d57e9f71bc" />
       <keyword name="twinPath" id="Arn.cpp::twinPath" ref="_arn_8cpp.html#a4de17e4c5a7e225b5d0cbd974c3fd794" />
+      <keyword name="providerPath" id="Arn.cpp::providerPath" ref="_arn_8cpp.html#aac061f2a56bc7a0ee9f89638dbdede0e" />
       <keyword name="isFolderPath" id="Arn.cpp::isFolderPath" ref="_arn_8cpp.html#a3a3f57fa61cdb0b8408df49466e1ca87" />
       <keyword name="isProviderPath" id="Arn.cpp::isProviderPath" ref="_arn_8cpp.html#a9a27c8dda4cc88176c941cc53f6c2426" />
       <keyword name="makeHostWithInfo" id="Arn.cpp::makeHostWithInfo" ref="_arn_8cpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" />
@@ -1775,6 +1841,7 @@
       <keyword name="addPath" id="Arn.hpp::addPath" ref="_arn_8hpp.html#abf5062a3262fb12eef2feedf03c8b4ae" />
       <keyword name="convertPath" id="Arn.hpp::convertPath" ref="_arn_8hpp.html#a67789049b85129fdd4f238d57e9f71bc" />
       <keyword name="twinPath" id="Arn.hpp::twinPath" ref="_arn_8hpp.html#a4de17e4c5a7e225b5d0cbd974c3fd794" />
+      <keyword name="providerPath" id="Arn.hpp::providerPath" ref="_arn_8hpp.html#aac061f2a56bc7a0ee9f89638dbdede0e" />
       <keyword name="makeHostWithInfo" id="Arn.hpp::makeHostWithInfo" ref="_arn_8hpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" />
       <keyword name="hostFromHostWithInfo" id="Arn.hpp::hostFromHostWithInfo" ref="_arn_8hpp.html#aa5388e7414b06aa7c8e1c0af4fe549a7" />
       <keyword name="defaultTcpPort" id="Arn.hpp::defaultTcpPort" ref="_arn_8hpp.html#a7dc869a2e500fff4982652f576c9207a" />
@@ -1811,6 +1878,7 @@
       <keyword name="General Description" id="General Description" ref="md__description.html" />
       <keyword name="Installation and usage" id="Installation and usage" ref="md__install.html" />
       <keyword name="ArnLib Internals" id="ArnLib Internals" ref="md__internals.html" />
+      <keyword name="ArnLib Todo" id="ArnLib Todo" ref="md__todo.html" />
       <keyword name="Example Collection" id="Example Collection" ref="exampleindex.html" />
       <keyword name="Chat Demo" id="Chat Demo" ref="chatdemo.html" />
       <keyword name="Help descriptions" id="Help descriptions" ref="help_disc_index.html" />
@@ -2126,6 +2194,37 @@
       <keyword name="Variant" id="ArnItemB::ExportCode::Variant" ref="struct_arn_item_b_1_1_export_code.html#a2986692d49ee6b19e8d015dc12379ca1a0e7c11a538d77c461e6e6bed86a70868" />
       <keyword name="VariantTxt" id="ArnItemB::ExportCode::VariantTxt" ref="struct_arn_item_b_1_1_export_code.html#a2986692d49ee6b19e8d015dc12379ca1af65ccf1b036524acb89688b523a4998c" />
       <keyword name="VariantBin" id="ArnItemB::ExportCode::VariantBin" ref="struct_arn_item_b_1_1_export_code.html#a2986692d49ee6b19e8d015dc12379ca1a54131c649eebbe75884cfebd27fe19ef" />
+      <keyword name="ArnItemValve" id="ArnItemValve" ref="class_arn_item_valve.html" />
+      <keyword name="setValue" id="ArnItemValve::setValue" ref="class_arn_item_valve.html#a6ee2964d55ca5cb68fdbd2955a20d7e4" />
+      <keyword name="changed" id="ArnItemValve::changed" ref="class_arn_item_valve.html#ad9d957aa7ca2fce2c608eafe76bbf5de" />
+      <keyword name="arnLinkDestroyed" id="ArnItemB::arnLinkDestroyed" ref="class_arn_item_b.html#a491881fa90d438c9db6218981faaa714" />
+      <keyword name="ArnItemValve" id="ArnItemValve::ArnItemValve" ref="class_arn_item_valve.html#a670d19b0355fcace249be1b0a339c14a" />
+      <keyword name="setTarget" id="ArnItemValve::setTarget" ref="class_arn_item_valve.html#a663ab4185b688bbebd8ae232d8717e4d" />
+      <keyword name="switchMode" id="ArnItemValve::switchMode" ref="class_arn_item_valve.html#a8421fb6421cd6d42a6635afec244bc9a" />
+      <keyword name="setSaveMode" id="ArnItemValve::setSaveMode" ref="class_arn_item_valve.html#a976787570afda3ce0e569dc4c89d4ec2" />
+      <keyword name="isSaveMode" id="ArnItemValve::isSaveMode" ref="class_arn_item_valve.html#a35145700fd6617c52a88d3d46c57fea3" />
+      <keyword name="setMaster" id="ArnItemValve::setMaster" ref="class_arn_item_valve.html#a60631ad9b3f6fc63898fc7055c89b79f" />
+      <keyword name="isMaster" id="ArnItemValve::isMaster" ref="class_arn_item_valve.html#a1c4e11547b5f94352485bc439a4c9da8" />
+      <keyword name="setAutoDestroy" id="ArnItemValve::setAutoDestroy" ref="class_arn_item_valve.html#aca161491a438b003a4bcdc632b819478" />
+      <keyword name="isAutoDestroy" id="ArnItemValve::isAutoDestroy" ref="class_arn_item_valve.html#a45ba55d06d3453abd53dee6edb537a60" />
+      <keyword name="toBool" id="ArnItemValve::toBool" ref="class_arn_item_valve.html#add3854a2ae028182d7ab9996f1775897" />
+      <keyword name="operator=" id="ArnItemValve::operator=" ref="class_arn_item_valve.html#adae1a778ff32fde1554d348bf912dec7" />
+      <keyword name="ArnItemB" id="ArnItemB::ArnItemB" ref="class_arn_item_b.html#a9fc560cd83fc75bad2eb8f629981fbba" />
+      <keyword name="~ArnItemB" id="ArnItemB::~ArnItemB" ref="class_arn_item_b.html#af2fdc6b17d74046c9853d2989b0668c6" />
+      <keyword name="open" id="ArnItemB::open" ref="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" />
+      <keyword name="close" id="ArnItemB::close" ref="class_arn_item_b.html#a6c523f9baf84b2f04711c0d81dd10168" />
+      <keyword name="destroyLink" id="ArnItemB::destroyLink" ref="class_arn_item_b.html#a909348cfa790b111e9d7254e7d592955" />
+      <keyword name="isOpen" id="ArnItemB::isOpen" ref="class_arn_item_b.html#ac601b44513692b1c8bf926c9c7423df6" />
+      <keyword name="path" id="ArnItemB::path" ref="class_arn_item_b.html#a0d5bec5b17b02359178a4bc6c35ffd68" />
+      <keyword name="name" id="ArnItemB::name" ref="class_arn_item_b.html#a9fe05e98525f3c7e8b817671f4faaae1" />
+      <keyword name="setReference" id="ArnItemB::setReference" ref="class_arn_item_b.html#a36303c266a2c623b23c0a47d8ff3483f" />
+      <keyword name="reference" id="ArnItemB::reference" ref="class_arn_item_b.html#a1db4c145def37dafca17d47a075fe1a1" />
+      <keyword name="itemId" id="ArnItemB::itemId" ref="class_arn_item_b.html#ada67d832add9a20158d71ec17273c010" />
+      <keyword name="linkId" id="ArnItemB::linkId" ref="class_arn_item_b.html#aac88cd45de0cd54f18bf2be05dcdd289" />
+      <keyword name="ArnItemValve::SwitchMode" id="ArnItemValve::SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html" />
+      <keyword name="InStream" id="ArnItemValve::SwitchMode::InStream" ref="struct_arn_item_valve_1_1_switch_mode.html#a38351a02f3e9902196ee64a68c6d28c4a54d8a9891c6afb0ae01605ee6ee742be" />
+      <keyword name="OutStream" id="ArnItemValve::SwitchMode::OutStream" ref="struct_arn_item_valve_1_1_switch_mode.html#a38351a02f3e9902196ee64a68c6d28c4a1d55ee51c014115212f90c0d9b29361c" />
+      <keyword name="InOutStream" id="ArnItemValve::SwitchMode::InOutStream" ref="struct_arn_item_valve_1_1_switch_mode.html#a38351a02f3e9902196ee64a68c6d28c4a2eead5c6601f0f2f2681aab4eeffea17" />
       <keyword name="ArnM" id="ArnM" ref="class_arn_m.html" />
       <keyword name="destroyLink" id="ArnM::destroyLink" ref="class_arn_m.html#a9bab1b3b13f68d36b3cf36b2e4213976" />
       <keyword name="setupErrorlog" id="ArnM::setupErrorlog" ref="class_arn_m.html#a3621b1884506f3f22c4c90dd192f7512" />
@@ -2188,6 +2287,7 @@
       <keyword name="setVcs" id="ArnPersist::setVcs" ref="class_arn_persist.html#a91359d742060af64cd3853806cdb9b8e" />
       <keyword name="setupDataBase" id="ArnPersist::setupDataBase" ref="class_arn_persist.html#ac54a85a233d7f19cfb0622d448844462" />
       <keyword name="ArnPipe" id="ArnPipe" ref="class_arn_pipe.html" />
+      <keyword name="setValue" id="ArnPipe::setValue" ref="class_arn_pipe.html#a7cbb18e76bd0d3b73fa78136c7e918ce" />
       <keyword name="changed" id="ArnPipe::changed" ref="class_arn_pipe.html#a121732850185805eaca00b91c7f75a6e" />
       <keyword name="outOfSequence" id="ArnPipe::outOfSequence" ref="class_arn_pipe.html#a0f85c1dfd3e25859b7a4e183bc79c095" />
       <keyword name="arnLinkDestroyed" id="ArnItemB::arnLinkDestroyed" ref="class_arn_item_b.html#a491881fa90d438c9db6218981faaa714" />
@@ -2199,7 +2299,6 @@
       <keyword name="isMaster" id="ArnPipe::isMaster" ref="class_arn_pipe.html#a59dc7a0d2b7318ea8a9292c4777a7261" />
       <keyword name="setAutoDestroy" id="ArnPipe::setAutoDestroy" ref="class_arn_pipe.html#a9b5b3129c4069f3b8ed15b89b4c348c6" />
       <keyword name="isAutoDestroy" id="ArnPipe::isAutoDestroy" ref="class_arn_pipe.html#a41fedcaf361dee6ed1dbe8ed9e184c31" />
-      <keyword name="setValue" id="ArnPipe::setValue" ref="class_arn_pipe.html#a7cbb18e76bd0d3b73fa78136c7e918ce" />
       <keyword name="operator=" id="ArnPipe::operator=" ref="class_arn_pipe.html#a18a1a6bf590e439a348ae68c2798f552" />
       <keyword name="setValueOverwrite" id="ArnPipe::setValueOverwrite" ref="class_arn_pipe.html#ac3225595492e733603de24dd09ddb005" />
       <keyword name="isSendSeq" id="ArnPipe::isSendSeq" ref="class_arn_pipe.html#a420a7839353b5c740ce4bf772b2c9732" />
@@ -2222,6 +2321,7 @@
       <keyword name="sendText" id="ArnRpc::sendText" ref="class_arn_rpc.html#a74f936af0f7718f1bdc58d2eebcaf3f1" />
       <keyword name="pipeClosed" id="ArnRpc::pipeClosed" ref="class_arn_rpc.html#af20b8270d7043673c9d9d3906efb7dac" />
       <keyword name="textReceived" id="ArnRpc::textReceived" ref="class_arn_rpc.html#a094d3683c8a62b66b1631ccdca5a4a9f" />
+      <keyword name="defaultCall" id="ArnRpc::defaultCall" ref="class_arn_rpc.html#a6f380544a22b4171d08a652b676161e9" />
       <keyword name="outOfSequence" id="ArnRpc::outOfSequence" ref="class_arn_rpc.html#a00aa03b83806c25ca39d82d111dcc064" />
       <keyword name="heartBeatChanged" id="ArnRpc::heartBeatChanged" ref="class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0" />
       <keyword name="heartBeatReceived" id="ArnRpc::heartBeatReceived" ref="class_arn_rpc.html#a9534d3737bf93fb9511c1f33a2f09967" />
@@ -2229,7 +2329,8 @@
       <keyword name="pipePath" id="ArnRpc::pipePath" ref="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b" />
       <keyword name="open" id="ArnRpc::open" ref="class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea" />
       <keyword name="setPipe" id="ArnRpc::setPipe" ref="class_arn_rpc.html#ae3f5ce01e8f0bc61bb04a4aa9d840b40" />
-      <keyword name="setReceiver" id="ArnRpc::setReceiver" ref="class_arn_rpc.html#a0e4dbd55242a36d63b4b1f9f76ed2df9" />
+      <keyword name="pipe" id="ArnRpc::pipe" ref="class_arn_rpc.html#a73756d72d4d2fd3616ef2ff0e03ca5cb" />
+      <keyword name="setReceiver" id="ArnRpc::setReceiver" ref="class_arn_rpc.html#ace8322eda7c1ab852e557042206db011" />
       <keyword name="setMethodPrefix" id="ArnRpc::setMethodPrefix" ref="class_arn_rpc.html#acb14a8cd274f112f806cdd28db426614" />
       <keyword name="setIncludeSender" id="ArnRpc::setIncludeSender" ref="class_arn_rpc.html#aeab85c18f1744d1c8790e1010a9f4c6d" />
       <keyword name="setMode" id="ArnRpc::setMode" ref="class_arn_rpc.html#a162f91fef9e07ea71b52611de26341db" />
@@ -2247,6 +2348,10 @@
       <keyword name="batchConnect" id="ArnRpc::batchConnect" ref="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" />
       <keyword name="ArnRpc::Invoke" id="ArnRpc::Invoke" ref="struct_arn_rpc_1_1_invoke.html" />
       <keyword name="NoQueue" id="ArnRpc::Invoke::NoQueue" ref="struct_arn_rpc_1_1_invoke.html#a1c1ed4aa72375daeb0d951c12f52548ba2abcbf96583e7362396a842143b709c6" />
+      <keyword name="ArnRpc::MethodsParam::Params" id="ArnRpc::MethodsParam::Params" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html" />
+      <keyword name="paramNames" id="ArnRpc::MethodsParam::Params::paramNames" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html#a17b6c64278422b4efed856f20ab734c4" />
+      <keyword name="methodIdsTab" id="ArnRpc::MethodsParam::Params::methodIdsTab" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html#ad6b2fc493f831c7bd82d26f89654717e" />
+      <keyword name="allMethodIds" id="ArnRpc::MethodsParam::Params::allMethodIds" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html#a8550bc8a5496ec00406d2f77370e6cb5" />
       <keyword name="ArnRpc::Mode" id="ArnRpc::Mode" ref="struct_arn_rpc_1_1_mode.html" />
       <keyword name="Provider" id="ArnRpc::Mode::Provider" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a90ec424cb525bbcce0c60a666bb1c4d4" />
       <keyword name="AutoDestroy" id="ArnRpc::Mode::AutoDestroy" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57ae2aa40ac645abc73df7c893bbde3f37f" />
@@ -2254,14 +2359,21 @@
       <keyword name="NoDefaultArgs" id="ArnRpc::Mode::NoDefaultArgs" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aee954e4308c5635281eb32d43b8af990" />
       <keyword name="SendSequence" id="ArnRpc::Mode::SendSequence" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57ab1cf0b7733a1074a5d2dbc31b49459ad" />
       <keyword name="CheckSequence" id="ArnRpc::Mode::CheckSequence" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a01da0fe2f6896f4b5af2d1cc1abe4823" />
+      <keyword name="OnlyPosArgIn" id="ArnRpc::Mode::OnlyPosArgIn" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a381c571be560f44204f4efeebbf3964a" />
+      <keyword name="NamedArg" id="ArnRpc::Mode::NamedArg" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aad089af31d0cf3b553274fda2d9744d1" />
+      <keyword name="NamedTypedArg" id="ArnRpc::Mode::NamedTypedArg" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a6337168e94716ee3b0910c04db570eb9" />
+      <keyword name="UseDefaultCall" id="ArnRpc::Mode::UseDefaultCall" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a949b58be951dea8253a17c0244c1373f" />
       <keyword name="Debug" id="ArnRpc::Mode::Debug" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a0450d7b70eaf255864e138ddf558c507" />
       <keyword name="UuidAutoDestroy" id="ArnRpc::Mode::UuidAutoDestroy" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57acf07d732ddd9af3b3ae07bb277c4aca0" />
       <keyword name="ArnSapi" id="ArnSapi" ref="class_arn_sapi.html" />
       <keyword name="ArnSapi" id="ArnSapi::ArnSapi" ref="class_arn_sapi.html#accd9c189e97a52f0f10d06bb47fac32c" />
       <keyword name="open" id="ArnSapi::open" ref="class_arn_sapi.html#a626b0e6efc688f02a1feacc2bb503b4f" />
+      <keyword name="batchConnectTo" id="ArnSapi::batchConnectTo" ref="class_arn_sapi.html#a48fc7203b188b0af970a8fb3625d4cf7" />
+      <keyword name="batchConnectFrom" id="ArnSapi::batchConnectFrom" ref="class_arn_sapi.html#a3913bd932c51c56aa3d940d41ee4b72b" />
       <keyword name="ArnRpc" id="ArnRpc::ArnRpc" ref="class_arn_rpc.html#a993650db0c8235fff42e0909b410610c" />
       <keyword name="pipePath" id="ArnRpc::pipePath" ref="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b" />
       <keyword name="open" id="ArnRpc::open" ref="class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea" />
+      <keyword name="pipe" id="ArnRpc::pipe" ref="class_arn_rpc.html#a73756d72d4d2fd3616ef2ff0e03ca5cb" />
       <keyword name="mode" id="ArnRpc::mode" ref="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0" />
       <keyword name="setHeartBeatSend" id="ArnRpc::setHeartBeatSend" ref="class_arn_rpc.html#a0c135a403fc7c22ecc5e869872e6758c" />
       <keyword name="setHeartBeatCheck" id="ArnRpc::setHeartBeatCheck" ref="class_arn_rpc.html#a5e5309bf47720f9bbe3442b804314e5f" />
@@ -2273,6 +2385,7 @@
       <keyword name="sendText" id="ArnRpc::sendText" ref="class_arn_rpc.html#a74f936af0f7718f1bdc58d2eebcaf3f1" />
       <keyword name="pipeClosed" id="ArnRpc::pipeClosed" ref="class_arn_rpc.html#af20b8270d7043673c9d9d3906efb7dac" />
       <keyword name="textReceived" id="ArnRpc::textReceived" ref="class_arn_rpc.html#a094d3683c8a62b66b1631ccdca5a4a9f" />
+      <keyword name="defaultCall" id="ArnRpc::defaultCall" ref="class_arn_rpc.html#a6f380544a22b4171d08a652b676161e9" />
       <keyword name="outOfSequence" id="ArnRpc::outOfSequence" ref="class_arn_rpc.html#a00aa03b83806c25ca39d82d111dcc064" />
       <keyword name="heartBeatChanged" id="ArnRpc::heartBeatChanged" ref="class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0" />
       <keyword name="heartBeatReceived" id="ArnRpc::heartBeatReceived" ref="class_arn_rpc.html#a9534d3737bf93fb9511c1f33a2f09967" />
@@ -2489,6 +2602,7 @@
       <keyword name="addPath" id="Arn::addPath" ref="namespace_arn.html#abf5062a3262fb12eef2feedf03c8b4ae" />
       <keyword name="convertPath" id="Arn::convertPath" ref="namespace_arn.html#a67789049b85129fdd4f238d57e9f71bc" />
       <keyword name="twinPath" id="Arn::twinPath" ref="namespace_arn.html#a4de17e4c5a7e225b5d0cbd974c3fd794" />
+      <keyword name="providerPath" id="Arn::providerPath" ref="namespace_arn.html#aac061f2a56bc7a0ee9f89638dbdede0e" />
       <keyword name="isFolderPath" id="Arn::isFolderPath" ref="namespace_arn.html#a3a3f57fa61cdb0b8408df49466e1ca87" />
       <keyword name="isProviderPath" id="Arn::isProviderPath" ref="namespace_arn.html#a9a27c8dda4cc88176c941cc53f6c2426" />
       <keyword name="makeHostWithInfo" id="Arn::makeHostWithInfo" ref="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" />
@@ -2691,6 +2805,7 @@
       <file>_description_8md_source.html</file>
       <file>_install_8md_source.html</file>
       <file>_internals_8md_source.html</file>
+      <file>_todo_8md_source.html</file>
       <file>_r_e_a_d_m_e_8md_source.html</file>
       <file>_arn_8cpp_source.html</file>
       <file>_arn_client_8cpp_source.html</file>
@@ -2707,6 +2822,7 @@
       <file>_arn_error_8hpp_source.html</file>
       <file>_arn_item_8hpp_source.html</file>
       <file>_arn_item_b_8hpp_source.html</file>
+      <file>_arn_item_valve_8hpp_source.html</file>
       <file>_arn_lib_8hpp_source.html</file>
       <file>_arn_lib__global_8hpp_source.html</file>
       <file>_arn_link_handle_8hpp_source.html</file>
@@ -2728,6 +2844,7 @@
       <file>_arn_item_b_8cpp_source.html</file>
       <file>_arn_item_net_8cpp_source.html</file>
       <file>_arn_item_net_8hpp_source.html</file>
+      <file>_arn_item_valve_8cpp_source.html</file>
       <file>_arn_lib_8cpp_source.html</file>
       <file>_arn_link_8cpp_source.html</file>
       <file>_arn_link_8hpp_source.html</file>
@@ -2744,12 +2861,13 @@
       <file>_arn_server_8cpp_source.html</file>
       <file>_arn_sync_8cpp_source.html</file>
       <file>_arn_sync_8hpp_source.html</file>
+      <file>_arn_x_string_map_8cpp_source.html</file>
       <file>_arn_zero_conf_8cpp_source.html</file>
-      <file>_x_string_map_8cpp_source.html</file>
       <file>_description_8md.html</file>
       <file>_help_index_8txt.html</file>
       <file>_install_8md.html</file>
       <file>_internals_8md.html</file>
+      <file>_todo_8md.html</file>
       <file>_examples_8txt.html</file>
       <file>_r_e_a_d_m_e_8md.html</file>
       <file>_arn_8cpp.html</file>
@@ -2815,6 +2933,11 @@
       <file>_arn_item_b_8hpp__incl.png</file>
       <file>_arn_item_b_8hpp__dep__incl.png</file>
       <file>_arn_item_b_8hpp__dep__incl.png</file>
+      <file>_arn_item_valve_8hpp.html</file>
+      <file>_arn_item_valve_8hpp__incl.png</file>
+      <file>_arn_item_valve_8hpp__incl.png</file>
+      <file>_arn_item_valve_8hpp__dep__incl.png</file>
+      <file>_arn_item_valve_8hpp__dep__incl.png</file>
       <file>_arn_lib_8hpp.html</file>
       <file>_arn_lib_8hpp__incl.png</file>
       <file>_arn_lib_8hpp__incl.png</file>
@@ -2914,6 +3037,9 @@
       <file>_arn_item_net_8hpp__incl.png</file>
       <file>_arn_item_net_8hpp__dep__incl.png</file>
       <file>_arn_item_net_8hpp__dep__incl.png</file>
+      <file>_arn_item_valve_8cpp.html</file>
+      <file>_arn_item_valve_8cpp__incl.png</file>
+      <file>_arn_item_valve_8cpp__incl.png</file>
       <file>_arn_lib_8cpp.html</file>
       <file>_arn_lib_8cpp__incl.png</file>
       <file>_arn_lib_8cpp__incl.png</file>
@@ -2966,16 +3092,17 @@
       <file>_arn_sync_8hpp__incl.png</file>
       <file>_arn_sync_8hpp__dep__incl.png</file>
       <file>_arn_sync_8hpp__dep__incl.png</file>
+      <file>_arn_x_string_map_8cpp.html</file>
+      <file>_arn_x_string_map_8cpp__incl.png</file>
+      <file>_arn_x_string_map_8cpp__incl.png</file>
       <file>_arn_zero_conf_8cpp.html</file>
       <file>_arn_zero_conf_8cpp__incl.png</file>
       <file>_arn_zero_conf_8cpp__incl.png</file>
-      <file>_x_string_map_8cpp.html</file>
-      <file>_x_string_map_8cpp__incl.png</file>
-      <file>_x_string_map_8cpp__incl.png</file>
       <file>md__r_e_a_d_m_e.html</file>
       <file>md__description.html</file>
       <file>md__install.html</file>
       <file>md__internals.html</file>
+      <file>md__todo.html</file>
       <file>exampleindex.html</file>
       <file>Arn_chat_demo_1.png</file>
       <file>chatdemo.html</file>
@@ -3043,6 +3170,14 @@
       <file>class_arn_item_b-members.html</file>
       <file>struct_arn_item_b_1_1_export_code.html</file>
       <file>struct_arn_item_b_1_1_export_code-members.html</file>
+      <file>class_arn_item_valve.html</file>
+      <file>class_arn_item_valve__inherit__graph.png</file>
+      <file>class_arn_item_valve__inherit__graph.png</file>
+      <file>class_arn_item_valve__coll__graph.png</file>
+      <file>class_arn_item_valve__coll__graph.png</file>
+      <file>class_arn_item_valve-members.html</file>
+      <file>struct_arn_item_valve_1_1_switch_mode.html</file>
+      <file>struct_arn_item_valve_1_1_switch_mode-members.html</file>
       <file>class_arn_m.html</file>
       <file>class_arn_m-members.html</file>
       <file>class_arn_monitor.html</file>
@@ -3061,6 +3196,8 @@
       <file>class_arn_rpc-members.html</file>
       <file>struct_arn_rpc_1_1_invoke.html</file>
       <file>struct_arn_rpc_1_1_invoke-members.html</file>
+      <file>struct_arn_rpc_1_1_methods_param_1_1_params.html</file>
+      <file>struct_arn_rpc_1_1_methods_param_1_1_params-members.html</file>
       <file>struct_arn_rpc_1_1_mode.html</file>
       <file>struct_arn_rpc_1_1_mode-members.html</file>
       <file>class_arn_sapi.html</file>
@@ -3209,6 +3346,8 @@
       <file>inherit_graph_39.png</file>
       <file>inherit_graph_40.png</file>
       <file>inherit_graph_41.png</file>
+      <file>inherit_graph_42.png</file>
+      <file>inherit_graph_43.png</file>
       <file>functions.html</file>
       <file>functions_0x61.html</file>
       <file>functions_0x62.html</file>

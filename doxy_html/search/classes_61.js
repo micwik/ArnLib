@@ -13,6 +13,7 @@ var searchData=
   ['arnerror',['ArnError',['../struct_arn_error.html',1,'']]],
   ['arnitem',['ArnItem',['../class_arn_item.html',1,'']]],
   ['arnitemb',['ArnItemB',['../class_arn_item_b.html',1,'']]],
+  ['arnitemvalve',['ArnItemValve',['../class_arn_item_valve.html',1,'']]],
   ['arnm',['ArnM',['../class_arn_m.html',1,'']]],
   ['arnmonitor',['ArnMonitor',['../class_arn_monitor.html',1,'']]],
   ['arnpersist',['ArnPersist',['../class_arn_persist.html',1,'']]],

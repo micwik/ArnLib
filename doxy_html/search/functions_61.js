@@ -36,6 +36,7 @@ var searchData=
   ['arnitem',['ArnItem',['../class_arn_item.html#a3bf04aa51990438a639f14e6ed00eb52',1,'ArnItem::ArnItem(QObject *parent=0)'],['../class_arn_item.html#a6d33672a48a0b07c653c5430c4494596',1,'ArnItem::ArnItem(const QString &amp;path, QObject *parent=0)'],['../class_arn_item.html#afd52995f47cf855f100544381980878e',1,'ArnItem::ArnItem(const ArnItem &amp;itemTemplate, const QString &amp;path, QObject *parent=0)']]],
   ['arnitemb',['ArnItemB',['../class_arn_item_b.html#a9fc560cd83fc75bad2eb8f629981fbba',1,'ArnItemB']]],
   ['arnitemcreated',['arnItemCreated',['../class_arn_item.html#a5bf7640d9baeca2a134dd9a576df9f97',1,'ArnItem::arnItemCreated()'],['../class_arn_monitor.html#aee1c84df3076e319f3faed532d1a780d',1,'ArnMonitor::arnItemCreated()']]],
+  ['arnitemvalve',['ArnItemValve',['../class_arn_item_valve.html#a670d19b0355fcace249be1b0a339c14a',1,'ArnItemValve']]],
   ['arnlinkdestroyed',['arnLinkDestroyed',['../class_arn_item_b.html#a491881fa90d438c9db6218981faaa714',1,'ArnItemB']]],
   ['arnlist',['arnList',['../class_arn_client.html#aa40570b93de2cdbea9ecd53cf28f57ef',1,'ArnClient']]],
   ['arnmodechanged',['arnModeChanged',['../class_arn_item.html#ac0cdccc5e2ba670e28cf2c182b99e1ea',1,'ArnItem']]],

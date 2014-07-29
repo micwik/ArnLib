@@ -12,6 +12,7 @@ var _arn_8cpp =
     [ "itemName", "_arn_8cpp.html#a0edc95f31e49e60899a7be23888c556c", null ],
     [ "makeHostWithInfo", "_arn_8cpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a", null ],
     [ "makePath", "_arn_8cpp.html#af7033a4ea5ac45c0bbc136000fd2ccca", null ],
+    [ "providerPath", "_arn_8cpp.html#aac061f2a56bc7a0ee9f89638dbdede0e", null ],
     [ "twinPath", "_arn_8cpp.html#a4de17e4c5a7e225b5d0cbd974c3fd794", null ],
     [ "pathDiscover", "_arn_8cpp.html#aac20bdfa60a3d566d6000e333724aa44", null ],
     [ "pathDiscoverConnect", "_arn_8cpp.html#a556d0c5ce01a0b3146a929137c7b786d", null ],

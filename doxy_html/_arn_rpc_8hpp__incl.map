@@ -1,12 +1,11 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="1245,304,1371,331"/>
-<area shape="rect" id="node7" href="$_arn_8hpp.html" title="Arn.hpp" alt="" coords="747,379,813,405"/>
-<area shape="rect" id="node9" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="851,453,951,480"/>
-<area shape="rect" id="node15" href="$_arn_pipe_8hpp.html" title="ArnPipe.hpp" alt="" coords="1027,80,1120,107"/>
-<area shape="rect" id="node63" href="$_x_string_map_8hpp.html" title="XStringMap.hpp" alt="" coords="1349,229,1461,256"/>
-<area shape="rect" id="node18" href="$_arn_item_8hpp.html" title="ArnItem.hpp" alt="" coords="765,155,856,181"/>
-<area shape="rect" id="node21" href="$_arn_item_b_8hpp.html" title="ArnItemB.hpp" alt="" coords="760,229,861,256"/>
-<area shape="rect" id="node38" href="$_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="1011,304,1105,331"/>
-<area shape="rect" id="node24" href="$_arn_link_handle_8hpp.html" title="ArnLinkHandle.hpp" alt="" coords="653,304,783,331"/>
-<area shape="rect" id="node26" href="$_arn_lib_8hpp.html" title="ArnLib.hpp" alt="" coords="638,379,721,405"/>
+<area shape="rect" id="node3" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="1125,229,1251,256"/>
+<area shape="rect" id="node7" href="$_arn_8hpp.html" title="Arn.hpp" alt="" coords="411,304,477,331"/>
+<area shape="rect" id="node9" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="289,379,388,405"/>
+<area shape="rect" id="node15" href="$_arn_pipe_8hpp.html" title="ArnPipe.hpp" alt="" coords="576,80,669,107"/>
+<area shape="rect" id="node52" href="$_x_string_map_8hpp.html" title="XStringMap.hpp" alt="" coords="1181,155,1293,181"/>
+<area shape="rect" id="node18" href="$_arn_item_b_8hpp.html" title="ArnItemB.hpp" alt="" coords="517,155,619,181"/>
+<area shape="rect" id="node21" href="$_arn_link_handle_8hpp.html" title="ArnLinkHandle.hpp" alt="" coords="555,229,684,256"/>
+<area shape="rect" id="node35" href="$_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="291,304,385,331"/>
+<area shape="rect" id="node23" href="$_arn_lib_8hpp.html" title="ArnLib.hpp" alt="" coords="603,304,687,331"/>
 </map>

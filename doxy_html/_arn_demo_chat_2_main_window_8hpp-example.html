@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.1.x</span>
+   &#160;<span id="projectnumber">2.2.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('_arn_demo_chat_2_main_window_8hpp-exam
 </div><!--header-->
 <div class="contents">
 <p>Demo Chat Client</p>
-<div class="fragment"><div class="line"><span class="comment">// Copyright (C) 2010-2013 Michael Wiklund.</span></div>
+<div class="fragment"><div class="line"><span class="comment">// Copyright (C) 2010-2014 Michael Wiklund.</span></div>
 <div class="line"><span class="comment">// All rights reserved.</span></div>
 <div class="line"><span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><span class="comment">//</span></div>
@@ -155,9 +155,8 @@ $(document).ready(function(){initNavTree('_arn_demo_chat_2_main_window_8hpp-exam
 <div class="line">    <span class="keywordtype">void</span>  doSendLine();</div>
 <div class="line">    <span class="keywordtype">void</span>  doTimeUpdate( QString timeStr);</div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// Chat Requester routines</span></div>
-<div class="line">    <span class="keywordtype">void</span>  chatUpdateMsg( <span class="keywordtype">int</span> seq, QString name, QString msg);</div>
-<div class="line">    <span class="keywordtype">void</span>  chatInfo( QString name, QString ver);</div>
+<div class="line">    <span class="keywordtype">void</span>  sapiUpdateMsg( <span class="keywordtype">int</span> seq, QString name, QString msg);</div>
+<div class="line">    <span class="keywordtype">void</span>  sapiInfo( QString name, QString ver);</div>
 <div class="line"></div>
 <div class="line"><span class="keyword">private</span>:</div>
 <div class="line">    Ui::MainWindow *_ui;</div>
@@ -177,7 +176,7 @@ $(document).ready(function(){initNavTree('_arn_demo_chat_2_main_window_8hpp-exam
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 12 2014 21:44:39 for ArnLib by
+    <li class="footer">Generated on Tue Jul 29 2014 23:17:15 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

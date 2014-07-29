@@ -15,6 +15,7 @@ var hierarchy =
     [ "ArnError", "struct_arn_error.html", null ],
     [ "ArnItemB", "class_arn_item_b.html", [
       [ "ArnItem", "class_arn_item.html", null ],
+      [ "ArnItemValve", "class_arn_item_valve.html", null ],
       [ "ArnPipe", "class_arn_pipe.html", null ]
     ] ],
     [ "ArnM", "class_arn_m.html", null ],
@@ -50,13 +51,15 @@ var hierarchy =
     [ "Arn::NameF", "struct_arn_1_1_name_f.html", null ],
     [ "Arn::ObjectMode", "struct_arn_1_1_object_mode.html", null ],
     [ "Arn::ObjectSyncMode", "struct_arn_1_1_object_sync_mode.html", null ],
+    [ "ArnRpc::MethodsParam::Params", "struct_arn_rpc_1_1_methods_param_1_1_params.html", null ],
     [ "Arn::SameValue", "struct_arn_1_1_same_value.html", null ],
-    [ "ArnDiscoverInfo::State", "struct_arn_discover_info_1_1_state.html", null ],
     [ "ArnZeroConf::State", "struct_arn_zero_conf_1_1_state.html", null ],
     [ "ArnDiscoverAdvertise::State", "struct_arn_discover_advertise_1_1_state.html", null ],
+    [ "ArnDiscoverInfo::State", "struct_arn_discover_info_1_1_state.html", null ],
     [ "ArnError::StdCode", "struct_arn_error_1_1_std_code.html", null ],
-    [ "ArnScriptJobs::Type", "struct_arn_script_jobs_1_1_type.html", null ],
+    [ "ArnItemValve::SwitchMode", "struct_arn_item_valve_1_1_switch_mode.html", null ],
     [ "ArnServer::Type", "struct_arn_server_1_1_type.html", null ],
     [ "ArnDiscover::Type", "struct_arn_discover_1_1_type.html", null ],
+    [ "ArnScriptJobs::Type", "struct_arn_script_jobs_1_1_type.html", null ],
     [ "Arn::XStringMap", "class_arn_1_1_x_string_map.html", null ]
 ];

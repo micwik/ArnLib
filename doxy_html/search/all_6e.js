@@ -1,6 +1,8 @@
 var searchData=
 [
   ['name',['name',['../class_arn_script_job.html#a2797492914480378438bc7574186ecea',1,'ArnScriptJob::name()'],['../class_arn_item_b.html#a9fe05e98525f3c7e8b817671f4faaae1',1,'ArnItemB::name()'],['../class_arn_script_job_control.html#a272d1f57eb4494f633f50211933ca465',1,'ArnScriptJobControl::name()']]],
+  ['namedarg',['NamedArg',['../struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aad089af31d0cf3b553274fda2d9744d1',1,'ArnRpc::Mode']]],
+  ['namedtypedarg',['NamedTypedArg',['../struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a6337168e94716ee3b0910c04db570eb9',1,'ArnRpc::Mode']]],
   ['namef',['NameF',['../struct_arn_1_1_name_f.html',1,'Arn']]],
   ['netsync',['NetSync',['../struct_arn_server_1_1_type.html#ae4fba4a82a463c288561b107362dde41abe95db1db12eebabf0398f1eb47a69bb',1,'ArnServer::Type']]],
   ['newconnector',['newConnector',['../class_arn_discover_remote.html#a0c79190e45f240469478465599910397',1,'ArnDiscoverRemote']]],

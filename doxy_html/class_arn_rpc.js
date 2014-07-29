@@ -7,6 +7,7 @@ var class_arn_rpc =
     [ "batchConnect", "class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de", null ],
     [ "batchConnect", "class_arn_rpc.html#a7f999b9eedac4890fbc5bed8a6e618ab", null ],
     [ "batchConnect", "class_arn_rpc.html#a75bd3439dec20345813e2bc40a67c166", null ],
+    [ "defaultCall", "class_arn_rpc.html#a6f380544a22b4171d08a652b676161e9", null ],
     [ "heartBeatChanged", "class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0", null ],
     [ "heartBeatReceived", "class_arn_rpc.html#a9534d3737bf93fb9511c1f33a2f09967", null ],
     [ "invoke", "class_arn_rpc.html#ab84c845961e86b52f698d4a81912f35d", null ],
@@ -15,6 +16,7 @@ var class_arn_rpc =
     [ "mode", "class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0", null ],
     [ "open", "class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea", null ],
     [ "outOfSequence", "class_arn_rpc.html#a00aa03b83806c25ca39d82d111dcc064", null ],
+    [ "pipe", "class_arn_rpc.html#a73756d72d4d2fd3616ef2ff0e03ca5cb", null ],
     [ "pipeClosed", "class_arn_rpc.html#af20b8270d7043673c9d9d3906efb7dac", null ],
     [ "pipePath", "class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b", null ],
     [ "rpcSender", "class_arn_rpc.html#a19a34d163bd3550495c01c6b4bbd20aa", null ],
@@ -26,6 +28,6 @@ var class_arn_rpc =
     [ "setMethodPrefix", "class_arn_rpc.html#acb14a8cd274f112f806cdd28db426614", null ],
     [ "setMode", "class_arn_rpc.html#a162f91fef9e07ea71b52611de26341db", null ],
     [ "setPipe", "class_arn_rpc.html#ae3f5ce01e8f0bc61bb04a4aa9d840b40", null ],
-    [ "setReceiver", "class_arn_rpc.html#a0e4dbd55242a36d63b4b1f9f76ed2df9", null ],
+    [ "setReceiver", "class_arn_rpc.html#ace8322eda7c1ab852e557042206db011", null ],
     [ "textReceived", "class_arn_rpc.html#a094d3683c8a62b66b1631ccdca5a4a9f", null ]
 ];

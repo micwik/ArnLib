@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.1.x</span>
+   &#160;<span id="projectnumber">2.2.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -117,7 +117,8 @@ $(document).ready(function(){initNavTree('md__description.html','');});
 <li class="level1"><a href="#gen_shareArnobj">Sharing Arn Data Objects    </a><ul><li class="level2"><a href="#gen_dynamicPort">Dynamic port</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#gen_rpc">RPC and SAPI    </a><ul><li class="level2"><a href="#gen_rpcformat">RPC and SAPI communication format</a></li>
+<li class="level1"><a href="#gen_rpc">RPC and SAPI    </a><ul><li class="level2"><a href="#gen_rpcoverload">RPC and SAPI method name overload</a></li>
+<li class="level2"><a href="#gen_rpcformat">RPC and SAPI communication format</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#gen_zeroconf">ZeroConfig    </a><ul><li class="level2"><a href="#gen_zeroconfServiceName">Service name</a></li>
@@ -202,7 +203,8 @@ Pipe Arn Data Objects    </h1>
 <p><em>Pipes</em> also use the <a href="#gen_bidirArnobj">bidirectional</a> functionality. The two (twin) parts are then named <em>requester</em> and <em>provider</em>.</p>
 <p>All data put into a pipe are part of a stream and as such will be fully transfered (syncronized) if they are <a href="#gen_shareArnobj">shared</a> with a server and other clients.</p>
 <p><a class="el" href="class_arn_pipe.html" title="ArnItem specialized as a pipe.">ArnPipe</a> is a specialized class for handling pipes. <br/>
- It contains logic for handling <a href="#gen_pipeSeqCheck">sequence check</a> and <a href="#gen_pipeAntiCongest">anti congest</a>. <br/>
+ It contains logic for handling <a href="#gen_pipeSeqCheck">sequence check</a> and <a href="#gen_pipeAntiCongest">anti congest</a>.</p>
+<p>Data stream to and from a pipe can be controlled using <a class="el" href="class_arn_item_valve.html" title="Valve for controlling stream to/from an ArnItemB.">ArnItemValve</a> class. Actually <a class="el" href="class_arn_item_valve.html" title="Valve for controlling stream to/from an ArnItemB.">ArnItemValve</a> can controll any <a class="el" href="class_arn_item_b.html" title="Base class handle for an Arn Data Object.">ArnItemB</a> derived class. <br/>
 <br/>
 </p>
 <h2><a class="anchor" id="gen_pipeSeqCheck"></a>
@@ -228,14 +230,10 @@ Persistent Arn Data Objects    </h1>
 <p>The <em>server</em> must use <a class="el" href="class_arn_persist.html">ArnPersist</a> to support the persistance service. As a standard <em>persist storage</em>, <em>ARN Data Objects</em> are stored in a SQLite database. It's also possible to store each object as a file.</p>
 <p>The <em>mount point</em> (path) for collecting the persistent <em>ARN Data objects</em> is set by <a class="el" href="class_arn_persist.html#a5a5df6121afbf16f1980093001aafdd4" title="Set the persistent enabled tree path.">ArnPersist::setMountPoint()</a>. For server applications this is typically set to "/", which makes all <em>ARN Data Objects</em> potential persistent. In client applications the <em>mount point</em> is typically restricted to <a class="el" href="namespace_arn.html#a690f9202c122418e5dfd8784529da8d9">Arn::pathLocal</a>, which only saves local <em>ARN Data Objects</em> in the local <em>persist storage</em>.</p>
 <p>Any connected <em>client</em> or the <em>server</em> can make an <em>ARN Data Object</em> persistent. It's just to open an <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a> to the object and change <em>mode</em> to <em>Save</em>. </p>
-<blockquote class="doxtable">
-<p><a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a> arnMaxLevel; <br/>
- arnMaxLevel.addMode( Arn::ObjectMode::Save); <br/>
- arnMaxLevel.open("//Config/Level/Max/value"); <br/>
-</p>
-<p></p>
-</blockquote>
-<p>When the <em>ARN Data Object</em> is set to <em>Save</em> mode, it's automatically loaded by the <a class="el" href="class_arn_persist.html">ArnPersist</a>. At the <em>server</em> this is instantly done. A <em>client</em> has to wait for the value to get synced from the <em>server</em>. It's convenient to use <a class="el" href="class_arn_depend.html" title="Class for setting up dependencis to needed services.">ArnDepend</a> to get a signal when the value is loaded and ready to use.</p>
+<div class="fragment"><div class="line"><a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>  arnMaxLevel;</div>
+<div class="line">arnMaxLevel.<a class="code" href="class_arn_item.html#a9b05c84369d7a5d3c68f113f79189b1a" title="Add general mode settings for this Arn Data Object">addMode</a>( <a class="code" href="struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155aa1a11a93f3421a36c42c54910d4e7c0b" title="Data is persistent and will be saved.">Arn::ObjectMode::Save</a>);</div>
+<div class="line">arnMaxLevel.<a class="code" href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" title="Open a handle to an Arn Data Object">open</a>(<span class="stringliteral">&quot;//Config/Level/Max/value&quot;</span>);</div>
+</div><!-- fragment --><p>When the <em>ARN Data Object</em> is set to <em>Save</em> mode, it's automatically loaded by the <a class="el" href="class_arn_persist.html">ArnPersist</a>. At the <em>server</em> this is instantly done. A <em>client</em> has to wait for the value to get synced from the <em>server</em>. It's convenient to use <a class="el" href="class_arn_depend.html" title="Class for setting up dependencis to needed services.">ArnDepend</a> to get a signal when the value is loaded and ready to use.</p>
 <p>When the <em>ARN Data Object</em> is changed, it will be automatically saved by <a class="el" href="class_arn_persist.html">ArnPersist</a>. There is a delay from first change of the object until the saving is done, see <a class="el" href="class_arn_item.html#a2487337c3924ea323ec6462b8b0aee08" title="Set delay of data changed signal.">ArnItem::setDelay()</a>. This allows for intensive updates of the object without choking down the server with saving operations.</p>
 <p>It's possible to mark an object in the SQLite data base as <em>mandatory</em>. In this way the <em>ARN Data Object</em> is set as <em>persistent</em> and gets loaded at start of <a class="el" href="class_arn_persist.html">ArnPersist</a>. <br/>
 <br/>
@@ -260,14 +258,10 @@ Sharing Arn Data Objects    </h1>
  This doesn't mean that everything in the shared tree at the server now will be available at the client. The client has to create an <em>ARN Data Object</em> in the shared tree. The client can then decide the exact objects of interest. <br/>
  <code>ArnItem::Open("/Share/Test/value")</code> will open a shared object in previous example.</p>
 <p>Note: Normally "//" or "/@.../" is used for shared. See <a href="#gen_naming">naming conventions</a>.</p>
-<p>The remote tree can be at a different path than the local tree (mount point). <br/>
- </p>
-<blockquote class="doxtable">
-<p><a class="el" href="class_arn_client.html#ac417b3db210850f4bea8abcf78bf1237" title="Add a sharing tree path.">ArnClient::addMountPoint</a>("/@Host/", "/") will make the server shared at "/@Host/". <br/>
- <a class="el" href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" title="Open a handle to an Arn Data Object">ArnItem::open</a>("/@Host/Share/Test/value") will now open the shared object in previous example.</p>
-<p></p>
-</blockquote>
-<p><br/>
+<p>The remote tree can be at a different path than the local tree (mount point). </p>
+<div class="fragment"><div class="line"><a class="code" href="class_arn_client.html#ac417b3db210850f4bea8abcf78bf1237" title="Add a sharing tree path.">ArnClient::addMountPoint</a>(<span class="stringliteral">&quot;/@Host/&quot;</span>, <span class="stringliteral">&quot;/&quot;</span>)  <span class="comment">// Makes the server shared at &quot;/@Host/&quot;.</span></div>
+<div class="line"><a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>::open(&quot;/@Host/Share/Test/value&quot;)  <span class="comment">// Open the shared object in previous example.</span></div>
+</div><!-- fragment --><p> <br/>
 <br/>
 </p>
 <h2><a class="anchor" id="gen_dynamicPort"></a>
@@ -284,51 +278,146 @@ RPC and SAPI    </h1>
 <p><a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a> uses <a class="el" href="md__description.html#gen_pipeArnobj">pipes</a> to communicate. The <em>pipes</em> can be monitored and receive test stimuli from the "Arn Browser" program. The used <a href="#gen_rpcformat">protocol</a> is XString based and quite easy to handtype when common data types are used. "$help" will give the syntax for the actual custom SAPI.</p>
 <p>A SAPI is setup by deriving the <a class="el" href="class_arn_sapi.html" title="Service API.">ArnSapi</a> class to a new class that defines the <em>custom SAPI</em>. This custom-declared class is included at both the <em>provider</em> and <em>requester</em> ends. The <em>custom SAPI</em> class by itself doesn't implement any <em>services</em>. It's merely a hub for connections to <em>external signals and slots</em>. The base <a class="el" href="class_arn_sapi.html" title="Service API.">ArnSapi</a> class automatically transfers all <em>custom signal</em> (SAPI) calls to the remote connected ends, which also have the <a class="el" href="class_arn_sapi.html" title="Service API.">ArnSapi</a> derived class and that emits the transfered signal. See example in <a class="el" href="class_arn_sapi.html" title="Service API.">ArnSapi</a> Detailed Description.</p>
 <p>The provider connects the signals from custom SAPI that are prefixed with "pv_" (as default) to each external slot that implements the services. In the same way the <em>requester</em> connects the signals prefixed with "rq_" to its external "service" slots.</p>
-<p>When there is a naming pattern between the <em>SAPI services</em> and the <em>external signals and slots</em>, it's a great convenience to use ArnRpc::BatchConnect(). This saves a lot of QObject::connect() calls. Also newly added services in the SAPI, that obey the naming scheme, will automaically be connected to the newly matching <em>external signals and slots</em> for implementation of the <em>service</em>.</p>
+<p>When there is a naming pattern between the <em>SAPI services</em> and the <em>external signals and slots</em>, it's a great convenience to use <a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" title="Make batch connection from one senders signals to another receivers slots/signals.">ArnRpc::batchConnect()</a>, <a class="el" href="class_arn_sapi.html#a48fc7203b188b0af970a8fb3625d4cf7" title="Make batch connection from this ArnSapi:s signals to another receivers slots/signals.">ArnSapi::batchConnectTo()</a> or <a class="el" href="class_arn_sapi.html#a3913bd932c51c56aa3d940d41ee4b72b" title="Make batch connection from one senders signals to this ArnSapi:s signals.">ArnSapi::batchConnectFrom()</a>. This saves a lot of QObject::connect() calls. Also newly added services in the SAPI, that obey the naming scheme, will automaically be connected to the newly matching <em>external signals and slots</em> for implementation of the <em>service</em>.</p>
 <p>An extended feature comparing to normal <em>signals</em> is that the <em>SAPI signals</em> are <em>public</em> and can be called by non-derived classes. This makes it optional to use both <em>signal to signal</em> connections or direct <em>signal</em> calls (emit), when issuing a RPC to the remote side.</p>
 <p>The <em>service</em> slot can get the emitting <em>custom SAPI</em> object by using normal QObject::sender() functionality. <br/>
 <br/>
 </p>
+<h2><a class="anchor" id="gen_rpcoverload"></a>
+RPC and SAPI method name overload</h2>
+<p>Under the hood Qt converts a signal that uses default argument(s) into methods with same name and all variation of the arguments. I.e. One method with all arguments, one with all but the last default argument, and so on until there is no more default urguments. When emitting the signal with some number of arguments, all of the signal methods will be exited.</p>
+<p><a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a> has to deal with this default urgument mechanism, otherwise there would be multiple calling messages for just one original signal emit.</p>
+<p>The problem arises when there also can be normal signals that are overloaded, i.e. using same method name but different arguments. <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a> has to be able to differentiate between these normal overloaded signals and the default argument signals described earlier.</p>
+<p>These are the alternatives, how you can help <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a> make your SAPI work:</p>
+<ul>
+<li>Don't overload arguments or make sure they don't have a common start of equal names and types. E.g. its ok with: <code>f( int a, int b); f( int b); f( int c); f( uint a);</code></li>
+<li>Set <a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aee954e4308c5635281eb32d43b8af990" title="If guarantied no default arguments, full member name overload is ok.">ArnRpc::Mode::NoDefaultArgs</a> and never use any default arguments in the SAPI. It's then ok to use any kind of normal overloading. <br/>
+<br/>
+</li>
+</ul>
 <h2><a class="anchor" id="gen_rpcformat"></a>
 RPC and SAPI communication format</h2>
-<p>The RPC calling has a basic format as XString (see <a class="el" href="class_arn_1_1_x_string_map.html" title="Container class with string representation for serialized data.">Arn::XStringMap</a>). The most generic form is seen below. The type mark <em>T</em> is "t" for writeable types and "tb" for binary (non writeable) types. </p>
+<p>The RPC calling has a basic format as XString (see <a class="el" href="class_arn_1_1_x_string_map.html" title="Container class with string representation for serialized data.">Arn::XStringMap</a>). A call message can have 3 possible argument formats: positional, named and typed. The positional format is always possible to use and is most comparable to a standard c++ call.</p>
+<p>The method name always come first in the message. After that comes arguments that have the argument data in the value part of its key/value pair. The key part can have the argument type and name, but this depends on the used argument format.</p>
+<p>The following RPC data types are available:</p>
+<table class="doxtable">
+<tr>
+<th>RPC </th><th>Qt </th></tr>
+<tr>
+<td>int </td><td>int </td></tr>
+<tr>
+<td>uint </td><td>uint </td></tr>
+<tr>
+<td>int64" </td><td>qint64 </td></tr>
+<tr>
+<td>uint64 </td><td>quint64 </td></tr>
+<tr>
+<td>bool </td><td>bool </td></tr>
+<tr>
+<td>float </td><td>float </td></tr>
+<tr>
+<td>double </td><td>double </td></tr>
+<tr>
+<td>bytes </td><td>QByteArray </td></tr>
+<tr>
+<td>date </td><td>QDate </td></tr>
+<tr>
+<td>time </td><td>QTime </td></tr>
+<tr>
+<td>datetime </td><td>QDateTime </td></tr>
+<tr>
+<td>list </td><td>QStringList </td></tr>
+<tr>
+<td>string </td><td>QString </td></tr>
+</table>
+<p>Also generic RPC data types can be formed as: </p>
 <blockquote class="doxtable">
-<p><em>funcname T</em> = <em>type1</em> a. <em>label1</em> = <em>arg1</em> <em>T</em> = <em>type2</em> a. <em>label2</em> = <em>arg2</em> ... <br/>
- Example: put t=QString a.id=level t=int a.value=123 <br/>
- For calling: put( QString("level"), 123)</p>
+<p>Textual like QColor t&lt;QColor&gt; <br/>
+ Binary like QPoint tb&lt;QPoint&gt; <br/>
+</p>
 <p></p>
 </blockquote>
-<p>Commonly used <em>types</em> have a shorter form. The <em>types</em> are: </p>
+<p>Only textual types, i.e. those that can be converted to/from a string, are reasonable to be hand typed.</p>
+<p>Lets have an example method to see the message when it is called. </p>
 <blockquote class="doxtable">
-<p><em>int</em>, <em>uint</em>, <em>bool</em>, <em>double</em>, <em>bytes</em> (QByteArray), <em>date</em> (QDate), <em>time</em> (QTime), <em>datetime</em> (QDateTime), <em>list</em> (QStringList) and <em>string</em> (QString). The default, when no type is specified, is <em>string</em>.</p>
+<p>Method: void put( QString id, int value); <br/>
+ Get called by: put("level", 123);</p>
 <p></p>
 </blockquote>
-<p>This can be used in previous example: </p>
+<p>Alternatives in positional argument format: </p>
 <blockquote class="doxtable">
-<p>put string.id=level int.value=123</p>
+<p>put t&lt;QString&gt;.id=level t&lt;int&gt;.value=123 <br/>
+ put string.id=level int.value=123 <br/>
+ put string.=level int.=123 <br/>
+ put string=level int=123 <br/>
+ put level int=123 <br/>
+</p>
 <p></p>
 </blockquote>
-<p>Or even shorter, skipping labels, when typed by hand: </p>
+<ul>
+<li>Argument names are optional and only for human debuging.</li>
+<li>When no type is given, "string" is asumed.</li>
+<li>When <a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aad089af31d0cf3b553274fda2d9744d1" title="When calling out, uses named argument e.g &quot;myFunc count=123&quot;.">ArnRpc::Mode::NamedArg</a> is active, its not allowed to only use typename, e.g. "int=123" can be "int.=123" to enforce positional format.</li>
+<li>Both textual and binary arguments can be used.</li>
+</ul>
+<p>Alternatives in named argument format: </p>
 <blockquote class="doxtable">
-<p>put level int=123</p>
+<p>put id=level value=123 <br/>
+ put value=123 id=level <br/>
+ put value=123 dummy=ABC id=level garbage=321 <br/>
+</p>
 <p></p>
 </blockquote>
-<p>List (QStringList) can be used. The <em>le</em> is <em>list element</em>. All examples below will get same resulting call. </p>
+<ul>
+<li>Only Argument names are used.</li>
+<li>Any order of arguments can be used.</li>
+<li>Extra arguments are discarded.</li>
+<li>If to few arguments, default constructor is used, e.g. "put value=123" will give id="".</li>
+<li>The methods parameter data type is used and only textual types are allowed.</li>
+<li>When <a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aad089af31d0cf3b553274fda2d9744d1" title="When calling out, uses named argument e.g &quot;myFunc count=123&quot;.">ArnRpc::Mode::NamedArg</a> is inactive, its not allowed to use an argument name that also is a RPC data type. See table above. E.g. "list" and "string" are not allowed.</li>
+<li>Only textual arguments can be used (as stated before).</li>
+</ul>
+<p>Alternatives in typed argument format: </p>
+<blockquote class="doxtable">
+<p>put id:t&lt;QString&gt;=level value:t&lt;int&gt;=123 <br/>
+ put id:string=level value:int=123 <br/>
+ put value:int=123 id:string=level <br/>
+ put value:int=123 dummy:bytes=ABC id:string=level <br/>
+</p>
+<p></p>
+</blockquote>
+<ul>
+<li>Argument names and types are used.</li>
+<li>Only the name is used to match method parameter.</li>
+<li>The type is verified with the matching method parameter for error check.</li>
+<li>Any order of arguments can be used.</li>
+<li>Extra arguments are discarded.</li>
+<li>If to few arguments, default constructor is used, e.g. "put value:int=123" will give id="".</li>
+<li>Both textual and binary arguments can be used.</li>
+</ul>
+<p>Named and typed argument format can be mixed, but positional format is never mixed.</p>
+<p>List (QStringList) can be used. All examples below will get same resulting call. </p>
 <blockquote class="doxtable">
 <p>For a function: void test( QStringList lst, int num) <br/>
  test list=red green blu int=3 <br/>
  test list.lst=red green blu int.num=3 <br/>
- test list= le=red le=green le=blu int=3 <br/>
- test list=red le=green blu int=3 <br/>
+ test list= +=red +==green +=blu int=3 <br/>
+ test list=red +=green blu int=3 <br/>
+ test lst:list=red green blu num=3 <br/>
+ test num=3 lst:list=red green +=blu <br/>
 </p>
 <p></p>
 </blockquote>
-<p>For special cases, like empty elements, the <em>le</em> (list element) is needed. The example below has a first empty element followed by "green". </p>
+<ul>
+<li>list is both a data type and a syntax for defining its data.</li>
+<li>list is only available for positional and typed argument format.</li>
+</ul>
+<p>For special cases, like empty elements, the += syntax is needed. The example below has a first empty element followed by "green". </p>
 <blockquote class="doxtable">
-<p>test list= le= green blue int=2</p>
+<p>test list= += green blue int=2</p>
 <p></p>
 </blockquote>
-<p>The built-in call "$help" will give an automatically generated list of the present SAPI with the syntax for each available service. <br/>
+<p>The built-in call "$help" will give an automatically generated list of the present SAPI with the syntax for each available service. The default argument format is positional. This can be changed to named format by giving "$help named". <br/>
 <br/>
 </p>
 <h1><a class="anchor" id="gen_zeroconf"></a>
@@ -406,7 +495,7 @@ Application notations    </h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 12 2014 21:44:41 for ArnLib by
+    <li class="footer">Generated on Tue Jul 29 2014 23:17:16 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

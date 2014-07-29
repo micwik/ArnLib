@@ -1,5 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$class_arn_item_b.html" title="Base class handle for an Arn Data Object." alt="" coords="6,31,82,57"/>
-<area shape="rect" id="node3" href="$class_arn_item.html" title="Handle for an Arn Data Object." alt="" coords="132,5,199,32"/>
-<area shape="rect" id="node5" href="$class_arn_pipe.html" title="ArnItem specialized as a pipe." alt="" coords="131,56,199,83"/>
+<area shape="rect" id="node1" href="$class_arn_item_b.html" title="Base class handle for an Arn Data Object." alt="" coords="6,56,82,83"/>
+<area shape="rect" id="node3" href="$class_arn_item.html" title="Handle for an Arn Data Object." alt="" coords="147,5,213,32"/>
+<area shape="rect" id="node5" href="$class_arn_item_valve.html" title="Valve for controlling stream to/from an ArnItemB." alt="" coords="131,56,229,83"/>
+<area shape="rect" id="node7" href="$class_arn_pipe.html" title="ArnItem specialized as a pipe." alt="" coords="146,107,214,133"/>
 </map>

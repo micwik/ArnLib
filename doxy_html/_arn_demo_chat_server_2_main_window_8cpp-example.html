@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.1.x</span>
+   &#160;<span id="projectnumber">2.2.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -159,9 +159,10 @@ $(document).ready(function(){initNavTree('_arn_demo_chat_server_2_main_window_8c
 <div class="line"></div>
 <div class="line">    _arnTime.open(<span class="stringliteral">&quot;//Chat/Time/value&quot;</span>);</div>
 <div class="line"></div>
+<div class="line">    <span class="keyword">typedef</span> <a name="_a3"></a><a class="code" href="struct_arn_rpc_1_1_mode.html">ArnSapi::Mode</a>  SMode;</div>
 <div class="line">    _commonSapi = <span class="keyword">new</span> ChatSapi( <span class="keyword">this</span>);</div>
-<div class="line">    _commonSapi-&gt;open(<span class="stringliteral">&quot;//Chat/Pipes/pipeCommon!&quot;</span>, <a name="a3"></a><a class="code" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a90ec424cb525bbcce0c60a666bb1c4d4" title="Provider side (opposed to requester)">ArnSapi::Mode::Provider</a>);</div>
-<div class="line">    _commonSapi-&gt;batchConnect( QRegExp(<span class="stringliteral">&quot;^pv_(.+)&quot;</span>), <span class="keyword">this</span>, <span class="stringliteral">&quot;chat\\1&quot;</span>);</div>
+<div class="line">    _commonSapi-&gt;open(<span class="stringliteral">&quot;//Chat/Pipes/pipeCommon&quot;</span>, SMode::Provider | SMode::UseDefaultCall);</div>
+<div class="line">    _commonSapi-&gt;batchConnectTo( <span class="keyword">this</span>, <span class="stringliteral">&quot;sapi&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <a name="_a4"></a><a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>*  arnPipes = <span class="keyword">new</span> <a class="code" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>(<span class="stringliteral">&quot;//Chat/Pipes/&quot;</span>, <span class="keyword">this</span>);</div>
 <div class="line">    connect( arnPipes, SIGNAL(arnItemCreated(QString)), <span class="keyword">this</span>, SLOT(doNewSession(QString)));</div>
@@ -178,9 +179,10 @@ $(document).ready(function(){initNavTree('_arn_demo_chat_server_2_main_window_8c
 <div class="line">{</div>
 <div class="line">    <span class="keywordflow">if</span> (!<a name="a5"></a><a class="code" href="namespace_arn.html#a9a27c8dda4cc88176c941cc53f6c2426" title="Test if path is a provider path">Arn::isProviderPath</a>( path))  <span class="keywordflow">return</span>;  <span class="comment">// Only provider pipe is used</span></div>
 <div class="line"></div>
+<div class="line">    <span class="keyword">typedef</span> <a class="code" href="struct_arn_rpc_1_1_mode.html">ArnSapi::Mode</a>  SMode;</div>
 <div class="line">    ChatSapi*  soleSapi = <span class="keyword">new</span> ChatSapi( <span class="keyword">this</span>);</div>
-<div class="line">    soleSapi-&gt;open( path, <a class="code" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a90ec424cb525bbcce0c60a666bb1c4d4" title="Provider side (opposed to requester)">ArnSapi::Mode::Provider</a>);</div>
-<div class="line">    soleSapi-&gt;batchConnect( QRegExp(<span class="stringliteral">&quot;^pv_(.+)&quot;</span>), <span class="keyword">this</span>, <span class="stringliteral">&quot;chat\\1&quot;</span>);</div>
+<div class="line">    soleSapi-&gt;open( path, SMode::Provider | SMode::UseDefaultCall);</div>
+<div class="line">    soleSapi-&gt;batchConnectTo( <span class="keyword">this</span>, <span class="stringliteral">&quot;sapi&quot;</span>);</div>
 <div class="line">    connect( soleSapi, SIGNAL(pipeClosed()), soleSapi, SLOT(deleteLater()));</div>
 <div class="line">    </div>
 <div class="line">    connect( soleSapi, SIGNAL(pipeClosed()), <span class="keyword">this</span>, SLOT(doSessionClosed()));    </div>
@@ -217,7 +219,7 @@ $(document).ready(function(){initNavTree('_arn_demo_chat_server_2_main_window_8c
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>  MainWindow::chatList()</div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::sapiList()</div>
 <div class="line">{</div>
 <div class="line">    ChatSapi*  sapi = qobject_cast&lt;ChatSapi*&gt;( sender());</div>
 <div class="line">    Q_ASSERT(sapi);</div>
@@ -227,7 +229,7 @@ $(document).ready(function(){initNavTree('_arn_demo_chat_server_2_main_window_8c
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>  MainWindow::chatNewMsg( QString name, QString msg)</div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::sapiNewMsg( QString name, QString msg)</div>
 <div class="line">{</div>
 <div class="line">    _chatNameList += name;</div>
 <div class="line">    _chatMsgList  += msg;</div>
@@ -237,18 +239,27 @@ $(document).ready(function(){initNavTree('_arn_demo_chat_server_2_main_window_8c
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>  MainWindow::chatInfoQ()</div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::sapiInfoQ()</div>
 <div class="line">{</div>
 <div class="line">    ChatSapi*  sapi = qobject_cast&lt;ChatSapi*&gt;( sender());</div>
 <div class="line">    Q_ASSERT(sapi);</div>
-<div class="line">    sapi-&gt;rq_info(<span class="stringliteral">&quot;Arn Chat Demo&quot;</span>, <span class="stringliteral">&quot;1.1&quot;</span>);</div>
+<div class="line">    sapi-&gt;rq_info(<span class="stringliteral">&quot;Arn Chat Demo&quot;</span>, <span class="stringliteral">&quot;1.2&quot;</span>);</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span>  MainWindow::sapiDefault( <span class="keyword">const</span> QByteArray&amp; data)</div>
+<div class="line">{</div>
+<div class="line">    ChatSapi*  sapi = qobject_cast&lt;ChatSapi*&gt;( sender());</div>
+<div class="line">    Q_ASSERT(sapi);</div>
+<div class="line">    qDebug() &lt;&lt; <span class="stringliteral">&quot;chatDefault:&quot;</span> &lt;&lt; data;</div>
+<div class="line">    sapi-&gt;sendText(<span class="stringliteral">&quot;Chat Sapi: Can&#39;t find method, use $help.&quot;</span>);</div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 12 2014 21:44:39 for ArnLib by
+    <li class="footer">Generated on Tue Jul 29 2014 23:17:15 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

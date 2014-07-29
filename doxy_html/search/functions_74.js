@@ -4,7 +4,7 @@ var searchData=
   ['tcpdisconnected',['tcpDisConnected',['../class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd',1,'ArnClient']]],
   ['tcperror',['tcpError',['../class_arn_client.html#a27858277134c9fa0240cf4b18fffdb28',1,'ArnClient']]],
   ['textreceived',['textReceived',['../class_arn_rpc.html#a094d3683c8a62b66b1631ccdca5a4a9f',1,'ArnRpc']]],
-  ['tobool',['toBool',['../class_arn_item.html#af6eb93f9bbd85447d4dd9bf3b12784c3',1,'ArnItem']]],
+  ['tobool',['toBool',['../class_arn_item.html#af6eb93f9bbd85447d4dd9bf3b12784c3',1,'ArnItem::toBool()'],['../class_arn_item_valve.html#add3854a2ae028182d7ab9996f1775897',1,'ArnItemValve::toBool()']]],
   ['tobytearray',['toByteArray',['../class_arn_item.html#a4c55dddb082391debbe8929b1d4e7865',1,'ArnItem']]],
   ['todouble',['toDouble',['../class_arn_item.html#ac19836c291a14798b65283c74a0a4a3d',1,'ArnItem']]],
   ['togglebool',['toggleBool',['../class_arn_item.html#afb85abf3355fe939286080e91e431431',1,'ArnItem']]],

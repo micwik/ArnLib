@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.1.x</span>
+   &#160;<span id="projectnumber">2.2.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -148,6 +148,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:a67789049b85129fdd4f238d57e9f71bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a path to a specific format.  <a href="#a67789049b85129fdd4f238d57e9f71bc"></a><br/></td></tr>
 <tr class="memitem:a4de17e4c5a7e225b5d0cbd974c3fd794"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a4de17e4c5a7e225b5d0cbd974c3fd794">twinPath</a> (const QString &amp;path)</td></tr>
 <tr class="memdesc:a4de17e4c5a7e225b5d0cbd974c3fd794"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the bidirectional twin to a given <em>path</em>  <a href="#a4de17e4c5a7e225b5d0cbd974c3fd794"></a><br/></td></tr>
+<tr class="memitem:aac061f2a56bc7a0ee9f89638dbdede0e"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#aac061f2a56bc7a0ee9f89638dbdede0e">providerPath</a> (const QString &amp;path, bool giveProviderPath=true)</td></tr>
+<tr class="memdesc:aac061f2a56bc7a0ee9f89638dbdede0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <em>provider path</em> or <em>requester path</em>  <a href="#aac061f2a56bc7a0ee9f89638dbdede0e"></a><br/></td></tr>
 <tr class="memitem:a3a3f57fa61cdb0b8408df49466e1ca87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a3a3f57fa61cdb0b8408df49466e1ca87">isFolderPath</a> (const QString &amp;path)</td></tr>
 <tr class="memdesc:a3a3f57fa61cdb0b8408df49466e1ca87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test if <em>path</em> is a <em>folder path</em>  <a href="#a3a3f57fa61cdb0b8408df49466e1ca87"></a><br/></td></tr>
 <tr class="memitem:a9a27c8dda4cc88176c941cc53f6c2426"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a9a27c8dda4cc88176c941cc53f6c2426">isProviderPath</a> (const QString &amp;path)</td></tr>
@@ -261,7 +263,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Change the base (start) of a path. </p>
-<p><em>oldBasePath</em> and <em>newBasePath</em> don't have to end with a "/", if missing it's added. If <em>path</em> not starts with <em>oldBasePath</em>, QString() is returned. Otherwise the path is returned with its base changed from <em>oldBasePath</em> to <em>newBasePath</em>.</p>
+<p><em>oldBasePath</em> and <em>newBasePath</em> don't have to end with a "/", if missing it's added. If <em>path</em> not starts with <em>oldBasePath</em>, <em>path</em> is returned. Otherwise the path is returned with its base changed from <em>oldBasePath</em> to <em>newBasePath</em>.</p>
 <p>Example: <em>path</em> = "//Measure/depth/value", <em>oldBasePath</em> = "//Measure/", <em>newBasePath</em> = "/Measure/Tmp/" ==&gt; return = "/Measure/Tmp/depth/value" </p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
@@ -452,7 +454,7 @@ Variables</h2></td></tr>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" title="Make a combined host and info string, i.e. HostWithInfo">makeHostWithInfo()</a> </dd></dl>
 <dl class="section note"><dt>Note:</dt><dd>As the format of the <em>HostWithInfo</em> string can be changed in the future, allways use <a class="el" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" title="Make a combined host and info string, i.e. HostWithInfo">makeHostWithInfo()</a> and <a class="el" href="namespace_arn.html#aa5388e7414b06aa7c8e1c0af4fe549a7" title="Get the host from the HostWithInfo string.">hostFromHostWithInfo()</a> for coding and decoding. </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00204">204</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00210">210</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
 </div>
 </div>
@@ -484,7 +486,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00185">185</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00191">191</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
 </div>
 </div>
@@ -518,7 +520,7 @@ Variables</h2></td></tr>
 </dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="_arn_demo_chat_server_2_main_window_8cpp-example.html#a5">ArnDemoChatServer/MainWindow.cpp</a>.</dd>
 </dl>
-<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00191">191</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00197">197</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
 </div>
 </div>
@@ -588,7 +590,7 @@ Variables</h2></td></tr>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="namespace_arn.html#aa5388e7414b06aa7c8e1c0af4fe549a7" title="Get the host from the HostWithInfo string.">hostFromHostWithInfo()</a> </dd></dl>
 <dl class="section note"><dt>Note:</dt><dd>As the format of the <em>HostWithInfo</em> string can be changed in the future, allways use <a class="el" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" title="Make a combined host and info string, i.e. HostWithInfo">makeHostWithInfo()</a> and <a class="el" href="namespace_arn.html#aa5388e7414b06aa7c8e1c0af4fe549a7" title="Get the host from the HostWithInfo string.">hostFromHostWithInfo()</a> for coding and decoding. </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00197">197</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00203">203</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
 </div>
 </div>
@@ -629,6 +631,53 @@ Variables</h2></td></tr>
 <dl class="section return"><dt>Returns:</dt><dd>The <em>path</em> </dd></dl>
 
 <p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00121">121</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aac061f2a56bc7a0ee9f89638dbdede0e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString Arn::providerPath </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>giveProviderPath</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get <em>provider path</em> or <em>requester path</em> </p>
+<p><a class="el" href="md__description.html#gen_bidirArnobj">About Bidirectional Arn Data Objects</a> </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>to be converted </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">giveProviderPath</td><td>choses between provider and requester path. false = requester path, default is true = provider path. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values:</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">is</td><td><em>provider path</em> or <em>requester path</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="namespace_arn.html#a4de17e4c5a7e225b5d0cbd974c3fd794" title="Get the bidirectional twin to a given path">twinPath()</a> </dd>
+<dd>
+<a class="el" href="namespace_arn.html#a9a27c8dda4cc88176c941cc53f6c2426" title="Test if path is a provider path">isProviderPath()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00185">185</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
 </div>
 </div>
@@ -962,7 +1011,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_arn.html">Arn</a></li>
-    <li class="footer">Generated on Thu Jun 12 2014 21:44:41 for ArnLib by
+    <li class="footer">Generated on Tue Jul 29 2014 23:17:17 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

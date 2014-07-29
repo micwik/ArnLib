@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.1.x</span>
+   &#160;<span id="projectnumber">2.2.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -118,21 +118,27 @@ $(document).ready(function(){initNavTree('struct_arn_rpc_1_1_mode.html','');});
 <tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ae20fe345c26e14c3805658cc52793c57"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57">E</a> { <br/>
-&#160;&#160;<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a90ec424cb525bbcce0c60a666bb1c4d4">Provider</a> =  0x01, 
-<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57ae2aa40ac645abc73df7c893bbde3f37f">AutoDestroy</a> =  0x02, 
-<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a30f9cd3cab247dc33931e4eeda08df92">UuidPipe</a> =  0x04, 
-<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aee954e4308c5635281eb32d43b8af990">NoDefaultArgs</a> =  0x08, 
+&#160;&#160;<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a90ec424cb525bbcce0c60a666bb1c4d4">Provider</a> =  0x0001, 
+<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57ae2aa40ac645abc73df7c893bbde3f37f">AutoDestroy</a> =  0x0002, 
+<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a30f9cd3cab247dc33931e4eeda08df92">UuidPipe</a> =  0x0004, 
+<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aee954e4308c5635281eb32d43b8af990">NoDefaultArgs</a> =  0x0008, 
 <br/>
-&#160;&#160;<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57ab1cf0b7733a1074a5d2dbc31b49459ad">SendSequence</a> =  0x10, 
-<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a01da0fe2f6896f4b5af2d1cc1abe4823">CheckSequence</a> =  0x20, 
-<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a0450d7b70eaf255864e138ddf558c507">Debug</a> =  0x40, 
+&#160;&#160;<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57ab1cf0b7733a1074a5d2dbc31b49459ad">SendSequence</a> =  0x0010, 
+<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a01da0fe2f6896f4b5af2d1cc1abe4823">CheckSequence</a> =  0x0020, 
+<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a381c571be560f44204f4efeebbf3964a">OnlyPosArgIn</a> =  0x0040, 
+<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aad089af31d0cf3b553274fda2d9744d1">NamedArg</a> =  0x0080, 
+<br/>
+&#160;&#160;<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a6337168e94716ee3b0910c04db570eb9">NamedTypedArg</a> =  0x0100, 
+<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a949b58be951dea8253a17c0244c1373f">UseDefaultCall</a> =  0x0200, 
+<a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a0450d7b70eaf255864e138ddf558c507">Debug</a> =  0x8000, 
 <a class="el" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57acf07d732ddd9af3b3ae07bb277c4aca0">UuidAutoDestroy</a> =  UuidPipe | AutoDestroy
 <br/>
  }</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00119">119</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<div class="textblock"><dl><dt><b>Examples: </b></dt><dd><a class="el" href="_arn_demo_chat_server_2_main_window_8cpp-example.html#_a3">ArnDemoChatServer/MainWindow.cpp</a>.</dd>
+</dl>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00122">122</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 </div><hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="ae20fe345c26e14c3805658cc52793c57"></a>
 <div class="memitem">
@@ -154,7 +160,7 @@ Public Types</h2></td></tr>
 <p>Use an unique uuid in the pipe name. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57aee954e4308c5635281eb32d43b8af990"></a>NoDefaultArgs</em>&nbsp;</td><td>
-<p>If guarantied no default arguments, member name overload is ok. </p>
+<p>If guarantied no default arguments, full member name overload is ok. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57ab1cf0b7733a1074a5d2dbc31b49459ad"></a>SendSequence</em>&nbsp;</td><td>
 <p>Send sequence order information to pipe. </p>
@@ -162,8 +168,20 @@ Public Types</h2></td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57a01da0fe2f6896f4b5af2d1cc1abe4823"></a>CheckSequence</em>&nbsp;</td><td>
 <p>Check sequence order information from pipe. Can generate signal <a class="el" href="class_arn_rpc.html#a00aa03b83806c25ca39d82d111dcc064" title="Signal emitted when checked sequence order is wrong.">outOfSequence()</a>. </p>
 </td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57a381c571be560f44204f4efeebbf3964a"></a>OnlyPosArgIn</em>&nbsp;</td><td>
+<p>Only allow calling in with positional argument (typed) </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57aad089af31d0cf3b553274fda2d9744d1"></a>NamedArg</em>&nbsp;</td><td>
+<p>When calling out, uses named argument e.g "myFunc count=123". </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57a6337168e94716ee3b0910c04db570eb9"></a>NamedTypedArg</em>&nbsp;</td><td>
+<p>When calling out, uses named argument with type e.g "myFunc count:int=123". </p>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57a949b58be951dea8253a17c0244c1373f"></a>UseDefaultCall</em>&nbsp;</td><td>
+<p>When receiver method missing, send <a class="el" href="class_arn_rpc.html#a6f380544a22b4171d08a652b676161e9" title="Signal emitted when receiver method missing.">defaultCall()</a> signal instead of error. </p>
+</td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57a0450d7b70eaf255864e138ddf558c507"></a>Debug</em>&nbsp;</td><td>
-<p>Debug mode, dumping done batch connections. </p>
+<p>Debug mode, dumping info for the batch connections. </p>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="ae20fe345c26e14c3805658cc52793c57acf07d732ddd9af3b3ae07bb277c4aca0"></a>UuidAutoDestroy</em>&nbsp;</td><td>
 <p>Convenience, combined <em>UuidPipe</em> and <em>AutoDestroy</em> </p>
@@ -172,12 +190,12 @@ Public Types</h2></td></tr>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00120">120</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00123">123</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/ArnInc/<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp (2.1.0)</a></li>
+<li>src/ArnInc/<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp (2.2.0)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -185,7 +203,7 @@ Public Types</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_rpc.html">ArnRpc</a></li><li class="navelem"><a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a></li>
-    <li class="footer">Generated on Thu Jun 12 2014 21:44:41 for ArnLib by
+    <li class="footer">Generated on Tue Jul 29 2014 23:17:17 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

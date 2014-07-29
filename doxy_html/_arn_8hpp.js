@@ -20,6 +20,7 @@ var _arn_8hpp =
     [ "itemName", "_arn_8hpp.html#a0edc95f31e49e60899a7be23888c556c", null ],
     [ "makeHostWithInfo", "_arn_8hpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a", null ],
     [ "makePath", "_arn_8hpp.html#af7033a4ea5ac45c0bbc136000fd2ccca", null ],
+    [ "providerPath", "_arn_8hpp.html#aac061f2a56bc7a0ee9f89638dbdede0e", null ],
     [ "twinPath", "_arn_8hpp.html#a4de17e4c5a7e225b5d0cbd974c3fd794", null ],
     [ "defaultTcpPort", "_arn_8hpp.html#a7dc869a2e500fff4982652f576c9207a", null ]
 ];

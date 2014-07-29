@@ -16,6 +16,7 @@ var annotated =
     [ "ArnError", "struct_arn_error.html", "struct_arn_error" ],
     [ "ArnItem", "class_arn_item.html", "class_arn_item" ],
     [ "ArnItemB", "class_arn_item_b.html", "class_arn_item_b" ],
+    [ "ArnItemValve", "class_arn_item_valve.html", "class_arn_item_valve" ],
     [ "ArnM", "class_arn_m.html", "class_arn_m" ],
     [ "ArnMonitor", "class_arn_monitor.html", "class_arn_monitor" ],
     [ "ArnPersist", "class_arn_persist.html", "class_arn_persist" ],

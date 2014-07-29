@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.1.x</span>
+   &#160;<span id="projectnumber">2.2.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -131,8 +131,11 @@ Inheritance diagram for ArnRpc:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>ArgInfo</b></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_arn_rpc_1_1_invoke.html">Invoke</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>MethodsParam</b></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>RpcTypeInfo</b></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-slots"></a>
 Public Slots</h2></td></tr>
@@ -145,6 +148,8 @@ Signals</h2></td></tr>
 <tr class="memdesc:af20b8270d7043673c9d9d3906efb7dac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when the used pipe is closed.  <a href="#af20b8270d7043673c9d9d3906efb7dac"></a><br/></td></tr>
 <tr class="memitem:a094d3683c8a62b66b1631ccdca5a4a9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a094d3683c8a62b66b1631ccdca5a4a9f">textReceived</a> (QString text)</td></tr>
 <tr class="memdesc:a094d3683c8a62b66b1631ccdca5a4a9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when a general text message is received.  <a href="#a094d3683c8a62b66b1631ccdca5a4a9f"></a><br/></td></tr>
+<tr class="memitem:a6f380544a22b4171d08a652b676161e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a6f380544a22b4171d08a652b676161e9">defaultCall</a> (const QByteArray &amp;data)</td></tr>
+<tr class="memdesc:a6f380544a22b4171d08a652b676161e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when receiver method missing.  <a href="#a6f380544a22b4171d08a652b676161e9"></a><br/></td></tr>
 <tr class="memitem:a00aa03b83806c25ca39d82d111dcc064"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a00aa03b83806c25ca39d82d111dcc064">outOfSequence</a> ()</td></tr>
 <tr class="memdesc:a00aa03b83806c25ca39d82d111dcc064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal emitted when checked sequence order is wrong.  <a href="#a00aa03b83806c25ca39d82d111dcc064"></a><br/></td></tr>
 <tr class="memitem:a1d250a29557cdcba950437cd41eacfd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0">heartBeatChanged</a> (bool isOk)</td></tr>
@@ -158,10 +163,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9034a54433ff006762da0ccc2b45526b"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b">pipePath</a> () const </td></tr>
 <tr class="memdesc:a9034a54433ff006762da0ccc2b45526b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the path for the used <em>pipe</em>  <a href="#a9034a54433ff006762da0ccc2b45526b"></a><br/></td></tr>
 <tr class="memitem:a69eb9b2f7b694e41bc349560854597ea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea">open</a> (QString <a class="el" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b">pipePath</a>)</td></tr>
-<tr class="memitem:ae3f5ce01e8f0bc61bb04a4aa9d840b40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#ae3f5ce01e8f0bc61bb04a4aa9d840b40">setPipe</a> (<a class="el" href="class_arn_pipe.html">ArnPipe</a> *pipe)</td></tr>
-<tr class="memitem:a0e4dbd55242a36d63b4b1f9f76ed2df9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a0e4dbd55242a36d63b4b1f9f76ed2df9">setReceiver</a> (QObject *receiver)</td></tr>
+<tr class="memitem:ae3f5ce01e8f0bc61bb04a4aa9d840b40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#ae3f5ce01e8f0bc61bb04a4aa9d840b40">setPipe</a> (<a class="el" href="class_arn_pipe.html">ArnPipe</a> *<a class="el" href="class_arn_rpc.html#a73756d72d4d2fd3616ef2ff0e03ca5cb">pipe</a>)</td></tr>
+<tr class="memitem:a73756d72d4d2fd3616ef2ff0e03ca5cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_arn_pipe.html">ArnPipe</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a73756d72d4d2fd3616ef2ff0e03ca5cb">pipe</a> () const </td></tr>
+<tr class="memdesc:a73756d72d4d2fd3616ef2ff0e03ca5cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the used <em>pipe</em>  <a href="#a73756d72d4d2fd3616ef2ff0e03ca5cb"></a><br/></td></tr>
+<tr class="memitem:ace8322eda7c1ab852e557042206db011"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#ace8322eda7c1ab852e557042206db011">setReceiver</a> (QObject *receiver, bool useTrackRpcSender=true)</td></tr>
 <tr class="memitem:acb14a8cd274f112f806cdd28db426614"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#acb14a8cd274f112f806cdd28db426614">setMethodPrefix</a> (QString prefix)</td></tr>
 <tr class="memitem:aeab85c18f1744d1c8790e1010a9f4c6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#aeab85c18f1744d1c8790e1010a9f4c6d">setIncludeSender</a> (bool v)</td></tr>
+<tr class="memdesc:aeab85c18f1744d1c8790e1010a9f4c6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add sender as argument when calling a rpc method.  <a href="#aeab85c18f1744d1c8790e1010a9f4c6d"></a><br/></td></tr>
 <tr class="memitem:a162f91fef9e07ea71b52611de26341db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a162f91fef9e07ea71b52611de26341db">setMode</a> (<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>)</td></tr>
 <tr class="memitem:a61df3306cfe2f97286967118bda69eb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a> () const </td></tr>
 <tr class="memdesc:a61df3306cfe2f97286967118bda69eb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mode.  <a href="#a61df3306cfe2f97286967118bda69eb0"></a><br/></td></tr>
@@ -178,15 +186,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:add5f77c6c330a42d1666f966d12f2f20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls a named remote procedure using invoke flags.  <a href="#add5f77c6c330a42d1666f966d12f2f20"></a><br/></td></tr>
 <tr class="memitem:a19a34d163bd3550495c01c6b4bbd20aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_arn_rpc.html">ArnRpc</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a19a34d163bd3550495c01c6b4bbd20aa">rpcSender</a> ()</td></tr>
 <tr class="memitem:a7f999b9eedac4890fbc5bed8a6e618ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a7f999b9eedac4890fbc5bed8a6e618ab">batchConnect</a> (const QRegExp &amp;rgx, const QObject *receiver, const QString &amp;replace, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>())</td></tr>
-<tr class="memdesc:a7f999b9eedac4890fbc5bed8a6e618ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s signals to another receivers slots.  <a href="#a7f999b9eedac4890fbc5bed8a6e618ab"></a><br/></td></tr>
+<tr class="memdesc:a7f999b9eedac4890fbc5bed8a6e618ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s signals to another receivers slots/signals.  <a href="#a7f999b9eedac4890fbc5bed8a6e618ab"></a><br/></td></tr>
 <tr class="memitem:a75bd3439dec20345813e2bc40a67c166"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a75bd3439dec20345813e2bc40a67c166">batchConnect</a> (const QObject *sender, const QRegExp &amp;rgx, const QString &amp;replace, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>())</td></tr>
-<tr class="memdesc:a75bd3439dec20345813e2bc40a67c166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from one senders signals to this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s slots.  <a href="#a75bd3439dec20345813e2bc40a67c166"></a><br/></td></tr>
+<tr class="memdesc:a75bd3439dec20345813e2bc40a67c166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from one senders signals to this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s slots/signals.  <a href="#a75bd3439dec20345813e2bc40a67c166"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a90adbfc92cf41e431401d33e835d99c5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_arn_rpc.html">ArnRpc</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#a90adbfc92cf41e431401d33e835d99c5">rpcSender</a> (QObject *receiver)</td></tr>
 <tr class="memitem:ab6f9ac5d65a3c538ee628372f32c14de"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de">batchConnect</a> (const QObject *sender, const QRegExp &amp;rgx, const QObject *receiver, const QString &amp;replace, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a> <a class="el" href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">mode</a>=<a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>())</td></tr>
-<tr class="memdesc:ab6f9ac5d65a3c538ee628372f32c14de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from one senders signals to another receivers slots.  <a href="#ab6f9ac5d65a3c538ee628372f32c14de"></a><br/></td></tr>
+<tr class="memdesc:ab6f9ac5d65a3c538ee628372f32c14de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make batch connection from one senders signals to another receivers slots/signals.  <a href="#ab6f9ac5d65a3c538ee628372f32c14de"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Remote Procedure Call. </p>
@@ -199,26 +207,28 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"></div>
 <div class="line">    <span class="comment">// In class code  (MyClass)</span></div>
 <div class="line">    &lt;em&gt;rpcCommon = <span class="keyword">new</span> <a class="code" href="class_arn_rpc.html#a993650db0c8235fff42e0909b410610c">ArnRpc</a>( <span class="keyword">this</span>);</div>
-<div class="line">    _rpcCommon-&gt;<a class="code" href="class_arn_rpc.html#aeab85c18f1744d1c8790e1010a9f4c6d">setIncludeSender</a>( <span class="keyword">true</span>);</div>
 <div class="line">    _rpcCommon-&gt;<a class="code" href="class_arn_rpc.html#acb14a8cd274f112f806cdd28db426614">setMethodPrefix</a>(<span class="stringliteral">&quot;rpc&lt;/em&gt;&quot;</span>);</div>
-<div class="line">    _rpcCommon-&gt;<a class="code" href="class_arn_rpc.html#a0e4dbd55242a36d63b4b1f9f76ed2df9">setReceiver</a>( <span class="keyword">this</span>);</div>
+<div class="line">    _rpcCommon-&gt;<a class="code" href="class_arn_rpc.html#ace8322eda7c1ab852e557042206db011">setReceiver</a>( <span class="keyword">this</span>);</div>
 <div class="line">    _rpcCommon-&gt;<a class="code" href="class_arn_rpc.html#a162f91fef9e07ea71b52611de26341db">setMode</a>( <a class="code" href="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a90ec424cb525bbcce0c60a666bb1c4d4" title="Provider side (opposed to requester)">ArnRpc::Mode::Provider</a>);</div>
 <div class="line">    _rpcCommon-&gt;<a class="code" href="class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea">open</a>(<span class="stringliteral">&quot;//Pipes/pipeCommon&quot;</span>);</div>
 <div class="line">.</div>
 <div class="line">.</div>
-<div class="line"><span class="keywordtype">void</span>  MyClass::rpc_test( <a class="code" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>* sender, QByteArray ba, QString str, <span class="keywordtype">int</span> i)</div>
+<div class="line"><span class="keywordtype">void</span>  MyClass::rpc_test( QByteArray ba, QString str, <span class="keywordtype">int</span> i)</div>
 <div class="line">{</div>
+<div class="line">    <a class="code" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>*  sender = <a class="code" href="class_arn_rpc.html#a19a34d163bd3550495c01c6b4bbd20aa">ArnRpc::rpcSender</a>( <span class="keyword">this</span>);</div>
 <div class="line">    <span class="keywordflow">if</span> (sender) qDebug() &lt;&lt; <span class="stringliteral">&quot;RPC sender=&quot;</span> &lt;&lt; sender-&gt;<a class="code" href="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b" title="Get the path for the used pipe">pipePath</a>();</div>
 <div class="line">    qDebug() &lt;&lt; <span class="stringliteral">&quot;RPC-test ba=&quot;</span> &lt;&lt; ba &lt;&lt; <span class="stringliteral">&quot; str=&quot;</span> &lt;&lt; str &lt;&lt; <span class="stringliteral">&quot; int=&quot;</span> &lt;&lt; i;</div>
 <div class="line">}</div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span>  MyClass::rpc_ver( <a class="code" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>* sender)</div>
+<div class="line"><span class="keywordtype">void</span>  MyClass::rpc_ver()</div>
 <div class="line">{</div>
+<div class="line">    <a class="code" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>*  sender = <a class="code" href="class_arn_rpc.html#a19a34d163bd3550495c01c6b4bbd20aa">ArnRpc::rpcSender</a>( <span class="keyword">this</span>);</div>
+<div class="line">    <span class="keywordflow">if</span> (!sender)  <span class="keywordflow">return</span>;</div>
 <div class="line">    <span class="comment">// Reply to requester the version text</span></div>
 <div class="line">    sender-&gt;<a class="code" href="class_arn_rpc.html#ab84c845961e86b52f698d4a81912f35d" title="Calls a named remote procedure.">invoke</a>(<span class="stringliteral">&quot;ver&quot;</span>, <a class="code" href="_arn_rpc_8hpp.html#aa477dc265a51dcb0136ec6f87fd271ff" title="Similar to Q_ARG but with added argument label (parameter name)">MQ_ARG</a>( QString, verText, <span class="stringliteral">&quot;MySytem Version 1.0&quot;</span>));</div>
 <div class="line">}</div>
 </div><!-- fragment --> 
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00115">115</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00118">118</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a993650db0c8235fff42e0909b410610c"></a>
 <div class="memitem">
@@ -242,7 +252,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00142">142</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00160">160</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -271,7 +281,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00275">275</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00320">320</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -325,21 +335,21 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Make batch connection from one senders signals to another receivers slots. </p>
+<p>Make batch connection from one senders signals to another receivers slots/signals. </p>
 <p>Used when there is a pattern in the naming of the signals and slots. It's assumed that naming for slots are unique regardless of its case i.e. using both test() and tesT() are not allowed.</p>
 <p>Example: <code>batchConnect( _commonSapi, QRegExp("^rq_(.+)"), this, "chat\\\\1");</code> connects signal: <code>rq_info(QString,QString)</code> to slot: <code>chatInfo(QString,QString)</code></p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">sender</td><td>is the sending QObject. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rgx</td><td>is the regular expression for selecting signals. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rgx</td><td>is the regular expression for selecting sender signals. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">receiver</td><td>is the receiving QObject. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">replace</td><td>is the conversion for naming the slots. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">replace</td><td>is the conversion for naming the receiver slots/signals. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>Used modes: <em>Debug</em>, <em>NoDefaultArgs</em> </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00923">923</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l01252">1252</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -387,21 +397,21 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Make batch connection from this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s signals to another receivers slots. </p>
+<p>Make batch connection from this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s signals to another receivers slots/signals. </p>
 <p>Used when there is a pattern in the naming of the signals and slots. It's assumed that naming for slots are unique regardless of its case i.e. using both test() and tesT() are not allowed.</p>
 <p>Example: <code>_commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\\\1");</code> connects signal: <code>rq_info(QString,QString)</code> to slot: <code>chatInfo(QString,QString)</code></p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">rgx</td><td>is the regular expression for selecting signals. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rgx</td><td>is the regular expression for selecting sender signals. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">receiver</td><td>is the receiving QObject. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">replace</td><td>is the conversion for naming the slots. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">replace</td><td>is the conversion for naming the receiver slots/signals. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" title="Make batch connection from one senders signals to another receivers slots.">batchConnect</a>(const QObject*, const QRegExp&amp;, const QObject*, const QString&amp;, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>) </dd></dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" title="Make batch connection from one senders signals to another receivers slots/signals.">batchConnect</a>(const QObject*, const QRegExp&amp;, const QObject*, const QString&amp;, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>) </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00289">289</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00311">311</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
 
 </div>
 </div>
@@ -449,21 +459,54 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Make batch connection from one senders signals to this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s slots. </p>
+<p>Make batch connection from one senders signals to this <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call.">ArnRpc</a>:s slots/signals. </p>
 <p>Used when there is a pattern in the naming of the signals and slots. It's assumed that naming for slots are unique regardless of its case i.e. using both test() and tesT() are not allowed.</p>
-<p>Example: <code>_commonSapi.batchConnect( _commonSapi, QRegExp("^rq_(.+)"), "chat\\\\1");</code> connects signal: <code>rq_info(QString,QString)</code> to slot: <code>chatInfo(QString,QString)</code></p>
+<p>Example: <code>_commonSapi.batchConnect( _commonSapi, QRegExp("^chat(.+)"), "rq_\\\\1");</code> connects signal: <code>chatinfo(QString,QString)</code> to slot: <code>rq_Info(QString,QString)</code></p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">sender</td><td>is the sending QObject. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rgx</td><td>is the regular expression for selecting signals. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">replace</td><td>is the conversion for naming the slots. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rgx</td><td>is the regular expression for selecting sender signals. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">replace</td><td>is the conversion for naming the receiver slots/signals. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" title="Make batch connection from one senders signals to another receivers slots.">batchConnect</a>(const QObject*, const QRegExp&amp;, const QObject*, const QString&amp;, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>) </dd></dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" title="Make batch connection from one senders signals to another receivers slots/signals.">batchConnect</a>(const QObject*, const QRegExp&amp;, const QObject*, const QString&amp;, <a class="el" href="struct_arn_rpc_1_1_mode.html">Mode</a>) </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00310">310</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8hpp_source.html#l00332">332</a> of file <a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6f380544a22b4171d08a652b676161e9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnRpc::defaultCall </td>
+          <td>(</td>
+          <td class="paramtype">const QByteArray &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Signal emitted when receiver method missing. </p>
+<p>This signal is only emitted if Mode::useDefaultCall is active. Error notification is then canceled. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>is the received call message in XString format. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -610,7 +653,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00321">321</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00370">370</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -706,7 +749,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00358">358</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00407">407</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -732,7 +775,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0" title="Signal emitted when Heart beat changes state.">heartBeatChanged()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00269">269</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00314">314</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -752,7 +795,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Get the mode. </p>
 <dl class="section return"><dt>Returns:</dt><dd>current <em>mode</em> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00245">245</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00290">290</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -770,7 +813,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00167">167</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00186">186</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -796,6 +839,26 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Signal emitted when checked sequence order is wrong. </p>
+
+</div>
+</div>
+<a class="anchor" id="a73756d72d4d2fd3616ef2ff0e03ca5cb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_arn_pipe.html">ArnPipe</a> * ArnRpc::pipe </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the used <em>pipe</em> </p>
+<dl class="section return"><dt>Returns:</dt><dd>pipe </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00238">238</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -839,15 +902,9 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get the path for the used <em>pipe</em> </p>
-<dl class="retval"><dt>Return values:</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">false</td><td>if error </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="md__description.html#gen_bidirArnobj">Bidirectional Arn Data Objects </a> </dd></dl>
+<dl class="section return"><dt>Returns:</dt><dd>path </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00159">159</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00178">178</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -864,7 +921,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00302">302</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00351">351</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -890,7 +947,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00310">310</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00359">359</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -926,7 +983,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#a094d3683c8a62b66b1631ccdca5a4a9f" title="Signal emitted when a general text message is received.">textReceived()</a>; </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00906">906</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l01235">1235</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -954,7 +1011,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#a0c135a403fc7c22ecc5e869872e6758c" title="Set period time for sending heart beat message.">setHeartBeatSend()</a>; </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00260">260</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00305">305</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -982,7 +1039,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_rpc.html#a5e5309bf47720f9bbe3442b804314e5f" title="Set max time period for receiving heart beat message.">setHeartBeatCheck()</a>; </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00251">251</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00296">296</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -1000,7 +1057,10 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00233">233</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Add sender as argument when calling a rpc method. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated:</a></b></dt><dd>Use <a class="el" href="class_arn_rpc.html#a19a34d163bd3550495c01c6b4bbd20aa">rpcSender()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00278">278</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -1018,7 +1078,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00227">227</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00271">271</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -1036,7 +1096,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00239">239</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00284">284</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -1054,25 +1114,35 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00198">198</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00221">221</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0e4dbd55242a36d63b4b1f9f76ed2df9"></a>
+<a class="anchor" id="ace8322eda7c1ab852e557042206db011"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ArnRpc::setReceiver </td>
+          <td class="memname">bool ArnRpc::setReceiver </td>
           <td>(</td>
           <td class="paramtype">QObject *&#160;</td>
-          <td class="paramname"><em>receiver</em></td><td>)</td>
+          <td class="paramname"><em>receiver</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useTrackRpcSender</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00215">215</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_rpc_8cpp_source.html#l00244">244</a> of file <a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp</a>.</p>
 
 </div>
 </div>
@@ -1111,8 +1181,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/ArnInc/<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp (2.1.0)</a></li>
-<li>src/<a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp (2.1.0)</a></li>
+<li>src/ArnInc/<a class="el" href="_arn_rpc_8hpp_source.html">ArnRpc.hpp (2.2.0)</a></li>
+<li>src/<a class="el" href="_arn_rpc_8cpp_source.html">ArnRpc.cpp (2.2.0)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -1120,7 +1190,7 @@ Static Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_rpc.html">ArnRpc</a></li>
-    <li class="footer">Generated on Thu Jun 12 2014 21:44:41 for ArnLib by
+    <li class="footer">Generated on Tue Jul 29 2014 23:17:17 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

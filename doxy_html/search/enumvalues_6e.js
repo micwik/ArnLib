@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['namedarg',['NamedArg',['../struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aad089af31d0cf3b553274fda2d9744d1',1,'ArnRpc::Mode']]],
+  ['namedtypedarg',['NamedTypedArg',['../struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a6337168e94716ee3b0910c04db570eb9',1,'ArnRpc::Mode']]],
   ['netsync',['NetSync',['../struct_arn_server_1_1_type.html#ae4fba4a82a463c288561b107362dde41abe95db1db12eebabf0398f1eb47a69bb',1,'ArnServer::Type']]],
   ['nodefaultargs',['NoDefaultArgs',['../struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57aee954e4308c5635281eb32d43b8af990',1,'ArnRpc::Mode']]],
   ['nofoldermark',['NoFolderMark',['../struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a449768cd68241ca0054fb02877de2973',1,'Arn::NameF']]],

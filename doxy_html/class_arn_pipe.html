@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.1.x</span>
+   &#160;<span id="projectnumber">2.2.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -105,6 +105,7 @@ $(document).ready(function(){initNavTree('class_arn_pipe.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#pub-slots">Public Slots</a> &#124;
 <a href="#signals">Signals</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
@@ -133,6 +134,11 @@ Collaboration diagram for ArnPipe:</div>
 
 <p><a href="class_arn_pipe-members.html">List of all members.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-slots"></a>
+Public Slots</h2></td></tr>
+<tr class="memitem:a7cbb18e76bd0d3b73fa78136c7e918ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_pipe.html#a7cbb18e76bd0d3b73fa78136c7e918ce">setValue</a> (const QByteArray &amp;value)</td></tr>
+<tr class="memdesc:a7cbb18e76bd0d3b73fa78136c7e918ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a <em>QByteArray</em> to a <em>Pipe</em>  <a href="#a7cbb18e76bd0d3b73fa78136c7e918ce"></a><br/></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="signals"></a>
 Signals</h2></td></tr>
 <tr class="memitem:a121732850185805eaca00b91c7f75a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_pipe.html#a121732850185805eaca00b91c7f75a6e">changed</a> (QByteArray value)</td></tr>
@@ -158,8 +164,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9b5b3129c4069f3b8ed15b89b4c348c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_arn_pipe.html">ArnPipe</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_pipe.html#a9b5b3129c4069f3b8ed15b89b4c348c6">setAutoDestroy</a> ()</td></tr>
 <tr class="memdesc:a9b5b3129c4069f3b8ed15b89b4c348c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set client session <em>sync mode</em> as <em>AutoDestroy</em> for this <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a>.  <a href="#a9b5b3129c4069f3b8ed15b89b4c348c6"></a><br/></td></tr>
 <tr class="memitem:a41fedcaf361dee6ed1dbe8ed9e184c31"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_pipe.html#a41fedcaf361dee6ed1dbe8ed9e184c31">isAutoDestroy</a> () const </td></tr>
-<tr class="memitem:a7cbb18e76bd0d3b73fa78136c7e918ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_pipe.html#a7cbb18e76bd0d3b73fa78136c7e918ce">setValue</a> (const QByteArray &amp;value)</td></tr>
-<tr class="memdesc:a7cbb18e76bd0d3b73fa78136c7e918ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a <em>QByteArray</em> to a <em>Pipe</em>  <a href="#a7cbb18e76bd0d3b73fa78136c7e918ce"></a><br/></td></tr>
 <tr class="memitem:a18a1a6bf590e439a348ae68c2798f552"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_arn_pipe.html">ArnPipe</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_pipe.html#a18a1a6bf590e439a348ae68c2798f552">operator=</a> (const QByteArray &amp;value)</td></tr>
 <tr class="memitem:ac3225595492e733603de24dd09ddb005"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_pipe.html#ac3225595492e733603de24dd09ddb005">setValueOverwrite</a> (const QByteArray &amp;value, const QRegExp &amp;rx)</td></tr>
 <tr class="memdesc:ac3225595492e733603de24dd09ddb005"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign a <em>QByteArray</em> to a <em>Pipe</em> by using <em>Anti congest</em> logic.  <a href="#ac3225595492e733603de24dd09ddb005"></a><br/></td></tr>
@@ -369,7 +373,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_pipe.html#a9b5b3129c4069f3b8ed15b89b4c348c6" title="Set client session sync mode as AutoDestroy for this ArnItem.">setAutoDestroy()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_pipe_8hpp_source.html#l00113">113</a> of file <a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_pipe_8hpp_source.html#l00114">114</a> of file <a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp</a>.</p>
 
 </div>
 </div>
@@ -429,7 +433,7 @@ Public Member Functions</h2></td></tr>
 <dd>
 <a class="el" href="md__description.html#gen_arnobjModes">Modes</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_pipe_8hpp_source.html#l00100">100</a> of file <a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_pipe_8hpp_source.html#l00101">101</a> of file <a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp</a>.</p>
 
 </div>
 </div>
@@ -482,6 +486,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Open a handle to an <a class="el" href="namespace_arn.html">Arn</a> Pipe Object with a unique uuid name. </p>
+<p>If <em>path</em> is marked as provider, the "!" marker will be moved to after uuid. </p>
 <dl class="params"><dt>Parameters:</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>The prefix for <a class="el" href="namespace_arn.html">Arn</a> uuid pipe path e.g. "//Pipes/pipe" </td></tr>
@@ -495,7 +500,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_pipe_8hpp_source.html#l00085">85</a> of file <a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_pipe_8hpp_source.html#l00086">86</a> of file <a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp</a>.</p>
 
 </div>
 </div>
@@ -572,7 +577,7 @@ Public Member Functions</h2></td></tr>
 <p>This <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object.">ArnItem</a> at client side is setup for auto destruction. </p>
 <dl class="section pre"><dt>Precondition:</dt><dd>This must be set before <a class="el" href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" title="Open a handle to an Arn Data Object">open()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_pipe_8hpp_source.html#l00107">107</a> of file <a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_pipe_8hpp_source.html#l00108">108</a> of file <a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp</a>.</p>
 
 </div>
 </div>
@@ -635,7 +640,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition:</dt><dd>This must be set before <a class="el" href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" title="Open a handle to an Arn Data Object">open()</a>. </dd></dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="md__description.html#gen_arnobjModes">Modes</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_pipe_8hpp_source.html#l00093">93</a> of file <a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_pipe_8hpp_source.html#l00094">94</a> of file <a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp</a>.</p>
 
 </div>
 </div>
@@ -675,6 +680,9 @@ Public Member Functions</h2></td></tr>
 <a class="anchor" id="a7cbb18e76bd0d3b73fa78136c7e918ce"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void ArnPipe::setValue </td>
@@ -684,6 +692,11 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">slot</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Assign a <em>QByteArray</em> to a <em>Pipe</em> </p>
@@ -747,8 +760,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/ArnInc/<a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp (2.1.0)</a></li>
-<li>src/<a class="el" href="_arn_pipe_8cpp_source.html">ArnPipe.cpp (2.1.0)</a></li>
+<li>src/ArnInc/<a class="el" href="_arn_pipe_8hpp_source.html">ArnPipe.hpp (2.2.0)</a></li>
+<li>src/<a class="el" href="_arn_pipe_8cpp_source.html">ArnPipe.cpp (2.2.0)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -756,7 +769,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_pipe.html">ArnPipe</a></li>
-    <li class="footer">Generated on Thu Jun 12 2014 21:44:41 for ArnLib by
+    <li class="footer">Generated on Tue Jul 29 2014 23:17:17 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

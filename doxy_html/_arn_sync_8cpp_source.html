@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: src/ArnSync.cpp (2.1.0) Source File</title>
+<title>ArnLib: src/ArnSync.cpp (2.2.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.1.x</span>
+   &#160;<span id="projectnumber">2.2.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -365,7 +365,7 @@ $(document).ready(function(){initNavTree('_arn_sync_8cpp.html','');});
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    }</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keywordflow">if</span> ((itemNet-&gt;type() != <a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a6e266a6b14caf2a6ee6a4c73c91767d2">Arn::DataType::Null</a>)</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    &amp;&amp; !(itemNet-&gt;syncMode().is( syncMode.<a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba007bef1fb81b23cf43aa9c64a54bbbff" title="The client is default generator of data.">Master</a>))) {  <span class="comment">// Only send non Null Value to non master</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        itemNet-&gt;itemUpdate( ArnLinkHandle()); <span class="comment">// Make server send the current value to client</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        itemNet-&gt;itemUpdated( ArnLinkHandle()); <span class="comment">// Make server send the current value to client</span></div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    }</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="struct_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afae843e04f35bbe3158d0f8772e9c688bd">ArnError::Ok</a>;</div>
@@ -541,7 +541,7 @@ $(document).ready(function(){initNavTree('_arn_sync_8cpp.html','');});
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;        <span class="keywordflow">if</span> ((itemNet-&gt;type() != <a class="code" href="struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a6e266a6b14caf2a6ee6a4c73c91767d2">Arn::DataType::Null</a>)            <span class="comment">// Only send non Null Value ...</span></div>
 <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;        &amp;&amp; (!itemNet-&gt;isPipeMode())                                      <span class="comment">// from non pipe ..</span></div>
 <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        &amp;&amp; (itemNet-&gt;syncMode().is( <a class="code" href="struct_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba007bef1fb81b23cf43aa9c64a54bbbff" title="The client is default generator of data.">Arn::ObjectSyncMode::Master</a>))) {  <span class="comment">// which is master</span></div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;            itemNet-&gt;itemUpdate( ArnLinkHandle());  <span class="comment">// Make client send the current value to server</span></div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;            itemNet-&gt;itemUpdated( ArnLinkHandle());  <span class="comment">// Make client send the current value to server</span></div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;        }</div>
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    }</div>
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    sendNext();</div>
@@ -902,7 +902,7 @@ $(document).ready(function(){initNavTree('_arn_sync_8cpp.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_sync_8cpp.html">ArnSync.cpp</a></li>
-    <li class="footer">Generated on Thu Jun 12 2014 21:44:40 for ArnLib by
+    <li class="footer">Generated on Tue Jul 29 2014 23:17:16 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>
