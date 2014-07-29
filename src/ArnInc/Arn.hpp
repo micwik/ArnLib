@@ -255,7 +255,7 @@ QString  twinPath( const QString& path);
  *  \param[in] path to be converted
  *  \param[in] giveProviderPath choses between provider and requester path.
  *             false = requester path, default is true = provider path.
- *  \retval _provider path_ or _requester path_
+ *  \retval is _provider path_ or _requester path_
  *  \see twinPath()
  *  \see isProviderPath()
  */
