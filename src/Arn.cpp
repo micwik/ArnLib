@@ -182,6 +182,12 @@ QString  twinPath( const QString& path)
 }
 
 
+QString  providerPath( const QString& path, bool giveProviderPath)
+{
+    return (giveProviderPath == isProviderPath( path)) ? path : twinPath( path);
+}
+
+
 bool  isFolderPath( const QString& path)
 {
     return path.endsWith('/');

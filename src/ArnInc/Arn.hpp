@@ -250,6 +250,17 @@ QString  convertPath( const QString& path,
  */
 QString  twinPath( const QString& path);
 
+//! Get _provider path_ or _requester path_
+/*! [About Bidirectional Arn Data Objects](\ref gen_bidirArnobj)
+ *  \param[in] path to be converted
+ *  \param[in] giveProviderPath choses between provider and requester path.
+ *             false = requester path, default is true = provider path.
+ *  \retval _provider path_ or _requester path_
+ *  \see twinPath()
+ *  \see isProviderPath()
+ */
+QString  providerPath( const QString& path, bool giveProviderPath = true);
+
 //! Make a combined host and info string, i.e. _HostWithInfo_
 /*! This is typically used to pass some extra information about the host,
  *  but still be used for connection to the host.
