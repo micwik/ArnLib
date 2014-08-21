@@ -79,48 +79,14 @@ ArnItemScr::~ArnItemScr()
 ArnScript::ArnScript( QObject* parent) :
     QObject( parent)
 {
-    _engine = new QScriptEngine( this);
-    connect( _engine, SIGNAL(signalHandlerException(QScriptValue)), this, SLOT(doSignalException(QScriptValue)));
-
-    //// Redefine print()
-    QScriptValue  printFunc = _engine->newFunction( ArnScript::printFunction);
-     printFunc.setData( _engine->newQObject( this));  // Save internal pointer to this ArnScript
-     _engine->globalObject().setProperty("print", printFunc);
+    setup(0);
+}
 
 
-    //// Define prototypes
-    _itemProto     = new ArnItemProto( this);
-    _monitorProto  = new ArnMonitorProto( this);
-    _depOfferProto = new ArnDepOfferProto( this);
-    _depProto      = new ArnDepProto( this);
-
-    QScriptValue itemProtoScr     = _engine->newQObject( _itemProto);
-    QScriptValue monitorProtoScr  = _engine->newQObject( _monitorProto);
-    QScriptValue depOfferProtoScr = _engine->newQObject( _depOfferProto);
-    QScriptValue depProtoScr      = _engine->newQObject( _depProto);
-
-    _engine->setDefaultPrototype( qMetaTypeId<ArnItemScr*>(),        itemProtoScr);
-    _engine->setDefaultPrototype( qMetaTypeId<ArnMonitor*>(),     monitorProtoScr);
-    _engine->setDefaultPrototype( qMetaTypeId<ArnDependOffer*>(), depOfferProtoScr);
-    _engine->setDefaultPrototype( qMetaTypeId<ArnDepend*>(),      depProtoScr);
-
-    QScriptValue itemConstrScr     = _engine->newFunction( ArnItemProto::constructor,     itemProtoScr);
-    QScriptValue monitorConstrScr  = _engine->newFunction( ArnMonitorProto::constructor,  monitorProtoScr);
-    QScriptValue depOfferConstrScr = _engine->newFunction( ArnDepOfferProto::constructor, depOfferProtoScr);
-    QScriptValue depConstrScr      = _engine->newFunction( ArnDepProto::constructor,      depProtoScr);
-
-    _engine->globalObject().setProperty("ArnItem",        itemConstrScr);
-    _engine->globalObject().setProperty("ArnMonitor",     monitorConstrScr);
-    _engine->globalObject().setProperty("ArnDependOffer", depOfferConstrScr);
-    _engine->globalObject().setProperty("ArnDepend",      depConstrScr);
-
-    // Add properties to prototypes (manually)
-    itemProtoScr.setProperty("num", _engine->newFunction( ArnItemProto::getSetNum),
-                    QScriptValue::PropertyGetter|QScriptValue::PropertySetter);
-    //// End define prototypes
-
-    _engine->globalObject().setProperty( "arn", _engine->newQObject( new ArnInterface( this),
-            QScriptEngine::QtOwnership, QScriptEngine::ExcludeSuperClassContents));
+ArnScript::ArnScript( QScriptEngine* engine, QObject* parent) :
+    QObject( parent)
+{
+    setup( engine);
 }
 
 
@@ -195,6 +161,56 @@ QScriptValue  ArnScript::printFunction( QScriptContext* context, QScriptEngine* 
     arnScript->errorLog( result, ArnError::Info);
 
     return engine->undefinedValue();
+}
+
+
+void ArnScript::setup( QScriptEngine* engine)
+{
+    if (engine)
+        _engine = engine;
+    else
+        _engine = new QScriptEngine( this);
+    connect( _engine, SIGNAL(signalHandlerException(QScriptValue)), this, SLOT(doSignalException(QScriptValue)));
+
+    //// Redefine print()
+    QScriptValue  printFunc = _engine->newFunction( ArnScript::printFunction);
+     printFunc.setData( _engine->newQObject( this));  // Save internal pointer to this ArnScript
+     _engine->globalObject().setProperty("print", printFunc);
+
+
+    //// Define prototypes
+    _itemProto     = new ArnItemProto( this);
+    _monitorProto  = new ArnMonitorProto( this);
+    _depOfferProto = new ArnDepOfferProto( this);
+    _depProto      = new ArnDepProto( this);
+
+    QScriptValue itemProtoScr     = _engine->newQObject( _itemProto);
+    QScriptValue monitorProtoScr  = _engine->newQObject( _monitorProto);
+    QScriptValue depOfferProtoScr = _engine->newQObject( _depOfferProto);
+    QScriptValue depProtoScr      = _engine->newQObject( _depProto);
+
+    _engine->setDefaultPrototype( qMetaTypeId<ArnItemScr*>(),        itemProtoScr);
+    _engine->setDefaultPrototype( qMetaTypeId<ArnMonitor*>(),     monitorProtoScr);
+    _engine->setDefaultPrototype( qMetaTypeId<ArnDependOffer*>(), depOfferProtoScr);
+    _engine->setDefaultPrototype( qMetaTypeId<ArnDepend*>(),      depProtoScr);
+
+    QScriptValue itemConstrScr     = _engine->newFunction( ArnItemProto::constructor,     itemProtoScr);
+    QScriptValue monitorConstrScr  = _engine->newFunction( ArnMonitorProto::constructor,  monitorProtoScr);
+    QScriptValue depOfferConstrScr = _engine->newFunction( ArnDepOfferProto::constructor, depOfferProtoScr);
+    QScriptValue depConstrScr      = _engine->newFunction( ArnDepProto::constructor,      depProtoScr);
+
+    _engine->globalObject().setProperty("ArnItem",        itemConstrScr);
+    _engine->globalObject().setProperty("ArnMonitor",     monitorConstrScr);
+    _engine->globalObject().setProperty("ArnDependOffer", depOfferConstrScr);
+    _engine->globalObject().setProperty("ArnDepend",      depConstrScr);
+
+    // Add properties to prototypes (manually)
+    itemProtoScr.setProperty("num", _engine->newFunction( ArnItemProto::getSetNum),
+                    QScriptValue::PropertyGetter|QScriptValue::PropertySetter);
+    //// End define prototypes
+
+    _engine->globalObject().setProperty( "arn", _engine->newQObject( new ArnInterface( this),
+            QScriptEngine::QtOwnership, QScriptEngine::ExcludeSuperClassContents));
 }
 
 

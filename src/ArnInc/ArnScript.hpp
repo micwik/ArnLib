@@ -199,6 +199,7 @@ class ARNLIBSHARED_EXPORT ArnScript : public QObject
     Q_OBJECT
 public:
     explicit  ArnScript( QObject* parent = 0);
+    ArnScript( QScriptEngine* engine, QObject* parent = 0);
     QScriptEngine&  engine()  const;
     bool  evaluate( QByteArray script, QString idName);
     bool  evaluateFile( QString fileName);
@@ -227,6 +228,8 @@ protected:
     ArnDepProto*  _depProto;
 
 private:
+    void  setup( QScriptEngine* engine);
+
     QString  _idName;
 };
 
