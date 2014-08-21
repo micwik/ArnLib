@@ -43,9 +43,11 @@ class  ArnItemQml : public ArnItem, public QQmlParserStatus
 
     Q_PROPERTY( QString valueType    READ valueType     WRITE setValueType NOTIFY valueTypeChanged)
     Q_PROPERTY( QString path         READ path          WRITE setPath      NOTIFY pathChanged)
-    Q_PROPERTY( QVariant value       READ value         WRITE setValue     NOTIFY valueChanged)
-    Q_PROPERTY( QString string       READ string        WRITE setString    NOTIFY valueChanged)
-    Q_PROPERTY( double num           READ num           WRITE setNum       NOTIFY valueChanged)
+    Q_PROPERTY( QVariant variant     READ toVariant     WRITE setVariant   NOTIFY valueChanged)
+    Q_PROPERTY( QString string       READ toString      WRITE setValue     NOTIFY valueChanged)
+    Q_PROPERTY( QByteArray bytes     READ toByteArray   WRITE setValue     NOTIFY valueChanged)
+    Q_PROPERTY( double num           READ toDouble      WRITE setValue     NOTIFY valueChanged)
+    Q_PROPERTY( int intNum           READ toInt         WRITE setValue     NOTIFY valueChanged)
     Q_PROPERTY( bool pipeMode        READ isPipeMode    WRITE setPipeMode)
     Q_PROPERTY( bool saveMode        READ isSaveMode    WRITE setSaveMode)
     Q_PROPERTY( bool masterMode      READ isMaster      WRITE setMaster)
@@ -58,27 +60,12 @@ public:
     QString  valueType()  const;
     void  setValueType( const QString& typeName);
 
-    QString  path()  const
-    { return _path;}
+    QString  path()  const;
 
     void  setPath( const QString& path);
 
-    QVariant  value()  const
-    { return toVariant();}
+    void  setVariant( const QVariant& value);
 
-    void  setValue( const QVariant& value);
-
-    QString  string()  const
-    { return toString();}
-
-    void  setString( const QString& value)
-    { ArnItem::setValue( value);}
-
-    double  num()  const
-    { return toDouble();}
-
-    void  setNum( double value)
-    { ArnItem::setValue( value);}
     void  setPipeMode( bool isPipeMode);
     void  setMaster( bool isMaster);
     void  setAutoDestroy( bool isAutoDestroy);
@@ -93,6 +80,9 @@ signals:
     void  valueChanged();
     void  pathChanged();
     void  valueTypeChanged();
+
+protected:
+    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
 
 private:
     bool  _isCompleted;

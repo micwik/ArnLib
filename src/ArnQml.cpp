@@ -36,7 +36,6 @@
 ArnItemQml::ArnItemQml( QObject* parent)
     : ArnItem( parent)
 {
-    connect( this, SIGNAL(changed()), this, SIGNAL(valueChanged()));
     _isCompleted = false;
 }
 
@@ -74,6 +73,12 @@ void  ArnItemQml::setValueType( const QString& typeName)
 }
 
 
+QString  ArnItemQml::path()  const
+{
+    return _path;
+}
+
+
 void  ArnItemQml::setPath( const QString& path)
 {
     _path = path;
@@ -84,7 +89,7 @@ void  ArnItemQml::setPath( const QString& path)
 }
 
 
-void  ArnItemQml::setValue( const QVariant& value)
+void  ArnItemQml::setVariant( const QVariant& value)
 {
     if (_valueType == QMetaType::Void)  // No valueType, no conversion
         ArnItem::setValue( value);
@@ -139,6 +144,14 @@ void  ArnItemQml::componentComplete()
     _isCompleted = true;
     if (!_path.isEmpty())
         setPath( _path);
+}
+
+
+void ArnItemQml::itemUpdated(const ArnLinkHandle& handleData, const QByteArray* value)
+{
+    ArnItem::itemUpdated( handleData, value);
+
+    emit valueChanged();
 }
 
 
