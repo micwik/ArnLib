@@ -7,9 +7,12 @@ PROJECT = ArnLib
 # ARN += core       # Level 1: Basic Arn functionality without any tcp and syncing
 # ARN += client     # Level 2: Client TCP functionality with sync etc
 # ARN += server     # Level 3: Server TCP functionality with persistence etc
+# ARN += script     # Java script support
+# ARN += qml        # QML support
 # ARN += zeroconf   # Using part of Bonjour (R), Apple's (R) implementation of zero-configuration networking.
 # ARN += discover   # High level service discovery using <zeroconf> and optionally <server> for remote config
 ARN += server
+ARN += qml
 ARN += discover
 QT -= gui
 

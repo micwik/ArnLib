@@ -40,20 +40,15 @@ RESOURCES += \
 
 contains(ARN, server) {
     ARN += client
-    QT += script sql
+    ARN += script
+    QT += sql
     SOURCES += \
         $$PWD/ArnServer.cpp \
-        $$PWD/ArnScript.cpp \
-        $$PWD/ArnScriptJobs.cpp \
-        $$PWD/ArnPersist.cpp \
-        $$PWD/ArnScriptJob.cpp
+        $$PWD/ArnPersist.cpp
 
     HEADERS += \
         $$PWD/ArnInc/ArnServer.hpp \
-        $$PWD/ArnInc/ArnScript.hpp \
-        $$PWD/ArnInc/ArnScriptJobs.hpp \
-        $$PWD/ArnInc/ArnPersist.hpp \
-        $$PWD/ArnInc/ArnScriptJob.hpp
+        $$PWD/ArnInc/ArnPersist.hpp
 }
 
 
@@ -78,6 +73,32 @@ contains(ARN, client) {
         $$PWD/ArnInc/ArnMonitor.hpp \
         $$PWD/ArnItemNet.hpp \
         $$PWD/ArnSync.hpp
+}
+
+
+contains(ARN, script) {
+    ARN += core
+    QT += script
+    SOURCES += \
+        $$PWD/ArnScript.cpp \
+        $$PWD/ArnScriptJobs.cpp \
+        $$PWD/ArnScriptJob.cpp
+
+    HEADERS += \
+        $$PWD/ArnInc/ArnScript.hpp \
+        $$PWD/ArnInc/ArnScriptJobs.hpp \
+        $$PWD/ArnInc/ArnScriptJob.hpp
+}
+
+
+contains(ARN, qml) {
+    ARN += core
+    QT += qml quick
+    SOURCES += \
+        $$PWD/ArnQml.cpp
+
+    HEADERS += \
+        $$PWD/ArnInc/ArnQml.hpp
 }
 
 

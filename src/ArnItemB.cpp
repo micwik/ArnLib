@@ -93,6 +93,9 @@ void  ArnItemB::setupOpenItem( bool isFolder)
 
 bool  ArnItemB::open( const QString& path)
 {
+    if (_link)
+        close();
+
     Arn::ObjectSyncMode  syncMode = _syncModeLinkShare ? _syncMode : Arn::ObjectSyncMode();
     _link = ArnM::link( path,  Arn::LinkFlags::CreateAllowed, syncMode);
     if (!_link)  return false;
