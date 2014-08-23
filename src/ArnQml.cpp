@@ -39,7 +39,21 @@ using namespace Arn;
 ArnQml::ArnQml()
     : QObject(0)
 {
+    _arnRootPath = "/";
 }
+
+
+QString  ArnQml::arnRootPath()
+{
+    return instance()._arnRootPath;
+}
+
+
+void  ArnQml::setArnRootPath(const QString& path)
+{
+    instance()._arnRootPath = path;
+}
+
 
 
 void  ArnQml::setup( ArnQml::UseFlags flags)
@@ -112,8 +126,10 @@ QString  ArnItemQml::path()  const
 void  ArnItemQml::setPath( const QString& path)
 {
     _path = path;
-    if (_isCompleted)
-        open( path);
+    if (_isCompleted) {
+        QString  arnPath = Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
+        open( arnPath);
+    }
 
     emit pathChanged();
 }

@@ -55,8 +55,13 @@ public:
 
     static ArnQml&  instance();
 
+    static QString  arnRootPath();
+    static void  setArnRootPath( const QString& path);
+
 private:
     ArnQml();
+
+    QString  _arnRootPath;
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnQml::UseFlags)
