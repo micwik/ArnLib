@@ -92,7 +92,20 @@ private:
 
 
 namespace Arn {
-    void  qmlSetup();
+    //!
+    struct QmlSetup {
+        enum E {
+            //!
+            ArnLib  = 0x01,
+            //!
+            MSystem = 0x02
+        };
+        MQ_DECLARE_FLAGS( QmlSetup)
+    };
+
+    void  qmlSetup( QmlSetup flags = QmlSetup::ArnLib);
 }
+
+MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::QmlSetup)
 
 #endif // ARNQML_HPP

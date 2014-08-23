@@ -95,10 +95,12 @@ contains(ARN, qml) {
     ARN += core
     QT += qml quick
     SOURCES += \
-        $$PWD/ArnQml.cpp
+        $$PWD/ArnQml.cpp \
+        $$PWD/ArnQmlMSystem.cpp
 
     HEADERS += \
-        $$PWD/ArnInc/ArnQml.hpp
+        $$PWD/ArnInc/ArnQml.hpp \
+        $$PWD/ArnInc/ArnQmlMSystem.hpp
 }
 
 

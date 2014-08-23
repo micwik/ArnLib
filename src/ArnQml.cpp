@@ -30,7 +30,10 @@
 //
 
 #include "ArnInc/ArnQml.hpp"
+#include "ArnInc/ArnQmlMSystem.hpp"
 #include <QtQml>
+
+using namespace Arn;
 
 
 ArnItemQml::ArnItemQml( QObject* parent)
@@ -155,7 +158,12 @@ void ArnItemQml::itemUpdated(const ArnLinkHandle& handleData, const QByteArray* 
 }
 
 
-void  Arn::qmlSetup()
+void  Arn::qmlSetup( QmlSetup flags)
 {
-    qmlRegisterType<ArnItemQml>("ArnLib", 1, 0, "ArnItem");
+    if (flags.is( flags.ArnLib)) {
+        qmlRegisterType<ArnItemQml>("ArnLib", 1, 0, "ArnItem");
+    }
+    if (flags.is( flags.MSystem)) {
+        qmlRegisterType<QmlMFileIO>("MSystem", 1, 0, "MFileIO");
+    }
 }
