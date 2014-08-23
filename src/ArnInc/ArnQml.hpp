@@ -32,8 +32,34 @@
 #ifndef ARNQML_HPP
 #define ARNQML_HPP
 
+#include "ArnLib_global.hpp"
 #include "ArnItem.hpp"
 #include <QQmlParserStatus>
+
+
+class ARNLIBSHARED_EXPORT ArnQml : public QObject
+{
+    Q_OBJECT
+public:
+    struct UseFlags {
+        enum E {
+            //!
+            ArnLib  = 0x01,
+            //!
+            MSystem = 0x02
+        };
+        MQ_DECLARE_FLAGS( UseFlags)
+    };
+
+    static void  setup( UseFlags flags = UseFlags::ArnLib);
+
+    static ArnQml&  instance();
+
+private:
+    ArnQml();
+};
+
+MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnQml::UseFlags)
 
 
 class  ArnItemQml : public ArnItem, public QQmlParserStatus
@@ -89,23 +115,5 @@ private:
     QString  _path;
     int  _valueType;
 };
-
-
-namespace Arn {
-    //!
-    struct QmlSetup {
-        enum E {
-            //!
-            ArnLib  = 0x01,
-            //!
-            MSystem = 0x02
-        };
-        MQ_DECLARE_FLAGS( QmlSetup)
-    };
-
-    void  qmlSetup( QmlSetup flags = QmlSetup::ArnLib);
-}
-
-MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::QmlSetup)
 
 #endif // ARNQML_HPP

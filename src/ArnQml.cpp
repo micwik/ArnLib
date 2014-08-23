@@ -36,6 +36,33 @@
 using namespace Arn;
 
 
+ArnQml::ArnQml()
+    : QObject(0)
+{
+}
+
+
+void  ArnQml::setup( ArnQml::UseFlags flags)
+{
+    if (flags.is( flags.ArnLib)) {
+        qmlRegisterType<ArnItemQml>("ArnLib", 1, 0, "ArnItem");
+    }
+    if (flags.is( flags.MSystem)) {
+        qmlRegisterType<QmlMFileIO>("MSystem", 1, 0, "MFileIO");
+    }
+}
+
+
+ArnQml&  ArnQml::instance()
+{
+    static ArnQml  ins;
+
+    return ins;
+}
+
+
+///////// ArnItemQml
+
 ArnItemQml::ArnItemQml( QObject* parent)
     : ArnItem( parent)
 {
@@ -155,15 +182,4 @@ void ArnItemQml::itemUpdated(const ArnLinkHandle& handleData, const QByteArray* 
     ArnItem::itemUpdated( handleData, value);
 
     emit valueChanged();
-}
-
-
-void  Arn::qmlSetup( QmlSetup flags)
-{
-    if (flags.is( flags.ArnLib)) {
-        qmlRegisterType<ArnItemQml>("ArnLib", 1, 0, "ArnItem");
-    }
-    if (flags.is( flags.MSystem)) {
-        qmlRegisterType<QmlMFileIO>("MSystem", 1, 0, "MFileIO");
-    }
 }
