@@ -65,15 +65,12 @@ public:
     static QString  arnRootPath();
     static void  setArnRootPath( const QString& path);
 
-    static QByteArray  arnCachedValue( const QString path);
-
 private:
     ArnQml();
 
     QString  _arnRootPath;
     ArnNetworkAccessManagerFactory*  _arnNetworkAccessManagerFactory;
     UseFlags  _regedUse;
-    QMap<QString,QByteArray>  _arnCache;
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnQml::UseFlags)
@@ -146,11 +143,15 @@ public:
     void  setRequest( const QNetworkRequest& request)
     { QNetworkReply::setRequest( request);}
 
+    void  setUrl( const QUrl& url)
+    { QNetworkReply::setUrl( url);}
+
     bool  isFinished()  const;
     qint64  bytesAvailable()  const;
     bool  isSequential()  const;
     qint64  size()  const;
 
+    void  setup( const QString& path);
     QByteArray  data()  const;
     void  setData( const QByteArray& data);
 
@@ -159,10 +160,15 @@ protected:
     virtual qint64  readData( char *data, qint64 maxlen);
 
 private slots:
+    void  postSetup();
+    void  dataArived();
 
 private:
+    QString  _arnPath;
     QByteArray  _data;
     int  _readPos;
+    bool  _isFinished;
+    ArnItem  _arnItem;
 };
 
 

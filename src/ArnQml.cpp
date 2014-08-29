@@ -57,24 +57,6 @@ void  ArnQml::setArnRootPath( const QString& path)
 }
 
 
-QByteArray  ArnQml::arnCachedValue( const QString path)
-{
-    ArnQml&  in = ArnQml::instance();
-    int  s = path.size();
-    if (in._arnCache.contains( path))
-        return in._arnCache.value( path);
-
-    QByteArray  retVal;
-    if (path.endsWith("/qmldir"))
-        retVal = "";
-    else
-        retVal = ArnM::valueByteArray( path);
-
-    in._arnCache.insert( path, retVal);
-    return retVal;
-}
-
-
 void  ArnQml::setup( QQmlEngine* qmlEngine, ArnQml::UseFlags flags)
 {
     ArnQml&  in = ArnQml::instance();
@@ -233,13 +215,14 @@ void ArnItemQml::itemUpdated(const ArnLinkHandle& handleData, const QByteArray* 
 ArnNetworkReply::ArnNetworkReply( QObject* parent)
     : QNetworkReply( parent)
 {
-    _readPos = 0;
+    _readPos    = 0;
+    _isFinished = false;
 }
 
 
 bool  ArnNetworkReply::isFinished()  const
 {
-    return true;
+    return _isFinished;
 }
 
 
@@ -270,7 +253,7 @@ qint64  ArnNetworkReply::readData( char* data, qint64 maxlen)
     }
 
     if ((len == 0) && (bytesAvailable() == 0)) {
-        return -1; // everything had been read
+        return -1;  // Everything has been read
     }
 
     return len;
@@ -289,11 +272,55 @@ QByteArray  ArnNetworkReply::data()  const
 }
 
 
+void  ArnNetworkReply::setup( const QString& path)
+{
+    _arnPath    = path;
+    _isFinished = false;
+
+    QByteArray  arnVal;
+    if (path.endsWith("/qmldir"))
+        arnVal = "";
+    else {
+        //// Normal values from Arn
+        QTimer::singleShot( 0, this, SLOT(postSetup()));
+        return;
+    }
+
+    //// Direct return of special values
+    setData( arnVal);
+}
+
+
+void  ArnNetworkReply::postSetup()
+{
+    bool  wasLocalExist = ArnM::exist( _arnPath);
+    _arnItem.open( _arnPath);
+
+    if (!wasLocalExist && (_arnItem.type() == Arn::DataType::Null)) {
+        qDebug() << "ArnQml wait for data: path=" << _arnPath;
+        connect( &_arnItem, SIGNAL(changed()), this, SLOT(dataArived()));
+        return;
+    }
+
+    qDebug() << "ArnQml direct using data: path=" << _arnPath;
+    setData( _arnItem.toByteArray());
+}
+
+
+void  ArnNetworkReply::dataArived()
+{
+    disconnect( &_arnItem, SIGNAL(changed()), this, SLOT(dataArived()));
+
+    qDebug() << "ArnQml data arived: path=" << _arnPath;
+    setData( _arnItem.toByteArray());
+}
+
+
 void  ArnNetworkReply::setData( const QByteArray& data)
 {
-    _data = data;
-    _readPos = 0;
-    setUrl( request().url());
+    _data       = data;
+    _readPos    = 0;
+    _isFinished = true;
     open( ReadOnly);
 
     QMetaObject::invokeMethod (this, "downloadProgress", Qt::QueuedConnection,
@@ -324,6 +351,7 @@ QNetworkReply*  ArnNetworkAccessManager::createRequest( QNetworkAccessManager::O
     ArnNetworkReply*  reply = new ArnNetworkReply;
     reply->setRequest( request);
     reply->setOperation( op);
+    reply->setUrl( url);
 
     switch (op) {
     case GetOperation:
@@ -331,7 +359,7 @@ QNetworkReply*  ArnNetworkAccessManager::createRequest( QNetworkAccessManager::O
         QString  path = url.path();
         QString  arnPath = Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
         arnPath = Arn::convertPath( arnPath, Arn::NameF::EmptyOk);
-        reply->setData( ArnQml::arnCachedValue( arnPath));
+        reply->setup( arnPath);
         break;
     }
     default:
