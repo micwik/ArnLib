@@ -242,7 +242,8 @@ bool  ArnM::isMainThread()
     if (Arn::debugThreading) {
         qDebug() << "isMainThread: appThr=" << QCoreApplication::instance()->thread()
                  << " mainThr=" << mainThread
-                 << " curThr=" << QThread::currentThread();
+                 << " curThr=" << QThread::currentThread()
+                 << " ArnMThr=" << instance().thread();
     }
     if (QThread::currentThread() != mainThread) {
         if (!instance()._isThreadedApp)  instance()._isThreadedApp = true;
@@ -434,6 +435,7 @@ ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, Arn::Obje
                                Q_ARG( ArnThreadCom*, threadCom.p()),
                                Q_ARG( QString, path), Q_ARG( int, flags.toInt()),
                                Q_ARG( int, syncMode.toInt()));
+    if (Arn::debugThreading)  qDebug() << "link-thread: invoked path=" << path;
     threadCom.waitCommandEnd();  // Wait main-thread gives retLink
     ArnLink*  retLink = qobject_cast<ArnLink*>( threadCom.p()->_retObj);
     if (retLink)  if (Arn::debugThreading)  qDebug() << "link-thread: end path=" << retLink->linkPath();
