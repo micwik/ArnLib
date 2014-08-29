@@ -12,8 +12,8 @@ PROJECT = ArnLib
 # ARN += zeroconf   # Using part of Bonjour (R), Apple's (R) implementation of zero-configuration networking.
 # ARN += discover   # High level service discovery using <zeroconf> and optionally <server> for remote config
 ARN += server
-ARN += qml
 ARN += discover
+greaterThan(QT_MAJOR_VERSION, 4): ARN += qml
 QT -= gui
 
 # Usage of internal mDNS code (no external dependency)

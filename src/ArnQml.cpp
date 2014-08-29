@@ -31,6 +31,7 @@
 
 #include "ArnInc/ArnQml.hpp"
 #include "ArnInc/ArnQmlMSystem.hpp"
+#include "ArnInc/ArnM.hpp"
 #include <QtQml>
 
 using namespace Arn;
@@ -40,6 +41,7 @@ ArnQml::ArnQml()
     : QObject(0)
 {
     _arnRootPath = "/";
+    _arnNetworkAccessManagerFactory = new ArnNetworkAccessManagerFactory;
 }
 
 
@@ -49,20 +51,45 @@ QString  ArnQml::arnRootPath()
 }
 
 
-void  ArnQml::setArnRootPath(const QString& path)
+void  ArnQml::setArnRootPath( const QString& path)
 {
     instance()._arnRootPath = path;
 }
 
 
-
-void  ArnQml::setup( ArnQml::UseFlags flags)
+QByteArray  ArnQml::arnCachedValue( const QString path)
 {
-    if (flags.is( flags.ArnLib)) {
+    ArnQml&  in = ArnQml::instance();
+    int  s = path.size();
+    if (in._arnCache.contains( path))
+        return in._arnCache.value( path);
+
+    QByteArray  retVal;
+    if (path.endsWith("/qmldir"))
+        retVal = "";
+    else
+        retVal = ArnM::valueByteArray( path);
+
+    in._arnCache.insert( path, retVal);
+    return retVal;
+}
+
+
+void  ArnQml::setup( QQmlEngine* qmlEngine, ArnQml::UseFlags flags)
+{
+    ArnQml&  in = ArnQml::instance();
+
+    if (flags.is( flags.ArnLib) && !in._regedUse.is( flags.ArnLib)) {
+        in._regedUse.set( flags.ArnLib);
         qmlRegisterType<ArnItemQml>("ArnLib", 1, 0, "ArnItem");
     }
-    if (flags.is( flags.MSystem)) {
+    if (flags.is( flags.MSystem) && !in._regedUse.is( flags.MSystem)) {
+        in._regedUse.set( flags.MSystem);
         qmlRegisterType<QmlMFileIO>("MSystem", 1, 0, "MFileIO");
+    }
+
+    if (qmlEngine) {
+        qmlEngine->setNetworkAccessManagerFactory( in._arnNetworkAccessManagerFactory);
     }
 }
 
@@ -84,7 +111,7 @@ ArnItemQml::ArnItemQml( QObject* parent)
 }
 
 
-QString  ArnItemQml::valueType()  const
+QString  ArnItemQml::variantType()  const
 {
     if (_valueType == QMetaType::Void)  return QString();
 
@@ -95,7 +122,7 @@ QString  ArnItemQml::valueType()  const
 }
 
 
-void  ArnItemQml::setValueType( const QString& typeName)
+void  ArnItemQml::setVariantType( const QString& typeName)
 {
     if (typeName.isEmpty()) {
         _valueType = QMetaType::Void;
@@ -113,7 +140,7 @@ void  ArnItemQml::setValueType( const QString& typeName)
             _valueType = type;
     }
 
-    emit valueTypeChanged();
+    emit variantTypeChanged();
 }
 
 
@@ -198,4 +225,127 @@ void ArnItemQml::itemUpdated(const ArnLinkHandle& handleData, const QByteArray* 
     ArnItem::itemUpdated( handleData, value);
 
     emit valueChanged();
+}
+
+
+///////// ArnNetworkReply
+
+ArnNetworkReply::ArnNetworkReply( QObject* parent)
+    : QNetworkReply( parent)
+{
+    _readPos = 0;
+}
+
+
+bool  ArnNetworkReply::isFinished()  const
+{
+    return true;
+}
+
+
+qint64  ArnNetworkReply::bytesAvailable()  const
+{
+    return QNetworkReply::bytesAvailable() + _data.size() - _readPos;
+}
+
+
+bool  ArnNetworkReply::isSequential()  const
+{
+    return true;
+}
+
+
+qint64 ArnNetworkReply::size() const
+{
+    return _data.size();
+}
+
+
+qint64  ArnNetworkReply::readData( char* data, qint64 maxlen)
+{
+    int  len = qMin( _data.size() - _readPos, int(maxlen));
+    if (len > 0) {
+        memcpy( data, _data.constData() + _readPos, len);
+        _readPos += len;
+    }
+
+    if ((len == 0) && (bytesAvailable() == 0)) {
+        return -1; // everything had been read
+    }
+
+    return len;
+}
+
+
+void  ArnNetworkReply::abort()
+{
+    close();
+}
+
+
+QByteArray  ArnNetworkReply::data()  const
+{
+    return _data;
+}
+
+
+void  ArnNetworkReply::setData( const QByteArray& data)
+{
+    _data = data;
+    _readPos = 0;
+    setUrl( request().url());
+    open( ReadOnly);
+
+    QMetaObject::invokeMethod (this, "downloadProgress", Qt::QueuedConnection,
+                               Q_ARG( qint64, _data.size()),
+                               Q_ARG( qint64, _data.size()));
+    QMetaObject::invokeMethod( this, "readyRead", Qt::QueuedConnection);
+    QMetaObject::invokeMethod( this, "finished", Qt::QueuedConnection);
+}
+
+
+
+///////// ArnNetworkAccessManager
+
+ArnNetworkAccessManager::ArnNetworkAccessManager( QObject* parent)
+    : QNetworkAccessManager( parent)
+{
+}
+
+
+QNetworkReply*  ArnNetworkAccessManager::createRequest( QNetworkAccessManager::Operation op,
+                                                        const QNetworkRequest& request,
+                                                        QIODevice* outgoingData)
+{
+    QUrl  url = request.url();
+    if (url.scheme() != "arn")
+        return QNetworkAccessManager::createRequest( op, request, outgoingData);
+
+    ArnNetworkReply*  reply = new ArnNetworkReply;
+    reply->setRequest( request);
+    reply->setOperation( op);
+
+    switch (op) {
+    case GetOperation:
+    {
+        QString  path = url.path();
+        QString  arnPath = Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
+        arnPath = Arn::convertPath( arnPath, Arn::NameF::EmptyOk);
+        reply->setData( ArnQml::arnCachedValue( arnPath));
+        break;
+    }
+    default:
+        qDebug() << "ArnNetworkAccessManager: Operation not supported op=" << op;
+        break;
+    }
+
+    return reply;
+}
+
+
+///////// ArnNetworkAccessManagerFactory
+
+QNetworkAccessManager*  ArnNetworkAccessManagerFactory::create( QObject* parent)
+{
+    return new ArnNetworkAccessManager( parent);
 }

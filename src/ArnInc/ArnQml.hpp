@@ -35,6 +35,13 @@
 #include "ArnLib_global.hpp"
 #include "ArnItem.hpp"
 #include <QQmlParserStatus>
+#include <QNetworkReply>
+#include <QNetworkAccessManager>
+#include <QQmlNetworkAccessManagerFactory>
+#include <QMap>
+
+class QQmlEngine;
+class ArnNetworkAccessManagerFactory;
 
 
 class ARNLIBSHARED_EXPORT ArnQml : public QObject
@@ -51,17 +58,22 @@ public:
         MQ_DECLARE_FLAGS( UseFlags)
     };
 
-    static void  setup( UseFlags flags = UseFlags::ArnLib);
+    static void  setup( QQmlEngine* qmlEngine, UseFlags flags = UseFlags::ArnLib);
 
     static ArnQml&  instance();
 
     static QString  arnRootPath();
     static void  setArnRootPath( const QString& path);
 
+    static QByteArray  arnCachedValue( const QString path);
+
 private:
     ArnQml();
 
     QString  _arnRootPath;
+    ArnNetworkAccessManagerFactory*  _arnNetworkAccessManagerFactory;
+    UseFlags  _regedUse;
+    QMap<QString,QByteArray>  _arnCache;
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnQml::UseFlags)
@@ -72,13 +84,13 @@ class  ArnItemQml : public ArnItem, public QQmlParserStatus
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
 
-    Q_PROPERTY( QString valueType    READ valueType     WRITE setValueType NOTIFY valueTypeChanged)
-    Q_PROPERTY( QString path         READ path          WRITE setPath      NOTIFY pathChanged)
-    Q_PROPERTY( QVariant variant     READ toVariant     WRITE setVariant   NOTIFY valueChanged)
-    Q_PROPERTY( QString string       READ toString      WRITE setValue     NOTIFY valueChanged)
-    Q_PROPERTY( QByteArray bytes     READ toByteArray   WRITE setValue     NOTIFY valueChanged)
-    Q_PROPERTY( double num           READ toDouble      WRITE setValue     NOTIFY valueChanged)
-    Q_PROPERTY( int intNum           READ toInt         WRITE setValue     NOTIFY valueChanged)
+    Q_PROPERTY( QString variantType  READ variantType   WRITE setVariantType  NOTIFY variantTypeChanged)
+    Q_PROPERTY( QString path         READ path          WRITE setPath         NOTIFY pathChanged)
+    Q_PROPERTY( QVariant variant     READ toVariant     WRITE setVariant      NOTIFY valueChanged)
+    Q_PROPERTY( QString string       READ toString      WRITE setValue        NOTIFY valueChanged)
+    Q_PROPERTY( QByteArray bytes     READ toByteArray   WRITE setValue        NOTIFY valueChanged)
+    Q_PROPERTY( double num           READ toDouble      WRITE setValue        NOTIFY valueChanged)
+    Q_PROPERTY( int intNum           READ toInt         WRITE setValue        NOTIFY valueChanged)
     Q_PROPERTY( bool pipeMode        READ isPipeMode    WRITE setPipeMode)
     Q_PROPERTY( bool saveMode        READ isSaveMode    WRITE setSaveMode)
     Q_PROPERTY( bool masterMode      READ isMaster      WRITE setMaster)
@@ -88,8 +100,8 @@ class  ArnItemQml : public ArnItem, public QQmlParserStatus
 public:
     ArnItemQml( QObject* parent = 0);
 
-    QString  valueType()  const;
-    void  setValueType( const QString& typeName);
+    QString  variantType()  const;
+    void  setVariantType( const QString& typeName);
 
     QString  path()  const;
 
@@ -110,7 +122,7 @@ public:
 signals:
     void  valueChanged();
     void  pathChanged();
-    void  valueTypeChanged();
+    void  variantTypeChanged();
 
 protected:
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
@@ -119,6 +131,61 @@ private:
     bool  _isCompleted;
     QString  _path;
     int  _valueType;
+};
+
+
+class ArnNetworkReply : public QNetworkReply
+{
+    Q_OBJECT
+public:
+    explicit ArnNetworkReply( QObject* parent = 0);
+
+    void  setOperation( QNetworkAccessManager::Operation operation)
+    { QNetworkReply::setOperation( operation);}
+
+    void  setRequest( const QNetworkRequest& request)
+    { QNetworkReply::setRequest( request);}
+
+    bool  isFinished()  const;
+    qint64  bytesAvailable()  const;
+    bool  isSequential()  const;
+    qint64  size()  const;
+
+    QByteArray  data()  const;
+    void  setData( const QByteArray& data);
+
+protected:
+    virtual void  abort();
+    virtual qint64  readData( char *data, qint64 maxlen);
+
+private slots:
+
+private:
+    QByteArray  _data;
+    int  _readPos;
+};
+
+
+class ArnNetworkAccessManager : public QNetworkAccessManager
+{
+    Q_OBJECT
+public:
+    explicit ArnNetworkAccessManager( QObject* parent = 0);
+
+protected:
+    virtual QNetworkReply*  createRequest( Operation op, const QNetworkRequest &request, QIODevice *outgoingData);
+
+private slots:
+
+private:
+};
+
+
+
+class ArnNetworkAccessManagerFactory : public QQmlNetworkAccessManagerFactory
+{
+public:
+    virtual QNetworkAccessManager*  create( QObject *parent);
 };
 
 #endif // ARNQML_HPP
