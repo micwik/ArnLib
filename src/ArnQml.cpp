@@ -31,6 +31,7 @@
 
 #include "ArnInc/ArnQml.hpp"
 #include "ArnInc/ArnQmlMSystem.hpp"
+#include "ArnInc/ArnInterface.hpp"
 #include "ArnInc/ArnM.hpp"
 #include <QtQml>
 
@@ -42,6 +43,11 @@ ArnQml::ArnQml()
 {
     _arnRootPath = "/";
     _arnNetworkAccessManagerFactory = new ArnNetworkAccessManagerFactory;
+}
+
+ArnQml::~ArnQml()
+{
+    delete _arnNetworkAccessManagerFactory;
 }
 
 
@@ -60,10 +66,12 @@ void  ArnQml::setArnRootPath( const QString& path)
 void  ArnQml::setup( QQmlEngine* qmlEngine, ArnQml::UseFlags flags)
 {
     ArnQml&  in = ArnQml::instance();
+    flags.set( flags.ArnLib);  // Always include ArnLib
 
     if (flags.is( flags.ArnLib) && !in._regedUse.is( flags.ArnLib)) {
         in._regedUse.set( flags.ArnLib);
-        qmlRegisterType<ArnItemQml>("ArnLib", 1, 0, "ArnItem");
+        qmlRegisterType<ArnItemQml>(   "ArnLib", 1, 0, "ArnItem");
+        qmlRegisterType<ArnMonitorQml>("ArnLib", 1, 0, "ArnMonitor");
     }
     if (flags.is( flags.MSystem) && !in._regedUse.is( flags.MSystem)) {
         in._regedUse.set( flags.MSystem);
@@ -72,6 +80,7 @@ void  ArnQml::setup( QQmlEngine* qmlEngine, ArnQml::UseFlags flags)
 
     if (qmlEngine) {
         qmlEngine->setNetworkAccessManagerFactory( in._arnNetworkAccessManagerFactory);
+        qmlEngine->rootContext()->setContextProperty("arn", new ArnInterface( qmlEngine));
     }
 }
 
@@ -207,6 +216,65 @@ void ArnItemQml::itemUpdated(const ArnLinkHandle& handleData, const QByteArray* 
     ArnItem::itemUpdated( handleData, value);
 
     emit valueChanged();
+}
+
+
+///////// ArnMonitorQml
+
+ArnMonitorQml::ArnMonitorQml( QObject* parent)
+    : ArnMonitor( parent)
+{
+    _isCompleted = false;
+}
+
+
+void ArnMonitorQml::reStart()
+{
+    ArnMonitor::reStart();
+}
+
+
+void  ArnMonitorQml::setClientId( const QString& id)
+{
+    _clientId = id;
+    setClient( id);
+}
+
+
+QString  ArnMonitorQml::clientId()  const
+{
+    return _clientId;
+}
+
+
+void  ArnMonitorQml::setMonitorPath( const QString& path)
+{
+    _path = path;
+    if (_isCompleted) {
+        QString  arnPath = Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
+        this->start( arnPath);
+    }
+
+    emit pathChanged();
+}
+
+
+QString  ArnMonitorQml::monitorPath()  const
+{
+    return _path;
+}
+
+
+void ArnMonitorQml::classBegin()
+{
+}
+
+
+void ArnMonitorQml::componentComplete()
+{
+    _isCompleted = true;
+    if (!_path.isEmpty())
+        setMonitorPath( _path);
 }
 
 
@@ -349,6 +417,9 @@ QNetworkReply*  ArnNetworkAccessManager::createRequest( QNetworkAccessManager::O
         return QNetworkAccessManager::createRequest( op, request, outgoingData);
 
     ArnNetworkReply*  reply = new ArnNetworkReply;
+    // QNetworkRequest  mRequest = request;
+    // mRequest.setAttribute( QNetworkRequest::CacheSaveControlAttribute, false);
+    // mRequest.setAttribute( QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
     reply->setRequest( request);
     reply->setOperation( op);
     reply->setUrl( url);

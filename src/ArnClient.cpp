@@ -35,9 +35,85 @@
 #include <QTcpSocket>
 #include <QStringList>
 #include <QTimer>
+#include <QMap>
+#include <QMutexLocker>
 #include <QDebug>
 
 using Arn::XStringMap;
+
+
+class ArnClientReg
+{
+public:
+    bool  store( ArnClient* client, const QString& id);
+    ArnClient*  get( const QString& id);
+    int  remove( const QString& id);
+    int  remove( const ArnClient* client);
+
+    static ArnClientReg&  instance();
+
+private:
+    ArnClientReg()  {}
+
+    QMap<QString, ArnClient*>  _clientTab;
+    QMutex  _mutex;
+};
+
+
+bool  ArnClientReg::store( ArnClient* client, const QString& id)
+{
+    if (id.isEmpty())  return false;
+
+    QMutexLocker  locker( &_mutex);
+
+    if (_clientTab.contains( id))  return false;
+
+    _clientTab.insert( id, client);
+    return true;
+}
+
+
+ArnClient*  ArnClientReg::get( const QString& id)
+{
+    QMutexLocker  locker( &_mutex);
+
+    return _clientTab.value( id, 0);
+}
+
+
+int  ArnClientReg::remove( const QString& id)
+{
+    QMutexLocker  locker( &_mutex);
+
+    return _clientTab.remove( id);
+}
+
+
+int  ArnClientReg::remove( const ArnClient* client)
+{
+    QMutexLocker  locker( &_mutex);
+
+    int  eraseCount = 0;
+
+    QMap<QString, ArnClient*>::iterator  i = _clientTab.begin();
+    while (i != _clientTab.end()) {
+        if (i.value() == client) {
+            i = _clientTab.erase(i);
+            ++eraseCount;
+        }
+        else
+            ++i;
+    }
+    return eraseCount;
+}
+
+
+ArnClientReg&  ArnClientReg::instance()
+{
+    static ArnClientReg  in;
+
+    return in;
+}
 
 
 ArnClient::ArnClient( QObject* parent) :
@@ -49,6 +125,10 @@ ArnClient::ArnClient( QObject* parent) :
     _port          = 0;
     _nextHost      = -1;
     _curPrio       = -1;
+
+    QString  stdId = "std";
+    if (ArnClientReg::instance().store( this, stdId))  // Only use std-id once
+        _id = stdId;
 
     _socket = new QTcpSocket( this);
     _arnNetSync = new ArnSync( _socket, true, this);
@@ -62,6 +142,12 @@ ArnClient::ArnClient( QObject* parent) :
     connect( _socket, SIGNAL(error(QAbstractSocket::SocketError)),
              this, SLOT(tcpError(QAbstractSocket::SocketError)));
     connect( _connectTimer, SIGNAL(timeout()), this, SLOT(reConnectArn()));
+}
+
+
+ArnClient::~ArnClient()
+{
+    ArnClientReg::instance().remove( this);  // If registered, remove it
 }
 
 
@@ -214,9 +300,18 @@ void  ArnClient::setAutoConnect( bool isAuto, int retryTime)
 }
 
 
-void  ArnClient::setId( QString id)
+void  ArnClient::registerClient( const QString& id)
 {
     _id = id;
+    ArnClientReg::instance().remove( this);
+    ArnClientReg::instance().remove( id);
+    ArnClientReg::instance().store( this, id);
+}
+
+
+ArnClient*  ArnClient::getClient( const QString& id)
+{
+    return ArnClientReg::instance().get( id);
 }
 
 

@@ -70,9 +70,13 @@ public:
 
     //! Set the _client_ to be used
     /*! \param[in] client to be used. If 0, local monitoring is done.
-     *  \param[in] id is an optional name to assign to the client.
      */
-    void  setClient( ArnClient* client, QString id = QString());
+    void  setClient( ArnClient* client);
+
+    //! Set the _client_ to be used by its id
+    /*! \param[in] id to identify client. If "", local monitoring is done.
+     */
+    void  setClient( const QString& id);
 
     //! Get the id name of the used _client_
     /*! \return The _client_ id name
@@ -105,6 +109,15 @@ public:
      *  \param[in] client to be used. If 0, local monitoring is done.
      */
     bool  start( const QString& path, ArnClient* client);
+
+    //! Starts the monitoring
+    /*! The monitor must normally be set at a [shared](\ref gen_shareArnobj) _path_ that is
+     *  shared using client::addMountPoint(). A none shared path can be used when client is
+     *  set to 0, i.e. local monitoring.
+     *  \param[in] path
+     */
+    bool  start( const QString& path)
+    { return start( path, client());}
 
     //! Get the monitored _path_
     /*! \return The _path_

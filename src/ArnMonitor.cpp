@@ -44,11 +44,15 @@ ArnMonitor::ArnMonitor( QObject* parent) :
 }
 
 
-void  ArnMonitor::setClient(ArnClient *client, QString id)
+void  ArnMonitor::setClient(ArnClient *client)
 {
     _arnClient = client;
-    if (_arnClient && !id.isNull())
-        _arnClient->setId( id);
+}
+
+
+void  ArnMonitor::setClient( const QString& id)
+{
+    _arnClient = ArnClient::getClient( id);
 }
 
 

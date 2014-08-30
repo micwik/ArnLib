@@ -101,6 +101,7 @@ public:
     typedef QList<HostAddrPort>  HostList;
 
     explicit ArnClient(QObject *parent = 0);
+    ~ArnClient();
 
     //! Clear the Arn connection list
     /*! Typically used to start making a new Arn connection list.
@@ -193,9 +194,27 @@ public:
      */
     void  setAutoConnect( bool isAuto, int retryTime = 2);
 
-    //! \cond ADV
-    void  setId( QString id);
+    //! Register this client to be avaiable with id
+    /*! \param[in] id, must not be "".
+     *  \see getClient()
+     *  \see id()
+     */
+    void  registerClient( const QString& id);
+
+    //! Get a client by its id
+    /*! \param[in] id, if "" will always return 0.
+     *  \return the found client, 0 = not found or id == ""
+     *  \see registerClient()
+     */
+    static ArnClient*  getClient( const QString& id);
+
+    //! Get the id of this client
+    /*! \return the id, "" = none (local)
+     *  \see registerClient()
+     */
     QString  id()  const;
+
+    //! \cond ADV
     int  curPrio()  const;
 
     void  commandGet( const QString& path);

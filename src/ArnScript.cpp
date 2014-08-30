@@ -493,8 +493,7 @@ void  ArnMonitorProto::setClientId( const QString& id)
     ArnMonitor*  arnMon = qscriptvalue_cast<ArnMonitor*>( thisObject());
     ArnScript*  arnScr = qobject_cast<ArnScript*>(parent());
     if (arnMon && arnScr) {
-        ArnClient*  client = arnScr->getClient( id);
-        arnMon->setClient( client, id);
+        arnMon->setClient( id);
     }
 }
 

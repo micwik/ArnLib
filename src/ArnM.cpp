@@ -337,12 +337,27 @@ void  ArnM::setValue( const QString& path, const QByteArray& value)
 }
 
 
-void  ArnM::setValue( const QString& path, const QVariant& value)
+void  ArnM::setValue( const QString& path, const QVariant& value, const char* typeName)
 {
     ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
 
     if (link) {
-        link->setValue( value);
+        int  valueType = QMetaType::Void;
+        if (typeName && *typeName)
+            valueType = QMetaType::type( typeName);
+
+        if (valueType == QMetaType::Void)
+            link->setValue( value);
+        else {
+            QVariant  val = value;
+            if (val.convert( QVariant::Type( valueType))) {
+                link->setValue( val);
+            }
+            else {
+                errorLog( QString(tr("Can't convert variant', Path:")) + path + " type=" + typeName,
+                          ArnError::Undef);
+            }
+        }
         link->deref();
     }
 }

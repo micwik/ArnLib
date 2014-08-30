@@ -78,6 +78,7 @@ contains(ARN, client) {
 
 contains(ARN, script) {
     ARN += core
+    ARN += script_qml
     QT += script
     SOURCES += \
         $$PWD/ArnScript.cpp \
@@ -93,6 +94,7 @@ contains(ARN, script) {
 
 contains(ARN, qml) {
     ARN += core
+    ARN += script_qml
     QT += qml quick
     SOURCES += \
         $$PWD/ArnQml.cpp \
@@ -101,6 +103,12 @@ contains(ARN, qml) {
     HEADERS += \
         $$PWD/ArnInc/ArnQml.hpp \
         $$PWD/ArnInc/ArnQmlMSystem.hpp
+}
+
+
+contains(ARN, script_qml) {
+    HEADERS += \
+        $$PWD/ArnInc/ArnInterface.hpp
 }
 
 

@@ -32,8 +32,8 @@
 #ifndef ARNSCRIPT_HPP
 #define ARNSCRIPT_HPP
 
-
 #include "ArnLib_global.hpp"
+#include "ArnInterface.hpp"
 #include "ArnM.hpp"
 #include <QObject>
 #include <QScriptable>
@@ -153,43 +153,6 @@ public:
     ArnDepProto( ArnScript* parent = 0);
 
     static QScriptValue  constructor( QScriptContext* context, QScriptEngine* engine);
-};
-
-
-class ARNLIBSHARED_EXPORT ArnInterface : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY( QString info  READ info )
-public:
-    explicit  ArnInterface( QObject* parent = 0) {Q_UNUSED(parent);}
-
-    QString  info()                             {return QString::fromUtf8( ArnM::instance().info().constData());}
-
-signals:
-
-public slots:
-    QVariant  value( const QString& path)       {return ArnM::instance().valueVariant( path);}
-    QString  string( const QString& path)       {return ArnM::instance().valueString( path);}
-    double  num( const QString& path)           {return ArnM::instance().valueDouble( path);}
-    QStringList  items( const QString& path)    {return ArnM::instance().items( path);}
-    bool  exist(const QString& path)            {return ArnM::instance().exist( path);}
-
-    bool  isFolder( const QString& path)        {return ArnM::instance().isFolder( path);}
-    bool  isLeaf( const QString& path)          {return ArnM::instance().isLeaf( path);}
-    void  setValue( const QString& path, const QVariant& value)
-                                                {ArnM::instance().setValue( path, value);}
-    void  setString( const QString& path, const QString& value)
-                                                {ArnM::instance().setValue( path, value);}
-    void  setNum( const QString& path, double value)
-                                                {ArnM::instance().setValue( path, value);}
-    //// "static" help functions
-    QString  itemName( const QString& path)     {return Arn::itemName( path);}
-    QString  childPath( const QString &parentPath, const QString &posterityPath)
-                                                {return Arn::childPath( parentPath, posterityPath);}
-
-    QString  makePath( const QString &parentPath, const QString &itemName)
-                                                {return Arn::makePath( parentPath, itemName);}
-private:
 };
 //! \endcond
 

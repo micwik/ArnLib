@@ -34,11 +34,11 @@
 
 #include "ArnLib_global.hpp"
 #include "ArnItem.hpp"
+#include "ArnMonitor.hpp"
 #include <QQmlParserStatus>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QQmlNetworkAccessManagerFactory>
-#include <QMap>
 
 class QQmlEngine;
 class ArnNetworkAccessManagerFactory;
@@ -66,7 +66,11 @@ public:
     static void  setArnRootPath( const QString& path);
 
 private:
+    /// Private constructor/destructor to keep this class singleton
     ArnQml();
+    ArnQml( const ArnQml&);
+    ~ArnQml();
+    ArnQml&  operator=( const ArnQml&);
 
     QString  _arnRootPath;
     ArnNetworkAccessManagerFactory*  _arnNetworkAccessManagerFactory;
@@ -95,7 +99,7 @@ class  ArnItemQml : public ArnItem, public QQmlParserStatus
     // Q_PROPERTY( bool smTemplate     READ isTemplate    WRITE setTemplate)
 
 public:
-    ArnItemQml( QObject* parent = 0);
+    explicit ArnItemQml( QObject* parent = 0);
 
     QString  variantType()  const;
     void  setVariantType( const QString& typeName);
@@ -128,6 +132,39 @@ private:
     bool  _isCompleted;
     QString  _path;
     int  _valueType;
+};
+
+
+class ARNLIBSHARED_EXPORT ArnMonitorQml : public ArnMonitor, public QQmlParserStatus
+{
+    Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
+
+    Q_PROPERTY( QString clientId     READ clientId     WRITE setClientId)
+    Q_PROPERTY( QString monitorPath  READ monitorPath  WRITE setMonitorPath  NOTIFY pathChanged)
+public slots:
+    void  reStart();
+
+public:
+    explicit ArnMonitorQml( QObject* parent = 0);
+
+    void  setClientId( const QString& id);
+    QString  clientId() const;
+    void  setMonitorPath( const QString& path);
+    QString  monitorPath() const;
+
+    virtual void classBegin();
+    virtual void componentComplete();
+
+signals:
+    void  pathChanged();
+
+protected:
+
+private:
+    bool  _isCompleted;
+    QString  _path;
+    QString  _clientId;
 };
 
 
