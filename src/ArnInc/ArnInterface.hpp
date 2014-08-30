@@ -78,13 +78,22 @@ public slots:
     {ArnM::instance().setValue( path, value);}
 
     //// "static" help functions
+    bool  isFolderPath( const QString& path)    {return Arn::isFolderPath( path);}
+    bool  isProviderPath( const QString& path)  {return Arn::isProviderPath( path);}
     QString  itemName( const QString& path)     {return Arn::itemName( path);}
+    QString  twinPath( const QString& path)     {return Arn::twinPath( path);}
+
+    QString  changeBasePath( const QString& oldBasePath, const QString& newBasePath, const QString& path)
+    {return Arn::changeBasePath( oldBasePath, newBasePath, path);}
 
     QString  childPath( const QString &parentPath, const QString &posterityPath)
     {return Arn::childPath( parentPath, posterityPath);}
 
     QString  makePath( const QString &parentPath, const QString &itemName)
     {return Arn::makePath( parentPath, itemName);}
+
+    QString  providerPath( const QString& path, bool giveProviderPath = true)
+    {return  Arn::providerPath( path, giveProviderPath);}
 };
 //! \endcond
 
