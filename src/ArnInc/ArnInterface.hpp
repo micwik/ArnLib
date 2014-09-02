@@ -40,7 +40,7 @@
 class ARNLIBSHARED_EXPORT ArnInterface : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY( QString info  READ info )
+    Q_PROPERTY( QString info  READ info  NOTIFY dummyNotifier)
 public:
     explicit  ArnInterface( QObject* parent = 0) : QObject( parent) {}
 
@@ -94,6 +94,9 @@ public slots:
 
     QString  providerPath( const QString& path, bool giveProviderPath = true)
     {return  Arn::providerPath( path, giveProviderPath);}
+
+signals:
+    void  dummyNotifier();
 };
 //! \endcond
 

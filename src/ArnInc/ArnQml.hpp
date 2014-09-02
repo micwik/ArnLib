@@ -92,10 +92,10 @@ class  ArnItemQml : public ArnItem, public QQmlParserStatus
     Q_PROPERTY( QByteArray bytes     READ toByteArray   WRITE setValue        NOTIFY valueChanged)
     Q_PROPERTY( double num           READ toDouble      WRITE setValue        NOTIFY valueChanged)
     Q_PROPERTY( int intNum           READ toInt         WRITE setValue        NOTIFY valueChanged)
-    Q_PROPERTY( bool pipeMode        READ isPipeMode    WRITE setPipeMode)
-    Q_PROPERTY( bool saveMode        READ isSaveMode    WRITE setSaveMode)
-    Q_PROPERTY( bool masterMode      READ isMaster      WRITE setMaster)
-    Q_PROPERTY( bool autoDestroyMode READ isAutoDestroy WRITE setAutoDestroy)
+    Q_PROPERTY( bool pipeMode        READ isPipeMode    WRITE setPipeMode     NOTIFY dummyNotifier)
+    Q_PROPERTY( bool saveMode        READ isSaveMode    WRITE setSaveMode     NOTIFY dummyNotifier)
+    Q_PROPERTY( bool masterMode      READ isMaster      WRITE setMaster       NOTIFY dummyNotifier)
+    Q_PROPERTY( bool autoDestroyMode READ isAutoDestroy WRITE setAutoDestroy  NOTIFY dummyNotifier)
     // Q_PROPERTY( bool smTemplate     READ isTemplate    WRITE setTemplate)
 
 public:
@@ -124,6 +124,7 @@ signals:
     void  valueChanged();
     void  pathChanged();
     void  variantTypeChanged();
+    void  dummyNotifier();
 
 protected:
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
@@ -140,7 +141,7 @@ class ARNLIBSHARED_EXPORT ArnMonitorQml : public ArnMonitor, public QQmlParserSt
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
 
-    Q_PROPERTY( QString clientId     READ clientId     WRITE setClientId)
+    Q_PROPERTY( QString clientId     READ clientId     WRITE setClientId     NOTIFY dummyNotifier)
     Q_PROPERTY( QString monitorPath  READ monitorPath  WRITE setMonitorPath  NOTIFY pathChanged)
 public slots:
     void  reStart();
@@ -158,6 +159,7 @@ public:
 
 signals:
     void  pathChanged();
+    void  dummyNotifier();
 
 protected:
 
