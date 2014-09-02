@@ -75,10 +75,10 @@ void  ArnMonitor::setMonitorPath( QString path, ArnClient *client)
 }
 
 
-bool ArnMonitor::start(const QString& path, ArnClient* client)
+bool  ArnMonitor::start( const QString& path, ArnClient* client)
 {
     _arnClient = client;
-    _monitorPath = Arn::fullPath( path);
+    _monitorPath = inPathConvert( Arn::fullPath( path));
     if (!_monitorPath.endsWith("/"))  _monitorPath += "/";
 
     if (_arnClient) {
@@ -176,11 +176,11 @@ void  ArnMonitor::dispatchArnEvent( QByteArray type, QByteArray data, bool isLoc
     }
 
     QString  foundRemotePath = QString::fromUtf8( data.constData(), data.size());
-    QString  foundPath = itemNet->toLocalPath( foundRemotePath);
+    QString  foundLocalPath  = itemNet->toLocalPath( foundRemotePath);
 
     if (type == "itemCreated") {
         //// "created" (new fresh) is special case of "found"
-        emit arnItemCreated( foundPath);
+        emit arnItemCreated( outPathConvert( foundLocalPath));
     }
     else if (type == "itemFound") {
     }
@@ -196,18 +196,18 @@ void  ArnMonitor::dispatchArnEvent( QByteArray type, QByteArray data, bool isLoc
     //// Continue with found items
     if (Arn::debugMonitor && !isLocal) {
         qDebug() << "Dipatch Arn event: type=" << type
-                 << " remotePath=" << foundRemotePath << " localPath=" << foundPath;
+                 << " remotePath=" << foundRemotePath << " localPath=" << foundLocalPath;
     }
 
-    QString childPath = Arn::childPath( _monitorPath, foundPath);
+    QString childPath = Arn::childPath( _monitorPath, foundLocalPath);
     // qDebug() << "### arnMon dispArnEv: childPath=" << childPath;
     if (!childPath.isEmpty()) {  // Should always be none emty ...
         if (!_foundChilds.contains( childPath)) {  // Only send events about unknown items
             _foundChilds += childPath;
             // qDebug() << "### arnMon dispArnEv: Emit chFound childPath=" << childPath;
-            emit arnChildFound( childPath);
-            if (childPath.endsWith('/'))  emit arnChildFoundFolder( childPath);
-            else                          emit arnChildFoundLeaf( childPath);
+            emit arnChildFound( outPathConvert( childPath));
+            if (childPath.endsWith('/'))  emit arnChildFoundFolder( outPathConvert( childPath));
+            else                          emit arnChildFoundLeaf( outPathConvert( childPath));
         }
     }
 }
@@ -215,9 +215,21 @@ void  ArnMonitor::dispatchArnEvent( QByteArray type, QByteArray data, bool isLoc
 
 void  ArnMonitor::foundChildDeleted( QString path)
 {
-    int  i = _foundChilds.indexOf( path);
+    int  i = _foundChilds.indexOf( inPathConvert( path));
     // qDebug() << "### arnMon foundChDel: path=" << path << " i=" << i;
     if (i >= 0) {
         _foundChilds.removeAt(i);
     }
+}
+
+
+QString  ArnMonitor::outPathConvert( const QString& path)
+{
+    return path;  // No conversion as standard
+}
+
+
+QString  ArnMonitor::inPathConvert( const QString& path)
+{
+    return path;  // No conversion as standard
 }

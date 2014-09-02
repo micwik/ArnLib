@@ -128,6 +128,8 @@ signals:
 
 protected:
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemCreatedBelow( QString path);
+    virtual void  itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode);
 
 private:
     bool  _isCompleted;
@@ -162,6 +164,8 @@ signals:
     void  dummyNotifier();
 
 protected:
+    virtual QString  outPathConvert( const QString& path);
+    virtual QString  inPathConvert( const QString& path);
 
 private:
     bool  _isCompleted;

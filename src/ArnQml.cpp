@@ -147,6 +147,8 @@ void  ArnItemQml::setPath( const QString& path)
     if (_isCompleted) {
         QString  arnPath = Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
         open( arnPath);
+        if (type() != Arn::DataType::Null)  // Value already present ...
+            emit valueChanged();
     }
 
     emit pathChanged();
@@ -211,11 +213,25 @@ void  ArnItemQml::componentComplete()
 }
 
 
-void ArnItemQml::itemUpdated(const ArnLinkHandle& handleData, const QByteArray* value)
+void  ArnItemQml::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
     ArnItem::itemUpdated( handleData, value);
 
     emit valueChanged();
+}
+
+
+void  ArnItemQml::itemCreatedBelow( QString path)
+{
+    QString  qmlPath = Arn::changeBasePath( ArnQml::arnRootPath(), "/", path);
+    emit arnItemCreated( qmlPath);
+}
+
+
+void  ArnItemQml::itemModeChangedBelow( QString path, uint linkId, ObjectMode mode)
+{
+    QString  qmlPath = Arn::changeBasePath( ArnQml::arnRootPath(), "/", path);
+    emit arnModeChanged( qmlPath, linkId, mode);
 }
 
 
@@ -251,8 +267,7 @@ void  ArnMonitorQml::setMonitorPath( const QString& path)
 {
     _path = path;
     if (_isCompleted) {
-        QString  arnPath = Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
-        this->start( arnPath);
+        this->start( path);
     }
 
     emit pathChanged();
@@ -275,6 +290,18 @@ void ArnMonitorQml::componentComplete()
     _isCompleted = true;
     if (!_path.isEmpty())
         setMonitorPath( _path);
+}
+
+
+QString ArnMonitorQml::outPathConvert(const QString& path)
+{
+    return Arn::changeBasePath( ArnQml::arnRootPath(), "/", path);
+}
+
+
+QString ArnMonitorQml::inPathConvert(const QString& path)
+{
+    return Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
 }
 
 

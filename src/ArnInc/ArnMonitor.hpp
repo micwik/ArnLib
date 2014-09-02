@@ -205,6 +205,9 @@ public slots:
     void  foundChildDeleted( QString path);
 
 protected:
+    virtual QString  outPathConvert( const QString& path);
+    virtual QString  inPathConvert( const QString& path);
+
     QPointer<ArnClient>  _arnClient;
     QString  _monitorPath;
 
