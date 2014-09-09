@@ -600,7 +600,7 @@ void  ArnRpc::pipeInput( QByteArray data)
     }
 
     //// Start processing normal rpc function call
-    ArgInfo  argInfo[20];
+    ArgInfo  argInfo[21];  // 0..9: Used args, 10..19: Default args, 20: Null arg
     int  argc = 0;
 
     if (_isIncludeSender) {
@@ -631,6 +631,9 @@ void  ArnRpc::pipeInput( QByteArray data)
             argOrder[i] = char(i);  // Set default order 1 to 1
         }
         stat = argLogic( argInfo, argOrder, argc, methodName);
+        for (int i = argc; i < 10; ++i) {
+            argOrder[i] = char(20);  // Set unused to null arg
+        }
     }
 
     if (stat) {
