@@ -173,8 +173,10 @@ public:
     ArnPipe*  pipe()  const;
 
     bool  setReceiver( QObject* receiver, bool useTrackRpcSender = true);
+    QObject*  receiver()  const;
 
     void  setMethodPrefix( QString prefix);
+    QString  methodPrefix()  const;
 
      //! Add sender as argument when calling a rpc method
      /*! \deprecated Use rpcSender()
@@ -335,6 +337,11 @@ public:
         batchConnect( sender, rgx, this, replace, mode);
     }
 
+    //! \cond ADV
+    bool  isConvVariantPar()  const;
+    void  setConvVariantPar( bool convVariantPar);
+    //! \endcond
+
 signals:
     //! Signal emitted when the used pipe is closed.
     /*! The _pipe_ closes when its _Arn Data Object_ is destroyed, i.e. the session
@@ -408,7 +415,7 @@ private:
         bool  isDataAlloc;
         bool  isArgAlloc;
         ArgInfo() {
-            typeId       = QMetaType::Void;
+            typeId       = 0;
             data         = 0;
             hasName      = false;
             hasType      = false;
@@ -433,7 +440,8 @@ private:
     bool  xsmLoadArg( const Arn::XStringMap& xsm, ArgInfo& argInfo, int& index, const QByteArray& methodName);
     bool  argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByteArray& methodName);
     int  argLogicFindMethod( const ArgInfo* argInfo, int argc, const QByteArray& methodName);
-    bool  importArgData( ArgInfo& argInfo, const QByteArray& methodName);
+    bool  checkConvVarPar( const QByteArray& methodName, int argc);
+    bool  importArgData( ArgInfo& argInfo, const QByteArray& methodName, bool useVarPar);
     void  funcHeartBeat( const Arn::XStringMap& xsm);
     void  funcHelp( const Arn::XStringMap& xsm);
     void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin, int flags);
@@ -459,6 +467,7 @@ private:
     bool  _isHeartBeatOk;
     QTimer*  _timerHeartBeatSend;
     QTimer*  _timerHeartBeatCheck;
+    bool  _convVariantPar;
 
     static RpcTypeInfo _rpcTypeInfoTab[];
 };

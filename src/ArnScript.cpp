@@ -46,7 +46,7 @@ Q_DECLARE_METATYPE(ArnDepend*)
 
 void  ArnItemScr::init()
 {
-    _defaultType = QMetaType::Void;
+    _defaultType = 0;
 }
 
 
@@ -241,7 +241,7 @@ QString  ArnItemProto::defaultType() const
 {
     ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (!item)  return QString();
-    if (item->_defaultType == QMetaType::Void)  return QString();
+    if (!item->_defaultType)  return QString();
 
     const char*  typeName = QMetaType::typeName( item->_defaultType);
     if (!typeName)  return QString();
@@ -256,7 +256,7 @@ void  ArnItemProto::setDefaultType( const QString &typeName)
     if (!item)  return;
 
     if (typeName.isEmpty()) {
-        item->_defaultType = QMetaType::Void;
+        item->_defaultType = 0;
         return;
     }
 
@@ -312,7 +312,7 @@ void  ArnItemProto::setValue( const QVariant &value)
     ArnItemScr*  item = qscriptvalue_cast<ArnItemScr*>( thisObject());
     if (!item)  return;
 
-    if (item->_defaultType == QMetaType::Void)  // No defaultType, no conversion
+    if (!item->_defaultType)  // No defaultType, no conversion
         item->setValue( value);
     else {  // Use defaultType
         QVariant  val = value;

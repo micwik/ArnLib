@@ -342,11 +342,11 @@ void  ArnM::setValue( const QString& path, const QVariant& value, const char* ty
     ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
 
     if (link) {
-        int  valueType = QMetaType::Void;
+        int  valueType = 0;
         if (typeName && *typeName)
             valueType = QMetaType::type( typeName);
 
-        if (valueType == QMetaType::Void)
+        if (!valueType)
             link->setValue( value);
         else {
             QVariant  val = value;

@@ -35,6 +35,7 @@
 #include "ArnLib_global.hpp"
 #include "ArnItem.hpp"
 #include "ArnMonitor.hpp"
+#include "ArnRpc.hpp"
 #include <QQmlParserStatus>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
@@ -171,6 +172,44 @@ private:
     bool  _isCompleted;
     QString  _path;
     QString  _clientId;
+};
+
+
+class ARNLIBSHARED_EXPORT ArnSapiQml : public ArnRpc, public QQmlParserStatus
+{
+    Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
+
+    Q_PROPERTY( QString pipePath   READ pipePath    WRITE setPipePath    NOTIFY pathChanged)
+    Q_PROPERTY( bool isProvider    READ isProvider  WRITE setIsProvider  NOTIFY dummyNotifier)
+    Q_PROPERTY( QObject* receiver  READ receiver    WRITE setReceiver    NOTIFY dummyNotifier)
+public slots:
+
+public:
+    explicit ArnSapiQml( QObject* parent = 0);
+
+    void  setPipePath( const QString& path);
+    QString  pipePath() const;
+
+    bool  isProvider()  const;
+    void  setIsProvider( bool isProvider);
+
+    virtual void classBegin();
+    virtual void componentComplete();
+
+signals:
+    void  pathChanged();
+    void  dummyNotifier();
+
+protected:
+
+private:
+    bool  _isCompleted;
+    QString  _path;
+    QString  _sendPrefix;
+    QString  _providerPrefix;
+    QString  _requesterPrefix;
+    bool  _isProvider;
 };
 
 

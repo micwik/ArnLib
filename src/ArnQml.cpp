@@ -72,6 +72,7 @@ void  ArnQml::setup( QQmlEngine* qmlEngine, ArnQml::UseFlags flags)
         in._regedUse.set( flags.ArnLib);
         qmlRegisterType<ArnItemQml>(   "ArnLib", 1, 0, "ArnItem");
         qmlRegisterType<ArnMonitorQml>("ArnLib", 1, 0, "ArnMonitor");
+        qmlRegisterType<ArnSapiQml>(    "ArnLib", 1, 0, "ArnSapi");
     }
     if (flags.is( flags.MSystem) && !in._regedUse.is( flags.MSystem)) {
         in._regedUse.set( flags.MSystem);
@@ -104,7 +105,7 @@ ArnItemQml::ArnItemQml( QObject* parent)
 
 QString  ArnItemQml::variantType()  const
 {
-    if (_valueType == QMetaType::Void)  return QString();
+    if (!_valueType)  return QString();
 
     const char*  typeName = QMetaType::typeName(_valueType);
     if (!typeName)  return QString();
@@ -116,7 +117,7 @@ QString  ArnItemQml::variantType()  const
 void  ArnItemQml::setVariantType( const QString& typeName)
 {
     if (typeName.isEmpty()) {
-        _valueType = QMetaType::Void;
+        _valueType = 0;
     }
     else {
         int  type = QMetaType::type( typeName.toLatin1().constData());
@@ -157,7 +158,7 @@ void  ArnItemQml::setPath( const QString& path)
 
 void  ArnItemQml::setVariant( const QVariant& value)
 {
-    if (_valueType == QMetaType::Void)  // No valueType, no conversion
+    if (!_valueType)  // No valueType, no conversion
         ArnItem::setValue( value);
     else {  // Use valueType
         QVariant  val = value;
@@ -303,6 +304,83 @@ QString ArnMonitorQml::inPathConvert(const QString& path)
 {
     return Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
 }
+
+
+///////// ArnSapiQml
+
+ArnSapiQml::ArnSapiQml( QObject* parent)
+    : ArnRpc( parent)
+{
+    _isCompleted     = false;
+    _isProvider      = false;
+    _providerPrefix  = "pv_";
+    _requesterPrefix = "rq_";
+}
+
+
+void  ArnSapiQml::setPipePath( const QString& path)
+{
+    _path = path;
+
+    if (_isCompleted) {
+        setConvVariantPar( true);
+        if (!receiver())
+            ArnRpc::setReceiver( this->parent(), false);
+
+        QString  receivePrefix;
+        if (_isProvider) {
+            receivePrefix = _providerPrefix;
+            _sendPrefix   = _requesterPrefix;
+        }
+        else {
+            receivePrefix = _requesterPrefix;
+            _sendPrefix   = _providerPrefix;
+        }
+        ArnRpc::setMethodPrefix( receivePrefix);
+        ArnRpc::addSenderSignals( ArnRpc::receiver(), _sendPrefix);
+
+        Mode  mode;
+        mode.set( Mode::Provider, _isProvider);
+        setMode( mode);
+
+        QString  arnPath = Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
+        open( arnPath);
+    }
+
+    emit pathChanged();
+}
+
+
+QString  ArnSapiQml::pipePath()  const
+{
+    return _path;
+}
+
+
+bool  ArnSapiQml::isProvider()  const
+{
+    return _isProvider;
+}
+
+
+void  ArnSapiQml::setIsProvider( bool isProvider)
+{
+    _isProvider = isProvider;
+}
+
+
+void  ArnSapiQml::classBegin()
+{
+}
+
+
+void  ArnSapiQml::componentComplete()
+{
+    _isCompleted = true;
+    if (!_path.isEmpty())
+        setPipePath( _path);
+}
+
 
 
 ///////// ArnNetworkReply
