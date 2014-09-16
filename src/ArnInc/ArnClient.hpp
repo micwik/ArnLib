@@ -195,14 +195,14 @@ public:
     void  setAutoConnect( bool isAuto, int retryTime = 2);
 
     //! Register this client to be avaiable with id
-    /*! \param[in] id, must not be "".
+    /*! \param[in] id must not be "".
      *  \see getClient()
      *  \see id()
      */
     void  registerClient( const QString& id);
 
     //! Get a client by its id
-    /*! \param[in] id, if "" will always return 0.
+    /*! \param[in] id if "" will always return 0.
      *  \return the found client, 0 = not found or id == ""
      *  \see registerClient()
      */

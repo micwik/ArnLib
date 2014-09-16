@@ -17,7 +17,7 @@ greaterThan(QT_MAJOR_VERSION, 4): ARN += qml
 QT -= gui
 
 # Usage of internal mDNS code (no external dependency)
-CONFIG += mDnsIntern
+# CONFIG += mDnsIntern
 
 include(src/ArnLib.pri)
 

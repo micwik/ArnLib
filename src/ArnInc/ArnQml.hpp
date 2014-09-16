@@ -45,25 +45,140 @@ class QQmlEngine;
 class ArnNetworkAccessManagerFactory;
 
 
+//! ARN QML.
+/*!
+This class is the central point for ArnQml.
+It's a singleton that is setup in the application.
+ArnQml can be used for creating GUI-applications in Qml that has integrated access to the
+ARN objects and some of the ArnLib funtionality.
+
+ArnBrowser is using this to run Qml applications in an opaque style, i.e. without specific
+application support. This resembles somewhat a web browser running a web application.
+
+Note that you must not use empty folder in QUrl for an Arn path.
+Example: path "//Qml/test.qml" can be set to the equal path "/@/Qml/test.qml".
+Also this conversion can be made by Arn::convertPath("//Qml/test.qml", Arn::NameF()).
+
+<b>Example usage</b> \n \code
+// In c++
+//
+    QQuickView*  view = new QQuickView;
+    ArnQml::setup( view->engine(), ArnQml::UseFlags::All);
+
+    QString  qmlPathInArn = "//Qml/test.qml"
+    QUrl  url;
+    url.setScheme("arn");
+    url.setPath( Arn::convertPath( qmlPathInArn, Arn::NameF()));
+    view->setSource( url);
+    view->show();
+
+    connect( engine(), SIGNAL(quit()), this, SLOT(onClose()));
+    connect( view, SIGNAL(closing(QQuickCloseEvent*)), this, SLOT(onClose()));
+
+// In Qml
+//
+import QtQuick 2.0
+import ArnLib 1.0
+
+Rectangle {
+    width: 370;  height: 400
+
+    property ArnItem arnT1: ArnItem {path: "//El/UpdClock/value"}
+
+    ArnMonitor {
+        clientId: "std"
+        monitorPath: "//Test/List/"
+        onArnChildFound: console.log("Found list item: " + path);
+    }
+
+    Image {
+        anchors.top: parent.top;  anchors.right: parent.right;
+        source: "arn:///@/Test/Data/pic.png"
+    }
+
+    ArnItem {id: arnElUpdClock;  path: "//El/UpdClock/value"}
+
+    Item {
+        id: sapiTest
+        ArnSapi {pipePath: "//Test/pipe"}
+
+        // Provider API
+        signal pv_readFileTest( string fileName)
+
+        // Requester API
+        signal rq_test2( string par1)
+        function rq_test( p1) {
+            console.log("rq_test: p1=" + p1);
+        }
+
+        Component.onCompleted: {
+            sapiTest.rq_test2.connect( info.setTestMsg);
+            sapiTest.pv_readFileTest("myfile");
+        }
+    }
+
+    Rectangle {
+        id: info
+        property string testMsg: ""
+        anchors.bottom: parent.bottom; anchors.left: parent.left;  anchors.right: parent.right
+        height: 80
+        Column {
+            anchors.fill: parent;
+            Text {text: "El updClock: " + arnElUpdClock.intNum + ", " + arnT1.intNum}
+            Text {text: "Msg: " + info.testMsg}
+            Text {text: arn.info}  // ArnLib version info
+        }
+
+        function setTestMsg( msg) {
+            info.testMsg = msg;
+        }
+    }
+}
+\endcode
+*/
 class ARNLIBSHARED_EXPORT ArnQml : public QObject
 {
     Q_OBJECT
 public:
     struct UseFlags {
         enum E {
-            //!
+            //! Note: ArnLib is always included
             ArnLib  = 0x01,
-            //!
-            MSystem = 0x02
+            //! Include some system fuctions like file-io
+            MSystem = 0x02,
+            //! Include everything
+            All     = 0xff
         };
         MQ_DECLARE_FLAGS( UseFlags)
     };
 
+    //! Add ArnLib support to a Qml instance
+    /*! ArnLib module is always included.
+     *  \param[in] qmlEngine is the qml instance engine
+     *  \param[in] flags gives the modules to include
+     */
     static void  setup( QQmlEngine* qmlEngine, UseFlags flags = UseFlags::ArnLib);
 
     static ArnQml&  instance();
 
+    //! Gives current ARN root path for all qml instances.
+    /*!
+     *  \return the root path
+     *  \see setArnRootPath
+     */
     static QString  arnRootPath();
+
+    //! Change ARN root path for all qml instances.
+    /*! This is set once in the application and must be set before any qml instances are
+     *  setup.
+     *
+     *  Example:
+     *  setArnRootPath("/@myHost/");
+     *  will map a path "/Test/value" in Qml to an ARN object at path "/@myHost/Test/value".
+     *
+     *  \param[in] path is the root path
+     *  \see arnRootPath
+     */
     static void  setArnRootPath( const QString& path);
 
 private:
@@ -139,7 +254,7 @@ private:
 };
 
 
-class ARNLIBSHARED_EXPORT ArnMonitorQml : public ArnMonitor, public QQmlParserStatus
+class ArnMonitorQml : public ArnMonitor, public QQmlParserStatus
 {
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
@@ -175,7 +290,7 @@ private:
 };
 
 
-class ARNLIBSHARED_EXPORT ArnSapiQml : public ArnRpc, public QQmlParserStatus
+class ArnSapiQml : public ArnRpc, public QQmlParserStatus
 {
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
@@ -213,6 +328,7 @@ private:
 };
 
 
+//! \cond ADV
 class ArnNetworkReply : public QNetworkReply
 {
     Q_OBJECT
@@ -275,5 +391,6 @@ class ArnNetworkAccessManagerFactory : public QQmlNetworkAccessManagerFactory
 public:
     virtual QNetworkAccessManager*  create( QObject *parent);
 };
+//! \endcond
 
 #endif // ARNQML_HPP

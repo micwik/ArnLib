@@ -208,7 +208,7 @@ public:
     //! Assign a _QVariant_ to an _Arn Data Object_ at _path_
     /*! \param[in] path
      *  \param[in] value to be assigned
-     *  \param[in] type to convert variant into, default no conversion
+     *  \param[in] typeName to convert variant into, default no conversion
      */
     static void  setValue( const QString& path, const QVariant& value, const char* typeName = 0);
 
