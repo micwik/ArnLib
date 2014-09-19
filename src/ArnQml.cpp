@@ -63,16 +63,29 @@ void  ArnQml::setArnRootPath( const QString& path)
 }
 
 
+QObject*  ArnQml::constructorArnInterface( QQmlEngine* engine, QJSEngine* scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+
+    ArnInterface *arnIterface = new ArnInterface();
+    return arnIterface;
+}
+
+
 void  ArnQml::setup( QQmlEngine* qmlEngine, ArnQml::UseFlags flags)
 {
     ArnQml&  in = ArnQml::instance();
     flags.set( flags.ArnLib);  // Always include ArnLib
 
+    qmlRegisterSingletonType<ArnInterface>("ArnXLib", 1, 0, "ArnM", constructorArnInterface);
     if (flags.is( flags.ArnLib) && !in._regedUse.is( flags.ArnLib)) {
         in._regedUse.set( flags.ArnLib);
         qmlRegisterType<ArnItemQml>(   "ArnLib", 1, 0, "ArnItem");
         qmlRegisterType<ArnMonitorQml>("ArnLib", 1, 0, "ArnMonitor");
-        qmlRegisterType<ArnSapiQml>(    "ArnLib", 1, 0, "ArnSapi");
+        qmlRegisterType<ArnSapiQml>(   "ArnLib", 1, 0, "ArnSapi");
+
+        qmlRegisterSingletonType<ArnInterface>("ArnLib", 1, 0, "Arn", constructorArnInterface);
     }
     if (flags.is( flags.MSystem) && !in._regedUse.is( flags.MSystem)) {
         in._regedUse.set( flags.MSystem);
@@ -81,7 +94,6 @@ void  ArnQml::setup( QQmlEngine* qmlEngine, ArnQml::UseFlags flags)
 
     if (qmlEngine) {
         qmlEngine->setNetworkAccessManagerFactory( in._arnNetworkAccessManagerFactory);
-        qmlEngine->rootContext()->setContextProperty("arn", new ArnInterface( qmlEngine));
     }
 }
 
@@ -170,6 +182,13 @@ void  ArnItemQml::setVariant( const QVariant& value)
             //                       "Can't convert to defaultType=" + defaultType());
         }
     }
+}
+
+
+void  ArnItemQml::setBiDirMode( bool isBiDirMode)
+{
+    if (isBiDirMode)
+        ArnItem::setBiDirMode();
 }
 
 

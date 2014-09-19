@@ -42,6 +42,7 @@
 #include <QQmlNetworkAccessManagerFactory>
 
 class QQmlEngine;
+class QJSEngine;
 class ArnNetworkAccessManagerFactory;
 
 
@@ -51,6 +52,9 @@ This class is the central point for ArnQml.
 It's a singleton that is setup in the application.
 ArnQml can be used for creating GUI-applications in Qml that has integrated access to the
 ARN objects and some of the ArnLib funtionality.
+
+For information about available ArnLib components in Qml see:
+ArnInterface, ArnItemQml, ArnMonitorQml, ArnSapiQml
 
 ArnBrowser is using this to run Qml applications in an opaque style, i.e. without specific
 application support. This resembles somewhat a web browser running a web application.
@@ -181,6 +185,10 @@ public:
      */
     static void  setArnRootPath( const QString& path);
 
+//! \cond ADV
+    static QObject *constructorArnInterface( QQmlEngine* engine, QJSEngine* scriptEngine);
+//! \endcond
+
 private:
     /// Private constructor/destructor to keep this class singleton
     ArnQml();
@@ -201,19 +209,33 @@ class  ArnItemQml : public ArnItem, public QQmlParserStatus
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
 
+    //! The type used inside the variant, e.g. QString
     Q_PROPERTY( QString variantType  READ variantType   WRITE setVariantType  NOTIFY variantTypeChanged)
+    //! The path of this ArnItem
     Q_PROPERTY( QString path         READ path          WRITE setPath         NOTIFY pathChanged)
+    //! The ArnItem value as a QVariant
     Q_PROPERTY( QVariant variant     READ toVariant     WRITE setVariant      NOTIFY valueChanged)
+    //! The ArnItem value as a QString
     Q_PROPERTY( QString string       READ toString      WRITE setValue        NOTIFY valueChanged)
+    //! The ArnItem value as a QByteArray
     Q_PROPERTY( QByteArray bytes     READ toByteArray   WRITE setValue        NOTIFY valueChanged)
+    //! The ArnItem value as a double
     Q_PROPERTY( double num           READ toDouble      WRITE setValue        NOTIFY valueChanged)
+    //! The ArnItem value as an int
     Q_PROPERTY( int intNum           READ toInt         WRITE setValue        NOTIFY valueChanged)
+    //! See Arn::ObjectMode::BiDir
+    Q_PROPERTY( bool biDirMode       READ isBiDirMode   WRITE setBiDirMode    NOTIFY dummyNotifier)
+    //! See Arn::ObjectMode::Pipe
     Q_PROPERTY( bool pipeMode        READ isPipeMode    WRITE setPipeMode     NOTIFY dummyNotifier)
+    //! See Arn::ObjectMode::Save
     Q_PROPERTY( bool saveMode        READ isSaveMode    WRITE setSaveMode     NOTIFY dummyNotifier)
+    //! See Arn::ObjectSyncMode::Master
     Q_PROPERTY( bool masterMode      READ isMaster      WRITE setMaster       NOTIFY dummyNotifier)
+    //! See Arn::ObjectSyncMode::AutoDestroy
     Q_PROPERTY( bool autoDestroyMode READ isAutoDestroy WRITE setAutoDestroy  NOTIFY dummyNotifier)
     // Q_PROPERTY( bool smTemplate     READ isTemplate    WRITE setTemplate)
 
+//! \cond ADV
 public:
     explicit ArnItemQml( QObject* parent = 0);
 
@@ -226,6 +248,7 @@ public:
 
     void  setVariant( const QVariant& value);
 
+    void  setBiDirMode( bool isBiDirMode);
     void  setPipeMode( bool isPipeMode);
     void  setMaster( bool isMaster);
     void  setAutoDestroy( bool isAutoDestroy);
@@ -246,6 +269,7 @@ protected:
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  itemCreatedBelow( QString path);
     virtual void  itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode);
+//! \endcond
 
 private:
     bool  _isCompleted;
@@ -264,6 +288,7 @@ class ArnMonitorQml : public ArnMonitor, public QQmlParserStatus
 public slots:
     void  reStart();
 
+//! \cond ADV
 public:
     explicit ArnMonitorQml( QObject* parent = 0);
 
@@ -282,6 +307,7 @@ signals:
 protected:
     virtual QString  outPathConvert( const QString& path);
     virtual QString  inPathConvert( const QString& path);
+//! \endcond
 
 private:
     bool  _isCompleted;
@@ -298,8 +324,8 @@ class ArnSapiQml : public ArnRpc, public QQmlParserStatus
     Q_PROPERTY( QString pipePath   READ pipePath    WRITE setPipePath    NOTIFY pathChanged)
     Q_PROPERTY( bool isProvider    READ isProvider  WRITE setIsProvider  NOTIFY dummyNotifier)
     Q_PROPERTY( QObject* receiver  READ receiver    WRITE setReceiver    NOTIFY dummyNotifier)
-public slots:
 
+//! \cond ADV
 public:
     explicit ArnSapiQml( QObject* parent = 0);
 
@@ -315,8 +341,7 @@ public:
 signals:
     void  pathChanged();
     void  dummyNotifier();
-
-protected:
+//! \endcond
 
 private:
     bool  _isCompleted;

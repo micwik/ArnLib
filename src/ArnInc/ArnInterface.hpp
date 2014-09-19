@@ -36,15 +36,39 @@
 #include "ArnM.hpp"
 
 
-//! \cond ADV
 class ARNLIBSHARED_EXPORT ArnInterface : public QObject
 {
     Q_OBJECT
     Q_PROPERTY( QString info  READ info  NOTIFY dummyNotifier)
 public:
+    enum SameValue {
+        //! Assigning same value generates an update of the _Arn Data Object_
+        SameValue_Accept = Arn::SameValue::Accept,
+        //! Assigning same value is ignored
+        SameValue_Ignore = Arn::SameValue::Ignore,
+        //! Assigning same value gives default action set in ArnM or ArnItem
+        SameValue_DefaultAction = Arn::SameValue::DefaultAction
+    };
+    Q_ENUMS(SameValue)
+
+    //! Selects a format for path or item name
+    enum NameF {
+        //! Empty not ok,  Path: Absolute  Item: FolderMark
+        NameF_Default      = Arn::NameF::Default,
+        //! Only on discrete names, no effect on path. "test/" ==> "test"
+        NameF_NoFolderMark = Arn::NameF::NoFolderMark,
+        //! Path: "/@/test" ==> "//test", Item: "@" ==> ""
+        NameF_EmptyOk      = Arn::NameF::EmptyOk,
+        //! Only on path, no effect on discrete names. "/test/value" ==> "test/value"
+        NameF_Relative     = Arn::NameF::Relative
+    };
+    Q_ENUMS(NameF)
+
+    //! \cond ADV
     explicit  ArnInterface( QObject* parent = 0) : QObject( parent) {}
 
     QString  info()                             {return QString::fromUtf8( ArnM::instance().info().constData());}
+//! \endcond
 
 public slots:
     QVariant  value( const QString& path)       {return ArnM::instance().valueVariant( path);}
@@ -95,9 +119,10 @@ public slots:
     QString  providerPath( const QString& path, bool giveProviderPath = true)
     {return  Arn::providerPath( path, giveProviderPath);}
 
+//! \cond ADV
 signals:
     void  dummyNotifier();
-};
 //! \endcond
+};
 
 #endif // ARNINTERFACE_HPP

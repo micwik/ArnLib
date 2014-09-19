@@ -117,6 +117,8 @@ struct LinkFlags {
 struct NameF {
     //! Selects a format for path or item name
     enum E {
+        //! Empty not ok,  Path: Absolute  Item: FolderMark
+        Default      = 0x00,
         //! Only on discrete names, no effect on path. "test/" ==> "test"
         NoFolderMark = 0x01,
         //! Path: "/@/test" ==> "//test", Item: "@" ==> ""
