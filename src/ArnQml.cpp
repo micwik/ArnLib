@@ -331,7 +331,6 @@ ArnSapiQml::ArnSapiQml( QObject* parent)
     : ArnRpc( parent)
 {
     _isCompleted     = false;
-    _isProvider      = false;
     _providerPrefix  = "pv_";
     _requesterPrefix = "rq_";
 }
@@ -347,7 +346,7 @@ void  ArnSapiQml::setPipePath( const QString& path)
             ArnRpc::setReceiver( this->parent(), false);
 
         QString  receivePrefix;
-        if (_isProvider) {
+        if (ArnRpc::mode().is( ArnRpc::Mode::Provider)) {
             receivePrefix = _providerPrefix;
             _sendPrefix   = _requesterPrefix;
         }
@@ -357,10 +356,6 @@ void  ArnSapiQml::setPipePath( const QString& path)
         }
         ArnRpc::setMethodPrefix( receivePrefix);
         ArnRpc::addSenderSignals( ArnRpc::receiver(), _sendPrefix);
-
-        Mode  mode;
-        mode.set( Mode::Provider, _isProvider);
-        setMode( mode);
 
         QString  arnPath = Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
         open( arnPath);
@@ -373,18 +368,6 @@ void  ArnSapiQml::setPipePath( const QString& path)
 QString  ArnSapiQml::pipePath()  const
 {
     return _path;
-}
-
-
-bool  ArnSapiQml::isProvider()  const
-{
-    return _isProvider;
-}
-
-
-void  ArnSapiQml::setIsProvider( bool isProvider)
-{
-    _isProvider = isProvider;
 }
 
 

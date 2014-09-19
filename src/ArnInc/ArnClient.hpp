@@ -195,7 +195,12 @@ public:
     void  setAutoConnect( bool isAuto, int retryTime = 2);
 
     //! Register this client to be avaiable with id
-    /*! \param[in] id must not be "".
+    /*! When instantiating an ArnClient, it's always registered as id = "std", if that's
+     *  not taken by another client.
+     *
+     *  Any previous registration of id for this client will be released when using
+     *  registerClient().
+     *  \param[in] id must not be "".
      *  \see getClient()
      *  \see id()
      */

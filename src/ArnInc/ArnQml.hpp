@@ -283,9 +283,14 @@ class ArnMonitorQml : public ArnMonitor, public QQmlParserStatus
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
 
+    //! The client id. Set whith ArnClient::registerClient(). Use "std" if not set.
     Q_PROPERTY( QString clientId     READ clientId     WRITE setClientId     NOTIFY dummyNotifier)
+    //! The path to be monitored at the server.
     Q_PROPERTY( QString monitorPath  READ monitorPath  WRITE setMonitorPath  NOTIFY pathChanged)
 public slots:
+    //! Restart the monitor
+    /*! All signals for found childs will be emitted again.
+     */
     void  reStart();
 
 //! \cond ADV
@@ -321,19 +326,47 @@ class ArnSapiQml : public ArnRpc, public QQmlParserStatus
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
 
+    //! Path of the pipe for this Sapi
     Q_PROPERTY( QString pipePath   READ pipePath    WRITE setPipePath    NOTIFY pathChanged)
-    Q_PROPERTY( bool isProvider    READ isProvider  WRITE setIsProvider  NOTIFY dummyNotifier)
+    //! Sapi modes
+    Q_PROPERTY( Mode modes          READ mode        WRITE setMode        NOTIFY dummyNotifier)
+    //! The receiving object of incomming Sapi calls. Default: parent
     Q_PROPERTY( QObject* receiver  READ receiver    WRITE setReceiver    NOTIFY dummyNotifier)
+public:
+    enum Mode {
+        //! Provider side (opposed to requester)
+        Provider       = ArnRpc::Mode::Provider,
+        //! Use _AutoDestroy_ for the pipe, i.e. it is closed when tcp/ip is broken
+        AutoDestroy    = ArnRpc::Mode::AutoDestroy,
+        //! Use an unique uuid in the pipe name
+        UuidPipe       = ArnRpc::Mode::UuidPipe,
+        //! If guarantied no default arguments, full member name overload is ok
+        NoDefaultArgs  = ArnRpc::Mode::NoDefaultArgs,
+        //! Send sequence order information to pipe
+        SendSequence   = ArnRpc::Mode::SendSequence,
+        //! Check sequence order information from pipe. Can generate signal outOfSequence().
+        CheckSequence  = ArnRpc::Mode::CheckSequence,
+        //! When calling out, uses named argument e.g "myFunc count=123"
+        NamedArg       = ArnRpc::Mode::NamedArg,
+        //! When calling out, uses named argument with type e.g "myFunc count:int=123"
+        NamedTypedArg  = ArnRpc::Mode::NamedTypedArg,
+        //! When receiver method missing, send defaultCall() signal instead of error
+        UseDefaultCall = ArnRpc::Mode::UseDefaultCall,
+        //! Convenience, combined _UuidPipe_ and _AutoDestroy_
+        UuidAutoDestroy = int(UuidPipe) | int(AutoDestroy)
+    };
+    Q_ENUMS( Mode)
 
 //! \cond ADV
-public:
     explicit ArnSapiQml( QObject* parent = 0);
 
     void  setPipePath( const QString& path);
     QString  pipePath() const;
 
-    bool  isProvider()  const;
-    void  setIsProvider( bool isProvider);
+    Mode  mode()  const
+    {return Mode( ArnRpc::mode().toInt());}
+    void  setMode( Mode m)
+    {ArnRpc::setMode( ArnRpc::Mode::fromInt(m));}
 
     virtual void classBegin();
     virtual void componentComplete();
@@ -349,7 +382,6 @@ private:
     QString  _sendPrefix;
     QString  _providerPrefix;
     QString  _requesterPrefix;
-    bool  _isProvider;
 };
 
 

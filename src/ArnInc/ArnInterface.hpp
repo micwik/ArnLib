@@ -64,7 +64,7 @@ public:
     };
     Q_ENUMS(NameF)
 
-    //! \cond ADV
+//! \cond ADV
     explicit  ArnInterface( QObject* parent = 0) : QObject( parent) {}
 
     QString  info()                             {return QString::fromUtf8( ArnM::instance().info().constData());}
