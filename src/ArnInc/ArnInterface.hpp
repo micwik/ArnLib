@@ -39,6 +39,7 @@
 class ARNLIBSHARED_EXPORT ArnInterface : public QObject
 {
     Q_OBJECT
+    //! See ArnM::info()
     Q_PROPERTY( QString info  READ info  NOTIFY dummyNotifier)
 public:
     enum SameValue {
@@ -71,51 +72,80 @@ public:
 //! \endcond
 
 public slots:
+
+    //! See ArnM::valueVariant()
     QVariant  value( const QString& path)       {return ArnM::instance().valueVariant( path);}
+    //! See ArnM::valueVariant()
     QVariant  variant( const QString& path)     {return ArnM::instance().valueVariant( path);}
+    //! See ArnM::valueString()
     QString  string( const QString& path)       {return ArnM::instance().valueString( path);}
+    //! See ArnM::valueByteArray()
     QByteArray  bytes( const QString& path)     {return ArnM::instance().valueByteArray( path);}
+    //! See ArnM::valueDouble()
     double  num( const QString& path)           {return ArnM::instance().valueDouble( path);}
+    //! See ArnM::valueInt()
     int  intNum( const QString& path)           {return ArnM::instance().valueInt( path);}
 
+    //! See ArnM::items()
     QStringList  items( const QString& path)    {return ArnM::instance().items( path);}
+    //! See ArnM::exist()
     bool  exist(const QString& path)            {return ArnM::instance().exist( path);}
+    //! See ArnM::isFolder()
     bool  isFolder( const QString& path)        {return ArnM::instance().isFolder( path);}
+    //! See ArnM::isLeaf()
     bool  isLeaf( const QString& path)          {return ArnM::instance().isLeaf( path);}
 
+    //! See ArnM::setValue()
     void  setValue( const QString& path, const QVariant& value)
     {ArnM::instance().setValue( path, value);}
 
+    //! See ArnM::setValue()
     void  setVariant( const QString& path, const QVariant& value, const QString& typeName = QString())
     {ArnM::instance().setValue( path, value, typeName.toLatin1().constData());}
 
+    //! See ArnM::setValue()
     void  setString( const QString& path, const QString& value)
     {ArnM::instance().setValue( path, value);}
 
+    //! See ArnM::setValue()
     void  setBytes( const QString& path, const QByteArray& value)
     {ArnM::instance().setValue( path, value);}
 
+    //! See ArnM::setValue()
     void  setNum( const QString& path, double value)
     {ArnM::instance().setValue( path, value);}
 
+    //! See ArnM::setValue()
     void  setIntNum( const QString& path, int value)
     {ArnM::instance().setValue( path, value);}
 
     //// "static" help functions
+
+    //! See Arn::isFolderPath()
     bool  isFolderPath( const QString& path)    {return Arn::isFolderPath( path);}
+
+    //! See Arn::isProviderPath()
     bool  isProviderPath( const QString& path)  {return Arn::isProviderPath( path);}
+
+    //! See Arn::itemName()
     QString  itemName( const QString& path)     {return Arn::itemName( path);}
+
+    //! See Arn::twinPath()
     QString  twinPath( const QString& path)     {return Arn::twinPath( path);}
 
+    //! See Arn::changeBasePath()
     QString  changeBasePath( const QString& oldBasePath, const QString& newBasePath, const QString& path)
     {return Arn::changeBasePath( oldBasePath, newBasePath, path);}
 
+    //! See Arn::childPath()
     QString  childPath( const QString &parentPath, const QString &posterityPath)
     {return Arn::childPath( parentPath, posterityPath);}
 
+    //! See Arn::makePath()
     QString  makePath( const QString &parentPath, const QString &itemName)
     {return Arn::makePath( parentPath, itemName);}
 
+    //! See Arn::providerPath()
     QString  providerPath( const QString& path, bool giveProviderPath = true)
     {return  Arn::providerPath( path, giveProviderPath);}
 

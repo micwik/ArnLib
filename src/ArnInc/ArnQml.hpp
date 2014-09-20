@@ -54,12 +54,18 @@ ArnQml can be used for creating GUI-applications in Qml that has integrated acce
 ARN objects and some of the ArnLib funtionality.
 
 For information about available ArnLib components in Qml see:
-ArnInterface, ArnItemQml, ArnMonitorQml, ArnSapiQml
+
+| QmlType    | See           |
+|------------|---------------|
+| Arn        | ArnInterface  |
+| ArnItem    | ArnItemQml    |
+| ArnMonitor | ArnMonitorQml |
+| ArnSapi    | ArnSapiQml    |
 
 ArnBrowser is using this to run Qml applications in an opaque style, i.e. without specific
 application support. This resembles somewhat a web browser running a web application.
 
-Note that you must not use empty folder in QUrl for an Arn path.
+Note that you must not use any empty folders in QUrl for an Arn path.
 Example: path "//Qml/test.qml" can be set to the equal path "/@/Qml/test.qml".
 Also this conversion can be made by Arn::convertPath("//Qml/test.qml", Arn::NameF()).
 
@@ -86,8 +92,6 @@ import ArnLib 1.0
 
 Rectangle {
     width: 370;  height: 400
-
-    property ArnItem arnT1: ArnItem {path: "//El/UpdClock/value"}
 
     ArnMonitor {
         clientId: "std"
@@ -128,7 +132,7 @@ Rectangle {
         height: 80
         Column {
             anchors.fill: parent;
-            Text {text: "El updClock: " + arnElUpdClock.intNum + ", " + arnT1.intNum}
+            Text {text: "El updClock: " + arnElUpdClock.intNum}
             Text {text: "Msg: " + info.testMsg}
             Text {text: arn.info}  // ArnLib version info
         }
@@ -204,6 +208,38 @@ private:
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnQml::UseFlags)
 
 
+//! ARN Item QML.
+/*!
+This class is the Qml version of ArnItem.
+
+\see ArnQml
+
+<b>Example usage</b> \n \code
+// In Qml
+//
+import QtQuick 2.0
+import ArnLib 1.0
+
+Rectangle {
+    width: 370;  height: 400
+
+    property ArnItem arnT1: ArnItem {path: "//El/UpdClock/value"}
+
+    ArnItem {id: arnElUpdClock;  path: "//El/UpdClock/value"}
+
+    Rectangle {
+        id: info
+        anchors.bottom: parent.bottom; anchors.left: parent.left;  anchors.right: parent.right
+        height: 80
+        Column {
+            anchors.fill: parent;
+            Text {text: "El updClock 1: " + arnElUpdClock.intNum}
+            Text {text: "El updClock 2: " + arnT1.intNum}
+        }
+    }
+}
+\endcode
+*/
 class  ArnItemQml : public ArnItem, public QQmlParserStatus
 {
     Q_OBJECT
@@ -278,6 +314,29 @@ private:
 };
 
 
+//! ARN Monitor QML.
+/*!
+This class is the Qml version of the ArnMonitor.
+
+\see ArnQml
+
+<b>Example usage</b> \n \code
+// In Qml
+//
+import QtQuick 2.0
+import ArnLib 1.0
+
+Rectangle {
+    width: 370;  height: 400
+
+    ArnMonitor {
+        clientId: "std"
+        monitorPath: "//Test/List/"
+        onArnChildFound: console.log("Found list item: " + path);
+    }
+}
+\endcode
+*/
 class ArnMonitorQml : public ArnMonitor, public QQmlParserStatus
 {
     Q_OBJECT
@@ -321,6 +380,61 @@ private:
 };
 
 
+//! ARN Sapi QML.
+/*!
+This class is the Qml version of the ArnSapi.
+
+\see ArnQml
+
+<b>Example usage</b> \n \code
+// In Qml
+//
+import QtQuick 2.0
+import ArnLib 1.0
+
+Rectangle {
+    width: 370;  height: 400
+
+    Item {
+        id: sapiTest
+        ArnSapi {
+            pipePath: "//Test/pipe"
+            mode: ArnSapi.NamedArg
+        }
+
+        // Provider API
+        signal pv_readFileTest( string fileName)
+
+        // Requester API
+        signal rq_test2( string par1)
+        function rq_test( p1) {
+            console.log("rq_test: p1=" + p1);
+        }
+
+        Component.onCompleted: {
+            sapiTest.rq_test2.connect( info.setTestMsg);
+            sapiTest.pv_readFileTest("myfile");
+        }
+    }
+
+    Rectangle {
+        id: info
+        property string testMsg: ""
+        anchors.bottom: parent.bottom; anchors.left: parent.left;  anchors.right: parent.right
+        height: 80
+        Column {
+            anchors.fill: parent;
+            Text {text: "Msg: " + info.testMsg}
+            Text {text: arn.info}  // ArnLib version info
+        }
+
+        function setTestMsg( msg) {
+            info.testMsg = msg;
+        }
+    }
+}
+\endcode
+*/
 class ArnSapiQml : public ArnRpc, public QQmlParserStatus
 {
     Q_OBJECT
@@ -329,7 +443,7 @@ class ArnSapiQml : public ArnRpc, public QQmlParserStatus
     //! Path of the pipe for this Sapi
     Q_PROPERTY( QString pipePath   READ pipePath    WRITE setPipePath    NOTIFY pathChanged)
     //! Sapi modes
-    Q_PROPERTY( Mode modes          READ mode        WRITE setMode        NOTIFY dummyNotifier)
+    Q_PROPERTY( Mode mode          READ mode        WRITE setMode        NOTIFY dummyNotifier)
     //! The receiving object of incomming Sapi calls. Default: parent
     Q_PROPERTY( QObject* receiver  READ receiver    WRITE setReceiver    NOTIFY dummyNotifier)
 public:
