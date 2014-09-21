@@ -193,9 +193,16 @@ public:
     //! Set period time for sending heart beat message
     /*! Setting time to zero will turn off sending.
      *  \param[in] time is the time period in seconds
-     *  \see setHeartBeatCheck();
+     *  \see setHeartBeatCheck()
      */
     void  setHeartBeatSend( int time);
+
+    //! Get period time for sending heart beat message
+    /*! Time zero is turned off sending.
+     *  \return time is the time period in seconds
+     *  \see setHeartBeatSend()
+     */
+    int  getHeartBeatSend()  const;
 
     //! Set max time period for receiving heart beat message
     /*! Setting time to zero will turn off checking.
@@ -203,6 +210,13 @@ public:
      *  \see setHeartBeatSend();
      */
     void  setHeartBeatCheck( int time);
+
+    //! Get max time period for receiving heart beat message
+    /*! Time zero is turned off checking.
+     *  \return time is the time period in seconds
+     *  \see setHeartBeatCheck()
+     */
+    int  getHeartBeatCheck()  const;
 
     //! Get the state of heart beat
     /*! \retval false if not getting heart beat in time

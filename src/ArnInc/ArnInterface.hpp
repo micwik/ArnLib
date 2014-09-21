@@ -42,6 +42,7 @@ class ARNLIBSHARED_EXPORT ArnInterface : public QObject
     //! See ArnM::info()
     Q_PROPERTY( QString info  READ info  NOTIFY dummyNotifier)
 public:
+    //! Action when assigning same value to an ArnItem
     enum SameValue {
         //! Assigning same value generates an update of the _Arn Data Object_
         SameValue_Accept = Arn::SameValue::Accept,
@@ -50,7 +51,29 @@ public:
         //! Assigning same value gives default action set in ArnM or ArnItem
         SameValue_DefaultAction = Arn::SameValue::DefaultAction
     };
-    Q_ENUMS(SameValue)
+    Q_ENUMS( SameValue)
+
+    //! Data type of an _Arn Data Object_
+    enum DataType {
+        DataType_Null      = Arn::DataType::Null,
+        DataType_Int       = Arn::DataType::Int,
+        DataType_Double    = Arn::DataType::Double,
+        DataType_ByteArray = Arn::DataType::ByteArray,
+        DataType_String    = Arn::DataType::String,
+        DataType_Variant   = Arn::DataType::Variant
+    };
+    Q_ENUMS( DataType)
+
+    //! General global mode of an _Arn Data Object_
+    enum ObjectMode {
+        //! A two way object, typically for validation or pipe
+        ObjectMode_BiDir = Arn::ObjectMode::BiDir,
+        //! Implies _BiDir_ and all data is preserved as a stream
+        ObjectMode_Pipe  = Arn::ObjectMode::Pipe,
+        //! Data is persistent and will be saved
+        ObjectMode_Save  = Arn::ObjectMode::Save
+    };
+    Q_ENUMS( ObjectMode)
 
     //! Selects a format for path or item name
     enum NameF {
@@ -63,7 +86,7 @@ public:
         //! Only on path, no effect on discrete names. "/test/value" ==> "test/value"
         NameF_Relative     = Arn::NameF::Relative
     };
-    Q_ENUMS(NameF)
+    Q_ENUMS( NameF)
 
 //! \cond ADV
     explicit  ArnInterface( QObject* parent = 0) : QObject( parent) {}
@@ -75,23 +98,31 @@ public slots:
 
     //! See ArnM::valueVariant()
     QVariant  value( const QString& path)       {return ArnM::instance().valueVariant( path);}
+
     //! See ArnM::valueVariant()
     QVariant  variant( const QString& path)     {return ArnM::instance().valueVariant( path);}
+
     //! See ArnM::valueString()
     QString  string( const QString& path)       {return ArnM::instance().valueString( path);}
+
     //! See ArnM::valueByteArray()
     QByteArray  bytes( const QString& path)     {return ArnM::instance().valueByteArray( path);}
+
     //! See ArnM::valueDouble()
     double  num( const QString& path)           {return ArnM::instance().valueDouble( path);}
+
     //! See ArnM::valueInt()
     int  intNum( const QString& path)           {return ArnM::instance().valueInt( path);}
 
     //! See ArnM::items()
     QStringList  items( const QString& path)    {return ArnM::instance().items( path);}
+
     //! See ArnM::exist()
     bool  exist(const QString& path)            {return ArnM::instance().exist( path);}
+
     //! See ArnM::isFolder()
     bool  isFolder( const QString& path)        {return ArnM::instance().isFolder( path);}
+
     //! See ArnM::isLeaf()
     bool  isLeaf( const QString& path)          {return ArnM::instance().isLeaf( path);}
 

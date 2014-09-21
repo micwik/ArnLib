@@ -327,12 +327,24 @@ void  ArnRpc::setHeartBeatSend( int time)
 }
 
 
+int  ArnRpc::getHeartBeatSend()  const
+{
+    return _timerHeartBeatSend->interval() / 1000;
+}
+
+
 void  ArnRpc::setHeartBeatCheck( int time)
 {
     if (time == 0)
         _timerHeartBeatCheck->stop();
     else
         _timerHeartBeatCheck->start( time * 1000);
+}
+
+
+int  ArnRpc::getHeartBeatCheck()  const
+{
+    return _timerHeartBeatCheck->interval() / 1000;
 }
 
 

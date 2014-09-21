@@ -112,14 +112,15 @@ ArnItemQml::ArnItemQml( QObject* parent)
     : ArnItem( parent)
 {
     _isCompleted = false;
+    _useUuid     = false;
 }
 
 
 QString  ArnItemQml::variantType()  const
 {
-    if (!_valueType)  return QString();
+    if (!_variantType)  return QString();
 
-    const char*  typeName = QMetaType::typeName(_valueType);
+    const char*  typeName = QMetaType::typeName(_variantType);
     if (!typeName)  return QString();
 
     return typeName;
@@ -129,7 +130,7 @@ QString  ArnItemQml::variantType()  const
 void  ArnItemQml::setVariantType( const QString& typeName)
 {
     if (typeName.isEmpty()) {
-        _valueType = 0;
+        _variantType = 0;
     }
     else {
         int  type = QMetaType::type( typeName.toLatin1().constData());
@@ -141,7 +142,7 @@ void  ArnItemQml::setVariantType( const QString& typeName)
         }
         else
 */
-            _valueType = type;
+            _variantType = type;
     }
 
     emit variantTypeChanged();
@@ -159,7 +160,11 @@ void  ArnItemQml::setPath( const QString& path)
     _path = path;
     if (_isCompleted) {
         QString  arnPath = Arn::changeBasePath("/", ArnQml::arnRootPath(), path);
-        open( arnPath);
+        if (_useUuid)
+            openUuid( arnPath);
+        else
+            open( arnPath);
+
         if (type() != Arn::DataType::Null)  // Value already present ...
             emit valueChanged();
     }
@@ -170,11 +175,11 @@ void  ArnItemQml::setPath( const QString& path)
 
 void  ArnItemQml::setVariant( const QVariant& value)
 {
-    if (!_valueType)  // No valueType, no conversion
+    if (!_variantType)  // No variantType, no conversion
         ArnItem::setValue( value);
-    else {  // Use valueType
+    else {  // Use variantType
         QVariant  val = value;
-        if (val.convert( QVariant::Type( _valueType))) {
+        if (val.convert( QVariant::Type( _variantType))) {
             ArnItem::setValue( val);
         }
         else {
@@ -217,6 +222,18 @@ void  ArnItemQml::setSaveMode( bool isSaveMode)
 {
     if (isSaveMode)
         ArnItem::setSaveMode();
+}
+
+
+bool  ArnItemQml::useUuid()  const
+{
+    return _useUuid;
+}
+
+
+void  ArnItemQml::setUseUuid( bool useUuid)
+{
+    _useUuid = useUuid;
 }
 
 

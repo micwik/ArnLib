@@ -243,33 +243,58 @@ Rectangle {
 class  ArnItemQml : public ArnItem, public QQmlParserStatus
 {
     Q_OBJECT
-    Q_INTERFACES(QQmlParserStatus)
+    Q_INTERFACES( QQmlParserStatus)
 
     //! The type used inside the variant, e.g. QString
-    Q_PROPERTY( QString variantType  READ variantType   WRITE setVariantType  NOTIFY variantTypeChanged)
+    Q_PROPERTY( QString variantType  READ variantType        WRITE setVariantType      NOTIFY variantTypeChanged)
+    //! Select to use ArnItem::openUuid()
+    Q_PROPERTY( bool useUuid         READ useUuid            WRITE setUseUuid          NOTIFY dummyNotifier)
     //! The path of this ArnItem
-    Q_PROPERTY( QString path         READ path          WRITE setPath         NOTIFY pathChanged)
+    Q_PROPERTY( QString path         READ path               WRITE setPath             NOTIFY pathChanged)
+    //! The Arn data type of this ArnItem
+    Q_PROPERTY( Arn::DataType type   READ type                                         NOTIFY valueChanged)
     //! The ArnItem value as a QVariant
-    Q_PROPERTY( QVariant variant     READ toVariant     WRITE setVariant      NOTIFY valueChanged)
+    Q_PROPERTY( QVariant variant     READ toVariant          WRITE setVariant          NOTIFY valueChanged)
     //! The ArnItem value as a QString
-    Q_PROPERTY( QString string       READ toString      WRITE setValue        NOTIFY valueChanged)
+    Q_PROPERTY( QString string       READ toString           WRITE setValue            NOTIFY valueChanged)
     //! The ArnItem value as a QByteArray
-    Q_PROPERTY( QByteArray bytes     READ toByteArray   WRITE setValue        NOTIFY valueChanged)
+    Q_PROPERTY( QByteArray bytes     READ toByteArray        WRITE setValue            NOTIFY valueChanged)
     //! The ArnItem value as a double
-    Q_PROPERTY( double num           READ toDouble      WRITE setValue        NOTIFY valueChanged)
+    Q_PROPERTY( double num           READ toDouble           WRITE setValue            NOTIFY valueChanged)
     //! The ArnItem value as an int
-    Q_PROPERTY( int intNum           READ toInt         WRITE setValue        NOTIFY valueChanged)
+    Q_PROPERTY( int intNum           READ toInt              WRITE setValue            NOTIFY valueChanged)
     //! See Arn::ObjectMode::BiDir
-    Q_PROPERTY( bool biDirMode       READ isBiDirMode   WRITE setBiDirMode    NOTIFY dummyNotifier)
+    Q_PROPERTY( bool biDirMode       READ isBiDirMode        WRITE setBiDirMode        NOTIFY dummyNotifier)
     //! See Arn::ObjectMode::Pipe
-    Q_PROPERTY( bool pipeMode        READ isPipeMode    WRITE setPipeMode     NOTIFY dummyNotifier)
+    Q_PROPERTY( bool pipeMode        READ isPipeMode         WRITE setPipeMode         NOTIFY dummyNotifier)
     //! See Arn::ObjectMode::Save
-    Q_PROPERTY( bool saveMode        READ isSaveMode    WRITE setSaveMode     NOTIFY dummyNotifier)
+    Q_PROPERTY( bool saveMode        READ isSaveMode         WRITE setSaveMode         NOTIFY dummyNotifier)
     //! See Arn::ObjectSyncMode::Master
-    Q_PROPERTY( bool masterMode      READ isMaster      WRITE setMaster       NOTIFY dummyNotifier)
+    Q_PROPERTY( bool masterMode      READ isMaster           WRITE setMaster           NOTIFY dummyNotifier)
     //! See Arn::ObjectSyncMode::AutoDestroy
-    Q_PROPERTY( bool autoDestroyMode READ isAutoDestroy WRITE setAutoDestroy  NOTIFY dummyNotifier)
+    Q_PROPERTY( bool autoDestroyMode READ isAutoDestroy      WRITE setAutoDestroy      NOTIFY dummyNotifier)
+    //! See ArnItem::setIgnoreSameValue()
+    Q_PROPERTY( bool ignoreSameValue READ isIgnoreSameValue  WRITE setIgnoreSameValue  NOTIFY dummyNotifier)
     // Q_PROPERTY( bool smTemplate     READ isTemplate    WRITE setTemplate)
+
+public slots:
+    //! Add _general mode_ settings for this _Arn Data Object_
+    /*! \see ArnItem::addMode()
+    */
+    void  addMode( Arn::ObjectMode mode)
+    {return ArnItemB::addMode( mode);}
+
+    /*! \return The _general mode_ of the _Arn Data Object_
+    *  \see ArnItem::getMode()
+    */
+    Arn::ObjectMode  getMode()  const
+    {return ArnItemB::getMode();}
+
+    //! Set _delay_ of data changed signal
+    /*! \see ArnItem::setDelay()
+    */
+    void  setDelay( int delay)
+    {ArnItem::setDelay( delay);}
 
 //! \cond ADV
 public:
@@ -292,10 +317,13 @@ public:
     // bool  isTemplate() const;
     // void  setTemplate( bool isTemplate);
 
-    virtual void classBegin();
-    virtual void componentComplete();
+    bool  useUuid()  const;
+    void  setUseUuid( bool useUuid);
 
-signals:
+    virtual void  classBegin();
+    virtual void  componentComplete();
+
+    signals:
     void  valueChanged();
     void  pathChanged();
     void  variantTypeChanged();
@@ -310,7 +338,8 @@ protected:
 private:
     bool  _isCompleted;
     QString  _path;
-    int  _valueType;
+    int  _variantType;
+    bool  _useUuid;
 };
 
 
@@ -340,7 +369,7 @@ Rectangle {
 class ArnMonitorQml : public ArnMonitor, public QQmlParserStatus
 {
     Q_OBJECT
-    Q_INTERFACES(QQmlParserStatus)
+    Q_INTERFACES( QQmlParserStatus)
 
     //! The client id. Set whith ArnClient::registerClient(). Use "std" if not set.
     Q_PROPERTY( QString clientId     READ clientId     WRITE setClientId     NOTIFY dummyNotifier)
@@ -438,14 +467,24 @@ Rectangle {
 class ArnSapiQml : public ArnRpc, public QQmlParserStatus
 {
     Q_OBJECT
-    Q_INTERFACES(QQmlParserStatus)
+    Q_INTERFACES( QQmlParserStatus)
 
     //! Path of the pipe for this Sapi
-    Q_PROPERTY( QString pipePath   READ pipePath    WRITE setPipePath    NOTIFY pathChanged)
+    Q_PROPERTY( QString pipePath    READ pipePath           WRITE setPipePath        NOTIFY pathChanged)
     //! Sapi modes
-    Q_PROPERTY( Mode mode          READ mode        WRITE setMode        NOTIFY dummyNotifier)
+    Q_PROPERTY( Mode mode           READ mode               WRITE setMode            NOTIFY dummyNotifier)
     //! The receiving object of incomming Sapi calls. Default: parent
-    Q_PROPERTY( QObject* receiver  READ receiver    WRITE setReceiver    NOTIFY dummyNotifier)
+    Q_PROPERTY( QObject* receiver   READ receiver           WRITE setReceiver        NOTIFY dummyNotifier)
+
+    //! Period time for sending heart beat message
+    /*! \see ArnRpc::setHeartBeatSend()
+     */
+    Q_PROPERTY( int heartBeatSend   READ getHeartBeatSend   WRITE setHeartBeatSend   NOTIFY dummyNotifier)
+
+    //! Max time period for receiving heart beat message
+    /*! \see ArnRpc::setHeartBeatCheck()
+     */
+    Q_PROPERTY( int heartBeatCheck  READ getHeartBeatCheck  WRITE setHeartBeatCheck  NOTIFY dummyNotifier)
 public:
     enum Mode {
         //! Provider side (opposed to requester)
@@ -471,7 +510,12 @@ public:
     };
     Q_ENUMS( Mode)
 
+public slots:
+    bool  isHeartBeatOk()
+    {return ArnRpc::isHeartBeatOk();}
+
 //! \cond ADV
+public:
     explicit ArnSapiQml( QObject* parent = 0);
 
     void  setPipePath( const QString& path);
