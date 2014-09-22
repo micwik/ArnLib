@@ -297,12 +297,6 @@ public slots:
     ArnInterface::ObjectMode  getMode()  const
     {return ArnInterface::ObjectMode( ArnItemB::getMode().toInt());}
 
-    //! Set _delay_ of data changed signal
-    /*! \see ArnItem::setDelay()
-    */
-    void  setDelay( int delay)
-    {ArnItem::setDelay( delay);}
-
 //! \cond ADV
 public:
     explicit ArnItemQml( QObject* parent = 0);
