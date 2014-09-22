@@ -130,9 +130,9 @@ void  ArnItem::setDelay( int delay)
 {
     if (!_delayTimer) {
         _delayTimer = new QTimer( this);
-        _delayTimer->setInterval( delay);
         connect( _delayTimer, SIGNAL(timeout()), this, SLOT(timeoutItemUpdate()));
     }
+    _delayTimer->setInterval( delay);
 }
 
 

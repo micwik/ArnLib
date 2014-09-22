@@ -34,6 +34,7 @@
 #include "ArnInc/ArnInterface.hpp"
 #include "ArnInc/ArnM.hpp"
 #include <QtQml>
+#include <QDebug>
 
 using namespace Arn;
 
@@ -136,15 +137,12 @@ void  ArnItemQml::setVariantType( const QString& typeName)
     }
     else {
         int  type = QMetaType::type( typeName.toLatin1().constData());
-/*
         if (!type) {
-            context()->throwError( QScriptContext::TypeError,
-                                   "Setting unknown defaultType=" + typeName);
+            qWarning() << "ItemQml setVariantType, Unknown: type=" + typeName + " path=" + path();
             return;
         }
-        else
-*/
-            _variantType = type;
+
+        _variantType = type;
     }
 
     emit variantTypeChanged();
@@ -185,8 +183,8 @@ void  ArnItemQml::setVariant( const QVariant& value)
             ArnItem::setValue( val);
         }
         else {
-            // context()->throwError( QScriptContext::TypeError,
-            //                       "Can't convert to defaultType=" + defaultType());
+            qWarning() << "ItemQml setVariant, Can't convert: type="
+                       << _variantType  << " path=" + path();
         }
     }
 }
@@ -491,12 +489,12 @@ void  ArnNetworkReply::postSetup()
     _arnItem.open( _arnPath);
 
     if (!wasLocalExist && (_arnItem.type() == Arn::DataType::Null)) {
-        qDebug() << "ArnQml wait for data: path=" << _arnPath;
+        // qDebug() << "ArnQml wait for data: path=" << _arnPath;
         connect( &_arnItem, SIGNAL(changed()), this, SLOT(dataArived()));
         return;
     }
 
-    qDebug() << "ArnQml direct using data: path=" << _arnPath;
+    // qDebug() << "ArnQml direct using data: path=" << _arnPath;
     setData( _arnItem.toByteArray());
 }
 
@@ -505,7 +503,7 @@ void  ArnNetworkReply::dataArived()
 {
     disconnect( &_arnItem, SIGNAL(changed()), this, SLOT(dataArived()));
 
-    qDebug() << "ArnQml data arived: path=" << _arnPath;
+    // qDebug() << "ArnQml data arived: path=" << _arnPath;
     setData( _arnItem.toByteArray());
 }
 
@@ -560,7 +558,7 @@ QNetworkReply*  ArnNetworkAccessManager::createRequest( QNetworkAccessManager::O
         break;
     }
     default:
-        qDebug() << "ArnNetworkAccessManager: Operation not supported op=" << op;
+        qWarning() << "ArnNetworkAccessManager: Operation not supported op=" << op;
         break;
     }
 

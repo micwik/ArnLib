@@ -14,6 +14,7 @@ Minor
 -----
 * In Signal Slot use "const Type&".
 * Add setDelay in ArnItemQml, rework changed().
+* ArnItemQml::updateValue() don't handle param data.
 * Optimize data transfer with minimal copying.
 * Optimize memory consumption with pointers to different data in ArnLink.
 * Simple access system for Server/Client

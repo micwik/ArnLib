@@ -66,7 +66,7 @@ For information about available ArnLib components in Qml see:
 ArnBrowser is using this to run Qml applications in an opaque style, i.e. without specific
 application support. This resembles somewhat a web browser running a web application.
 
-Note that you must not use any empty folders in QUrl for an Arn path.
+Note that you must not use any empty folders in QUrl for an ARN path.
 Example: path "//Qml/test.qml" can be set to the equal path "/@/Qml/test.qml".
 Also this conversion can be made by Arn::convertPath("//Qml/test.qml", Arn::NameF()).
 
