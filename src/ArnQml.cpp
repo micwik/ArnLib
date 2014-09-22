@@ -113,6 +113,8 @@ ArnItemQml::ArnItemQml( QObject* parent)
 {
     _isCompleted = false;
     _useUuid     = false;
+
+    setIgnoreSameValue( true);
 }
 
 
@@ -165,7 +167,7 @@ void  ArnItemQml::setPath( const QString& path)
         else
             open( arnPath);
 
-        if (type() != Arn::DataType::Null)  // Value already present ...
+        if (ArnItem::type() != Arn::DataType::Null)  // Value already present ...
             emit valueChanged();
     }
 

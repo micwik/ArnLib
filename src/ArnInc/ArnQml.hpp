@@ -33,6 +33,7 @@
 #define ARNQML_HPP
 
 #include "ArnLib_global.hpp"
+#include "ArnInterface.hpp"
 #include "ArnItem.hpp"
 #include "ArnMonitor.hpp"
 #include "ArnRpc.hpp"
@@ -226,6 +227,7 @@ Rectangle {
     property ArnItem arnT1: ArnItem {path: "//El/UpdClock/value"}
 
     ArnItem {id: arnElUpdClock;  path: "//El/UpdClock/value"}
+    ArnItem {id: arnTest;        path: "//Test/test"}
 
     Rectangle {
         id: info
@@ -236,6 +238,10 @@ Rectangle {
             Text {text: "El updClock 1: " + arnElUpdClock.intNum}
             Text {text: "El updClock 2: " + arnT1.intNum}
         }
+    }
+
+    Component.onCompleted: {
+        arnTest.setValue("Start ...", Arn.SameValue_Accept);
     }
 }
 \endcode
@@ -252,7 +258,8 @@ class  ArnItemQml : public ArnItem, public QQmlParserStatus
     //! The path of this ArnItem
     Q_PROPERTY( QString path         READ path               WRITE setPath             NOTIFY pathChanged)
     //! The Arn data type of this ArnItem
-    Q_PROPERTY( Arn::DataType type   READ type                                         NOTIFY valueChanged)
+    Q_PROPERTY( ArnInterface::DataType  type
+                                     READ type                                         NOTIFY valueChanged)
     //! The ArnItem value as a QVariant
     Q_PROPERTY( QVariant variant     READ toVariant          WRITE setVariant          NOTIFY valueChanged)
     //! The ArnItem value as a QString
@@ -281,14 +288,14 @@ public slots:
     //! Add _general mode_ settings for this _Arn Data Object_
     /*! \see ArnItem::addMode()
     */
-    void  addMode( Arn::ObjectMode mode)
-    {return ArnItemB::addMode( mode);}
+    void  addMode( ArnInterface::ObjectMode mode)
+    {ArnItemB::addMode( Arn::ObjectMode::fromInt( mode));}
 
     /*! \return The _general mode_ of the _Arn Data Object_
     *  \see ArnItem::getMode()
     */
-    Arn::ObjectMode  getMode()  const
-    {return ArnItemB::getMode();}
+    ArnInterface::ObjectMode  getMode()  const
+    {return ArnInterface::ObjectMode( ArnItemB::getMode().toInt());}
 
     //! Set _delay_ of data changed signal
     /*! \see ArnItem::setDelay()
@@ -304,6 +311,9 @@ public:
     void  setVariantType( const QString& typeName);
 
     QString  path()  const;
+
+    ArnInterface::DataType  type()  const
+    {return ArnInterface::DataType( ArnItem::type().toInt());}
 
     void  setPath( const QString& path);
 
