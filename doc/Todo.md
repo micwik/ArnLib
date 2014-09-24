@@ -21,7 +21,9 @@ Minor
 * Add tranfer classes for copying values.
 * Add multiplex/demultiplex-classes for pipes used by Sapi.
 
-Done
-----
+Done in 2.3
+-----------
 * QML with "files" as ArnObject and other integration with Arn.
+* QML support for Sapi
 * ArnClient stored centraly with an id. Also accessible by the id.
+* External engine can be assigned to ArnScript
