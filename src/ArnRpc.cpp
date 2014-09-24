@@ -1155,8 +1155,12 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
     QByteArray  modePar = xsm.value(1);
     int  flags = -1;  // Default is faulty parameter
 
-    if (modePar.isEmpty()) {
-        flags = 0;  // Ok, standard
+    if (modePar.isEmpty()) {  // Ok, standard
+        bool  useNamedArgHelp = _mode.isAny( Mode::AnyNamedArg) & !_mode.is( Mode::OnlyPosArgIn);
+        flags = _mode.flagIf( useNamedArgHelp, Mode::NamedArg);
+    }
+    else if (modePar.startsWith("p")) {  // Positional
+        flags = 0;
     }
     else if (modePar.startsWith("n")) {  // Named
         flags = Mode::NamedArg;
@@ -1206,7 +1210,7 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
 
     sendText("$arg pos|named|typed");
     sendText("$heartbeat [`time`|off|off1]");
-    sendText("$help [named]");
+    sendText("$help [pos|named]");
 }
 
 
