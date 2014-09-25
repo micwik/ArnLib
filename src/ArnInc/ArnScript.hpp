@@ -169,9 +169,6 @@ public:
     bool  logUncaughtError( QScriptValue& scriptValue);
     QString  idName()  const;
 
-    // To be reimplemented for accessing higher layer info
-    virtual ArnClient*  getClient( QString clientId);
-
 signals:
     void  errorText( QString txt);
 

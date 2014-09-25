@@ -48,17 +48,6 @@ class QEvent;
 
 
 //! \cond ADV
-class ArnScriptJ : public ArnScript
-{
-Q_OBJECT
-public:
-    explicit  ArnScriptJ( ArnScriptJobB* parent);
-    ~ArnScriptJ();
-
-    // Reimplemented for accessing info from ArnJobs layer
-    virtual ArnClient*  getClient( QString clientId);
-};
-
 
 /// Internal class for hiding details from Script
 class ArnScriptJobB : public QObject
@@ -110,7 +99,7 @@ protected:
     void  addConfig( QObject* obj);
     void  setJobFactory( ArnScriptJobFactory* jobFactory);
 
-    ArnScriptJ*  _arnScr;
+    ArnScript*  _arnScr;
     QObject*  _configObj;
     QTimer*  _abortTimer;
 
@@ -160,7 +149,6 @@ public:
     virtual  ~ArnScriptJobFactory();
     virtual bool  installExtension( QString id, QScriptEngine& engine,
                                     const ArnScriptJobControl* jobControl = 0) = 0;
-    virtual ArnClient*  getClient( QString id);
 
 protected:
     static void  setupJsObj( const QString& id, const QScriptValue& jsObj, QScriptEngine& engine);

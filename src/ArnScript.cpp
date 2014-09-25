@@ -223,12 +223,6 @@ void  ArnScript::errorLog( QString errText, ArnError err, void* reference)
 }
 
 
-ArnClient*  ArnScript::getClient( QString /*clientId*/)
-{
-    return 0;
-}
-
-
 ///////// ArnItem
 
 ArnItemProto::ArnItemProto( ArnScript* parent)

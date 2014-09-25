@@ -42,25 +42,6 @@
 const QEvent::Type  EventQuit = QEvent::Type( QEvent::User + 0);
 
 
-ArnScriptJ::ArnScriptJ( ArnScriptJobB* parent) :
-        ArnScript( parent)
-{
-}
-
-
-ArnScriptJ::~ArnScriptJ()
-{
-}
-
-
-ArnClient*  ArnScriptJ::getClient( QString clientId)
-{
-    ArnScriptJobB*  job = qobject_cast<ArnScriptJobB*>( parent());
-    Q_ASSERT( job && job->jobFactory());
-    return job->jobFactory()->getClient( clientId);
-}
-
-
 ArnScriptJobB::ArnScriptJobB( int id, QObject* parent) :
         QObject( parent)
 {
@@ -74,7 +55,7 @@ ArnScriptJobB::ArnScriptJobB( int id, QObject* parent) :
     _jobFactory = 0;
     _configObj  = new QObject( this);
     _abortTimer = new QTimer( this);
-    _arnScr     = new ArnScriptJ( this);
+    _arnScr     = new ArnScript( this);
     setPollTime( _pollTime);
 
     connect( _abortTimer, SIGNAL(timeout()), this, SLOT(doTimeoutAbort()));
@@ -337,12 +318,6 @@ ArnScriptJobFactory::ArnScriptJobFactory()
 
 ArnScriptJobFactory::~ArnScriptJobFactory()
 {
-}
-
-
-ArnClient*  ArnScriptJobFactory::getClient( QString /*id*/)
-{
-    return 0;
 }
 
 
