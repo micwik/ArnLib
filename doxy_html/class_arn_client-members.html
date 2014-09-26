@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.2.x</span>
+   &#160;<span id="projectnumber">2.3.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -120,19 +120,23 @@ $(document).ready(function(){initNavTree('class_arn_client.html','');});
   <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a4dcd34da7a9b9458055389746d0557f3">connectStatus</a>() const </td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057">connectToArn</a>(const QString &amp;arnHost, quint16 port=0)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#abb3b70b54670be547e87118c60c685dc">connectToArnList</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53">HostList</a> typedef</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#ae46eb729558c88cf73941b1c190cd976">removeMountPoint</a>(const QString &amp;localPath)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60">setAutoConnect</a>(bool isAuto, int retryTime=2)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548">setMountPoint</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#ad4b15b43e125a4f40d9deee316c1ee1c">tcpConnected</a>(QString arnHost, quint16 port)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd">tcpDisConnected</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#a27858277134c9fa0240cf4b18fffdb28">tcpError</a>(QString errorText, QAbstractSocket::SocketError socketError)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#afd967a49b126566e76e9f22276c4a65e">getClient</a>(const QString &amp;id)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53">HostList</a> typedef</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#aa9b18c9ed13ce18807e80df71ceae1b0">id</a>() const </td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#ad351d3f637b6c65e44506cd30b26d7a3">registerClient</a>(const QString &amp;id)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#ae46eb729558c88cf73941b1c190cd976">removeMountPoint</a>(const QString &amp;localPath)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60">setAutoConnect</a>(bool isAuto, int retryTime=2)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548">setMountPoint</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#ad4b15b43e125a4f40d9deee316c1ee1c">tcpConnected</a>(QString arnHost, quint16 port)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd">tcpDisConnected</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a27858277134c9fa0240cf4b18fffdb28">tcpError</a>(QString errorText, QAbstractSocket::SocketError socketError)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#a6790b90c92aa497667e85e6dac0a95c7">~ArnClient</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 29 2014 23:17:16 for ArnLib by
+    <li class="footer">Generated on Fri Sep 26 2014 21:03:46 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

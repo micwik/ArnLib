@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ArnLib: doc/Todo.md (2.2.0) Source File</title>
+<title>ArnLib: doc/Todo.md (2.3.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.2.x</span>
+   &#160;<span id="projectnumber">2.3.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('_todo_8md.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">doc/Todo.md (2.2.0)</div>  </div>
+<div class="title">doc/Todo.md (2.3.0)</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="_todo_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;ArnLib Todo</div>
@@ -112,25 +112,36 @@ $(document).ready(function(){initNavTree('_todo_8md.html','');});
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;Major</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;-----</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;* Script support <span class="keywordflow">for</span> Sapi.</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;* QML with <span class="stringliteral">&quot;files&quot;</span> as ArnObject and other integration with Arn.</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;* Convert to d-pointer <span class="keywordflow">for</span> making binary compatible library in the future.</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;* Convert to d-pointer <span class="keywordflow">for</span> making binary compatible library in the future.</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;* Distributed deletion of folders</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;* Unit tests</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;Minor</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;-----</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;* In Signal Slot use <span class="stringliteral">&quot;const Type&amp;&quot;</span>.</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;* Optimize data transfer with minimal copying.</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;* Optimize memory consumption with pointers to different data in ArnLink.</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;* Add tranfer classes <span class="keywordflow">for</span> copying values.</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;* Add more examples</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;* <a class="code" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a> stored centraly with an <span class="keywordtype">id</span>. Also accessible by the <span class="keywordtype">id</span>.</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;* General access system</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;* Add more examples</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;Minor</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;-----</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;* In Signal Slot use <span class="stringliteral">&quot;const Type&amp;&quot;</span>.</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;* Add setDelay in <a class="code" href="class_arn_item_qml.html" title="ARN Item QML.">ArnItemQml</a>, rework changed().</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;* ArnItemQml::updateValue() don&#39;t handle param data.</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;* Optimize data transfer with minimal copying.</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;* Optimize memory consumption with pointers to different data in ArnLink.</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;* Simple access system for Server/Client</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;* Add tranfer classes for copying values.</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;* Add multiplex/demultiplex-classes for pipes used by Sapi.</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;Done in 2.3</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;-----------</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;* QML with &quot;files&quot; as ArnObject and other integration with Arn.</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;* QML support for Sapi</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;* <a class="code" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a> stored centraly with an <span class="keywordtype">id</span>. Also accessible by the <span class="keywordtype">id</span>.</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;* External engine can be assigned to <a class="code" href="class_arn_script.html">ArnScript</a></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="_todo_8md.html">Todo.md</a></li>
-    <li class="footer">Generated on Tue Jul 29 2014 23:17:15 for ArnLib by
+    <li class="footer">Generated on Fri Sep 26 2014 21:03:44 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

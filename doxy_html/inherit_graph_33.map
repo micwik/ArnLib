@@ -1,3 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$class_arn_script_job.html" title="ArnScriptJob" alt="" coords="5,5,101,32"/>
+<area shape="rect" id="node1" href="$class_arn_rpc.html" title="Remote Procedure Call." alt="" coords="6,31,71,57"/>
+<area shape="rect" id="node3" href="$class_arn_sapi.html" title="Service API." alt="" coords="133,5,201,32"/>
+<area shape="rect" id="node5" href="$class_arn_sapi_qml.html" title="ARN Sapi QML." alt="" coords="121,56,213,83"/>
 </map>

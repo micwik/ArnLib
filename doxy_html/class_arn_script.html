@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.2.x</span>
+   &#160;<span id="projectnumber">2.3.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -126,12 +126,12 @@ Signals</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a240907efcc52b656a2bb3ee82b3138fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_script.html#a240907efcc52b656a2bb3ee82b3138fd">ArnScript</a> (QObject *parent=0)</td></tr>
+<tr class="memitem:a33ae53b0a6742be11a3369d5841d9bf9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_script.html#a33ae53b0a6742be11a3369d5841d9bf9">ArnScript</a> (QScriptEngine *<a class="el" href="class_arn_script.html#afbcd826fba629bb92cd089c1a8a85e82">engine</a>, QObject *parent=0)</td></tr>
 <tr class="memitem:afbcd826fba629bb92cd089c1a8a85e82"><td class="memItemLeft" align="right" valign="top">QScriptEngine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_script.html#afbcd826fba629bb92cd089c1a8a85e82">engine</a> () const </td></tr>
 <tr class="memitem:a55168dc6f30fbca04c8caa64b4e4c848"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_script.html#a55168dc6f30fbca04c8caa64b4e4c848">evaluate</a> (QByteArray script, QString <a class="el" href="class_arn_script.html#a30dbc244eb0ea34e54529335fae4326b">idName</a>)</td></tr>
 <tr class="memitem:a9b0fe8b82d78aea78470aacea486348c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_script.html#a9b0fe8b82d78aea78470aacea486348c">evaluateFile</a> (QString fileName)</td></tr>
 <tr class="memitem:ae7388bb2411ca0a39e10333a6b7cfb66"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_script.html#ae7388bb2411ca0a39e10333a6b7cfb66">logUncaughtError</a> (QScriptValue &amp;scriptValue)</td></tr>
 <tr class="memitem:a30dbc244eb0ea34e54529335fae4326b"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_script.html#a30dbc244eb0ea34e54529335fae4326b">idName</a> () const </td></tr>
-<tr class="memitem:a490516c01a2b021fbceb439378183936"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_arn_client.html">ArnClient</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_script.html#a490516c01a2b021fbceb439378183936">getClient</a> (QString clientId)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -151,7 +151,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00197">197</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00160">160</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a240907efcc52b656a2bb3ee82b3138fd"></a>
 <div class="memitem">
@@ -179,6 +179,34 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a33ae53b0a6742be11a3369d5841d9bf9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ArnScript::ArnScript </td>
+          <td>(</td>
+          <td class="paramtype">QScriptEngine *&#160;</td>
+          <td class="paramname"><em>engine</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QObject *&#160;</td>
+          <td class="paramname"><em>parent</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00086">86</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
+
+</div>
+</div>
 <hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="afbcd826fba629bb92cd089c1a8a85e82"></a>
 <div class="memitem">
@@ -193,7 +221,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00135">135</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00093">93</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
 
 </div>
 </div>
@@ -235,7 +263,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00209">209</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00217">217</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
 
 </div>
 </div>
@@ -287,7 +315,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00141">141</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00099">99</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
 
 </div>
 </div>
@@ -305,33 +333,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00152">152</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a490516c01a2b021fbceb439378183936"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_arn_client.html">ArnClient</a> * ArnScript::getClient </td>
-          <td>(</td>
-          <td class="paramtype">QString&#160;</td>
-          <td class="paramname"><em>clientId</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00218">218</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00110">110</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
 
 </div>
 </div>
@@ -348,7 +350,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00177">177</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00135">135</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
 
 </div>
 </div>
@@ -366,7 +368,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00161">161</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00119">119</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
 
 </div>
 </div>
@@ -402,7 +404,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00191">191</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8cpp_source.html#l00149">149</a> of file <a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp</a>.</p>
 
 </div>
 </div>
@@ -425,7 +427,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00226">226</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00187">187</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
 
 </div>
 </div>
@@ -447,7 +449,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00227">227</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00188">188</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
 
 </div>
 </div>
@@ -469,7 +471,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00223">223</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00184">184</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
 
 </div>
 </div>
@@ -491,7 +493,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00224">224</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00185">185</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
 
 </div>
 </div>
@@ -513,13 +515,13 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00225">225</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_script_8hpp_source.html#l00186">186</a> of file <a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/ArnInc/<a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp (2.2.0)</a></li>
-<li>src/<a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp (2.2.0)</a></li>
+<li>src/ArnInc/<a class="el" href="_arn_script_8hpp_source.html">ArnScript.hpp (2.3.0)</a></li>
+<li>src/<a class="el" href="_arn_script_8cpp_source.html">ArnScript.cpp (2.3.0)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -527,7 +529,7 @@ Protected Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_script.html">ArnScript</a></li>
-    <li class="footer">Generated on Tue Jul 29 2014 23:17:17 for ArnLib by
+    <li class="footer">Generated on Fri Sep 26 2014 21:03:47 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

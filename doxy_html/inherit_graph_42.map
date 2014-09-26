@@ -1,7 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$class_arn_zero_conf_b.html" title="Base class for Zero Config." alt="" coords="6,81,109,108"/>
-<area shape="rect" id="node3" href="$class_arn_zero_conf_browser.html" title="Browsing for ZeroConfig services." alt="" coords="158,5,298,32"/>
-<area shape="rect" id="node5" href="$class_arn_zero_conf_lookup.html" title="Lookup a host." alt="" coords="161,56,295,83"/>
-<area shape="rect" id="node7" href="$class_arn_zero_conf_register.html" title="Registering a ZeroConfig service." alt="" coords="157,107,299,133"/>
-<area shape="rect" id="node9" href="$class_arn_zero_conf_resolve.html" title="Resolv a ZeroConfig service." alt="" coords="159,157,297,184"/>
+<area shape="rect" id="node1" href="$struct_arn_script_jobs_1_1_type.html" title="ArnScriptJobs::Type" alt="" coords="5,5,144,32"/>
 </map>

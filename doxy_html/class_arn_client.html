@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.2.x</span>
+   &#160;<span id="projectnumber">2.3.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -108,7 +108,8 @@ $(document).ready(function(){initNavTree('class_arn_client.html','');});
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#signals">Signals</a> &#124;
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">ArnClient Class Reference</div>  </div>
 </div><!--header-->
@@ -144,6 +145,7 @@ Signals</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5b34e108640a9308afff44bd95c63862"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a5b34e108640a9308afff44bd95c63862">ArnClient</a> (QObject *parent=0)</td></tr>
+<tr class="memitem:a6790b90c92aa497667e85e6dac0a95c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a6790b90c92aa497667e85e6dac0a95c7">~ArnClient</a> ()</td></tr>
 <tr class="memitem:a612e42fe9c9859f446f715499635730b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#a612e42fe9c9859f446f715499635730b">clearArnList</a> (int prioFilter=-1)</td></tr>
 <tr class="memdesc:a612e42fe9c9859f446f715499635730b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the <a class="el" href="namespace_arn.html">Arn</a> connection list.  <a href="#a612e42fe9c9859f446f715499635730b"></a><br/></td></tr>
 <tr class="memitem:aa40570b93de2cdbea9ecd53cf28f57ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53">HostList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#aa40570b93de2cdbea9ecd53cf28f57ef">arnList</a> (int prioFilter=-1) const </td></tr>
@@ -164,6 +166,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a4dcd34da7a9b9458055389746d0557f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the <a class="el" href="namespace_arn.html">Arn</a> connection status.  <a href="#a4dcd34da7a9b9458055389746d0557f3"></a><br/></td></tr>
 <tr class="memitem:aba0318e38f60035bc4c78e89b25a4c60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60">setAutoConnect</a> (bool isAuto, int retryTime=2)</td></tr>
 <tr class="memdesc:aba0318e38f60035bc4c78e89b25a4c60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set automatic reconnect.  <a href="#aba0318e38f60035bc4c78e89b25a4c60"></a><br/></td></tr>
+<tr class="memitem:ad351d3f637b6c65e44506cd30b26d7a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#ad351d3f637b6c65e44506cd30b26d7a3">registerClient</a> (const QString &amp;<a class="el" href="class_arn_client.html#aa9b18c9ed13ce18807e80df71ceae1b0">id</a>)</td></tr>
+<tr class="memdesc:ad351d3f637b6c65e44506cd30b26d7a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register this client to be avaiable with id.  <a href="#ad351d3f637b6c65e44506cd30b26d7a3"></a><br/></td></tr>
+<tr class="memitem:aa9b18c9ed13ce18807e80df71ceae1b0"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#aa9b18c9ed13ce18807e80df71ceae1b0">id</a> () const </td></tr>
+<tr class="memdesc:aa9b18c9ed13ce18807e80df71ceae1b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the id of this client.  <a href="#aa9b18c9ed13ce18807e80df71ceae1b0"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:afd967a49b126566e76e9f22276c4a65e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_arn_client.html">ArnClient</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_client.html#afd967a49b126566e76e9f22276c4a65e">getClient</a> (const QString &amp;<a class="el" href="class_arn_client.html#aa9b18c9ed13ce18807e80df71ceae1b0">id</a>)</td></tr>
+<tr class="memdesc:afd967a49b126566e76e9f22276c4a65e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a client by its id.  <a href="#afd967a49b126566e76e9f22276c4a65e"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Class for connecting to an <em><a class="el" href="namespace_arn.html">Arn</a> Server</em>. </p>
@@ -219,7 +230,24 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00043">43</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00119">119</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6790b90c92aa497667e85e6dac0a95c7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ArnClient::~ArnClient </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00148">148</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -265,7 +293,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="md__description.html#gen_shareArnobj">Sharing Arn Data Objects </a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00155">155</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00241">241</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -314,7 +342,7 @@ Public Member Functions</h2></td></tr>
 <dd>
 <a class="el" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" title="Make a combined host and info string, i.e. HostWithInfo">Arn::makeHostWithInfo()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00105">105</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00191">191</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -347,7 +375,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_client.html#adcd16d9e9e4712de5b9b4d5ef5837272" title="Add an Arn Server to the Arn connection list.">addToArnList()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00089">89</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00175">175</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -375,7 +403,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_client.html#adcd16d9e9e4712de5b9b4d5ef5837272" title="Add an Arn Server to the Arn connection list.">addToArnList()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00068">68</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00154">154</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -444,7 +472,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00140">140</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00226">226</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -482,7 +510,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" title="Make a combined host and info string, i.e. HostWithInfo">Arn::makeHostWithInfo()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00131">131</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00217">217</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -502,7 +530,95 @@ Public Member Functions</h2></td></tr>
 <p>Connect to an <em><a class="el" href="namespace_arn.html">Arn</a> Server</em> in the <a class="el" href="namespace_arn.html">Arn</a> connection list. </p>
 <p>Will scan the connection list once until a successful connection is made. If the end of the list is reached without connection, the <a class="el" href="class_arn_client.html#a27858277134c9fa0240cf4b18fffdb28">tcpError()</a> signal </p>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00122">122</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00208">208</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afd967a49b126566e76e9f22276c4a65e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_arn_client.html">ArnClient</a> * ArnClient::getClient </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get a client by its id. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>if "" will always return 0. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns:</dt><dd>the found client, 0 = not found or id == "" </dd></dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_client.html#ad351d3f637b6c65e44506cd30b26d7a3" title="Register this client to be avaiable with id.">registerClient()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00312">312</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa9b18c9ed13ce18807e80df71ceae1b0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">QString ArnClient::id </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the id of this client. </p>
+<dl class="section return"><dt>Returns:</dt><dd>the id, "" = none (local) </dd></dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_client.html#ad351d3f637b6c65e44506cd30b26d7a3" title="Register this client to be avaiable with id.">registerClient()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00318">318</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad351d3f637b6c65e44506cd30b26d7a3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArnClient::registerClient </td>
+          <td>(</td>
+          <td class="paramtype">const QString &amp;&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register this client to be avaiable with id. </p>
+<p>When instantiating an <a class="el" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a>, it's always registered as id = "std", if that's not taken by another client.</p>
+<p>Any previous registration of id for this client will be released when using <a class="el" href="class_arn_client.html#ad351d3f637b6c65e44506cd30b26d7a3" title="Register this client to be avaiable with id.">registerClient()</a>. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>must not be "". </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="class_arn_client.html#afd967a49b126566e76e9f22276c4a65e" title="Get a client by its id.">getClient()</a> </dd>
+<dd>
+<a class="el" href="class_arn_client.html#aa9b18c9ed13ce18807e80df71ceae1b0" title="Get the id of this client.">id()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00303">303</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -536,7 +652,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="md__description.html#gen_shareArnobj">Sharing Arn Data Objects </a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00192">192</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00278">278</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -574,7 +690,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00210">210</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00296">296</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -609,7 +725,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="md__description.html#gen_shareArnobj">Sharing Arn Data Objects </a> </dd></dl>
 <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>Use <a class="el" href="class_arn_client.html#ac417b3db210850f4bea8abcf78bf1237" title="Add a sharing tree path.">addMountPoint()</a> and <a class="el" href="class_arn_client.html#ae46eb729558c88cf73941b1c190cd976" title="Remove a sharing tree path.">removeMountPoint()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00146">146</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_client_8cpp_source.html#l00232">232</a> of file <a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp</a>.</p>
 
 </div>
 </div>
@@ -724,8 +840,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/ArnInc/<a class="el" href="_arn_client_8hpp_source.html">ArnClient.hpp (2.2.0)</a></li>
-<li>src/<a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp (2.2.0)</a></li>
+<li>src/ArnInc/<a class="el" href="_arn_client_8hpp_source.html">ArnClient.hpp (2.3.0)</a></li>
+<li>src/<a class="el" href="_arn_client_8cpp_source.html">ArnClient.cpp (2.3.0)</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -733,7 +849,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_arn_client.html">ArnClient</a></li>
-    <li class="footer">Generated on Tue Jul 29 2014 23:17:16 for ArnLib by
+    <li class="footer">Generated on Fri Sep 26 2014 21:03:46 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

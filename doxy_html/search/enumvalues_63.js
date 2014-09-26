@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['checksequence',['CheckSequence',['../struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a01da0fe2f6896f4b5af2d1cc1abe4823',1,'ArnRpc::Mode']]],
+  ['checksequence',['CheckSequence',['../class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87a15d377202928d81fc5f79d1712066e57',1,'ArnSapiQml::CheckSequence()'],['../struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a01da0fe2f6896f4b5af2d1cc1abe4823',1,'ArnRpc::Mode::CheckSequence()']]],
   ['client',['Client',['../struct_arn_discover_1_1_type.html#a2f0639da40be8bc9291f3f249233fa81a37e9f07ecd8344cd5577f2c6e10a1927',1,'ArnDiscover::Type']]],
   ['connected',['Connected',['../struct_arn_client_1_1_connect_stat.html#a041852c62dde98ac9025ecf47dd9cf9da4705f562e3d7820890e297c25078b3e6',1,'ArnClient::ConnectStat']]],
   ['connecting',['Connecting',['../struct_arn_client_1_1_connect_stat.html#a041852c62dde98ac9025ecf47dd9cf9da7974d60ac2a5a1bb759c10ff2bb46ac6',1,'ArnClient::ConnectStat']]],

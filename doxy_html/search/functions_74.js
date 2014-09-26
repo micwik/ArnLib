@@ -13,7 +13,7 @@ var searchData=
   ['tovariant',['toVariant',['../class_arn_item.html#abf80ad9c602ecb204f70134d33a4cb08',1,'ArnItem']]],
   ['tovariantmap',['toVariantMap',['../class_arn_1_1_x_string_map.html#af0f0b224b88e07f2c1233c705e4b4bd8',1,'Arn::XStringMap']]],
   ['toxstring',['toXString',['../class_arn_1_1_x_string_map.html#aef1fdb06685ee217d41e69167fb8ad28',1,'Arn::XStringMap']]],
-  ['twinpath',['twinPath',['../namespace_arn.html#a4de17e4c5a7e225b5d0cbd974c3fd794',1,'Arn']]],
+  ['twinpath',['twinPath',['../class_arn_interface.html#a480709b0488e10b82aededde8d610690',1,'ArnInterface::twinPath()'],['../namespace_arn.html#a4de17e4c5a7e225b5d0cbd974c3fd794',1,'Arn::twinPath()']]],
   ['txtrecord',['txtRecord',['../class_arn_zero_conf_register.html#ae7026403345317df9a63ae168e73d26b',1,'ArnZeroConfRegister::txtRecord()'],['../class_arn_zero_conf_resolve.html#a8c80e94b8327250729cc1f4d14ea5b38',1,'ArnZeroConfResolve::txtRecord()']]],
   ['type',['type',['../class_arn_discover_info.html#ac026d485ccc11ea079c2e4a71d5da52d',1,'ArnDiscoverInfo::type()'],['../class_arn_item.html#aa26ee32abe7931c875ce76ff85443e01',1,'ArnItem::type()']]],
   ['typestring',['typeString',['../class_arn_discover_info.html#aa99a16996a129175e77a08b2abd519a7',1,'ArnDiscoverInfo']]]

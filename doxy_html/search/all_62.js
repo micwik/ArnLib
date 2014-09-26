@@ -5,9 +5,11 @@ var searchData=
   ['batchconnectfrom',['batchConnectFrom',['../class_arn_sapi.html#a3913bd932c51c56aa3d940d41ee4b72b',1,'ArnSapi']]],
   ['batchconnectto',['batchConnectTo',['../class_arn_sapi.html#a48fc7203b188b0af970a8fb3625d4cf7',1,'ArnSapi']]],
   ['bidir',['BiDir',['../struct_arn_1_1_object_mode.html#a1b35282c90d50d65d184265d5b545155af0251c882746336fb7a89473cc2898e8',1,'Arn::ObjectMode']]],
+  ['bidirmode',['biDirMode',['../class_arn_item_qml.html#a30b16737d99ea8c7286dbfa48fb31097',1,'ArnItemQml']]],
   ['binary',['Binary',['../struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163aa38b66c8fd42a93a992919ebdd2cd6d1',1,'Arn::Coding']]],
   ['browse',['browse',['../class_arn_discover_browser.html#af5ddb4b279d225433e5c1049b464df5a',1,'ArnDiscoverBrowser::browse()'],['../class_arn_zero_conf_browser.html#ad40f7e842f64f9e210a90b13b98bf252',1,'ArnZeroConfBrowser::browse()']]],
   ['browseerror',['browseError',['../class_arn_zero_conf_browser.html#aa6ce3d92810a7197eb6ac02524892ee4',1,'ArnZeroConfBrowser']]],
   ['browsing',['Browsing',['../struct_arn_zero_conf_1_1_state.html#a1612afd0a0484418d4f889fd0f924ad2abdb39073894b2cc1a3d1b1b5645a735e',1,'ArnZeroConf::State']]],
-  ['bytearray',['ByteArray',['../struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a92fe4984959fc38c2bf97ba8598ec652',1,'Arn::DataType::ByteArray()'],['../struct_arn_item_b_1_1_export_code.html#a2986692d49ee6b19e8d015dc12379ca1a5777d15d1068677e41e4ed163ebf5b36',1,'ArnItemB::ExportCode::ByteArray()']]]
+  ['bytearray',['ByteArray',['../struct_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a92fe4984959fc38c2bf97ba8598ec652',1,'Arn::DataType::ByteArray()'],['../struct_arn_item_b_1_1_export_code.html#a2986692d49ee6b19e8d015dc12379ca1a5777d15d1068677e41e4ed163ebf5b36',1,'ArnItemB::ExportCode::ByteArray()']]],
+  ['bytes',['bytes',['../class_arn_item_qml.html#a0bf1fbd1f5ffea29260f33fcef16af9e',1,'ArnItemQml::bytes()'],['../class_arn_interface.html#a0f7dd22b5bb6fdea5368865d9d31b3f1',1,'ArnInterface::bytes()']]]
 ];

@@ -1,3 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$struct_arn_rpc_1_1_invoke.html" title="ArnRpc::Invoke" alt="" coords="5,5,115,32"/>
+<area shape="rect" id="node1" href="$class_arn_monitor.html" title="A client remote monitor to detect changes at server." alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node3" href="$class_arn_monitor_qml.html" title="ARN Monitor QML." alt="" coords="139,5,248,32"/>
 </map>

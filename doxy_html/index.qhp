@@ -4,7 +4,7 @@
   <filterSection>
     <filterAttribute>doxygen</filterAttribute>
     <toc>
-      <section title="ArnLib 2.2.x" ref="index.html">
+      <section title="ArnLib 2.3.x" ref="index.html">
         <section title="README" ref="md__r_e_a_d_m_e.html" />
         <section title="General Description" ref="md__description.html">
           <section title="Arn Data Objects    " ref="md__description.html">
@@ -106,6 +106,18 @@
               <section title="Coding" ref="struct_arn_1_1_coding.html">
                 <section title="E" ref="struct_arn_1_1_coding.html" />
               </section>
+              <section title="QmlMFileIO" ref="class_arn_1_1_qml_m_file_i_o.html">
+                <section title="QmlMFileIO" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                <section title="error" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                <section title="path" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                <section title="pathChanged" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                <section title="read" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                <section title="readBytes" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                <section title="setPath" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                <section title="write" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                <section title="writeBytes" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                <section title="path" ref="class_arn_1_1_qml_m_file_i_o.html" />
+              </section>
               <section title="XStringMap" ref="class_arn_1_1_x_string_map.html">
                 <section title="XStringMap" ref="class_arn_1_1_x_string_map.html" />
                 <section title="XStringMap" ref="class_arn_1_1_x_string_map.html" />
@@ -204,6 +216,7 @@
               </section>
               <section title="HostList" ref="class_arn_client.html" />
               <section title="ArnClient" ref="class_arn_client.html" />
+              <section title="~ArnClient" ref="class_arn_client.html" />
               <section title="addMountPoint" ref="class_arn_client.html" />
               <section title="addToArnList" ref="class_arn_client.html" />
               <section title="arnList" ref="class_arn_client.html" />
@@ -212,12 +225,22 @@
               <section title="connectStatus" ref="class_arn_client.html" />
               <section title="connectToArn" ref="class_arn_client.html" />
               <section title="connectToArnList" ref="class_arn_client.html" />
+              <section title="getClient" ref="class_arn_client.html" />
+              <section title="id" ref="class_arn_client.html" />
+              <section title="registerClient" ref="class_arn_client.html" />
               <section title="removeMountPoint" ref="class_arn_client.html" />
               <section title="setAutoConnect" ref="class_arn_client.html" />
               <section title="setMountPoint" ref="class_arn_client.html" />
               <section title="tcpConnected" ref="class_arn_client.html" />
               <section title="tcpDisConnected" ref="class_arn_client.html" />
               <section title="tcpError" ref="class_arn_client.html" />
+            </section>
+            <section title="ArnClientReg" ref="class_arn_client_reg.html">
+              <section title="get" ref="class_arn_client_reg.html" />
+              <section title="instance" ref="class_arn_client_reg.html" />
+              <section title="remove" ref="class_arn_client_reg.html" />
+              <section title="remove" ref="class_arn_client_reg.html" />
+              <section title="store" ref="class_arn_client_reg.html" />
             </section>
             <section title="ArnDepend" ref="class_arn_depend.html">
               <section title="DepSlot" ref="class_arn_depend.html" />
@@ -347,6 +370,37 @@
               </section>
               <section title="E" ref="struct_arn_error.html" />
             </section>
+            <section title="ArnInterface" ref="class_arn_interface.html">
+              <section title="DataType" ref="class_arn_interface.html" />
+              <section title="NameF" ref="class_arn_interface.html" />
+              <section title="ObjectMode" ref="class_arn_interface.html" />
+              <section title="SameValue" ref="class_arn_interface.html" />
+              <section title="bytes" ref="class_arn_interface.html" />
+              <section title="changeBasePath" ref="class_arn_interface.html" />
+              <section title="childPath" ref="class_arn_interface.html" />
+              <section title="exist" ref="class_arn_interface.html" />
+              <section title="intNum" ref="class_arn_interface.html" />
+              <section title="isFolder" ref="class_arn_interface.html" />
+              <section title="isFolderPath" ref="class_arn_interface.html" />
+              <section title="isLeaf" ref="class_arn_interface.html" />
+              <section title="isProviderPath" ref="class_arn_interface.html" />
+              <section title="itemName" ref="class_arn_interface.html" />
+              <section title="items" ref="class_arn_interface.html" />
+              <section title="makePath" ref="class_arn_interface.html" />
+              <section title="num" ref="class_arn_interface.html" />
+              <section title="providerPath" ref="class_arn_interface.html" />
+              <section title="setBytes" ref="class_arn_interface.html" />
+              <section title="setIntNum" ref="class_arn_interface.html" />
+              <section title="setNum" ref="class_arn_interface.html" />
+              <section title="setString" ref="class_arn_interface.html" />
+              <section title="setValue" ref="class_arn_interface.html" />
+              <section title="setVariant" ref="class_arn_interface.html" />
+              <section title="string" ref="class_arn_interface.html" />
+              <section title="twinPath" ref="class_arn_interface.html" />
+              <section title="value" ref="class_arn_interface.html" />
+              <section title="variant" ref="class_arn_interface.html" />
+              <section title="info" ref="class_arn_interface.html" />
+            </section>
             <section title="ArnItem" ref="class_arn_item.html">
               <section title="ArnItem" ref="class_arn_item.html" />
               <section title="ArnItem" ref="class_arn_item.html" />
@@ -429,6 +483,25 @@
               <section title="reference" ref="class_arn_item_b.html" />
               <section title="setReference" ref="class_arn_item_b.html" />
             </section>
+            <section title="ArnItemQml" ref="class_arn_item_qml.html">
+              <section title="addMode" ref="class_arn_item_qml.html" />
+              <section title="getMode" ref="class_arn_item_qml.html" />
+              <section title="autoDestroyMode" ref="class_arn_item_qml.html" />
+              <section title="biDirMode" ref="class_arn_item_qml.html" />
+              <section title="bytes" ref="class_arn_item_qml.html" />
+              <section title="ignoreSameValue" ref="class_arn_item_qml.html" />
+              <section title="intNum" ref="class_arn_item_qml.html" />
+              <section title="masterMode" ref="class_arn_item_qml.html" />
+              <section title="num" ref="class_arn_item_qml.html" />
+              <section title="path" ref="class_arn_item_qml.html" />
+              <section title="pipeMode" ref="class_arn_item_qml.html" />
+              <section title="saveMode" ref="class_arn_item_qml.html" />
+              <section title="string" ref="class_arn_item_qml.html" />
+              <section title="type" ref="class_arn_item_qml.html" />
+              <section title="useUuid" ref="class_arn_item_qml.html" />
+              <section title="variant" ref="class_arn_item_qml.html" />
+              <section title="variantType" ref="class_arn_item_qml.html" />
+            </section>
             <section title="ArnItemValve" ref="class_arn_item_valve.html">
               <section title="SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html">
                 <section title="E" ref="struct_arn_item_valve_1_1_switch_mode.html" />
@@ -491,15 +564,24 @@
               <section title="client" ref="class_arn_monitor.html" />
               <section title="clientId" ref="class_arn_monitor.html" />
               <section title="foundChildDeleted" ref="class_arn_monitor.html" />
+              <section title="inPathConvert" ref="class_arn_monitor.html" />
               <section title="monitorPath" ref="class_arn_monitor.html" />
+              <section title="outPathConvert" ref="class_arn_monitor.html" />
               <section title="reference" ref="class_arn_monitor.html" />
               <section title="reStart" ref="class_arn_monitor.html" />
+              <section title="setClient" ref="class_arn_monitor.html" />
               <section title="setClient" ref="class_arn_monitor.html" />
               <section title="setMonitorPath" ref="class_arn_monitor.html" />
               <section title="setReference" ref="class_arn_monitor.html" />
               <section title="start" ref="class_arn_monitor.html" />
+              <section title="start" ref="class_arn_monitor.html" />
               <section title="_arnClient" ref="class_arn_monitor.html" />
               <section title="_monitorPath" ref="class_arn_monitor.html" />
+            </section>
+            <section title="ArnMonitorQml" ref="class_arn_monitor_qml.html">
+              <section title="reStart" ref="class_arn_monitor_qml.html" />
+              <section title="clientId" ref="class_arn_monitor_qml.html" />
+              <section title="monitorPath" ref="class_arn_monitor_qml.html" />
             </section>
             <section title="ArnPersist" ref="class_arn_persist.html">
               <section title="ArnPersist" ref="class_arn_persist.html" />
@@ -530,6 +612,15 @@
               <section title="setValue" ref="class_arn_pipe.html" />
               <section title="setValueOverwrite" ref="class_arn_pipe.html" />
             </section>
+            <section title="ArnQml" ref="class_arn_qml.html">
+              <section title="UseFlags" ref="struct_arn_qml_1_1_use_flags.html">
+                <section title="E" ref="struct_arn_qml_1_1_use_flags.html" />
+              </section>
+              <section title="arnRootPath" ref="class_arn_qml.html" />
+              <section title="instance" ref="class_arn_qml.html" />
+              <section title="setArnRootPath" ref="class_arn_qml.html" />
+              <section title="setup" ref="class_arn_qml.html" />
+            </section>
             <section title="ArnRpc" ref="class_arn_rpc.html">
               <section title="Invoke" ref="struct_arn_rpc_1_1_invoke.html">
                 <section title="E" ref="struct_arn_rpc_1_1_invoke.html" />
@@ -543,17 +634,21 @@
               <section title="batchConnect" ref="class_arn_rpc.html" />
               <section title="batchConnect" ref="class_arn_rpc.html" />
               <section title="defaultCall" ref="class_arn_rpc.html" />
+              <section title="getHeartBeatCheck" ref="class_arn_rpc.html" />
+              <section title="getHeartBeatSend" ref="class_arn_rpc.html" />
               <section title="heartBeatChanged" ref="class_arn_rpc.html" />
               <section title="heartBeatReceived" ref="class_arn_rpc.html" />
               <section title="invoke" ref="class_arn_rpc.html" />
               <section title="invoke" ref="class_arn_rpc.html" />
               <section title="isHeartBeatOk" ref="class_arn_rpc.html" />
+              <section title="methodPrefix" ref="class_arn_rpc.html" />
               <section title="mode" ref="class_arn_rpc.html" />
               <section title="open" ref="class_arn_rpc.html" />
               <section title="outOfSequence" ref="class_arn_rpc.html" />
               <section title="pipe" ref="class_arn_rpc.html" />
               <section title="pipeClosed" ref="class_arn_rpc.html" />
               <section title="pipePath" ref="class_arn_rpc.html" />
+              <section title="receiver" ref="class_arn_rpc.html" />
               <section title="rpcSender" ref="class_arn_rpc.html" />
               <section title="rpcSender" ref="class_arn_rpc.html" />
               <section title="sendText" ref="class_arn_rpc.html" />
@@ -572,14 +667,23 @@
               <section title="batchConnectTo" ref="class_arn_sapi.html" />
               <section title="open" ref="class_arn_sapi.html" />
             </section>
+            <section title="ArnSapiQml" ref="class_arn_sapi_qml.html">
+              <section title="Mode" ref="class_arn_sapi_qml.html" />
+              <section title="isHeartBeatOk" ref="class_arn_sapi_qml.html" />
+              <section title="heartBeatCheck" ref="class_arn_sapi_qml.html" />
+              <section title="heartBeatSend" ref="class_arn_sapi_qml.html" />
+              <section title="mode" ref="class_arn_sapi_qml.html" />
+              <section title="pipePath" ref="class_arn_sapi_qml.html" />
+              <section title="receiver" ref="class_arn_sapi_qml.html" />
+            </section>
             <section title="ArnScript" ref="class_arn_script.html">
+              <section title="ArnScript" ref="class_arn_script.html" />
               <section title="ArnScript" ref="class_arn_script.html" />
               <section title="engine" ref="class_arn_script.html" />
               <section title="errorLog" ref="class_arn_script.html" />
               <section title="errorText" ref="class_arn_script.html" />
               <section title="evaluate" ref="class_arn_script.html" />
               <section title="evaluateFile" ref="class_arn_script.html" />
-              <section title="getClient" ref="class_arn_script.html" />
               <section title="idName" ref="class_arn_script.html" />
               <section title="logUncaughtError" ref="class_arn_script.html" />
               <section title="printFunction" ref="class_arn_script.html" />
@@ -622,7 +726,6 @@
             <section title="ArnScriptJobFactory" ref="class_arn_script_job_factory.html">
               <section title="ArnScriptJobFactory" ref="class_arn_script_job_factory.html" />
               <section title="~ArnScriptJobFactory" ref="class_arn_script_job_factory.html" />
-              <section title="getClient" ref="class_arn_script_job_factory.html" />
               <section title="installExtension" ref="class_arn_script_job_factory.html" />
               <section title="setupInterface" ref="class_arn_script_job_factory.html" />
               <section title="setupJsObj" ref="class_arn_script_job_factory.html" />
@@ -747,6 +850,7 @@
           </section>
           <section title="Class Index" ref="classes.html">
             <section title="ArnClient" ref="class_arn_client.html" />
+            <section title="ArnClientReg" ref="class_arn_client_reg.html" />
             <section title="ArnDepend" ref="class_arn_depend.html" />
             <section title="ArnDependOffer" ref="class_arn_depend_offer.html" />
             <section title="ArnDiscoverAdvertise" ref="class_arn_discover_advertise.html">
@@ -759,16 +863,23 @@
             <section title="ArnDiscoverConnector" ref="class_arn_discover_connector.html" />
             <section title="ArnDiscoverInfo" ref="class_arn_discover_info.html" />
             <section title="ArnError" ref="struct_arn_error.html" />
+            <section title="ArnInterface" ref="class_arn_interface.html" />
             <section title="ArnItemB" ref="class_arn_item_b.html">
-              <section title="ArnItem" ref="class_arn_item.html" />
+              <section title="ArnItem" ref="class_arn_item.html">
+                <section title="ArnItemQml" ref="class_arn_item_qml.html" />
+              </section>
               <section title="ArnItemValve" ref="class_arn_item_valve.html" />
               <section title="ArnPipe" ref="class_arn_pipe.html" />
             </section>
             <section title="ArnM" ref="class_arn_m.html" />
-            <section title="ArnMonitor" ref="class_arn_monitor.html" />
+            <section title="ArnMonitor" ref="class_arn_monitor.html">
+              <section title="ArnMonitorQml" ref="class_arn_monitor_qml.html" />
+            </section>
             <section title="ArnPersist" ref="class_arn_persist.html" />
+            <section title="ArnQml" ref="class_arn_qml.html" />
             <section title="ArnRpc" ref="class_arn_rpc.html">
               <section title="ArnSapi" ref="class_arn_sapi.html" />
+              <section title="ArnSapiQml" ref="class_arn_sapi_qml.html" />
             </section>
             <section title="ArnScript" ref="class_arn_script.html" />
             <section title="ArnScriptJob" ref="class_arn_script_job.html" />
@@ -798,19 +909,22 @@
             <section title="Arn::ObjectMode" ref="struct_arn_1_1_object_mode.html" />
             <section title="Arn::ObjectSyncMode" ref="struct_arn_1_1_object_sync_mode.html" />
             <section title="ArnRpc::MethodsParam::Params" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html" />
+            <section title="Arn::QmlMFileIO" ref="class_arn_1_1_qml_m_file_i_o.html" />
             <section title="Arn::SameValue" ref="struct_arn_1_1_same_value.html" />
             <section title="ArnZeroConf::State" ref="struct_arn_zero_conf_1_1_state.html" />
             <section title="ArnDiscoverAdvertise::State" ref="struct_arn_discover_advertise_1_1_state.html" />
             <section title="ArnDiscoverInfo::State" ref="struct_arn_discover_info_1_1_state.html" />
             <section title="ArnError::StdCode" ref="struct_arn_error_1_1_std_code.html" />
             <section title="ArnItemValve::SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html" />
+            <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
             <section title="ArnServer::Type" ref="struct_arn_server_1_1_type.html" />
             <section title="ArnDiscover::Type" ref="struct_arn_discover_1_1_type.html" />
-            <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
+            <section title="ArnQml::UseFlags" ref="struct_arn_qml_1_1_use_flags.html" />
             <section title="Arn::XStringMap" ref="class_arn_1_1_x_string_map.html" />
           </section>
           <section title="Class Hierarchy" ref="hierarchy.html">
             <section title="ArnClient" ref="class_arn_client.html" />
+            <section title="ArnClientReg" ref="class_arn_client_reg.html" />
             <section title="ArnDepend" ref="class_arn_depend.html" />
             <section title="ArnDependOffer" ref="class_arn_depend_offer.html" />
             <section title="ArnDiscoverAdvertise" ref="class_arn_discover_advertise.html">
@@ -823,16 +937,23 @@
             <section title="ArnDiscoverConnector" ref="class_arn_discover_connector.html" />
             <section title="ArnDiscoverInfo" ref="class_arn_discover_info.html" />
             <section title="ArnError" ref="struct_arn_error.html" />
+            <section title="ArnInterface" ref="class_arn_interface.html" />
             <section title="ArnItemB" ref="class_arn_item_b.html">
-              <section title="ArnItem" ref="class_arn_item.html" />
+              <section title="ArnItem" ref="class_arn_item.html">
+                <section title="ArnItemQml" ref="class_arn_item_qml.html" />
+              </section>
               <section title="ArnItemValve" ref="class_arn_item_valve.html" />
               <section title="ArnPipe" ref="class_arn_pipe.html" />
             </section>
             <section title="ArnM" ref="class_arn_m.html" />
-            <section title="ArnMonitor" ref="class_arn_monitor.html" />
+            <section title="ArnMonitor" ref="class_arn_monitor.html">
+              <section title="ArnMonitorQml" ref="class_arn_monitor_qml.html" />
+            </section>
             <section title="ArnPersist" ref="class_arn_persist.html" />
+            <section title="ArnQml" ref="class_arn_qml.html" />
             <section title="ArnRpc" ref="class_arn_rpc.html">
               <section title="ArnSapi" ref="class_arn_sapi.html" />
+              <section title="ArnSapiQml" ref="class_arn_sapi_qml.html" />
             </section>
             <section title="ArnScript" ref="class_arn_script.html" />
             <section title="ArnScriptJob" ref="class_arn_script_job.html" />
@@ -862,15 +983,17 @@
             <section title="Arn::ObjectMode" ref="struct_arn_1_1_object_mode.html" />
             <section title="Arn::ObjectSyncMode" ref="struct_arn_1_1_object_sync_mode.html" />
             <section title="ArnRpc::MethodsParam::Params" ref="struct_arn_rpc_1_1_methods_param_1_1_params.html" />
+            <section title="Arn::QmlMFileIO" ref="class_arn_1_1_qml_m_file_i_o.html" />
             <section title="Arn::SameValue" ref="struct_arn_1_1_same_value.html" />
             <section title="ArnZeroConf::State" ref="struct_arn_zero_conf_1_1_state.html" />
             <section title="ArnDiscoverAdvertise::State" ref="struct_arn_discover_advertise_1_1_state.html" />
             <section title="ArnDiscoverInfo::State" ref="struct_arn_discover_info_1_1_state.html" />
             <section title="ArnError::StdCode" ref="struct_arn_error_1_1_std_code.html" />
             <section title="ArnItemValve::SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html" />
+            <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
             <section title="ArnServer::Type" ref="struct_arn_server_1_1_type.html" />
             <section title="ArnDiscover::Type" ref="struct_arn_discover_1_1_type.html" />
-            <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
+            <section title="ArnQml::UseFlags" ref="struct_arn_qml_1_1_use_flags.html" />
             <section title="Arn::XStringMap" ref="class_arn_1_1_x_string_map.html" />
           </section>
           <section title="Class Members" ref="functions.html">
@@ -923,6 +1046,7 @@
               <section title="s" ref="functions_func_0x73.html" />
               <section title="t" ref="functions_func_0x74.html" />
               <section title="v" ref="functions_func_0x76.html" />
+              <section title="w" ref="functions_func_0x77.html" />
               <section title="x" ref="functions_func_0x78.html" />
               <section title="y" ref="functions_func_0x79.html" />
               <section title="~" ref="functions_func_0x7e.html" />
@@ -990,6 +1114,7 @@
                     </section>
                     <section title="HostList" ref="class_arn_client.html" />
                     <section title="ArnClient" ref="class_arn_client.html" />
+                    <section title="~ArnClient" ref="class_arn_client.html" />
                     <section title="addMountPoint" ref="class_arn_client.html" />
                     <section title="addToArnList" ref="class_arn_client.html" />
                     <section title="arnList" ref="class_arn_client.html" />
@@ -998,6 +1123,9 @@
                     <section title="connectStatus" ref="class_arn_client.html" />
                     <section title="connectToArn" ref="class_arn_client.html" />
                     <section title="connectToArnList" ref="class_arn_client.html" />
+                    <section title="getClient" ref="class_arn_client.html" />
+                    <section title="id" ref="class_arn_client.html" />
+                    <section title="registerClient" ref="class_arn_client.html" />
                     <section title="removeMountPoint" ref="class_arn_client.html" />
                     <section title="setAutoConnect" ref="class_arn_client.html" />
                     <section title="setMountPoint" ref="class_arn_client.html" />
@@ -1162,6 +1290,39 @@
                   </section>
                   <section title="StdCode" ref="struct_arn_error_1_1_std_code.html">
                     <section title="E" ref="struct_arn_error_1_1_std_code.html" />
+                  </section>
+                </section>
+                <section title="ArnInterface.hpp" ref="_arn_interface_8hpp.html">
+                  <section title="ArnInterface" ref="class_arn_interface.html">
+                    <section title="DataType" ref="class_arn_interface.html" />
+                    <section title="NameF" ref="class_arn_interface.html" />
+                    <section title="ObjectMode" ref="class_arn_interface.html" />
+                    <section title="SameValue" ref="class_arn_interface.html" />
+                    <section title="bytes" ref="class_arn_interface.html" />
+                    <section title="changeBasePath" ref="class_arn_interface.html" />
+                    <section title="childPath" ref="class_arn_interface.html" />
+                    <section title="exist" ref="class_arn_interface.html" />
+                    <section title="intNum" ref="class_arn_interface.html" />
+                    <section title="isFolder" ref="class_arn_interface.html" />
+                    <section title="isFolderPath" ref="class_arn_interface.html" />
+                    <section title="isLeaf" ref="class_arn_interface.html" />
+                    <section title="isProviderPath" ref="class_arn_interface.html" />
+                    <section title="itemName" ref="class_arn_interface.html" />
+                    <section title="items" ref="class_arn_interface.html" />
+                    <section title="makePath" ref="class_arn_interface.html" />
+                    <section title="num" ref="class_arn_interface.html" />
+                    <section title="providerPath" ref="class_arn_interface.html" />
+                    <section title="setBytes" ref="class_arn_interface.html" />
+                    <section title="setIntNum" ref="class_arn_interface.html" />
+                    <section title="setNum" ref="class_arn_interface.html" />
+                    <section title="setString" ref="class_arn_interface.html" />
+                    <section title="setValue" ref="class_arn_interface.html" />
+                    <section title="setVariant" ref="class_arn_interface.html" />
+                    <section title="string" ref="class_arn_interface.html" />
+                    <section title="twinPath" ref="class_arn_interface.html" />
+                    <section title="value" ref="class_arn_interface.html" />
+                    <section title="variant" ref="class_arn_interface.html" />
+                    <section title="info" ref="class_arn_interface.html" />
                   </section>
                 </section>
                 <section title="ArnItem.hpp" ref="_arn_item_8hpp.html">
@@ -1329,12 +1490,16 @@
                     <section title="client" ref="class_arn_monitor.html" />
                     <section title="clientId" ref="class_arn_monitor.html" />
                     <section title="foundChildDeleted" ref="class_arn_monitor.html" />
+                    <section title="inPathConvert" ref="class_arn_monitor.html" />
                     <section title="monitorPath" ref="class_arn_monitor.html" />
+                    <section title="outPathConvert" ref="class_arn_monitor.html" />
                     <section title="reference" ref="class_arn_monitor.html" />
                     <section title="reStart" ref="class_arn_monitor.html" />
                     <section title="setClient" ref="class_arn_monitor.html" />
+                    <section title="setClient" ref="class_arn_monitor.html" />
                     <section title="setMonitorPath" ref="class_arn_monitor.html" />
                     <section title="setReference" ref="class_arn_monitor.html" />
+                    <section title="start" ref="class_arn_monitor.html" />
                     <section title="start" ref="class_arn_monitor.html" />
                     <section title="_arnClient" ref="class_arn_monitor.html" />
                     <section title="_monitorPath" ref="class_arn_monitor.html" />
@@ -1374,6 +1539,67 @@
                     <section title="setValueOverwrite" ref="class_arn_pipe.html" />
                   </section>
                 </section>
+                <section title="ArnQml.hpp" ref="_arn_qml_8hpp.html">
+                  <section title="ArnQml" ref="class_arn_qml.html">
+                    <section title="UseFlags" ref="struct_arn_qml_1_1_use_flags.html">
+                      <section title="E" ref="struct_arn_qml_1_1_use_flags.html" />
+                    </section>
+                    <section title="arnRootPath" ref="class_arn_qml.html" />
+                    <section title="instance" ref="class_arn_qml.html" />
+                    <section title="setArnRootPath" ref="class_arn_qml.html" />
+                    <section title="setup" ref="class_arn_qml.html" />
+                  </section>
+                  <section title="UseFlags" ref="struct_arn_qml_1_1_use_flags.html">
+                    <section title="E" ref="struct_arn_qml_1_1_use_flags.html" />
+                  </section>
+                  <section title="ArnItemQml" ref="class_arn_item_qml.html">
+                    <section title="addMode" ref="class_arn_item_qml.html" />
+                    <section title="getMode" ref="class_arn_item_qml.html" />
+                    <section title="autoDestroyMode" ref="class_arn_item_qml.html" />
+                    <section title="biDirMode" ref="class_arn_item_qml.html" />
+                    <section title="bytes" ref="class_arn_item_qml.html" />
+                    <section title="ignoreSameValue" ref="class_arn_item_qml.html" />
+                    <section title="intNum" ref="class_arn_item_qml.html" />
+                    <section title="masterMode" ref="class_arn_item_qml.html" />
+                    <section title="num" ref="class_arn_item_qml.html" />
+                    <section title="path" ref="class_arn_item_qml.html" />
+                    <section title="pipeMode" ref="class_arn_item_qml.html" />
+                    <section title="saveMode" ref="class_arn_item_qml.html" />
+                    <section title="string" ref="class_arn_item_qml.html" />
+                    <section title="type" ref="class_arn_item_qml.html" />
+                    <section title="useUuid" ref="class_arn_item_qml.html" />
+                    <section title="variant" ref="class_arn_item_qml.html" />
+                    <section title="variantType" ref="class_arn_item_qml.html" />
+                  </section>
+                  <section title="ArnMonitorQml" ref="class_arn_monitor_qml.html">
+                    <section title="reStart" ref="class_arn_monitor_qml.html" />
+                    <section title="clientId" ref="class_arn_monitor_qml.html" />
+                    <section title="monitorPath" ref="class_arn_monitor_qml.html" />
+                  </section>
+                  <section title="ArnSapiQml" ref="class_arn_sapi_qml.html">
+                    <section title="Mode" ref="class_arn_sapi_qml.html" />
+                    <section title="isHeartBeatOk" ref="class_arn_sapi_qml.html" />
+                    <section title="heartBeatCheck" ref="class_arn_sapi_qml.html" />
+                    <section title="heartBeatSend" ref="class_arn_sapi_qml.html" />
+                    <section title="mode" ref="class_arn_sapi_qml.html" />
+                    <section title="pipePath" ref="class_arn_sapi_qml.html" />
+                    <section title="receiver" ref="class_arn_sapi_qml.html" />
+                  </section>
+                </section>
+                <section title="ArnQmlMSystem.hpp" ref="_arn_qml_m_system_8hpp.html">
+                  <section title="QmlMFileIO" ref="class_arn_1_1_qml_m_file_i_o.html">
+                    <section title="QmlMFileIO" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                    <section title="error" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                    <section title="path" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                    <section title="pathChanged" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                    <section title="read" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                    <section title="readBytes" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                    <section title="setPath" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                    <section title="write" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                    <section title="writeBytes" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                    <section title="path" ref="class_arn_1_1_qml_m_file_i_o.html" />
+                  </section>
+                </section>
                 <section title="ArnRpc.hpp" ref="_arn_rpc_8hpp.html">
                   <section title="MQGenericArgument" ref="class_m_q_generic_argument.html">
                     <section title="MQGenericArgument" ref="class_m_q_generic_argument.html" />
@@ -1396,17 +1622,21 @@
                     <section title="batchConnect" ref="class_arn_rpc.html" />
                     <section title="batchConnect" ref="class_arn_rpc.html" />
                     <section title="defaultCall" ref="class_arn_rpc.html" />
+                    <section title="getHeartBeatCheck" ref="class_arn_rpc.html" />
+                    <section title="getHeartBeatSend" ref="class_arn_rpc.html" />
                     <section title="heartBeatChanged" ref="class_arn_rpc.html" />
                     <section title="heartBeatReceived" ref="class_arn_rpc.html" />
                     <section title="invoke" ref="class_arn_rpc.html" />
                     <section title="invoke" ref="class_arn_rpc.html" />
                     <section title="isHeartBeatOk" ref="class_arn_rpc.html" />
+                    <section title="methodPrefix" ref="class_arn_rpc.html" />
                     <section title="mode" ref="class_arn_rpc.html" />
                     <section title="open" ref="class_arn_rpc.html" />
                     <section title="outOfSequence" ref="class_arn_rpc.html" />
                     <section title="pipe" ref="class_arn_rpc.html" />
                     <section title="pipeClosed" ref="class_arn_rpc.html" />
                     <section title="pipePath" ref="class_arn_rpc.html" />
+                    <section title="receiver" ref="class_arn_rpc.html" />
                     <section title="rpcSender" ref="class_arn_rpc.html" />
                     <section title="rpcSender" ref="class_arn_rpc.html" />
                     <section title="sendText" ref="class_arn_rpc.html" />
@@ -1445,12 +1675,12 @@
                 <section title="ArnScript.hpp" ref="_arn_script_8hpp.html">
                   <section title="ArnScript" ref="class_arn_script.html">
                     <section title="ArnScript" ref="class_arn_script.html" />
+                    <section title="ArnScript" ref="class_arn_script.html" />
                     <section title="engine" ref="class_arn_script.html" />
                     <section title="errorLog" ref="class_arn_script.html" />
                     <section title="errorText" ref="class_arn_script.html" />
                     <section title="evaluate" ref="class_arn_script.html" />
                     <section title="evaluateFile" ref="class_arn_script.html" />
-                    <section title="getClient" ref="class_arn_script.html" />
                     <section title="idName" ref="class_arn_script.html" />
                     <section title="logUncaughtError" ref="class_arn_script.html" />
                     <section title="printFunction" ref="class_arn_script.html" />
@@ -1477,7 +1707,6 @@
                   <section title="ArnScriptJobFactory" ref="class_arn_script_job_factory.html">
                     <section title="ArnScriptJobFactory" ref="class_arn_script_job_factory.html" />
                     <section title="~ArnScriptJobFactory" ref="class_arn_script_job_factory.html" />
-                    <section title="getClient" ref="class_arn_script_job_factory.html" />
                     <section title="installExtension" ref="class_arn_script_job_factory.html" />
                     <section title="setupInterface" ref="class_arn_script_job_factory.html" />
                     <section title="setupJsObj" ref="class_arn_script_job_factory.html" />
@@ -1731,7 +1960,15 @@
                 <section title="pathLocal" ref="_arn_8cpp.html" />
                 <section title="pathLocalSys" ref="_arn_8cpp.html" />
               </section>
-              <section title="ArnClient.cpp" ref="_arn_client_8cpp.html" />
+              <section title="ArnClient.cpp" ref="_arn_client_8cpp.html">
+                <section title="ArnClientReg" ref="class_arn_client_reg.html">
+                  <section title="get" ref="class_arn_client_reg.html" />
+                  <section title="instance" ref="class_arn_client_reg.html" />
+                  <section title="remove" ref="class_arn_client_reg.html" />
+                  <section title="remove" ref="class_arn_client_reg.html" />
+                  <section title="store" ref="class_arn_client_reg.html" />
+                </section>
+              </section>
               <section title="ArnDepend.cpp" ref="_arn_depend_8cpp.html">
                 <section title="ArnDependPath" ref="_arn_depend_8cpp.html" />
               </section>
@@ -1771,6 +2008,8 @@
                 <section title="arnDbSaveVer" ref="_arn_persist_8cpp.html" />
               </section>
               <section title="ArnPipe.cpp" ref="_arn_pipe_8cpp.html" />
+              <section title="ArnQml.cpp" ref="_arn_qml_8cpp.html" />
+              <section title="ArnQmlMSystem.cpp" ref="_arn_qml_m_system_8cpp.html" />
               <section title="ArnRpc.cpp" ref="_arn_rpc_8cpp.html">
                 <section title="RPC_STORAGE_NAME" ref="_arn_rpc_8cpp.html" />
               </section>
@@ -1891,6 +2130,7 @@
       <keyword name="tcpDisConnected" id="ArnClient::tcpDisConnected" ref="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd" />
       <keyword name="connectionStatusChanged" id="ArnClient::connectionStatusChanged" ref="class_arn_client.html#a6f50ffe0617a72432e8b7dab17388554" />
       <keyword name="ArnClient" id="ArnClient::ArnClient" ref="class_arn_client.html#a5b34e108640a9308afff44bd95c63862" />
+      <keyword name="~ArnClient" id="ArnClient::~ArnClient" ref="class_arn_client.html#a6790b90c92aa497667e85e6dac0a95c7" />
       <keyword name="clearArnList" id="ArnClient::clearArnList" ref="class_arn_client.html#a612e42fe9c9859f446f715499635730b" />
       <keyword name="arnList" id="ArnClient::arnList" ref="class_arn_client.html#aa40570b93de2cdbea9ecd53cf28f57ef" />
       <keyword name="addToArnList" id="ArnClient::addToArnList" ref="class_arn_client.html#adcd16d9e9e4712de5b9b4d5ef5837272" />
@@ -1901,6 +2141,9 @@
       <keyword name="removeMountPoint" id="ArnClient::removeMountPoint" ref="class_arn_client.html#ae46eb729558c88cf73941b1c190cd976" />
       <keyword name="connectStatus" id="ArnClient::connectStatus" ref="class_arn_client.html#a4dcd34da7a9b9458055389746d0557f3" />
       <keyword name="setAutoConnect" id="ArnClient::setAutoConnect" ref="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60" />
+      <keyword name="registerClient" id="ArnClient::registerClient" ref="class_arn_client.html#ad351d3f637b6c65e44506cd30b26d7a3" />
+      <keyword name="id" id="ArnClient::id" ref="class_arn_client.html#aa9b18c9ed13ce18807e80df71ceae1b0" />
+      <keyword name="getClient" id="ArnClient::getClient" ref="class_arn_client.html#afd967a49b126566e76e9f22276c4a65e" />
       <keyword name="ArnClient::ConnectStat" id="ArnClient::ConnectStat" ref="struct_arn_client_1_1_connect_stat.html" />
       <keyword name="Init" id="ArnClient::ConnectStat::Init" ref="struct_arn_client_1_1_connect_stat.html#a041852c62dde98ac9025ecf47dd9cf9da5cff12fe4a406359d6fc4b07796d1c70" />
       <keyword name="Connecting" id="ArnClient::ConnectStat::Connecting" ref="struct_arn_client_1_1_connect_stat.html#a041852c62dde98ac9025ecf47dd9cf9da7974d60ac2a5a1bb759c10ff2bb46ac6" />
@@ -1912,6 +2155,12 @@
       <keyword name="HostAddrPort" id="ArnClient::HostAddrPort::HostAddrPort" ref="struct_arn_client_1_1_host_addr_port.html#a331ebf5933182a3efe4c05e409cc5d2f" />
       <keyword name="addr" id="ArnClient::HostAddrPort::addr" ref="struct_arn_client_1_1_host_addr_port.html#a03a47477bf6a263f5393262d7352c094" />
       <keyword name="port" id="ArnClient::HostAddrPort::port" ref="struct_arn_client_1_1_host_addr_port.html#a5ea2c2abb0227148aae22aac0daab7e6" />
+      <keyword name="ArnClientReg" id="ArnClientReg" ref="class_arn_client_reg.html" />
+      <keyword name="store" id="ArnClientReg::store" ref="class_arn_client_reg.html#a27fe532f4a2a7dd790dc257afc2b43a2" />
+      <keyword name="get" id="ArnClientReg::get" ref="class_arn_client_reg.html#ac14f1a5a2ee61c6e16cb7c3edebf00b2" />
+      <keyword name="remove" id="ArnClientReg::remove" ref="class_arn_client_reg.html#a14bc1923ff3edc10d1a1968991fcf512" />
+      <keyword name="remove" id="ArnClientReg::remove" ref="class_arn_client_reg.html#a054512c251a91fd1b71a7d28c41fdf3a" />
+      <keyword name="instance" id="ArnClientReg::instance" ref="class_arn_client_reg.html#ae87136bfbaf60bfe014ca2fa8c3a8ad8" />
       <keyword name="ArnDepend" id="ArnDepend" ref="class_arn_depend.html" />
       <keyword name="DepSlot" id="ArnDepend::DepSlot" ref="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5" />
       <keyword name="completed" id="ArnDepend::completed" ref="class_arn_depend.html#a49dbcb4053f36d9205263729612a0440" />
@@ -2098,6 +2347,48 @@
       <keyword name="Warning" id="ArnError::StdCode::Warning" ref="struct_arn_error_1_1_std_code.html#aea37b0c27c3daa5ee66a133ed3af7366a3e6a4d435609198034a6405a373ba6ad" />
       <keyword name="Err_Undef" id="ArnError::StdCode::Err_Undef" ref="struct_arn_error_1_1_std_code.html#aea37b0c27c3daa5ee66a133ed3af7366a7e8e666da98f1399a2c7e0c9669b47d0" />
       <keyword name="Err_Custom" id="ArnError::StdCode::Err_Custom" ref="struct_arn_error_1_1_std_code.html#aea37b0c27c3daa5ee66a133ed3af7366ad75489f057428b4dd3c8708a6450407f" />
+      <keyword name="ArnInterface" id="ArnInterface" ref="class_arn_interface.html" />
+      <keyword name="value" id="ArnInterface::value" ref="class_arn_interface.html#a4d322ba2074c9685461113c936736976" />
+      <keyword name="variant" id="ArnInterface::variant" ref="class_arn_interface.html#a2422ddf9dc123536f215dc7c4debc905" />
+      <keyword name="string" id="ArnInterface::string" ref="class_arn_interface.html#a6f475f7a32c335c6b0cd69b7bac6a5d7" />
+      <keyword name="bytes" id="ArnInterface::bytes" ref="class_arn_interface.html#a0f7dd22b5bb6fdea5368865d9d31b3f1" />
+      <keyword name="num" id="ArnInterface::num" ref="class_arn_interface.html#a85926e4f3e14e9f3504bca35d0c82679" />
+      <keyword name="intNum" id="ArnInterface::intNum" ref="class_arn_interface.html#ac7bf70046e978fd30e6ff09d3e1992b5" />
+      <keyword name="items" id="ArnInterface::items" ref="class_arn_interface.html#a9f8c01f8caa673dc0914dc9084f57a1c" />
+      <keyword name="exist" id="ArnInterface::exist" ref="class_arn_interface.html#a069723897a6e500e81c69af99e640033" />
+      <keyword name="isFolder" id="ArnInterface::isFolder" ref="class_arn_interface.html#a303d6506ad3eedeed483aaea2caba6e0" />
+      <keyword name="isLeaf" id="ArnInterface::isLeaf" ref="class_arn_interface.html#abf6ed179c14deaa8ceab28d3da42a913" />
+      <keyword name="setValue" id="ArnInterface::setValue" ref="class_arn_interface.html#ab695665ed5fa1c51a5cb2e74432e462f" />
+      <keyword name="setVariant" id="ArnInterface::setVariant" ref="class_arn_interface.html#a6af3902f54e275c5810d29fe2502763b" />
+      <keyword name="setString" id="ArnInterface::setString" ref="class_arn_interface.html#a0c2af492084c01c97d7dfe40e9a55db3" />
+      <keyword name="setBytes" id="ArnInterface::setBytes" ref="class_arn_interface.html#ae97da7fe97177db4073c68c780da5425" />
+      <keyword name="setNum" id="ArnInterface::setNum" ref="class_arn_interface.html#a217e82eea73ac7ad74ce078dac38c353" />
+      <keyword name="setIntNum" id="ArnInterface::setIntNum" ref="class_arn_interface.html#a886ab5b764475b6cef1947b2ac0a9b89" />
+      <keyword name="isFolderPath" id="ArnInterface::isFolderPath" ref="class_arn_interface.html#a47cd765617623e8a2abf5fdf63199f4f" />
+      <keyword name="isProviderPath" id="ArnInterface::isProviderPath" ref="class_arn_interface.html#ac5fe829e986fe313880e6be803c8383d" />
+      <keyword name="itemName" id="ArnInterface::itemName" ref="class_arn_interface.html#a8f0d1976a008cd1b4a2edc770061b08c" />
+      <keyword name="twinPath" id="ArnInterface::twinPath" ref="class_arn_interface.html#a480709b0488e10b82aededde8d610690" />
+      <keyword name="changeBasePath" id="ArnInterface::changeBasePath" ref="class_arn_interface.html#aee7b538b96bd2f7f6f1a76d4b37cd05f" />
+      <keyword name="childPath" id="ArnInterface::childPath" ref="class_arn_interface.html#a0dbdf8477d403c7b817ecd3596c8479a" />
+      <keyword name="makePath" id="ArnInterface::makePath" ref="class_arn_interface.html#acf78402b1f4fd9a1a79f4ac602fdef9b" />
+      <keyword name="providerPath" id="ArnInterface::providerPath" ref="class_arn_interface.html#abe6cf1e9c9ba4a1156d23806767dfdf7" />
+      <keyword name="info" id="ArnInterface::info" ref="class_arn_interface.html#a74e464d9e6045900274c60ee35811d51" />
+      <keyword name="DataType_Null" id="ArnInterface::DataType_Null" ref="class_arn_interface.html#aa4aae6c1e0c9f9167788d76734426ea8a6987594255d55f32cb62759ee39b0384" />
+      <keyword name="DataType_Int" id="ArnInterface::DataType_Int" ref="class_arn_interface.html#aa4aae6c1e0c9f9167788d76734426ea8ab291f6e0a71b5453510bc5da18812161" />
+      <keyword name="DataType_Double" id="ArnInterface::DataType_Double" ref="class_arn_interface.html#aa4aae6c1e0c9f9167788d76734426ea8acd83cd5887543af1d63de38414b66111" />
+      <keyword name="DataType_ByteArray" id="ArnInterface::DataType_ByteArray" ref="class_arn_interface.html#aa4aae6c1e0c9f9167788d76734426ea8a6372124815c1e5060188856d4f2500bd" />
+      <keyword name="DataType_String" id="ArnInterface::DataType_String" ref="class_arn_interface.html#aa4aae6c1e0c9f9167788d76734426ea8a372e5b7da22b77f62e726299bcd53c70" />
+      <keyword name="DataType_Variant" id="ArnInterface::DataType_Variant" ref="class_arn_interface.html#aa4aae6c1e0c9f9167788d76734426ea8adecfd54ea81fd5fa9525270b6aa7c4d6" />
+      <keyword name="NameF_Default" id="ArnInterface::NameF_Default" ref="class_arn_interface.html#a0c692648e6e931a19e8e8bb2358760a8a34440b2a03422378b8f6ab54a6088146" />
+      <keyword name="NameF_NoFolderMark" id="ArnInterface::NameF_NoFolderMark" ref="class_arn_interface.html#a0c692648e6e931a19e8e8bb2358760a8a7e7218549711d2d69bd8d3e0bb7ba070" />
+      <keyword name="NameF_EmptyOk" id="ArnInterface::NameF_EmptyOk" ref="class_arn_interface.html#a0c692648e6e931a19e8e8bb2358760a8afe24e15d289c21cce84fccd1dcc1a6b8" />
+      <keyword name="NameF_Relative" id="ArnInterface::NameF_Relative" ref="class_arn_interface.html#a0c692648e6e931a19e8e8bb2358760a8ace3d75a6bc06e6d75e22b43c570660f2" />
+      <keyword name="ObjectMode_BiDir" id="ArnInterface::ObjectMode_BiDir" ref="class_arn_interface.html#a93fc3d288a948ed2f93f543892ddac6aa68dc1a4929f20644d69c36b84716a875" />
+      <keyword name="ObjectMode_Pipe" id="ArnInterface::ObjectMode_Pipe" ref="class_arn_interface.html#a93fc3d288a948ed2f93f543892ddac6aaf68a77c790318de2ae491bdbab28281d" />
+      <keyword name="ObjectMode_Save" id="ArnInterface::ObjectMode_Save" ref="class_arn_interface.html#a93fc3d288a948ed2f93f543892ddac6aace41c1b568717837628a2df568f9a702" />
+      <keyword name="SameValue_Accept" id="ArnInterface::SameValue_Accept" ref="class_arn_interface.html#a58fcb8c758809de9fd0bbe2de16980f4ac8a7e7f62690fbb2b877c55b5d28a438" />
+      <keyword name="SameValue_Ignore" id="ArnInterface::SameValue_Ignore" ref="class_arn_interface.html#a58fcb8c758809de9fd0bbe2de16980f4ad1f17ca8fb5a8520f564d13c111f800b" />
+      <keyword name="SameValue_DefaultAction" id="ArnInterface::SameValue_DefaultAction" ref="class_arn_interface.html#a58fcb8c758809de9fd0bbe2de16980f4a3bf933b3e33541c4143a22d367d88315" />
       <keyword name="ArnItem" id="ArnItem" ref="class_arn_item.html" />
       <keyword name="setValue" id="ArnItem::setValue" ref="class_arn_item.html#ae05443f427793c321c6b68a8c4150d99" />
       <keyword name="setValue" id="ArnItem::setValue" ref="class_arn_item.html#a23e2c207cb553d2cfdfda90653fd6a96" />
@@ -2194,6 +2485,98 @@
       <keyword name="Variant" id="ArnItemB::ExportCode::Variant" ref="struct_arn_item_b_1_1_export_code.html#a2986692d49ee6b19e8d015dc12379ca1a0e7c11a538d77c461e6e6bed86a70868" />
       <keyword name="VariantTxt" id="ArnItemB::ExportCode::VariantTxt" ref="struct_arn_item_b_1_1_export_code.html#a2986692d49ee6b19e8d015dc12379ca1af65ccf1b036524acb89688b523a4998c" />
       <keyword name="VariantBin" id="ArnItemB::ExportCode::VariantBin" ref="struct_arn_item_b_1_1_export_code.html#a2986692d49ee6b19e8d015dc12379ca1a54131c649eebbe75884cfebd27fe19ef" />
+      <keyword name="ArnItemQml" id="ArnItemQml" ref="class_arn_item_qml.html" />
+      <keyword name="addMode" id="ArnItemQml::addMode" ref="class_arn_item_qml.html#ade56f1850b53a7f492111c04d3daaedd" />
+      <keyword name="getMode" id="ArnItemQml::getMode" ref="class_arn_item_qml.html#a37418d7d0303d90918ccb05ce9e3eb03" />
+      <keyword name="setValue" id="ArnItem::setValue" ref="class_arn_item.html#ae05443f427793c321c6b68a8c4150d99" />
+      <keyword name="setValue" id="ArnItem::setValue" ref="class_arn_item.html#a23e2c207cb553d2cfdfda90653fd6a96" />
+      <keyword name="setValue" id="ArnItem::setValue" ref="class_arn_item.html#a6edcde908f3ef0048671ddf8e81f3059" />
+      <keyword name="setValue" id="ArnItem::setValue" ref="class_arn_item.html#af9067decb882ca8f18fcf4c52b0a1f11" />
+      <keyword name="setValue" id="ArnItem::setValue" ref="class_arn_item.html#ae9799d197525362f7f580dab2ddd7b31" />
+      <keyword name="setValue" id="ArnItem::setValue" ref="class_arn_item.html#a2ae6183b047d6b93b6f7ac73162b9142" />
+      <keyword name="setValue" id="ArnItem::setValue" ref="class_arn_item.html#afee0a91637e4b7e3bf71ed6a05c35f29" />
+      <keyword name="toggleBool" id="ArnItem::toggleBool" ref="class_arn_item.html#afb85abf3355fe939286080e91e431431" />
+      <keyword name="variantType" id="ArnItemQml::variantType" ref="class_arn_item_qml.html#aadc70aed8827685b9b9b48ec14759f38" />
+      <keyword name="useUuid" id="ArnItemQml::useUuid" ref="class_arn_item_qml.html#a3160c3a25309fc58e47efd351204b5f1" />
+      <keyword name="path" id="ArnItemQml::path" ref="class_arn_item_qml.html#ad1ab5ab3f7f3c1888abb1f2c758fe3df" />
+      <keyword name="type" id="ArnItemQml::type" ref="class_arn_item_qml.html#a5a254fed5c8f27f25c3038073150cc5e" />
+      <keyword name="variant" id="ArnItemQml::variant" ref="class_arn_item_qml.html#a329af23f9a427fd5a4c134c62c293762" />
+      <keyword name="string" id="ArnItemQml::string" ref="class_arn_item_qml.html#a2a2b1d35236d3bc95a2fbc85a3c631c6" />
+      <keyword name="bytes" id="ArnItemQml::bytes" ref="class_arn_item_qml.html#a0bf1fbd1f5ffea29260f33fcef16af9e" />
+      <keyword name="num" id="ArnItemQml::num" ref="class_arn_item_qml.html#a1c0dd1a25d8a0d41e430c0bd6ada3ba4" />
+      <keyword name="intNum" id="ArnItemQml::intNum" ref="class_arn_item_qml.html#aa29aa2ec5f444a1b428aae2b1a92609e" />
+      <keyword name="biDirMode" id="ArnItemQml::biDirMode" ref="class_arn_item_qml.html#a30b16737d99ea8c7286dbfa48fb31097" />
+      <keyword name="pipeMode" id="ArnItemQml::pipeMode" ref="class_arn_item_qml.html#a4eb4a4565c940a754c549302385310b3" />
+      <keyword name="saveMode" id="ArnItemQml::saveMode" ref="class_arn_item_qml.html#af6d302896bbda4277669836a0391289c" />
+      <keyword name="masterMode" id="ArnItemQml::masterMode" ref="class_arn_item_qml.html#a1735788687648774686f6a3aa862b8d7" />
+      <keyword name="autoDestroyMode" id="ArnItemQml::autoDestroyMode" ref="class_arn_item_qml.html#ae65519366d2ea64195382d3615e0659c" />
+      <keyword name="ignoreSameValue" id="ArnItemQml::ignoreSameValue" ref="class_arn_item_qml.html#afc44109732a03598dd556a5092e24d6d" />
+      <keyword name="changed" id="ArnItem::changed" ref="class_arn_item.html#a0930d9c81b17574c85f0cb91899ed684" />
+      <keyword name="changed" id="ArnItem::changed" ref="class_arn_item.html#ad4150e3588d51ef290a2555a3a1868e2" />
+      <keyword name="changed" id="ArnItem::changed" ref="class_arn_item.html#a62977ac2af3c0d08fc673692ab5a6050" />
+      <keyword name="changed" id="ArnItem::changed" ref="class_arn_item.html#a0c101339e196c0b1fbc6bda621c5c617" />
+      <keyword name="changed" id="ArnItem::changed" ref="class_arn_item.html#a99a4d07d180b364e95104ab73c4be82f" />
+      <keyword name="changed" id="ArnItem::changed" ref="class_arn_item.html#a5909c524bccf45cc001f2db7af76781b" />
+      <keyword name="changed" id="ArnItem::changed" ref="class_arn_item.html#ad433ce7226d38580d93a8d4dc6799f97" />
+      <keyword name="modeChanged" id="ArnItem::modeChanged" ref="class_arn_item.html#ae67a140f231ad957f80b7dae24146e7a" />
+      <keyword name="arnItemCreated" id="ArnItem::arnItemCreated" ref="class_arn_item.html#a5bf7640d9baeca2a134dd9a576df9f97" />
+      <keyword name="arnModeChanged" id="ArnItem::arnModeChanged" ref="class_arn_item.html#ac0cdccc5e2ba670e28cf2c182b99e1ea" />
+      <keyword name="arnLinkDestroyed" id="ArnItemB::arnLinkDestroyed" ref="class_arn_item_b.html#a491881fa90d438c9db6218981faaa714" />
+      <keyword name="ArnItem" id="ArnItem::ArnItem" ref="class_arn_item.html#a3bf04aa51990438a639f14e6ed00eb52" />
+      <keyword name="ArnItem" id="ArnItem::ArnItem" ref="class_arn_item.html#a6d33672a48a0b07c653c5430c4494596" />
+      <keyword name="ArnItem" id="ArnItem::ArnItem" ref="class_arn_item.html#afd52995f47cf855f100544381980878e" />
+      <keyword name="~ArnItem" id="ArnItem::~ArnItem" ref="class_arn_item.html#afe04ee3f1f785a5521e9f7968d1adb1e" />
+      <keyword name="openUuid" id="ArnItem::openUuid" ref="class_arn_item.html#af3f0d6368024fdeff289696ad5b1d442" />
+      <keyword name="openUuidPipe" id="ArnItem::openUuidPipe" ref="class_arn_item.html#aa93648c2e921061e35ccbcf16db21a65" />
+      <keyword name="openFolder" id="ArnItem::openFolder" ref="class_arn_item.html#ab9460dee048f3a07102ac1c47c82a62f" />
+      <keyword name="isFolder" id="ArnItem::isFolder" ref="class_arn_item.html#a12671bff7e6af1d832c75933bca9e058" />
+      <keyword name="isBiDir" id="ArnItem::isBiDir" ref="class_arn_item.html#a5f61161aa46bc9bc3068235fd5efe000" />
+      <keyword name="type" id="ArnItem::type" ref="class_arn_item.html#aa26ee32abe7931c875ce76ff85443e01" />
+      <keyword name="setIgnoreSameValue" id="ArnItem::setIgnoreSameValue" ref="class_arn_item.html#ae52fa4597f43fe38ccc36d7f3bbd32d3" />
+      <keyword name="isIgnoreSameValue" id="ArnItem::isIgnoreSameValue" ref="class_arn_item.html#a344f0a6cd9d2d248c15b216d48e6ae48" />
+      <keyword name="addMode" id="ArnItem::addMode" ref="class_arn_item.html#a9b05c84369d7a5d3c68f113f79189b1a" />
+      <keyword name="syncMode" id="ArnItem::syncMode" ref="class_arn_item.html#a7b58a4bf40ef63b6b02c08bf14d79fd0" />
+      <keyword name="setTemplate" id="ArnItem::setTemplate" ref="class_arn_item.html#ad0abf36e61104c113f46503bfcf4f39a" />
+      <keyword name="isTemplate" id="ArnItem::isTemplate" ref="class_arn_item.html#a20cae680300033eae41ffed733f0b181" />
+      <keyword name="setBiDirMode" id="ArnItem::setBiDirMode" ref="class_arn_item.html#a105bc4a01bf08fa4cabca4685baafb7e" />
+      <keyword name="isBiDirMode" id="ArnItem::isBiDirMode" ref="class_arn_item.html#a5197330f10b2ac8599e0ead659573083" />
+      <keyword name="setPipeMode" id="ArnItem::setPipeMode" ref="class_arn_item.html#ad58e3879bda6cd859a561658d3fc34ad" />
+      <keyword name="isPipeMode" id="ArnItem::isPipeMode" ref="class_arn_item.html#abf129af97197a8a34d0a30a4d491a96e" />
+      <keyword name="setSaveMode" id="ArnItem::setSaveMode" ref="class_arn_item.html#a3af7904009c42509ab35aedc222edee5" />
+      <keyword name="isSaveMode" id="ArnItem::isSaveMode" ref="class_arn_item.html#a35e66240b06bbc62c1e9531e6fca1c27" />
+      <keyword name="setMaster" id="ArnItem::setMaster" ref="class_arn_item.html#a22de5dfc89c02245370d5c0a89cee3f6" />
+      <keyword name="isMaster" id="ArnItem::isMaster" ref="class_arn_item.html#aa6c16f48ad0789d0dd903e4ba4f02ff5" />
+      <keyword name="setAutoDestroy" id="ArnItem::setAutoDestroy" ref="class_arn_item.html#a984f218824f9f782dd5aa9e03519e64a" />
+      <keyword name="isAutoDestroy" id="ArnItem::isAutoDestroy" ref="class_arn_item.html#a701db94b1d9b53a31d54edabc5ea738d" />
+      <keyword name="setDelay" id="ArnItem::setDelay" ref="class_arn_item.html#a2487337c3924ea323ec6462b8b0aee08" />
+      <keyword name="arnImport" id="ArnItem::arnImport" ref="class_arn_item.html#ade70fa75d20f24ccf952187c845714d5" />
+      <keyword name="arnExport" id="ArnItem::arnExport" ref="class_arn_item.html#a067e26af9053171edd296a00c460c3e5" />
+      <keyword name="toInt" id="ArnItem::toInt" ref="class_arn_item.html#aaf0db948f0bad93acec951253055c347" />
+      <keyword name="toDouble" id="ArnItem::toDouble" ref="class_arn_item.html#ac19836c291a14798b65283c74a0a4a3d" />
+      <keyword name="toBool" id="ArnItem::toBool" ref="class_arn_item.html#af6eb93f9bbd85447d4dd9bf3b12784c3" />
+      <keyword name="toString" id="ArnItem::toString" ref="class_arn_item.html#a244767ed8c21477994640c5d4d3c1ecf" />
+      <keyword name="toByteArray" id="ArnItem::toByteArray" ref="class_arn_item.html#a4c55dddb082391debbe8929b1d4e7865" />
+      <keyword name="toVariant" id="ArnItem::toVariant" ref="class_arn_item.html#abf80ad9c602ecb204f70134d33a4cb08" />
+      <keyword name="operator=" id="ArnItem::operator=" ref="class_arn_item.html#acb0438c8a0640e221509cbb45c390251" />
+      <keyword name="operator=" id="ArnItem::operator=" ref="class_arn_item.html#ac1f0b213786274b08d000a5c6e8cb5e1" />
+      <keyword name="operator=" id="ArnItem::operator=" ref="class_arn_item.html#a820ace5957cbf3b5e54dc684d94c9a59" />
+      <keyword name="operator=" id="ArnItem::operator=" ref="class_arn_item.html#a58bc2496bd3bf8e989d717442ef40f42" />
+      <keyword name="operator=" id="ArnItem::operator=" ref="class_arn_item.html#a046b7113bd6316743933e1122b47440e" />
+      <keyword name="operator=" id="ArnItem::operator=" ref="class_arn_item.html#aee7b63225bece51d9bbf12c84b91255f" />
+      <keyword name="operator=" id="ArnItem::operator=" ref="class_arn_item.html#a204d40c560c0d2d6962faa470f468802" />
+      <keyword name="setValue" id="ArnItem::setValue" ref="class_arn_item.html#adac29fabc8112521b4e1ea0bfc436d21" />
+      <keyword name="ArnItemB" id="ArnItemB::ArnItemB" ref="class_arn_item_b.html#a9fc560cd83fc75bad2eb8f629981fbba" />
+      <keyword name="~ArnItemB" id="ArnItemB::~ArnItemB" ref="class_arn_item_b.html#af2fdc6b17d74046c9853d2989b0668c6" />
+      <keyword name="open" id="ArnItemB::open" ref="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1" />
+      <keyword name="close" id="ArnItemB::close" ref="class_arn_item_b.html#a6c523f9baf84b2f04711c0d81dd10168" />
+      <keyword name="destroyLink" id="ArnItemB::destroyLink" ref="class_arn_item_b.html#a909348cfa790b111e9d7254e7d592955" />
+      <keyword name="isOpen" id="ArnItemB::isOpen" ref="class_arn_item_b.html#ac601b44513692b1c8bf926c9c7423df6" />
+      <keyword name="path" id="ArnItemB::path" ref="class_arn_item_b.html#a0d5bec5b17b02359178a4bc6c35ffd68" />
+      <keyword name="name" id="ArnItemB::name" ref="class_arn_item_b.html#a9fe05e98525f3c7e8b817671f4faaae1" />
+      <keyword name="setReference" id="ArnItemB::setReference" ref="class_arn_item_b.html#a36303c266a2c623b23c0a47d8ff3483f" />
+      <keyword name="reference" id="ArnItemB::reference" ref="class_arn_item_b.html#a1db4c145def37dafca17d47a075fe1a1" />
+      <keyword name="itemId" id="ArnItemB::itemId" ref="class_arn_item_b.html#ada67d832add9a20158d71ec17273c010" />
+      <keyword name="linkId" id="ArnItemB::linkId" ref="class_arn_item_b.html#aac88cd45de0cd54f18bf2be05dcdd289" />
       <keyword name="ArnItemValve" id="ArnItemValve" ref="class_arn_item_valve.html" />
       <keyword name="setValue" id="ArnItemValve::setValue" ref="class_arn_item_valve.html#a6ee2964d55ca5cb68fdbd2955a20d7e4" />
       <keyword name="changed" id="ArnItemValve::changed" ref="class_arn_item_valve.html#ad9d957aa7ca2fce2c608eafe76bbf5de" />
@@ -2250,7 +2633,7 @@
       <keyword name="setValue" id="ArnM::setValue" ref="class_arn_m.html#a158729c49afcf485b32f3e28ad871d35" />
       <keyword name="setValue" id="ArnM::setValue" ref="class_arn_m.html#a032387fac9f16f983daa98bb61c7e403" />
       <keyword name="setValue" id="ArnM::setValue" ref="class_arn_m.html#a863ec6e8e1ab9d5f4b132f362f69f653" />
-      <keyword name="setValue" id="ArnM::setValue" ref="class_arn_m.html#a93c6ca596ca53db02bf0560c70f9c911" />
+      <keyword name="setValue" id="ArnM::setValue" ref="class_arn_m.html#abddde97733004c5de42d32874170515d" />
       <keyword name="setValue" id="ArnM::setValue" ref="class_arn_m.html#a4e4f6180c313feb75857c3c61b5f3387" />
       <keyword name="loadFromFile" id="ArnM::loadFromFile" ref="class_arn_m.html#a9c091174f670765d2f64bfb388282eee" />
       <keyword name="loadFromDirRoot" id="ArnM::loadFromDirRoot" ref="class_arn_m.html#a041c411febaaf56a1ebbb2af12262894" />
@@ -2266,15 +2649,43 @@
       <keyword name="arnChildFoundFolder" id="ArnMonitor::arnChildFoundFolder" ref="class_arn_monitor.html#ae067b765e213049c7a2ac5dcf0cc6d67" />
       <keyword name="arnChildFoundLeaf" id="ArnMonitor::arnChildFoundLeaf" ref="class_arn_monitor.html#a9458cfceef585c85e824b622d0afeb97" />
       <keyword name="ArnMonitor" id="ArnMonitor::ArnMonitor" ref="class_arn_monitor.html#a5b183d3eb917f16eea2fdcd73a7765bb" />
-      <keyword name="setClient" id="ArnMonitor::setClient" ref="class_arn_monitor.html#a188d2b01824fa28631736dce391b0ae1" />
+      <keyword name="setClient" id="ArnMonitor::setClient" ref="class_arn_monitor.html#a3580c66ba157546427c80df2616ae7df" />
+      <keyword name="setClient" id="ArnMonitor::setClient" ref="class_arn_monitor.html#a79ea5cdaf266e128bc06e941d7a3ce34" />
       <keyword name="clientId" id="ArnMonitor::clientId" ref="class_arn_monitor.html#a2b1604f4fa457f8800534bcf3d8fbba5" />
       <keyword name="client" id="ArnMonitor::client" ref="class_arn_monitor.html#a83cd827fcd09ac64f75c2e2ba0b32629" />
       <keyword name="setMonitorPath" id="ArnMonitor::setMonitorPath" ref="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae" />
       <keyword name="start" id="ArnMonitor::start" ref="class_arn_monitor.html#a28f43c9d2933a92660d93cc5bd3ef6e4" />
+      <keyword name="start" id="ArnMonitor::start" ref="class_arn_monitor.html#ae9d6ed2678c517168ff96d451f4d27fb" />
       <keyword name="monitorPath" id="ArnMonitor::monitorPath" ref="class_arn_monitor.html#a204697cdbefdc68c6cdadf563df83810" />
       <keyword name="reStart" id="ArnMonitor::reStart" ref="class_arn_monitor.html#a740f070fa55cbfcbc57f43d877956d9a" />
       <keyword name="setReference" id="ArnMonitor::setReference" ref="class_arn_monitor.html#a96ff8e729c7436ba906d8e19a136cf69" />
       <keyword name="reference" id="ArnMonitor::reference" ref="class_arn_monitor.html#aec8712e63229d4bb18e2e179c4da9d3c" />
+      <keyword name="outPathConvert" id="ArnMonitor::outPathConvert" ref="class_arn_monitor.html#a617045fa5cab5fec8dca48e9eaa2dd26" />
+      <keyword name="inPathConvert" id="ArnMonitor::inPathConvert" ref="class_arn_monitor.html#aa7bb7b8a3355de601ba24ac4bc49cdf3" />
+      <keyword name="_arnClient" id="ArnMonitor::_arnClient" ref="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c" />
+      <keyword name="_monitorPath" id="ArnMonitor::_monitorPath" ref="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4" />
+      <keyword name="ArnMonitorQml" id="ArnMonitorQml" ref="class_arn_monitor_qml.html" />
+      <keyword name="reStart" id="ArnMonitorQml::reStart" ref="class_arn_monitor_qml.html#aaaab2dd9e4c47f905d056cf034f92b46" />
+      <keyword name="foundChildDeleted" id="ArnMonitor::foundChildDeleted" ref="class_arn_monitor.html#af17594221c0a2f111a0613c90dc4b976" />
+      <keyword name="clientId" id="ArnMonitorQml::clientId" ref="class_arn_monitor_qml.html#a83dd818b47e6aaacebe6c2e404173388" />
+      <keyword name="monitorPath" id="ArnMonitorQml::monitorPath" ref="class_arn_monitor_qml.html#a62973646edb997fd60b060865e7ae608" />
+      <keyword name="arnItemCreated" id="ArnMonitor::arnItemCreated" ref="class_arn_monitor.html#aee1c84df3076e319f3faed532d1a780d" />
+      <keyword name="arnChildFound" id="ArnMonitor::arnChildFound" ref="class_arn_monitor.html#a783c8066daafd9a266c27662e47106c8" />
+      <keyword name="arnChildFoundFolder" id="ArnMonitor::arnChildFoundFolder" ref="class_arn_monitor.html#ae067b765e213049c7a2ac5dcf0cc6d67" />
+      <keyword name="arnChildFoundLeaf" id="ArnMonitor::arnChildFoundLeaf" ref="class_arn_monitor.html#a9458cfceef585c85e824b622d0afeb97" />
+      <keyword name="ArnMonitor" id="ArnMonitor::ArnMonitor" ref="class_arn_monitor.html#a5b183d3eb917f16eea2fdcd73a7765bb" />
+      <keyword name="setClient" id="ArnMonitor::setClient" ref="class_arn_monitor.html#a3580c66ba157546427c80df2616ae7df" />
+      <keyword name="setClient" id="ArnMonitor::setClient" ref="class_arn_monitor.html#a79ea5cdaf266e128bc06e941d7a3ce34" />
+      <keyword name="clientId" id="ArnMonitor::clientId" ref="class_arn_monitor.html#a2b1604f4fa457f8800534bcf3d8fbba5" />
+      <keyword name="client" id="ArnMonitor::client" ref="class_arn_monitor.html#a83cd827fcd09ac64f75c2e2ba0b32629" />
+      <keyword name="setMonitorPath" id="ArnMonitor::setMonitorPath" ref="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae" />
+      <keyword name="start" id="ArnMonitor::start" ref="class_arn_monitor.html#a28f43c9d2933a92660d93cc5bd3ef6e4" />
+      <keyword name="start" id="ArnMonitor::start" ref="class_arn_monitor.html#ae9d6ed2678c517168ff96d451f4d27fb" />
+      <keyword name="monitorPath" id="ArnMonitor::monitorPath" ref="class_arn_monitor.html#a204697cdbefdc68c6cdadf563df83810" />
+      <keyword name="setReference" id="ArnMonitor::setReference" ref="class_arn_monitor.html#a96ff8e729c7436ba906d8e19a136cf69" />
+      <keyword name="reference" id="ArnMonitor::reference" ref="class_arn_monitor.html#aec8712e63229d4bb18e2e179c4da9d3c" />
+      <keyword name="outPathConvert" id="ArnMonitor::outPathConvert" ref="class_arn_monitor.html#a617045fa5cab5fec8dca48e9eaa2dd26" />
+      <keyword name="inPathConvert" id="ArnMonitor::inPathConvert" ref="class_arn_monitor.html#aa7bb7b8a3355de601ba24ac4bc49cdf3" />
       <keyword name="_arnClient" id="ArnMonitor::_arnClient" ref="class_arn_monitor.html#afdac0d500a4c808239a2552c3806260c" />
       <keyword name="_monitorPath" id="ArnMonitor::_monitorPath" ref="class_arn_monitor.html#a3f0f5a1239cbc1fbc44df2bff4e188c4" />
       <keyword name="ArnPersist" id="ArnPersist" ref="class_arn_persist.html" />
@@ -2317,6 +2728,15 @@
       <keyword name="reference" id="ArnItemB::reference" ref="class_arn_item_b.html#a1db4c145def37dafca17d47a075fe1a1" />
       <keyword name="itemId" id="ArnItemB::itemId" ref="class_arn_item_b.html#ada67d832add9a20158d71ec17273c010" />
       <keyword name="linkId" id="ArnItemB::linkId" ref="class_arn_item_b.html#aac88cd45de0cd54f18bf2be05dcdd289" />
+      <keyword name="ArnQml" id="ArnQml" ref="class_arn_qml.html" />
+      <keyword name="setup" id="ArnQml::setup" ref="class_arn_qml.html#a600e65be55dd58c058d30cca88d5a1f5" />
+      <keyword name="instance" id="ArnQml::instance" ref="class_arn_qml.html#a0f5168745452389949f9292a4e79cad8" />
+      <keyword name="arnRootPath" id="ArnQml::arnRootPath" ref="class_arn_qml.html#ab3b77a3dcc40fd68023322293cbddb18" />
+      <keyword name="setArnRootPath" id="ArnQml::setArnRootPath" ref="class_arn_qml.html#a54d563bf463fbc006c7ff805109dea91" />
+      <keyword name="ArnQml::UseFlags" id="ArnQml::UseFlags" ref="struct_arn_qml_1_1_use_flags.html" />
+      <keyword name="ArnLib" id="ArnQml::UseFlags::ArnLib" ref="struct_arn_qml_1_1_use_flags.html#a8cbceb4a9531e1526eef35e2b9941effabe0e5373ed0780b20a54c66669cdf584" />
+      <keyword name="MSystem" id="ArnQml::UseFlags::MSystem" ref="struct_arn_qml_1_1_use_flags.html#a8cbceb4a9531e1526eef35e2b9941effaa9cf272e280e17e111a0fb8b1559f908" />
+      <keyword name="All" id="ArnQml::UseFlags::All" ref="struct_arn_qml_1_1_use_flags.html#a8cbceb4a9531e1526eef35e2b9941effa6df2adb40d77e62ee47ed34d03da8e11" />
       <keyword name="ArnRpc" id="ArnRpc" ref="class_arn_rpc.html" />
       <keyword name="sendText" id="ArnRpc::sendText" ref="class_arn_rpc.html#a74f936af0f7718f1bdc58d2eebcaf3f1" />
       <keyword name="pipeClosed" id="ArnRpc::pipeClosed" ref="class_arn_rpc.html#af20b8270d7043673c9d9d3906efb7dac" />
@@ -2331,12 +2751,16 @@
       <keyword name="setPipe" id="ArnRpc::setPipe" ref="class_arn_rpc.html#ae3f5ce01e8f0bc61bb04a4aa9d840b40" />
       <keyword name="pipe" id="ArnRpc::pipe" ref="class_arn_rpc.html#a73756d72d4d2fd3616ef2ff0e03ca5cb" />
       <keyword name="setReceiver" id="ArnRpc::setReceiver" ref="class_arn_rpc.html#ace8322eda7c1ab852e557042206db011" />
+      <keyword name="receiver" id="ArnRpc::receiver" ref="class_arn_rpc.html#a2cd4a8494450579dfe1c6e4e8707b0a3" />
       <keyword name="setMethodPrefix" id="ArnRpc::setMethodPrefix" ref="class_arn_rpc.html#acb14a8cd274f112f806cdd28db426614" />
+      <keyword name="methodPrefix" id="ArnRpc::methodPrefix" ref="class_arn_rpc.html#a66cc3e89ccecc4a4f82cd1e013e4bd27" />
       <keyword name="setIncludeSender" id="ArnRpc::setIncludeSender" ref="class_arn_rpc.html#aeab85c18f1744d1c8790e1010a9f4c6d" />
       <keyword name="setMode" id="ArnRpc::setMode" ref="class_arn_rpc.html#a162f91fef9e07ea71b52611de26341db" />
       <keyword name="mode" id="ArnRpc::mode" ref="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0" />
       <keyword name="setHeartBeatSend" id="ArnRpc::setHeartBeatSend" ref="class_arn_rpc.html#a0c135a403fc7c22ecc5e869872e6758c" />
+      <keyword name="getHeartBeatSend" id="ArnRpc::getHeartBeatSend" ref="class_arn_rpc.html#a1eabbf8f25a3c7e07235c04d983e857c" />
       <keyword name="setHeartBeatCheck" id="ArnRpc::setHeartBeatCheck" ref="class_arn_rpc.html#a5e5309bf47720f9bbe3442b804314e5f" />
+      <keyword name="getHeartBeatCheck" id="ArnRpc::getHeartBeatCheck" ref="class_arn_rpc.html#a197410c0694afc858d9d0bd457c4efa1" />
       <keyword name="isHeartBeatOk" id="ArnRpc::isHeartBeatOk" ref="class_arn_rpc.html#aba3b50c527ee01eda8955d7590afbf6c" />
       <keyword name="addSenderSignals" id="ArnRpc::addSenderSignals" ref="class_arn_rpc.html#aa735fedd853fecb5d5744f3435f12893" />
       <keyword name="invoke" id="ArnRpc::invoke" ref="class_arn_rpc.html#ab84c845961e86b52f698d4a81912f35d" />
@@ -2365,6 +2789,7 @@
       <keyword name="UseDefaultCall" id="ArnRpc::Mode::UseDefaultCall" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a949b58be951dea8253a17c0244c1373f" />
       <keyword name="Debug" id="ArnRpc::Mode::Debug" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57a0450d7b70eaf255864e138ddf558c507" />
       <keyword name="UuidAutoDestroy" id="ArnRpc::Mode::UuidAutoDestroy" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57acf07d732ddd9af3b3ae07bb277c4aca0" />
+      <keyword name="AnyNamedArg" id="ArnRpc::Mode::AnyNamedArg" ref="struct_arn_rpc_1_1_mode.html#ae20fe345c26e14c3805658cc52793c57adaacc6fcf84da494fb0d9330af64bb02" />
       <keyword name="ArnSapi" id="ArnSapi" ref="class_arn_sapi.html" />
       <keyword name="ArnSapi" id="ArnSapi::ArnSapi" ref="class_arn_sapi.html#accd9c189e97a52f0f10d06bb47fac32c" />
       <keyword name="open" id="ArnSapi::open" ref="class_arn_sapi.html#a626b0e6efc688f02a1feacc2bb503b4f" />
@@ -2374,9 +2799,13 @@
       <keyword name="pipePath" id="ArnRpc::pipePath" ref="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b" />
       <keyword name="open" id="ArnRpc::open" ref="class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea" />
       <keyword name="pipe" id="ArnRpc::pipe" ref="class_arn_rpc.html#a73756d72d4d2fd3616ef2ff0e03ca5cb" />
+      <keyword name="receiver" id="ArnRpc::receiver" ref="class_arn_rpc.html#a2cd4a8494450579dfe1c6e4e8707b0a3" />
+      <keyword name="methodPrefix" id="ArnRpc::methodPrefix" ref="class_arn_rpc.html#a66cc3e89ccecc4a4f82cd1e013e4bd27" />
       <keyword name="mode" id="ArnRpc::mode" ref="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0" />
       <keyword name="setHeartBeatSend" id="ArnRpc::setHeartBeatSend" ref="class_arn_rpc.html#a0c135a403fc7c22ecc5e869872e6758c" />
+      <keyword name="getHeartBeatSend" id="ArnRpc::getHeartBeatSend" ref="class_arn_rpc.html#a1eabbf8f25a3c7e07235c04d983e857c" />
       <keyword name="setHeartBeatCheck" id="ArnRpc::setHeartBeatCheck" ref="class_arn_rpc.html#a5e5309bf47720f9bbe3442b804314e5f" />
+      <keyword name="getHeartBeatCheck" id="ArnRpc::getHeartBeatCheck" ref="class_arn_rpc.html#a197410c0694afc858d9d0bd457c4efa1" />
       <keyword name="isHeartBeatOk" id="ArnRpc::isHeartBeatOk" ref="class_arn_rpc.html#aba3b50c527ee01eda8955d7590afbf6c" />
       <keyword name="invoke" id="ArnRpc::invoke" ref="class_arn_rpc.html#ab84c845961e86b52f698d4a81912f35d" />
       <keyword name="invoke" id="ArnRpc::invoke" ref="class_arn_rpc.html#add5f77c6c330a42d1666f966d12f2f20" />
@@ -2390,15 +2819,64 @@
       <keyword name="heartBeatChanged" id="ArnRpc::heartBeatChanged" ref="class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0" />
       <keyword name="heartBeatReceived" id="ArnRpc::heartBeatReceived" ref="class_arn_rpc.html#a9534d3737bf93fb9511c1f33a2f09967" />
       <keyword name="batchConnect" id="ArnRpc::batchConnect" ref="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" />
+      <keyword name="ArnSapiQml" id="ArnSapiQml" ref="class_arn_sapi_qml.html" />
+      <keyword name="isHeartBeatOk" id="ArnSapiQml::isHeartBeatOk" ref="class_arn_sapi_qml.html#a69aa04737733eec5f624430593b09f7f" />
+      <keyword name="sendText" id="ArnRpc::sendText" ref="class_arn_rpc.html#a74f936af0f7718f1bdc58d2eebcaf3f1" />
+      <keyword name="pipePath" id="ArnSapiQml::pipePath" ref="class_arn_sapi_qml.html#a2252af4a78fce46823f149498bf301b1" />
+      <keyword name="mode" id="ArnSapiQml::mode" ref="class_arn_sapi_qml.html#aa228bccb3b595201de2d2209aa66ca3d" />
+      <keyword name="receiver" id="ArnSapiQml::receiver" ref="class_arn_sapi_qml.html#adc2709e9b57f57eb461dbda5b442d593" />
+      <keyword name="heartBeatSend" id="ArnSapiQml::heartBeatSend" ref="class_arn_sapi_qml.html#a26ed8d03cd4fcf4e44c396be3c1b26f5" />
+      <keyword name="heartBeatCheck" id="ArnSapiQml::heartBeatCheck" ref="class_arn_sapi_qml.html#a74d03659a38df11364ded93d19bf7dd8" />
+      <keyword name="pipeClosed" id="ArnRpc::pipeClosed" ref="class_arn_rpc.html#af20b8270d7043673c9d9d3906efb7dac" />
+      <keyword name="textReceived" id="ArnRpc::textReceived" ref="class_arn_rpc.html#a094d3683c8a62b66b1631ccdca5a4a9f" />
+      <keyword name="defaultCall" id="ArnRpc::defaultCall" ref="class_arn_rpc.html#a6f380544a22b4171d08a652b676161e9" />
+      <keyword name="outOfSequence" id="ArnRpc::outOfSequence" ref="class_arn_rpc.html#a00aa03b83806c25ca39d82d111dcc064" />
+      <keyword name="heartBeatChanged" id="ArnRpc::heartBeatChanged" ref="class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0" />
+      <keyword name="heartBeatReceived" id="ArnRpc::heartBeatReceived" ref="class_arn_rpc.html#a9534d3737bf93fb9511c1f33a2f09967" />
+      <keyword name="ArnRpc" id="ArnRpc::ArnRpc" ref="class_arn_rpc.html#a993650db0c8235fff42e0909b410610c" />
+      <keyword name="pipePath" id="ArnRpc::pipePath" ref="class_arn_rpc.html#a9034a54433ff006762da0ccc2b45526b" />
+      <keyword name="open" id="ArnRpc::open" ref="class_arn_rpc.html#a69eb9b2f7b694e41bc349560854597ea" />
+      <keyword name="setPipe" id="ArnRpc::setPipe" ref="class_arn_rpc.html#ae3f5ce01e8f0bc61bb04a4aa9d840b40" />
+      <keyword name="pipe" id="ArnRpc::pipe" ref="class_arn_rpc.html#a73756d72d4d2fd3616ef2ff0e03ca5cb" />
+      <keyword name="setReceiver" id="ArnRpc::setReceiver" ref="class_arn_rpc.html#ace8322eda7c1ab852e557042206db011" />
+      <keyword name="receiver" id="ArnRpc::receiver" ref="class_arn_rpc.html#a2cd4a8494450579dfe1c6e4e8707b0a3" />
+      <keyword name="setMethodPrefix" id="ArnRpc::setMethodPrefix" ref="class_arn_rpc.html#acb14a8cd274f112f806cdd28db426614" />
+      <keyword name="methodPrefix" id="ArnRpc::methodPrefix" ref="class_arn_rpc.html#a66cc3e89ccecc4a4f82cd1e013e4bd27" />
+      <keyword name="setIncludeSender" id="ArnRpc::setIncludeSender" ref="class_arn_rpc.html#aeab85c18f1744d1c8790e1010a9f4c6d" />
+      <keyword name="setMode" id="ArnRpc::setMode" ref="class_arn_rpc.html#a162f91fef9e07ea71b52611de26341db" />
+      <keyword name="mode" id="ArnRpc::mode" ref="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0" />
+      <keyword name="setHeartBeatSend" id="ArnRpc::setHeartBeatSend" ref="class_arn_rpc.html#a0c135a403fc7c22ecc5e869872e6758c" />
+      <keyword name="getHeartBeatSend" id="ArnRpc::getHeartBeatSend" ref="class_arn_rpc.html#a1eabbf8f25a3c7e07235c04d983e857c" />
+      <keyword name="setHeartBeatCheck" id="ArnRpc::setHeartBeatCheck" ref="class_arn_rpc.html#a5e5309bf47720f9bbe3442b804314e5f" />
+      <keyword name="getHeartBeatCheck" id="ArnRpc::getHeartBeatCheck" ref="class_arn_rpc.html#a197410c0694afc858d9d0bd457c4efa1" />
+      <keyword name="isHeartBeatOk" id="ArnRpc::isHeartBeatOk" ref="class_arn_rpc.html#aba3b50c527ee01eda8955d7590afbf6c" />
+      <keyword name="addSenderSignals" id="ArnRpc::addSenderSignals" ref="class_arn_rpc.html#aa735fedd853fecb5d5744f3435f12893" />
+      <keyword name="invoke" id="ArnRpc::invoke" ref="class_arn_rpc.html#ab84c845961e86b52f698d4a81912f35d" />
+      <keyword name="invoke" id="ArnRpc::invoke" ref="class_arn_rpc.html#add5f77c6c330a42d1666f966d12f2f20" />
+      <keyword name="rpcSender" id="ArnRpc::rpcSender" ref="class_arn_rpc.html#a19a34d163bd3550495c01c6b4bbd20aa" />
+      <keyword name="batchConnect" id="ArnRpc::batchConnect" ref="class_arn_rpc.html#a7f999b9eedac4890fbc5bed8a6e618ab" />
+      <keyword name="batchConnect" id="ArnRpc::batchConnect" ref="class_arn_rpc.html#a75bd3439dec20345813e2bc40a67c166" />
+      <keyword name="rpcSender" id="ArnRpc::rpcSender" ref="class_arn_rpc.html#a90adbfc92cf41e431401d33e835d99c5" />
+      <keyword name="batchConnect" id="ArnRpc::batchConnect" ref="class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de" />
+      <keyword name="Provider" id="ArnSapiQml::Provider" ref="class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87a41fe4b72a5df1a9f334b1fd3dacdf4f4" />
+      <keyword name="AutoDestroy" id="ArnSapiQml::AutoDestroy" ref="class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87a1264c6d2f86bf935bd20ce94f9e99830" />
+      <keyword name="UuidPipe" id="ArnSapiQml::UuidPipe" ref="class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87ad41e1b679d0ef39041f99a613ef40fb6" />
+      <keyword name="NoDefaultArgs" id="ArnSapiQml::NoDefaultArgs" ref="class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87ad88405201e243ab780e00a94b65f0e15" />
+      <keyword name="SendSequence" id="ArnSapiQml::SendSequence" ref="class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87a477ec8eab881493424f48dcfa3e0245e" />
+      <keyword name="CheckSequence" id="ArnSapiQml::CheckSequence" ref="class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87a15d377202928d81fc5f79d1712066e57" />
+      <keyword name="NamedArg" id="ArnSapiQml::NamedArg" ref="class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87a03da8759685d89f4d789ef56d6100e7d" />
+      <keyword name="NamedTypedArg" id="ArnSapiQml::NamedTypedArg" ref="class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87a7ee9e2a965849647816f503ef14890c1" />
+      <keyword name="UseDefaultCall" id="ArnSapiQml::UseDefaultCall" ref="class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87a3c494f6a119bea306c130f6c9ed2fc55" />
+      <keyword name="UuidAutoDestroy" id="ArnSapiQml::UuidAutoDestroy" ref="class_arn_sapi_qml.html#a0701488e9bcb3d8a4496935f02812f87a5b01b6314c43b443b73c6d9e24f51d70" />
       <keyword name="ArnScript" id="ArnScript" ref="class_arn_script.html" />
       <keyword name="errorText" id="ArnScript::errorText" ref="class_arn_script.html#a1bff0263e23177f618f088b12030b851" />
       <keyword name="ArnScript" id="ArnScript::ArnScript" ref="class_arn_script.html#a240907efcc52b656a2bb3ee82b3138fd" />
+      <keyword name="ArnScript" id="ArnScript::ArnScript" ref="class_arn_script.html#a33ae53b0a6742be11a3369d5841d9bf9" />
       <keyword name="engine" id="ArnScript::engine" ref="class_arn_script.html#afbcd826fba629bb92cd089c1a8a85e82" />
       <keyword name="evaluate" id="ArnScript::evaluate" ref="class_arn_script.html#a55168dc6f30fbca04c8caa64b4e4c848" />
       <keyword name="evaluateFile" id="ArnScript::evaluateFile" ref="class_arn_script.html#a9b0fe8b82d78aea78470aacea486348c" />
       <keyword name="logUncaughtError" id="ArnScript::logUncaughtError" ref="class_arn_script.html#ae7388bb2411ca0a39e10333a6b7cfb66" />
       <keyword name="idName" id="ArnScript::idName" ref="class_arn_script.html#a30dbc244eb0ea34e54529335fae4326b" />
-      <keyword name="getClient" id="ArnScript::getClient" ref="class_arn_script.html#a490516c01a2b021fbceb439378183936" />
       <keyword name="errorLog" id="ArnScript::errorLog" ref="class_arn_script.html#ac67449503cda62150240d9db074e9d41" />
       <keyword name="printFunction" id="ArnScript::printFunction" ref="class_arn_script.html#ad45984e36f1394527c8bde9f114fd39f" />
       <keyword name="_engine" id="ArnScript::_engine" ref="class_arn_script.html#a4b28274c99ef773a1d679379faa5589a" />
@@ -2438,7 +2916,6 @@
       <keyword name="ArnScriptJobFactory" id="ArnScriptJobFactory::ArnScriptJobFactory" ref="class_arn_script_job_factory.html#a72ab6f8fcedb174fa89d51834538ce67" />
       <keyword name="~ArnScriptJobFactory" id="ArnScriptJobFactory::~ArnScriptJobFactory" ref="class_arn_script_job_factory.html#a2e359628a7bce0b6c439b5c36891a2bd" />
       <keyword name="installExtension" id="ArnScriptJobFactory::installExtension" ref="class_arn_script_job_factory.html#ad37f5b97e0433d138325b020c47a96e1" />
-      <keyword name="getClient" id="ArnScriptJobFactory::getClient" ref="class_arn_script_job_factory.html#af7db479b73c547106b5085c31ddbba4d" />
       <keyword name="setupJsObj" id="ArnScriptJobFactory::setupJsObj" ref="class_arn_script_job_factory.html#a9f486ed73998182fd8decfe8a917f9a2" />
       <keyword name="setupInterface" id="ArnScriptJobFactory::setupInterface" ref="class_arn_script_job_factory.html#af13b9b5c829cad521f7380d0a2925373" />
       <keyword name="ArnScriptJobs" id="ArnScriptJobs" ref="class_arn_script_jobs.html" />
@@ -2654,12 +3131,24 @@
       <keyword name="SilentError" id="Arn::LinkFlags::SilentError" ref="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610a709766e24eae1cf229d8898d1d2836ee" />
       <keyword name="Threaded" id="Arn::LinkFlags::Threaded" ref="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610a390687f99d558c56d2d4f6a9837f200b" />
       <keyword name="Arn::NameF" id="Arn::NameF" ref="struct_arn_1_1_name_f.html" />
+      <keyword name="Default" id="Arn::NameF::Default" ref="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a07121f79d689f1e7b009d281ba3b6bb6" />
       <keyword name="NoFolderMark" id="Arn::NameF::NoFolderMark" ref="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a449768cd68241ca0054fb02877de2973" />
       <keyword name="EmptyOk" id="Arn::NameF::EmptyOk" ref="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776" />
       <keyword name="Relative" id="Arn::NameF::Relative" ref="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40add0d4f2215d5e30f295fbfd0d27d39a1" />
       <keyword name="Arn::Coding" id="Arn::Coding" ref="struct_arn_1_1_coding.html" />
       <keyword name="Binary" id="Arn::Coding::Binary" ref="struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163aa38b66c8fd42a93a992919ebdd2cd6d1" />
       <keyword name="Text" id="Arn::Coding::Text" ref="struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163a905ec2383ef46c82dc382b75eabba242" />
+      <keyword name="Arn::QmlMFileIO" id="Arn::QmlMFileIO" ref="class_arn_1_1_qml_m_file_i_o.html" />
+      <keyword name="setPath" id="Arn::QmlMFileIO::setPath" ref="class_arn_1_1_qml_m_file_i_o.html#a9b5e61889ad10c91ee342209b7a014e8" />
+      <keyword name="pathChanged" id="Arn::QmlMFileIO::pathChanged" ref="class_arn_1_1_qml_m_file_i_o.html#ae976b8c4d5fb4dbc195fc9ef55ec6c89" />
+      <keyword name="error" id="Arn::QmlMFileIO::error" ref="class_arn_1_1_qml_m_file_i_o.html#a6a50da8b6336795d0c21307df9273fd7" />
+      <keyword name="QmlMFileIO" id="Arn::QmlMFileIO::QmlMFileIO" ref="class_arn_1_1_qml_m_file_i_o.html#a670bd204edaf1567647c54703b76c603" />
+      <keyword name="read" id="Arn::QmlMFileIO::read" ref="class_arn_1_1_qml_m_file_i_o.html#a1cf72f568ee34c49fb33aa2768e535c1" />
+      <keyword name="write" id="Arn::QmlMFileIO::write" ref="class_arn_1_1_qml_m_file_i_o.html#adfd44e3904809f6bc62cc762f56fd098" />
+      <keyword name="readBytes" id="Arn::QmlMFileIO::readBytes" ref="class_arn_1_1_qml_m_file_i_o.html#a6616c0fc1e881168838f256653d953a8" />
+      <keyword name="writeBytes" id="Arn::QmlMFileIO::writeBytes" ref="class_arn_1_1_qml_m_file_i_o.html#a255be038b2b7f60a0867bb877500ee27" />
+      <keyword name="path" id="Arn::QmlMFileIO::path" ref="class_arn_1_1_qml_m_file_i_o.html#aad6a4b9a52b0758485ef8a09c4991134" />
+      <keyword name="path" id="Arn::QmlMFileIO::path" ref="class_arn_1_1_qml_m_file_i_o.html#a4c7ec5607f50529670f268c3b2a05375" />
       <keyword name="Arn::XStringMap" id="Arn::XStringMap" ref="class_arn_1_1_x_string_map.html" />
       <keyword name="XStringMap" id="Arn::XStringMap::XStringMap" ref="class_arn_1_1_x_string_map.html#a4c3bcc47ceaa123cdad58630fd4a10c8" />
       <keyword name="XStringMap" id="Arn::XStringMap::XStringMap" ref="class_arn_1_1_x_string_map.html#a3bf91e4b62611a4651e845b1d38ceae0" />
@@ -2820,6 +3309,7 @@
       <file>_arn_discover_connect_8hpp_source.html</file>
       <file>_arn_discover_remote_8hpp_source.html</file>
       <file>_arn_error_8hpp_source.html</file>
+      <file>_arn_interface_8hpp_source.html</file>
       <file>_arn_item_8hpp_source.html</file>
       <file>_arn_item_b_8hpp_source.html</file>
       <file>_arn_item_valve_8hpp_source.html</file>
@@ -2831,6 +3321,8 @@
       <file>_arn_persist_8hpp_source.html</file>
       <file>_arn_persist_sapi_8hpp_source.html</file>
       <file>_arn_pipe_8hpp_source.html</file>
+      <file>_arn_qml_8hpp_source.html</file>
+      <file>_arn_qml_m_system_8hpp_source.html</file>
       <file>_arn_rpc_8hpp_source.html</file>
       <file>_arn_sapi_8hpp_source.html</file>
       <file>_arn_script_8hpp_source.html</file>
@@ -2853,6 +3345,8 @@
       <file>_arn_monitor_8cpp_source.html</file>
       <file>_arn_persist_8cpp_source.html</file>
       <file>_arn_pipe_8cpp_source.html</file>
+      <file>_arn_qml_8cpp_source.html</file>
+      <file>_arn_qml_m_system_8cpp_source.html</file>
       <file>_arn_rpc_8cpp_source.html</file>
       <file>_arn_sapi_8cpp_source.html</file>
       <file>_arn_script_8cpp_source.html</file>
@@ -2923,6 +3417,11 @@
       <file>_arn_error_8hpp__incl.png</file>
       <file>_arn_error_8hpp__dep__incl.png</file>
       <file>_arn_error_8hpp__dep__incl.png</file>
+      <file>_arn_interface_8hpp.html</file>
+      <file>_arn_interface_8hpp__incl.png</file>
+      <file>_arn_interface_8hpp__incl.png</file>
+      <file>_arn_interface_8hpp__dep__incl.png</file>
+      <file>_arn_interface_8hpp__dep__incl.png</file>
       <file>_arn_item_8hpp.html</file>
       <file>_arn_item_8hpp__incl.png</file>
       <file>_arn_item_8hpp__incl.png</file>
@@ -2978,6 +3477,16 @@
       <file>_arn_pipe_8hpp__incl.png</file>
       <file>_arn_pipe_8hpp__dep__incl.png</file>
       <file>_arn_pipe_8hpp__dep__incl.png</file>
+      <file>_arn_qml_8hpp.html</file>
+      <file>_arn_qml_8hpp__incl.png</file>
+      <file>_arn_qml_8hpp__incl.png</file>
+      <file>_arn_qml_8hpp__dep__incl.png</file>
+      <file>_arn_qml_8hpp__dep__incl.png</file>
+      <file>_arn_qml_m_system_8hpp.html</file>
+      <file>_arn_qml_m_system_8hpp__incl.png</file>
+      <file>_arn_qml_m_system_8hpp__incl.png</file>
+      <file>_arn_qml_m_system_8hpp__dep__incl.png</file>
+      <file>_arn_qml_m_system_8hpp__dep__incl.png</file>
       <file>_arn_rpc_8hpp.html</file>
       <file>_arn_rpc_8hpp__incl.png</file>
       <file>_arn_rpc_8hpp__incl.png</file>
@@ -3066,6 +3575,12 @@
       <file>_arn_pipe_8cpp.html</file>
       <file>_arn_pipe_8cpp__incl.png</file>
       <file>_arn_pipe_8cpp__incl.png</file>
+      <file>_arn_qml_8cpp.html</file>
+      <file>_arn_qml_8cpp__incl.png</file>
+      <file>_arn_qml_8cpp__incl.png</file>
+      <file>_arn_qml_m_system_8cpp.html</file>
+      <file>_arn_qml_m_system_8cpp__incl.png</file>
+      <file>_arn_qml_m_system_8cpp__incl.png</file>
       <file>_arn_rpc_8cpp.html</file>
       <file>_arn_rpc_8cpp__incl.png</file>
       <file>_arn_rpc_8cpp__incl.png</file>
@@ -3116,6 +3631,8 @@
       <file>struct_arn_client_1_1_connect_stat-members.html</file>
       <file>struct_arn_client_1_1_host_addr_port.html</file>
       <file>struct_arn_client_1_1_host_addr_port-members.html</file>
+      <file>class_arn_client_reg.html</file>
+      <file>class_arn_client_reg-members.html</file>
       <file>class_arn_depend.html</file>
       <file>class_arn_depend-members.html</file>
       <file>class_arn_depend_offer.html</file>
@@ -3158,6 +3675,8 @@
       <file>struct_arn_error-members.html</file>
       <file>struct_arn_error_1_1_std_code.html</file>
       <file>struct_arn_error_1_1_std_code-members.html</file>
+      <file>class_arn_interface.html</file>
+      <file>class_arn_interface-members.html</file>
       <file>class_arn_item.html</file>
       <file>class_arn_item__inherit__graph.png</file>
       <file>class_arn_item__inherit__graph.png</file>
@@ -3170,6 +3689,12 @@
       <file>class_arn_item_b-members.html</file>
       <file>struct_arn_item_b_1_1_export_code.html</file>
       <file>struct_arn_item_b_1_1_export_code-members.html</file>
+      <file>class_arn_item_qml.html</file>
+      <file>class_arn_item_qml__inherit__graph.png</file>
+      <file>class_arn_item_qml__inherit__graph.png</file>
+      <file>class_arn_item_qml__coll__graph.png</file>
+      <file>class_arn_item_qml__coll__graph.png</file>
+      <file>class_arn_item_qml-members.html</file>
       <file>class_arn_item_valve.html</file>
       <file>class_arn_item_valve__inherit__graph.png</file>
       <file>class_arn_item_valve__inherit__graph.png</file>
@@ -3181,7 +3706,15 @@
       <file>class_arn_m.html</file>
       <file>class_arn_m-members.html</file>
       <file>class_arn_monitor.html</file>
+      <file>class_arn_monitor__inherit__graph.png</file>
+      <file>class_arn_monitor__inherit__graph.png</file>
       <file>class_arn_monitor-members.html</file>
+      <file>class_arn_monitor_qml.html</file>
+      <file>class_arn_monitor_qml__inherit__graph.png</file>
+      <file>class_arn_monitor_qml__inherit__graph.png</file>
+      <file>class_arn_monitor_qml__coll__graph.png</file>
+      <file>class_arn_monitor_qml__coll__graph.png</file>
+      <file>class_arn_monitor_qml-members.html</file>
       <file>class_arn_persist.html</file>
       <file>class_arn_persist-members.html</file>
       <file>class_arn_pipe.html</file>
@@ -3190,6 +3723,10 @@
       <file>class_arn_pipe__coll__graph.png</file>
       <file>class_arn_pipe__coll__graph.png</file>
       <file>class_arn_pipe-members.html</file>
+      <file>class_arn_qml.html</file>
+      <file>class_arn_qml-members.html</file>
+      <file>struct_arn_qml_1_1_use_flags.html</file>
+      <file>struct_arn_qml_1_1_use_flags-members.html</file>
       <file>class_arn_rpc.html</file>
       <file>class_arn_rpc__inherit__graph.png</file>
       <file>class_arn_rpc__inherit__graph.png</file>
@@ -3206,6 +3743,12 @@
       <file>class_arn_sapi__coll__graph.png</file>
       <file>class_arn_sapi__coll__graph.png</file>
       <file>class_arn_sapi-members.html</file>
+      <file>class_arn_sapi_qml.html</file>
+      <file>class_arn_sapi_qml__inherit__graph.png</file>
+      <file>class_arn_sapi_qml__inherit__graph.png</file>
+      <file>class_arn_sapi_qml__coll__graph.png</file>
+      <file>class_arn_sapi_qml__coll__graph.png</file>
+      <file>class_arn_sapi_qml-members.html</file>
       <file>class_arn_script.html</file>
       <file>class_arn_script-members.html</file>
       <file>class_arn_script_job.html</file>
@@ -3275,6 +3818,8 @@
       <file>struct_arn_1_1_name_f-members.html</file>
       <file>struct_arn_1_1_coding.html</file>
       <file>struct_arn_1_1_coding-members.html</file>
+      <file>class_arn_1_1_qml_m_file_i_o.html</file>
+      <file>class_arn_1_1_qml_m_file_i_o-members.html</file>
       <file>class_arn_1_1_x_string_map.html</file>
       <file>class_arn_1_1_x_string_map-members.html</file>
       <file>namespace_arn_discover.html</file>
@@ -3348,6 +3893,11 @@
       <file>inherit_graph_41.png</file>
       <file>inherit_graph_42.png</file>
       <file>inherit_graph_43.png</file>
+      <file>inherit_graph_44.png</file>
+      <file>inherit_graph_45.png</file>
+      <file>inherit_graph_46.png</file>
+      <file>inherit_graph_47.png</file>
+      <file>inherit_graph_48.png</file>
       <file>functions.html</file>
       <file>functions_0x61.html</file>
       <file>functions_0x62.html</file>
@@ -3394,6 +3944,7 @@
       <file>functions_func_0x73.html</file>
       <file>functions_func_0x74.html</file>
       <file>functions_func_0x76.html</file>
+      <file>functions_func_0x77.html</file>
       <file>functions_func_0x78.html</file>
       <file>functions_func_0x79.html</file>
       <file>functions_func_0x7e.html</file>

@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.2.x</span>
+   &#160;<span id="projectnumber">2.3.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -121,19 +121,23 @@ $(document).ready(function(){initNavTree('class_arn_monitor.html','');});
   <tr><td class="entry"><a class="el" href="class_arn_monitor.html#a83cd827fcd09ac64f75c2e2ba0b32629">client</a>() const </td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_arn_monitor.html#a2b1604f4fa457f8800534bcf3d8fbba5">clientId</a>() const </td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="class_arn_monitor.html#af17594221c0a2f111a0613c90dc4b976">foundChildDeleted</a>(QString path)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"><span class="mlabel">slot</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_monitor.html#a204697cdbefdc68c6cdadf563df83810">monitorPath</a>() const </td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_monitor.html#aa7bb7b8a3355de601ba24ac4bc49cdf3">inPathConvert</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_monitor.html#a204697cdbefdc68c6cdadf563df83810">monitorPath</a>() const </td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_monitor.html#a617045fa5cab5fec8dca48e9eaa2dd26">outPathConvert</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_arn_monitor.html#aec8712e63229d4bb18e2e179c4da9d3c">reference</a>() const </td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_arn_monitor.html#a740f070fa55cbfcbc57f43d877956d9a">reStart</a>()</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_monitor.html#a188d2b01824fa28631736dce391b0ae1">setClient</a>(ArnClient *client, QString id=QString())</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae">setMonitorPath</a>(QString path, ArnClient *client=0)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_monitor.html#a96ff8e729c7436ba906d8e19a136cf69">setReference</a>(void *reference)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_monitor.html#a28f43c9d2933a92660d93cc5bd3ef6e4">start</a>(const QString &amp;path, ArnClient *client)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_monitor.html#a3580c66ba157546427c80df2616ae7df">setClient</a>(ArnClient *client)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_monitor.html#a79ea5cdaf266e128bc06e941d7a3ce34">setClient</a>(const QString &amp;id)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_monitor.html#a1ea9f8e76d3715cd6aa98ddc86742fae">setMonitorPath</a>(QString path, ArnClient *client=0)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_monitor.html#a96ff8e729c7436ba906d8e19a136cf69">setReference</a>(void *reference)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_monitor.html#a28f43c9d2933a92660d93cc5bd3ef6e4">start</a>(const QString &amp;path, ArnClient *client)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_monitor.html#ae9d6ed2678c517168ff96d451f4d27fb">start</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_monitor.html">ArnMonitor</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 29 2014 23:17:17 for ArnLib by
+    <li class="footer">Generated on Fri Sep 26 2014 21:03:46 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

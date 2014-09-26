@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.2.x</span>
+   &#160;<span id="projectnumber">2.3.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -103,25 +103,36 @@ $(document).ready(function(){initNavTree('md__todo.html','');});
 <div class="textblock"><h1>Major</h1>
 <ul>
 <li>Script support for Sapi.</li>
-<li>QML with "files" as ArnObject and other integration with <a class="el" href="namespace_arn.html">Arn</a>.</li>
 <li>Convert to d-pointer for making binary compatible library in the future.</li>
+<li>Distributed deletion of folders</li>
 <li>Unit tests</li>
+<li>General access system</li>
+<li>Add more examples</li>
 </ul>
 <h1>Minor</h1>
 <ul>
 <li>In Signal Slot use "const Type&amp;".</li>
+<li>Add setDelay in <a class="el" href="class_arn_item_qml.html" title="ARN Item QML.">ArnItemQml</a>, rework changed().</li>
+<li>ArnItemQml::updateValue() don't handle param data.</li>
 <li>Optimize data transfer with minimal copying.</li>
 <li>Optimize memory consumption with pointers to different data in ArnLink.</li>
+<li>Simple access system for Server/Client</li>
 <li>Add tranfer classes for copying values.</li>
-<li>Add more examples</li>
-<li><a class="el" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a> stored centraly with an id. Also accessible by the id. </li>
+<li>Add multiplex/demultiplex-classes for pipes used by Sapi.</li>
+</ul>
+<h1>Done in 2.3</h1>
+<ul>
+<li>QML with "files" as ArnObject and other integration with <a class="el" href="namespace_arn.html">Arn</a>.</li>
+<li>QML support for Sapi</li>
+<li><a class="el" href="class_arn_client.html" title="Class for connecting to an Arn Server.">ArnClient</a> stored centraly with an id. Also accessible by the id.</li>
+<li>External engine can be assigned to <a class="el" href="class_arn_script.html">ArnScript</a> </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 29 2014 23:17:16 for ArnLib by
+    <li class="footer">Generated on Fri Sep 26 2014 21:03:46 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

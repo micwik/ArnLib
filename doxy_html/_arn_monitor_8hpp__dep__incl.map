@@ -1,4 +1,6 @@
 <map id="G" name="G">
 <area shape="rect" id="node3" href="$_arn_monitor_8cpp.html" title="src/ArnMonitor.cpp" alt="" coords="5,80,136,107"/>
-<area shape="rect" id="node5" href="$_arn_script_8cpp.html" title="src/ArnScript.cpp" alt="" coords="161,80,284,107"/>
+<area shape="rect" id="node5" href="$_arn_qml_8hpp.html" title="src/ArnInc/ArnQml.hpp" alt="" coords="161,80,315,107"/>
+<area shape="rect" id="node9" href="$_arn_script_8cpp.html" title="src/ArnScript.cpp" alt="" coords="340,80,463,107"/>
+<area shape="rect" id="node7" href="$_arn_qml_8cpp.html" title="src/ArnQml.cpp" alt="" coords="182,155,295,181"/>
 </map>

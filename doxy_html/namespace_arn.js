@@ -7,5 +7,6 @@ var namespace_arn =
     [ "LinkFlags", "struct_arn_1_1_link_flags.html", "struct_arn_1_1_link_flags" ],
     [ "NameF", "struct_arn_1_1_name_f.html", "struct_arn_1_1_name_f" ],
     [ "Coding", "struct_arn_1_1_coding.html", "struct_arn_1_1_coding" ],
+    [ "QmlMFileIO", "class_arn_1_1_qml_m_file_i_o.html", "class_arn_1_1_qml_m_file_i_o" ],
     [ "XStringMap", "class_arn_1_1_x_string_map.html", "class_arn_1_1_x_string_map" ]
 ];

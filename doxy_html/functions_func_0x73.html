@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">2.2.x</span>
+   &#160;<span id="projectnumber">2.3.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,6 +109,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="functions_func_0x73.html#index_s"><span>s</span></a></li>
       <li><a href="functions_func_0x74.html#index_t"><span>t</span></a></li>
       <li><a href="functions_func_0x76.html#index_v"><span>v</span></a></li>
+      <li><a href="functions_func_0x77.html#index_w"><span>w</span></a></li>
       <li><a href="functions_func_0x78.html#index_x"><span>x</span></a></li>
       <li><a href="functions_func_0x79.html#index_y"><span>y</span></a></li>
       <li><a href="functions_func_0x7e.html#index_0x7e"><span>~</span></a></li>
@@ -198,22 +199,28 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 <li>setArchiveDir()
 : <a class="el" href="class_arn_persist.html#adb8096f25f52df71d910bfd8206caf8d">ArnPersist</a>
 </li>
+<li>setArnRootPath()
+: <a class="el" href="class_arn_qml.html#a54d563bf463fbc006c7ff805109dea91">ArnQml</a>
+</li>
 <li>setAutoConnect()
 : <a class="el" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60">ArnClient</a>
 </li>
 <li>setAutoDestroy()
-: <a class="el" href="class_arn_pipe.html#a9b5b3129c4069f3b8ed15b89b4c348c6">ArnPipe</a>
+: <a class="el" href="class_arn_item_valve.html#aca161491a438b003a4bcdc632b819478">ArnItemValve</a>
+, <a class="el" href="class_arn_pipe.html#a9b5b3129c4069f3b8ed15b89b4c348c6">ArnPipe</a>
 , <a class="el" href="class_arn_item.html#a984f218824f9f782dd5aa9e03519e64a">ArnItem</a>
-, <a class="el" href="class_arn_item_valve.html#aca161491a438b003a4bcdc632b819478">ArnItemValve</a>
 </li>
 <li>setBiDirMode()
 : <a class="el" href="class_arn_item.html#a105bc4a01bf08fa4cabca4685baafb7e">ArnItem</a>
+</li>
+<li>setBytes()
+: <a class="el" href="class_arn_interface.html#ae97da7fe97177db4073c68c780da5425">ArnInterface</a>
 </li>
 <li>setCheckSeq()
 : <a class="el" href="class_arn_pipe.html#a77316d8b09159df3af9a3c9ff3a2d3f6">ArnPipe</a>
 </li>
 <li>setClient()
-: <a class="el" href="class_arn_monitor.html#a188d2b01824fa28631736dce391b0ae1">ArnMonitor</a>
+: <a class="el" href="class_arn_monitor.html#a3580c66ba157546427c80df2616ae7df">ArnMonitor</a>
 </li>
 <li>setConfig()
 : <a class="el" href="class_arn_script_job_control.html#a8eb92e052e588e9c90218a027e6487a9">ArnScriptJobControl</a>
@@ -287,10 +294,13 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 <li>setInitialServiceTimeout()
 : <a class="el" href="class_arn_discover_remote.html#af3f6aee1d007c824a79afbc54d48116f">ArnDiscoverRemote</a>
 </li>
+<li>setIntNum()
+: <a class="el" href="class_arn_interface.html#a886ab5b764475b6cef1947b2ac0a9b89">ArnInterface</a>
+</li>
 <li>setMaster()
-: <a class="el" href="class_arn_item_valve.html#a60631ad9b3f6fc63898fc7055c89b79f">ArnItemValve</a>
+: <a class="el" href="class_arn_item.html#a22de5dfc89c02245370d5c0a89cee3f6">ArnItem</a>
+, <a class="el" href="class_arn_item_valve.html#a60631ad9b3f6fc63898fc7055c89b79f">ArnItemValve</a>
 , <a class="el" href="class_arn_pipe.html#a0237b478a1c0d451d57ab51428611f8e">ArnPipe</a>
-, <a class="el" href="class_arn_item.html#a22de5dfc89c02245370d5c0a89cee3f6">ArnItem</a>
 </li>
 <li>setMethodPrefix()
 : <a class="el" href="class_arn_rpc.html#acb14a8cd274f112f806cdd28db426614">ArnRpc</a>
@@ -311,6 +321,12 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 <li>setName()
 : <a class="el" href="class_arn_script_job_control.html#a4c85ffb037ae733410353f3a075e6399">ArnScriptJobControl</a>
 </li>
+<li>setNum()
+: <a class="el" href="class_arn_interface.html#a217e82eea73ac7ad74ce078dac38c353">ArnInterface</a>
+</li>
+<li>setPath()
+: <a class="el" href="class_arn_1_1_qml_m_file_i_o.html#a9b5e61889ad10c91ee342209b7a014e8">Arn::QmlMFileIO</a>
+</li>
 <li>setPersistDir()
 : <a class="el" href="class_arn_persist.html#a34de416764dae40d9d3b6ab962ed2a8a">ArnPersist</a>
 </li>
@@ -327,8 +343,8 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 : <a class="el" href="class_arn_rpc.html#ace8322eda7c1ab852e557042206db011">ArnRpc</a>
 </li>
 <li>setReference()
-: <a class="el" href="class_arn_monitor.html#a96ff8e729c7436ba906d8e19a136cf69">ArnMonitor</a>
-, <a class="el" href="class_arn_item_b.html#a36303c266a2c623b23c0a47d8ff3483f">ArnItemB</a>
+: <a class="el" href="class_arn_item_b.html#a36303c266a2c623b23c0a47d8ff3483f">ArnItemB</a>
+, <a class="el" href="class_arn_monitor.html#a96ff8e729c7436ba906d8e19a136cf69">ArnMonitor</a>
 </li>
 <li>setResolver()
 : <a class="el" href="class_arn_discover_connector.html#a401ad11e2a91216753faca195a62311a">ArnDiscoverConnector</a>
@@ -347,8 +363,8 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 : <a class="el" href="class_arn_pipe.html#a00cece801ca692319e31f877acc01da5">ArnPipe</a>
 </li>
 <li>setService()
-: <a class="el" href="class_arn_discover_connector.html#a66eccd756cc98272082066a7dd1a4181">ArnDiscoverConnector</a>
-, <a class="el" href="class_arn_discover_advertise.html#ab9b2eb894c07682ffddbdc7e132a80f0">ArnDiscoverAdvertise</a>
+: <a class="el" href="class_arn_discover_advertise.html#ab9b2eb894c07682ffddbdc7e132a80f0">ArnDiscoverAdvertise</a>
+, <a class="el" href="class_arn_discover_connector.html#a66eccd756cc98272082066a7dd1a4181">ArnDiscoverConnector</a>
 , <a class="el" href="class_arn_discover_remote.html#a3e4361d9290064d9ec864a1a12a12a64">ArnDiscoverRemote</a>
 </li>
 <li>setServiceName()
@@ -369,6 +385,9 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 </li>
 <li>setStateName()
 : <a class="el" href="class_arn_depend_offer.html#a6946894879c4a58f44475bbd2ea92fe6">ArnDependOffer</a>
+</li>
+<li>setString()
+: <a class="el" href="class_arn_interface.html#a0c2af492084c01c97d7dfe40e9a55db3">ArnInterface</a>
 </li>
 <li>setSubType()
 : <a class="el" href="class_arn_zero_conf_browser.html#a53186d8488ab5992b909f7feacadfcf5">ArnZeroConfBrowser</a>
@@ -391,6 +410,9 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 <li>setTxtRecordMap()
 : <a class="el" href="class_arn_zero_conf_register.html#a6b29d9c7e4810cc90a40a3f534643b7e">ArnZeroConfRegister</a>
 </li>
+<li>setup()
+: <a class="el" href="class_arn_qml.html#a600e65be55dd58c058d30cca88d5a1f5">ArnQml</a>
+</li>
 <li>setupDataBase()
 : <a class="el" href="class_arn_persist.html#ac54a85a233d7f19cfb0622d448844462">ArnPersist</a>
 </li>
@@ -404,19 +426,20 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 : <a class="el" href="class_arn_script_job_factory.html#a9f486ed73998182fd8decfe8a917f9a2">ArnScriptJobFactory</a>
 </li>
 <li>setValue()
-: <a class="el" href="class_arn_item_valve.html#a6ee2964d55ca5cb68fdbd2955a20d7e4">ArnItemValve</a>
-, <a class="el" href="class_arn_m.html#a863ec6e8e1ab9d5f4b132f362f69f653">ArnM</a>
-, <a class="el" href="class_arn_item.html#adac29fabc8112521b4e1ea0bfc436d21">ArnItem</a>
-, <a class="el" href="class_arn_m.html#a158729c49afcf485b32f3e28ad871d35">ArnM</a>
-, <a class="el" href="class_arn_item.html#af9067decb882ca8f18fcf4c52b0a1f11">ArnItem</a>
-, <a class="el" href="class_arn_m.html#a4e4f6180c313feb75857c3c61b5f3387">ArnM</a>
-, <a class="el" href="class_arn_item.html#ae9799d197525362f7f580dab2ddd7b31">ArnItem</a>
-, <a class="el" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36">ArnM</a>
+: <a class="el" href="class_arn_m.html#a863ec6e8e1ab9d5f4b132f362f69f653">ArnM</a>
+, <a class="el" href="class_arn_item.html#a6edcde908f3ef0048671ddf8e81f3059">ArnItem</a>
 , <a class="el" href="class_arn_pipe.html#a7cbb18e76bd0d3b73fa78136c7e918ce">ArnPipe</a>
-, <a class="el" href="class_arn_item.html#a23e2c207cb553d2cfdfda90653fd6a96">ArnItem</a>
+, <a class="el" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36">ArnM</a>
+, <a class="el" href="class_arn_item.html#ae9799d197525362f7f580dab2ddd7b31">ArnItem</a>
+, <a class="el" href="class_arn_interface.html#ab695665ed5fa1c51a5cb2e74432e462f">ArnInterface</a>
+, <a class="el" href="class_arn_item.html#adac29fabc8112521b4e1ea0bfc436d21">ArnItem</a>
+, <a class="el" href="class_arn_item_valve.html#a6ee2964d55ca5cb68fdbd2955a20d7e4">ArnItemValve</a>
 </li>
 <li>setValueOverwrite()
 : <a class="el" href="class_arn_pipe.html#ac3225595492e733603de24dd09ddb005">ArnPipe</a>
+</li>
+<li>setVariant()
+: <a class="el" href="class_arn_interface.html#a6af3902f54e275c5810d29fe2502763b">ArnInterface</a>
 </li>
 <li>setVcs()
 : <a class="el" href="class_arn_persist.html#a91359d742060af64cd3853806cdb9b8e">ArnPersist</a>
@@ -440,9 +463,10 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 : <a class="el" href="class_arn_1_1_x_string_map.html#ae933525e7e862a9fd94034c124de34b1">Arn::XStringMap</a>
 </li>
 <li>start()
-: <a class="el" href="class_arn_server.html#a876c70386dfcafab6ce21ae3cd99a91e">ArnServer</a>
+: <a class="el" href="class_arn_script_jobs.html#aa0a158f7b5ecd70b34843c75fd5ebf5c">ArnScriptJobs</a>
+, <a class="el" href="class_arn_server.html#a876c70386dfcafab6ce21ae3cd99a91e">ArnServer</a>
+, <a class="el" href="class_arn_monitor.html#ae9d6ed2678c517168ff96d451f4d27fb">ArnMonitor</a>
 , <a class="el" href="class_arn_discover_connector.html#a9a105ff70a59ad36fb0126cdd0a8837a">ArnDiscoverConnector</a>
-, <a class="el" href="class_arn_script_jobs.html#aa0a158f7b5ecd70b34843c75fd5ebf5c">ArnScriptJobs</a>
 , <a class="el" href="class_arn_monitor.html#a28f43c9d2933a92660d93cc5bd3ef6e4">ArnMonitor</a>
 </li>
 <li>startMonitor()
@@ -455,8 +479,8 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 : <a class="el" href="class_arn_discover_remote.html#a93e835daf6f7ce9278f1e41573359e40">ArnDiscoverRemote</a>
 </li>
 <li>state()
-: <a class="el" href="class_arn_discover_advertise.html#a2bf814039bf146f1ddec3e258f8e47c6">ArnDiscoverAdvertise</a>
-, <a class="el" href="class_arn_zero_conf_b.html#a66b9fe081c61ca726791af009d518bf2">ArnZeroConfB</a>
+: <a class="el" href="class_arn_zero_conf_b.html#a66b9fe081c61ca726791af009d518bf2">ArnZeroConfB</a>
+, <a class="el" href="class_arn_discover_advertise.html#a2bf814039bf146f1ddec3e258f8e47c6">ArnDiscoverAdvertise</a>
 , <a class="el" href="class_arn_discover_info.html#a786b963ebb06f870f0b497749a96463d">ArnDiscoverInfo</a>
 </li>
 <li>stateId()
@@ -466,11 +490,17 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 : <a class="el" href="class_arn_depend_offer.html#af361db4e9aacd374e62317324c7b29a3">ArnDependOffer</a>
 </li>
 <li>stopBrowse()
-: <a class="el" href="class_arn_zero_conf_browser.html#a88527e074bcc0ebd36e8cb859977a3ab">ArnZeroConfBrowser</a>
-, <a class="el" href="class_arn_discover_browser.html#a4e8d2b9ec6ac760d57e46dd91e1fcd76">ArnDiscoverBrowser</a>
+: <a class="el" href="class_arn_discover_browser.html#a4e8d2b9ec6ac760d57e46dd91e1fcd76">ArnDiscoverBrowser</a>
+, <a class="el" href="class_arn_zero_conf_browser.html#a88527e074bcc0ebd36e8cb859977a3ab">ArnZeroConfBrowser</a>
 </li>
 <li>stopState()
 : <a class="el" href="class_arn_discover_info.html#afd59b7cfb002e250a1de0d4d8a9c134d">ArnDiscoverInfo</a>
+</li>
+<li>store()
+: <a class="el" href="class_arn_client_reg.html#a27fe532f4a2a7dd790dc257afc2b43a2">ArnClientReg</a>
+</li>
+<li>string()
+: <a class="el" href="class_arn_interface.html#a6f475f7a32c335c6b0cd69b7bac6a5d7">ArnInterface</a>
 </li>
 <li>stringCode()
 : <a class="el" href="class_arn_1_1_x_string_map.html#a1b94c5ee79dfc933e068e4a48913d8f5">Arn::XStringMap</a>
@@ -496,7 +526,7 @@ $(document).ready(function(){initNavTree('functions_func_0x73.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 29 2014 23:17:18 for ArnLib by
+    <li class="footer">Generated on Fri Sep 26 2014 21:03:47 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

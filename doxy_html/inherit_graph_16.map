@@ -1,5 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$class_arn_discover_browser_b.html" title="Browse() and resolve() together, may never be used to the same instance." alt="" coords="5,31,152,57"/>
-<area shape="rect" id="node3" href="$class_arn_discover_browser.html" title="Browsing for Arn services." alt="" coords="201,5,340,32"/>
-<area shape="rect" id="node5" href="$class_arn_discover_resolver.html" title="Resolv an Arn service." alt="" coords="201,56,341,83"/>
+<area shape="rect" id="node1" href="$class_arn_discover_advertise.html" title="Advertise an Arn service." alt="" coords="5,5,149,32"/>
+<area shape="rect" id="node3" href="$class_arn_discover_remote.html" title="Discover with remote setting." alt="" coords="197,5,333,32"/>
 </map>
