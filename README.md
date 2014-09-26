@@ -117,3 +117,12 @@ address and port number.
 * Simple integration together with a custom GUI for browsing, etc.
 
 * Optional internal DNS_SD/mDNS routines for no dependency to any extra library.
+
+#### Qml
+
+* Support in Qml for: _Arn Data Objects_, monitoring of changed objects and Service Api (RPC).
+
+* Added support in Qml for url like "arn:///test.qml".
+
+* Possibility to create a remote generic Qml running environment, comparable to a web browser
+  running an arbitrary web application. This is done by ArnBrowser.

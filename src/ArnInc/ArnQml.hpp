@@ -49,6 +49,8 @@ class ArnNetworkAccessManagerFactory;
 
 //! ARN QML.
 /*!
+ArnQml is only supported in Qt5.
+
 This class is the central point for ArnQml.
 It's a singleton that is setup in the application.
 ArnQml can be used for creating GUI-applications in Qml that has integrated access to the
