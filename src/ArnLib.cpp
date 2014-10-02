@@ -34,7 +34,7 @@
 
 namespace Arn {
 
-bool debugThreading   = false;
+bool debugThreading   = true;
 bool debugLinkRef     = false;
 bool debugLinkDestroy = false;
 bool debugRecInOut    = false;
@@ -43,6 +43,7 @@ bool debugMonitor     = false;
 bool debugMonitorTest = false;
 bool debugRPC         = false;
 bool debugDepend      = false;
+bool debugQmlNetwork  = true;
 bool debugDiscover    = false;
 bool debugZeroConf    = false;
 bool debugMDNS        = false;

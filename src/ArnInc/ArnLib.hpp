@@ -46,6 +46,7 @@ extern bool  debugMonitor;
 extern bool  debugMonitorTest;
 extern bool  debugRPC;
 extern bool  debugDepend;
+extern bool  debugQmlNetwork;
 extern bool  debugDiscover;
 extern bool  debugZeroConf;
 extern bool  debugMDNS;

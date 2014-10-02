@@ -33,7 +33,9 @@
 #include "ArnInc/ArnQmlMSystem.hpp"
 #include "ArnInc/ArnInterface.hpp"
 #include "ArnInc/ArnM.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include <QtQml>
+#include <QThread>
 #include <QDebug>
 
 using namespace Arn;
@@ -474,27 +476,41 @@ void  ArnNetworkReply::setup( const QString& path)
         arnVal = "";
     else {
         //// Normal values from Arn
-        QTimer::singleShot( 0, this, SLOT(postSetup()));
+        if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. reply setup later path="
+                                            << path;
+        ArnM::isMainThread();
+        //QTimer::singleShot( 0, this, SLOT(postSetup()));
+        QMetaObject::invokeMethod( this, "postSetup", Qt::QueuedConnection);        
         return;
     }
 
     //// Direct return of special values
+    if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. reply setup now path="
+                                        << path;
     setData( arnVal);
 }
 
 
 void  ArnNetworkReply::postSetup()
 {
+    if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. reply postSetup path="
+                                        << _arnPath;
+    QThread::msleep(3000);
+
     bool  wasLocalExist = ArnM::exist( _arnPath);
+    if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. reply postSetup 2";
+
     _arnItem.open( _arnPath);
+    if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. reply postSetup 3";
 
     if (!wasLocalExist && (_arnItem.type() == Arn::DataType::Null)) {
-        // qDebug() << "ArnQml wait for data: path=" << _arnPath;
+        // Note: Open can have resulted in a persistent loading of the item. 
+        if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. wait for data: path=" << _arnPath;
         connect( &_arnItem, SIGNAL(changed()), this, SLOT(dataArived()));
         return;
     }
 
-    // qDebug() << "ArnQml direct using data: path=" << _arnPath;
+    if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. direct using data: path=" << _arnPath;
     setData( _arnItem.toByteArray());
 }
 
@@ -503,7 +519,7 @@ void  ArnNetworkReply::dataArived()
 {
     disconnect( &_arnItem, SIGNAL(changed()), this, SLOT(dataArived()));
 
-    // qDebug() << "ArnQml data arived: path=" << _arnPath;
+    if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. data arived: path=" << _arnPath;
     setData( _arnItem.toByteArray());
 }
 
@@ -540,6 +556,8 @@ QNetworkReply*  ArnNetworkAccessManager::createRequest( QNetworkAccessManager::O
     if (url.scheme() != "arn")
         return QNetworkAccessManager::createRequest( op, request, outgoingData);
 
+    if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. Create request url="
+                                        << url.toString();
     ArnNetworkReply*  reply = new ArnNetworkReply;
     // QNetworkRequest  mRequest = request;
     // mRequest.setAttribute( QNetworkRequest::CacheSaveControlAttribute, false);

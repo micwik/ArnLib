@@ -51,7 +51,7 @@ QString  QmlMFileIO::read()
         emit error("Invalid fileName=" + _path);
         return QString();
     }
-    QString  path = url.path();
+    QString  path = url.toLocalFile();
 
     QFile  file( path);
     QString  fileContent;

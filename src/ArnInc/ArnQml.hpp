@@ -49,7 +49,8 @@ class ArnNetworkAccessManagerFactory;
 
 //! ARN QML.
 /*!
-ArnQml is only supported in Qt5.
+\note ArnQml is only supported in Qt5.
+\note This class must be partly thread-safe
 
 This class is the central point for ArnQml.
 It's a singleton that is setup in the application.

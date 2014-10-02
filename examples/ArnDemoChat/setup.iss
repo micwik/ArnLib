@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ArnDemoChat"
-#define MyAppVersion "1.1"
+#define MyAppVersion "1.0"
 #define MyAppPublisher "MicTron"
 #define MyAppURL "http://www.mictron.se/"
 #define MyAppExeName "ArnDemoChat.exe"
