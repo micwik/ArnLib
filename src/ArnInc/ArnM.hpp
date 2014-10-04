@@ -64,9 +64,9 @@ public:
     QStringList  _retStringList;
 
 private:
+    static ArnThreadComStorage*  getThreadComStorage();
     static ArnThreadCom*  getThreadCom();
 
-    static ArnThreadComStorage* _threadStorage;
     QWaitCondition  _commandEnd;
     QMutex  _mutex;
 };

@@ -52,16 +52,24 @@
 
 //! \cond ADV
 class ArnThreadComStorage : public QThreadStorage<ArnThreadCom*> {};
-ArnThreadComStorage*  ArnThreadCom::_threadStorage = new ArnThreadComStorage;
 //! \endcond
+
+
+ArnThreadComStorage  *ArnThreadCom::getThreadComStorage()
+{
+    static ArnThreadComStorage  threadComStorage;
+  
+    return &threadComStorage;
+}
 
 
 ArnThreadCom*  ArnThreadCom::getThreadCom()
 {
-    if (!_threadStorage->hasLocalData()) {
-        _threadStorage->setLocalData( new ArnThreadCom);
+    ArnThreadComStorage*  threadComStorage = getThreadComStorage();
+    if (!threadComStorage->hasLocalData()) {
+        threadComStorage->setLocalData( new ArnThreadCom);
     }
-    return _threadStorage->localData();
+    return threadComStorage->localData();
 }
 
 
@@ -96,14 +104,14 @@ ArnThreadComProxyLock::ArnThreadComProxyLock( ArnThreadCom* threadCom) :
         _p( threadCom)
 {
     if (Arn::debugThreading)  qDebug() << "ThreadComProxy start p=" << _p;
-    _p->_mutex.lock();
+    _p->_mutex.lock();  // Sync caller waiting
+    _p->_mutex.unlock();
 }
 
 
 ArnThreadComProxyLock::~ArnThreadComProxyLock()
 {
-    _p->_commandEnd.wakeOne();
-    _p->_mutex.unlock();
+    _p->_commandEnd.wakeOne();  // wake up caller
     if (Arn::debugThreading)  qDebug() << "ThreadComProxy end p=" << _p;
 }
 
