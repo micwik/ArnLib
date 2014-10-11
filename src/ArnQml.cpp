@@ -478,8 +478,6 @@ void  ArnNetworkReply::setup( const QString& path)
         //// Normal values from Arn
         if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. reply setup later path="
                                             << path;
-        ArnM::isMainThread();
-        //QTimer::singleShot( 0, this, SLOT(postSetup()));
         QMetaObject::invokeMethod( this, "postSetup", Qt::QueuedConnection);        
         return;
     }
@@ -495,8 +493,6 @@ void  ArnNetworkReply::postSetup()
 {
     if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. reply postSetup path="
                                         << _arnPath;
-    QThread::msleep(3000);
-
     bool  wasLocalExist = ArnM::exist( _arnPath);
     if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. reply postSetup 2";
 
