@@ -46,7 +46,7 @@
 using Arn::XStringMap;
 
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 bool  ArnZeroConfLookup::_isForceQtDnsLookup( false);  // Windows has normally no mDNS DNS lookup
 #else
 bool  ArnZeroConfLookup::_isForceQtDnsLookup( true);   // Deafult expect platform to support mDNS DNS lookup
