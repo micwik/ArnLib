@@ -95,7 +95,11 @@ contains(ARN, script) {
 contains(ARN, qml) {
     ARN += core
     ARN += script_qml
-    QT += qml quick
+    greaterThan(QT_MAJOR_VERSION, 4) {
+        QT += qml quick
+    } else {
+        QT += declarative
+    }
     SOURCES += \
         $$PWD/ArnQml.cpp \
         $$PWD/ArnQmlMSystem.cpp

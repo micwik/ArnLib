@@ -34,7 +34,6 @@
 #include "ArnInc/ArnInterface.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/ArnLib.hpp"
-#include <QtQml>
 #include <QThread>
 #include <QDebug>
 
@@ -66,7 +65,7 @@ void  ArnQml::setArnRootPath( const QString& path)
 }
 
 
-QObject*  ArnQml::constructorArnInterface( QQmlEngine* engine, QJSEngine* scriptEngine)
+QObject*  ArnQml::constructorArnInterface( QML_ENGINE* engine, QJSEngine* scriptEngine)
 {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
@@ -76,19 +75,21 @@ QObject*  ArnQml::constructorArnInterface( QQmlEngine* engine, QJSEngine* script
 }
 
 
-void  ArnQml::setup( QQmlEngine* qmlEngine, ArnQml::UseFlags flags)
+void  ArnQml::setup( QML_ENGINE* qmlEngine, ArnQml::UseFlags flags)
 {
     ArnQml&  in = ArnQml::instance();
     flags.set( flags.ArnLib);  // Always include ArnLib
 
-    qmlRegisterSingletonType<ArnInterface>("ArnXLib", 1, 0, "ArnM", constructorArnInterface);
     if (flags.is( flags.ArnLib) && !in._regedUse.is( flags.ArnLib)) {
         in._regedUse.set( flags.ArnLib);
         qmlRegisterType<ArnItemQml>(   "ArnLib", 1, 0, "ArnItem");
         qmlRegisterType<ArnMonitorQml>("ArnLib", 1, 0, "ArnMonitor");
         qmlRegisterType<ArnSapiQml>(   "ArnLib", 1, 0, "ArnSapi");
-
+#ifdef QML_Qt4
+        qmlRegisterType<ArnInterface>( "ArnLib", 1, 0, "Arn");
+#else
         qmlRegisterSingletonType<ArnInterface>("ArnLib", 1, 0, "Arn", constructorArnInterface);
+#endif
     }
     if (flags.is( flags.MSystem) && !in._regedUse.is( flags.MSystem)) {
         in._regedUse.set( flags.MSystem);
@@ -97,6 +98,8 @@ void  ArnQml::setup( QQmlEngine* qmlEngine, ArnQml::UseFlags flags)
 
     if (qmlEngine) {
         qmlEngine->setNetworkAccessManagerFactory( in._arnNetworkAccessManagerFactory);
+        // For compatibility to Qt4 QML
+        qmlEngine->rootContext()->setContextProperty("ArnM", new ArnInterface( qmlEngine));
     }
 }
 
@@ -526,6 +529,16 @@ void  ArnNetworkReply::setData( const QByteArray& data)
     _readPos    = 0;
     _isFinished = true;
     open( ReadOnly);
+
+#ifndef QML_Qt4
+    int posStart = _data.indexOf("import QtQuick 1.");
+    if (posStart >= 0) {
+        int posEnd = _data.indexOf('\n', posStart);
+        if (posEnd >= 0) {
+            _data.replace( posStart, posEnd - posStart, "import QtQuick 2.3");
+        }
+    }
+#endif
 
     QMetaObject::invokeMethod (this, "downloadProgress", Qt::QueuedConnection,
                                Q_ARG( qint64, _data.size()),

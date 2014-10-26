@@ -37,12 +37,28 @@
 #include "ArnItem.hpp"
 #include "ArnMonitor.hpp"
 #include "ArnRpc.hpp"
-#include <QQmlParserStatus>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
-#include <QQmlNetworkAccessManagerFactory>
 
-class QQmlEngine;
+#if QT_VERSION >= 0x050000
+#  include <QtQml>
+#  include <QQmlParserStatus>
+#  include <QQmlNetworkAccessManagerFactory>
+#  include <QQmlEngine>
+#  define QML_ENGINE            QQmlEngine
+#  define QML_PARSER_STATUS     QQmlParserStatus
+#  define QML_NETACC_FACTORY    QQmlNetworkAccessManagerFactory
+#else
+#  include <QtDeclarative>
+#  include <QDeclarativeParserStatus>
+#  include <QDeclarativeNetworkAccessManagerFactory>
+#  include <QDeclarativeEngine>
+#  define QML_Qt4
+#  define QML_ENGINE            QDeclarativeEngine
+#  define QML_PARSER_STATUS     QDeclarativeParserStatus
+#  define QML_NETACC_FACTORY    QDeclarativeNetworkAccessManagerFactory
+#endif
+
 class QJSEngine;
 class ArnNetworkAccessManagerFactory;
 
@@ -169,7 +185,7 @@ public:
      *  \param[in] qmlEngine is the qml instance engine
      *  \param[in] flags gives the modules to include
      */
-    static void  setup( QQmlEngine* qmlEngine, UseFlags flags = UseFlags::ArnLib);
+    static void  setup( QML_ENGINE* qmlEngine, UseFlags flags = UseFlags::ArnLib);
 
     static ArnQml&  instance();
 
@@ -194,7 +210,7 @@ public:
     static void  setArnRootPath( const QString& path);
 
 //! \cond ADV
-    static QObject *constructorArnInterface( QQmlEngine* engine, QJSEngine* scriptEngine);
+    static QObject *constructorArnInterface( QML_ENGINE* engine, QJSEngine* scriptEngine);
 //! \endcond
 
 private:
@@ -249,10 +265,15 @@ Rectangle {
 }
 \endcode
 */
-class  ArnItemQml : public ArnItem, public QQmlParserStatus
+class  ArnItemQml : public ArnItem, public QML_PARSER_STATUS
 {
     Q_OBJECT
+
+#ifdef QML_Qt4
+    Q_INTERFACES( QDeclarativeParserStatus)
+#else
     Q_INTERFACES( QQmlParserStatus)
+#endif
 
     //! The type used inside the variant, e.g. QString
     Q_PROPERTY( QString variantType  READ variantType        WRITE setVariantType      NOTIFY variantTypeChanged)
@@ -373,10 +394,15 @@ Rectangle {
 }
 \endcode
 */
-class ArnMonitorQml : public ArnMonitor, public QQmlParserStatus
+class ArnMonitorQml : public ArnMonitor, public QML_PARSER_STATUS
 {
     Q_OBJECT
+
+#ifdef QML_Qt4
+    Q_INTERFACES( QDeclarativeParserStatus)
+#else
     Q_INTERFACES( QQmlParserStatus)
+#endif
 
     //! The client id. Set whith ArnClient::registerClient(). Use "std" if not set.
     Q_PROPERTY( QString clientId     READ clientId     WRITE setClientId     NOTIFY dummyNotifier)
@@ -471,10 +497,15 @@ Rectangle {
 }
 \endcode
 */
-class ArnSapiQml : public ArnRpc, public QQmlParserStatus
+class ArnSapiQml : public ArnRpc, public QML_PARSER_STATUS
 {
     Q_OBJECT
+
+#ifdef QML_Qt4
+    Q_INTERFACES( QDeclarativeParserStatus)
+#else
     Q_INTERFACES( QQmlParserStatus)
+#endif
 
     //! Path of the pipe for this Sapi
     Q_PROPERTY( QString pipePath    READ pipePath           WRITE setPipePath        NOTIFY pathChanged)
@@ -607,8 +638,7 @@ private:
 };
 
 
-
-class ArnNetworkAccessManagerFactory : public QQmlNetworkAccessManagerFactory
+class ArnNetworkAccessManagerFactory : public QML_NETACC_FACTORY
 {
 public:
     virtual QNetworkAccessManager*  create( QObject *parent);
