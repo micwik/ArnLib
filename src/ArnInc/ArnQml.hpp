@@ -45,6 +45,7 @@
 #  include <QQmlParserStatus>
 #  include <QQmlNetworkAccessManagerFactory>
 #  include <QQmlEngine>
+#  define QML_QUICK_TYPE        2
 #  define QML_ENGINE            QQmlEngine
 #  define QML_PARSER_STATUS     QQmlParserStatus
 #  define QML_NETACC_FACTORY    QQmlNetworkAccessManagerFactory
@@ -54,6 +55,7 @@
 #  include <QDeclarativeNetworkAccessManagerFactory>
 #  include <QDeclarativeEngine>
 #  define QML_Qt4
+#  define QML_QUICK_TYPE        1
 #  define QML_ENGINE            QDeclarativeEngine
 #  define QML_PARSER_STATUS     QDeclarativeParserStatus
 #  define QML_NETACC_FACTORY    QDeclarativeNetworkAccessManagerFactory

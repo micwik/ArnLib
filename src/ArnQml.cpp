@@ -98,8 +98,9 @@ void  ArnQml::setup( QML_ENGINE* qmlEngine, ArnQml::UseFlags flags)
 
     if (qmlEngine) {
         qmlEngine->setNetworkAccessManagerFactory( in._arnNetworkAccessManagerFactory);
-        // For compatibility to Qt4 QML
+        //// For compatibility to Qt4 QML
         qmlEngine->rootContext()->setContextProperty("ArnM", new ArnInterface( qmlEngine));
+        qmlEngine->rootContext()->setContextProperty("mQuickTypeRun", int(QML_QUICK_TYPE));
     }
 }
 
