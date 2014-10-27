@@ -415,6 +415,7 @@ void  ArnSapiQml::componentComplete()
 namespace Arn {
 
 QmlMSys::QmlMSys( QObject* parent)
+    : QObject( parent)
 {
 }
 
