@@ -86,10 +86,12 @@ For information about available ArnLib components in Qml see:
 If the Qml code must run in both Quick1 (Qt4) and Quick2 (Qt5), following apply:
 Only Quick1 code will be able to run in both environments. When this code is run in Quick2
 its "import QtQuick 1" will be changed internally to "import QtQuick 2".
-ArnM is now an instantiation of ArnInterface and Arn is the type.
+"arn" is now an instantiation of ArnInterface and "Arn" is the type.
+In qml "arn.quickTypeRun" will give a 1 when running in a QtQuick1 environment and a 2
+for QtQuick2.
 
 When the Qml code only is to be run in Quick2 it should use "import QtQuick 2". In this case
-Arn will be a singleton instantiation of ArnInterface. ArnM is then not needed.
+"Arn" will be a singleton instantiation of ArnInterface. "arn" is then not needed.
 
 ArnBrowser is using this class to run Qml applications in an opaque style, i.e. without specific
 application support. This resembles somewhat a web browser running a web application.
@@ -591,6 +593,22 @@ private:
 
 
 //! \cond ADV
+namespace Arn {
+
+class QmlMSys : public QObject
+{
+    Q_OBJECT
+
+public:
+    Q_PROPERTY( int quickTypeRun  READ quickTypeRun)
+
+    explicit QmlMSys( QObject* parent = 0);
+
+    int  quickTypeRun();
+};
+}
+
+
 class ArnNetworkReply : public QNetworkReply
 {
     Q_OBJECT

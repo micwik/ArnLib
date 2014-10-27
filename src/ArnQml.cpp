@@ -98,9 +98,11 @@ void  ArnQml::setup( QML_ENGINE* qmlEngine, ArnQml::UseFlags flags)
 
     if (qmlEngine) {
         qmlEngine->setNetworkAccessManagerFactory( in._arnNetworkAccessManagerFactory);
-        //// For compatibility to Qt4 QML
-        qmlEngine->rootContext()->setContextProperty("ArnM", new ArnInterface( qmlEngine));
-        qmlEngine->rootContext()->setContextProperty("mQuickTypeRun", int(QML_QUICK_TYPE));
+
+        // For compatibility to Qt4 QML
+        qmlEngine->rootContext()->setContextProperty("arn", new ArnInterface( qmlEngine));
+
+        qmlEngine->rootContext()->setContextProperty("mSys", new QmlMSys( qmlEngine));
     }
 }
 
@@ -406,6 +408,22 @@ void  ArnSapiQml::componentComplete()
         setPipePath( _path);
 }
 
+
+
+///////// QmlMSys
+
+namespace Arn {
+
+QmlMSys::QmlMSys( QObject* parent)
+{
+}
+
+
+int QmlMSys::quickTypeRun()
+{
+    return QML_QUICK_TYPE;
+}
+}
 
 
 ///////// ArnNetworkReply
