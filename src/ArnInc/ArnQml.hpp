@@ -67,7 +67,6 @@ class ArnNetworkAccessManagerFactory;
 
 //! ARN QML.
 /*!
-\note ArnQml is only supported in Qt5.
 \note This class must be partly thread-safe
 
 This class is the central point for ArnQml.
@@ -84,7 +83,15 @@ For information about available ArnLib components in Qml see:
 | ArnMonitor | ArnMonitorQml |
 | ArnSapi    | ArnSapiQml    |
 
-ArnBrowser is using this to run Qml applications in an opaque style, i.e. without specific
+If the Qml code must run in both Quick1 (Qt4) and Quick2 (Qt5), following apply:
+Only Quick1 code will be able to run in both environments. When this code is run in Quick2
+its "import QtQuick 1" will be changed internally to "import QtQuick 2".
+ArnM is now an instantiation of ArnInterface and Arn is the type.
+
+When the Qml code only is to be run in Quick2 it should use "import QtQuick 2". In this case
+Arn will be a singleton instantiation of ArnInterface. ArnM is then not needed.
+
+ArnBrowser is using this class to run Qml applications in an opaque style, i.e. without specific
 application support. This resembles somewhat a web browser running a web application.
 
 Note that you must not use any empty folders in QUrl for an ARN path.
@@ -156,7 +163,7 @@ Rectangle {
             anchors.fill: parent;
             Text {text: "El updClock: " + arnElUpdClock.intNum}
             Text {text: "Msg: " + info.testMsg}
-            Text {text: arn.info}  // ArnLib version info
+            Text {text: Arn.info}  // ArnLib version info
         }
 
         function setTestMsg( msg) {
@@ -489,7 +496,7 @@ Rectangle {
         Column {
             anchors.fill: parent;
             Text {text: "Msg: " + info.testMsg}
-            Text {text: arn.info}  // ArnLib version info
+            Text {text: Arn.info}  // ArnLib version info
         }
 
         function setTestMsg( msg) {
