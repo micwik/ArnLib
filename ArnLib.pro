@@ -13,7 +13,7 @@ PROJECT = ArnLib
 # ARN += discover   # High level service discovery using <zeroconf> and optionally <server> for remote config
 ARN += server
 ARN += discover
-greaterThan(QT_MAJOR_VERSION, 4): ARN += qml
+ARN += qml
 QT -= gui
 
 # Usage of internal mDNS code (no external dependency)
