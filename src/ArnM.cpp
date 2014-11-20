@@ -121,7 +121,7 @@ ArnThreadComProxyLock::~ArnThreadComProxyLock()
 
 int  ArnM::valueInt( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::fromInt(0));
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
     if (!link)  return 0;
 
     int  retVal = link->toInt();
@@ -132,7 +132,7 @@ int  ArnM::valueInt( const QString& path)
 
 double  ArnM::valueDouble( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::fromInt(0));
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
     if (!link)  return 0;
 
     double  retVal = link->toDouble();
@@ -143,7 +143,7 @@ double  ArnM::valueDouble( const QString& path)
 
 QString  ArnM::valueString( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::fromInt(0));
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
     if (!link)  return QString();
 
     QString  retVal = link->toString();
@@ -154,7 +154,7 @@ QString  ArnM::valueString( const QString& path)
 
 QByteArray  ArnM::valueByteArray( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::fromInt(0));
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
     if (!link)  return QByteArray();
 
     QByteArray  retVal = link->toByteArray();
@@ -165,7 +165,7 @@ QByteArray  ArnM::valueByteArray( const QString& path)
 
 QVariant  ArnM::valueVariant( const QString& path)
 {
-    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::fromInt(0));
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
     if (!link)  return QVariant();
 
     QVariant  retVal = link->toVariant();
