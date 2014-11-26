@@ -119,28 +119,34 @@ ArnClientReg&  ArnClientReg::instance()
 ArnClient::ArnClient( QObject* parent) :
     QObject( parent)
 {
-    _arnMountPoint = 0;
-    _isAutoConnect = false;
-    _retryTime     = 2;
-    _port          = 0;
-    _nextHost      = -1;
-    _curPrio       = -1;
+    _arnMountPoint   = 0;
+    _isAutoConnect   = false;
+    _receiveTimeout  = 0;  // No timeout
+    _recTimeoutCount = 0;
+    _retryTime       = 2;
+    _port            = 0;
+    _nextHost        = -1;
+    _curPrio         = -1;
 
     QString  stdId = "std";
     if (ArnClientReg::instance().store( this, stdId))  // Only use std-id once
         _id = stdId;
 
-    _socket = new QTcpSocket( this);
-    _arnNetSync = new ArnSync( _socket, true, this);
+    _socket       = new QTcpSocket( this);
+    _arnNetSync   = new ArnSync( _socket, true, this);
     _connectTimer = new QTimer( this);
+    _recTimer     = new QTimer( this);
 
     connect( _socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
+    connect( _socket, SIGNAL(disconnected()), this, SLOT(doTcpDisconnected()));
     connect( _socket, SIGNAL(disconnected()), this, SIGNAL(tcpDisConnected()));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SLOT(doReplyRecord(Arn::XStringMap&)));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SIGNAL(replyRecord(Arn::XStringMap&)));
+    connect( _recTimer, SIGNAL(timeout()), this, SLOT(doRecTimeout()));
+    connect( _socket, SIGNAL(readyRead()), this, SLOT(doRecNotified()));
 
     connect( _socket, SIGNAL(error(QAbstractSocket::SocketError)),
-             this, SLOT(tcpError(QAbstractSocket::SocketError)));
+             this, SLOT(doTcpError(QAbstractSocket::SocketError)));
     connect( _connectTimer, SIGNAL(timeout()), this, SLOT(reConnectArn()));
 }
 
@@ -321,6 +327,18 @@ QString  ArnClient::id()  const
 }
 
 
+int  ArnClient::receiveTimeout()  const
+{
+    return _receiveTimeout;
+}
+
+
+void  ArnClient::setReceiveTimeout( int receiveTimeout)
+{
+    _receiveTimeout = receiveTimeout;
+}
+
+
 int ArnClient::curPrio() const
 {
     return _curPrio;
@@ -429,13 +447,17 @@ void  ArnClient::createNewItem( QString path)
 }
 
 
-void  ArnClient::tcpError(QAbstractSocket::SocketError socketError)
+void  ArnClient::doTcpError(QAbstractSocket::SocketError socketError)
 {
+    _recTimer->stop();
+
+    qDebug() << "ArnClient TcpError: hostAddr=" << _curConnectAP.addr;
     QString  errTextSum = QString(tr("TCP Client Msg:")) + _socket->errorString();
     ArnM::errorLog( errTextSum, ArnError::ConnectionError);
     emit tcpError( _socket->errorString(), socketError);
 
-    _connectStat = (_connectStat == ConnectStat::Connected) ? ConnectStat::Disconnected : ConnectStat::Error;
+    _connectStat = ((_connectStat == ConnectStat::Connected) || (_connectStat == ConnectStat::Stopped))
+                 ? ConnectStat::Disconnected : ConnectStat::Error;
     emit connectionStatusChanged( _connectStat, _curPrio);
 
     if ((_nextHost >= 0) && (_nextHost < _hostTab.size())) {
@@ -444,6 +466,13 @@ void  ArnClient::tcpError(QAbstractSocket::SocketError socketError)
     else if (_isAutoConnect) {
         _connectTimer->start( _retryTime * 1000);
     }
+}
+
+
+void ArnClient::doTcpDisconnected()
+{
+    qDebug() << "ArnClient TcpDisconnected: hostAddr=" << _curConnectAP.addr;
+    _recTimer->stop();
 }
 
 
@@ -457,9 +486,45 @@ void  ArnClient::reConnectArn()
 void  ArnClient::doTcpConnected()
 {
     // qDebug() << "ArnClient TcpConnected: hostAddr=" << _curConnectAP.addr;
+    if (_receiveTimeout > 0)
+        _recTimer->start( _receiveTimeout * 1000);
+
     emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
     _connectStat = ConnectStat::Connected;
     emit connectionStatusChanged( _connectStat, _curPrio);
+}
+
+
+void ArnClient::doRecNotified()
+{
+    if (_recTimer->isActive())
+        _recTimer->start();
+    _recTimeoutCount = 0;
+
+    if (_connectStat == ConnectStat::Stopped) {
+        _connectStat = ConnectStat::Connected;
+        emit connectionStatusChanged( _connectStat, _curPrio);
+    }
+}
+
+
+void ArnClient::doRecTimeout()
+{
+    ++_recTimeoutCount;
+
+    if (_recTimeoutCount == 1) {
+        commandVersion();  // Use version command as a flow requester
+    }
+    else if (_recTimeoutCount == 6) {
+        _socket->abort();
+    }
+
+    if (_recTimeoutCount > 1) {
+        if (_connectStat == ConnectStat::Connected) {
+            _connectStat = ConnectStat::Stopped;
+            emit connectionStatusChanged( _connectStat, _curPrio);
+        }
+    }
 }
 
 

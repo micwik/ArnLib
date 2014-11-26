@@ -182,7 +182,7 @@ void  ArnDiscoverConnector::doClientConnectChanged( int stat, int curPrio)
     if (Arn::debugDiscover)  qDebug() << "Discover ClientConnectChanged 1: stat=" << stat
                                       << " prio=" << curPrio;
     if (!_resolver || (cs == cs.Connecting))  return;
-    if (cs == cs.Connected) {
+    if ((cs == cs.Connected) || (cs == cs.Stopped)) {
         _resolveRefreshBlocked = false;
         return;
     }
@@ -219,8 +219,9 @@ void  ArnDiscoverConnector::postSetupClient()
     connect( _client, SIGNAL(connectionStatusChanged(int,int)), arnConnectStatus, SLOT(setValue(int)));
     typedef ArnClient::ConnectStat CS;
     ArnM::setValue( path + "set",
-                    QString("%1=Initialized %2=Connecting %3=Connected %4=Connect_error %5=Disconnected")
-                    .arg(CS::Init).arg(CS::Connecting).arg(CS::Connected).arg(CS::Error).arg(CS::Disconnected));
+          QString("%1=Initialized %2=Connecting %3=Connected %4=Stopped %5=Connect_error %6=Disconnected")
+                  .arg(CS::Init).arg(CS::Connecting).arg(CS::Connected).arg(CS::Stopped)
+                  .arg(CS::Error).arg(CS::Disconnected));
 
     path = connectIdPath + "Request/";
     ArnItem*  arnConnectReqPV = new ArnItem( path + "value!", this);

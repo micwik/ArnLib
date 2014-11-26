@@ -80,6 +80,8 @@ public:
             Connecting,
             //! Successfully connected to an Arn host
             Connected,
+            //! No data flow within set timeout (still connected)
+            Stopped,
             //! Unsuccessfull when trying to connect to an Arn host
             Error,
             //! TCP connection is broken (has been successfull)
@@ -219,6 +221,25 @@ public:
      */
     QString  id()  const;
 
+    //! Get receive data timeout (base time)
+    /*! \return the timeout in seconds
+     *  \see setReceiveTimeout()
+     */
+    int  receiveTimeout()  const;
+
+    //! Set receive data timeout (base time)
+    /*! The timeout deals with no received data. This base time T is used as follows:
+     *  time passed == T, send a dummy request to ArnServer
+     *  time passed == 2*T, signal status ConnectStat::Stopped
+     *  time passed == 6*T, abort ArnClient tcp socket.
+     *
+     *  Default time is set to 0.
+     *  \param[in] receiveTimeout is the base time in seconds. 0 = off (no timeout).
+     *  \see receiveTimeout()
+     *  \Note Must be set before client is connected
+     */
+    void  setReceiveTimeout( int receiveTimeout);
+
     //! \cond ADV
     int  curPrio()  const;
 
@@ -265,11 +286,14 @@ signals:
 private slots:
     void  newNetItemProxy( ArnThreadCom* threadCom,
                            const QString& path, int syncMode = 0, void* isNewPtr = 0);
-    void  tcpError(QAbstractSocket::SocketError socketError);
     void  createNewItem( QString path);
     void  doReplyRecord( Arn::XStringMap& replyMap);
     void  reConnectArn();
+    void  doTcpError(QAbstractSocket::SocketError socketError);
+    void  doTcpDisconnected();
     void  doTcpConnected();
+    void  doRecNotified();
+    void  doRecTimeout();
 
 private:
     struct MountPointSlot {
@@ -297,8 +321,11 @@ private:
     QString  _arnHost;
     quint16  _port;
     bool  _isAutoConnect;
+    int  _recTimeoutCount;
+    int  _receiveTimeout;
     int  _retryTime;
     QTimer*  _connectTimer;
+    QTimer*  _recTimer;
     ArnItem*  _arnMountPoint;
     QList<MountPointSlot>  _mountPoints;
     Arn::XStringMap  _commandMap;
