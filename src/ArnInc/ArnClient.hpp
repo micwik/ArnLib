@@ -233,8 +233,8 @@ public:
      *  time passed == 2*T, signal status ConnectStat::Stopped
      *  time passed == 6*T, abort ArnClient tcp socket.
      *
-     *  Default time is set to 0.
-     *  \param[in] receiveTimeout is the base time in seconds. 0 = off (no timeout).
+     *  Default base time T is set to 5.
+     *  \param[in] receiveTimeout is the base time T in seconds. 0 = off (no timeout).
      *  \see receiveTimeout()
      *  \Note Must be set before client is connected
      */
@@ -289,7 +289,9 @@ private slots:
     void  createNewItem( QString path);
     void  doReplyRecord( Arn::XStringMap& replyMap);
     void  reConnectArn();
+    void  onConnectWaitDone();
     void  doTcpError(QAbstractSocket::SocketError socketError);
+    void  doTcpError(int socketError);
     void  doTcpDisconnected();
     void  doTcpConnected();
     void  doRecNotified();

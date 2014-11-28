@@ -121,7 +121,7 @@ ArnClient::ArnClient( QObject* parent) :
 {
     _arnMountPoint   = 0;
     _isAutoConnect   = false;
-    _receiveTimeout  = 0;  // No timeout
+    _receiveTimeout  = 5;
     _recTimeoutCount = 0;
     _retryTime       = 2;
     _port            = 0;
@@ -147,7 +147,7 @@ ArnClient::ArnClient( QObject* parent) :
 
     connect( _socket, SIGNAL(error(QAbstractSocket::SocketError)),
              this, SLOT(doTcpError(QAbstractSocket::SocketError)));
-    connect( _connectTimer, SIGNAL(timeout()), this, SLOT(reConnectArn()));
+    connect( _connectTimer, SIGNAL(timeout()), this, SLOT(onConnectWaitDone()));
 }
 
 
@@ -451,15 +451,46 @@ void  ArnClient::doTcpError(QAbstractSocket::SocketError socketError)
 {
     _recTimer->stop();
 
-    qDebug() << "ArnClient TcpError: hostAddr=" << _curConnectAP.addr;
+    QMetaObject::invokeMethod( this,
+                               "doTcpError",
+                               Qt::QueuedConnection,
+                               Q_ARG( int, socketError));
+}
+
+
+void ArnClient::doTcpError(int socketError)
+{
+    // qDebug() << "ArnClient TcpError: hostAddr=" << _curConnectAP.addr;
     QString  errTextSum = QString(tr("TCP Client Msg:")) + _socket->errorString();
     ArnM::errorLog( errTextSum, ArnError::ConnectionError);
-    emit tcpError( _socket->errorString(), socketError);
+    emit tcpError( _socket->errorString(), QAbstractSocket::SocketError( socketError));
 
-    _connectStat = ((_connectStat == ConnectStat::Connected) || (_connectStat == ConnectStat::Stopped))
-                 ? ConnectStat::Disconnected : ConnectStat::Error;
-    emit connectionStatusChanged( _connectStat, _curPrio);
+    if (_connectStat != ConnectStat::Disconnected) {
+        _connectStat = (  (_connectStat == ConnectStat::Connected)
+                       || (_connectStat == ConnectStat::Stopped))
+                     ? ConnectStat::Disconnected : ConnectStat::Error;
+        emit connectionStatusChanged( _connectStat, _curPrio);
+        reConnectArn();
+    }
+}
 
+
+void ArnClient::doTcpDisconnected()
+{
+    // qDebug() << "ArnClient TcpDisconnected: hostAddr=" << _curConnectAP.addr;
+    _recTimer->stop();
+
+    if ((_connectStat == ConnectStat::Connected) || (_connectStat == ConnectStat::Stopped)) {
+        _connectStat = ConnectStat::Disconnected;
+        emit connectionStatusChanged( _connectStat, _curPrio);
+        reConnectArn();
+    }
+}
+
+
+void  ArnClient::reConnectArn()
+{
+    // qDebug() << " reConnectArn";
     if ((_nextHost >= 0) && (_nextHost < _hostTab.size())) {
         doConnectArnLogic();
     }
@@ -469,14 +500,7 @@ void  ArnClient::doTcpError(QAbstractSocket::SocketError socketError)
 }
 
 
-void ArnClient::doTcpDisconnected()
-{
-    qDebug() << "ArnClient TcpDisconnected: hostAddr=" << _curConnectAP.addr;
-    _recTimer->stop();
-}
-
-
-void  ArnClient::reConnectArn()
+void  ArnClient::onConnectWaitDone()
 {
     _connectTimer->stop();
     doConnectArnLogic();
