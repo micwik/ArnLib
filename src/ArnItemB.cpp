@@ -170,7 +170,7 @@ bool  ArnItemB::isFolder()  const
 }
 
 
-bool  ArnItemB::isBiDir()  const
+bool  ArnItemB::isProvider()  const
 {
     if (!_link)  return false;
 

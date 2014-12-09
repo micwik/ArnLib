@@ -187,11 +187,11 @@ protected:
      */
     bool  isFolder()  const;
 
-    /*! \retval true if this ArnItem is bi-directional
+    /*! \retval true if this ArnItem is a provider
      *  \see setBiDirMode()
      *  \see \ref gen_arnobjModes
      */
-    bool  isBiDir()  const;
+    bool  isProvider()  const;
 
     //! The type stored in the _Arn Data Object_
     /*! \return The type stored

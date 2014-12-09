@@ -119,12 +119,12 @@ public:
     bool  isFolder()  const
     {return ArnItemB::isFolder();}
 
-    /*! \retval true if this ArnItem is bi-directional
+    /*! \retval true if this ArnItem is a provider
      *  \see setBiDirMode()
      *  \see \ref gen_arnobjModes
      */
-    bool  isBiDir()  const
-    {return ArnItemB::isBiDir();}
+    bool  isProvider()  const
+    {return ArnItemB::isProvider();}
 
     //! The type stored in the _Arn Data Object_
     /*! \return The type stored
