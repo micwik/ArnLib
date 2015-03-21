@@ -229,11 +229,11 @@ public:
 
     //! Set receive data timeout (base time)
     /*! The timeout deals with no received data. This base time T is used as follows:
-     *  time passed == T, send a dummy request to ArnServer
-     *  time passed == 2*T, signal status ConnectStat::Stopped
-     *  time passed == 6*T, abort ArnClient tcp socket.
+     *  time passed == T/2, send a dummy request to ArnServer
+     *  time passed == T, signal status ConnectStat::Stopped
+     *  time passed == 3*T, abort ArnClient tcp socket.
      *
-     *  Default base time T is set to 5.
+     *  Default base time T is set to 10 seconds.
      *  \param[in] receiveTimeout is the base time T in seconds. 0 = off (no timeout).
      *  \see receiveTimeout()
      *  \Note Must be set before client is connected

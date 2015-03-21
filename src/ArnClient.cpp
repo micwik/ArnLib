@@ -121,7 +121,7 @@ ArnClient::ArnClient( QObject* parent) :
 {
     _arnMountPoint   = 0;
     _isAutoConnect   = false;
-    _receiveTimeout  = 5;
+    _receiveTimeout  = 10;
     _recTimeoutCount = 0;
     _retryTime       = 2;
     _port            = 0;
@@ -511,7 +511,7 @@ void  ArnClient::doTcpConnected()
 {
     // qDebug() << "ArnClient TcpConnected: hostAddr=" << _curConnectAP.addr;
     if (_receiveTimeout > 0)
-        _recTimer->start( _receiveTimeout * 1000);
+        _recTimer->start( _receiveTimeout * 1000 / 2);
 
     emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
     _connectStat = ConnectStat::Connected;
