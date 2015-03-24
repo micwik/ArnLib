@@ -32,7 +32,6 @@
 #ifndef ARNLINKHANDLE_HPP
 #define ARNLINKHANDLE_HPP
 
-#include "ArnLib.hpp"
 #include "Arn.hpp"
 #include "MQFlags.hpp"
 #include <QMetaType>

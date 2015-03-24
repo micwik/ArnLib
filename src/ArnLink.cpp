@@ -30,6 +30,7 @@
 //
 
 #include "ArnLink.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include <QDebug>
 #include <limits>
 
@@ -40,7 +41,7 @@ QAtomicInt ArnLink::_idCount(1);
 void ArnLink::resetHave()
 {
     _haveInt       = false;
-    _haveDouble    = false;
+    _haveReal      = false;
     _haveString    = false;
     _haveByteArray = false;
     _haveVariant   = false;
@@ -77,7 +78,7 @@ void ArnLink::setValue( int value, int sendId, bool forceKeep)
 }
 
 
-void ArnLink::setValue( double value, int sendId, bool forceKeep)
+void ArnLink::setValue( ARNREAL value, int sendId, bool forceKeep)
 {
     if (_twin  &&  !forceKeep) {    // support for bidirectional function
         _twin->setValue( value, sendId, true);
@@ -86,9 +87,9 @@ void ArnLink::setValue( double value, int sendId, bool forceKeep)
 
     if (_isThreaded)  _mutex.lock();
     resetHave();
-    _valueDouble = value;
-    _type.e     = _type.Double;
-    _haveDouble  = true;
+    _valueReal = value;
+    _type.e    = _type.Real;
+    _haveReal  = true;
     if (_isThreaded)  _mutex.unlock();
 
     emitChanged( sendId);
@@ -173,8 +174,8 @@ int ArnLink::toInt()
 
     if (!_haveInt) {
         switch (_type.e) {
-        case Arn::DataType::Double:
-            _valueInt = (int)_valueDouble;
+        case Arn::DataType::Real:
+            _valueInt = (int)_valueReal;
             break;
         case Arn::DataType::String:
             _valueInt = _valueString.toInt();
@@ -200,36 +201,48 @@ int ArnLink::toInt()
 }
 
 
-double ArnLink::toDouble()
+ARNREAL  ArnLink::toReal()
 {
     if (_isThreaded)  _mutex.lock();
 
-    if (!_haveDouble) {
+    if (!_haveReal) {
         switch (_type.e) {
         case Arn::DataType::Int:
-            _valueDouble = (double)_valueInt;
+            _valueReal = (ARNREAL)_valueInt;
             break;
+#if defined( ARNREAL_FLOAT)
         case Arn::DataType::String:
-            _valueDouble = _valueString.toDouble();
+            _valueReal = _valueString.toFloat();
             break;
         case Arn::DataType::ByteArray:
-            _valueDouble = _valueByteArray.toDouble();
+            _valueReal = _valueByteArray.toFloat();
             break;
         case Arn::DataType::Variant:
-            _valueDouble = _valueVariant.toDouble();
+            _valueReal = _valueVariant.toFloat();
             break;
+#else
+        case Arn::DataType::String:
+            _valueReal = _valueString.toDouble();
+            break;
+        case Arn::DataType::ByteArray:
+            _valueReal = _valueByteArray.toDouble();
+            break;
+        case Arn::DataType::Variant:
+            _valueReal = _valueVariant.toDouble();
+            break;
+#endif
         default:
-            _valueDouble = 0.0;
+            _valueReal = 0.0;
         }
-        _haveDouble = true;
+        _haveReal = true;
     }
 
     if (_isThreaded) {
-        double retVal = _valueDouble;
+        ARNREAL retVal = _valueReal;
         _mutex.unlock();
         return retVal;
     }
-    return _valueDouble;
+    return _valueReal;
 }
 
 
@@ -243,8 +256,12 @@ QString ArnLink::toString()
         case Arn::DataType::Int:
             _valueString += QString::number(_valueInt, 10);
             break;
-        case Arn::DataType::Double:
-            _valueString += QString::number(_valueDouble, 'g', std::numeric_limits<double>::digits10);
+        case Arn::DataType::Real:
+#if defined( ARNREAL_FLOAT)
+            _valueString += QString::number(_valueReal, 'g', std::numeric_limits<float>::digits10);
+#else
+            _valueString += QString::number(_valueReal, 'g', std::numeric_limits<double>::digits10);
+#endif
             break;
         case Arn::DataType::ByteArray:
             _valueString += QString::fromUtf8( _valueByteArray.constData(), _valueByteArray.size());
@@ -276,8 +293,12 @@ QByteArray ArnLink::toByteArray()
         case Arn::DataType::Int:
             _valueByteArray += QByteArray::number( _valueInt, 10);
             break;
-        case Arn::DataType::Double:
-            _valueByteArray += QByteArray::number( _valueDouble, 'g', std::numeric_limits<double>::digits10);
+        case Arn::DataType::Real:
+#if defined( ARNREAL_FLOAT)
+            _valueByteArray += QByteArray::number( _valueReal, 'g', std::numeric_limits<float>::digits10);
+#else
+            _valueByteArray += QByteArray::number( _valueReal, 'g', std::numeric_limits<double>::digits10);
+#endif
             break;
         case Arn::DataType::String:
             _valueByteArray += _valueString.toUtf8();
@@ -308,8 +329,8 @@ QVariant ArnLink::toVariant( void)
         case Arn::DataType::Int:
             _valueVariant = _valueInt;
             break;
-        case Arn::DataType::Double:
-            _valueVariant = _valueDouble;
+        case Arn::DataType::Real:
+            _valueVariant = _valueReal;
             break;
         case Arn::DataType::String:
             _valueVariant = _valueString;
@@ -391,7 +412,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     _isProvider     = name_.endsWith('!');
     _isThreaded     = false;  // The correct value is set by Arn::link
     _valueInt       = 0;
-    _valueDouble    = 0.0;
+    _valueReal    = 0.0;
     _valueString    = "";
     _valueByteArray = "";
     _valueVariant   = QVariant();

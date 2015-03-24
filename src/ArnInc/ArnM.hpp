@@ -33,7 +33,6 @@
 #define ARNM_HPP
 
 #include "ArnLib_global.hpp"
-#include "ArnLib.hpp"
 #include "Arn.hpp"
 #include "ArnError.hpp"
 #include "ArnItem.hpp"
@@ -133,13 +132,19 @@ public:
     /*! \param[in] path
      *  \return The _Arn Data Object_ as an _integer_
      */
-    static int   valueInt( const QString& path);
+    static int  valueInt( const QString& path);
 
     //! Get the value of _Arn Data Object_ at _path_
     /*! \param[in] path
      *  \return The _Arn Data Object_ as a _double_
      */
-    static double   valueDouble( const QString& path);
+    static double  valueDouble( const QString& path);
+
+    //! Get the value of _Arn Data Object_ at _path_
+    /*! \param[in] path
+     *  \return The _Arn Data Object_ as an _ARNREAL_
+     */
+    static ARNREAL  valueReal( const QString& path);
 
     //! Get the value of _Arn Data Object_ at _path_
     /*! \param[in] path
@@ -187,11 +192,11 @@ public:
      */
     static void  setValue( const QString& path, int value);
 
-    //! Assign a _double_ to an _Arn Data Object_ at _path_
+    //! Assign an _ARNREAL_ to an _Arn Data Object_ at _path_
     /*! \param[in] path
      *  \param[in] value to be assigned
      */
-    static void  setValue( const QString& path, double value);
+    static void  setValue( const QString& path, ARNREAL value);
 
     //! Assign a _QString_ to an _Arn Data Object_ at _path_
     /*! \param[in] path

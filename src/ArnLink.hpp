@@ -34,7 +34,6 @@
 
 #include "ArnInc/ArnLib_global.hpp"
 #include "ArnInc/ArnLinkHandle.hpp"
-#include "ArnInc/ArnLib.hpp"
 #include "ArnInc/Arn.hpp"
 #include "ArnInc/MQFlags.hpp"
 #include <QObject>
@@ -52,7 +51,7 @@ class ArnLink : public QObject
 
 public:
     void  setValue( int value, int sendId = 0, bool forceKeep = 0);
-    void  setValue( double value, int sendId = 0, bool forceKeep = 0);
+    void  setValue( ARNREAL value, int sendId = 0, bool forceKeep = 0);
     void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0,
                     const ArnLinkHandle& handleData = ArnLinkHandle());
     void  setValue( const QByteArray& value, int sendId = 0, bool forceKeep = 0,
@@ -60,7 +59,7 @@ public:
     void  setValue( const QVariant& value, int sendId = 0, bool forceKeep = 0);
 
     int  toInt();
-    double  toDouble();
+    ARNREAL toReal();
     QString  toString();
     QByteArray  toByteArray();
     QVariant  toVariant();
@@ -127,13 +126,13 @@ private:
     volatile bool  _isRetired;
 
     volatile int  _valueInt;
-    volatile double  _valueDouble;
+    volatile ARNREAL  _valueReal;
     QString  _valueString;
     QByteArray  _valueByteArray;
     QVariant  _valueVariant;
 
     volatile bool  _haveInt;
-    volatile bool  _haveDouble;
+    volatile bool  _haveReal;
     volatile bool  _haveString;
     volatile bool  _haveByteArray;
     volatile bool  _haveVariant;

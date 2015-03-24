@@ -31,6 +31,7 @@
 
 #include "ArnInc/ArnItemB.hpp"
 #include "ArnInc/ArnM.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include "ArnLink.hpp"
 #include <QDataStream>
 #include <QUuid>
@@ -610,7 +611,15 @@ double  ArnItemB::toDouble() const
 {
     if (!_link)  return 0.0;
 
-    return _link->toDouble();
+    return _link->toReal();
+}
+
+
+ARNREAL  ArnItemB::toReal() const
+{
+    if (!_link)  return 0.0;
+
+    return _link->toReal();
 }
 
 
@@ -633,8 +642,8 @@ void  ArnItemB::setValue( const ArnItemB& other, int ignoreSame)
         case Arn::DataType::Int:
             this->setValue( link->toInt(), ignoreSame);
             break;
-        case Arn::DataType::Double:
-            this->setValue( link->toDouble(), ignoreSame);
+        case Arn::DataType::Real:
+            this->setValue( link->toReal(), ignoreSame);
             break;
         case Arn::DataType::String:
             this->setValue( link->toString(), ignoreSame);
@@ -691,7 +700,7 @@ void  ArnItemB::setValue( int value, int ignoreSame)
 }
 
 
-void  ArnItemB::setValue( double value, int ignoreSame)
+void  ArnItemB::setValue( ARNREAL value, int ignoreSame)
 {
     if (!_enableSetValue)  return;
 
@@ -699,7 +708,7 @@ void  ArnItemB::setValue( double value, int ignoreSame)
     if (_link) {
         if (isIgnoreSame) {
             ArnLink*  holderLink = _link->holderLink( _useForceKeep);
-            if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toDouble())) {
+            if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toReal())) {
                 return;
             }
         }
@@ -710,7 +719,7 @@ void  ArnItemB::setValue( double value, int ignoreSame)
             _link->setValue( value, _id, _useForceKeep);
     }
     else {
-        errorLog( QString(tr("Assigning double:")) + QString::number( value),
+        errorLog( QString(tr("Assigning ARNREAL:")) + QString::number( value),
                   ArnError::ItemNotOpen);
     }
 }

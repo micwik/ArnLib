@@ -31,6 +31,7 @@
 
 #include "ArnInc/ArnClient.hpp"
 #include "ArnInc/Arn.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include "ArnSync.hpp"
 #include <QTcpSocket>
 #include <QStringList>

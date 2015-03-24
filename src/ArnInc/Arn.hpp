@@ -37,6 +37,12 @@
 
 #define DATASTREAM_VER  QDataStream::Qt_4_6
 
+#if defined( ARNREAL_FLOAT)
+#  define ARNREAL   float
+#else
+#  define ARNREAL   double
+#endif
+
 
 namespace Arn {
 
@@ -67,6 +73,7 @@ struct DataType {
         Null       = 0,
         Int        = 1,
         Double     = 2,
+        Real       = 2,
         ByteArray  = 3,
         String     = 4,
         Variant    = 5

@@ -58,6 +58,7 @@ public:
         DataType_Null      = Arn::DataType::Null,
         DataType_Int       = Arn::DataType::Int,
         DataType_Double    = Arn::DataType::Double,
+        DataType_Real      = Arn::DataType::Real,
         DataType_ByteArray = Arn::DataType::ByteArray,
         DataType_String    = Arn::DataType::String,
         DataType_Variant   = Arn::DataType::Variant
@@ -109,7 +110,7 @@ public slots:
     QByteArray  bytes( const QString& path)     {return ArnM::instance().valueByteArray( path);}
 
     //! See ArnM::valueDouble()
-    double  num( const QString& path)           {return ArnM::instance().valueDouble( path);}
+    ARNREAL  num( const QString& path)          {return ArnM::instance().valueDouble( path);}
 
     //! See ArnM::valueInt()
     int  intNum( const QString& path)           {return ArnM::instance().valueInt( path);}
@@ -143,7 +144,7 @@ public slots:
     {ArnM::instance().setValue( path, value);}
 
     //! See ArnM::setValue()
-    void  setNum( const QString& path, double value)
+    void  setNum( const QString& path, ARNREAL value)
     {ArnM::instance().setValue( path, value);}
 
     //! See ArnM::setValue()

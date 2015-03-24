@@ -301,8 +301,8 @@ class  ArnItemQml : public ArnItem, public QML_PARSER_STATUS
     Q_PROPERTY( QString string       READ toString           WRITE setValue            NOTIFY valueChanged)
     //! The ArnItem value as a QByteArray
     Q_PROPERTY( QByteArray bytes     READ toByteArray        WRITE setValue            NOTIFY valueChanged)
-    //! The ArnItem value as a double
-    Q_PROPERTY( double num           READ toDouble           WRITE setValue            NOTIFY valueChanged)
+    //! The ArnItem value as an ARNREAL
+    Q_PROPERTY( ARNREAL num          READ toReal             WRITE setValue            NOTIFY valueChanged)
     //! The ArnItem value as an int
     Q_PROPERTY( int intNum           READ toInt              WRITE setValue            NOTIFY valueChanged)
     //! See Arn::ObjectMode::BiDir

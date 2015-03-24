@@ -321,6 +321,10 @@ protected:
      */
     double  toDouble()  const;
 
+    /*! \return Convert _Arn Data Object_ to an _ARNREAL_
+     */
+    ARNREAL  toReal()  const;
+
     /*! \return Convert _Arn Data Object_ to a _bool_
      */
     bool  toBool()  const;
@@ -346,12 +350,12 @@ protected:
      */
     void  setValue( int value, int ignoreSame = Arn::SameValue::DefaultAction);
 
-    //! Assign a _double_ to an _Arn Data Object_
+    //! Assign an _ARNREAL_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( double value, int ignoreSame = Arn::SameValue::DefaultAction);
+    void  setValue( ARNREAL value, int ignoreSame = Arn::SameValue::DefaultAction);
 
     //! Assign a _bool_ to an _Arn Data Object_
     /*! \param[in] value to be assigned

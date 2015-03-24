@@ -33,6 +33,7 @@
 #include "ArnItemNet.hpp"
 #include "ArnLink.hpp"
 #include "ArnInc/ArnClient.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include <QTcpSocket>
 #include <QString>
 #include <QStringList>

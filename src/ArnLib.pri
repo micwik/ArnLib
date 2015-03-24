@@ -8,12 +8,12 @@ ARNLIBVER = 2.3.2-d3
 DEFINES += ARNLIBVER=\\\"$${ARNLIBVER}\\\"
 
 win32 {
-DEFINES += ARNBUILDDATE=\\\"$$system('echo %date%')\\\"
-DEFINES += ARNBUILDTIME=\\\"00:00\\\"
-# DEFINES += ARNBUILDTIME=\\\"$$system('echo %time%')\\\"
+    DEFINES += ARNBUILDDATE=\\\"$$system('echo %date%')\\\"
+    DEFINES += ARNBUILDTIME=\\\"00:00\\\"
+    # DEFINES += ARNBUILDTIME=\\\"$$system('echo %time%')\\\"
 } else {
-DEFINES += ARNBUILDTIME=\\\"$$system(date '+%H:%M')\\\"
-DEFINES += ARNBUILDDATE=\\\"$$system(date '+%y-%m-%d')\\\"
+    DEFINES += ARNBUILDTIME=\\\"$$system(date '+%H:%M')\\\"
+    DEFINES += ARNBUILDDATE=\\\"$$system(date '+%y-%m-%d')\\\"
 }
 
 DEFINES += ARNLIB_COMPILE

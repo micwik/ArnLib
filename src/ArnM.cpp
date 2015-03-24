@@ -132,10 +132,16 @@ int  ArnM::valueInt( const QString& path)
 
 double  ArnM::valueDouble( const QString& path)
 {
+    return valueReal( path);
+}
+
+
+ARNREAL  ArnM::valueReal(const QString& path)
+{
     ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
     if (!link)  return 0;
 
-    double  retVal = link->toDouble();
+    ARNREAL  retVal = link->toReal();
     link->deref();
     return retVal;
 }
@@ -323,7 +329,7 @@ void  ArnM::setValue( const QString& path, int value)
 }
 
 
-void  ArnM::setValue( const QString& path, double value)
+void  ArnM::setValue( const QString& path, ARNREAL value)
 {
     ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
 

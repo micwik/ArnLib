@@ -44,7 +44,7 @@ QMetaMethod  ArnItem::_metaSignalChanged(
 QMetaMethod  ArnItem::_metaSignalChangedInt(
         QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(int)>(&ArnItem::changed)));
 QMetaMethod  ArnItem::_metaSignalChangedDouble(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(double)>(&ArnItem::changed)));
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(ARNREAL)>(&ArnItem::changed)));
 QMetaMethod  ArnItem::_metaSignalChangedBool(
         QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(bool)>(&ArnItem::changed)));
 QMetaMethod  ArnItem::_metaSignalChangedString(
@@ -63,7 +63,7 @@ void  ArnItem::init()
 
     _emitChanged          = 0;
     _emitChangedInt       = 0;
-    _emitChangedDouble    = 0;
+    _emitChangedReal      = 0;
     _emitChangedBool      = 0;
     _emitChangedString    = 0;
     _emitChangedByteArray = 0;
@@ -150,7 +150,7 @@ ArnItem&  ArnItem::operator=( int other)
 }
 
 
-ArnItem&  ArnItem::operator=( double other)
+ArnItem&  ArnItem::operator=( ARNREAL other)
 {
     this->setValue( other);
     return *this;
@@ -210,7 +210,7 @@ void  ArnItem::connectNotify( const QMetaMethod &signal)
         _emitChangedInt++;
     }
     else if (signal == _metaSignalChangedDouble) {
-        _emitChangedDouble++;
+        _emitChangedReal++;
     }
     else if (signal == _metaSignalChangedBool) {
         _emitChangedBool++;
@@ -236,7 +236,7 @@ void  ArnItem::disconnectNotify( const QMetaMethod &signal)
         _emitChangedInt--;
     }
     else if (signal == _metaSignalChangedDouble) {
-        _emitChangedDouble--;
+        _emitChangedReal--;
     }
     else if (signal == _metaSignalChangedBool) {
         _emitChangedBool--;
@@ -263,8 +263,8 @@ void  ArnItem::connectNotify( const char *signal)
     else if (QLatin1String( signal) == SIGNAL(changed(int))) {
         _emitChangedInt++;
     }
-    else if (QLatin1String( signal) == SIGNAL(changed(double))) {
-        _emitChangedDouble++;
+    else if (QLatin1String( signal) == SIGNAL(changed(ARNREAL))) {
+        _emitChangedReal++;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(bool))) {
         _emitChangedBool++;
@@ -289,8 +289,8 @@ void  ArnItem::disconnectNotify( const char *signal)
     else if (QLatin1String( signal) == SIGNAL(changed(int))) {
         _emitChangedInt--;
     }
-    else if (QLatin1String( signal) == SIGNAL(changed(double))) {
-        _emitChangedDouble--;
+    else if (QLatin1String( signal) == SIGNAL(changed(ARNREAL))) {
+        _emitChangedReal--;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(bool))) {
         _emitChangedBool--;
@@ -328,8 +328,12 @@ void  ArnItem::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* v
         if (_emitChangedInt) {
             emit changed( int( value->toInt()));
         }
-        if (_emitChangedDouble) {
+        if (_emitChangedReal) {
+#if defined( ARNREAL_FLOAT)
+            emit changed( float( value->toFloat()));
+#else
             emit changed( double( value->toDouble()));
+#endif
         }
         if (_emitChangedBool) {
             emit changed( bool( value->toInt() != 0));
@@ -363,8 +367,8 @@ void  ArnItem::doItemUpdate( const ArnLinkHandle& handleData)
     if (_emitChangedInt) {
         emit changed( toInt());
     }
-    if (_emitChangedDouble) {
-        emit changed( toDouble());
+    if (_emitChangedReal) {
+        emit changed( toReal());
     }
     if (_emitChangedBool) {
         emit changed( toBool());

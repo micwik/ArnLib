@@ -31,6 +31,7 @@
 
 #include "ArnInc/ArnMonitor.hpp"
 #include "ArnInc/ArnClient.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include "ArnSync.hpp"
 #include "ArnItemNet.hpp"
 #include <QDebug>

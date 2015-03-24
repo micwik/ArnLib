@@ -31,6 +31,7 @@
 
 #include "ArnInc/ArnDepend.hpp"
 #include "ArnInc/ArnM.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include <QUuid>
 #include <QTimer>
 #include <QtAlgorithms>

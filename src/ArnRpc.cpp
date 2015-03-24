@@ -31,6 +31,7 @@
 
 #include "ArnInc/ArnRpc.hpp"
 #include "ArnInc/ArnM.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include <QMetaType>
 #include <QMetaMethod>
 #include <QTimer>
