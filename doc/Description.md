@@ -18,7 +18,7 @@ Folder names can be empty. In the above example, the first level folder is empty
 second level folder is "Measure".
 The empty folder name can also be referred as "@". Again, the example can equally be written
 "/@/Measure/Water/Temperature/value". This "@" is typically used when an empty name is
-unacceptable, e.g. in the tree viewer of ArnBrowser.
+unacceptable, e.g. in the tree viewer of the ArnBrowser tool.
 
 A relative path is also called the [local path](#gen_localPath), e.g.
 "Sys/Discover/This/Service/value".
@@ -32,8 +32,7 @@ _Mode_ change is a one direction process. Once a specific _mode_ is set, it can'
 
 If the ArnItem is in a closed state when the _mode_ change is done, the added modes will
 be stored and the real _mode_ change is done when the ArnItem is opened to an
-_ARN Data Object_. This implies that ArnItems can benefit from _mode_ settings before
-being opened.
+_ARN Data Object_.
 
 If the _general mode_ change is done to a [shared](#gen_shareArnobj) object, the change
 of _general mode_ is also done at the server and any connected clients.
@@ -91,12 +90,13 @@ will share and access the [Discover remote](#gen_discoverRemote) _service name_ 
 
 ### Naming conventions ###    {#gen_naming}
 These rules must not be obeyed, but are recommended, to get the most benefits of the
-%Arn echo system, like ArnBrowser.
+%Arn echo system, like the ArnBrowser tool.
 
 * First level folder empty, e.g. "//MyGlobalFolder/Date/value", is a global path and is
-  [shared](#gen_shareArnobj) to server and clients.
+  [shared](#gen_shareArnobj) to ARN server and clients.
 * First level folder starts with "@", e.g. "/@SomeServer/MyFolder/Date/value", is a shared
-  path and is [shared](#gen_shareArnobj) to a server (typically with some other remote path).
+  path and is [shared](#gen_shareArnobj) to an ARN server (typically with some other
+  remote path).
 * First level folder is "/Local", e.g "/Local/Key/value", is a [local path](#gen_localPath)
   and is not [shared](#gen_shareArnobj).
 * Path is relative, e.g "Key/value", is a [local path](#gen_localPath)
@@ -134,7 +134,7 @@ _Pipes_ also use the [bidirectional](#gen_bidirArnobj) functionality. The two (t
 are then named _requester_ and _provider_.
 
 All data put into a pipe are part of a stream and as such will be fully transfered
-(syncronized) if they are [shared](#gen_shareArnobj) with a server and other clients.
+(synchronized) if they are [shared](#gen_shareArnobj) with a server and other clients.
 
 ArnPipe is a specialized class for handling pipes. <Br>
 It contains logic for handling [sequence check](#gen_pipeSeqCheck) and
@@ -197,7 +197,7 @@ is typically restricted to Arn::pathLocal, which only saves local _ARN Data Obje
 local _persist storage_.
 
 Any connected _client_ or the _server_ can make an _ARN Data Object_ persistent.
-It's just to open an ArnItem to the object and change _mode_ to _Save_.
+Just open an ArnItem to the object and change _mode_ to _Save_.
 ~~~{.cpp}
 ArnItem  arnMaxLevel;
 arnMaxLevel.addMode( Arn::ObjectMode::Save);
@@ -326,11 +326,11 @@ QObject::sender() functionality.
 ### RPC and SAPI method name overload ###    {#gen_rpcoverload}
 Under the hood Qt converts a signal that uses default argument(s) into methods with same
 name and all variation of the arguments. I.e. One method with all arguments, one with
-all but the last default argument, and so on until there is no more default urguments.
+all but the last default argument, and so on until there is no more default arguments.
 When emitting the signal with some number of arguments, all of the signal methods will
 be exited.
 
-ArnRpc has to deal with this default urgument mechanism, otherwise there would be multiple
+ArnRpc has to deal with this default argument mechanism, otherwise there would be multiple
 calling messages for just one original signal emit.
 
 The problem arises when there also can be normal signals that are overloaded, i.e. using
@@ -360,7 +360,7 @@ The following RPC data types are available:
 |----------|-------------|
 | int      | int         |
 | uint     | uint        |
-| int64"   | qint64      |
+| int64    | qint64      |
 | uint64   | quint64     |
 | bool     | bool        |
 | float    | float       |
@@ -401,7 +401,7 @@ Alternatives in named argument format:
 * Only Argument names are used.
 * Any order of arguments can be used.
 * Extra arguments are discarded.
-* If to few arguments, default constructor is used, e.g. "put value=123" will give id="".
+* If too few arguments, default constructor is used, e.g. "put value=123" will give id="".
 * The methods parameter data type is used and only textual types are allowed.
 * When ArnRpc::Mode::NamedArg is inactive, its not allowed to use an argument name that
   also is a RPC data type. See table above. E.g. "list" and "string" are not allowed.
@@ -417,7 +417,7 @@ Alternatives in typed argument format:
 * The type is verified with the matching method parameter for error check.
 * Any order of arguments can be used.
 * Extra arguments are discarded.
-* If to few arguments, default constructor is used, e.g. "put value:int=123" will give id="".
+* If too few arguments, default constructor is used, e.g. "put value:int=123" will give id="".
 * Both textual and binary arguments can be used.
 
 Named and typed argument format can be mixed, but positional format is never mixed.
@@ -450,10 +450,10 @@ For getting a basic understanding of ZeroConfig and further references to releva
 documentation, see: http://zeroconf.org/
 
 _ARN ZeroConfig_ is the lowest level support for advertising and discovering services on
-a local network. The implementation has very few dependences to the rest of the ArnLib.
+a local network. The implementation has very few dependencies to the rest of the ArnLib.
 
 _ARN ZeroConfig_ can use a built in implementation of Apple (R) _mDns_ / _DNS_SD_ that has no
-further dependences to external libraries. For _mDns_ the low end system abstraction layer
+further dependencies to external libraries. For _mDns_ the low end system abstraction layer
 has been written to use Qt for portability. The higher level _DNS_SD_ has wrappers written
 to give a good c++ / Qt API.
 
