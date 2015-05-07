@@ -353,7 +353,11 @@ public slots:
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( ARNREAL value, int ignoreSame = Arn::SameValue::DefaultAction)
+#ifdef ARNREAL_FLOAT
+    void  setValue( float value, int ignoreSame = Arn::SameValue::DefaultAction)
+#else
+    void  setValue( double value, int ignoreSame = Arn::SameValue::DefaultAction)
+#endif
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _bool_ to an _Arn Data Object_
@@ -420,7 +424,11 @@ signals:
 
     /*! \see changed()
      */
-    void  changed( ARNREAL value);
+#ifdef ARNREAL_FLOAT
+    void  changed( float value);
+#else
+    void  changed( double value);
+#endif
 
     /*! \see changed()
      */

@@ -110,7 +110,11 @@ public slots:
     QByteArray  bytes( const QString& path)     {return ArnM::instance().valueByteArray( path);}
 
     //! See ArnM::valueDouble()
-    ARNREAL  num( const QString& path)          {return ArnM::instance().valueDouble( path);}
+#ifdef ARNREAL_FLOAT
+    float  num( const QString& path)            {return ArnM::instance().valueDouble( path);}
+#else
+    double  num( const QString& path)           {return ArnM::instance().valueDouble( path);}
+#endif
 
     //! See ArnM::valueInt()
     int  intNum( const QString& path)           {return ArnM::instance().valueInt( path);}
@@ -144,7 +148,11 @@ public slots:
     {ArnM::instance().setValue( path, value);}
 
     //! See ArnM::setValue()
-    void  setNum( const QString& path, ARNREAL value)
+#ifdef ARNREAL_FLOAT
+    void  setNum( const QString& path, float value)
+#else
+    void  setNum( const QString& path, double value)
+#endif
     {ArnM::instance().setValue( path, value);}
 
     //! See ArnM::setValue()
