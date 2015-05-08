@@ -492,7 +492,7 @@ private:
     void  disconnectNotify( const QMetaMethod & signal);
     static QMetaMethod  _metaSignalChanged;
     static QMetaMethod  _metaSignalChangedInt;
-    static QMetaMethod  _metaSignalChangedDouble;
+    static QMetaMethod  _metaSignalChangedReal;
     static QMetaMethod  _metaSignalChangedBool;
     static QMetaMethod  _metaSignalChangedString;
     static QMetaMethod  _metaSignalChangedByteArray;

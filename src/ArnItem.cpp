@@ -43,7 +43,7 @@ QMetaMethod  ArnItem::_metaSignalChanged(
         QMetaMethod::fromSignal( static_cast<void (ArnItem::*)()>(&ArnItem::changed)));
 QMetaMethod  ArnItem::_metaSignalChangedInt(
         QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(int)>(&ArnItem::changed)));
-QMetaMethod  ArnItem::_metaSignalChangedDouble(
+QMetaMethod  ArnItem::_metaSignalChangedReal(
         QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(ARNREAL)>(&ArnItem::changed)));
 QMetaMethod  ArnItem::_metaSignalChangedBool(
         QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(bool)>(&ArnItem::changed)));
@@ -209,7 +209,7 @@ void  ArnItem::connectNotify( const QMetaMethod &signal)
     else if (signal == _metaSignalChangedInt) {
         _emitChangedInt++;
     }
-    else if (signal == _metaSignalChangedDouble) {
+    else if (signal == _metaSignalChangedReal) {
         _emitChangedReal++;
     }
     else if (signal == _metaSignalChangedBool) {
@@ -235,7 +235,7 @@ void  ArnItem::disconnectNotify( const QMetaMethod &signal)
     else if (signal == _metaSignalChangedInt) {
         _emitChangedInt--;
     }
-    else if (signal == _metaSignalChangedDouble) {
+    else if (signal == _metaSignalChangedReal) {
         _emitChangedReal--;
     }
     else if (signal == _metaSignalChangedBool) {
