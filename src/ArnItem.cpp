@@ -263,7 +263,11 @@ void  ArnItem::connectNotify( const char *signal)
     else if (QLatin1String( signal) == SIGNAL(changed(int))) {
         _emitChangedInt++;
     }
-    else if (QLatin1String( signal) == SIGNAL(changed(ARNREAL))) {
+#ifdef ARNREAL_FLOAT
+    else if (QLatin1String( signal) == SIGNAL(changed(float))) {
+#else
+    else if (QLatin1String( signal) == SIGNAL(changed(double))) {
+#endif
         _emitChangedReal++;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(bool))) {
@@ -289,7 +293,11 @@ void  ArnItem::disconnectNotify( const char *signal)
     else if (QLatin1String( signal) == SIGNAL(changed(int))) {
         _emitChangedInt--;
     }
-    else if (QLatin1String( signal) == SIGNAL(changed(ARNREAL))) {
+#ifdef ARNREAL_FLOAT
+    else if (QLatin1String( signal) == SIGNAL(changed(float))) {
+#else
+    else if (QLatin1String( signal) == SIGNAL(changed(double))) {
+#endif
         _emitChangedReal--;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(bool))) {
