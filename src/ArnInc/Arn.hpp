@@ -250,6 +250,15 @@ QString  addPath( const QString& parentPath, const QString& childRelPath,
  */
 QString  convertPath( const QString& path,
                              Arn::NameF nameF = Arn::NameF::EmptyOk);
+
+//! Get the parent to a given _path_
+/*! Example: _path_ = "//Measure/depth/value!"
+ *  ==> return = "//Measure/depth/"
+ *  \param[in] path
+ *  \return The parent _path_
+ */
+QString  parentPath( const QString& path);
+
 //! Get the bidirectional twin to a given _path_
 /*! Example: _path_ = "//Measure/depth/value!"
  *  ==> return = "//Measure/depth/value"

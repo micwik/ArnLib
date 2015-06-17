@@ -173,6 +173,18 @@ QString  convertPath( const QString& path, Arn::NameF nameF)
 }
 
 
+QString  parentPath( const QString& path)
+{
+    QString  retPath = path;
+    if (retPath.endsWith("/"))
+        retPath.chop(1);
+    if (!retPath.contains("/"))  return QString();  // Can't give a valid parent
+
+    retPath.resize( retPath.lastIndexOf("/") + 1);
+    return retPath;
+}
+
+
 QString  twinPath( const QString& path)
 {
     if (path.endsWith('/'))  return path;  // Can't return twin for a folder
