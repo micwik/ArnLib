@@ -166,7 +166,7 @@ public:
      */
     QString  pipePath() const;
 
-    bool  open( QString pipePath);
+    bool  open( const QString& pipePath);
     void  setPipe( ArnPipe* pipe);
 
     //! Get the used _pipe_
@@ -177,7 +177,7 @@ public:
     bool  setReceiver( QObject* receiver, bool useTrackRpcSender = true);
     QObject*  receiver()  const;
 
-    void  setMethodPrefix( QString prefix);
+    void  setMethodPrefix( const QString& prefix);
     QString  methodPrefix()  const;
 
      //! Add sender as argument when calling a rpc method
@@ -226,7 +226,7 @@ public:
      */
     bool  isHeartBeatOk()  const;
 
-    void  addSenderSignals( QObject* sender, QString prefix);
+    void  addSenderSignals( QObject* sender, const QString& prefix);
 
     //! Calls a named remote procedure
     /*! This is the low level way to call a remote procedure. It can freely call
@@ -370,7 +370,7 @@ signals:
      *  \param[in] text is the received text
      *  \see sendText();
      */
-    void  textReceived( QString text);
+    void  textReceived( const QString& text);
 
     //! Signal emitted when receiver method missing.
     /*! This signal is only emitted if Mode::useDefaultCall is active. Error notification
@@ -398,17 +398,17 @@ public slots:
      *  \param[in] txt is the text to be sent
      *  \see textReceived();
      */
-    void  sendText( QString txt);
+    void  sendText( const QString& txt);
 
 private slots:
-    void  pipeInput( QByteArray data);
+    void  pipeInput( const QByteArray& data);
     void  destroyPipe();
     void  timeoutHeartBeatSend();
     void  timeoutHeartBeatCheck();
 
     //! \cond ADV
 protected:
-    void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
+    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0);
     //! \endcond
 
 private:
@@ -460,7 +460,7 @@ private:
     bool  importArgData( ArgInfo& argInfo, const QByteArray& methodName, bool useVarPar);
     void  funcHeartBeat( const Arn::XStringMap& xsm);
     void  funcHelp( const Arn::XStringMap& xsm);
-    void  funcHelpMethod( const QMetaMethod& method, QByteArray name, int parNumMin, int flags);
+    void  funcHelpMethod( const QMetaMethod& method, const QByteArray& name, int parNumMin, int flags);
     void  funcArg( const Arn::XStringMap& xsm);
 
     void  setupReceiverMethodsParam();

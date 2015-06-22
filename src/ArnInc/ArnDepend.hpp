@@ -66,7 +66,7 @@ public:
     //! Advertise an available _service_
     /*! \param[in] serviceName is the name of the _service_.
      */
-    void  advertise( QString serviceName);
+    void  advertise( const QString& serviceName);
 
     //! Set the _state_ of the _service_ by a logic name.
     /*! The _state_ starts of by "Start" as default.
@@ -138,18 +138,18 @@ public:
     /*! \param[in] serviceName is the name of the needed _service_.
      *  \param[in] stateId is the needed _state_ id number. -1 is don't care.
      */
-    void  add( QString serviceName, int stateId = -1);
+    void  add( const QString& serviceName, int stateId = -1);
 
     //! Add a dependency for a _service_
     /*! \param[in] serviceName is the name of the needed _service_.
      *  \param[in] stateName is the needed _state_ name.
      */
-    void  add( QString serviceName, QString stateName);
+    void  add( const QString& serviceName, const QString& stateName);
 
     //! Set an optional monitor name for debugging
     /*! \param[in] name is the monitor name.
      */
-    void  setMonitorName( QString name);
+    void  setMonitorName( const QString& name);
 
     //! Starting the dependency monitor
     void  startMonitor();
@@ -160,12 +160,12 @@ signals:
 
 private slots:
     void  echoRefresh();
-    void  echoCheck( QString echo, DepSlot* slot = 0);
+    void  echoCheck( const QString& echo, DepSlot* slot = 0);
     void  stateCheck( DepSlot* slot = 0);
     void  deleteSlot( void* slot = 0);
 
 private:
-    DepSlot*  setupDepSlot( QString name);
+    DepSlot*  setupDepSlot( const QString& name);
     void  doDepOk( DepSlot* slot);
 
     QList<DepSlot*>  _depTab;

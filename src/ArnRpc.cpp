@@ -185,7 +185,7 @@ QString  ArnRpc::pipePath()  const
 }
 
 
-bool  ArnRpc::open( QString pipePath)
+bool  ArnRpc::open( const QString& pipePath)
 {
     setPipe(0);  // Remove any existing pipe
 
@@ -276,7 +276,7 @@ QObject*ArnRpc::receiver() const
 }
 
 
-void  ArnRpc::setMethodPrefix( QString prefix)
+void  ArnRpc::setMethodPrefix( const QString& prefix)
 {
     _methodPrefix = prefix.toLatin1();
     deleteReceiverMethodsParam();
@@ -355,7 +355,7 @@ bool  ArnRpc::isHeartBeatOk()  const
 }
 
 
-void  ArnRpc::addSenderSignals( QObject* sender, QString prefix)
+void  ArnRpc::addSenderSignals( QObject* sender, const QString& prefix)
 {
     const QMetaObject*  metaObject = sender->metaObject();
     int  methodCount = metaObject->methodCount();
@@ -572,7 +572,7 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
 }
 
 
-void  ArnRpc::pipeInput( QByteArray data)
+void  ArnRpc::pipeInput( const QByteArray& data)
 {
     if (!_receiver) {
         errorLog( QString(tr("Can't invoke method: receiver=0")), ArnError::RpcReceiveError);
@@ -1215,7 +1215,7 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
 }
 
 
-void  ArnRpc::funcHelpMethod( const QMetaMethod &method, QByteArray name, int parNumMin, int flags)
+void  ArnRpc::funcHelpMethod( const QMetaMethod &method, const QByteArray& name, int parNumMin, int flags)
 {
     QString  line = QString::fromLatin1( name.mid( _methodPrefix.size()));
 
@@ -1329,14 +1329,14 @@ void  ArnRpc::timeoutHeartBeatCheck()
 }
 
 
-void  ArnRpc::sendText( QString txt)
+void  ArnRpc::sendText( const QString& txt)
 {
     if (_pipe)
         *_pipe = "\"" + txt.toUtf8() + "\"";
 }
 
 
-void  ArnRpc::errorLog( QString errText, ArnError err, void* reference)
+void  ArnRpc::errorLog( const QString& errText, ArnError err, void* reference)
 {
     QString  idText;
     if (_pipe) {

@@ -177,7 +177,7 @@ ArnDiscoverResolver::ArnDiscoverResolver( QObject* parent) :
 }
 
 
-int  ArnDiscoverResolver::resolve( QString serviceName, bool forceUpdate)
+int  ArnDiscoverResolver::resolve( const QString& serviceName, bool forceUpdate)
 {
     return ArnDiscoverBrowserB::resolve( serviceName.isEmpty() ? _defaultService : serviceName, forceUpdate);
 }
@@ -236,7 +236,7 @@ const ArnDiscoverInfo&  ArnDiscoverBrowserB::infoById( int id)
 }
 
 
-const ArnDiscoverInfo&  ArnDiscoverBrowserB::infoByName( QString serviceName)
+const ArnDiscoverInfo&  ArnDiscoverBrowserB::infoByName( const QString& serviceName)
 {
     return infoById( serviceNameToId( serviceName));
 }
@@ -284,7 +284,7 @@ void  ArnDiscoverBrowserB::setFilter( ArnDiscover::Type typeFilter)
 }
 
 
-void ArnDiscoverBrowserB::setFilter( QString group)
+void ArnDiscoverBrowserB::setFilter( const QString& group)
 {
     _filter = group;
 }
@@ -344,7 +344,7 @@ void  ArnDiscoverBrowserB::stopBrowse()
 }
 
 
-int  ArnDiscoverBrowserB::resolve( QString serviceName, bool forceUpdate)
+int  ArnDiscoverBrowserB::resolve( const QString& serviceName, bool forceUpdate)
 {
     if (Arn::debugDiscover)  qDebug() << "Man resolve Service: name=" << serviceName;
 
@@ -388,7 +388,7 @@ void  ArnDiscoverBrowserB::onBrowseError( int code)
 }
 
 
-void  ArnDiscoverBrowserB::onServiceAdded( int id, QString name, QString domain)
+void  ArnDiscoverBrowserB::onServiceAdded( int id, const QString& name, const QString& domain)
 {
     if (Arn::debugDiscover)  qDebug() << "Browse Service added: name=" << name << " domain=" << domain
                                       << " escFullDomain=" << _serviceBrowser->escapedFullDomain();
@@ -401,7 +401,7 @@ void  ArnDiscoverBrowserB::onServiceAdded( int id, QString name, QString domain)
 }
 
 
-void  ArnDiscoverBrowserB::onServiceRemoved( int id, QString name, QString domain)
+void  ArnDiscoverBrowserB::onServiceRemoved( int id, const QString& name, const QString& domain)
 {
     if (Arn::debugDiscover)  qDebug() << "Browse Service removed: name=" << name << " domain=" << domain;
     int  index = _activeServIds.indexOf( id);
@@ -433,7 +433,7 @@ void  ArnDiscoverBrowserB::onResolveError( int id, int code)
 }
 
 
-void  ArnDiscoverBrowserB::onResolved( int id, QByteArray escFullDomain)
+void  ArnDiscoverBrowserB::onResolved( int id, const QByteArray& escFullDomain)
 {
     Q_UNUSED(escFullDomain)
 
@@ -511,7 +511,7 @@ void  ArnDiscoverBrowserB::onLookuped( int id)
 }
 
 
-int  ArnDiscoverBrowserB::newServiceInfo( int id, QString name, QString domain)
+int  ArnDiscoverBrowserB::newServiceInfo( int id, const QString& name, const QString& domain)
 {
     ArnDiscoverInfo  info;
     info._id          = id;
@@ -590,7 +590,7 @@ ArnDiscoverAdvertise::ArnDiscoverAdvertise( QObject *parent) :
 }
 
 
-void  ArnDiscoverAdvertise::advertiseService( ArnDiscover::Type discoverType, QString serviceName,
+void  ArnDiscoverAdvertise::advertiseService( ArnDiscover::Type discoverType, const QString& serviceName,
                                               int port, const QString& hostName)
 {
     if (Arn::debugDiscover)  qDebug() << "Discover advertise setup: serviceName=" << serviceName
@@ -629,7 +629,7 @@ void  ArnDiscoverAdvertise::postSetupThis()
 }
 
 
-void  ArnDiscoverAdvertise::serviceRegistered( QString serviceName)
+void  ArnDiscoverAdvertise::serviceRegistered( const QString& serviceName)
 {
     if (Arn::debugDiscover)  qDebug() << "DiscoverAdvertice Service registered: serviceName=" << serviceName;
 
@@ -687,7 +687,7 @@ ArnDiscoverAdvertise::State  ArnDiscoverAdvertise::state()  const
 }
 
 
-void  ArnDiscoverAdvertise::setService( QString service)
+void  ArnDiscoverAdvertise::setService( const QString& service)
 {
     if (Arn::debugDiscover)  qDebug() << "DiscoverAdvertise setService: serviceName=" << service;
 

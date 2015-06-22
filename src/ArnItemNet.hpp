@@ -59,7 +59,7 @@ public:
     QByteArray  getSyncModeString()  const;
     void  setModeString( const QByteArray& mode);
     QByteArray  getModeString()  const;
-    void  emitNewItemEvent( QString path, bool isOld = 0);
+    void  emitNewItemEvent( const QString& path, bool isOld = 0);
 
     void  setDisable( bool disable = true);
     bool  isDisable()  const;
@@ -73,7 +73,7 @@ public:
     bool  isDirtyMode()  const;
 
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
-    virtual void  itemCreatedBelow( QString path);
+    virtual void  itemCreatedBelow( const QString& path);
     virtual void  modeUpdate( bool isSetup = false);
 
     using ArnItemB::addSyncMode;
@@ -89,14 +89,13 @@ public:
     using ArnItemB::openFolder;
 
 signals:
-    void  arnEvent( QByteArray type, QByteArray data, bool isLocal);
+    void  arnEvent( const QByteArray& type, const QByteArray& data, bool isLocal);
     void  goneDirty( const ArnLinkHandle& handleData);
     void  goneDirtyMode();
 
 public slots:
-    void  emitArnEvent( QByteArray type, QByteArray data = QByteArray(), bool isLocal = true);
-
-protected:
+    void  emitArnEvent( const QByteArray& type, const QByteArray& data = QByteArray(),
+                        bool isLocal = true);
 
 private:
     void  init();
@@ -109,8 +108,6 @@ private:
     bool  _isMonitor;  // item is used as a Monitor
     QString  _localMountPath;
     QString  _remoteMountPath;
-
-private slots:
 };
 //! \endcond
 

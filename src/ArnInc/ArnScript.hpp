@@ -127,7 +127,7 @@ class ARNLIBSHARED_EXPORT ArnDepOfferProto : public QObject, public QScriptable
     Q_PROPERTY( QString stateName  READ stateName  WRITE setStateName)
     Q_PROPERTY( int     stateId    READ stateId    WRITE setStateId)
 public slots:
-    void  advertise( QString serviceName);
+    void  advertise( const QString& serviceName);
 
 public:
     ArnDepOfferProto( ArnScript* parent = 0);
@@ -144,9 +144,9 @@ class ARNLIBSHARED_EXPORT ArnDepProto : public QObject, public QScriptable
 {
     Q_OBJECT
 public slots:
-    void  add( QString serviceName, int stateId = -1);
-    void  add( QString serviceName, QString stateName);
-    void  setMonitorName( QString name);
+    void  add( const QString& serviceName, int stateId = -1);
+    void  add( const QString& serviceName, const QString& stateName);
+    void  setMonitorName( const QString& name);
     void  startMonitor();
 
 public:
@@ -164,8 +164,8 @@ public:
     explicit  ArnScript( QObject* parent = 0);
     ArnScript( QScriptEngine* engine, QObject* parent = 0);
     QScriptEngine&  engine()  const;
-    bool  evaluate( QByteArray script, QString idName);
-    bool  evaluateFile( QString fileName);
+    bool  evaluate( const QByteArray& script, const QString& idName);
+    bool  evaluateFile( const QString& fileName);
     bool  logUncaughtError( QScriptValue& scriptValue);
     QString  idName()  const;
 
@@ -178,7 +178,7 @@ private slots:
     void  doSignalException( const QScriptValue& exception);
 
 protected:
-    void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
+    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0);
     static QScriptValue  printFunction( QScriptContext* context, QScriptEngine* engine);
 
     QScriptEngine*  _engine;

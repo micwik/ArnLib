@@ -567,7 +567,7 @@ signals:
      *  \see setServiceName()
      *  \see serviceName()
      */
-    void  registered( QString serviceName);
+    void  registered( const QString& serviceName);
 
     //! Indicate unsuccessfull registration of service
     /*! \param[in] code error code.

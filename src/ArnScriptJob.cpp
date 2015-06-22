@@ -108,7 +108,7 @@ int  ArnScriptJobB::pollTime()
 }
 
 
-void  ArnScriptJobB::installInterface( QString id, QObject* obj)
+void  ArnScriptJobB::installInterface( const QString& id, QObject* obj)
 {
     if ((id.isEmpty()) || (obj == 0))  return;
 
@@ -121,7 +121,7 @@ void  ArnScriptJobB::installInterface( QString id, QObject* obj)
 }
 
 
-bool  ArnScriptJobB::installExtension( QString id, ArnScriptJobControl *jobControl)
+bool  ArnScriptJobB::installExtension( const QString& id, ArnScriptJobControl *jobControl)
 {
     if (!_jobFactory || !_arnScr)  return false;
 
@@ -129,7 +129,7 @@ bool  ArnScriptJobB::installExtension( QString id, ArnScriptJobControl *jobContr
 }
 
 
-bool  ArnScriptJobB::evaluateScript( QByteArray script, QString idName)
+bool  ArnScriptJobB::evaluateScript( const QByteArray& script, const QString& idName)
 {
     setWatchDog();
     bool stat = _arnScr->evaluate( script, idName);
@@ -138,7 +138,7 @@ bool  ArnScriptJobB::evaluateScript( QByteArray script, QString idName)
 }
 
 
-bool  ArnScriptJobB::evaluateScriptFile( QString fileName)
+bool  ArnScriptJobB::evaluateScriptFile( const QString& fileName)
 {
     setWatchDog();
     bool stat = _arnScr->evaluateFile( fileName);
@@ -304,7 +304,7 @@ bool  ArnScriptJobB::isStopped()  const
 }
 
 
-void  ArnScriptJobB::errorLog( QString txt)
+void  ArnScriptJobB::errorLog( const QString& txt)
 {
     ArnM::errorLog( txt + " name=" + name(), ArnError::ScriptError);
     emit errorText( txt);
@@ -365,7 +365,7 @@ ArnScriptJobControl::ArnScriptJobControl( QObject* parent) :
 }
 
 
-void  ArnScriptJobControl::setName( QString name)
+void  ArnScriptJobControl::setName( const QString& name)
 {
     if (_isThreaded)  _mutex.lock();
     _name = name;
@@ -393,7 +393,7 @@ QString  ArnScriptJobControl::name()  const
 }
 
 
-void  ArnScriptJobControl::addInterface( QString id)
+void  ArnScriptJobControl::addInterface( const QString& id)
 {
     if (_isThreaded)  _mutex.lock();
     if (!id.isEmpty())  _interfaceList += id;
@@ -402,7 +402,7 @@ void  ArnScriptJobControl::addInterface( QString id)
 }
 
 
-void  ArnScriptJobControl::addInterfaceList( QStringList interfaceList)
+void  ArnScriptJobControl::addInterfaceList( const QStringList& interfaceList)
 {
     if (_isThreaded)  _mutex.lock();
     _interfaceList += interfaceList;
@@ -411,7 +411,7 @@ void  ArnScriptJobControl::addInterfaceList( QStringList interfaceList)
 }
 
 
-void  ArnScriptJobControl::setScript( QByteArray script)
+void  ArnScriptJobControl::setScript( const QByteArray& script)
 {
     if (_isThreaded)  _mutex.lock();
     _script = script;
@@ -431,7 +431,7 @@ QByteArray  ArnScriptJobControl::script()  const
 }
 
 
-void  ArnScriptJobControl::loadScriptFile( QString fileName)
+void  ArnScriptJobControl::loadScriptFile( const QString& fileName)
 {
     if (fileName.isEmpty())  return;
 

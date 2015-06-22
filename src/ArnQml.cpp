@@ -266,14 +266,14 @@ void  ArnItemQml::itemUpdated( const ArnLinkHandle& handleData, const QByteArray
 }
 
 
-void  ArnItemQml::itemCreatedBelow( QString path)
+void  ArnItemQml::itemCreatedBelow( const QString& path)
 {
     QString  qmlPath = Arn::changeBasePath( ArnQml::arnRootPath(), "/", path);
     emit arnItemCreated( qmlPath);
 }
 
 
-void  ArnItemQml::itemModeChangedBelow( QString path, uint linkId, ObjectMode mode)
+void  ArnItemQml::itemModeChangedBelow( const QString& path, uint linkId, ObjectMode mode)
 {
     QString  qmlPath = Arn::changeBasePath( ArnQml::arnRootPath(), "/", path);
     emit arnModeChanged( qmlPath, linkId, mode);

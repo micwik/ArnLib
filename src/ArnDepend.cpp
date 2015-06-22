@@ -48,7 +48,7 @@ ArnDependOffer::ArnDependOffer( QObject* parent) :
 }
 
 
-void  ArnDependOffer::advertise( QString serviceName)
+void  ArnDependOffer::advertise( const QString& serviceName)
 {
     _serviceName = serviceName;
     QString  basePath = QString( ArnDependPath) + serviceName + "/";
@@ -142,7 +142,7 @@ ArnDepend::~ArnDepend()
 }
 
 
-ArnDepend::DepSlot*  ArnDepend::setupDepSlot( QString serviceName)
+ArnDepend::DepSlot*  ArnDepend::setupDepSlot( const QString& serviceName)
 {
     QString  basePath = QString( ArnDependPath) + serviceName + "/";
     DepSlot*  slot = new DepSlot;
@@ -162,7 +162,7 @@ ArnDepend::DepSlot*  ArnDepend::setupDepSlot( QString serviceName)
 }
 
 
-void  ArnDepend::add( QString serviceName, QString stateName)
+void  ArnDepend::add( const QString& serviceName, const QString& stateName)
 {
     DepSlot*  slot = setupDepSlot( serviceName);
     slot->stateName = stateName;
@@ -170,7 +170,7 @@ void  ArnDepend::add( QString serviceName, QString stateName)
 }
 
 
-void  ArnDepend::add( QString serviceName, int stateId)
+void  ArnDepend::add( const QString& serviceName, int stateId)
 {
     DepSlot*  slot = setupDepSlot( serviceName);
     slot->stateId = stateId;
@@ -178,7 +178,7 @@ void  ArnDepend::add( QString serviceName, int stateId)
 }
 
 
-void  ArnDepend::setMonitorName( QString name)
+void  ArnDepend::setMonitorName( const QString& name)
 {
     _name = name;
 }
@@ -208,7 +208,7 @@ void  ArnDepend::echoRefresh()
 }
 
 
-void  ArnDepend::echoCheck( QString echo, DepSlot* slot)
+void  ArnDepend::echoCheck( const QString& echo, DepSlot* slot)
 {
     if (Arn::debugDepend)  qDebug() << "echoCheck: monitorName=" << _name;
     if (slot == 0) {

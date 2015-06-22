@@ -198,24 +198,24 @@ public slots:
      *  \see currentService()
      *  \see advertiseService()
      */
-    virtual void  setService( QString service);
+    virtual void  setService( const QString& service);
 
     //! \cond ADV
 protected:
     //// Handle Service This
     virtual void  postSetupThis();
-    virtual void  serviceRegistered( QString serviceName);
+    virtual void  serviceRegistered( const QString& serviceName);
     //! \endcond
 
 private slots:
     //// Handle Service This
     void  serviceTimeout();
-    void  firstServiceSetup( QString serviceName, bool forceSetup = false);
-    void  doServiceChanged( QString val);
+    void  firstServiceSetup( const QString& serviceName, bool forceSetup = false);
+    void  doServiceChanged( const QString& val);
 
 private:
     //// Hide
-    void  advertiseService( ArnDiscover::Type discoverType, QString serviceName,
+    void  advertiseService( ArnDiscover::Type discoverType, const QString& serviceName,
                             int port = -1, const QString& hostName = QString());
 
     ArnServer*  _arnInternalServer;

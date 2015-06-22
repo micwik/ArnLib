@@ -210,7 +210,7 @@ void  ArnPersist::setVcs( ArnVcs* vcs)
 }
 
 
-ArnItemPersist*  ArnPersist::getPersistItem( QString path)
+ArnItemPersist*  ArnPersist::getPersistItem( const QString& path)
 {
     ArnItemPersist*  item = new ArnItemPersist( this);
     item->open( path);
@@ -235,7 +235,7 @@ ArnItemPersist*  ArnPersist::getPersistItem( QString path)
 }
 
 
-ArnItemPersist*  ArnPersist::setupMandatory( QString path, bool isMandatory)
+ArnItemPersist*  ArnPersist::setupMandatory( const QString& path, bool isMandatory)
 {
     ArnItemPersist::StoreType  st;
     ArnItemPersist*  item = 0;
@@ -267,7 +267,7 @@ ArnItemPersist*  ArnPersist::setupMandatory( QString path, bool isMandatory)
 }
 
 
-void  ArnPersist::removeFilePersistItem( QString path)
+void  ArnPersist::removeFilePersistItem( const QString& path)
 {
     uint  linkId = _pathPersistMap.value( path);
     if (!linkId)  return;  // path not found
@@ -294,7 +294,7 @@ void  ArnPersist::doArnDestroy()
 }
 
 
-void  ArnPersist::doArnModeChanged( QString path, uint linkId, Arn::ObjectMode mode)
+void  ArnPersist::doArnModeChanged( const QString& path, uint linkId, Arn::ObjectMode mode)
 {
     // qDebug() << "Persist modeChanged: path=" << path << " mode=" << mode.f;
     if (!mode.is( mode.Save))  return;  // Not save-mode
@@ -393,7 +393,7 @@ bool  ArnPersist::setMountPoint( const QString& path)
 }
 
 
-bool  ArnPersist::setupDataBase( QString dbName)
+bool  ArnPersist::setupDataBase( const QString& dbName)
 {
     if (_query)  delete _query;
 
@@ -489,7 +489,7 @@ bool  ArnPersist::setMetaDbValue( const QString& attr, const QString& value)
 }
 
 
-bool  ArnPersist::getDbId( QString path, int& storeId)
+bool  ArnPersist::getDbId( const QString& path, int& storeId)
 {
     bool  retVal = false;
     int   isUsed = 1;
@@ -592,7 +592,7 @@ bool  ArnPersist::getDbValue(int storeId, QString &path, QByteArray &value)
 }
 
 
-bool  ArnPersist::getDbValue( QString path, QByteArray& value, int& storeId)
+bool  ArnPersist::getDbValue( const QString& path, QByteArray& value, int& storeId)
 {
     bool  retVal = false;
     int   isUsed = 1;
@@ -650,20 +650,21 @@ bool  ArnPersist::getDbList( bool isUsed, QList<int> &storeIdList)
 }
 
 
-bool  ArnPersist::insertDbValue( QString path, QByteArray value)
+bool  ArnPersist::insertDbValue( const QString& path, const QByteArray& value)
 {
     bool  retVal = false;
 
     QString  meta;
     QString  valueTxt;
-    dbSetupWriteValue( meta, valueTxt, value);
+    QByteArray  value_ = value;
+    dbSetupWriteValue( meta, valueTxt, value_);
 
     _query->prepare("INSERT INTO store (meta, path, valueTxt, value) "
                    "VALUES (:meta, :path, :valueTxt, :value)");
     _query->bindValue(":meta", meta);
     _query->bindValue(":path", path);
     _query->bindValue(":valueTxt", valueTxt);
-    _query->bindValue(":value", value);
+    _query->bindValue(":value", value_);
     retVal = _query->exec();
     _query->finish();
 
@@ -671,21 +672,22 @@ bool  ArnPersist::insertDbValue( QString path, QByteArray value)
 }
 
 
-bool  ArnPersist::updateDbValue( int storeId, QByteArray value)
+bool  ArnPersist::updateDbValue( int storeId, const QByteArray& value)
 {
     //qDebug() << "Persist updateDb: id=" << storeId << " value=" << value;
     bool  retVal = false;
 
     QString  meta;
     QString  valueTxt;
-    dbSetupWriteValue( meta, valueTxt, value);
+    QByteArray  value_ = value;
+    dbSetupWriteValue( meta, valueTxt, value_);
 
     _query->prepare("UPDATE store SET meta = :meta, valueTxt = :valueTxt, value = :value "
                     "WHERE id = :id");
     _query->bindValue(":id", storeId);
     _query->bindValue(":meta", meta);
     _query->bindValue(":valueTxt", valueTxt);
-    _query->bindValue(":value", value);
+    _query->bindValue(":value", value_);
     retVal = _query->exec();
     _query->finish();
 
@@ -723,7 +725,7 @@ bool  ArnPersist::updateDbMandatory( int storeId, int isMandatory)
 }
 
 
-bool  ArnPersist::doArchive(QString name)
+bool  ArnPersist::doArchive( const QString& name)
 {
     QString  arFileName;
 
@@ -780,7 +782,7 @@ void  ArnPersist::doLoadFiles()
 }
 
 
-void  ArnPersist::loadFile( QString relPath)
+void  ArnPersist::loadFile( const QString& relPath)
 {
     QString  arnPath = Arn::convertPath( relPath, Arn::NameF::EmptyOk);
     qDebug() << "Persist loadFile: relPath=" << relPath;
@@ -825,7 +827,7 @@ void  ArnPersist::getFileList(QStringList& flist, const QDir& dir, const QDir* b
 }
 
 
-void  ArnPersist::setupSapi( ArnPersistSapi* sapi, QString pipePath)
+void  ArnPersist::setupSapi( ArnPersistSapi* sapi, const QString& pipePath)
 {
     typedef ArnRpc::Mode  Mode;
     sapi->open( pipePath, Mode::Provider);
@@ -858,7 +860,7 @@ void  ArnPersist::vcsCheckoutR()
 }
 
 
-void  ArnPersist::sapiTest( QString str, int i)
+void  ArnPersist::sapiTest( const QString& str, int i)
 {
     ArnPersistSapi*  sapiSender = qobject_cast<ArnPersistSapi*>( sender());
     if (sapiSender) {
@@ -875,7 +877,7 @@ void  ArnPersist::sapiLoad()
 }
 
 
-void  ArnPersist::sapiLs( QString path)
+void  ArnPersist::sapiLs( const QString& path)
 {
     QStringList  flist;
     getFileList( flist, *_persistDir);
@@ -888,7 +890,7 @@ void  ArnPersist::sapiLs( QString path)
 }
 
 
-void  ArnPersist::sapiRm( QString path)
+void  ArnPersist::sapiRm( const QString& path)
 {
     QString  relPath = Arn::convertPath( path, Arn::NameF::Relative);
     bool  isOk = _persistDir->remove( relPath);
@@ -901,7 +903,7 @@ void  ArnPersist::sapiRm( QString path)
 }
 
 
-void  ArnPersist::sapiTouch( QString path)
+void  ArnPersist::sapiTouch( const QString& path)
 {
     if (path.endsWith('/'))  return;  // Don't touch a dir
 
@@ -922,7 +924,7 @@ void  ArnPersist::sapiTouch( QString path)
 }
 
 
-void  ArnPersist::sapiDbMandatory( QString path, bool isMandatory)
+void  ArnPersist::sapiDbMandatory( const QString& path, bool isMandatory)
 {
     ArnItemPersist::StoreType  st;
     int storeId;
@@ -936,7 +938,7 @@ void  ArnPersist::sapiDbMandatory( QString path, bool isMandatory)
 }
 
 
-void  ArnPersist::sapiDbMandatoryLs( QString path)
+void  ArnPersist::sapiDbMandatoryLs( const QString& path)
 {
     QStringList  retList;
     QList<int>  storeIdList;
@@ -958,7 +960,7 @@ void  ArnPersist::sapiDbMandatoryLs( QString path)
 }
 
 
-void  ArnPersist::sapiDbLs( QString path, bool isUsed)
+void  ArnPersist::sapiDbLs( const QString& path, bool isUsed)
 {
     QStringList  retList;
     QList<int>  storeIdList;
@@ -980,7 +982,7 @@ void  ArnPersist::sapiDbLs( QString path, bool isUsed)
 }
 
 
-void  ArnPersist::sapiDbMarkUnused( QString path)
+void  ArnPersist::sapiDbMarkUnused( const QString& path)
 {
     QList<int>  storeIdList;
     if (!getDbList( true, storeIdList)) {

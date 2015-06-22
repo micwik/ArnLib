@@ -39,7 +39,7 @@ ArnSapi::ArnSapi( QObject* parent) :
 }
 
 
-bool  ArnSapi::open( QString pipePath, Mode mode,
+bool  ArnSapi::open( const QString& pipePath, Mode mode,
                      const char *providerPrefix, const char *requesterPrefix)
 {
     if (mode.is( mode.Provider)) {

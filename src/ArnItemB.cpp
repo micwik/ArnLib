@@ -833,13 +833,13 @@ void  ArnItemB::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* 
 }
 
 
-void  ArnItemB::itemCreatedBelow( QString path)
+void  ArnItemB::itemCreatedBelow( const QString& path)
 {
     Q_UNUSED(path);
 }
 
 
-void  ArnItemB::itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode)
+void  ArnItemB::itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode)
 {
     Q_UNUSED(path);
     Q_UNUSED(linkId);
@@ -919,7 +919,7 @@ QStringList  ArnItemB::childItemsMain()  const
 }
 
 
-void  ArnItemB::errorLog( QString errText, ArnError err, void* reference)  const
+void  ArnItemB::errorLog( const QString& errText, ArnError err, void* reference)  const
 {
     QString  itemText;
     if (_link) {
@@ -941,7 +941,7 @@ void  ArnItemB::linkValueUpdated( uint sendId, const ArnLinkHandle& handleData)
 }
 
 
-void  ArnItemB::linkValueUpdated( uint sendId, QByteArray value, ArnLinkHandle handleData)
+void  ArnItemB::linkValueUpdated( uint sendId, const QByteArray& value, ArnLinkHandle handleData)
 {
     if (_blockEcho  &&  sendId == _id)  // This update was initiated from this Item, it can be blocked ...
         return;
@@ -961,7 +961,7 @@ void  ArnItemB::arnLinkCreatedBelow( ArnLink* link)
 }
 
 
-void  ArnItemB::arnModeChangedBelow( QString path, uint linkId)
+void  ArnItemB::arnModeChangedBelow( const QString& path, uint linkId)
 {
     Arn::LinkFlags  flags;
     ArnLink*  link = ArnM::link( path, flags.SilentError);

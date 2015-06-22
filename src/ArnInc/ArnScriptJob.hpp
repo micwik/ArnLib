@@ -57,8 +57,8 @@ class ArnScriptJobB : public QObject
 
 public:
     explicit  ArnScriptJobB( int id, QObject* parent = 0);
-    bool  evaluateScript( QByteArray script, QString idName);
-    bool  evaluateScriptFile( QString fileName);
+    bool  evaluateScript( const QByteArray& script, const QString& idName);
+    bool  evaluateScriptFile( const QString& fileName);
     int  id()  const;
     QString  name()  const;
     bool  setupScript();
@@ -75,13 +75,13 @@ public:
     bool  isSleepState()  const;
     bool  isRunable()  const;
     bool  isStopped()  const;
-    void  errorLog( QString txt);
+    void  errorLog( const QString& txt);
 
 signals:
     void  scheduleRequest( int callerId);
     void  quitRequest( int callerId);
     void  timeoutAbort( int id);
-    void  errorText( QString txt);
+    void  errorText( const QString& txt);
 
 public slots:
     void  yield();
@@ -93,8 +93,8 @@ protected slots:
 protected:
     virtual void  customEvent( QEvent* ev);
 
-    void  installInterface( QString id, QObject* obj);
-    bool  installExtension( QString id, ArnScriptJobControl* jobControl);
+    void  installInterface( const QString& id, QObject* obj);
+    bool  installExtension( const QString& id, ArnScriptJobControl* jobControl);
     bool  setConfig( const char* name, const QVariant& value);
     void  addConfig( QObject* obj);
     void  setJobFactory( ArnScriptJobFactory* jobFactory);
@@ -137,7 +137,7 @@ public slots:
     void  setWatchDogTime( int time)  {ArnScriptJobB::setWatchDogTime( time);}
     void  yield()  {ArnScriptJobB::yield();}
     void  quit()  {ArnScriptJobB::quit();}
-    void  errorLog( QString txt)  {ArnScriptJobB::errorLog( txt);}
+    void  errorLog( const QString& txt)  {ArnScriptJobB::errorLog( txt);}
 };
 
 
@@ -147,7 +147,7 @@ class ARNLIBSHARED_EXPORT ArnScriptJobFactory
 public:
     explicit  ArnScriptJobFactory();
     virtual  ~ArnScriptJobFactory();
-    virtual bool  installExtension( QString id, QScriptEngine& engine,
+    virtual bool  installExtension( const QString& id, QScriptEngine& engine,
                                     const ArnScriptJobControl* jobControl = 0) = 0;
 
 protected:
@@ -164,11 +164,11 @@ public:
     explicit  ArnScriptJobControl( QObject* parent = 0);
     int  id();
     QString  name()  const;
-    void  setName( QString name);
-    void  addInterface( QString id);
-    void  addInterfaceList( QStringList interfaceList);
+    void  setName( const QString& name);
+    void  addInterface( const QString& id);
+    void  addInterfaceList( const QStringList& interfaceList);
     QByteArray  script()  const;
-    void  loadScriptFile( QString fileName);
+    void  loadScriptFile( const QString& fileName);
     QVariant  config( const char* name)  const;
     bool  setConfig( const char* name, const QVariant& value);
     void  addConfig( QObject* obj);
@@ -178,10 +178,10 @@ public:
 
 signals:
     void  scriptChanged( int id);
-    void  errorText( QString txt);
+    void  errorText( const QString& txt);
 
 public slots:
-    void  setScript( QByteArray script);
+    void  setScript( const QByteArray& script);
 
 private:
     // Source for unique id to all Jobs ..

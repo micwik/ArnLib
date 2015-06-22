@@ -90,13 +90,13 @@ public:
     ~ArnLink();
 
 public slots:
-    void  trfValue( QByteArray value, int sendId, bool forceKeep, ArnLinkHandle handleData);
+    void  trfValue( const QByteArray& value, int sendId, bool forceKeep, ArnLinkHandle handleData);
 
 signals:
     void  changed( uint sendId, const ArnLinkHandle& handleData);
-    void  changed( uint sendId, QByteArray value, ArnLinkHandle handleData);
-    void  modeChanged( QString path, uint linkId);
-    void  modeChangedBelow( QString path, uint linkId);
+    void  changed( uint sendId, const QByteArray& value, const ArnLinkHandle& handleData);
+    void  modeChanged( const QString& path, uint linkId);
+    void  modeChangedBelow( const QString& path, uint linkId);
     void  linkCreatedBelow( ArnLink* link);
     void  zeroRef();
     void  retired();
@@ -104,7 +104,7 @@ signals:
 protected:
     ArnLink( ArnLink* parent, const QString& name, Arn::LinkFlags flags);
     void  setupEnd( Arn::ObjectSyncMode syncMode);
-    ArnLink*  findLink(const QString& name);
+    ArnLink*  findLink( const QString& name);
     void  ref();
     int  refCount();
     void  setRefCount( int count);

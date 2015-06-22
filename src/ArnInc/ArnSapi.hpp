@@ -132,7 +132,7 @@ public:
      *  \retval false if error
      *  \see \ref gen_pipeArnobj
      */
-    bool  open( QString pipePath, Mode mode = Mode(),
+    bool  open( const QString& pipePath, Mode mode = Mode(),
                 const char* providerPrefix = 0, const char* requesterPrefix = 0);
 
     //! Make batch connection from this ArnSapi:s signals to another receivers slots/signals
@@ -178,10 +178,10 @@ private:
     void  setPipe( ArnPipe* pipe);
     void  setReceiver( QObject* receiver);
     bool  setReceiver( QObject* receiver, bool useTrackRpcSender);
-    void  setMethodPrefix( QString prefix);
+    void  setMethodPrefix( const QString& prefix);
     void  setIncludeSender( bool v);
     void  setMode( Mode mode);
-    void  addSenderSignals( QObject* sender, QString prefix);
+    void  addSenderSignals( QObject* sender, const QString& prefix);
     ArnRpc*  rpcSender();
     static ArnRpc*  rpcSender( QObject* receiver);
 

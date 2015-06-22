@@ -436,15 +436,15 @@ signals:
 
     /*! \see changed()
      */
-    void  changed( QString value);
+    void  changed( const QString& value);
 
     /*! \see changed()
      */
-    void  changed( QByteArray value);
+    void  changed( const QByteArray& value);
 
     /*! \see changed()
      */
-    void  changed( QVariant value);
+    void  changed( const QVariant& value);
 
     //! Signal emitted when mode in _Arn Data Object_ is changed.
     /*! Object changing _general mode_ will give this signal.
@@ -459,7 +459,7 @@ signals:
      *  Only created non folder objects will give this signal.
      *  \param[in] path to the created _Arn Data Object_
      */
-    void  arnItemCreated( QString path);
+    void  arnItemCreated( const QString& path);
 
     //! Signal emitted when an _Arn Data Object_ in the tree below has a _general mode_ change.
     /*! The ArnItem is a folder. Objects changing _general mode_ in this folder or
@@ -470,14 +470,14 @@ signals:
      *  \see linkId()
      *  \see \ref gen_arnobjModes
      */
-    void  arnModeChanged( QString path, uint linkId, Arn::ObjectMode mode);
+    void  arnModeChanged( const QString& path, uint linkId, Arn::ObjectMode mode);
 
     //! \cond ADV
 protected:
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  modeUpdate( bool isSetup = false);
-    virtual void  itemCreatedBelow( QString path);
-    virtual void  itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode);
+    virtual void  itemCreatedBelow( const QString& path);
+    virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
     //! \endcond
 
 private slots:

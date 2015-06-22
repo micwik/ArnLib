@@ -509,7 +509,7 @@ void  ArnSync::linkDestroyedHandle()
 }
 
 
-void  ArnSync::doArnEvent( QByteArray type, QByteArray data, bool isLocal)
+void  ArnSync::doArnEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
@@ -612,7 +612,7 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
 }
 
 
-void  ArnSync::eventToFluxQue( uint netId, QByteArray type, QByteArray data)
+void  ArnSync::eventToFluxQue( uint netId, const QByteArray& type, const QByteArray& data)
 {
     if (!netId)  return;  // Not valid id, item was disabled
 

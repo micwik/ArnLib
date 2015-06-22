@@ -403,7 +403,7 @@ void  ArnClient::newNetItemProxy( ArnThreadCom *threadCom,
 }
 
 
-ArnItemNet*  ArnClient::newNetItem( QString path, Arn::ObjectSyncMode syncMode, bool* isNewPtr)
+ArnItemNet*  ArnClient::newNetItem( const QString& path, Arn::ObjectSyncMode syncMode, bool* isNewPtr)
 {
     if (ArnM::isMainThread()) {
         QString  path_ = Arn::fullPath( path);
@@ -437,7 +437,7 @@ ArnItemNet*  ArnClient::newNetItem( QString path, Arn::ObjectSyncMode syncMode, 
 }
 
 
-void  ArnClient::createNewItem( QString path)
+void  ArnClient::createNewItem( const QString& path)
 {
     // qDebug() << "ArnClient,ArnItem-created: path=" << path;
     ArnItem*  item = qobject_cast<ArnItem*>( sender());

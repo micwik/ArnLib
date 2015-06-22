@@ -70,7 +70,7 @@ ArnClient*  ArnMonitor::client()  const
 }
 
 
-void  ArnMonitor::setMonitorPath( QString path, ArnClient *client)
+void  ArnMonitor::setMonitorPath( const QString& path, ArnClient *client)
 {
     start( path, client ? client : _arnClient.data());
 }
@@ -144,7 +144,7 @@ void  ArnMonitor::reStart()
 }
 
 
-void  ArnMonitor::emitArnEvent( QByteArray type, QByteArray data)
+void  ArnMonitor::emitArnEvent( const QByteArray& type, const QByteArray& data)
 {
     if (!_itemNet)  return;
 
@@ -162,7 +162,7 @@ void  ArnMonitor::setupLocalMonitorItem()
 }
 
 
-void  ArnMonitor::dispatchArnEvent( QByteArray type, QByteArray data, bool isLocal)
+void  ArnMonitor::dispatchArnEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
@@ -214,7 +214,7 @@ void  ArnMonitor::dispatchArnEvent( QByteArray type, QByteArray data, bool isLoc
 }
 
 
-void  ArnMonitor::foundChildDeleted( QString path)
+void  ArnMonitor::foundChildDeleted( const QString& path)
 {
     int  i = _foundChilds.indexOf( inPathConvert( path));
     // qDebug() << "### arnMon foundChDel: path=" << path << " i=" << i;

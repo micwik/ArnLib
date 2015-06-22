@@ -154,7 +154,7 @@ void ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
 }
 
 
-void ArnLink::trfValue( QByteArray value, int sendId, bool forceKeep, ArnLinkHandle handleData)
+void ArnLink::trfValue( const QByteArray& value, int sendId, bool forceKeep, ArnLinkHandle handleData)
 {
     ArnLinkHandle::Flags&  handleFlags = handleData._flags;
 

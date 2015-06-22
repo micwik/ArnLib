@@ -155,7 +155,7 @@ QString  ArnDiscoverConnector::service()  const
 }
 
 
-void ArnDiscoverConnector::setService(QString service)
+void ArnDiscoverConnector::setService( const QString& service)
 {
     _service = service;
 
@@ -253,7 +253,7 @@ void  ArnDiscoverConnector::postSetupClient()
 }
 
 
-void  ArnDiscoverConnector::doClientConnectChange( QString arnHost, quint16 port)
+void  ArnDiscoverConnector::doClientConnectChange( const QString& arnHost, quint16 port)
 {
     QString  path = Arn::pathDiscoverConnect + _id + "/UsingHost/";
     ArnM::setValue( path + "value", arnHost);

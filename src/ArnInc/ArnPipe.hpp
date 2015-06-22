@@ -173,7 +173,7 @@ signals:
     /*! This is implied by the _Arn Data Object_ is changed.
      *  \param[in] value is the received bytes
      */
-    void  changed( QByteArray value);
+    void  changed( const QByteArray& value);
 
     //! Signal emitted when the received sequence numbers are "out of sequence"
     /*! \see setCheckSeq()

@@ -157,7 +157,7 @@ QByteArray  ArnItemNet::getModeString()  const
 }
 
 
-void  ArnItemNet::emitNewItemEvent( QString path, bool isOld)
+void  ArnItemNet::emitNewItemEvent( const QString& path, bool isOld)
 {
     emit arnEvent( isOld ? "itemFound" : "itemCreated", path.toUtf8(), true);
 }
@@ -229,7 +229,7 @@ void  ArnItemNet::itemUpdated( const ArnLinkHandle& handleData, const QByteArray
 }
 
 
-void  ArnItemNet::itemCreatedBelow( QString path)
+void  ArnItemNet::itemCreatedBelow( const QString& path)
 {
     if (_isMonitor)
         emitNewItemEvent( path);
@@ -248,7 +248,7 @@ void  ArnItemNet::modeUpdate( bool isSetup)
 }
 
 
-void  ArnItemNet::emitArnEvent( QByteArray type, QByteArray data, bool isLocal)
+void  ArnItemNet::emitArnEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
 {
     emit arnEvent( type, data, isLocal);
 }

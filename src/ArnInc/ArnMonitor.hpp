@@ -99,7 +99,7 @@ public:
      *  \see start()
      *  \deprecated Use start() instead, _client_ parameter is changed.
      */
-    void  setMonitorPath( QString path, ArnClient* client = 0);
+    void  setMonitorPath( const QString& path, ArnClient* client = 0);
 
     //! Starts the monitoring
     /*! The monitor must normally be set at a [shared](\ref gen_shareArnobj) _path_ that is
@@ -153,7 +153,7 @@ signals:
      *  Only created non folder objects will give this signal.
      *  \param[in] path to the created _Arn Data Object_
      */
-    void  arnItemCreated( QString path);
+    void  arnItemCreated( const QString& path);
 
     //! Signal emitted for present and newly created childs in the monitor folder
     /*! The ArnMonitor monitors a folder. Present and newly created objects in this
@@ -169,7 +169,7 @@ signals:
      *  \param[in] path to the child
      *  \see arnItemCreated()
      */
-    void  arnChildFound( QString path);
+    void  arnChildFound( const QString& path);
 
     //! Signal emitted for present and newly created folder childs in the monitor folder
     /*! The ArnMonitor monitors a folder. Present and newly created folder objects in this
@@ -183,7 +183,7 @@ signals:
      *  \see arnItemCreated()
      *  \see arnChildFound()
      */
-    void  arnChildFoundFolder( QString path);
+    void  arnChildFoundFolder( const QString& path);
 
     //! Signal emitted for present and newly created leaf childs in the monitor folder
     /*! The ArnMonitor monitors a folder. Present and newly created leaf objects in this
@@ -194,7 +194,7 @@ signals:
      *  \param[in] path to the child
      *  \see arnChildFound()
      */
-    void  arnChildFoundLeaf( QString path);
+    void  arnChildFoundLeaf( const QString& path);
 
 public slots:
     //! Help telling the monitor about deletion of a previous found child
@@ -202,7 +202,7 @@ public slots:
      *  reappears later it will not give a signal unless this function is used.
      *  \param[in] path to the deleted child
      */
-    void  foundChildDeleted( QString path);
+    void  foundChildDeleted( const QString& path);
 
 protected:
     virtual QString  outPathConvert( const QString& path);
@@ -217,8 +217,8 @@ private:
     void*  _reference;
 
 private slots:
-    void  dispatchArnEvent( QByteArray type, QByteArray data, bool isLocal);
-    void  emitArnEvent( QByteArray type, QByteArray data = QByteArray());
+    void  dispatchArnEvent( const QByteArray& type, const QByteArray& data, bool isLocal);
+    void  emitArnEvent( const QByteArray& type, const QByteArray& data = QByteArray());
     void  setupLocalMonitorItem();
 };
 

@@ -197,7 +197,7 @@ public slots:
      *  \param[in] service is the requested connection service name e.g. "My House Registry"
      *  \see ArnDiscoverAdvertise::setService()
      */
-    void  setService( QString service);
+    void  setService( const QString& service);
 
 signals:
     //! Signal for external client connection
@@ -219,7 +219,7 @@ private slots:
     void  doClientConnectRequest( int reqCode);
     //// Handle Client directHosts
     void  postSetupClient();
-    void  doClientConnectChange( QString arnHost, quint16 port);
+    void  doClientConnectChange( const QString& arnHost, quint16 port);
     void  doClientDirHostChanged();
     //// Handle Client resolvHost
     void  postSetupResolver();

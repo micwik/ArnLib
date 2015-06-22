@@ -178,11 +178,11 @@ public slots:
     {return Arn::changeBasePath( oldBasePath, newBasePath, path);}
 
     //! See Arn::childPath()
-    QString  childPath( const QString &parentPath, const QString &posterityPath)
+    QString  childPath( const QString& parentPath, const QString& posterityPath)
     {return Arn::childPath( parentPath, posterityPath);}
 
     //! See Arn::makePath()
-    QString  makePath( const QString &parentPath, const QString &itemName)
+    QString  makePath( const QString& parentPath, const QString& itemName)
     {return Arn::makePath( parentPath, itemName);}
 
     //! See Arn::providerPath()

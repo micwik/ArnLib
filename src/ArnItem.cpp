@@ -48,11 +48,11 @@ QMetaMethod  ArnItem::_metaSignalChangedReal(
 QMetaMethod  ArnItem::_metaSignalChangedBool(
         QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(bool)>(&ArnItem::changed)));
 QMetaMethod  ArnItem::_metaSignalChangedString(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(QString)>(&ArnItem::changed)));
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(const QString&)>(&ArnItem::changed)));
 QMetaMethod  ArnItem::_metaSignalChangedByteArray(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(QByteArray)>(&ArnItem::changed)));
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(const QByteArray&)>(&ArnItem::changed)));
 QMetaMethod  ArnItem::_metaSignalChangedVariant(
-        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(QVariant)>(&ArnItem::changed)));
+        QMetaMethod::fromSignal( static_cast<void (ArnItem::*)(const QVariant&)>(&ArnItem::changed)));
 #endif
 
 
@@ -101,13 +101,13 @@ ArnItem::ArnItem( const ArnItem& itemTemplate, const QString& path, QObject *par
 }
 
 
-void  ArnItem::itemCreatedBelow( QString path)
+void  ArnItem::itemCreatedBelow( const QString& path)
 {
     emit arnItemCreated( path);
 }
 
 
-void  ArnItem::itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode)
+void  ArnItem::itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode)
 {
     emit arnModeChanged( path, linkId, mode);
 }

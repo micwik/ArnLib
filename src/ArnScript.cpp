@@ -96,7 +96,7 @@ QScriptEngine&  ArnScript::engine()  const
 }
 
 
-bool  ArnScript::evaluate( QByteArray script, QString idName)
+bool  ArnScript::evaluate( const QByteArray& script, const QString& idName)
 {
     _idName = idName;
     QScriptValue  result = _engine->evaluate( QString::fromUtf8( script.constData()));
@@ -107,7 +107,7 @@ bool  ArnScript::evaluate( QByteArray script, QString idName)
 }
 
 
-bool  ArnScript::evaluateFile(QString fileName)
+bool  ArnScript::evaluateFile( const QString& fileName)
 {
     QFile  file( fileName);
     file.open( QIODevice::ReadOnly);
@@ -214,7 +214,7 @@ void ArnScript::setup( QScriptEngine* engine)
 }
 
 
-void  ArnScript::errorLog( QString errText, ArnError err, void* reference)
+void  ArnScript::errorLog( const QString& errText, ArnError err, void* reference)
 {
     QString  scriptText = " Script:" + _idName;
 
@@ -535,7 +535,7 @@ ArnDepOfferProto::ArnDepOfferProto( ArnScript* parent)
 }
 
 
-void  ArnDepOfferProto::advertise( QString serviceName)
+void  ArnDepOfferProto::advertise( const QString& serviceName)
 {
     ArnDependOffer*  depOffer = qscriptvalue_cast<ArnDependOffer*>( thisObject());
     if (depOffer)  depOffer->advertise( serviceName);
@@ -592,7 +592,7 @@ ArnDepProto::ArnDepProto( ArnScript* parent)
 }
 
 
-void  ArnDepProto::add( QString serviceName, QString stateName)
+void  ArnDepProto::add( const QString& serviceName, const QString& stateName)
 {
     ArnDepend*  dep = qscriptvalue_cast<ArnDepend*>( thisObject());
     // qDebug() << "DepProto add serv=" << serviceName << " stateName=" << stateName;
@@ -600,7 +600,7 @@ void  ArnDepProto::add( QString serviceName, QString stateName)
 }
 
 
-void  ArnDepProto::add( QString serviceName, int stateId)
+void  ArnDepProto::add( const QString& serviceName, int stateId)
 {
     ArnDepend*  dep = qscriptvalue_cast<ArnDepend*>( thisObject());
     // qDebug() << "DepProto add serv=" << serviceName << " stateId=" << stateId;
@@ -608,7 +608,7 @@ void  ArnDepProto::add( QString serviceName, int stateId)
 }
 
 
-void  ArnDepProto::setMonitorName( QString name)
+void  ArnDepProto::setMonitorName( const QString& name)
 {
     ArnDepend*  dep = qscriptvalue_cast<ArnDepend*>( thisObject());
     // qDebug() << "DepProto set monitorName=" << name;

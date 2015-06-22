@@ -259,7 +259,7 @@ public:
      *  \return selected service discover info
      *  \see serviceNameToId()
      */
-    const ArnDiscoverInfo&  infoByName( QString serviceName);
+    const ArnDiscoverInfo&  infoByName( const QString& serviceName);
 
     //! Return the discover service id by its index
     /*! The index for a service info is only valid valid for a given moment, it can change
@@ -332,7 +332,7 @@ signals:
      *  \see serviceRemoved()
      *  \see infoUpdated()
      */
-    void  serviceAdded( int index, QString name);
+    void  serviceAdded( int index, const QString& name);
 
     //! Indicate service has been removed
     /*! \param[in] index for the service
@@ -371,7 +371,7 @@ protected:
      *  \param[in] group the filter group name
      *  \see ArnDiscoverAdvertise::setGroups()
      */
-    void  setFilter( QString group);
+    void  setFilter( const QString& group);
 
     //! Change state of browsing
     /*! When browsing is started, services will be discovered.
@@ -398,22 +398,22 @@ protected:
      *  \see indexToId()
      *  \see infoUpdated()
      */
-    int  resolve( QString serviceName, bool forceUpdate = true);
+    int  resolve( const QString& serviceName, bool forceUpdate = true);
     //! \endcond
 
 private slots:
     void  onBrowseError( int code);
-    void  onServiceAdded( int id, QString name, QString domain);
-    void  onServiceRemoved( int id, QString name, QString domain);
+    void  onServiceAdded( int id, const QString& name, const QString& domain);
+    void  onServiceRemoved( int id, const QString& name, const QString& domain);
 
     void  onResolveError( int id, int code);
-    void  onResolved( int id, QByteArray escFullDomain);
+    void  onResolved( int id, const QByteArray& escFullDomain);
 
     void  onLookupError( int id, int code);
     void  onLookuped( int id);
 
 private:
-    int  newServiceInfo( int id, QString name, QString domain);
+    int  newServiceInfo( int id, const QString& name, const QString& domain);
     void  removeServiceInfo( int index);
     void  doNextState( ArnDiscoverInfo& info);
 
@@ -497,7 +497,7 @@ public:
      *  \param[in] group the filter group name, e.g. "myGroup1"
      *  \see ArnDiscoverAdvertise::setGroups()
      */
-    void  setFilter( QString group)
+    void  setFilter( const QString& group)
     {ArnDiscoverBrowserB::setFilter( group);}
 
 public slots:
@@ -584,7 +584,7 @@ public slots:
      *  \see indexToId()
      *  \see infoUpdated()
      */
-    int  resolve( QString serviceName, bool forceUpdate = true);
+    int  resolve( const QString& serviceName, bool forceUpdate = true);
 
 private:
     QString  _defaultService;
@@ -699,7 +699,7 @@ public:
      *  \see serviceChanged()
      *  \see serviceChangeError()
      */
-    void  advertiseService( ArnDiscover::Type discoverType, QString serviceName,
+    void  advertiseService( ArnDiscover::Type discoverType, const QString& serviceName,
                             int port = -1, const QString& hostName = QString());
 
     //! Return service custom properties
@@ -740,7 +740,7 @@ signals:
      *  \see advertiseService()
      *  \see setService()
      */
-    void  serviceChanged( QString serviceName);
+    void  serviceChanged( const QString& serviceName);
 
     //! Indicate unsuccessfull advertise of service
     /*! \param[in] code error code.
@@ -766,7 +766,7 @@ public slots:
      *  \see serviceChanged()
      *  \see serviceChangeError()
      */
-    virtual void  setService( QString service);
+    virtual void  setService( const QString& service);
 
     //! \cond ADV
 protected:
@@ -785,7 +785,7 @@ protected slots:
      *  \param[in] serviceName is the service name registered.
      *  \note This base method must be called from derived method.
      */
-    virtual void  serviceRegistered( QString serviceName);
+    virtual void  serviceRegistered( const QString& serviceName);
 
     //! Service registration error callback
     /*! Can be derived for special notifying.

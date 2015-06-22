@@ -140,7 +140,7 @@ void  ArnDiscoverRemote::serviceTimeout()
 }
 
 
-void  ArnDiscoverRemote::firstServiceSetup( QString serviceName, bool forceSetup)
+void  ArnDiscoverRemote::firstServiceSetup( const QString& serviceName, bool forceSetup)
 {
     QString  useService = service();  // Priority for any previous set service name
     if (useService.isEmpty())
@@ -159,7 +159,7 @@ void  ArnDiscoverRemote::firstServiceSetup( QString serviceName, bool forceSetup
 }
 
 
-void  ArnDiscoverRemote::doServiceChanged( QString val)
+void  ArnDiscoverRemote::doServiceChanged( const QString& val)
 {
     if (Arn::debugDiscover)  qDebug() << "DiscoverRemote Service changed: servname=" << val;
     _arnServicePv = val;
@@ -167,7 +167,7 @@ void  ArnDiscoverRemote::doServiceChanged( QString val)
 }
 
 
-void  ArnDiscoverRemote::serviceRegistered( QString serviceName)
+void  ArnDiscoverRemote::serviceRegistered( const QString& serviceName)
 {
     if (Arn::debugDiscover)  qDebug() << "DiscoverRemote Service registered: serviceName=" << serviceName;
 
@@ -177,7 +177,7 @@ void  ArnDiscoverRemote::serviceRegistered( QString serviceName)
 }
 
 
-void  ArnDiscoverRemote::setService( QString service)
+void  ArnDiscoverRemote::setService( const QString& service)
 {
     if (Arn::debugDiscover)  qDebug() << "DiscoverRemote setService: serviceName=" << service;
 

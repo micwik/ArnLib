@@ -283,7 +283,7 @@ public slots:
     static void  setupErrorlog( QObject* errLog);
 
 signals:
-    void  errorLogSig( QString errText, uint errCode, void* reference);
+    void  errorLogSig( const QString& errText, uint errCode, void* reference);
 
 protected:
 #ifndef DOXYGEN_SKIP

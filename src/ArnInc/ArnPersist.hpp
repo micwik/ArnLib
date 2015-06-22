@@ -206,18 +206,18 @@ public:
      *  \param[in] dbName is the name (and path) of the SQLite database file.
      *  \see \ref gen_persistArnobj
      */
-    bool  setupDataBase( QString dbName = "persist.db");
+    bool  setupDataBase( const QString& dbName = "persist.db");
 
     //! \cond ADV
     QString  metaDbValue( const QString& attr, const QString& def = QString());
     bool  setMetaDbValue( const QString& attr, const QString& value);
-    bool  getDbId( QString path, int& storeId);
+    bool  getDbId( const QString& path, int& storeId);
     bool  getDbValue( int storeId, QString& path, QByteArray& value);
-    bool  getDbValue( QString path, QByteArray& value, int& storeId);
+    bool  getDbValue( const QString& path, QByteArray& value, int& storeId);
     bool  getDbMandatoryList( QList<int>& storeIdList);
     bool  getDbList( bool isUsed, QList<int>& storeIdList);
-    bool  insertDbValue( QString path, QByteArray value);
-    bool  updateDbValue( int storeId, QByteArray value);
+    bool  insertDbValue( const QString& path, const QByteArray& value);
+    bool  updateDbValue( int storeId, const QByteArray& value);
     bool  updateDbUsed( int storeId, int isUsed);
     bool  updateDbMandatory( int storeId, int isMandatory);
     //! \endcond
@@ -229,40 +229,40 @@ public slots:
      *  \param[in] name is the file name of the backup. QString() gives default name.
      *  \see setArchiveDir()
      */
-    bool  doArchive( QString name = QString());
+    bool  doArchive( const QString& name = QString());
 
 private slots:
-    void  sapiTest( QString str, int i=0);
-    void  sapiLs( QString path);
+    void  sapiTest( const QString& str, int i=0);
+    void  sapiLs( const QString& path);
     void  sapiLoad();
-    void  sapiRm( QString path);
-    void  sapiTouch( QString path);
-    void  sapiDbMandatory( QString path, bool isMandatory);
-    void  sapiDbMandatoryLs( QString path);
-    void  sapiDbLs( QString path, bool isUsed = true);
-    void  sapiDbMarkUnused( QString path);
+    void  sapiRm( const QString& path);
+    void  sapiTouch( const QString& path);
+    void  sapiDbMandatory( const QString& path, bool isMandatory);
+    void  sapiDbMandatoryLs( const QString& path);
+    void  sapiDbLs( const QString& path, bool isUsed = true);
+    void  sapiDbMarkUnused( const QString& path);
     void  sapiInfo();
 
     void  vcsCheckoutR();
 
-    void  doArnModeChanged( QString path, uint linkId, Arn::ObjectMode mode);
+    void  doArnModeChanged( const QString& path, uint linkId, Arn::ObjectMode mode);
     void  doArnUpdate();
     void  doArnDestroy();
     void  destroyRpc();
 
 private:
-    ArnItemPersist*  getPersistItem( QString path);
-    ArnItemPersist*  setupMandatory( QString path, bool isMandatory);
-    void  removeFilePersistItem( QString path);
+    ArnItemPersist*  getPersistItem( const QString& path);
+    ArnItemPersist*  setupMandatory( const QString& path, bool isMandatory);
+    void  removeFilePersistItem( const QString& path);
     void  getFileList( QStringList& flist, const QDir& dir, const QDir* baseDir = 0);
-    void  loadFile( QString relPath);
+    void  loadFile( const QString& relPath);
     void  doLoadMandatory();
     void  doLoadFiles();
-    void  setupSapi( ArnPersistSapi* sapi, QString pipePath);
+    void  setupSapi( ArnPersistSapi* sapi, const QString& pipePath);
     void  convertFileList( QStringList& files, Arn::NameF nameF);
     void  dbSetupReadValue( const QString& meta, const QString& valueTxt,
                             QByteArray& value);
-    void  dbSetupWriteValue( QString& meta, QString& valueTxt, QByteArray& value);
+    void  dbSetupWriteValue(QString& meta, QString& valueTxt, QByteArray& value);
 
     QDir*  _persistDir;
     QDir*  _archiveDir;

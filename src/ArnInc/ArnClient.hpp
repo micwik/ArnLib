@@ -248,7 +248,7 @@ public:
     void  commandLs( const QString& path);
     void  commandVersion();
     void  commandExit();
-    ArnItemNet*  newNetItem( QString path,
+    ArnItemNet*  newNetItem( const QString& path,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
                              bool* isNewPtr = 0);
     //! \endcond
@@ -258,13 +258,13 @@ signals:
     /*! \param[in] errorText is the human readable description of the error.
      *  \param[in] socketError is the error from tcp socket, see Qt doc.
      */
-    void  tcpError( QString errorText, QAbstractSocket::SocketError socketError);
+    void  tcpError( const QString& errorText, QAbstractSocket::SocketError socketError);
 
     //! Signal emitted when the tcp connection is successfull.
     /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
      *  \param[in] port is the host port, e.g. 2022.
      */
-    void  tcpConnected( QString arnHost, quint16 port);
+    void  tcpConnected( const QString& arnHost, quint16 port);
 
     //! Signal emitted when the tcp connection is broken (has been successfull).
     void  tcpDisConnected();
@@ -278,15 +278,15 @@ signals:
 
     //! \cond ADV
     void  replyRecord( Arn::XStringMap& replyMap);
-    void  replyGet( QString data, QString path);
-    void  replyLs( QStringList subItems, QString path);
-    void  replyVer( QString version);
+    void  replyGet( const QString& data, const QString& path);
+    void  replyLs( const QStringList& subItems, const QString& path);
+    void  replyVer( const QString& version);
     //! \endcond
 
 private slots:
     void  newNetItemProxy( ArnThreadCom* threadCom,
                            const QString& path, int syncMode = 0, void* isNewPtr = 0);
-    void  createNewItem( QString path);
+    void  createNewItem( const QString& path);
     void  doReplyRecord( Arn::XStringMap& replyMap);
     void  reConnectArn();
     void  onConnectWaitDone();

@@ -387,8 +387,8 @@ protected:
 
     //// To be reimplemented
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
-    virtual void  itemCreatedBelow( QString path);
-    virtual void  itemModeChangedBelow( QString path, uint linkId, Arn::ObjectMode mode);
+    virtual void  itemCreatedBelow( const QString& path);
+    virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
 
     //// Methods not to be public
     void  setForceKeep( bool fk = true);
@@ -405,14 +405,14 @@ protected:
                     const ArnLinkHandle& handleData);
     void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
     QStringList  childItemsMain()  const;
-    void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0)  const;
+    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0)  const;
     //! \endcond
 
 private slots:
     void  linkValueUpdated( uint sendId, const ArnLinkHandle& handleData);
-    void  linkValueUpdated( uint sendId, QByteArray value, ArnLinkHandle handleData);
+    void  linkValueUpdated( uint sendId, const QByteArray& value, ArnLinkHandle handleData);
     void  arnLinkCreatedBelow( ArnLink* link);
-    void  arnModeChangedBelow( QString path, uint linkId);
+    void  arnModeChangedBelow( const QString& path, uint linkId);
     void  doArnLinkDestroyed();
 
 private:
