@@ -833,21 +833,21 @@ void DNSSD_API  ArnZeroConfIntern::lookupHostCallback(
     Q_UNUSED(interfaceIndex);
     Q_UNUSED(hostname);
     Q_UNUSED(ttl);
-    ArnZeroConfLookup*  self = reinterpret_cast<ArnZeroConfLookup*>(context);
-    Q_ASSERT(self);
 
 #ifdef MDNS_HAVE_LOOKUP
+    ArnZeroConfLookup*  self = reinterpret_cast<ArnZeroConfLookup*>(context);
+    Q_ASSERT(self);
     self->_operationTimer->stop();
 
     if (self->_id < 0)  // No valid id set, get one
         self->_id = ArnZeroConfB::getNextId();
 
-    if (Arn::debugZeroConf)  qDebug() << "Resolve Lookup callback hostName=" << hostname 
+    if (Arn::debugZeroConf)  qDebug() << "Resolve Lookup callback hostName=" << hostname
                                       << " errCode=" << errCode;
     if (errCode == kDNSServiceErr_NoError) {
         QHostAddress  hostAddr( address);
         self->_hostAddr = hostAddr;
-        if (Arn::debugZeroConf)  qDebug() << "Resolve Lookup callback hostName=" << hostname 
+        if (Arn::debugZeroConf)  qDebug() << "Resolve Lookup callback hostName=" << hostname
                                           << " ip=" << hostAddr.toString();
         self->_state.set( ArnZeroConf::State::LookingUp, false);
         self->_state.set( ArnZeroConf::State::Lookuped);
@@ -860,6 +860,7 @@ void DNSSD_API  ArnZeroConfIntern::lookupHostCallback(
 #else
     Q_UNUSED(errCode)
     Q_UNUSED(address)
+    Q_UNUSED(context);
 #endif
 }
 
