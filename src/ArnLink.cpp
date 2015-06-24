@@ -582,8 +582,11 @@ bool  ArnLink::isRetired()
 }
 
 
+/// Can only be called from main-thread
 void  ArnLink::setRetired()
 {
+    ref();  // At least 1 reference, will block any zeroRef signal
+
     if (_isThreaded)  _mutex.lock();
     if (Arn::debugLinkDestroy)  qDebug() << "setRetired: path=" << this->linkPath();
     bool  wasRetired = _isRetired;
@@ -591,6 +594,8 @@ void  ArnLink::setRetired()
     if (_isThreaded)  _mutex.unlock();
 
     if (!wasRetired)  emit retired();
+
+    deref();  // Can release zeroRef signal
 }
 
 
