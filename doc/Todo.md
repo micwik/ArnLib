@@ -11,6 +11,9 @@ Major
 * General access system.
 * Add more examples.
 * Add Unit tests.
+* API to Sync ArnObjects with other protocols (e.g. JSON-based).
+* API to Sync ArnObjects over other media (e.g. CAN).
+* Javascript based ArnLib for Web-applications over WebSocket.
 
 Minor
 -----
@@ -23,6 +26,10 @@ Minor
 * Add tranfer classes for copying values.
 * Add multiplex/demultiplex-classes for pipes used by Sapi.
 * Script with "include".
+* Converter classes for ArnPipes to other streams (e.g UART, TCP etc).
+
+Done in 3.0
+-----------
 
 Done in 2.3
 -----------
