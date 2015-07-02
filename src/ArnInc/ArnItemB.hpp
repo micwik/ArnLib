@@ -94,10 +94,21 @@ public:
     void  close();
 
     //! Destroy the _Arn Data Object_
-    /*! The link (_Arn Data Object_) will be removed locally, from server and all
-     *  connected clients.
+    /*! The link (_Arn Data Object_) will be removed locally and optionally from server
+     *  and all connected clients. Server is allways forcing global destroy.
+     *  \param[in] isGlobal If true, removes from server and all connected clients,
+     *                      otherwise only local link.
+     *  \see destroyLinkLocal()
      */
-    void  destroyLink();
+    void  destroyLink( bool isGlobal = true);
+
+    //! Destroy the local _Arn Data Object_
+    /*! The link (_Arn Data Object_) will be removed locally. Server is allways forcing
+     *  global destroy.
+     *  \see destroyLink()
+     */
+    void  destroyLinkLocal()
+    { destroyLink( false);}
 
     //! State of the handle
     /*! \retval true if this ArnItem is open
@@ -398,6 +409,7 @@ protected:
     void  resetOnlyEcho();
     bool  isOnlyEcho()  const;
     void  setBlockEcho( bool blockEcho);
+    bool  isRetiredGlobal();
     void  setEnableSetValue( bool enable);
     void  setEnableUpdNotify( bool enable);
     void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);

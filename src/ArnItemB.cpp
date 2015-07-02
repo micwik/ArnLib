@@ -151,9 +151,9 @@ void  ArnItemB::close()
 }
 
 
-void  ArnItemB::destroyLink()
+void  ArnItemB::destroyLink( bool isGlobal)
 {
-    ArnM::destroyLink( _link);
+    ArnM::destroyLink( _link, isGlobal);
 }
 
 
@@ -230,6 +230,12 @@ bool  ArnItemB::isOnlyEcho() const
 void  ArnItemB::setBlockEcho( bool blockEcho)
 {
     _blockEcho = blockEcho;
+}
+
+
+bool ArnItemB::isRetiredGlobal()
+{
+    return _link ? _link->isRetiredGlobal() : false;
 }
 
 

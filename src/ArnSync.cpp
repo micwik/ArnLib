@@ -212,6 +212,9 @@ void  ArnSync::doCommand()
     else if (command == "mode") {
         stat = doCommandMode();
     }
+    else if (command == "nosync") {
+        stat = doCommandNoSync();
+    }
     else if (command == "destroy") {
         stat = doCommandDestroy();
     }
@@ -307,9 +310,24 @@ uint  ArnSync::doCommandMode()
 }
 
 
+uint ArnSync::doCommandNoSync()
+{
+    uint  netId    = _commandMap.value("id").toUInt();
+
+    ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+    if (!itemNet) {  // Not existing item is ok, maybe destroyed before sync
+        return ArnError::Ok;
+    }
+
+    removeItemNet( itemNet);
+
+    return ArnError::Ok;
+}
+
+
 uint  ArnSync::doCommandDestroy()
 {
-    uint  netId = _commandMap.value("id").toUInt();
+    uint  netId    = _commandMap.value("id").toUInt();
 
     ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
     if (!itemNet) {  // Not existing item is ok, maybe destroyed before sync
@@ -318,6 +336,7 @@ uint  ArnSync::doCommandDestroy()
 
     itemNet->setDisable();  // Defunc the item to prevent sending destroy record (MW: problem with twin)
     itemNet->destroyLink();
+
     return ArnError::Ok;
 }
 
@@ -472,7 +491,7 @@ void  ArnSync::disConnected()
             ArnItemNet* itemNet = _itemNetMap.value( netId, 0);
             if (itemNet) {  // if this itemNet still exist
                 // qDebug() << "Server-disconnect: Destroy path=" << itemNet->path();
-                itemNet->destroyLink();  // The itemNet will be destroyed
+                itemNet->destroyLink( true);  // The itemNet will be destroyed (gblobally)
             }
         }
 
@@ -490,9 +509,16 @@ void  ArnSync::linkDestroyedHandle()
         return;
     }
 
-    uint  sendId = itemNet->isDisable() ? 0 : itemNet->netId();  // 0 = Do not send
-
     if (Arn::debugLinkDestroy)  qDebug() << "itemRemove: netId=" << itemNet->netId() << " path=" << itemNet->path();
+    removeItemNet( itemNet);
+    destroyToFluxQue( itemNet);
+}
+
+
+void  ArnSync::removeItemNet( ArnItemNet* itemNet)
+{
+    if (!itemNet)  return;
+
     int s;
     s = _itemNetMap.remove( itemNet->netId());
     // qDebug() << "... remove from itemMap num=" << s;
@@ -505,7 +531,6 @@ void  ArnSync::linkDestroyedHandle()
     ++s;  // Gets rid of warning
 
     itemNet->deleteLater();
-    destroyToFluxQue( sendId);
 }
 
 
@@ -631,16 +656,15 @@ void  ArnSync::eventToFluxQue( uint netId, const QByteArray& type, const QByteAr
 }
 
 
-void  ArnSync::destroyToFluxQue( uint netId)
+void  ArnSync::destroyToFluxQue( ArnItemNet* itemNet)
 {
-    if (!netId) {  // Not valid id, item was disabled
-        return;
-    }
+    if (itemNet->isDisable())  return;
 
+    bool  isGlobal = itemNet->isRetiredGlobal() || !_isClientSide;  // Server allways Global destroy
     FluxRec*  fluxRec = getFreeFluxRec();
     _syncMap.clear();
-    _syncMap.add(ARNRECNAME, "destroy").add("id", QByteArray::number( netId));
-    //_syncMap.add("id", QByteArray::number( netId));
+    _syncMap.add(ARNRECNAME, isGlobal ? "destroy" : "nosync")
+            .add("id", QByteArray::number( itemNet->netId()));
     fluxRec->xString += _syncMap.toXString();
     _fluxPipeQueue.enqueue( fluxRec);
 

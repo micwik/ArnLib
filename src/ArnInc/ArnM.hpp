@@ -272,13 +272,25 @@ public:
      */
     void  setSkipLocalSysLoading( bool skipLocalSysLoading);
 
+    //! Destroy the local _Arn Data Object_ at _path_
+    /*! The link (_Arn Data Object_) will be removed locally. Server is allways forcing
+     *  global destroy.
+     *  \param[in] path
+     *  \see destroyLink()
+     */
+    static void  destroyLinkLocal( const QString& path)
+    { destroyLink( path, false); }
+
 public slots:
     //! Destroy the _Arn Data Object_ at _path_
-    /*! The link (_Arn Data Object_) will be removed locally, from server and all
-     *  connected clients.
+    /*! The link (_Arn Data Object_) will be removed locally and optionally from server
+     *  and all connected clients. Server is allways forcing global destroy.
      *  \param[in] path
+     *  \param[in] isGlobal If true, removes from server and all connected clients,
+     *                      otherwise only local link.
+     *  \see destroyLinkLocal()
      */
-    static void  destroyLink( const QString& path);
+    static void  destroyLink( const QString& path, bool isGlobal = true);
 
     static void  setupErrorlog( QObject* errLog);
 
@@ -292,8 +304,8 @@ protected:
                            Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode());
     static ArnLink*  addTwin( ArnLink* child, Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode(),
                               Arn::LinkFlags flags = Arn::LinkFlags());
-    static void  destroyLink( ArnLink* link);
-    static void  destroyLinkMain( ArnLink* link);
+    static void  destroyLink( ArnLink* link, bool isGlobal);
+    static void  destroyLinkMain( ArnLink* link, bool isGlobal);
 #endif
 
 private slots:

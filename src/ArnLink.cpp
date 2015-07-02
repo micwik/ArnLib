@@ -408,23 +408,24 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
 
     QObject::setParent((QObject*) parent);
     QObject::setObjectName( name_);
-    _isFolder       = flags.is( flags.Folder);
-    _isProvider     = name_.endsWith('!');
-    _isThreaded     = false;  // The correct value is set by Arn::link
-    _valueInt       = 0;
-    _valueReal    = 0.0;
-    _valueString    = "";
-    _valueByteArray = "";
-    _valueVariant   = QVariant();
-    _type.e         = Arn::DataType::Null;
-    _twin           = 0;
-    _isPipeMode     = false;
-    _isSaveMode     = false;
-    _hasBeenSetup   = false;
-    _syncMode       = 0;
-    _id             = _idCount.fetchAndAddRelaxed(1);
-    _refCount       = -1;  // Mark no reference, Ok to delete
-    _isRetired      = false;
+    _isFolder        = flags.is( flags.Folder);
+    _isProvider      = name_.endsWith('!');
+    _isThreaded      = false;  // The correct value is set by Arn::link
+    _valueInt        = 0;
+    _valueReal       = 0.0;
+    _valueString     = "";
+    _valueByteArray  = "";
+    _valueVariant    = QVariant();
+    _type.e          = Arn::DataType::Null;
+    _twin            = 0;
+    _isPipeMode      = false;
+    _isSaveMode      = false;
+    _hasBeenSetup    = false;
+    _syncMode        = 0;
+    _id              = _idCount.fetchAndAddRelaxed(1);
+    _refCount        = -1;  // Mark no reference, Ok to delete
+    _isRetired       = false;
+    _isRetiredGlobal = false;
 
     if (parent) {
         if (_isFolder) {
@@ -582,15 +583,27 @@ bool  ArnLink::isRetired()
 }
 
 
+bool  ArnLink::isRetiredGlobal()
+{
+    if (_isThreaded)  _mutex.lock();
+    bool  retVal = _isRetiredGlobal;
+    if (_isThreaded)  _mutex.unlock();
+    return retVal;
+}
+
+
 /// Can only be called from main-thread
-void  ArnLink::setRetired()
+void  ArnLink::setRetired( bool isGlobal)
 {
     ref();  // At least 1 reference, will block any zeroRef signal
 
     if (_isThreaded)  _mutex.lock();
     if (Arn::debugLinkDestroy)  qDebug() << "setRetired: path=" << this->linkPath();
     bool  wasRetired = _isRetired;
-    _isRetired = true;
+    if (!wasRetired) {
+        _isRetiredGlobal = isGlobal;
+        _isRetired       = true;
+    }
     if (_isThreaded)  _mutex.unlock();
 
     if (!wasRetired)  emit retired();

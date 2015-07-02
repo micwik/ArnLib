@@ -673,22 +673,22 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
 }
 
 
-void  ArnM::destroyLink( ArnLink* link)
+void  ArnM::destroyLink( ArnLink* link, bool isGlobal)
 {
     if (!link)  return;
 
     if (isMainThread()) {
         if (Arn::debugLinkDestroy) qDebug() << "destroyLink-mainA: start path=" << link->linkPath();
-        destroyLinkMain( link);
+        destroyLinkMain( link, isGlobal);
         return;
     }
 
     /// Threaded version of destroyLink
-    destroyLink( link->linkPath());
+    destroyLink( link->linkPath(), isGlobal);
 }
 
 
-void  ArnM::destroyLink( const QString& path)
+void  ArnM::destroyLink( const QString& path, bool isGlobal)
 {
     if (isMainThread()) {
         Arn::LinkFlags  flags;
@@ -696,7 +696,7 @@ void  ArnM::destroyLink( const QString& path)
         if (link) {
             link->deref();  // Ok, as this is main thread. Avoid locking this link
             qDebug() << "destroyLink-mainB: start path=" << link->linkPath();
-            destroyLinkMain( link);
+            destroyLinkMain( link, isGlobal);
         }
         return;
     }
@@ -706,12 +706,13 @@ void  ArnM::destroyLink( const QString& path)
     QMetaObject::invokeMethod( &instance(),
                                "destroyLink",
                                Qt::QueuedConnection,
-                               Q_ARG( QString, path));
+                               Q_ARG( QString, path),
+                               Q_ARG( bool, isGlobal));
 }
 
 
 /// This will be called recursively in main-thread
-void  ArnM::destroyLinkMain( ArnLink* link)
+void  ArnM::destroyLinkMain( ArnLink* link, bool isGlobal)
 {
     if (!link)  return;
 
@@ -720,14 +721,14 @@ void  ArnM::destroyLinkMain( ArnLink* link)
     /// Childless link is directly retired
     if (childNum == 0) {
         ArnLink*  twin = link->twinLink();
-        link->setRetired();
+        link->setRetired( isGlobal);
         if (twin)
-            twin->setRetired();
+            twin->setRetired( isGlobal);
         return;
     }
     /// Make all childs retired by recursion
     for (int i = 0; i < childNum; ++i) {
-        destroyLinkMain( qobject_cast<ArnLink*>( objList.at( i)));
+        destroyLinkMain( qobject_cast<ArnLink*>( objList.at( i)), isGlobal);
     }
 }
 

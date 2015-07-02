@@ -90,11 +90,13 @@ private:
     void  sendSyncItem( ArnItemNet* itemNet);
     void  sendModeItem( ArnItemNet* itemNet);
     void  eventToFluxQue( uint netId, const QByteArray& type, const QByteArray& data);
-    void  destroyToFluxQue( uint netId);
+    void  destroyToFluxQue( ArnItemNet* itemNet);
+    void  removeItemNet( ArnItemNet* itemNet);
 
     void  doCommand();
     uint  doCommandSync();
     uint  doCommandMode();
+    uint  doCommandNoSync();
     uint  doCommandDestroy();
     uint  doCommandFlux();
     uint  doCommandEvent();

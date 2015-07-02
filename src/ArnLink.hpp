@@ -81,6 +81,7 @@ public:
     bool  isProvider()  const;
     bool  isThreaded()  const;
     bool  isRetired();
+    bool  isRetiredGlobal();
     ArnLink*  twinLink();
     ArnLink*  valueLink();
     ArnLink*  providerLink();
@@ -108,7 +109,7 @@ protected:
     void  ref();
     int  refCount();
     void  setRefCount( int count);
-    void  setRetired();
+    void  setRetired( bool isGlobal);
 
 private:
     void  resetHave();
@@ -124,6 +125,7 @@ private:
     QMutex  _mutex;
     QAtomicInt  _refCount;
     volatile bool  _isRetired;
+    volatile bool  _isRetiredGlobal;
 
     volatile int  _valueInt;
     volatile ARNREAL  _valueReal;

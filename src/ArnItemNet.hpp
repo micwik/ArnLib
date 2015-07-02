@@ -82,6 +82,7 @@ public:
     using ArnItemB::isPipeMode;
     using ArnItemB::setBlockEcho;
     using ArnItemB::isOnlyEcho;
+    using ArnItemB::isRetiredGlobal;
     using ArnItemB::type;
     using ArnItemB::arnExport;
     using ArnItemB::arnImport;
