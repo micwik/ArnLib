@@ -635,7 +635,7 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
         }
         // Create folders or items when needed
         child = new ArnLink(parent, name, flags);
-        connect( child, SIGNAL(zeroRef()), &instance(), SLOT(doZeroRefLink()));
+        connect( child, SIGNAL(zeroRef(QObject*)), &instance(), SLOT(doZeroRefLink(QObject*)));
     }
     else {
         if (child->isRetired()) {
@@ -728,15 +728,17 @@ void  ArnM::destroyLinkMain( ArnLink* link, bool isGlobal)
     }
     /// Make all childs retired by recursion
     for (int i = 0; i < childNum; ++i) {
-        destroyLinkMain( qobject_cast<ArnLink*>( objList.at( i)), isGlobal);
+        ArnLink* dLink = qobject_cast<ArnLink*>( objList.at( i));
+        destroyLinkMain( dLink, isGlobal);
     }
 }
 
 
-void  ArnM::doZeroRefLink( QObject* /*obj*/)
+void  ArnM::doZeroRefLink( QObject* linkObj)
 {
-    ArnLink*  link = qobject_cast<ArnLink*>( instance().sender());
+    ArnLink*  link = qobject_cast<ArnLink*>( linkObj);
     if (!link)  return;
+    if (link->refCount() != 0)  return;  // Just in case ...
 
     link->setRefCount( -1);  // Mark link as fully de-referenced
     // qDebug() << "ZeroRef: set fully deref path=" << link->linkPath();
@@ -746,7 +748,7 @@ void  ArnM::doZeroRefLink( QObject* /*obj*/)
            link->children().size() == 0) {  // Has no children
         ArnLink*  parent = qobject_cast<ArnLink*>( link->parent());
         // qDebug() << "ZeroRef: delete link path=" << link->linkPath();
-        delete link;
+        link->deleteLater();
         link = parent;
     }
 }

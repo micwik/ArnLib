@@ -689,7 +689,7 @@ void  ArnLink::deref()
     bool  moreRefs = valueLink()->_refCount.deref();
     if (Arn::debugLinkRef)  qDebug() << "link-deref: path=" << this->linkPath() << " count=" << refCount();
     if (!moreRefs) {  // This is last reference
-        emit zeroRef();  // Will be received in main-thread
+        emit zeroRef( this);  // Will be received in main-thread
     }
 }
 

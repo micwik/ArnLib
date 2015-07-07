@@ -99,7 +99,7 @@ signals:
     void  modeChanged( const QString& path, uint linkId);
     void  modeChangedBelow( const QString& path, uint linkId);
     void  linkCreatedBelow( ArnLink* link);
-    void  zeroRef();
+    void  zeroRef( QObject* linkObj);
     void  retired();
 
 protected:

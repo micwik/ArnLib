@@ -313,7 +313,7 @@ private slots:
     static void  linkProxy( ArnThreadCom* threadCom, const QString& path,
                             int flagValue, int syncMode = 0);
     static void  itemsProxy( ArnThreadCom* threadCom, const QString& path);
-    static void  doZeroRefLink( QObject* obj = 0);
+    static void  doZeroRefLink( QObject* linkObj);
 
 private:
     /// Private constructor/destructor to keep this class singleton
