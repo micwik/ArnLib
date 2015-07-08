@@ -49,7 +49,7 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     _socket          = socket;  // Note: client side does not own socket ...
     _isClientSide    = isClientSide;
     _isSending       = false;
-    _fluxQueueSwitch = 0;
+    _isClosed        = isClientSide;  // Server start as not closed
     _queueNumCount   = 0;
     _queueNumDone    = 0;
     _dataRemain.clear();
@@ -140,12 +140,46 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
     itemNet->addSyncMode( syncMode, true);
     setupItemNet( itemNet, netId);
     itemNet->setBlockEcho( true);    // Client gives no echo to avoid endless looping
+
+    if (_isClosed)  return itemNet;
+
     _syncQueue.enqueue( itemNet);
     // qDebug() << "Sync EnQueue: id=" << itemNet->netId() << " path=" << itemNet->path();
 
-    if (!_isSending)  sendNext();
+    if (!_isSending)
+        sendNext();
 
     return itemNet;
+}
+
+
+void ArnSync::close()
+{
+    if (_isClosed)  return;
+
+    _isClosed = true;
+    if (!_isSending)
+        sendNext();
+    if (!_isConnected)
+        clearQueues();
+}
+
+
+void ArnSync::closeFinal()
+{
+    sendExit();
+    _socket->disconnectFromHost();
+    _isConnected = false;
+}
+
+
+void ArnSync::clearQueues()
+{
+    _syncQueue.clear();
+    _modeQueue.clear();
+    _fluxItemQueue.clear();
+    _fluxRecPool += _fluxPipeQueue;
+    _fluxPipeQueue.clear();
 }
 
 
@@ -153,9 +187,9 @@ void  ArnSync::socketInput()
 {
     _dataReadBuf.resize( _socket->bytesAvailable());
     int nbytes = _socket->read( _dataReadBuf.data(), _dataReadBuf.size());
-    if (nbytes <= 0) {
-        return; // No bytes / error
-    }
+    if (nbytes <= 0)  return; // No bytes / error
+    if (_isClosed)  return;
+
     _dataReadBuf.resize( nbytes);
     _dataRemain += _dataReadBuf;
 
@@ -444,8 +478,12 @@ uint  ArnSync::doCommandLs()
 
 void  ArnSync::connected()
 {
+    bool  wasClosed = _isClosed;
     _isConnected = true;
+    _isClosed    = false;
     _syncQueue.clear();
+    if (wasClosed)
+        clearQueues();
 
     /// All the existing netItems must be synced
     ArnItemNet*  itemNet;
@@ -454,14 +492,20 @@ void  ArnSync::connected()
     while (i.hasNext()) {
         i.next();
         itemNet = i.value();
+
+        if (wasClosed) {
+            itemNet->resetDirty();
+            itemNet->resetDirtyMode();
+        }
+
         _syncQueue.enqueue( itemNet);
         mode = itemNet->getModeString();
         // If non default mode that isn't already in modeQueue
         if (!mode.isEmpty()  &&  !itemNet->isDirtyMode()) {
             _modeQueue.enqueue( itemNet);
         }
-        if ((itemNet->type() != Arn::DataType::Null)            // Only send non Null Value ...
-        && (!itemNet->isPipeMode())                                      // from non pipe ..
+        if ((itemNet->type() != Arn::DataType::Null)                  // Only send non Null Value ...
+        && (!itemNet->isPipeMode())                                   // from non pipe ..
         && (itemNet->syncMode().is( Arn::ObjectSyncMode::Master))) {  // which is master
             itemNet->itemUpdated( ArnLinkHandle());  // Make client send the current value to server
         }
@@ -476,6 +520,9 @@ void  ArnSync::disConnected()
     _isSending = false;
 
     if (_isClientSide) {  // Client
+        if (_isClosed) {
+            clearQueues();
+        }
     }
     else {  // Server
         // Make a list of netId to AutoDestroy
@@ -572,6 +619,8 @@ void  ArnSync::doArnEvent( const QByteArray& type, const QByteArray& data, bool 
 
 void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
 {
+    if (_isClosed)  return;
+
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
         ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for itemChanged")),
@@ -640,6 +689,7 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
 void  ArnSync::eventToFluxQue( uint netId, const QByteArray& type, const QByteArray& data)
 {
     if (!netId)  return;  // Not valid id, item was disabled
+    if (_isClosed)  return;
 
     FluxRec*  fluxRec = getFreeFluxRec();
     _syncMap.clear();
@@ -659,6 +709,7 @@ void  ArnSync::eventToFluxQue( uint netId, const QByteArray& type, const QByteAr
 void  ArnSync::destroyToFluxQue( ArnItemNet* itemNet)
 {
     if (itemNet->isDisable())  return;
+    if (_isClosed)  return;
 
     bool  isGlobal = itemNet->isRetiredGlobal() || !_isClientSide;  // Server allways Global destroy
     FluxRec*  fluxRec = getFreeFluxRec();
@@ -693,6 +744,8 @@ ArnSync::FluxRec*  ArnSync::getFreeFluxRec()
 
 void  ArnSync::addToModeQue()
 {
+    if (_isClosed)  return;
+
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
         ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for itemModeChanged")),
@@ -712,9 +765,7 @@ void  ArnSync::sendNext()
 {
     _isSending = false;
 
-    if ( !_isConnected  ||  !_socket->isValid()) {
-        return;
-    }
+    if (!_isConnected || !_socket->isValid())  return;
 
     ArnItemNet*  itemNet;
 
@@ -752,6 +803,10 @@ void  ArnSync::sendNext()
             }
             _isSending = true;
         }
+        else {  // Nothing more to send
+            if (_isClosed)
+                closeFinal();
+        }
     }
 }
 
@@ -780,7 +835,7 @@ QByteArray  ArnSync::makeFluxString(const ArnItemNet* itemNet, const ArnLinkHand
 
 void  ArnSync::sendFluxItem( const ArnItemNet* itemNet)
 {
-    if (!itemNet  ||  !itemNet->isOpen()) {
+    if (!itemNet || !itemNet->isOpen()) {
         sendNext();  // Warning: this is recursion while not existing items
         return;
     }
@@ -824,3 +879,13 @@ void  ArnSync::sendModeItem( ArnItemNet* itemNet)
     _syncMap.add("data", itemNet->getModeString());
     sendXSMap( _syncMap);
 }
+
+
+void ArnSync::sendExit()
+{
+    XStringMap xm;
+    xm.add(ARNRECNAME, "exit");
+
+    sendXSMap( xm);
+}
+

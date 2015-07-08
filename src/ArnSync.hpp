@@ -58,8 +58,10 @@ public:
                              const QString& localMountPath, const QString& remoteMountPath,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
                              bool* isNewPtr = 0);
+    void  close();
     void  sendXSMap( const Arn::XStringMap& xsMap);
     void  send( const QByteArray& xString);
+    void  sendExit();
 
     static void  setupMonitorItem( ArnItemNet* itemNet);
     static void  doChildsToEvent( ArnItemNet* itemNet);
@@ -92,6 +94,8 @@ private:
     void  eventToFluxQue( uint netId, const QByteArray& type, const QByteArray& data);
     void  destroyToFluxQue( ArnItemNet* itemNet);
     void  removeItemNet( ArnItemNet* itemNet);
+    void  closeFinal();
+    void  clearQueues();
 
     void  doCommand();
     uint  doCommandSync();
@@ -123,9 +127,9 @@ private:
 
     int  _queueNumCount;
     int  _queueNumDone;
-    int  _fluxQueueSwitch;
     bool  _isConnected;
     bool  _isSending;
+    bool  _isClosed;
     bool  _isClientSide;      // True if this is the client side of the connection
 };
 //! \endcond

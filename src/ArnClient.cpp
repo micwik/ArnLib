@@ -230,6 +230,21 @@ void  ArnClient::connectToArn( const QString& arnHost, quint16 port)
 }
 
 
+void  ArnClient::disconnectFromArn()
+{
+    _arnNetSync->sendExit();
+    setAutoConnect( false);
+    _socket->disconnectFromHost();
+}
+
+
+void ArnClient::close()
+{
+    setAutoConnect( false);
+    _arnNetSync->close();
+}
+
+
 ArnClient::ConnectStat  ArnClient::connectStatus()  const
 {
     return _connectStat;
@@ -383,12 +398,10 @@ void  ArnClient::commandVersion()
 }
 
 
+// MW: Should probably be deprecated (removed)
 void  ArnClient::commandExit()
 {
-    _commandMap.clear();
-    _commandMap.add(ARNRECNAME, "exit");
-
-    _arnNetSync->sendXSMap( _commandMap);
+    _arnNetSync->sendExit();
 }
 
 

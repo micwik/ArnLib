@@ -132,6 +132,7 @@ public:
     //! Connect to an _Arn Server_ in the Arn connection list
     /*! Will scan the connection list once until a successful connection is made.
      *  If the end of the list is reached without connection, the tcpError() signal
+     *  \see connectToArn()
      */
     void  connectToArnList();
 
@@ -139,8 +140,35 @@ public:
     /*! \param[in] arnHost is host name or ip address, e.g. "192.168.1.1".
      *  \param[in] port is the host port, 0 gives Arn::defaultTcpPort.
      *  \see Arn::makeHostWithInfo()
+     *  \see connectToArnList()
      */
     void  connectToArn( const QString& arnHost, quint16 port = 0);
+
+    //! Disconnect from an _Arn Server_
+    /*! Force disconnect from the _Arn server_, similar behaviour to losing connection.
+     *  All pending data is written before disconnect. All _Arn objects_ that has been
+     *  setup to be synronized is still kept. This implies that it's possible to continue
+     *  previous session by just connecting to the _Arn server_ again.
+     *
+     *  Auto connection is also disabled.
+     *  \see close()
+     *  \see setAutoConnect()
+     *  \see connectToArn()
+     */
+    void  disconnectFromArn();
+
+    //! Close sharing with an _Arn Server_
+    /*! Stop sharing _Arn objects_ with the _Arn server_. Similar to disconnectFromArn().
+     *  All pending data is written before disconnect. No syncronized _Arn objects_ are
+     *  remembered. This implies that it's not possible to continue previous session.
+     *  This function is aimed at later starting a new session from scratch.
+     *
+     *  Auto connection is also disabled.
+     *  \see disconnectFromArn()
+     *  \see setAutoConnect()
+     *  \see connectToArn()
+     */
+    void  close();
 
     //! Set the sharing tree path
     /*! For campatibility, this can only set one mount point and with same local as remote
