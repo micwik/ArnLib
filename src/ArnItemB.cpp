@@ -102,6 +102,9 @@ bool  ArnItemB::open( const QString& path)
     if (!_link)  return false;
 
     setupOpenItem( _link->isFolder());
+#ifdef ARNITEMB_INCPATH
+    _path = path;
+#endif
     return true;
 }
 

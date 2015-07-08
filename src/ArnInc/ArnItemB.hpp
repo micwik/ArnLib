@@ -45,6 +45,8 @@
 #include <QVariant>
 #include <QAtomicInt>
 
+#define ARNITEMB_INCPATH
+
 class QTimer;
 class ArnLink;
 
@@ -447,6 +449,9 @@ private:
     bool  _isOnlyEcho;
     uint  _id;
     void*  _reference;
+#ifdef ARNITEMB_INCPATH
+    QString _path;
+#endif
 };
 
 #endif // ARNITEMB_HPP
