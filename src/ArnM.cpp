@@ -749,11 +749,13 @@ void  ArnM::doZeroRefLink( QObject* linkObj)
 
     while (link->isRetired()  &&
            link->refCount() < 0  &&
-           link->children().size() == 0) {  // Has no children
+           link->children().size() == 0) {
         ArnLink*  parent = qobject_cast<ArnLink*>( link->parent());
-        // qDebug() << "ZeroRef: delete link path=" << link->linkPath();
+        if (Arn::debugLinkDestroy)  qDebug() << "ZeroRef: delete link path=" << link->linkPath();
         link->setParent(0);
-        link->deleteLater();
+        if (link->_twin)
+            link->_twin->setParent(0);
+        link->deleteLater();  // This will also delete an existing twin
         link = parent;
     }
 }
