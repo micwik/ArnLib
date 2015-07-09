@@ -110,6 +110,7 @@ protected:
     int  refCount();
     void  setRefCount( int count);
     void  setRetired( bool isGlobal);
+    void  doRetired();
 
 private:
     void  resetHave();

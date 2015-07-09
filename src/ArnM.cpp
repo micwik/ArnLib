@@ -715,22 +715,26 @@ void  ArnM::destroyLink( const QString& path, bool isGlobal)
 void  ArnM::destroyLinkMain( ArnLink* link, bool isGlobal)
 {
     if (!link)  return;
+    if (link->isRetired())  return;  // This link is already retired
 
+    /// Mark this link as retired
+    ArnLink*  twin = link->twinLink();
+    link->setRetired( isGlobal);
+    if (twin)
+        twin->setRetired( isGlobal);
+
+    /// Make all childs retired by recursion
     QObjectList objList = link->children();
     int  childNum = objList.size();
-    /// Childless link is directly retired
-    if (childNum == 0) {
-        ArnLink*  twin = link->twinLink();
-        link->setRetired( isGlobal);
-        if (twin)
-            twin->setRetired( isGlobal);
-        return;
-    }
-    /// Make all childs retired by recursion
     for (int i = 0; i < childNum; ++i) {
         ArnLink* dLink = qobject_cast<ArnLink*>( objList.at( i));
         destroyLinkMain( dLink, isGlobal);
     }
+
+    /// Make this link retired
+    link->doRetired();
+    if (twin)
+        twin->doRetired();
 }
 
 
@@ -748,6 +752,7 @@ void  ArnM::doZeroRefLink( QObject* linkObj)
            link->children().size() == 0) {  // Has no children
         ArnLink*  parent = qobject_cast<ArnLink*>( link->parent());
         // qDebug() << "ZeroRef: delete link path=" << link->linkPath();
+        link->setParent(0);
         link->deleteLater();
         link = parent;
     }

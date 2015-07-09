@@ -71,32 +71,50 @@ ArnMonitor    {#int_arnmonitor}
   This will resync ItemNet to a Monitor at any server restart.
 
 * Now 2 possibilities depending on threading:
-    1. The ItemNet was sent before syncMode Monitor was set. Then server will receive an ordinary Itemnet and
-       do standard setup.
-    2. The ItemNet was sent with syncMode Monitor set. The server will detect this and do MonitorSetup on the ItemNet.
+    1. The ItemNet was sent before syncMode Monitor was set. Then server will receive an ordinary
+       Itemnet and do standard setup.
+    2. The ItemNet was sent with syncMode Monitor set. The server will detect this and do
+       MonitorSetup on the ItemNet.
 
 * When arn-event "monitorStart" is received on server-side, if SyncMode is not already set to "Monitor",
   server will do MonitorSetup on the ItemNet.
 
-* When doing MonitorSetup (at server-side), connections are made to send arn-events when new childs are created,
-  and present childs are directly sent as arn-event.
+* When doing MonitorSetup (at server-side), connections are made to send arn-events when new
+  childs are created, and present childs are directly sent as arn-event.
 
 
 Destroy    {#int_destroy}
 -------
-* Command arives with a netId.
+* Destruction can be locally initiated and affects one link. Destruction can be set as
+  local or global.
 
-* Corresponding ItemNet is disabled (set as defunct).
+* Destruction can also be initiated by the destroy command and arives with a netId.
 
-* All link-leaves for the ItemNet:s tree is set as retired and each leaf is emitting a retired signal.
+* Corresponding ItemNet is disabled (set as defunct), which prohibit sending destroy command
+  back to the originator of the command.
 
-* The retired signal is handled by each connected Item. Each Item is sending a linkDestroyed signal to be handled by application code.
+* The ItemNet is also destroyed in the same way as a locally initiated destruction and affects
+  one link. Destruction is set to be global.
+
+* The affected link:s tree is recursively traversed and all links are first marked as retired.
+  Also global or local destroy is marked.
+
+* As the last thing in this recursion each link is emitting a retired signal, ie the leaves are
+  the first to emit.
+
+* The retired signal is handled by each connected Item. Each Item is sending a linkDestroyed
+  signal to be handled by application code.
   The Items is finally closed and by this the link ref counter is decremented.
 
 * When the links ref counter is reaching zero, a zeroRef signal is sent.
 
-* The signal is handled by doZerRefLink(), in Main thread. It will set the link ref counter to -1 to mark the link as fully de-referenced.
-  The link and parent (and grand parants ...) are deleted if they don't have any children and ref = -1 and they are retired.
+* The signal is handled by doZerRefLink(), in Main thread. It will set the link ref counter
+  to -1, to mark the link as fully de-referenced.
+  The link and parent (and grand parants ...) are deleted if they don't have any children
+  and ref = -1 and they are marked retired.
 
-* When the ItemNet is sending the linkDestroyed signal, it will be deleted from sync map and all queues.
-  Finally a destroy command is sent with its netId, to spread the destruction to server and other clients.
+* When the ItemNet is sending the linkDestroyed signal, it will be deleted from sync map
+  and all queues. Finally a command is sent with its netId.
+
+* The sent command depends on global or local destroy. For local, a nosync command is used.
+  For global, a destroy command is used to spread the destruction to server and other clients.

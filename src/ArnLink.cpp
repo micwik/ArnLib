@@ -595,20 +595,20 @@ bool  ArnLink::isRetiredGlobal()
 /// Can only be called from main-thread
 void  ArnLink::setRetired( bool isGlobal)
 {
-    ref();  // At least 1 reference, will block any zeroRef signal
-
     if (_isThreaded)  _mutex.lock();
     if (Arn::debugLinkDestroy)  qDebug() << "setRetired: path=" << this->linkPath();
-    bool  wasRetired = _isRetired;
-    if (!wasRetired) {
-        _isRetiredGlobal = isGlobal;
-        _isRetired       = true;
-    }
+
+    _isRetiredGlobal = isGlobal;
+    _isRetired       = true;
+
     if (_isThreaded)  _mutex.unlock();
+}
 
-    if (!wasRetired)  emit retired();
 
-    deref();  // Can release zeroRef signal
+void  ArnLink::doRetired()
+{
+    if (Arn::debugLinkDestroy)  qDebug() << "doRetired: path=" << this->linkPath();
+    emit retired();
 }
 
 
