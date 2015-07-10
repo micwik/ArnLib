@@ -17,7 +17,6 @@ Major
 
 Minor
 -----
-* Delete ArnObject, but only local (remove any sync of it).
 * Add setDelay in ArnItemQml, rework changed().
 * ArnItemQml::updateValue() don't handle param data.
 * Optimize data transfer with minimal copying.
@@ -30,6 +29,8 @@ Minor
 
 Done in 3.0
 -----------
+* Delete ArnObject, but only local (remove any sync of it).
+* ArnClient disconnect and close.
 
 Done in 2.3
 -----------
