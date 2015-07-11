@@ -36,6 +36,7 @@
 #include <QMetaMethod>
 #include <QTimer>
 #include <QRegExp>
+#include <QDataStream>
 #include <QVariant>
 #include <QDebug>
 
