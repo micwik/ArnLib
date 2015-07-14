@@ -410,7 +410,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     QObject::setObjectName( name_);
     _isFolder        = flags.is( flags.Folder);
     _isProvider      = name_.endsWith('!');
-    _isThreaded      = false;  // The correct value is set by Arn::link
+    _isThreaded      = false;  // The correct value is set by ArnM::getRawLink
     _valueInt        = 0;
     _valueReal       = 0.0;
     _valueString     = "";
@@ -424,6 +424,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     _syncMode        = 0;
     _id              = _idCount.fetchAndAddRelaxed(1);
     _refCount        = -1;  // Mark no reference, Ok to delete
+    _zeroRefCount    = 0;
     _isRetired       = false;
     _isRetiredGlobal = false;
 
@@ -623,9 +624,8 @@ ArnLink*  ArnLink::twinLink()
 
 ArnLink*  ArnLink::valueLink()
 {
-    if (_isThreaded)  _mutex.lock();  // MW: not needed (?)
+    // MW: Mutex not needed, all values are stable (?)
     ArnLink*  retVal = _isProvider ? _twin : this;
-    if (_isThreaded)  _mutex.unlock();
     return retVal;
 }
 
@@ -664,21 +664,54 @@ QString  ArnLink::twinName()
 /// Can only be called from main-thread
 void  ArnLink::setRefCount( int count)
 {
-#if QT_VERSION >= 0x050000
-    valueLink()->_refCount.store( count);
-#else
-    valueLink()->_refCount = count;
-#endif
+    ArnLink*  vLink = valueLink();
+
+    if (_isThreaded)  vLink->_mutex.lock();
+    vLink->_refCount = count;
+    if (_isThreaded)  vLink->_mutex.unlock();
+}
+
+
+void ArnLink::decZeroRefs()
+{
+    int  zeroRefCount = 0;
+    ArnLink*  vLink = valueLink();
+
+    if (_isThreaded)  vLink->_mutex.lock();
+    if (vLink->_zeroRefCount > 0) {
+        vLink->_zeroRefCount--;
+        zeroRefCount = vLink->_zeroRefCount;
+    }
+    if (_isThreaded)  vLink->_mutex.unlock();
+    if (Arn::debugLinkRef)  qDebug() << "link-decZeroRefs: path=" << this->linkPath()
+                                     << " count=" << zeroRefCount;
+}
+
+
+bool ArnLink::isLastZeroRef()
+{
+    bool  retVal    = false;
+    ArnLink*  vLink = valueLink();
+
+    if (_isThreaded)  vLink->_mutex.lock();
+    retVal = (vLink->_refCount == 0) && (vLink->_zeroRefCount == 0);
+    if (_isThreaded)  vLink->_mutex.unlock();
+
+    return retVal;
 }
 
 
 /// Can only be called from main-thread
 void  ArnLink::ref()
 {
-    if (refCount() <= 0)   // First reference, no other thread involved
-        setRefCount(1);
+    ArnLink*  vLink = valueLink();
+
+    if (_isThreaded)  vLink->_mutex.lock();
+    if (vLink->_refCount <= 0)   // First reference, no other thread involved
+        vLink->_refCount = 1;
     else
-        valueLink()->_refCount.ref();  // Increase reference atomicly
+        vLink->_refCount++;
+    if (_isThreaded)  vLink->_mutex.unlock();
     if (Arn::debugLinkRef)  qDebug() << "link-ref: path=" << this->linkPath() << " count=" << refCount();
 }
 
@@ -686,9 +719,21 @@ void  ArnLink::ref()
 /// Can be called from any thread any time
 void  ArnLink::deref()
 {
-    bool  moreRefs = valueLink()->_refCount.deref();
+    bool  isZeroRefs = false;
+    ArnLink*  vLink  = valueLink();
+
+    if (_isThreaded)  vLink->_mutex.lock();
+    if (vLink->_refCount > 1)
+        vLink->_refCount--;
+    else {
+        vLink->_refCount = 0;
+        vLink->_zeroRefCount++;
+        isZeroRefs = true;
+    }
+    if (_isThreaded)  vLink->_mutex.unlock();
     if (Arn::debugLinkRef)  qDebug() << "link-deref: path=" << this->linkPath() << " count=" << refCount();
-    if (!moreRefs) {  // This is last reference
+
+    if (isZeroRefs) {  // This is last reference
         emit zeroRef( this);  // Will be received in main-thread
     }
 }
@@ -696,11 +741,14 @@ void  ArnLink::deref()
 
 int  ArnLink::refCount()
 {
-#if QT_VERSION >= 0x050000
-    return valueLink()->_refCount.load();
-#else
-    return valueLink()->_refCount;
-#endif
+    int  retVal     = 0;
+    ArnLink*  vLink = valueLink();
+
+    if (_isThreaded)  vLink->_mutex.lock();
+    retVal = vLink->_refCount;
+    if (_isThreaded)  vLink->_mutex.unlock();
+
+    return retVal;
 }
 
 

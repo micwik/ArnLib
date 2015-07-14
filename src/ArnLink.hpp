@@ -109,6 +109,8 @@ protected:
     void  ref();
     int  refCount();
     void  setRefCount( int count);
+    void  decZeroRefs();
+    bool  isLastZeroRef();
     void  setRetired( bool isGlobal);
     void  doRetired();
 
@@ -124,7 +126,8 @@ private:
     bool  _isProvider;
     bool  _isThreaded;
     QMutex  _mutex;
-    QAtomicInt  _refCount;
+    volatile int  _refCount;
+    volatile quint8  _zeroRefCount;
     volatile bool  _isRetired;
     volatile bool  _isRetiredGlobal;
 

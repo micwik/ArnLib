@@ -742,7 +742,8 @@ void  ArnM::doZeroRefLink( QObject* linkObj)
 {
     ArnLink*  link = qobject_cast<ArnLink*>( linkObj);
     if (!link)  return;
-    if (link->refCount() != 0)  return;  // Just in case ...
+    link->decZeroRefs();
+    if (!link->isLastZeroRef())  return;  // Link reused & more zeroRefs will come
 
     link->setRefCount( -1);  // Mark link as fully de-referenced
     // qDebug() << "ZeroRef: set fully deref path=" << link->linkPath();
