@@ -80,7 +80,6 @@ public:
     bool  isSaveMode();
     bool  isProvider()  const;
     bool  isThreaded()  const;
-    void  setThreaded();
     bool  isRetired();
     bool  isRetiredGlobal();
     ArnLink*  twinLink();
@@ -104,6 +103,7 @@ signals:
     void  retired();
 
 protected:
+    //// Will never be inherited, this section is separated for use by friend ArnM
     ArnLink( ArnLink* parent, const QString& name, Arn::LinkFlags flags);
     void  setupEnd( Arn::ObjectSyncMode syncMode);
     ArnLink*  findLink( const QString& name);
@@ -114,6 +114,11 @@ protected:
     bool  isLastZeroRef();
     void  setRetired( bool isGlobal);
     void  doRetired();
+    void  setThreaded();
+    void  lock();
+    void  unlock();
+
+    ArnLink*  _twin;   // Used for bidirectional functionality
 
 private:
     void  resetHave();
@@ -121,8 +126,6 @@ private:
 
     // Source for unique id to all ArnLink ..
     static QAtomicInt  _idCount;
-
-    ArnLink*  _twin;   // Used for bidirectional functionality
 
     QMutex*  _mutex;
 

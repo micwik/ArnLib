@@ -584,6 +584,18 @@ void  ArnLink::setThreaded()
 }
 
 
+void ArnLink::lock()
+{
+    if (_mutex)  _mutex->lock();
+}
+
+
+void ArnLink::unlock()
+{
+    if (_mutex)  _mutex->unlock();
+}
+
+
 bool  ArnLink::isRetired()
 {
     if (_mutex)  _mutex->lock();

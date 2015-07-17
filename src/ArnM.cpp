@@ -574,10 +574,22 @@ ArnLink*  ArnM::addTwinMain( ArnLink* link, Arn::ObjectSyncMode syncMode, Arn::L
         twinLink = getRawLink( parent, twinName, flags.f | flags.CreateAllowed);
         // qDebug() << "addTwin: parent=" << parent->linkPath() << " twinName=" << twinName;
         if (twinLink) {  // if twin ok, setup cross links betwen value & provider
-            if (link->isThreaded())  link->_mutex->lock();
+            bool isThreaded = false;
+            if (link->isThreaded()  // If anything indicates threaded, set twins as threded
+            || twinLink->isThreaded()
+            || flags.is( flags.Threaded)) {
+                isThreaded = true;
+                link->setThreaded();
+                twinLink->setThreaded();
+                link->lock();
+                twinLink->lock();
+            }
             twinLink->_twin = link;
             link->_twin = twinLink;
-            if (link->isThreaded())  link->_mutex->unlock();
+            if (isThreaded) {
+                link->unlock();
+                twinLink->unlock();
+            }
             twinLink->setupEnd( syncMode);
             emit link->modeChanged( link->linkPath(), link->linkId());   // This is now Bidirectional mode
         }
