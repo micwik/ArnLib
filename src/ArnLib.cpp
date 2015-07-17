@@ -34,6 +34,7 @@
 
 namespace Arn {
 
+bool debugSizes       = true;
 bool debugThreading   = false;
 bool debugLinkRef     = false;
 bool debugLinkDestroy = false;

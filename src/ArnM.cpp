@@ -527,8 +527,9 @@ ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags f
         return 0;
     }
 
-    if (!flags.is( flags.Folder)  &&  nameNorm.endsWith('!')
-        &&  flags.is( flags.CreateAllowed)) {
+    if (!flags.is( flags.Folder)
+    &&  nameNorm.endsWith('!')
+    &&  flags.is( flags.CreateAllowed)) {
         // Make sure a provider link has a twin, ie a value link
         addTwinMain( child, syncMode, flags);
     }
@@ -573,10 +574,10 @@ ArnLink*  ArnM::addTwinMain( ArnLink* link, Arn::ObjectSyncMode syncMode, Arn::L
         twinLink = getRawLink( parent, twinName, flags.f | flags.CreateAllowed);
         // qDebug() << "addTwin: parent=" << parent->linkPath() << " twinName=" << twinName;
         if (twinLink) {  // if twin ok, setup cross links betwen value & provider
-            if (link->isThreaded())  link->_mutex.lock();
+            if (link->isThreaded())  link->_mutex->lock();
             twinLink->_twin = link;
             link->_twin = twinLink;
-            if (link->isThreaded())  link->_mutex.unlock();
+            if (link->isThreaded())  link->_mutex->unlock();
             twinLink->setupEnd( syncMode);
             emit link->modeChanged( link->linkPath(), link->linkId());   // This is now Bidirectional mode
         }
@@ -662,10 +663,12 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
         }
     }
     /// Make sure threaded flag is updated for the twins
-    if (child) {
-        child->_isThreaded |= flags.is( flags.Threaded);
-        if (child->_twin) {
-            child->_twin->_isThreaded |= flags.is( flags.Threaded);
+    if (flags.is( flags.Threaded)) {
+        if (child) {
+            child->setThreaded();
+            if (child->_twin) {
+                child->_twin->setThreaded();
+            }
         }
     }
 
@@ -859,6 +862,21 @@ ArnM::ArnM()
     _errTextTab[ ArnError::ScriptError]     = QString(tr("Script"));
     _errTextTab[ ArnError::RpcInvokeError]  = QString(tr("Rpc Invoke error"));
     _errTextTab[ ArnError::RpcReceiveError] = QString(tr("Rpc Receive error"));
+
+    if (Arn::debugSizes) {
+        qDebug() << "====== Arn Sizes ======";
+        qDebug() << "QObject: " << sizeof(QObject);
+        qDebug() << "  QScopedPtr: " << sizeof(QScopedPointer<QObjectData>);
+        qDebug() << "  QObjectData: " << sizeof(QObjectData);
+        qDebug() << "QString: " << sizeof(QString);
+        qDebug() << "QVariant: " << sizeof(QVariant);
+        qDebug() << "ArnLink: " << sizeof(ArnLink);
+        qDebug() << "ArnItemB: " << sizeof(ArnItemB);
+        qDebug() << "ArnItem: " << sizeof(ArnItem);
+        qDebug() << "DataType: " << sizeof(Arn::DataType);
+        qDebug() << "DataType::E: " << sizeof(Arn::DataType::E);
+        qDebug() << "=======================";
+    }
 
     QTimer::singleShot( 0, this, SLOT(postSetup()));
 }

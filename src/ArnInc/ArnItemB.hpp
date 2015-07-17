@@ -69,7 +69,7 @@ class ARNLIBSHARED_EXPORT ArnItemB : public QObject
 public:
     //! Code used in blob for arnExport() and arnImport()
     struct ExportCode {
-        enum E {
+        enum _ARN_ENUM_PACKED_  E {
             ByteArray  = 3,
             String     = 4,
             Variant    = 5,  // Legacy

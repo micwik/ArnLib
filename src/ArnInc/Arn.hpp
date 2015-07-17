@@ -33,6 +33,7 @@
 #define ARN_HPP
 
 #include "MQFlags.hpp"
+#include "ArnLib_global.hpp"
 #include <QString>
 
 #define DATASTREAM_VER  QDataStream::Qt_4_6
@@ -69,7 +70,7 @@ struct SameValue {
 
 //! Data type of an _Arn Data Object_
 struct DataType {
-    enum E {
+    enum _ARN_ENUM_PACKED_  E {
         Null       = 0,
         Int        = 1,
         Double     = 2,
@@ -77,12 +78,13 @@ struct DataType {
         ByteArray  = 3,
         String     = 4,
         Variant    = 5
-        // 16 and above is reserved by ArnItemB::ExportCode
+        // 16 and above (max 255) is reserved by ArnItemB::ExportCode
     };
     MQ_DECLARE_ENUM( DataType)
 };
 
 //! General global mode of an _Arn Data Object_
+/// Max 16 bit
 struct ObjectMode {
     enum E {
         //! A two way object, typically for validation or pipe
@@ -96,6 +98,7 @@ struct ObjectMode {
 };
 
 //! The client session sync mode of an _Arn Data Object_
+/// Max 16 bit
 struct ObjectSyncMode {  // This mode is sent with sync-command
     enum E {
         //! default

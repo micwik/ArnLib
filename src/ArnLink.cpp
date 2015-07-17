@@ -53,7 +53,7 @@ void ArnLink::emitChanged( int sendId, const ArnLinkHandle& handleData)
 {
     // qDebug() << "emitChanged: isThr=" << _isThreaded << " isPipe=" << _isPipeMode <<
     //            " path=" << linkPath() << " value=" << toByteArray();
-    if (_isThreaded && (_isPipeMode || !handleData.isNull()))
+    if (_mutex && (_isPipeMode || !handleData.isNull()))
         emit changed( sendId, toByteArray(), handleData);
     else
         emit changed( sendId, handleData);
@@ -67,12 +67,12 @@ void ArnLink::setValue( int value, int sendId, bool forceKeep)
         return;
     }
 
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     resetHave();
     _valueInt = value;
-    _type.e  = _type.Int;
+    _type.e   = _type.Int;
     _haveInt  = true;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
 
     emitChanged( sendId);
 }
@@ -85,12 +85,12 @@ void ArnLink::setValue( ARNREAL value, int sendId, bool forceKeep)
         return;
     }
 
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     resetHave();
     _valueReal = value;
     _type.e    = _type.Real;
     _haveReal  = true;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
 
     emitChanged( sendId);
 }
@@ -104,13 +104,13 @@ void ArnLink::setValue( const QString& value, int sendId, bool forceKeep,
         return;
     }
 
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     resetHave();
     _valueString.resize(0);     // Avoid heap defragmentation
     _valueString += value;
-    _type.e      = _type.String;
+    _type.e       = _type.String;
     _haveString   = true;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
 
     emitChanged( sendId, handleData);
 }
@@ -124,13 +124,13 @@ void ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
         return;
     }
 
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     resetHave();
     _valueByteArray.resize(0);     // Avoid heap defragmentation
     _valueByteArray += value;
-    _type.e         = _type.ByteArray;
+    _type.e          = _type.ByteArray;
     _haveByteArray   = true;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
 
     emitChanged( sendId, handleData);
 }
@@ -143,12 +143,12 @@ void ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
         return;
     }
 
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     resetHave();
     _valueVariant = value;
-    _type.e      = _type.Variant;
+    _type.e       = _type.Variant;
     _haveVariant  = true;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
 
     emitChanged( sendId);
 }
@@ -170,7 +170,7 @@ void ArnLink::trfValue( const QByteArray& value, int sendId, bool forceKeep, Arn
 
 int ArnLink::toInt()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
 
     if (!_haveInt) {
         switch (_type.e) {
@@ -192,9 +192,9 @@ int ArnLink::toInt()
         _haveInt = true;
     }
 
-    if (_isThreaded) {
+    if (_mutex) {
         int retVal = _valueInt;
-        _mutex.unlock();
+        _mutex->unlock();
         return retVal;
     }
     return _valueInt;
@@ -203,7 +203,7 @@ int ArnLink::toInt()
 
 ARNREAL  ArnLink::toReal()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
 
     if (!_haveReal) {
         switch (_type.e) {
@@ -237,9 +237,9 @@ ARNREAL  ArnLink::toReal()
         _haveReal = true;
     }
 
-    if (_isThreaded) {
+    if (_mutex) {
         ARNREAL retVal = _valueReal;
-        _mutex.unlock();
+        _mutex->unlock();
         return retVal;
     }
     return _valueReal;
@@ -248,7 +248,7 @@ ARNREAL  ArnLink::toReal()
 
 QString ArnLink::toString()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
 
     if (!_haveString) {
         _valueString.resize(0);     // Avoid heap defragmentation
@@ -274,9 +274,9 @@ QString ArnLink::toString()
         _haveString  = true;
     }
 
-    if (_isThreaded) {
+    if (_mutex) {
         QString retVal = _valueString;
-        _mutex.unlock();
+        _mutex->unlock();
         return retVal;
     }
     return _valueString;
@@ -285,7 +285,7 @@ QString ArnLink::toString()
 
 QByteArray ArnLink::toByteArray()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
 
     if (!_haveByteArray) {
         _valueByteArray.resize(0);     // Avoid heap defragmentation
@@ -311,9 +311,9 @@ QByteArray ArnLink::toByteArray()
         _haveByteArray  = true;
     }
 
-    if (_isThreaded) {
+    if (_mutex) {
         QByteArray retVal = _valueByteArray;
-        _mutex.unlock();
+        _mutex->unlock();
         return retVal;
     }
     return _valueByteArray;
@@ -322,7 +322,7 @@ QByteArray ArnLink::toByteArray()
 
 QVariant ArnLink::toVariant( void)
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
 
     if (!_haveVariant) {
         switch (_type.e) {
@@ -344,9 +344,9 @@ QVariant ArnLink::toVariant( void)
         _haveVariant = true;
     }
 
-    if (_isThreaded) {
+    if (_mutex) {
         QVariant retVal = _valueVariant;
-        _mutex.unlock();
+        _mutex->unlock();
         return retVal;
     }
     return _valueVariant;
@@ -355,9 +355,9 @@ QVariant ArnLink::toVariant( void)
 
 Arn::DataType  ArnLink::type()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     Arn::DataType  retVal = Arn::DataType( _type.e);
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
 
     return retVal;
 }
@@ -410,7 +410,6 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     QObject::setObjectName( name_);
     _isFolder        = flags.is( flags.Folder);
     _isProvider      = name_.endsWith('!');
-    _isThreaded      = false;  // The correct value is set by ArnM::getRawLink
     _valueInt        = 0;
     _valueReal       = 0.0;
     _valueString     = "";
@@ -418,6 +417,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     _valueVariant    = QVariant();
     _type.e          = Arn::DataType::Null;
     _twin            = 0;
+    _mutex           = 0;
     _isPipeMode      = false;
     _isSaveMode      = false;
     _hasBeenSetup    = false;
@@ -454,6 +454,8 @@ void  ArnLink::setupEnd( Arn::ObjectSyncMode syncMode)
 ArnLink::~ArnLink()
 {
     if (Arn::debugLinkDestroy)  qDebug() << "Destructor link: path=" << linkPath();
+    if (_mutex)
+        delete _mutex;
     if (_twin) {
         _twin->_twin = 0;  // points to this object
         delete _twin;
@@ -487,17 +489,17 @@ bool ArnLink::isFolder( void)
 
 void  ArnLink::addSyncMode( Arn::ObjectSyncMode syncMode)
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     _syncMode |= syncMode.toInt();
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
 }
 
 
 Arn::ObjectSyncMode  ArnLink::syncMode()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     int  retVal = _syncMode;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
     return Arn::ObjectSyncMode::fromInt( retVal);
 }
 
@@ -510,27 +512,27 @@ bool  ArnLink::isBiDirMode()
 
 void  ArnLink::setPipeMode( bool isPipeMode, bool alsoSetTwin)
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     if (isPipeMode != _isPipeMode) {
         _isPipeMode = isPipeMode;
-        if (_isThreaded)  _mutex.unlock();
+        if (_mutex)  _mutex->unlock();
         emit modeChanged( linkPath(), linkId());
-        if (_isThreaded)  _mutex.lock();
+        if (_mutex)  _mutex->lock();
     }
     if (_twin  &&  alsoSetTwin) {
-        if (_isThreaded)  _mutex.unlock();
+        if (_mutex)  _mutex->unlock();
         _twin->setPipeMode( isPipeMode, false);
-        if (_isThreaded)  _mutex.lock();
+        if (_mutex)  _mutex->lock();
     }
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
 }
 
 
 bool  ArnLink::isPipeMode()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     bool  retVal = _isPipeMode;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
     return retVal;
 }
 
@@ -540,14 +542,14 @@ void  ArnLink::setSaveMode( bool isSaveMode)
     ArnLink*  link = valueLink();  // SaveMode is always stored in ValueLink
     if (this != link)  return link->setSaveMode( isSaveMode);
 
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     if (isSaveMode != _isSaveMode) {
         _isSaveMode = isSaveMode;
-        if (_isThreaded)  _mutex.unlock();
+        if (_mutex)  _mutex->unlock();
         emit modeChanged( linkPath(), linkId());
-        if (_isThreaded)  _mutex.lock();
+        if (_mutex)  _mutex->lock();
     }
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
 }
 
 
@@ -556,9 +558,9 @@ bool  ArnLink::isSaveMode()
     ArnLink*  link = valueLink();  // SaveMode is always stored in ValueLink
     if (this != link)  return link->isSaveMode();
 
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     bool  retVal = _isSaveMode;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
     return retVal;
 }
 
@@ -571,24 +573,31 @@ bool  ArnLink::isProvider()  const
 
 bool  ArnLink::isThreaded()  const
 {
-    return _isThreaded;
+    return _mutex != 0;
+}
+
+
+void  ArnLink::setThreaded()
+{
+    if (!_mutex)
+        _mutex = new QMutex;
 }
 
 
 bool  ArnLink::isRetired()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     bool  retVal = _isRetired;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
     return retVal;
 }
 
 
 bool  ArnLink::isRetiredGlobal()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     bool  retVal = _isRetiredGlobal;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
     return retVal;
 }
 
@@ -596,13 +605,13 @@ bool  ArnLink::isRetiredGlobal()
 /// Can only be called from main-thread
 void  ArnLink::setRetired( bool isGlobal)
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     if (Arn::debugLinkDestroy)  qDebug() << "setRetired: path=" << this->linkPath();
 
     _isRetiredGlobal = isGlobal;
     _isRetired       = true;
 
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
 }
 
 
@@ -615,9 +624,9 @@ void  ArnLink::doRetired()
 
 ArnLink*  ArnLink::twinLink()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     ArnLink*  retVal = _twin;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
     return retVal;
 }
 
@@ -632,18 +641,18 @@ ArnLink*  ArnLink::valueLink()
 
 ArnLink*  ArnLink::providerLink()
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     ArnLink*  retVal = _isProvider ? this : _twin;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
     return retVal;
 }
 
 
 ArnLink*  ArnLink::holderLink( bool forceKeep)
 {
-    if (_isThreaded)  _mutex.lock();
+    if (_mutex)  _mutex->lock();
     ArnLink*  retVal = (_twin && !forceKeep) ? _twin : this;
-    if (_isThreaded)  _mutex.unlock();
+    if (_mutex)  _mutex->unlock();
     return retVal;
 }
 
@@ -666,9 +675,9 @@ void  ArnLink::setRefCount( int count)
 {
     ArnLink*  vLink = valueLink();
 
-    if (_isThreaded)  vLink->_mutex.lock();
+    if (vLink->_mutex)  vLink->_mutex->lock();
     vLink->_refCount = count;
-    if (_isThreaded)  vLink->_mutex.unlock();
+    if (vLink->_mutex)  vLink->_mutex->unlock();
 }
 
 
@@ -677,12 +686,12 @@ void ArnLink::decZeroRefs()
     int  zeroRefCount = 0;
     ArnLink*  vLink = valueLink();
 
-    if (_isThreaded)  vLink->_mutex.lock();
+    if (vLink->_mutex)  vLink->_mutex->lock();
     if (vLink->_zeroRefCount > 0) {
         vLink->_zeroRefCount--;
         zeroRefCount = vLink->_zeroRefCount;
     }
-    if (_isThreaded)  vLink->_mutex.unlock();
+    if (vLink->_mutex)  vLink->_mutex->unlock();
     if (Arn::debugLinkRef)  qDebug() << "link-decZeroRefs: path=" << this->linkPath()
                                      << " count=" << zeroRefCount;
 }
@@ -693,9 +702,9 @@ bool ArnLink::isLastZeroRef()
     bool  retVal    = false;
     ArnLink*  vLink = valueLink();
 
-    if (_isThreaded)  vLink->_mutex.lock();
+    if (vLink->_mutex)  vLink->_mutex->lock();
     retVal = (vLink->_refCount == 0) && (vLink->_zeroRefCount == 0);
-    if (_isThreaded)  vLink->_mutex.unlock();
+    if (vLink->_mutex)  vLink->_mutex->unlock();
 
     return retVal;
 }
@@ -706,12 +715,12 @@ void  ArnLink::ref()
 {
     ArnLink*  vLink = valueLink();
 
-    if (_isThreaded)  vLink->_mutex.lock();
+    if (vLink->_mutex)  vLink->_mutex->lock();
     if (vLink->_refCount <= 0)   // First reference, no other thread involved
         vLink->_refCount = 1;
     else
         vLink->_refCount++;
-    if (_isThreaded)  vLink->_mutex.unlock();
+    if (vLink->_mutex)  vLink->_mutex->unlock();
     if (Arn::debugLinkRef)  qDebug() << "link-ref: path=" << this->linkPath() << " count=" << refCount();
 }
 
@@ -722,7 +731,7 @@ void  ArnLink::deref()
     bool  isZeroRefs = false;
     ArnLink*  vLink  = valueLink();
 
-    if (_isThreaded)  vLink->_mutex.lock();
+    if (vLink->_mutex)  vLink->_mutex->lock();
     if (vLink->_refCount > 1)
         vLink->_refCount--;
     else {
@@ -730,7 +739,7 @@ void  ArnLink::deref()
         vLink->_zeroRefCount++;
         isZeroRefs = true;
     }
-    if (_isThreaded)  vLink->_mutex.unlock();
+    if (vLink->_mutex)  vLink->_mutex->unlock();
     if (Arn::debugLinkRef)  qDebug() << "link-deref: path=" << this->linkPath() << " count=" << refCount();
 
     if (isZeroRefs) {  // This is last reference
@@ -744,9 +753,9 @@ int  ArnLink::refCount()
     int  retVal     = 0;
     ArnLink*  vLink = valueLink();
 
-    if (_isThreaded)  vLink->_mutex.lock();
+    if (vLink->_mutex)  vLink->_mutex->lock();
     retVal = vLink->_refCount;
-    if (_isThreaded)  vLink->_mutex.unlock();
+    if (vLink->_mutex)  vLink->_mutex->unlock();
 
     return retVal;
 }

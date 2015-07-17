@@ -11,4 +11,10 @@
 #  define ARNLIBSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
+#if defined (__GNUC__)
+#define _ARN_ENUM_PACKED_ __attribute__((packed))
+#else
+#define _ARN_ENUM_PACKED_
+#endif
+
 #endif // ARNLIB_GLOBAL_HPP

@@ -80,6 +80,7 @@ public:
     bool  isSaveMode();
     bool  isProvider()  const;
     bool  isThreaded()  const;
+    void  setThreaded();
     bool  isRetired();
     bool  isRetiredGlobal();
     ArnLink*  twinLink();
@@ -121,35 +122,39 @@ private:
     // Source for unique id to all ArnLink ..
     static QAtomicInt  _idCount;
 
-    uint  _id;
-    bool  _isFolder;
-    bool  _isProvider;
-    bool  _isThreaded;
-    QMutex  _mutex;
-    volatile int  _refCount;
-    volatile quint8  _zeroRefCount;
-    volatile bool  _isRetired;
-    volatile bool  _isRetiredGlobal;
+    ArnLink*  _twin;   // Used for bidirectional functionality
 
-    volatile int  _valueInt;
-    volatile ARNREAL  _valueReal;
+    QMutex*  _mutex;
+
     QString  _valueString;
     QByteArray  _valueByteArray;
     QVariant  _valueVariant;
+    volatile ARNREAL  _valueReal;
+    volatile int  _valueInt;
 
-    volatile bool  _haveInt;
-    volatile bool  _haveReal;
-    volatile bool  _haveString;
-    volatile bool  _haveByteArray;
-    volatile bool  _haveVariant;
+    quint32  _id;
+    volatile qint32  _refCount;
+
+    volatile qint16   _syncMode;
 
     volatile Arn::DataType  _type;
+    volatile quint8  _zeroRefCount;
 
-    ArnLink*  _twin;   // Used for bidirectional functionality
-    volatile int   _syncMode;
-    volatile bool  _isPipeMode;
-    volatile bool  _isSaveMode;
-    bool  _hasBeenSetup;
+    bool  _hasBeenSetup : 1;
+    bool  _isFolder : 1;
+    bool  _isProvider : 1;
+
+    volatile bool  _isPipeMode : 1;
+    volatile bool  _isSaveMode : 1;
+
+    volatile bool  _isRetired : 1;
+    volatile bool  _isRetiredGlobal : 1;
+
+    volatile bool  _haveInt : 1;
+    volatile bool  _haveReal : 1;
+    volatile bool  _haveString : 1;
+    volatile bool  _haveByteArray : 1;
+    volatile bool  _haveVariant : 1;
 };
 //! \endcond
 

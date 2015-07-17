@@ -34,9 +34,9 @@
 
 #include <QString>
 
-
 namespace Arn {
 
+extern bool  debugSizes;
 extern bool  debugThreading;
 extern bool  debugLinkRef;
 extern bool  debugLinkDestroy;
