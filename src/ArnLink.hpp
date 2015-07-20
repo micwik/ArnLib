@@ -42,6 +42,8 @@
 #include <QAtomicInt>
 #include <QMutex>
 
+struct ArnLinkValue;
+
 
 //! \cond ADV
 class ArnLink : public QObject
@@ -128,12 +130,7 @@ private:
     static QAtomicInt  _idCount;
 
     QMutex*  _mutex;
-
-    QString  _valueString;
-    QByteArray  _valueByteArray;
-    QVariant  _valueVariant;
-    volatile ARNREAL  _valueReal;
-    volatile int  _valueInt;
+    ArnLinkValue* _val;
 
     quint32  _id;
     volatile qint32  _refCount;
