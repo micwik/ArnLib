@@ -133,7 +133,8 @@ contains(ARN, core) {
         $$PWD/ArnInc/ArnPipe.hpp \
         $$PWD/ArnInc/ArnItemB.hpp \
         $$PWD/ArnInc/ArnLinkHandle.hpp \
-        $$PWD/ArnLink.hpp
+        $$PWD/ArnLink.hpp \
+        $$PWD/private/ArnItemB_p.hpp
 }
 
 

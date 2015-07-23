@@ -30,6 +30,7 @@
 //
 
 #include "ArnInc/ArnItemB.hpp"
+#include "private/ArnItemB_p.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include "ArnLink.hpp"
@@ -40,14 +41,13 @@
 #include <QDebug>
 
 
-QAtomicInt ArnItemB::_idCount(1);
+QAtomicInt ArnItemBPrivate::_idCount(1);
 
 
-void  ArnItemB::init()
+ArnItemBPrivate::ArnItemBPrivate()
 {
-    _link       = 0;
-    _reference  = 0;
-    _id         = _idCount.fetchAndAddRelaxed(1);
+    _reference = 0;
+    _id        = _idCount.fetchAndAddRelaxed(1);
 
     _useForceKeep    = false;
     _blockEcho       = false;
@@ -56,21 +56,50 @@ void  ArnItemB::init()
     _ignoreSameValue = ArnM::defaultIgnoreSameValue();
     _isOnlyEcho      = true;  // Nothing else yet ...
 
-    _syncMode = Arn::ObjectSyncMode();
-    _mode     = Arn::ObjectMode();
+    _syncMode          = Arn::ObjectSyncMode();
+    _mode              = Arn::ObjectMode();
     _syncModeLinkShare = true;
 }
 
 
+ArnItemBPrivate::~ArnItemBPrivate()
+{
+}
+
+
+void  ArnItemB::init()
+{
+    _link = 0;
+}
+
+
 ArnItemB::ArnItemB( QObject *parent)
-            : QObject( parent)
+    : QObject( parent)
+    , d_ptr( new ArnItemBPrivate)
 {
     init();
 }
 
 
+ArnItemB::ArnItemB( ArnItemBPrivate& dd, QObject* parent)
+    : QObject( parent)
+    , d_ptr( &dd)
+{
+    init();
+}
+
+
+ArnItemB::~ArnItemB()
+{
+    close();
+    delete d_ptr;
+}
+
+
 void  ArnItemB::setupOpenItem( bool isFolder)
 {
+    Q_D(ArnItemB);
+
     connect( _link, SIGNAL(retired()), this, SLOT(doArnLinkDestroyed()));
 
     if (isFolder) {
@@ -87,23 +116,25 @@ void  ArnItemB::setupOpenItem( bool isFolder)
                  this, SLOT(linkValueUpdated(uint,QByteArray,ArnLinkHandle)));
         connect( _link, SIGNAL(modeChanged(QString,uint)), this, SLOT(modeUpdate()));
     }
-    addMode( _mode);  // Transfer modes to the link
+    addMode( d->_mode);  // Transfer modes to the link
     modeUpdate(true);
 }
 
 
 bool  ArnItemB::open( const QString& path)
 {
+    Q_D(ArnItemB);
+
     if (_link)
         close();
 
-    Arn::ObjectSyncMode  syncMode = _syncModeLinkShare ? _syncMode : Arn::ObjectSyncMode();
+    Arn::ObjectSyncMode  syncMode = d->_syncModeLinkShare ? d->_syncMode : Arn::ObjectSyncMode();
     _link = ArnM::link( path,  Arn::LinkFlags::CreateAllowed, syncMode);
     if (!_link)  return false;
 
     setupOpenItem( _link->isFolder());
 #ifdef ARNITEMB_INCPATH
-    _path = path;
+    d->_path = path;
 #endif
     return true;
 }
@@ -145,12 +176,14 @@ bool  ArnItemB::openFolder( const QString& path)
 
 void  ArnItemB::close()
 {
+    Q_D(ArnItemB);
+
     if (!_link)  return;
 
     _link->deref();
-    _link     = 0;
-    _syncMode = Arn::ObjectSyncMode();
-    _mode     = Arn::ObjectMode();
+    _link        = 0;
+    d->_syncMode = Arn::ObjectSyncMode();
+    d->_mode     = Arn::ObjectMode();
 }
 
 
@@ -210,29 +243,37 @@ void  ArnItemB::modeUpdate( bool isSetup)
 
 void  ArnItemB::addSyncMode( Arn::ObjectSyncMode syncMode, bool linkShare)
 {
-    _syncModeLinkShare = linkShare;
-    _syncMode.f |= syncMode.f;
-    if (_syncModeLinkShare  &&  _link) {
-        _link->addSyncMode( _syncMode);
+    Q_D(ArnItemB);
+
+    d->_syncModeLinkShare = linkShare;
+    d->_syncMode.f |= syncMode.f;
+    if (d->_syncModeLinkShare  &&  _link) {
+        _link->addSyncMode( d->_syncMode);
     }
 }
 
 
 void  ArnItemB::resetOnlyEcho()
 {
-    _isOnlyEcho = true;
+    Q_D(ArnItemB);
+
+    d->_isOnlyEcho = true;
 }
 
 
 bool  ArnItemB::isOnlyEcho() const
 {
-    return _isOnlyEcho;
+    Q_D(const ArnItemB);
+
+    return d->_isOnlyEcho;
 }
 
 
 void  ArnItemB::setBlockEcho( bool blockEcho)
 {
-    _blockEcho = blockEcho;
+    Q_D(ArnItemB);
+
+    d->_blockEcho = blockEcho;
 }
 
 
@@ -244,28 +285,36 @@ bool ArnItemB::isRetiredGlobal()
 
 void  ArnItemB::setEnableSetValue( bool enable)
 {
-    _enableSetValue = enable;
+    Q_D(ArnItemB);
+
+    d->_enableSetValue = enable;
 }
 
 
 void  ArnItemB::setEnableUpdNotify( bool enable)
 {
-    _enableUpdNotify = enable;
+    Q_D(ArnItemB);
+
+    d->_enableUpdNotify = enable;
 }
 
 
 Arn::ObjectSyncMode  ArnItemB::syncMode()  const
 {
-    if (_syncModeLinkShare  &&  _link) {
+    Q_D(const ArnItemB);
+
+    if (d->_syncModeLinkShare  &&  _link) {
         return Arn::ObjectSyncMode::fromInt( _link->syncMode());
     }
-    return _syncMode;
+    return d->_syncMode;
 }
 
 
 ArnItemB&  ArnItemB::setBiDirMode()
 {
-    _mode.set( _mode.BiDir);
+    Q_D(ArnItemB);
+
+    d->_mode.set( Arn::ObjectMode::BiDir);
     if (!_link)  return *this;
 
     if (_link->isBiDirMode())  return *this;  // Already is bidirectional mode
@@ -280,7 +329,9 @@ ArnItemB&  ArnItemB::setBiDirMode()
 
 bool  ArnItemB::isBiDirMode()  const
 {
-    if (!_link)  return _mode.is( _mode.BiDir);
+    Q_D(const ArnItemB);
+
+    if (!_link)  return d->_mode.is( Arn::ObjectMode::BiDir);
 
     return _link->isBiDirMode();
 }
@@ -288,12 +339,14 @@ bool  ArnItemB::isBiDirMode()  const
 
 ArnItemB&  ArnItemB::setPipeMode()
 {
-    _mode.set( _mode.Pipe).set( _mode.BiDir);
+    Q_D(ArnItemB);
+
+    d->_mode.set( Arn::ObjectMode::Pipe).set( Arn::ObjectMode::BiDir);
     if (!_link)  return *this;
 
     if (_link->isPipeMode())  return *this;  // Already is pipe mode
 
-    _ignoreSameValue = false;
+    d->_ignoreSameValue = false;
     // Pipe-mode demands the pair of value & provider
     ArnLink*  twinLink = ArnM::addTwin( _link, syncMode());
     _link->setPipeMode( true);
@@ -305,7 +358,9 @@ ArnItemB&  ArnItemB::setPipeMode()
 
 bool  ArnItemB::isPipeMode()  const
 {
-    if (!_link)  return _mode.is( _mode.Pipe);
+    Q_D(const ArnItemB);
+
+    if (!_link)  return d->_mode.is( Arn::ObjectMode::Pipe);
 
     return _link->isPipeMode();
 }
@@ -313,7 +368,9 @@ bool  ArnItemB::isPipeMode()  const
 
 ArnItemB&  ArnItemB::setSaveMode()
 {
-    _mode.set( _mode.Save);
+    Q_D(ArnItemB);
+
+    d->_mode.set( Arn::ObjectMode::Save);
     if (!_link)  return *this;
 
     _link->setSaveMode( true);
@@ -323,7 +380,9 @@ ArnItemB&  ArnItemB::setSaveMode()
 
 bool  ArnItemB::isSaveMode()  const
 {
-    if (!_link)  return _mode.is( _mode.Save);
+    Q_D(const ArnItemB);
+
+    if (!_link)  return d->_mode.is( Arn::ObjectMode::Save);
 
     return _link->isSaveMode();
 }
@@ -365,7 +424,9 @@ bool  ArnItemB::isAutoDestroy()  const
 
 void  ArnItemB::addMode( Arn::ObjectMode mode)
 {
-    _mode.f |= mode.f;  // Just in case, transfer all modes
+    Q_D(ArnItemB);
+
+    d->_mode.f |= mode.f;  // Just in case, transfer all modes
 
     if (mode.is( mode.Pipe)) {
         setPipeMode();
@@ -388,7 +449,9 @@ Arn::ObjectMode  ArnItemB::getMode()  const
 /// Use with care, link must be "referenced" before use, otherwise it might have been deleted
 Arn::ObjectMode  ArnItemB::getMode( ArnLink* link)  const
 {
-    if (!link)  return _mode;
+    Q_D(const ArnItemB);
+
+    if (!link)  return d->_mode;
 
     Arn::ObjectMode  mode;
     if (link->isPipeMode())   mode.set( mode.Pipe);
@@ -401,13 +464,17 @@ Arn::ObjectMode  ArnItemB::getMode( ArnLink* link)  const
 
 void  ArnItemB::setIgnoreSameValue( bool isIgnore)
 {
-    _ignoreSameValue = isPipeMode() ? false :isIgnore;
+    Q_D(ArnItemB);
+
+    d->_ignoreSameValue = isPipeMode() ? false : isIgnore;
 }
 
 
-bool  ArnItemB::isIgnoreSameValue()
+bool  ArnItemB::isIgnoreSameValue()  const
 {
-    return _ignoreSameValue;
+    Q_D(const ArnItemB);
+
+    return d->_ignoreSameValue;
 }
 
 
@@ -427,6 +494,30 @@ QString  ArnItemB::name( Arn::NameF nameF)  const
 }
 
 
+void  ArnItemB::setReference( void* reference)
+{
+    Q_D(ArnItemB);
+
+    d->_reference = reference;
+}
+
+
+void*  ArnItemB::reference()  const
+{
+    Q_D(const ArnItemB);
+
+    return d->_reference;
+}
+
+
+uint  ArnItemB::itemId()  const
+{
+    Q_D(const ArnItemB);
+
+    return d->_id;
+}
+
+
 void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame)
 {
     ArnLinkHandle  handle;
@@ -436,7 +527,9 @@ void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame)
 
 void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData)
 {
-    if (!_enableSetValue)  return;
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
 
     if (!data.isEmpty()) {
         if (data.at(0) < 32) {  // Assume Export-code
@@ -642,7 +735,9 @@ bool  ArnItemB::toBool() const
 
 void  ArnItemB::setValue( const ArnItemB& other, int ignoreSame)
 {
-    if (!_enableSetValue)  return;
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
 
     ArnLink *link = other._link;
 
@@ -686,21 +781,23 @@ void  ArnItemB::setValue( const ArnItemB& other, int ignoreSame)
 
 void  ArnItemB::setValue( int value, int ignoreSame)
 {
-    if (!_enableSetValue)  return;
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( _useForceKeep);
+            ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
             if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toInt())) {
                 return;
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( QByteArray::number( value), _id, _useForceKeep,
+            trfValue( QByteArray::number( value), d->_id, d->_useForceKeep,
                       ArnLinkHandle( ArnLinkHandle::Flags::Text));
         else
-            _link->setValue( value, _id, _useForceKeep);
+            _link->setValue( value, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning int:")) + QString::number( value),
@@ -711,21 +808,23 @@ void  ArnItemB::setValue( int value, int ignoreSame)
 
 void  ArnItemB::setValue( ARNREAL value, int ignoreSame)
 {
-    if (!_enableSetValue)  return;
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( _useForceKeep);
+            ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
             if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toReal())) {
                 return;
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( QByteArray::number( value), _id, _useForceKeep,
+            trfValue( QByteArray::number( value), d->_id, d->_useForceKeep,
                       ArnLinkHandle( ArnLinkHandle::Flags::Text));
         else
-            _link->setValue( value, _id, _useForceKeep);
+            _link->setValue( value, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning ARNREAL:")) + QString::number( value),
@@ -736,21 +835,23 @@ void  ArnItemB::setValue( ARNREAL value, int ignoreSame)
 
 void  ArnItemB::setValue( bool value, int ignoreSame)
 {
-    if (!_enableSetValue)  return;
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( _useForceKeep);
+            ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
             if ((holderLink->type() != Arn::DataType::Null) && (value == (holderLink->toInt() != 0))) {
                 return;
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( QByteArray::number( value ? 1 : 0), _id, _useForceKeep,
+            trfValue( QByteArray::number( value ? 1 : 0), d->_id, d->_useForceKeep,
                       ArnLinkHandle( ArnLinkHandle::Flags::Text));
         else
-            _link->setValue( value ? 1 : 0, _id, _useForceKeep);
+            _link->setValue( value ? 1 : 0, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning bool:")) + QString::number( value),
@@ -761,21 +862,23 @@ void  ArnItemB::setValue( bool value, int ignoreSame)
 
 void  ArnItemB::setValue( const QString& value, int ignoreSame)
 {
-    if (!_enableSetValue)  return;
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( _useForceKeep);
+            ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
             if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toString())) {
                 return;
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( value.toUtf8(), _id, _useForceKeep,
+            trfValue( value.toUtf8(), d->_id, d->_useForceKeep,
                       ArnLinkHandle( ArnLinkHandle::Flags::Text));
         else
-            _link->setValue( value, _id, _useForceKeep);
+            _link->setValue( value, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning string:")) + value,
@@ -786,21 +889,23 @@ void  ArnItemB::setValue( const QString& value, int ignoreSame)
 
 void  ArnItemB::setValue( const QByteArray& value, int ignoreSame)
 {
-    if (!_enableSetValue)  return;
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( _useForceKeep);
+            ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
             if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toByteArray())) {
                 return;
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( value, _id, _useForceKeep,
+            trfValue( value, d->_id, d->_useForceKeep,
                       ArnLinkHandle());
         else
-            _link->setValue( value, _id, _useForceKeep);
+            _link->setValue( value, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning bytearray:")) + QString::fromUtf8( value.constData(), value.size()),
@@ -811,22 +916,24 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame)
 
 void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
 {
-    if (!_enableSetValue)  return;
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( _useForceKeep);
+            ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
             if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toVariant())) {
                 return;
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
             // QVariant is not realy supported for pipe in threaded usage
-            trfValue( value.toString().toUtf8(), _id, _useForceKeep,
+            trfValue( value.toString().toUtf8(), d->_id, d->_useForceKeep,
                       ArnLinkHandle( ArnLinkHandle::Flags::Text));
         else
-            _link->setValue( value, _id, _useForceKeep);
+            _link->setValue( value, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning variant")),
@@ -858,19 +965,25 @@ void  ArnItemB::itemModeChangedBelow( const QString& path, uint linkId, Arn::Obj
 
 void  ArnItemB::setForceKeep( bool fk)
 {
-    _useForceKeep = fk;
+    Q_D(ArnItemB);
+
+    d->_useForceKeep = fk;
 }
 
 
 bool  ArnItemB::isForceKeep()  const
 {
-    return _useForceKeep;
+    Q_D(const ArnItemB);
+
+    return d->_useForceKeep;
 }
 
 
 void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData)
 {
-    if (!_enableSetValue)  return;
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     ArnLinkHandle::Flags&  handleFlags = handleData._flags;
@@ -881,7 +994,7 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle
 
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( _useForceKeep);
+            ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
             if (handleFlags.is( handleFlags.Text)) {
                 if ((holderLink->type() != Arn::DataType::Null) && (valueTxt == holderLink->toString()))
                     return;
@@ -892,14 +1005,14 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle
             }
         }
         if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( value, _id, _useForceKeep, handleData);
+            trfValue( value, d->_id, d->_useForceKeep, handleData);
         else
             if (handleFlags.is( handleFlags.Text)) {
                 handleFlags.set( handleFlags.Text, false);  // Text flag not needed anymore
-                _link->setValue( valueTxt, _id, _useForceKeep, handleData);
+                _link->setValue( valueTxt, d->_id, d->_useForceKeep, handleData);
             }
             else
-                _link->setValue( value, _id, _useForceKeep, handleData);
+                _link->setValue( value, d->_id, d->_useForceKeep, handleData);
     }
     else {
         errorLog( QString(tr("Assigning bytearray (ArnLinkHandle):")) + QString::fromUtf8( value.constData(), value.size()),
@@ -911,7 +1024,9 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle
 void  ArnItemB::trfValue( const QByteArray& value, int sendId, bool forceKeep,
                          const ArnLinkHandle& handleData)
 {
-    if (!_enableSetValue)  return;
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
 
     QMetaObject::invokeMethod( _link, "trfValue", Qt::QueuedConnection,
                                Q_ARG( QByteArray, value),
@@ -940,24 +1055,28 @@ void  ArnItemB::errorLog( const QString& errText, ArnError err, void* reference)
 
 void  ArnItemB::linkValueUpdated( uint sendId, const ArnLinkHandle& handleData)
 {
-    if (_blockEcho  &&  sendId == _id)  // This update was initiated from this Item, it can be blocked ...
+    Q_D(ArnItemB);
+
+    if (d->_blockEcho  &&  sendId == d->_id)  // Update was initiated from this Item, it can be blocked ...
         return;
 
-    _isOnlyEcho = (sendId == _id) ? _isOnlyEcho : false;
+    d->_isOnlyEcho = (sendId == d->_id) ? d->_isOnlyEcho : false;
 
-    if (_enableUpdNotify)
+    if (d->_enableUpdNotify)
         itemUpdated( handleData);
 }
 
 
 void  ArnItemB::linkValueUpdated( uint sendId, const QByteArray& value, ArnLinkHandle handleData)
 {
-    if (_blockEcho  &&  sendId == _id)  // This update was initiated from this Item, it can be blocked ...
+    Q_D(ArnItemB);
+
+    if (d->_blockEcho  &&  sendId == d->_id)  // Update was initiated from this Item, it can be blocked ...
         return;
 
-    _isOnlyEcho = (sendId == _id) ? _isOnlyEcho : false;
+    d->_isOnlyEcho = (sendId == d->_id) ? d->_isOnlyEcho : false;
 
-    if (_enableUpdNotify)
+    if (d->_enableUpdNotify)
         itemUpdated( handleData, &value);
 }
 
@@ -985,11 +1104,5 @@ void  ArnItemB::doArnLinkDestroyed()
 {
     if (Arn::debugLinkDestroy)  qDebug() << "Item arnLinkDestroyed: path=" << path();
     emit arnLinkDestroyed();
-    close();
-}
-
-
-ArnItemB::~ArnItemB()
-{
     close();
 }

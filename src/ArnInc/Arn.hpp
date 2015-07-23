@@ -86,7 +86,7 @@ struct DataType {
 //! General global mode of an _Arn Data Object_
 /// Max 16 bit
 struct ObjectMode {
-    enum E {
+    enum _ARN_ENUM_PACKED_  E {
         //! A two way object, typically for validation or pipe
         BiDir = 0x01,
         //! Implies _BiDir_ and all data is preserved as a stream
@@ -100,7 +100,7 @@ struct ObjectMode {
 //! The client session sync mode of an _Arn Data Object_
 /// Max 16 bit
 struct ObjectSyncMode {  // This mode is sent with sync-command
-    enum E {
+    enum _ARN_ENUM_PACKED_  E {
         //! default
         Normal      = 0x000,
         //! Monitor of server object for client

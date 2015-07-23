@@ -45,8 +45,7 @@
 #include <QVariant>
 #include <QAtomicInt>
 
-#define ARNITEMB_INCPATH
-
+class ArnItemBPrivate;
 class QTimer;
 class ArnLink;
 
@@ -65,6 +64,7 @@ See ArnItem.
 class ARNLIBSHARED_EXPORT ArnItemB : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnItemB)
 
 public:
     //! Code used in blob for arnExport() and arnImport()
@@ -137,13 +137,13 @@ public:
      *  \param[in] reference Any external structure or id.
      *  \see reference()
      */
-    void  setReference( void* reference)  {_reference = reference;}
+    void  setReference( void* reference);
 
     //! Get the stored external reference
     /*! \return The associated external reference
      *  \see setReference()
      */
-    void*  reference()  const {return _reference;}
+    void*  reference()  const;
 
     //! Get the _id_ for this ArnItem
     /*! The ArnItem _id_ is unique within its running program. Even if 2 ArnItems are
@@ -151,7 +151,7 @@ public:
      *  \return _id_ for this ArnItem
      *  \see linkId()
      */
-    uint  itemId()  const {return _id;}
+    uint  itemId()  const;
 
     //! Get the _id_ for this _Arn Data Object_
     /*! The link (_Arn Data Object_) _id_ is unique within its running program.
@@ -219,7 +219,7 @@ protected:
     /*! \retval true if skipping equal values
      *  \see setIgnoreSameValue()
      */
-    bool  isIgnoreSameValue();
+    bool  isIgnoreSameValue()  const;
 
     //! Add _general mode_ settings for this _Arn Data Object_
     /*! If this ArnItem is in closed state, the added modes will be stored and
@@ -420,6 +420,9 @@ protected:
     void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
     QStringList  childItemsMain()  const;
     void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0)  const;
+
+    ArnItemB( ArnItemBPrivate& dd, QObject* parent);
+    ArnItemBPrivate* const  d_ptr;
     //! \endcond
 
 private slots:
@@ -434,24 +437,7 @@ private:
     void  setupOpenItem( bool isFolder);
     //bool  open( const ArnItemB& folder, const QString& itemName, bool isFolder);
 
-    /// Source for unique id to all ArnItem ..
-    static QAtomicInt  _idCount;
-
     ArnLink*  _link;
-    Arn::ObjectSyncMode  _syncMode;
-    Arn::ObjectMode  _mode;
-    bool  _syncModeLinkShare;
-    bool  _useForceKeep;
-    bool  _blockEcho;
-    bool  _enableSetValue;
-    bool  _enableUpdNotify;
-    bool  _ignoreSameValue;
-    bool  _isOnlyEcho;
-    uint  _id;
-    void*  _reference;
-#ifdef ARNITEMB_INCPATH
-    QString _path;
-#endif
 };
 
 #endif // ARNITEMB_HPP
