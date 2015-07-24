@@ -29,38 +29,34 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
-#ifndef ARNITEMB_P_HPP
-#define ARNITEMB_P_HPP
+#ifndef ARNITEM_P_HPP
+#define ARNITEM_P_HPP
 
-// #define ARNITEMB_INCPATH
+#include "ArnItemB_p.hpp"
+
+#define ARNITEM_COUNTTYPE quint16
 
 
-class ArnItemBPrivate
+class ArnItemPrivate : public ArnItemBPrivate
 {
-    friend class ArnItemB;
+    friend class ArnItem;
 public:
-    ArnItemBPrivate();
-    virtual ~ArnItemBPrivate();
+    ArnItemPrivate();
+    virtual ~ArnItemPrivate();
 
 private:
-    /// Source for unique id to all ArnItem ..
-    static QAtomicInt  _idCount;
+    QTimer*  _delayTimer;
 
-    void*  _reference;
-#ifdef ARNITEMB_INCPATH
-    QString _path;
-#endif
-    quint32  _id;
-    Arn::ObjectSyncMode  _syncMode;
-    Arn::ObjectMode  _mode;
-    bool  _syncModeLinkShare : 1;
-    bool  _useForceKeep : 1;
-    bool  _blockEcho : 1;
-    bool  _enableSetValue : 1;
-    bool  _enableUpdNotify : 1;
-    bool  _ignoreSameValue : 1;
-    bool  _isOnlyEcho : 1;
+    ARNITEM_COUNTTYPE  _emitChanged;
+    ARNITEM_COUNTTYPE  _emitChangedInt;
+    ARNITEM_COUNTTYPE  _emitChangedReal;
+    ARNITEM_COUNTTYPE  _emitChangedBool;
+    ARNITEM_COUNTTYPE  _emitChangedString;
+    ARNITEM_COUNTTYPE  _emitChangedByteArray;
+    ARNITEM_COUNTTYPE  _emitChangedVariant;
+
+    bool  _isTemplate : 1;
 };
 
-#endif // ARNITEMB_P_HPP
+#endif // ARNITEM_P_HPP
 

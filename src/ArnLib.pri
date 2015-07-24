@@ -134,7 +134,8 @@ contains(ARN, core) {
         $$PWD/ArnInc/ArnItemB.hpp \
         $$PWD/ArnInc/ArnLinkHandle.hpp \
         $$PWD/ArnLink.hpp \
-        $$PWD/private/ArnItemB_p.hpp
+        $$PWD/private/ArnItemB_p.hpp \
+        $$PWD/private/ArnItem_p.hpp
 }
 
 

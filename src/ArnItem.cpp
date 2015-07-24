@@ -30,6 +30,7 @@
 //
 
 #include "ArnInc/ArnItem.hpp"
+#include "private/ArnItem_p.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnLink.hpp"
 #include <QTimer>
@@ -56,7 +57,7 @@ QMetaMethod  ArnItem::_metaSignalChangedVariant(
 #endif
 
 
-void  ArnItem::init()
+ArnItemPrivate::ArnItemPrivate()
 {
     _delayTimer = 0;
     _isTemplate = false;
@@ -70,15 +71,25 @@ void  ArnItem::init()
 }
 
 
+ArnItemPrivate::~ArnItemPrivate()
+{
+}
+
+
+void  ArnItem::init()
+{
+}
+
+
 ArnItem::ArnItem( QObject *parent)
-            : ArnItemB( parent)
+    : ArnItemB( *new ArnItemPrivate, parent)
 {
     init();
 }
 
 
 ArnItem::ArnItem( const QString& path, QObject *parent)
-            : ArnItemB( parent)
+    : ArnItemB( *new ArnItemPrivate, parent)
 {
     init();
     this->open( path);
@@ -86,7 +97,7 @@ ArnItem::ArnItem( const QString& path, QObject *parent)
 
 
 ArnItem::ArnItem( const ArnItem& itemTemplate, const QString& path, QObject *parent)
-            : ArnItemB( parent)
+    : ArnItemB( *new ArnItemPrivate, parent)
 {
     init();
     if (itemTemplate.isTemplate()) {  // Template mode: Copy syncMode & Mode from template to this Item
@@ -98,6 +109,13 @@ ArnItem::ArnItem( const ArnItem& itemTemplate, const QString& path, QObject *par
         ArnM::errorLog( QString(tr("Should be template path=")) + path,
                         ArnError::CreateError);
     }
+}
+
+
+ArnItem::ArnItem( ArnItemPrivate& dd, QObject* parent)
+    : ArnItemB( dd, parent)
+{
+    init();
 }
 
 
@@ -115,24 +133,30 @@ void  ArnItem::itemModeChangedBelow( const QString& path, uint linkId, Arn::Obje
 
 ArnItem&  ArnItem::setTemplate( bool isTemplate)
 {
-    _isTemplate = isTemplate;
+    Q_D(ArnItem);
+
+    d->_isTemplate = isTemplate;
     return *this;
 }
 
 
 bool  ArnItem::isTemplate()  const
 {
-    return _isTemplate;
+    Q_D(const ArnItem);
+
+    return d->_isTemplate;
 }
 
 
 void  ArnItem::setDelay( int delay)
 {
-    if (!_delayTimer) {
-        _delayTimer = new QTimer( this);
-        connect( _delayTimer, SIGNAL(timeout()), this, SLOT(timeoutItemUpdate()));
+    Q_D(ArnItem);
+
+    if (!d->_delayTimer) {
+        d->_delayTimer = new QTimer( this);
+        connect( d->_delayTimer, SIGNAL(timeout()), this, SLOT(timeoutItemUpdate()));
     }
-    _delayTimer->setInterval( delay);
+    d->_delayTimer->setInterval( delay);
 }
 
 
@@ -203,52 +227,56 @@ void  ArnItem::toggleBool()
 
 void  ArnItem::connectNotify( const QMetaMethod &signal)
 {
+    Q_D(ArnItem);
+
     if (signal == _metaSignalChanged) {
-        _emitChanged++;
+        d->_emitChanged++;
     }
     else if (signal == _metaSignalChangedInt) {
-        _emitChangedInt++;
+        d->_emitChangedInt++;
     }
     else if (signal == _metaSignalChangedReal) {
-        _emitChangedReal++;
+        d->_emitChangedReal++;
     }
     else if (signal == _metaSignalChangedBool) {
-        _emitChangedBool++;
+        d->_emitChangedBool++;
     }
     else if (signal == _metaSignalChangedString) {
-        _emitChangedString++;
+        d->_emitChangedString++;
     }
     else if (signal == _metaSignalChangedByteArray) {
-        _emitChangedByteArray++;
+        d->_emitChangedByteArray++;
     }
     else if (signal == _metaSignalChangedVariant) {
-        _emitChangedVariant++;
+        d->_emitChangedVariant++;
     }
 }
 
 
 void  ArnItem::disconnectNotify( const QMetaMethod &signal)
 {
+    Q_D(ArnItem);
+
     if (signal == _metaSignalChanged) {
-        _emitChanged--;
+        d->_emitChanged--;
     }
     else if (signal == _metaSignalChangedInt) {
-        _emitChangedInt--;
+        d->_emitChangedInt--;
     }
     else if (signal == _metaSignalChangedReal) {
-        _emitChangedReal--;
+        d->_emitChangedReal--;
     }
     else if (signal == _metaSignalChangedBool) {
-        _emitChangedBool--;
+        d->_emitChangedBool--;
     }
     else if (signal == _metaSignalChangedString) {
-        _emitChangedString--;
+        d->_emitChangedString--;
     }
     else if (signal == _metaSignalChangedByteArray) {
-        _emitChangedByteArray--;
+        d->_emitChangedByteArray--;
     }
     else if (signal == _metaSignalChangedVariant) {
-        _emitChangedVariant--;
+        d->_emitChangedVariant--;
     }
 }
 
@@ -257,60 +285,64 @@ void  ArnItem::disconnectNotify( const QMetaMethod &signal)
 
 void  ArnItem::connectNotify( const char *signal)
 {
+    Q_D(ArnItem);
+
     if (QLatin1String( signal) == SIGNAL(changed())) {
-        _emitChanged++;
+        d->_emitChanged++;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(int))) {
-        _emitChangedInt++;
+        d->_emitChangedInt++;
     }
 #ifdef ARNREAL_FLOAT
     else if (QLatin1String( signal) == SIGNAL(changed(float))) {
 #else
     else if (QLatin1String( signal) == SIGNAL(changed(double))) {
 #endif
-        _emitChangedReal++;
+        d->_emitChangedReal++;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(bool))) {
-        _emitChangedBool++;
+        d->_emitChangedBool++;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(QString))) {
-        _emitChangedString++;
+        d->_emitChangedString++;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(QByteArray))) {
-        _emitChangedByteArray++;
+        d->_emitChangedByteArray++;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(QVariant))) {
-        _emitChangedVariant++;
+        d->_emitChangedVariant++;
     }
 }
 
 
 void  ArnItem::disconnectNotify( const char *signal)
 {
+    Q_D(ArnItem);
+
     if (QLatin1String( signal) == SIGNAL(changed())) {
-        _emitChanged--;
+        d->_emitChanged--;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(int))) {
-        _emitChangedInt--;
+        d->_emitChangedInt--;
     }
 #ifdef ARNREAL_FLOAT
     else if (QLatin1String( signal) == SIGNAL(changed(float))) {
 #else
     else if (QLatin1String( signal) == SIGNAL(changed(double))) {
 #endif
-        _emitChangedReal--;
+        d->_emitChangedReal--;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(bool))) {
-        _emitChangedBool--;
+        d->_emitChangedBool--;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(QString))) {
-        _emitChangedString--;
+        d->_emitChangedString--;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(QByteArray))) {
-        _emitChangedByteArray--;
+        d->_emitChangedByteArray--;
     }
     else if (QLatin1String( signal) == SIGNAL(changed(QVariant))) {
-        _emitChangedVariant--;
+        d->_emitChangedVariant--;
     }
 }
 
@@ -319,10 +351,12 @@ void  ArnItem::disconnectNotify( const char *signal)
 
 void  ArnItem::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
+    Q_D(ArnItem);
+
     if (!value) {  // Update of item with no data supplied
-        if (_delayTimer) {
-            if (!_delayTimer->isActive()) {
-                _delayTimer->start();
+        if (d->_delayTimer) {
+            if (!d->_delayTimer->isActive()) {
+                d->_delayTimer->start();
             }
         }
         else {
@@ -330,29 +364,29 @@ void  ArnItem::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* v
         }
     }
     else {  // Update of item with data supplied (pipe in multi-thread)
-        if (_emitChanged) {
+        if (d->_emitChanged) {
             emit changed();
         }
-        if (_emitChangedInt) {
+        if (d->_emitChangedInt) {
             emit changed( int( value->toInt()));
         }
-        if (_emitChangedReal) {
+        if (d->_emitChangedReal) {
 #if defined( ARNREAL_FLOAT)
             emit changed( float( value->toFloat()));
 #else
             emit changed( double( value->toDouble()));
 #endif
         }
-        if (_emitChangedBool) {
+        if (d->_emitChangedBool) {
             emit changed( bool( value->toInt() != 0));
         }
-        if (_emitChangedString) {
+        if (d->_emitChangedString) {
             emit changed( QString::fromUtf8( value->constData(), value->size()));
         }
-        if (_emitChangedByteArray) {
+        if (d->_emitChangedByteArray) {
             emit changed( *value);
         }
-        if (_emitChangedVariant) {
+        if (d->_emitChangedVariant) {
             // Can only handle printable value ...
             emit changed( QVariant( QString::fromUtf8( value->constData(), value->size())));
         }
@@ -364,30 +398,32 @@ void  ArnItem::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* v
 void  ArnItem::doItemUpdate( const ArnLinkHandle& handleData)
 {
     Q_UNUSED(handleData);
+    Q_D(ArnItem);
 
-    if (_delayTimer ) {
-        _delayTimer->stop();
+
+    if (d->_delayTimer ) {
+        d->_delayTimer->stop();
     }
 
-    if (_emitChanged) {
+    if (d->_emitChanged) {
         emit changed();
     }
-    if (_emitChangedInt) {
+    if (d->_emitChangedInt) {
         emit changed( toInt());
     }
-    if (_emitChangedReal) {
+    if (d->_emitChangedReal) {
         emit changed( toReal());
     }
-    if (_emitChangedBool) {
+    if (d->_emitChangedBool) {
         emit changed( toBool());
     }
-    if (_emitChangedString) {
+    if (d->_emitChangedString) {
         emit changed( toString());
     }
-    if (_emitChangedByteArray) {
+    if (d->_emitChangedByteArray) {
         emit changed( toByteArray());
     }
-    if (_emitChangedByteArray) {
+    if (d->_emitChangedByteArray) {
         emit changed( toVariant());
     }
     resetOnlyEcho();  // Nothing else yet ...
@@ -419,4 +455,3 @@ QTextStream &operator<<( QTextStream& out, const ArnItem& item)
     out << item.toString();
     return out;
 }
-

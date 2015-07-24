@@ -43,6 +43,7 @@
 #include <QVariant>
 #include <QAtomicInt>
 
+class ArnItemPrivate;
 class QTimer;
 
 
@@ -70,6 +71,7 @@ have it's own handles i.e ArnItem instances.
 class ARNLIBSHARED_EXPORT ArnItem : public ArnItemB
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnItem)
 
 public:
     //! Standard constructor of a closed handle
@@ -478,6 +480,8 @@ protected:
     virtual void  modeUpdate( bool isSetup = false);
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
+
+    ArnItem( ArnItemPrivate& dd, QObject* parent);
     //! \endcond
 
 private slots:
@@ -501,18 +505,6 @@ private:
     void  connectNotify( const char* signal);
     void  disconnectNotify( const char* signal);
 #endif
-
-    QTimer*  _delayTimer;
-
-    int  _emitChanged;
-    int  _emitChangedInt;
-    int  _emitChangedReal;
-    int  _emitChangedBool;
-    int  _emitChangedString;
-    int  _emitChangedByteArray;
-    int  _emitChangedVariant;
-
-    bool  _isTemplate;
 };
 
 QTextStream&  operator<<(QTextStream& out, const ArnItem& item);
