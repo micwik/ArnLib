@@ -107,7 +107,7 @@ signals:
 protected:
     //// Will never be inherited, this section is separated for use by friend ArnM
     ArnLink( ArnLink* parent, const QString& name, Arn::LinkFlags flags);
-    void  setupEnd( Arn::ObjectSyncMode syncMode);
+    void  setupEnd( const QString& path, Arn::ObjectSyncMode syncMode);
     ArnLink*  findLink( const QString& name);
     void  ref();
     int  refCount();
@@ -119,6 +119,8 @@ protected:
     void  setThreaded();
     void  lock();
     void  unlock();
+
+    virtual bool  event( QEvent* ev);
 
     ArnLink*  _twin;   // Used for bidirectional functionality
 

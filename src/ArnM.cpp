@@ -493,7 +493,7 @@ ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, Arn::Object
             continue;
         }
 
-        currentLink = ArnM::linkMain( currentLink, subpath, subFlags, syncMode);
+        currentLink = ArnM::linkMain( path, currentLink, subpath, subFlags, syncMode);
         if (currentLink == 0) {
             return 0;
         }
@@ -504,7 +504,7 @@ ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, Arn::Object
 }
 
 
-ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags flags,
+ArnLink*  ArnM::linkMain( const QString& path, ArnLink *parent, const QString& name, Arn::LinkFlags flags,
                           Arn::ObjectSyncMode syncMode)
 {
     if (!parent) {  // No parent (folder) error
@@ -531,20 +531,21 @@ ArnLink*  ArnM::linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags f
     &&  nameNorm.endsWith('!')
     &&  flags.is( flags.CreateAllowed)) {
         // Make sure a provider link has a twin, ie a value link
-        addTwinMain( child, syncMode, flags);
+        addTwinMain( path, child, syncMode, flags);
     }
 
-    child->setupEnd( syncMode);
+    child->setupEnd( path, syncMode);
     return child;
 }
 
 
-ArnLink*  ArnM::addTwin( ArnLink* link, Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags)
+ArnLink*  ArnM::addTwin( const QString& path, ArnLink* link,
+                         Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags)
 {
     if (!link)  return 0;
 
     if (isMainThread()) {
-        ArnLink*  retLink = addTwinMain( link, syncMode, flags);
+        ArnLink*  retLink = addTwinMain( path, link, syncMode, flags);
         if (retLink)  retLink->ref();
         return retLink;
     }
@@ -561,7 +562,8 @@ ArnLink*  ArnM::addTwin( ArnLink* link, Arn::ObjectSyncMode syncMode, Arn::LinkF
 }
 
 
-ArnLink*  ArnM::addTwinMain( ArnLink* link, Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags)
+ArnLink*  ArnM::addTwinMain( const QString& path, ArnLink* link,
+                             Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags)
 {
     if (!link) {
         return 0;
@@ -590,7 +592,7 @@ ArnLink*  ArnM::addTwinMain( ArnLink* link, Arn::ObjectSyncMode syncMode, Arn::L
                 link->unlock();
                 twinLink->unlock();
             }
-            twinLink->setupEnd( syncMode);
+            twinLink->setupEnd( Arn::twinPath( path), syncMode);
             emit link->modeChanged( link->linkPath(), link->linkId());   // This is now Bidirectional mode
         }
     }

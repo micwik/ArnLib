@@ -320,7 +320,7 @@ ArnItemB&  ArnItemB::setBiDirMode()
     if (_link->isBiDirMode())  return *this;  // Already is bidirectional mode
 
     /// Bidirectional-mode is the pair of value & provider
-    ArnLink*  twinLink = ArnM::addTwin( _link, syncMode());
+    ArnLink*  twinLink = ArnM::addTwin( _link->linkPath(), _link, syncMode());
     twinLink->deref();
 
     return *this;
@@ -348,7 +348,7 @@ ArnItemB&  ArnItemB::setPipeMode()
 
     d->_ignoreSameValue = false;
     // Pipe-mode demands the pair of value & provider
-    ArnLink*  twinLink = ArnM::addTwin( _link, syncMode());
+    ArnLink*  twinLink = ArnM::addTwin( _link->linkPath(), _link, syncMode());
     _link->setPipeMode( true);
     twinLink->deref();
 

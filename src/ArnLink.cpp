@@ -31,8 +31,10 @@
 
 #include "ArnLink.hpp"
 #include "ArnInc/ArnLib.hpp"
-#include <QDebug>
+#include "ArnInc/ArnEvent.hpp"
+#include <QCoreApplication>
 #include <limits>
+#include <QDebug>
 
 
 QAtomicInt ArnLink::_idCount(1);
@@ -451,7 +453,6 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
 
     if (parent) {
         if (_isFolder) {
-            connect( this, SIGNAL(linkCreatedBelow(ArnLink*)), parent, SIGNAL(linkCreatedBelow(ArnLink*)));
             connect( this, SIGNAL(modeChangedBelow(QString,uint)), parent, SIGNAL(modeChangedBelow(QString,uint)));
         }
         else {
@@ -461,13 +462,22 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
 }
 
 
-void  ArnLink::setupEnd( Arn::ObjectSyncMode syncMode)
+void  ArnLink::setupEnd( const QString& path, Arn::ObjectSyncMode syncMode)
 {
     if (!_hasBeenSetup) {
         _hasBeenSetup = true;
         addSyncMode( syncMode);
-        ArnLink*  parent = qobject_cast<ArnLink*>( this->parent());
-        emit parent->linkCreatedBelow( this);
+
+        ArnEvLinkCreate  arnEvLinkCreate;
+        arnEvLinkCreate._path    = path;
+        arnEvLinkCreate._arnLink = this;
+        ArnLink*  link = this;
+        forever {
+            link = qobject_cast<ArnLink*>( link->parent());
+            if (!link)  break;
+            if (link->_refCount > 0)
+                QCoreApplication::sendEvent( link, &arnEvLinkCreate);
+        }
     }
 }
 
@@ -614,6 +624,19 @@ void ArnLink::lock()
 void ArnLink::unlock()
 {
     if (_mutex)  _mutex->unlock();
+}
+
+
+bool  ArnLink::event( QEvent* ev)
+{
+    QEvent::Type  type = ev->type();
+    if (type == ArnEvLinkCreate::type()) {
+        ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
+        // qDebug() << "ArnEvLinkCreate: path=" << e->_path << " inLinkPath=" << linkPath();
+        emit linkCreatedBelow( e->_arnLink);
+        return true;
+    }
+    else return QObject::event( ev);
 }
 
 

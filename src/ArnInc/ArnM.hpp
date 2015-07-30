@@ -302,7 +302,8 @@ protected:
     static ArnLink*  root();
     static ArnLink*  link( const QString& path, Arn::LinkFlags flags,
                            Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode());
-    static ArnLink*  addTwin( ArnLink* child, Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode(),
+    static ArnLink*  addTwin( const QString& path, ArnLink* child,
+                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode(),
                               Arn::LinkFlags flags = Arn::LinkFlags());
     static void  destroyLink( ArnLink* link, bool isGlobal);
     static void  destroyLinkMain( ArnLink* link, bool isGlobal);
@@ -326,9 +327,10 @@ private:
                                Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode());
     static ArnLink*  linkThread( const QString& path, Arn::LinkFlags flags,
                                  Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode());
-    static ArnLink*  linkMain( ArnLink *parent, const QString& name, Arn::LinkFlags flags,
-                               Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode());
-    static ArnLink*  addTwinMain( ArnLink* child, Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode(),
+    static ArnLink*  linkMain( const QString& path, ArnLink *parent, const QString& name,
+                               Arn::LinkFlags flags, Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode());
+    static ArnLink*  addTwinMain( const QString& path, ArnLink* child,
+                                  Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode(),
                                   Arn::LinkFlags flags = Arn::LinkFlags::fromInt(0));
     static ArnLink*  getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags);
     static QStringList  itemsMain( const ArnLink *parent);
