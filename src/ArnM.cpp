@@ -593,7 +593,7 @@ ArnLink*  ArnM::addTwinMain( const QString& path, ArnLink* link,
                 twinLink->unlock();
             }
             twinLink->setupEnd( Arn::twinPath( path), syncMode);
-            emit link->modeChanged( link->linkPath(), link->linkId());   // This is now Bidirectional mode
+            link->doModeChanged();   // This is now Bidirectional mode
         }
     }
 

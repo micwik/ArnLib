@@ -39,9 +39,23 @@ ArnEvLinkCreate::ArnEvLinkCreate()
 }
 
 
-QEvent::Type ArnEvLinkCreate::type()
+QEvent::Type  ArnEvLinkCreate::type()
 {
     static int evType = QEvent::registerEventType(2022);
+
+    return Type( evType);
+}
+
+
+ArnEvModeChange::ArnEvModeChange()
+    : QEvent( type())
+{
+}
+
+
+QEvent::Type  ArnEvModeChange::type()
+{
+    static int evType = QEvent::registerEventType(2023);
 
     return Type( evType);
 }

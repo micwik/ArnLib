@@ -44,8 +44,19 @@ public:
     ArnEvLinkCreate();
     static QEvent::Type  type();
 
-    QString  _path;
-    ArnLink*  _arnLink;
+    QString  path;
+    ArnLink*  arnLink;
+};
+
+
+class ArnEvModeChange : public QEvent
+{
+public:
+    ArnEvModeChange();
+    static QEvent::Type  type();
+
+    QString  path;
+    uint  linkId;
 };
 
 #endif // ARNEVENT_HPP

@@ -33,6 +33,7 @@
 #include "ArnInc/ArnLib.hpp"
 #include "ArnInc/ArnEvent.hpp"
 #include <QCoreApplication>
+#include <QThread>
 #include <limits>
 #include <QDebug>
 
@@ -449,16 +450,6 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     _zeroRefCount    = 0;
     _isRetired       = false;
     _isRetiredGlobal = false;
-
-
-    if (parent) {
-        if (_isFolder) {
-            connect( this, SIGNAL(modeChangedBelow(QString,uint)), parent, SIGNAL(modeChangedBelow(QString,uint)));
-        }
-        else {
-            connect( this, SIGNAL(modeChanged(QString,uint)), parent, SIGNAL(modeChangedBelow(QString,uint)));
-        }
-    }
 }
 
 
@@ -469,8 +460,8 @@ void  ArnLink::setupEnd( const QString& path, Arn::ObjectSyncMode syncMode)
         addSyncMode( syncMode);
 
         ArnEvLinkCreate  arnEvLinkCreate;
-        arnEvLinkCreate._path    = path;
-        arnEvLinkCreate._arnLink = this;
+        arnEvLinkCreate.path    = path;
+        arnEvLinkCreate.arnLink = this;
         ArnLink*  link = this;
         forever {
             link = qobject_cast<ArnLink*>( link->parent());
@@ -478,6 +469,23 @@ void  ArnLink::setupEnd( const QString& path, Arn::ObjectSyncMode syncMode)
             if (link->_refCount > 0)
                 QCoreApplication::sendEvent( link, &arnEvLinkCreate);
         }
+    }
+}
+
+
+void  ArnLink::doModeChanged()
+{
+    if (thread() == QThread::currentThread()) {
+        ArnEvModeChange  arnEvModeChange;
+        arnEvModeChange.path   = linkPath();
+        arnEvModeChange.linkId = _id;
+        QCoreApplication::sendEvent( this, &arnEvModeChange);
+    }
+    else {
+        ArnEvModeChange  *arnEvModeChange = new ArnEvModeChange;
+        arnEvModeChange->path   = linkPath();
+        arnEvModeChange->linkId = _id;
+        QCoreApplication::postEvent( this, arnEvModeChange);
     }
 }
 
@@ -547,7 +555,7 @@ void  ArnLink::setPipeMode( bool isPipeMode, bool alsoSetTwin)
     if (isPipeMode != _isPipeMode) {
         _isPipeMode = isPipeMode;
         if (_mutex)  _mutex->unlock();
-        emit modeChanged( linkPath(), linkId());
+        doModeChanged();
         if (_mutex)  _mutex->lock();
     }
     if (_twin  &&  alsoSetTwin) {
@@ -577,8 +585,8 @@ void  ArnLink::setSaveMode( bool isSaveMode)
     if (isSaveMode != _isSaveMode) {
         _isSaveMode = isSaveMode;
         if (_mutex)  _mutex->unlock();
-        emit modeChanged( linkPath(), linkId());
-        if (_mutex)  _mutex->lock();
+        doModeChanged();
+        return;
     }
     if (_mutex)  _mutex->unlock();
 }
@@ -632,11 +640,27 @@ bool  ArnLink::event( QEvent* ev)
     QEvent::Type  type = ev->type();
     if (type == ArnEvLinkCreate::type()) {
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
-        // qDebug() << "ArnEvLinkCreate: path=" << e->_path << " inLinkPath=" << linkPath();
-        emit linkCreatedBelow( e->_arnLink);
+        // qDebug() << "ArnEvLinkCreate: path=" << e->path << " inLinkPath=" << linkPath();
+        emit linkCreatedBelow( e->arnLink);
         return true;
     }
-    else return QObject::event( ev);
+    if (type == ArnEvModeChange::type()) {
+        ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
+        // qDebug() << "ArnEvModeChange: path=" << e->path << " inLinkPath=" << linkPath();
+        emit modeChanged( e->path, e->linkId);
+        ArnLink*  link = this;
+        forever {
+            link = qobject_cast<ArnLink*>( link->parent());
+            if (!link)  break;
+            // qDebug() << "ArnEvModeChange: path=" << e->path << " inParentLinkPath=" << link->linkPath();
+            if (link->_refCount > 0) {
+                emit modeChangedBelow( e->path, e->linkId);
+            }
+        }
+        return true;
+    }
+
+    return QObject::event( ev);
 }
 
 
