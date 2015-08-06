@@ -32,6 +32,7 @@
 #include "ArnInc/ArnItemB.hpp"
 #include "private/ArnItemB_p.hpp"
 #include "ArnInc/ArnM.hpp"
+#include "ArnInc/ArnEvent.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include "ArnLink.hpp"
 #include <QDataStream>
@@ -102,19 +103,12 @@ void  ArnItemB::setupOpenItem( bool isFolder)
 
     connect( _link, SIGNAL(retired()), this, SLOT(doArnLinkDestroyed()));
 
-    if (isFolder) {
-        connect( _link, SIGNAL(linkCreatedBelow(ArnLink*)),
-                 this, SLOT(arnLinkCreatedBelow(ArnLink*)));
-        connect( _link, SIGNAL(modeChangedBelow(QString,uint)),
-                 this, SLOT(arnModeChangedBelow(QString,uint)));
-    }
-    else {
+    if (!isFolder) {
         //// Optimize: Only one changed() should be connected depending on thread & pipeMode
         connect( _link, SIGNAL(changed(uint,const ArnLinkHandle&)),
                  this, SLOT(linkValueUpdated(uint,const ArnLinkHandle&)));
         connect( _link, SIGNAL(changed(uint,QByteArray,ArnLinkHandle)),
                  this, SLOT(linkValueUpdated(uint,QByteArray,ArnLinkHandle)));
-        connect( _link, SIGNAL(modeChanged(QString,uint)), this, SLOT(modeUpdate()));
     }
     addMode( d->_mode);  // Transfer modes to the link
     modeUpdate(true);
@@ -132,6 +126,7 @@ bool  ArnItemB::open( const QString& path)
     _link = ArnM::link( path,  Arn::LinkFlags::CreateAllowed, syncMode);
     if (!_link)  return false;
 
+    _link->subscribe( this);
     setupOpenItem( _link->isFolder());
 #ifdef ARNITEMB_INCPATH
     d->_path = path;
@@ -180,7 +175,7 @@ void  ArnItemB::close()
 
     if (!_link)  return;
 
-    _link->deref();
+    _link->deref( this);
     _link        = 0;
     d->_syncMode = Arn::ObjectSyncMode();
     d->_mode     = Arn::ObjectMode();
@@ -235,7 +230,7 @@ void  ArnItemB::modeUpdate( bool isSetup)
 {
     Q_UNUSED(isSetup);
 
-    if (_link->isPipeMode()) {  // Pipe-mode never IgnoreSameValue
+    if (isPipeMode()) {  // Pipe-mode never IgnoreSameValue
         setIgnoreSameValue(false);
     }
 }
@@ -347,7 +342,7 @@ ArnItemB&  ArnItemB::setPipeMode()
     if (_link->isPipeMode())  return *this;  // Already is pipe mode
 
     d->_ignoreSameValue = false;
-    // Pipe-mode demands the pair of value & provider
+    //// Pipe-mode demands the pair of value & provider
     ArnLink*  twinLink = ArnM::addTwin( _link->linkPath(), _link, syncMode());
     _link->setPipeMode( true);
     twinLink->deref();
@@ -453,12 +448,7 @@ Arn::ObjectMode  ArnItemB::getMode( ArnLink* link)  const
 
     if (!link)  return d->_mode;
 
-    Arn::ObjectMode  mode;
-    if (link->isPipeMode())   mode.set( mode.Pipe);
-    if (link->isBiDirMode())  mode.set( mode.BiDir);
-    if (link->isSaveMode())   mode.set( mode.Save);
-
-    return mode;
+    return link->getMode();
 }
 
 
@@ -1081,22 +1071,29 @@ void  ArnItemB::linkValueUpdated( uint sendId, const QByteArray& value, ArnLinkH
 }
 
 
-void  ArnItemB::arnLinkCreatedBelow( ArnLink* link)
+bool  ArnItemB::event( QEvent* ev)
 {
-    if (!link->isFolder()) {
-        itemCreatedBelow( link->linkPath());
+    QEvent::Type  type = ev->type();
+    if (type == ArnEvLinkCreate::type()) {
+        ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
+        qDebug() << "ArnEvLinkCreate: path=" << e->path() << " inItemPath=" << path();
+        if (!Arn::isFolderPath( e->path())) {
+            itemCreatedBelow( e->path());
+        }
+        return true;
     }
-}
+    if (type == ArnEvModeChange::type()) {
+        ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
+        // qDebug() << "ArnEvModeChange: path=" << e->path() << " mode=" << e->mode()
+        //          << " inItemPath=" << path();
+        if (isFolder())
+            itemModeChangedBelow( e->path(), e->linkId(),e->mode());
+        else
+            modeUpdate();
+        return true;
+    }
 
-
-void  ArnItemB::arnModeChangedBelow( const QString& path, uint linkId)
-{
-    Arn::LinkFlags  flags;
-    ArnLink*  link = ArnM::link( path, flags.SilentError);
-    if (!link)  return;  // Item has been lost (deleted?)
-
-    itemModeChangedBelow( path, linkId, getMode( link));
-    link->deref();  // Release the link-reference
+    return QObject::event( ev);
 }
 
 

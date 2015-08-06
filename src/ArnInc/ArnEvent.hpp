@@ -32,31 +32,59 @@
 #ifndef ARNEVENT_HPP
 #define ARNEVENT_HPP
 
+#include <ArnInc/Arn.hpp>
 #include <QEvent>
 #include <QString>
 
 class ArnLink;
 
 
-class ArnEvLinkCreate : public QEvent
+class ArnEvent : public QEvent
 {
 public:
-    ArnEvLinkCreate();
-    static QEvent::Type  type();
+    ArnEvent( QEvent::Type type);
 
-    QString  path;
-    ArnLink*  arnLink;
+    virtual ArnEvent*  makeHeapClone() = 0;
 };
 
 
-class ArnEvModeChange : public QEvent
+class ArnEvLinkCreate : public ArnEvent
 {
-public:
-    ArnEvModeChange();
-    static QEvent::Type  type();
+    QString  _path;
+    ArnLink*  _arnLink;
 
-    QString  path;
-    uint  linkId;
+public:
+    ArnEvLinkCreate( const QString& path, ArnLink* arnLink);
+    static QEvent::Type  type();
+    virtual ArnEvent*  makeHeapClone();
+
+    inline const QString&  path()  const
+    { return _path;}
+
+    inline ArnLink*  arnLink()  const
+    { return _arnLink;}
+};
+
+
+class ArnEvModeChange : public ArnEvent
+{
+    QString  _path;
+    uint  _linkId;
+    Arn::ObjectMode  _mode;
+
+public:
+    ArnEvModeChange( const QString& path, uint linkId, Arn::ObjectMode mode);
+    static QEvent::Type  type();
+    virtual ArnEvent*  makeHeapClone();
+
+    inline const QString&  path()  const
+    { return _path;}
+
+    inline uint  linkId()  const
+    { return _linkId;}
+
+    inline Arn::ObjectMode  mode()  const
+    { return _mode;}
 };
 
 #endif // ARNEVENT_HPP

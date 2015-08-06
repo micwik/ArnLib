@@ -172,9 +172,6 @@ signals:
     void  arnLinkDestroyed();
 
     //! \cond ADV
-protected slots:
-    virtual void  modeUpdate( bool isSetup = false);
-
 protected:
     //! Open a handle to an Arn Object with a unique uuid name
     /*! If _path_ is marked as provider, the "!" marker will be moved to after uuid.
@@ -400,8 +397,10 @@ protected:
 
     //// To be reimplemented
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  modeUpdate( bool isSetup = false);
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
+    virtual bool  event( QEvent* ev);
 
     //// Methods not to be public
     void  setForceKeep( bool fk = true);
@@ -428,8 +427,6 @@ protected:
 private slots:
     void  linkValueUpdated( uint sendId, const ArnLinkHandle& handleData);
     void  linkValueUpdated( uint sendId, const QByteArray& value, ArnLinkHandle handleData);
-    void  arnLinkCreatedBelow( ArnLink* link);
-    void  arnModeChangedBelow( const QString& path, uint linkId);
     void  doArnLinkDestroyed();
 
 private:

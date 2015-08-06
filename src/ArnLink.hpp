@@ -43,6 +43,7 @@
 #include <QMutex>
 
 struct ArnLinkValue;
+class ArnEvent;
 
 
 //! \cond ADV
@@ -75,6 +76,7 @@ public:
 
     void  addSyncMode( Arn::ObjectSyncMode syncMode);
     Arn::ObjectSyncMode  syncMode();
+    Arn::ObjectMode  getMode();
     bool  isBiDirMode();
     void  setPipeMode( bool isPipeMode, bool alsoSetTwin = true);
     bool  isPipeMode();
@@ -89,7 +91,9 @@ public:
     ArnLink*  providerLink();
     ArnLink*  holderLink( bool forceKeep);
     QString  twinName();
-    void  deref();
+    bool  subscribe( QObject* subscriber);
+    bool  unsubscribe( QObject* subscriber);
+    void  deref( QObject* subscriber = 0);
     ~ArnLink();
 
 public slots:
@@ -98,9 +102,6 @@ public slots:
 signals:
     void  changed( uint sendId, const ArnLinkHandle& handleData);
     void  changed( uint sendId, const QByteArray& value, const ArnLinkHandle& handleData);
-    void  modeChanged( const QString& path, uint linkId);
-    void  modeChangedBelow( const QString& path, uint linkId);
-    void  linkCreatedBelow( ArnLink* link);
     void  zeroRef( QObject* linkObj);
     void  retired();
 
@@ -121,19 +122,21 @@ protected:
     void  lock();
     void  unlock();
 
-    virtual bool  event( QEvent* ev);
-
     ArnLink*  _twin;   // Used for bidirectional functionality
 
 private:
     void  resetHave();
     void  emitChanged( int sendId, const ArnLinkHandle& handleData = ArnLinkHandle());
+    void  sendEventsInThread( ArnEvent* ev, const QObjectList& recipients);
+    void  sendEvents( ArnEvent* ev);
+    void  sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink);
 
     // Source for unique id to all ArnLink ..
     static QAtomicInt  _idCount;
 
     QMutex*  _mutex;
-    ArnLinkValue* _val;
+    ArnLinkValue*  _val;
+    QObjectList*  _subscribeTab;
 
     quint32  _id;
     volatile qint32  _refCount;

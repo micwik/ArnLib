@@ -55,6 +55,48 @@ struct ArnLinkValue {
 };
 
 
+ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
+        : QObject(0)
+{
+    QString  name_ = Arn::convertBaseName( name, Arn::NameF());
+
+    QObject::setParent((QObject*) parent);
+    QObject::setObjectName( name_);
+    _isFolder        = flags.is( flags.Folder);
+    _isProvider      = name_.endsWith('!');
+    _type.e          = Arn::DataType::Null;
+    _twin            = 0;
+    _subscribeTab    = 0;
+    _mutex           = 0;
+    _val             = _isFolder ? 0 : new ArnLinkValue;
+    _isPipeMode      = false;
+    _isSaveMode      = false;
+    _hasBeenSetup    = false;
+    _syncMode        = 0;
+    _id              = _idCount.fetchAndAddRelaxed(1);
+    _refCount        = -1;  // Mark no reference, Ok to delete
+    _zeroRefCount    = 0;
+    _isRetired       = false;
+    _isRetiredGlobal = false;
+}
+
+
+ArnLink::~ArnLink()
+{
+    if (Arn::debugLinkDestroy)  qDebug() << "Destructor link: path=" << linkPath();
+    if (_mutex)
+        delete _mutex;
+    if (_subscribeTab)
+        delete _subscribeTab;
+
+    if (_twin) {
+        _twin->_twin = 0;  // points to this object
+        delete _twin;
+        _twin = 0;
+    }
+}
+
+
 void ArnLink::resetHave()
 {
     _haveInt       = false;
@@ -74,6 +116,62 @@ void ArnLink::emitChanged( int sendId, const ArnLinkHandle& handleData)
         emit changed( sendId, toByteArray(), handleData);
     else
         emit changed( sendId, handleData);
+}
+
+
+void  ArnLink::sendEventsInThread( ArnEvent* ev, const QObjectList& recipients)
+{
+    foreach (QObject* qobj, recipients) {
+        ev->setAccepted( true);  // Default
+        QCoreApplication::sendEvent( qobj, ev);
+    }
+}
+
+
+void  ArnLink::sendEvents( ArnEvent* ev)
+{
+    if (!_mutex) {  // Fast non threaded version
+        if (!_subscribeTab || _subscribeTab->isEmpty())  return;
+
+        sendEventsInThread( ev, *_subscribeTab);
+        return;
+    }
+
+    _mutex->lock();
+    if (!_subscribeTab || _subscribeTab->isEmpty()) {
+        _mutex->unlock();
+        return;
+    }
+    QObjectList  subscrInThread;
+    QThread*  curThread = QThread::currentThread();
+
+    foreach (QObject* qobj, *_subscribeTab) {
+        if (qobj->thread() == curThread) {
+            subscrInThread += qobj;
+        }
+        else {
+            // Recipient in different thread
+            ArnEvent*  evClone = ev->makeHeapClone();
+            QCoreApplication::postEvent( qobj, evClone);
+        }
+    }
+    _mutex->unlock();
+
+    sendEventsInThread( ev, subscrInThread);
+}
+
+
+void  ArnLink::sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink)
+{
+    ArnLink*  link = startLink;
+    while (link) {
+        // qDebug() << "sendEventsDirRoot: inLinkPath=" << link->linkPath();
+        link->sendEvents( ev);
+
+        if (_mutex)  _mutex->lock();
+        link = qobject_cast<ArnLink*>( link->parent());
+        if (_mutex)  _mutex->unlock();
+    }
 }
 
 
@@ -428,78 +526,22 @@ uint  ArnLink::linkId()  const
 }
 
 
-ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
-        : QObject(0)
-{
-    QString  name_ = Arn::convertBaseName( name, Arn::NameF());
-
-    QObject::setParent((QObject*) parent);
-    QObject::setObjectName( name_);
-    _isFolder        = flags.is( flags.Folder);
-    _isProvider      = name_.endsWith('!');
-    _type.e          = Arn::DataType::Null;
-    _twin            = 0;
-    _mutex           = 0;
-    _val             = _isFolder ? 0 : new ArnLinkValue;
-    _isPipeMode      = false;
-    _isSaveMode      = false;
-    _hasBeenSetup    = false;
-    _syncMode        = 0;
-    _id              = _idCount.fetchAndAddRelaxed(1);
-    _refCount        = -1;  // Mark no reference, Ok to delete
-    _zeroRefCount    = 0;
-    _isRetired       = false;
-    _isRetiredGlobal = false;
-}
-
-
 void  ArnLink::setupEnd( const QString& path, Arn::ObjectSyncMode syncMode)
 {
     if (!_hasBeenSetup) {
         _hasBeenSetup = true;
         addSyncMode( syncMode);
 
-        ArnEvLinkCreate  arnEvLinkCreate;
-        arnEvLinkCreate.path    = path;
-        arnEvLinkCreate.arnLink = this;
-        ArnLink*  link = this;
-        forever {
-            link = qobject_cast<ArnLink*>( link->parent());
-            if (!link)  break;
-            if (link->_refCount > 0)
-                QCoreApplication::sendEvent( link, &arnEvLinkCreate);
-        }
+        ArnEvLinkCreate  arnEvLinkCreate( path, this);
+        sendEventsDirRoot( &arnEvLinkCreate, qobject_cast<ArnLink*>( parent()));
     }
 }
 
 
 void  ArnLink::doModeChanged()
-{
-    if (thread() == QThread::currentThread()) {
-        ArnEvModeChange  arnEvModeChange;
-        arnEvModeChange.path   = linkPath();
-        arnEvModeChange.linkId = _id;
-        QCoreApplication::sendEvent( this, &arnEvModeChange);
-    }
-    else {
-        ArnEvModeChange  *arnEvModeChange = new ArnEvModeChange;
-        arnEvModeChange->path   = linkPath();
-        arnEvModeChange->linkId = _id;
-        QCoreApplication::postEvent( this, arnEvModeChange);
-    }
-}
-
-
-ArnLink::~ArnLink()
-{
-    if (Arn::debugLinkDestroy)  qDebug() << "Destructor link: path=" << linkPath();
-    if (_mutex)
-        delete _mutex;
-    if (_twin) {
-        _twin->_twin = 0;  // points to this object
-        delete _twin;
-        _twin = 0;
-    }
+{    
+    ArnEvModeChange  arnEvModeChange( linkPath(), _id, getMode());
+    sendEventsDirRoot( &arnEvModeChange, this);
 }
 
 
@@ -540,6 +582,19 @@ Arn::ObjectSyncMode  ArnLink::syncMode()
     int  retVal = _syncMode;
     if (_mutex)  _mutex->unlock();
     return Arn::ObjectSyncMode::fromInt( retVal);
+}
+
+
+Arn::ObjectMode  ArnLink::getMode()
+{
+    Arn::ObjectMode  mode;
+    if (_mutex)  _mutex->lock();
+    mode.set( mode.Pipe, _isPipeMode);
+    mode.set( mode.BiDir, _twin != 0);
+    if (_mutex)  _mutex->unlock();
+    mode.set( mode.Save, isSaveMode());
+
+    return mode;
 }
 
 
@@ -635,35 +690,6 @@ void ArnLink::unlock()
 }
 
 
-bool  ArnLink::event( QEvent* ev)
-{
-    QEvent::Type  type = ev->type();
-    if (type == ArnEvLinkCreate::type()) {
-        ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
-        // qDebug() << "ArnEvLinkCreate: path=" << e->path << " inLinkPath=" << linkPath();
-        emit linkCreatedBelow( e->arnLink);
-        return true;
-    }
-    if (type == ArnEvModeChange::type()) {
-        ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
-        // qDebug() << "ArnEvModeChange: path=" << e->path << " inLinkPath=" << linkPath();
-        emit modeChanged( e->path, e->linkId);
-        ArnLink*  link = this;
-        forever {
-            link = qobject_cast<ArnLink*>( link->parent());
-            if (!link)  break;
-            // qDebug() << "ArnEvModeChange: path=" << e->path << " inParentLinkPath=" << link->linkPath();
-            if (link->_refCount > 0) {
-                emit modeChangedBelow( e->path, e->linkId);
-            }
-        }
-        return true;
-    }
-
-    return QObject::event( ev);
-}
-
-
 bool  ArnLink::isRetired()
 {
     if (_mutex)  _mutex->lock();
@@ -750,6 +776,36 @@ QString  ArnLink::twinName()
 }
 
 
+/// Can be called from any thread any time
+bool  ArnLink::subscribe( QObject* subscriber)
+{
+    if (!subscriber)  return false;  // Not valid subscriber
+
+    if (_mutex)  _mutex->lock();
+    if (!_subscribeTab)
+        _subscribeTab = new QObjectList;
+
+    *_subscribeTab += subscriber;
+    if (_mutex)  _mutex->unlock();
+
+    return true;  // Subsciber added Ok
+}
+
+
+/// Can be called from any thread any time
+bool  ArnLink::unsubscribe( QObject* subscriber)
+{
+    if (!subscriber)  return false;  // Not valid subscriber
+    if (!_subscribeTab)   return false;  // Not valid subscribe table
+
+    if (_mutex)  _mutex->lock();
+    bool  stat = _subscribeTab->removeOne( subscriber);
+    if (_mutex)  _mutex->unlock();
+
+    return stat;
+}
+
+
 /// Can only be called from main-thread
 void  ArnLink::setRefCount( int count)
 {
@@ -806,8 +862,10 @@ void  ArnLink::ref()
 
 
 /// Can be called from any thread any time
-void  ArnLink::deref()
+void  ArnLink::deref( QObject* subscriber)
 {
+    unsubscribe( subscriber);
+
     bool  isZeroRefs = false;
     ArnLink*  vLink  = valueLink();
 
