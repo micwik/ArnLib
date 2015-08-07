@@ -427,7 +427,6 @@ protected:
 private slots:
     void  linkValueUpdated( uint sendId, const ArnLinkHandle& handleData);
     void  linkValueUpdated( uint sendId, const QByteArray& value, ArnLinkHandle handleData);
-    void  doArnLinkDestroyed();
 
 private:
     void  init();

@@ -87,4 +87,13 @@ public:
     { return _mode;}
 };
 
+
+class ArnEvRetired : public ArnEvent
+{
+public:
+    ArnEvRetired();
+    static QEvent::Type  type();
+    virtual ArnEvent*  makeHeapClone();
+};
+
 #endif // ARNEVENT_HPP

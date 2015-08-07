@@ -724,7 +724,8 @@ void  ArnLink::setRetired( bool isGlobal)
 void  ArnLink::doRetired()
 {
     if (Arn::debugLinkDestroy)  qDebug() << "doRetired: path=" << this->linkPath();
-    emit retired();
+    ArnEvRetired  arnEvRetired;
+    sendEvents( &arnEvRetired);
 }
 
 

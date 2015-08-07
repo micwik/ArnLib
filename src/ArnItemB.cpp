@@ -101,8 +101,6 @@ void  ArnItemB::setupOpenItem( bool isFolder)
 {
     Q_D(ArnItemB);
 
-    connect( _link, SIGNAL(retired()), this, SLOT(doArnLinkDestroyed()));
-
     if (!isFolder) {
         //// Optimize: Only one changed() should be connected depending on thread & pipeMode
         connect( _link, SIGNAL(changed(uint,const ArnLinkHandle&)),
@@ -1076,8 +1074,8 @@ bool  ArnItemB::event( QEvent* ev)
     QEvent::Type  type = ev->type();
     if (type == ArnEvLinkCreate::type()) {
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
-        qDebug() << "ArnEvLinkCreate: path=" << e->path() << " inItemPath=" << path();
-        if (!Arn::isFolderPath( e->path())) {
+        // qDebug() << "ArnEvLinkCreate: path=" << e->path() << " inItemPath=" << path();
+        if (!Arn::isFolderPath( e->path())) {  // Only created leaves are passed on
             itemCreatedBelow( e->path());
         }
         return true;
@@ -1092,14 +1090,12 @@ bool  ArnItemB::event( QEvent* ev)
             modeUpdate( e->mode());
         return true;
     }
+    if (type == ArnEvRetired::type()) {
+        if (Arn::debugLinkDestroy)  qDebug() << "Item arnLinkDestroyed: path=" << path();
+        emit arnLinkDestroyed();
+        close();
+        return true;
+    }
 
     return QObject::event( ev);
-}
-
-
-void  ArnItemB::doArnLinkDestroyed()
-{
-    if (Arn::debugLinkDestroy)  qDebug() << "Item arnLinkDestroyed: path=" << path();
-    emit arnLinkDestroyed();
-    close();
 }

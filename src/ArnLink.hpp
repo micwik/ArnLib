@@ -103,7 +103,6 @@ signals:
     void  changed( uint sendId, const ArnLinkHandle& handleData);
     void  changed( uint sendId, const QByteArray& value, const ArnLinkHandle& handleData);
     void  zeroRef( QObject* linkObj);
-    void  retired();
 
 protected:
     //// Will never be inherited, this section is separated for use by friend ArnM

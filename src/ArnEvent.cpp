@@ -39,6 +39,7 @@ ArnEvent::ArnEvent( QEvent::Type type)
 }
 
 
+
 ArnEvLinkCreate::ArnEvLinkCreate( const QString& path, ArnLink* arnLink)
     : ArnEvent( type())
     , _path( path)
@@ -61,6 +62,7 @@ ArnEvent*  ArnEvLinkCreate::makeHeapClone()
 }
 
 
+
 ArnEvModeChange::ArnEvModeChange( const QString& path, uint linkId, Arn::ObjectMode mode)
     : ArnEvent( type())
     , _path( path)
@@ -81,4 +83,25 @@ QEvent::Type  ArnEvModeChange::type()
 ArnEvent*  ArnEvModeChange::makeHeapClone()
 {
     return new ArnEvModeChange( _path, _linkId, _mode);
+}
+
+
+
+ArnEvRetired::ArnEvRetired()
+    : ArnEvent( type())
+{
+}
+
+
+QEvent::Type ArnEvRetired::type()
+{
+    static int evType = QEvent::registerEventType(2024);
+
+    return Type( evType);
+}
+
+
+ArnEvent*ArnEvRetired::makeHeapClone()
+{
+    return new ArnEvRetired();
 }
