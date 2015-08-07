@@ -296,7 +296,7 @@ uint  ArnSync::doCommandSync()
         setupMonitorItem( itemNet);
     }
     if (!itemNet->getModeString().isEmpty()) {   // If non default mode
-        itemNet->modeUpdate();    // Make server send the current mode  to client
+        itemNet->modeUpdate( Arn::ObjectMode());    // Make server send the current mode to client
     }
     if ((itemNet->type() != Arn::DataType::Null)
     && !(itemNet->syncMode().is( syncMode.Master))) {  // Only send non Null Value to non master

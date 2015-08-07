@@ -111,7 +111,7 @@ void  ArnItemB::setupOpenItem( bool isFolder)
                  this, SLOT(linkValueUpdated(uint,QByteArray,ArnLinkHandle)));
     }
     addMode( d->_mode);  // Transfer modes to the link
-    modeUpdate(true);
+    modeUpdate( getMode(), true);
 }
 
 
@@ -226,11 +226,11 @@ uint  ArnItemB::linkId()  const
 }
 
 
-void  ArnItemB::modeUpdate( bool isSetup)
+void  ArnItemB::modeUpdate( Arn::ObjectMode mode, bool isSetup)
 {
     Q_UNUSED(isSetup);
 
-    if (isPipeMode()) {  // Pipe-mode never IgnoreSameValue
+    if (mode.is( mode.Pipe)) {  // Pipe-mode never IgnoreSameValue
         setIgnoreSameValue(false);
     }
 }
@@ -1089,7 +1089,7 @@ bool  ArnItemB::event( QEvent* ev)
         if (isFolder())
             itemModeChangedBelow( e->path(), e->linkId(),e->mode());
         else
-            modeUpdate();
+            modeUpdate( e->mode());
         return true;
     }
 

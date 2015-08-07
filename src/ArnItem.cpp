@@ -436,12 +436,12 @@ void  ArnItem::timeoutItemUpdate()
 }
 
 
-void  ArnItem::modeUpdate( bool isSetup)
+void  ArnItem::modeUpdate( Arn::ObjectMode mode, bool isSetup)
 {
-    ArnItemB::modeUpdate( isSetup); // must be called for base-class update
+    ArnItemB::modeUpdate( mode, isSetup); // must be called for base-class update
     if (isSetup)  return;
 
-    emit modeChanged( getMode());
+    emit modeChanged( mode);
 }
 
 

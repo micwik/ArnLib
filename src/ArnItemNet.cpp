@@ -236,9 +236,9 @@ void  ArnItemNet::itemCreatedBelow( const QString& path)
 }
 
 
-void  ArnItemNet::modeUpdate( bool isSetup)
+void  ArnItemNet::modeUpdate( Arn::ObjectMode mode, bool isSetup)
 {
-    ArnItemB::modeUpdate( isSetup); // must be called for base-class update
+    ArnItemB::modeUpdate( mode, isSetup); // must be called for base-class update
     if (isSetup)  return;
 
     if (!_dirtyMode) {

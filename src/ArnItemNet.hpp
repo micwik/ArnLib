@@ -74,7 +74,7 @@ public:
 
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  itemCreatedBelow( const QString& path);
-    virtual void  modeUpdate( bool isSetup = false);
+    virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
 
     using ArnItemB::addSyncMode;
     using ArnItemB::syncMode;

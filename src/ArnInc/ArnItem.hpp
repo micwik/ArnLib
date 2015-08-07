@@ -477,7 +477,7 @@ signals:
     //! \cond ADV
 protected:
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
-    virtual void  modeUpdate( bool isSetup = false);
+    virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
 
