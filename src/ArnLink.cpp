@@ -175,6 +175,26 @@ void  ArnLink::sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink)
 }
 
 
+void  ArnLink::sendEventArnM( ArnEvent* ev)
+{
+    bool  isMainThread = true;  // Default
+    QObject*  objArnM = arnM();
+
+    if (_mutex) {
+        if (QThread::currentThread() != objArnM->thread()) {
+            isMainThread = false;
+            ArnEvent*  evClone = ev->makeHeapClone();
+            QCoreApplication::postEvent( objArnM, evClone);
+        }
+    }
+
+    if (isMainThread) {
+        QCoreApplication::sendEvent( objArnM, ev);
+    }
+
+}
+
+
 void ArnLink::setValue( int value, int sendId, bool forceKeep)
 {
     if (!_val)  return;
@@ -690,6 +710,16 @@ void ArnLink::unlock()
 }
 
 
+QObject*  ArnLink::arnM( QObject* inArnM)
+{
+    static QObject*  storeArnM = 0;
+
+    if (!storeArnM && inArnM)
+        storeArnM = inArnM;
+    return storeArnM;
+}
+
+
 bool  ArnLink::isRetired()
 {
     if (_mutex)  _mutex->lock();
@@ -882,7 +912,8 @@ void  ArnLink::deref( QObject* subscriber)
     if (Arn::debugLinkRef)  qDebug() << "link-deref: path=" << this->linkPath() << " count=" << refCount();
 
     if (isZeroRefs) {  // This is last reference
-        emit zeroRef( this);  // Will be received in main-thread
+        ArnEvZeroRef  arnEvZeroRef( this);
+        sendEventArnM( &arnEvZeroRef);  // Will allways be received in main-thread (ArnM)
     }
 }
 

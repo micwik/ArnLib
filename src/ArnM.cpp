@@ -31,8 +31,9 @@
 
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/ArnLib.hpp"
+#include "ArnInc/ArnEvent.hpp"
 #include "ArnLink.hpp"
-#include <QEvent>
+//#include <QEvent>
 #include <QMutex>
 #include <QWaitCondition>
 #include <QThreadStorage>
@@ -650,7 +651,6 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
         }
         // Create folders or items when needed
         child = new ArnLink(parent, name, flags);
-        connect( child, SIGNAL(zeroRef(QObject*)), &instance(), SLOT(doZeroRefLink(QObject*)));
     }
     else {
         if (child->isRetired()) {
@@ -755,9 +755,8 @@ void  ArnM::destroyLinkMain( ArnLink* link, bool isGlobal)
 }
 
 
-void  ArnM::doZeroRefLink( QObject* linkObj)
+void  ArnM::doZeroRefLink( ArnLink* link)
 {
-    ArnLink*  link = qobject_cast<ArnLink*>( linkObj);
     if (!link)  return;
     link->decZeroRefs();
     if (!link->isLastZeroRef())  return;  // Link reused & more zeroRefs will come
@@ -819,6 +818,20 @@ void  ArnM::setupErrorlog( QObject* errLog)
 }
 
 
+bool  ArnM::event( QEvent* ev)
+{
+    QEvent::Type  type = ev->type();
+    if (type == ArnEvZeroRef::type()) {
+        ArnEvZeroRef*  e = static_cast<ArnEvZeroRef*>( ev);
+        // qDebug() << "ArnEvZeroRef: path=" << e->arnLink()->linkPath();
+        doZeroRefLink( e->arnLink());
+        return true;
+    }
+
+    return QObject::event( ev);
+}
+
+
 void  ArnM::errorLog( QString errText, ArnError err, void* reference )
 {
     QString errTextSum;
@@ -845,6 +858,8 @@ void  ArnM::errorLog( QString errText, ArnError err, void* reference )
 /// Creator is run by first usage of Arn (see instance())
 ArnM::ArnM()
 {
+    ArnLink::arnM( this);
+
     _defaultIgnoreSameValue = false;
     _skipLocalSysLoading    = false;
     _isThreadedApp          = false;

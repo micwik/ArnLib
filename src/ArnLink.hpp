@@ -102,7 +102,6 @@ public slots:
 signals:
     void  changed( uint sendId, const ArnLinkHandle& handleData);
     void  changed( uint sendId, const QByteArray& value, const ArnLinkHandle& handleData);
-    void  zeroRef( QObject* linkObj);
 
 protected:
     //// Will never be inherited, this section is separated for use by friend ArnM
@@ -120,6 +119,7 @@ protected:
     void  setThreaded();
     void  lock();
     void  unlock();
+    static QObject*  arnM( QObject* inArnM = 0);
 
     ArnLink*  _twin;   // Used for bidirectional functionality
 
@@ -129,6 +129,7 @@ private:
     void  sendEventsInThread( ArnEvent* ev, const QObjectList& recipients);
     void  sendEvents( ArnEvent* ev);
     void  sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink);
+    void  sendEventArnM( ArnEvent* ev);
 
     // Source for unique id to all ArnLink ..
     static QAtomicInt  _idCount;

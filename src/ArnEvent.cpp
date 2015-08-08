@@ -105,3 +105,25 @@ ArnEvent*ArnEvRetired::makeHeapClone()
 {
     return new ArnEvRetired();
 }
+
+
+
+ArnEvZeroRef::ArnEvZeroRef( ArnLink* arnLink)
+    : ArnEvent( type())
+    , _arnLink (arnLink)
+{
+}
+
+
+QEvent::Type  ArnEvZeroRef::type()
+{
+    static int evType = QEvent::registerEventType(2025);
+
+    return Type( evType);
+}
+
+
+ArnEvent*  ArnEvZeroRef::makeHeapClone()
+{
+    return new ArnEvZeroRef( _arnLink);
+}

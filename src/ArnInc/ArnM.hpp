@@ -299,6 +299,8 @@ signals:
 
 protected:
 #ifndef DOXYGEN_SKIP
+    virtual bool  event( QEvent* ev);
+
     static ArnLink*  root();
     static ArnLink*  link( const QString& path, Arn::LinkFlags flags,
                            Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode());
@@ -314,7 +316,6 @@ private slots:
     static void  linkProxy( ArnThreadCom* threadCom, const QString& path,
                             int flagValue, int syncMode = 0);
     static void  itemsProxy( ArnThreadCom* threadCom, const QString& path);
-    static void  doZeroRefLink( QObject* linkObj);
 
 private:
     /// Private constructor/destructor to keep this class singleton
@@ -335,6 +336,8 @@ private:
     static ArnLink*  getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags);
     static QStringList  itemsMain( const ArnLink *parent);
     static QStringList  itemsMain( const QString& path);
+
+    static void  doZeroRefLink( ArnLink* link);
 
     // The root object of all other arn data
     ArnLink*  _root;

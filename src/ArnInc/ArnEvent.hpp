@@ -96,4 +96,18 @@ public:
     virtual ArnEvent*  makeHeapClone();
 };
 
+
+class ArnEvZeroRef : public ArnEvent
+{
+    ArnLink*  _arnLink;
+
+public:
+    ArnEvZeroRef( ArnLink* arnLink);
+    static QEvent::Type  type();
+    virtual ArnEvent*  makeHeapClone();
+
+    inline ArnLink*  arnLink()  const
+    { return _arnLink;}
+};
+
 #endif // ARNEVENT_HPP
