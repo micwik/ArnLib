@@ -20,6 +20,7 @@ Minor
 * Add setDelay in ArnItemQml, rework changed().
 * ArnItemQml::updateValue() don't handle param data.
 * Optimize data transfer with minimal copying.
+* Make ArnLink none QObject to save memory and independent on main-thread-create.
 * Simple access system for Server/Client.
 * Add tranfer classes for copying values.
 * Add multiplex/demultiplex-classes for pipes used by Sapi.
@@ -31,6 +32,7 @@ Done in 3.0
 * Delete ArnObject, but only local (remove any sync of it).
 * ArnClient disconnect and close.
 * Optimize memory consumption with pointers to different data in ArnLink.
+* Minimized signal/slot:s in ArnLink by change to ArnEvent.
 
 Done in 2.3
 -----------

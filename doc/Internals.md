@@ -99,16 +99,24 @@ Destroy    {#int_destroy}
 * The affected link:s tree is recursively traversed and all links are first marked as retired.
   Also global or local destroy is marked.
 
-* As the last thing in this recursion each link is emitting a retired signal, ie the leaves are
-  the first to emit.
+* As the last thing in this recursion each link is sending a Retired ArnEvent, ie the leaves are
+  the first to send.
 
-* The retired signal is handled by each connected Item. Each Item is sending a linkDestroyed
+* The Retired ArnEvent is handled by each connected Item. Each Item is sending a linkDestroyed
   signal to be handled by application code.
   The Items is finally closed and by this the link ref counter is decremented.
 
-* When the links ref counter is reaching zero, a zeroRef signal is sent.
+* When the links ref counter is reaching zero, a ZeroRef ArnEvent is sent. Also a ZeroRef pending
+  counter is increased.
 
-* The signal is handled by doZerRefLink(), in Main thread. It will set the link ref counter
+* The event is handled by ArnM::doZerRefLink(), in Main thread. First the ZeroRef pending
+  counter is decreased. Next both ref counter and ZeroRef pending counter is checked to be zero,
+  which indicates that this is the final ZeroRef for this link.
+  This is to prohibit a scenario where the link has been reused during ZeroRef ArnEvent delivery.
+  Also this reuse might have been followed by a dropped usage resulting in a second ZeroRef
+  ArnEvent.
+
+* In ArnM::doZerRefLink() if this is the final ZeroRef, it will set the link ref counter
   to -1, to mark the link as fully de-referenced.
   The link and parent (and grand parants ...) are deleted if they don't have any children
   and ref = -1 and they are marked retired.
