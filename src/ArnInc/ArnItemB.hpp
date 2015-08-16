@@ -410,7 +410,7 @@ protected:
     void  resetOnlyEcho();
     bool  isOnlyEcho()  const;
     void  setBlockEcho( bool blockEcho);
-    bool  isRetiredGlobal();
+    uint  retireType();
     void  setEnableSetValue( bool enable);
     void  setEnableUpdNotify( bool enable);
     void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);

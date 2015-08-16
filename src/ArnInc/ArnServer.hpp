@@ -38,7 +38,27 @@
 #include <QObject>
 #include <QHostAddress>
 
+class ArnSync;
+class ArnItemNetEar;
 class QTcpServer;
+class QTcpSocket;
+
+
+class ArnServerNetSync : public QObject
+{
+    Q_OBJECT
+public:
+    ArnServerNetSync( QTcpSocket* socket, QObject *parent = 0);
+
+private:
+    ArnSync*  _arnNetSync;
+    ArnItemNetEar*  _arnNetEar;
+
+private slots:
+    void  shutdown();
+    void  doDestroyArnTree( const QString& path);
+    void  onCommandDelete( const QString& path);
+};
 
 
 //! Class for making an _Arn Server_.

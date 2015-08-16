@@ -94,6 +94,25 @@ void  ArnSync::send( const QByteArray& xString)
 }
 
 
+void  ArnSync::sendDelete( const QString& path)
+{
+    XStringMap xm;
+    xm.add(ARNRECNAME, "delete").add("path", path);
+
+    // qDebug() << "ArnSync-delete: path=" << path;
+    sendXSMap( xm);
+}
+
+
+void ArnSync::sendExit()
+{
+    XStringMap xm;
+    xm.add(ARNRECNAME, "exit");
+
+    sendXSMap( xm);
+}
+
+
 /// Common setup of ItemNet for both server and client
 void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
 {
@@ -252,6 +271,9 @@ void  ArnSync::doCommand()
     else if (command == "destroy") {
         stat = doCommandDestroy();
     }
+    else if (command == "delete") {
+        stat = doCommandDelete();
+    }
     else if (command == "ls") {
         stat = doCommandLs();
     }
@@ -364,7 +386,7 @@ uint  ArnSync::doCommandDestroy()
     uint  netId    = _commandMap.value("id").toUInt();
 
     ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
-    if (!itemNet) {  // Not existing item is ok, maybe destroyed before sync
+    if (!itemNet) {  // Not existing item is ok, maybe destroyed before this
         return ArnError::Ok;
     }
 
@@ -472,6 +494,16 @@ uint  ArnSync::doCommandLs()
         return ArnError::NotFound;
     }
 
+   return ArnError::Ok;
+}
+
+
+uint  ArnSync::doCommandDelete()
+{
+    QByteArray  path = _commandMap.value("path");
+    if (path.isEmpty())  return ArnError::NotFound;
+
+    emit xcomDelete( path);
     return ArnError::Ok;
 }
 
@@ -711,7 +743,10 @@ void  ArnSync::destroyToFluxQue( ArnItemNet* itemNet)
     if (itemNet->isDisable())  return;
     if (_isClosed)  return;
 
-    bool  isGlobal = itemNet->isRetiredGlobal() || !_isClientSide;  // Server allways Global destroy
+    ArnLink::RetireType  rt = ArnLink::RetireType::fromInt( itemNet->retireType());
+    if ((rt == rt.Tree) || (rt == rt.None))  return;  // Not handled here ...
+
+    bool  isGlobal = (rt == rt.LeafGlobal) || !_isClientSide;  // Server allways Global destroy leaf
     FluxRec*  fluxRec = getFreeFluxRec();
     _syncMap.clear();
     _syncMap.add(ARNRECNAME, isGlobal ? "destroy" : "nosync")
@@ -878,14 +913,5 @@ void  ArnSync::sendModeItem( ArnItemNet* itemNet)
     _syncMap.add("id", QByteArray::number( itemNet->netId()));
     _syncMap.add("data", itemNet->getModeString());
     sendXSMap( _syncMap);
-}
-
-
-void ArnSync::sendExit()
-{
-    XStringMap xm;
-    xm.add(ARNRECNAME, "exit");
-
-    sendXSMap( xm);
 }
 

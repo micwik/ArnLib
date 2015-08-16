@@ -87,8 +87,11 @@ ArnEvent*  ArnEvModeChange::makeHeapClone()
 
 
 
-ArnEvRetired::ArnEvRetired()
+ArnEvRetired::ArnEvRetired( ArnLink* startLink, bool isBelow, bool isGlobal)
     : ArnEvent( type())
+    , _startLink( startLink)
+    , _isBelow( isBelow)
+    , _isGlobal( isGlobal)
 {
 }
 
@@ -103,7 +106,7 @@ QEvent::Type ArnEvRetired::type()
 
 ArnEvent*ArnEvRetired::makeHeapClone()
 {
-    return new ArnEvRetired();
+    return new ArnEvRetired( _startLink, _isBelow, _isGlobal);
 }
 
 

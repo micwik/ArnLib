@@ -143,6 +143,7 @@ ArnClient::ArnClient( QObject* parent) :
     connect( _socket, SIGNAL(disconnected()), this, SIGNAL(tcpDisConnected()));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SLOT(doReplyRecord(Arn::XStringMap&)));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SIGNAL(replyRecord(Arn::XStringMap&)));
+    connect( _arnNetSync, SIGNAL(xcomDelete(QString)), this, SLOT(onCommandDelete(QString)));
     connect( _recTimer, SIGNAL(timeout()), this, SLOT(doRecTimeout()));
     connect( _socket, SIGNAL(readyRead()), this, SLOT(doRecNotified()));
 
@@ -281,12 +282,13 @@ bool  ArnClient::addMountPoint( const QString& localPath, const QString& remoteP
     }
 
     MountPointSlot  mpSlot;
-    mpSlot.arnMountPoint = new ArnItem( this);
+    mpSlot.arnMountPoint = new ArnItemNetEar( this);
     bool  isOk = mpSlot.arnMountPoint->openFolder( localPath_);
     if (isOk) {
         mpSlot.localPath  = localPath_;
         mpSlot.remotePath = remotePath.isEmpty() ? localPath_ : Arn::fullPath( remotePath);
         connect( mpSlot.arnMountPoint, SIGNAL(arnItemCreated(QString)), this, SLOT(createNewItem(QString)));
+        connect( mpSlot.arnMountPoint, SIGNAL(ArnTreeDestroyed(QString)), this, SLOT(doDestroyArnTree(QString)));
         _mountPoints += mpSlot;
         mpSlot.arnMountPoint->setReference( &_mountPoints.last());  // Give a ref to this added slot
     }
@@ -453,15 +455,29 @@ ArnItemNet*  ArnClient::newNetItem( const QString& path, Arn::ObjectSyncMode syn
 void  ArnClient::createNewItem( const QString& path)
 {
     // qDebug() << "ArnClient,ArnItem-created: path=" << path;
-    ArnItem*  item = qobject_cast<ArnItem*>( sender());
+    ArnItemNetEar*  item = qobject_cast<ArnItemNetEar*>( sender());
     Q_ASSERT(item);
     MountPointSlot*  mpSlot = static_cast<MountPointSlot*>( item->reference());
     Q_ASSERT(mpSlot);
+
     _arnNetSync->newNetItem( path, mpSlot->localPath, mpSlot->remotePath);
 }
 
 
-void  ArnClient::doTcpError(QAbstractSocket::SocketError socketError)
+void ArnClient::doDestroyArnTree( const QString& path)
+{
+    // qDebug() << "ArnClient,DestroyArnTree: path=" << path;
+    ArnItemNetEar*  item = qobject_cast<ArnItemNetEar*>( sender());
+    Q_ASSERT(item);
+    MountPointSlot*  mpSlot = static_cast<MountPointSlot*>( item->reference());
+    Q_ASSERT(mpSlot);
+
+    QString  remotePath = Arn::changeBasePath( mpSlot->localPath, mpSlot->remotePath, path);
+    _arnNetSync->sendDelete( remotePath);
+}
+
+
+void  ArnClient::doTcpError( QAbstractSocket::SocketError socketError)
 {
     _recTimer->stop();
 
@@ -472,7 +488,7 @@ void  ArnClient::doTcpError(QAbstractSocket::SocketError socketError)
 }
 
 
-void ArnClient::doTcpError(int socketError)
+void ArnClient::doTcpError( int socketError)
 {
     // qDebug() << "ArnClient TcpError: hostAddr=" << _curConnectAP.addr;
     QString  errTextSum = QString(tr("TCP Client Msg:")) + _socket->errorString();
@@ -563,6 +579,21 @@ void ArnClient::doRecTimeout()
             emit connectionStatusChanged( _connectStat, _curPrio);
         }
     }
+}
+
+
+void  ArnClient::onCommandDelete( const QString& remotePath)
+{
+    // qDebug() << "ArnClient-delete: remotePath=" << remotePath;
+    QString  localPath;
+    foreach (const MountPointSlot& mountPoint, _mountPoints) {
+        if (remotePath.startsWith( mountPoint.remotePath)) {
+            localPath = Arn::changeBasePath( mountPoint.remotePath, mountPoint.localPath, remotePath);
+            break;
+        }
+    }
+    if (!localPath.isEmpty())
+        ArnM::destroyLink( localPath);
 }
 
 

@@ -696,7 +696,7 @@ void  ArnM::destroyLink( ArnLink* link, bool isGlobal)
 
     if (isMainThread()) {
         if (Arn::debugLinkDestroy) qDebug() << "destroyLink-mainA: start path=" << link->linkPath();
-        destroyLinkMain( link, isGlobal);
+        destroyLinkMain( link, link, isGlobal);
         return;
     }
 
@@ -712,8 +712,8 @@ void  ArnM::destroyLink( const QString& path, bool isGlobal)
         ArnLink*  link = ArnM::link( path, flags.SilentError);
         if (link) {
             link->deref();  // Ok, as this is main thread. Avoid locking this link
-            qDebug() << "destroyLink-mainB: start path=" << link->linkPath();
-            destroyLinkMain( link, isGlobal);
+            if (Arn::debugLinkDestroy) qDebug() << "destroyLink-mainB: start path=" << link->linkPath();
+            destroyLinkMain( link, link, isGlobal);
         }
         return;
     }
@@ -729,29 +729,33 @@ void  ArnM::destroyLink( const QString& path, bool isGlobal)
 
 
 /// This will be called recursively in main-thread
-void  ArnM::destroyLinkMain( ArnLink* link, bool isGlobal)
+void  ArnM::destroyLinkMain( ArnLink* link, ArnLink* startLink, bool isGlobal)
 {
     if (!link)  return;
     if (link->isRetired())  return;  // This link is already retired
 
     /// Mark this link as retired
+    ArnLink::RetireType  rt;
+    rt = startLink->isFolder() ? rt.Tree
+                               : isGlobal ? rt.LeafGlobal
+                                          : rt.LeafLocal;
     ArnLink*  twin = link->twinLink();
-    link->setRetired( isGlobal);
+    link->setRetired( rt);
     if (twin)
-        twin->setRetired( isGlobal);
+        twin->setRetired( rt);
 
     /// Make all childs retired by recursion
     QObjectList objList = link->children();
     int  childNum = objList.size();
     for (int i = 0; i < childNum; ++i) {
-        ArnLink* dLink = qobject_cast<ArnLink*>( objList.at( i));
-        destroyLinkMain( dLink, isGlobal);
+        ArnLink*  dLink = qobject_cast<ArnLink*>( objList.at( i));
+        destroyLinkMain( dLink, startLink, isGlobal);
     }
 
     /// Make this link retired
-    link->doRetired();
+    link->doRetired( startLink, isGlobal);
     if (twin)
-        twin->doRetired();
+        twin->doRetired( startLink, isGlobal);
 }
 
 

@@ -34,6 +34,7 @@
 
 
 #include "ArnInc/ArnItemB.hpp"
+#include "ArnInc/ArnItem.hpp"  // MW: tobe removed?
 #include <QStringList>
 
 
@@ -82,7 +83,7 @@ public:
     using ArnItemB::isPipeMode;
     using ArnItemB::setBlockEcho;
     using ArnItemB::isOnlyEcho;
-    using ArnItemB::isRetiredGlobal;
+    using ArnItemB::retireType;
     using ArnItemB::type;
     using ArnItemB::arnExport;
     using ArnItemB::arnImport;
@@ -109,6 +110,22 @@ private:
     bool  _isMonitor;  // item is used as a Monitor
     QString  _localMountPath;
     QString  _remoteMountPath;
+};
+
+
+class ArnItemNetEar : public ArnItem
+{
+    Q_OBJECT
+public:
+    explicit ArnItemNetEar( QObject* parent = 0);
+
+signals:
+    void  ArnTreeDestroyed( const QString& path);
+
+protected:
+    virtual void  customEvent( QEvent* ev);
+
+private:
 };
 //! \endcond
 

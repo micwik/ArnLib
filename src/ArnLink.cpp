@@ -77,7 +77,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     _refCount        = -1;  // Mark no reference, Ok to delete
     _zeroRefCount    = 0;
     _isRetired       = false;
-    _isRetiredGlobal = false;
+    _retireType      = RetireType::None;
 }
 
 
@@ -167,10 +167,7 @@ void  ArnLink::sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink)
     while (link) {
         // qDebug() << "sendEventsDirRoot: inLinkPath=" << link->linkPath();
         link->sendEvents( ev);
-
-        if (_mutex)  _mutex->lock();
         link = qobject_cast<ArnLink*>( link->parent());
-        if (_mutex)  _mutex->unlock();
     }
 }
 
@@ -729,32 +726,36 @@ bool  ArnLink::isRetired()
 }
 
 
-bool  ArnLink::isRetiredGlobal()
+uint  ArnLink::retireType()
 {
     if (_mutex)  _mutex->lock();
-    bool  retVal = _isRetiredGlobal;
+    uint  retVal = _retireType;
     if (_mutex)  _mutex->unlock();
     return retVal;
 }
 
 
 /// Can only be called from main-thread
-void  ArnLink::setRetired( bool isGlobal)
+void  ArnLink::setRetired( RetireType retireType)
 {
     if (_mutex)  _mutex->lock();
     if (Arn::debugLinkDestroy)  qDebug() << "setRetired: path=" << this->linkPath();
 
-    _isRetiredGlobal = isGlobal;
-    _isRetired       = true;
+    _retireType = retireType;
+    _isRetired  = true;
 
     if (_mutex)  _mutex->unlock();
 }
 
 
-void  ArnLink::doRetired()
+void  ArnLink::doRetired( ArnLink* startLink, bool isGlobal)
 {
     if (Arn::debugLinkDestroy)  qDebug() << "doRetired: path=" << this->linkPath();
-    ArnEvRetired  arnEvRetired;
+    if ((startLink == this) && _isFolder) {
+        ArnEvRetired  arnEvRetired( startLink, true, isGlobal);
+        sendEventsDirRoot( &arnEvRetired, qobject_cast<ArnLink*>( parent()));
+    }
+    ArnEvRetired  arnEvRetired( startLink, false, isGlobal);
     sendEvents( &arnEvRetired);
 }
 

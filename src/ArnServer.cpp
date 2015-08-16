@@ -33,11 +33,50 @@
 #include "ArnInc/ArnError.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnSync.hpp"
+#include "ArnItemNet.hpp"
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QHostInfo>
 #include <QNetworkInterface>
 #include <QDebug>
+
+
+ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, QObject* parent)
+    : QObject( parent)
+{
+    _arnNetSync = new ArnSync( socket, false, this);
+
+    _arnNetEar  = new ArnItemNetEar( this);
+    _arnNetEar->open("/");  // MW: Optimize to only mountPoint:s ?
+
+    connect( _arnNetSync, SIGNAL(destroyed(QObject*)), this, SLOT(shutdown()));
+    connect( _arnNetSync, SIGNAL(xcomDelete(QString)), this, SLOT(onCommandDelete(QString)));
+    connect( _arnNetEar, SIGNAL(ArnTreeDestroyed(QString)), this, SLOT(doDestroyArnTree(QString)));
+}
+
+
+void  ArnServerNetSync::shutdown()
+{
+    _arnNetSync = 0;
+    _arnNetEar->close();
+    deleteLater();
+}
+
+
+void  ArnServerNetSync::doDestroyArnTree( const QString& path)
+{
+    if (!_arnNetSync)  return;
+
+    _arnNetSync->sendDelete( path);
+}
+
+
+void  ArnServerNetSync::onCommandDelete( const QString& path)
+{
+    // qDebug() << "ArnServerNetSync-delete: path=" << path;
+    ArnM::destroyLink( path);
+}
+
 
 
 ArnServer::ArnServer( Type serverType, QObject *parent)
@@ -94,7 +133,7 @@ void  ArnServer::tcpConnection()
 
     switch (_serverType) {
     case Type::NetSync:
-        new ArnSync( socket, false, this);
+        new ArnServerNetSync( socket, this);
         break;
     }
 }

@@ -308,7 +308,7 @@ protected:
                               Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode(),
                               Arn::LinkFlags flags = Arn::LinkFlags());
     static void  destroyLink( ArnLink* link, bool isGlobal);
-    static void  destroyLinkMain( ArnLink* link, bool isGlobal);
+    static void  destroyLinkMain( ArnLink* link, ArnLink* startLink, bool isGlobal);
 #endif
 
 private slots:

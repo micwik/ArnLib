@@ -61,6 +61,7 @@ public:
     void  close();
     void  sendXSMap( const Arn::XStringMap& xsMap);
     void  send( const QByteArray& xString);
+    void  sendDelete( const QString& path);
     void  sendExit();
 
     static void  setupMonitorItem( ArnItemNet* itemNet);
@@ -68,6 +69,7 @@ public:
 
 signals:
     void  replyRecord( Arn::XStringMap& replyMap);
+    void  xcomDelete( const QString& path);
 
 private slots:
     void  connected();
@@ -107,6 +109,7 @@ private:
     uint  doCommandSet();
     uint  doCommandGet();
     uint  doCommandLs();
+    uint  doCommandDelete();
 
     QTcpSocket*  _socket;
 

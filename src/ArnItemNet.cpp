@@ -30,6 +30,9 @@
 //
 
 #include "ArnItemNet.hpp"
+#include "ArnLink.hpp"
+#include "ArnInc/ArnEvent.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include <QDebug>
 
 
@@ -251,4 +254,27 @@ void  ArnItemNet::modeUpdate( Arn::ObjectMode mode, bool isSetup)
 void  ArnItemNet::emitArnEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
 {
     emit arnEvent( type, data, isLocal);
+}
+
+
+
+ArnItemNetEar::ArnItemNetEar( QObject* parent)
+    : ArnItem( parent)
+{
+}
+
+
+void  ArnItemNetEar::customEvent( QEvent* ev)
+{
+    QEvent::Type  type = ev->type();
+    if (type == ArnEvRetired::type()) {
+        ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
+        QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : path();
+        if (Arn::debugLinkDestroy)  qDebug() << "ArnItemNetEar retired: path=" << destroyPath
+                                             << " isGlobal=" << e->isGlobal();
+        if (e->startLink()->isFolder()) {
+            emit ArnTreeDestroyed( destroyPath);
+        }
+        return;
+    }
 }

@@ -43,6 +43,7 @@
 
 class ArnSync;
 class ArnItemNet;
+class ArnItemNetEar;
 class QTcpSocket;
 class QTimer;
 
@@ -315,19 +316,21 @@ private slots:
     void  newNetItemProxy( ArnThreadCom* threadCom,
                            const QString& path, int syncMode = 0, void* isNewPtr = 0);
     void  createNewItem( const QString& path);
+    void  doDestroyArnTree( const QString& path);
     void  doReplyRecord( Arn::XStringMap& replyMap);
     void  reConnectArn();
     void  onConnectWaitDone();
-    void  doTcpError(QAbstractSocket::SocketError socketError);
-    void  doTcpError(int socketError);
+    void  doTcpError( QAbstractSocket::SocketError socketError);
+    void  doTcpError( int socketError);
     void  doTcpDisconnected();
     void  doTcpConnected();
     void  doRecNotified();
     void  doRecTimeout();
+    void  onCommandDelete( const QString& remotePath);
 
 private:
     struct MountPointSlot {
-        ArnItem*  arnMountPoint;
+        ArnItemNetEar*  arnMountPoint;
         QString  localPath;
         QString  remotePath;
 

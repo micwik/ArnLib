@@ -270,9 +270,9 @@ void  ArnItemB::setBlockEcho( bool blockEcho)
 }
 
 
-bool ArnItemB::isRetiredGlobal()
+uint  ArnItemB::retireType()
 {
-    return _link ? _link->isRetiredGlobal() : false;
+    return _link ? _link->retireType() : uint( ArnLink::RetireType::None);
 }
 
 
@@ -1091,10 +1091,13 @@ bool  ArnItemB::event( QEvent* ev)
         return true;
     }
     if (type == ArnEvRetired::type()) {
+        ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         if (Arn::debugLinkDestroy)  qDebug() << "Item arnLinkDestroyed: path=" << path();
-        emit arnLinkDestroyed();
-        close();
-        return true;
+        if (!e->isBelow()) {
+            emit arnLinkDestroyed();
+            close();
+        }
+        return QObject::event( ev);
     }
 
     return QObject::event( ev);

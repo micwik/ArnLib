@@ -53,6 +53,16 @@ class ArnLink : public QObject
     friend class ArnM;
 
 public:
+    struct RetireType {
+        enum E {  // Warning limited number (ArnLink stores in bitfield)
+            None,
+            LeafLocal,
+            LeafGlobal,
+            Tree
+        };
+        MQ_DECLARE_ENUM( RetireType)
+    };
+
     void  setValue( int value, int sendId = 0, bool forceKeep = 0);
     void  setValue( ARNREAL value, int sendId = 0, bool forceKeep = 0);
     void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0,
@@ -85,7 +95,7 @@ public:
     bool  isProvider()  const;
     bool  isThreaded()  const;
     bool  isRetired();
-    bool  isRetiredGlobal();
+    uint  retireType();
     ArnLink*  twinLink();
     ArnLink*  valueLink();
     ArnLink*  providerLink();
@@ -114,8 +124,8 @@ protected:
     void  setRefCount( int count);
     void  decZeroRefs();
     bool  isLastZeroRef();
-    void  setRetired( bool isGlobal);
-    void  doRetired();
+    void  setRetired( RetireType retireType);
+    void  doRetired( ArnLink* startLink, bool isGlobal);
     void  setThreaded();
     void  lock();
     void  unlock();
@@ -154,7 +164,7 @@ private:
     volatile bool  _isSaveMode : 1;
 
     volatile bool  _isRetired : 1;
-    volatile bool  _isRetiredGlobal : 1;
+    volatile uint  _retireType : 2;
 
     volatile bool  _haveInt : 1;
     volatile bool  _haveReal : 1;

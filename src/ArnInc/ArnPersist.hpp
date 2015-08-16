@@ -71,12 +71,6 @@ public:
     void  setMandatory( bool v)  {_isMandatory = v;}
     bool  isMandatory()  const {return _isMandatory;}
 
-signals:
-
-public slots:
-
-private slots:
-
 private:
     StoreType  _storeType;
     int  _storeId;

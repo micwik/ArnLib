@@ -90,10 +90,23 @@ public:
 
 class ArnEvRetired : public ArnEvent
 {
+    ArnLink*  _startLink;
+    bool  _isBelow;
+    bool  _isGlobal;
+
 public:
-    ArnEvRetired();
+    ArnEvRetired( ArnLink* startLink, bool isBelow, bool isGlobal);
     static QEvent::Type  type();
     virtual ArnEvent*  makeHeapClone();
+
+    inline ArnLink*  startLink()  const
+    { return _startLink;}
+
+    inline bool  isBelow()  const
+    { return _isBelow;}
+
+    inline bool  isGlobal()  const
+    { return _isGlobal;}
 };
 
 
