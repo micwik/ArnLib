@@ -484,17 +484,20 @@ ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, Arn::Object
     }
 
     ArnLink*  currentLink = root();
-    QStringList pathlist = pathNorm.split("/", QString::KeepEmptyParts);
+    QStringList  pathlist = pathNorm.split("/", QString::KeepEmptyParts);
+    QString  growPath = "/";
+    int  pathListSize = pathlist.size();
 
-    for (int i = 0; i < pathlist.size(); i++) {
+    for (int i = 1; i < pathListSize; ++i) {
         Arn::LinkFlags  subFlags;
-        subFlags.f = flags.f | flags.flagIf( i < pathlist.size() - 1, flags.Folder);
-        QString  subpath = pathlist.at(i);
-        if (subpath.isEmpty()  &&  i == 0) {  // If subpath is root, go for next subpath
-            continue;
-        }
+        subFlags.f = flags.f | flags.flagIf( i < pathListSize - 1, flags.Folder);
+        QString  subPath = pathlist.at(i);
 
-        currentLink = ArnM::linkMain( path, currentLink, subpath, subFlags, syncMode);
+        growPath += subPath;
+        if (subFlags.is( subFlags.Folder))
+            growPath += "/";
+
+        currentLink = ArnM::linkMain( growPath, currentLink, subPath, subFlags, syncMode);
         if (currentLink == 0) {
             return 0;
         }
