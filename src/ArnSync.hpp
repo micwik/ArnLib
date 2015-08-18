@@ -61,6 +61,7 @@ public:
     void  close();
     void  sendXSMap( const Arn::XStringMap& xsMap);
     void  send( const QByteArray& xString);
+    void  sendNoSync( const QString& path);
     void  sendDelete( const QString& path);
     void  sendExit();
 

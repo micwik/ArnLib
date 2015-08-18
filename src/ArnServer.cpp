@@ -51,7 +51,8 @@ ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, QObject* parent)
 
     connect( _arnNetSync, SIGNAL(destroyed(QObject*)), this, SLOT(shutdown()));
     connect( _arnNetSync, SIGNAL(xcomDelete(QString)), this, SLOT(onCommandDelete(QString)));
-    connect( _arnNetEar, SIGNAL(ArnTreeDestroyed(QString)), this, SLOT(doDestroyArnTree(QString)));
+    connect( _arnNetEar, SIGNAL(ArnTreeDestroyed(QString,bool)),
+             this, SLOT(doDestroyArnTree(QString,bool)));
 }
 
 
@@ -63,8 +64,10 @@ void  ArnServerNetSync::shutdown()
 }
 
 
-void  ArnServerNetSync::doDestroyArnTree( const QString& path)
+void  ArnServerNetSync::doDestroyArnTree( const QString& path, bool isGlobal)
 {
+    Q_UNUSED(isGlobal)  // Destruction of tree on server will allways be global
+
     if (!_arnNetSync)  return;
 
     _arnNetSync->sendDelete( path);

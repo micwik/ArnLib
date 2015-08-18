@@ -288,7 +288,8 @@ bool  ArnClient::addMountPoint( const QString& localPath, const QString& remoteP
         mpSlot.localPath  = localPath_;
         mpSlot.remotePath = remotePath.isEmpty() ? localPath_ : Arn::fullPath( remotePath);
         connect( mpSlot.arnMountPoint, SIGNAL(arnItemCreated(QString)), this, SLOT(createNewItem(QString)));
-        connect( mpSlot.arnMountPoint, SIGNAL(ArnTreeDestroyed(QString)), this, SLOT(doDestroyArnTree(QString)));
+        connect( mpSlot.arnMountPoint, SIGNAL(ArnTreeDestroyed(QString,bool)),
+                 this, SLOT(doDestroyArnTree(QString,bool)));
         _mountPoints += mpSlot;
         mpSlot.arnMountPoint->setReference( &_mountPoints.last());  // Give a ref to this added slot
     }
@@ -464,7 +465,7 @@ void  ArnClient::createNewItem( const QString& path)
 }
 
 
-void ArnClient::doDestroyArnTree( const QString& path)
+void ArnClient::doDestroyArnTree( const QString& path, bool isGlobal)
 {
     // qDebug() << "ArnClient,DestroyArnTree: path=" << path;
     ArnItemNetEar*  item = qobject_cast<ArnItemNetEar*>( sender());
@@ -473,7 +474,10 @@ void ArnClient::doDestroyArnTree( const QString& path)
     Q_ASSERT(mpSlot);
 
     QString  remotePath = Arn::changeBasePath( mpSlot->localPath, mpSlot->remotePath, path);
-    _arnNetSync->sendDelete( remotePath);
+    if (isGlobal)
+        _arnNetSync->sendDelete( remotePath);
+    else
+        _arnNetSync->sendNoSync( remotePath);
 }
 
 

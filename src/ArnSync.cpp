@@ -94,6 +94,16 @@ void  ArnSync::send( const QByteArray& xString)
 }
 
 
+void  ArnSync::sendNoSync( const QString& path)
+{
+    XStringMap xm;
+    xm.add(ARNRECNAME, "nosync").add("path", path);
+
+    // qDebug() << "ArnSync-nosync: path=" << path;
+    sendXSMap( xm);
+}
+
+
 void  ArnSync::sendDelete( const QString& path)
 {
     XStringMap xm;
@@ -368,15 +378,31 @@ uint  ArnSync::doCommandMode()
 
 uint ArnSync::doCommandNoSync()
 {
-    uint  netId    = _commandMap.value("id").toUInt();
+    //// Single NoSync with id
+    uint  netId = _commandMap.value("id").toUInt();
+    if (netId) {
+        ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+        if (!itemNet) {  // Not existing item is ok, maybe destroyed before sync
+            return ArnError::Ok;
+        }
 
-    ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
-    if (!itemNet) {  // Not existing item is ok, maybe destroyed before sync
+        removeItemNet( itemNet);
         return ArnError::Ok;
     }
 
-    removeItemNet( itemNet);
-
+    //// Tree NoSync with path
+    QString   path = _commandMap.valueString("path");
+    QList<ArnItemNet*>  noSyncList;
+    foreach (ArnItemNet* itemNet, _itemNetMap) {
+        if (itemNet->path().startsWith( path)) {
+            noSyncList += itemNet;
+            // qDebug() << "ArnSync-noSync: Add noSyncList path=" << itemNet->path();
+        }
+    }
+    // Make NoSync from list
+    foreach (ArnItemNet* itemNet, noSyncList) {
+        removeItemNet( itemNet);
+    }
     return ArnError::Ok;
 }
 

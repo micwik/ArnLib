@@ -120,7 +120,7 @@ public:
     explicit ArnItemNetEar( QObject* parent = 0);
 
 signals:
-    void  ArnTreeDestroyed( const QString& path);
+    void  ArnTreeDestroyed( const QString& path, bool isGlobal);
 
 protected:
     virtual void  customEvent( QEvent* ev);

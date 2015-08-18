@@ -273,7 +273,7 @@ void  ArnItemNetEar::customEvent( QEvent* ev)
         if (Arn::debugLinkDestroy)  qDebug() << "ArnItemNetEar retired: path=" << destroyPath
                                              << " isGlobal=" << e->isGlobal();
         if (e->startLink()->isFolder()) {
-            emit ArnTreeDestroyed( destroyPath);
+            emit ArnTreeDestroyed( destroyPath, e->isGlobal());
         }
         return;
     }
