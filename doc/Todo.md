@@ -4,7 +4,6 @@ ArnLib Todo
 Major
 -----
 * Convert to d-pointer for making binary compatible library in the future.
-* Distributed deletion of folders.
 * Script support for Sapi.
 * ArnObject Link to other ArnObject (like in a filesystem).
 * Add atomic operations in ArnItem for: "+=", "&=", "|=" and alike.
@@ -17,6 +16,7 @@ Major
 
 Minor
 -----
+* Distributed create of folder.
 * Add setDelay in ArnItemQml, rework changed().
 * ArnItemQml::updateValue() don't handle param data.
 * Optimize data transfer with minimal copying.
@@ -33,6 +33,7 @@ Done in 3.0
 * ArnClient disconnect and close.
 * Optimize memory consumption with pointers to different data in ArnLink.
 * Minimized signal/slot:s in ArnLink by change to ArnEvent.
+* Distributed deletion of folders.
 
 Done in 2.3
 -----------

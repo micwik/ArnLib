@@ -88,19 +88,24 @@ Destroy    {#int_destroy}
 * Destruction can be locally initiated and affects one link. Destruction can be set as
   local or global.
 
-* Destruction can also be initiated by the destroy command and arives with a netId.
+* Destruction can also be initiated for leaves by the destroy command and arives with a netId.
+  Or it can be with the delete command for a folder (tree).
 
-* Corresponding ItemNet is disabled (set as defunct), which prohibit sending destroy command
-  back to the originator of the command.
+* For leaf, corresponding ItemNet is disabled (set as defunct), which prohibit sending destroy
+  command back to the originator of the command.
 
 * The ItemNet is also destroyed in the same way as a locally initiated destruction and affects
   one link. Destruction is set to be global.
 
 * The affected link:s tree is recursively traversed and all links are first marked as retired.
-  Also global or local destroy is marked.
+  Also the retire type is set as LeafLocal, LeafGlobal or Tree.
 
 * As the last thing in this recursion each link is sending a Retired ArnEvent, ie the leaves are
-  the first to send.
+  the first to send. The event is sent to the subscriptions (ArnItems) of each link.
+
+* If it's a destroy of a tree (folder), a Retired ArnEvent is also sent to the tree:s parent
+  and all the way up to the root. The event is sent to the subscriptions (ArnItems) of each link.
+  These events have a marking telling destroy is below.
 
 * The Retired ArnEvent is handled by each connected Item. Each Item is sending a linkDestroyed
   signal to be handled by application code.
@@ -122,7 +127,20 @@ Destroy    {#int_destroy}
   and ref = -1 and they are marked retired.
 
 * When the ItemNet is sending the linkDestroyed signal, it will be deleted from sync map
-  and all queues. Finally a command is sent with its netId.
+  and all queues. Finally a command can be sent with its netId.
 
-* The sent command depends on global or local destroy. For local, a nosync command is used.
-  For global, a destroy command is used to spread the destruction to server and other clients.
+* The sent command depends on retire type. For Leaflocal, a nosync command is used.
+  For LeafGlobal, a destroy command is used to spread the destruction to server and other
+  clients. The Tree type doesn't send a command at item level.
+
+* For tree destroy, ArnClient is using a monitoring ArnItem at each mount point to catch
+  the Retire ArnEvent for a tree below. Such an event is resulting in a delete or noSync
+  command is sent, depending on global or local destroy. The command is sent with the path
+  to the destroyed tree.
+
+* For tree destroy, ArnServer is using a monitoring ArnItem at root to catch the Retire
+  ArnEvent  for a tree below. Such an event is resulting in a delete command is sent.
+  The command is sent with the path to the destroyed tree.
+
+* When a delete command is echoed back to the originator, it will stop with this only echo
+  as the affected tree is already marked for retire and this will terminate the command.
