@@ -393,6 +393,7 @@ uint ArnSync::doCommandNoSync()
     //// Tree NoSync with path
     QString   path = _commandMap.valueString("path");
     QList<ArnItemNet*>  noSyncList;
+    // qDebug() << "ArnSync-noSync: path=" << path;
     foreach (ArnItemNet* itemNet, _itemNetMap) {
         if (itemNet->path().startsWith( path)) {
             noSyncList += itemNet;

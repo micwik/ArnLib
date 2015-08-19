@@ -287,7 +287,7 @@ void  ArnPersist::doArnDestroy()
     ArnItemPersist*  item = qobject_cast<ArnItemPersist*>( sender());
     if (!item)  return;  // No valid sender
 
-    qDebug() << "Persist destroyArn: path=" << item->path();
+    // qDebug() << "Persist destroyArn: path=" << item->path();
     _itemPersistMap.remove( item->linkId());
     _pathPersistMap.remove( item->path());
     item->deleteLater();
@@ -350,7 +350,7 @@ void  ArnPersist::doArnUpdate()
     case ArnItemPersist::StoreType::File:
     {
         QString  relPath = item->path( Arn::NameF::Relative);
-        qDebug() << "Persist arnUpdate: Save to relPath=" << relPath;
+        // qDebug() << "Persist arnUpdate: Save to relPath=" << relPath;
         QFile  file( _persistDir->absoluteFilePath( relPath));
         file.open( QIODevice::WriteOnly);
         QByteArray  data = item->toByteArray();
@@ -674,7 +674,7 @@ bool  ArnPersist::insertDbValue( const QString& path, const QByteArray& value)
 
 bool  ArnPersist::updateDbValue( int storeId, const QByteArray& value)
 {
-    //qDebug() << "Persist updateDb: id=" << storeId << " value=" << value;
+    // qDebug() << "Persist updateDb: id=" << storeId << " value=" << value;
     bool  retVal = false;
 
     QString  meta;
@@ -712,7 +712,7 @@ bool  ArnPersist::updateDbUsed( int storeId, int isUsed)
 
 bool  ArnPersist::updateDbMandatory( int storeId, int isMandatory)
 {
-    //qDebug() << "UpdateDb: id=" << storeId << " isMandatory=" << isMandatory;
+    // qDebug() << "UpdateDb: id=" << storeId << " isMandatory=" << isMandatory;
     bool  retVal = false;
 
     _query->prepare("UPDATE store SET isMandatory = :isMandatory WHERE id = :id");
@@ -739,7 +739,7 @@ bool  ArnPersist::doArchive( const QString& name)
     }
     QString  dbFileName = _db->databaseName();
 
-    //qDebug() << "Persist Archive: src=" << dbFileName << " dst=" << arFileName;
+    // qDebug() << "Persist Archive: src=" << dbFileName << " dst=" << arFileName;
     return QFile::copy( dbFileName, arFileName);
 }
 
@@ -785,7 +785,7 @@ void  ArnPersist::doLoadFiles()
 void  ArnPersist::loadFile( const QString& relPath)
 {
     QString  arnPath = Arn::convertPath( relPath, Arn::NameF::EmptyOk);
-    qDebug() << "Persist loadFile: relPath=" << relPath;
+    // qDebug() << "Persist loadFile: relPath=" << relPath;
 
     ArnItemPersist*  item;
     if (!_pathPersistMap.contains( arnPath)) {  // First time loaded
@@ -813,7 +813,7 @@ void  ArnPersist::getFileList(QStringList& flist, const QDir& dir, const QDir* b
     if (!baseDir)
         baseDir = &dir;
     QString  path = dir.absolutePath();
-    //qDebug() << "fileList: dir=" << path;
+    // qDebug() << "fileList: dir=" << path;
 
     foreach( QFileInfo finfo, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::AllDirs | QDir::Files)) {
         if (finfo.isFile()) {
@@ -840,7 +840,7 @@ void  ArnPersist::destroyRpc()
     ArnRpc*  rpc = qobject_cast<ArnRpc*>( sender());
     if (!rpc)  return;  // No valid sender
 
-    qDebug() << "Persist destroyRpc: pipePath=" << rpc->pipePath();
+    // qDebug() << "Persist destroyRpc: pipePath=" << rpc->pipePath();
     rpc->deleteLater();
 }
 
@@ -893,12 +893,28 @@ void  ArnPersist::sapiLs( const QString& path)
 void  ArnPersist::sapiRm( const QString& path)
 {
     QString  relPath = Arn::convertPath( path, Arn::NameF::Relative);
-    bool  isOk = _persistDir->remove( relPath);
-    if (isOk) {
-        QString  filePath = _persistDir->absoluteFilePath( relPath);
-        _persistDir->rmpath( QFileInfo( filePath).dir().path());  // Remove empty paths
-        removeFilePersistItem( path);
+    bool  isOk = true;
+    if (Arn::isFolderPath( relPath)) {
+        QStringList  flist;
+        getFileList( flist, *_persistDir);
+        foreach (const QString& delPath, flist) {
+            if (delPath.startsWith( relPath)) {
+                isOk &= _persistDir->remove( delPath);
+                removeFilePersistItem( Arn::convertPath( delPath, Arn::NameF::EmptyOk));
+                if (isOk) {
+                    _persistDir->rmpath( Arn::parentPath( delPath));  // Remove empty paths if possible
+                }
+            }
+        }
     }
+    else {
+        isOk = _persistDir->remove( relPath);
+        removeFilePersistItem( path);
+        if (isOk) {
+            _persistDir->rmpath( Arn::parentPath( relPath));  // Remove empty paths if possible
+        }
+    }
+
     emit _sapiCommon->rq_rmR( isOk);
 }
 
@@ -926,15 +942,39 @@ void  ArnPersist::sapiTouch( const QString& path)
 
 void  ArnPersist::sapiDbMandatory( const QString& path, bool isMandatory)
 {
-    ArnItemPersist::StoreType  st;
-    int storeId;
-    if (getDbId( path, storeId)) {
-        if (updateDbMandatory( storeId, isMandatory)) {
-            setupMandatory( path, isMandatory);
-            emit _sapiCommon->rq_dbMandatoryR(true);
+    bool isOk = true;
+
+    if (Arn::isFolderPath( path)) {
+        QList<int>  storeIdList;
+        if (!getDbList( true, storeIdList)) {
+            emit _sapiCommon->rq_dbMandatoryR( isOk);
+            return;
+        }
+
+        QString  pathDb;
+        QByteArray  value;
+        foreach (int storeId, storeIdList) {
+            if (!getDbValue( storeId, pathDb, value))  continue;
+            if (!pathDb.startsWith( path))  continue;
+
+            if (updateDbMandatory( storeId, isMandatory)) {
+                setupMandatory( pathDb, isMandatory);
+            }
+            else
+                isOk = false;
         }
     }
-    emit _sapiCommon->rq_dbMandatoryR(false);
+    else {
+        int storeId;
+        if (getDbId( path, storeId)) {
+            if (updateDbMandatory( storeId, isMandatory)) {
+                setupMandatory( path, isMandatory);
+            }
+            else
+                isOk = false;
+        }
+    }
+    emit _sapiCommon->rq_dbMandatoryR( isOk);
 }
 
 
