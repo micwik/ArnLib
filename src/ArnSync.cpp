@@ -483,7 +483,9 @@ uint  ArnSync::doCommandSet()
         return ArnError::CreateError;
     }
 
-    item.arnImport( data);
+    if (!item.isFolder())
+        item.arnImport( data);
+
     return ArnError::Ok;
 }
 
