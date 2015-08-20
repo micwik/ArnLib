@@ -400,7 +400,7 @@ protected:
     virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
-    virtual bool  event( QEvent* ev);
+    virtual void  customEvent( QEvent* ev);
 
     //// Methods not to be public
     void  setForceKeep( bool fk = true);

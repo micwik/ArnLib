@@ -299,7 +299,7 @@ signals:
 
 protected:
 #ifndef DOXYGEN_SKIP
-    virtual bool  event( QEvent* ev);
+    virtual void  customEvent( QEvent* ev);
 
     static ArnLink*  root();
     static ArnLink*  link( const QString& path, Arn::LinkFlags flags,

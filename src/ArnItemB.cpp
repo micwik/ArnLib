@@ -1069,7 +1069,7 @@ void  ArnItemB::linkValueUpdated( uint sendId, const QByteArray& value, ArnLinkH
 }
 
 
-bool  ArnItemB::event( QEvent* ev)
+void  ArnItemB::customEvent( QEvent* ev)
 {
     QEvent::Type  type = ev->type();
     if (type == ArnEvLinkCreate::type()) {
@@ -1078,7 +1078,7 @@ bool  ArnItemB::event( QEvent* ev)
         if (!Arn::isFolderPath( e->path())) {  // Only created leaves are passed on
             itemCreatedBelow( e->path());
         }
-        return true;
+        return;
     }
     if (type == ArnEvModeChange::type()) {
         ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
@@ -1088,7 +1088,7 @@ bool  ArnItemB::event( QEvent* ev)
             itemModeChangedBelow( e->path(), e->linkId(),e->mode());
         else
             modeUpdate( e->mode());
-        return true;
+        return;
     }
     if (type == ArnEvRetired::type()) {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
@@ -1097,8 +1097,6 @@ bool  ArnItemB::event( QEvent* ev)
             emit arnLinkDestroyed();
             close();
         }
-        return QObject::event( ev);
+        return;
     }
-
-    return QObject::event( ev);
 }

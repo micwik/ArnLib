@@ -825,17 +825,15 @@ void  ArnM::setupErrorlog( QObject* errLog)
 }
 
 
-bool  ArnM::event( QEvent* ev)
+void  ArnM::customEvent( QEvent* ev)
 {
     QEvent::Type  type = ev->type();
     if (type == ArnEvZeroRef::type()) {
         ArnEvZeroRef*  e = static_cast<ArnEvZeroRef*>( ev);
         // qDebug() << "ArnEvZeroRef: path=" << e->arnLink()->linkPath();
         doZeroRefLink( e->arnLink());
-        return true;
+        return;
     }
-
-    return QObject::event( ev);
 }
 
 

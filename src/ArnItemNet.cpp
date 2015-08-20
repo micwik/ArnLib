@@ -275,6 +275,8 @@ void  ArnItemNetEar::customEvent( QEvent* ev)
         if (e->startLink()->isFolder()) {
             emit ArnTreeDestroyed( destroyPath, e->isGlobal());
         }
-        return;
+        return ArnItem::customEvent( ev);
     }
+
+    return ArnItem::customEvent( ev);
 }
