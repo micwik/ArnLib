@@ -51,6 +51,8 @@ ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, QObject* parent)
 
     connect( _arnNetSync, SIGNAL(destroyed(QObject*)), this, SLOT(shutdown()));
     connect( _arnNetSync, SIGNAL(xcomDelete(QString)), this, SLOT(onCommandDelete(QString)));
+    connect( _arnNetEar, SIGNAL(ArnTreeCreated(QString)),
+             this, SLOT(doCreateArnTree(QString)));
     connect( _arnNetEar, SIGNAL(ArnTreeDestroyed(QString,bool)),
              this, SLOT(doDestroyArnTree(QString,bool)));
 }
@@ -61,6 +63,15 @@ void  ArnServerNetSync::shutdown()
     _arnNetSync = 0;
     _arnNetEar->close();
     deleteLater();
+}
+
+
+void  ArnServerNetSync::doCreateArnTree( const QString& path)
+{
+    if (!_arnNetSync)  return;
+
+    qDebug() << "ArnServerNetSync::doCreateArnTree (dis) path=" << path;
+    //_arnNetSync->sendSetTree( path);
 }
 
 

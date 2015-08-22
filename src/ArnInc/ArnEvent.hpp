@@ -52,9 +52,10 @@ class ArnEvLinkCreate : public ArnEvent
 {
     QString  _path;
     ArnLink*  _arnLink;
+    bool  _isLastLink;
 
 public:
-    ArnEvLinkCreate( const QString& path, ArnLink* arnLink);
+    ArnEvLinkCreate( const QString& path, ArnLink* arnLink, bool isLastLink);
     static QEvent::Type  type();
     virtual ArnEvent*  makeHeapClone();
 
@@ -63,6 +64,9 @@ public:
 
     inline ArnLink*  arnLink()  const
     { return _arnLink;}
+
+    inline bool  isLastLink()  const
+    { return _isLastLink;}
 };
 
 

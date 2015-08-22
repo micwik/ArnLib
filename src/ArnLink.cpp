@@ -543,13 +543,13 @@ uint  ArnLink::linkId()  const
 }
 
 
-void  ArnLink::setupEnd( const QString& path, Arn::ObjectSyncMode syncMode)
+void  ArnLink::setupEnd( const QString& path, Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags)
 {
     if (!_hasBeenSetup) {
         _hasBeenSetup = true;
         addSyncMode( syncMode);
 
-        ArnEvLinkCreate  arnEvLinkCreate( path, this);
+        ArnEvLinkCreate  arnEvLinkCreate( path, this, flags.is( flags.LastLink));
         sendEventsDirRoot( &arnEvLinkCreate, qobject_cast<ArnLink*>( parent()));
     }
 }

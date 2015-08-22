@@ -40,10 +40,11 @@ ArnEvent::ArnEvent( QEvent::Type type)
 
 
 
-ArnEvLinkCreate::ArnEvLinkCreate( const QString& path, ArnLink* arnLink)
+ArnEvLinkCreate::ArnEvLinkCreate( const QString& path, ArnLink* arnLink, bool isLastLink)
     : ArnEvent( type())
     , _path( path)
-    , _arnLink (arnLink)
+    , _arnLink( arnLink)
+    , _isLastLink( isLastLink)
 {
 }
 
@@ -58,7 +59,7 @@ QEvent::Type  ArnEvLinkCreate::type()
 
 ArnEvent*  ArnEvLinkCreate::makeHeapClone()
 {
-    return new ArnEvLinkCreate( _path, _arnLink);
+    return new ArnEvLinkCreate( _path, _arnLink, _isLastLink);
 }
 
 

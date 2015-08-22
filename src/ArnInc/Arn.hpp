@@ -119,7 +119,8 @@ struct LinkFlags {
         Folder        = 0x01,
         CreateAllowed = 0x02,
         SilentError   = 0x04,
-        Threaded      = 0x08
+        LastLink      = 0x08,
+        Threaded      = 0x80
     };
     MQ_DECLARE_FLAGS( LinkFlags)
 };

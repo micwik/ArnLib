@@ -491,6 +491,7 @@ ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, Arn::Object
     for (int i = 1; i < pathListSize; ++i) {
         Arn::LinkFlags  subFlags;
         subFlags.f = flags.f | flags.flagIf( i < pathListSize - 1, flags.Folder);
+        subFlags.set( flags.LastLink, i == pathListSize - 1);
         QString  subPath = pathlist.at(i);
 
         growPath += subPath;
@@ -538,7 +539,7 @@ ArnLink*  ArnM::linkMain( const QString& path, ArnLink *parent, const QString& n
         addTwinMain( path, child, syncMode, flags);
     }
 
-    child->setupEnd( path, syncMode);
+    child->setupEnd( path, syncMode, flags);
     return child;
 }
 
@@ -596,7 +597,8 @@ ArnLink*  ArnM::addTwinMain( const QString& path, ArnLink* link,
                 link->unlock();
                 twinLink->unlock();
             }
-            twinLink->setupEnd( Arn::twinPath( path), syncMode);
+            flags.set( flags.LastLink);  // A twin must be last link (also a leaf)
+            twinLink->setupEnd( Arn::twinPath( path), syncMode, flags);
             link->doModeChanged();   // This is now Bidirectional mode
         }
     }

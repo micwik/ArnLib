@@ -56,6 +56,7 @@ private:
 
 private slots:
     void  shutdown();
+    void  doCreateArnTree( const QString& path);
     void  doDestroyArnTree( const QString& path, bool isGlobal);
     void  onCommandDelete( const QString& path);
 };

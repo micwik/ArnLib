@@ -316,6 +316,7 @@ private slots:
     void  newNetItemProxy( ArnThreadCom* threadCom,
                            const QString& path, int syncMode = 0, void* isNewPtr = 0);
     void  createNewItem( const QString& path);
+    void  doCreateArnTree( const QString& path);
     void  doDestroyArnTree( const QString& path, bool isGlobal);
     void  doReplyRecord( Arn::XStringMap& replyMap);
     void  reConnectArn();

@@ -104,6 +104,16 @@ void  ArnSync::sendNoSync( const QString& path)
 }
 
 
+void  ArnSync::sendSetTree( const QString& path)
+{
+    XStringMap xm;
+    xm.add(ARNRECNAME, "set").add("path", path);
+
+    qDebug() << "ArnSync-set-tree: path=" << path;
+    sendXSMap( xm);
+}
+
+
 void  ArnSync::sendDelete( const QString& path)
 {
     XStringMap xm;

@@ -267,6 +267,14 @@ ArnItemNetEar::ArnItemNetEar( QObject* parent)
 void  ArnItemNetEar::customEvent( QEvent* ev)
 {
     QEvent::Type  type = ev->type();
+    if (type == ArnEvLinkCreate::type()) {
+        ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
+        if (e->isLastLink() && e->arnLink()->isFolder()) {
+            qDebug() << "ArnItemNetEar create tree: path=" << e->path();
+            emit ArnTreeCreated( e->path());
+        }
+        return ArnItem::customEvent( ev);
+    }
     if (type == ArnEvRetired::type()) {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : path();

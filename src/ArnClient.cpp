@@ -288,6 +288,8 @@ bool  ArnClient::addMountPoint( const QString& localPath, const QString& remoteP
         mpSlot.localPath  = localPath_;
         mpSlot.remotePath = remotePath.isEmpty() ? localPath_ : Arn::fullPath( remotePath);
         connect( mpSlot.arnMountPoint, SIGNAL(arnItemCreated(QString)), this, SLOT(createNewItem(QString)));
+        connect( mpSlot.arnMountPoint, SIGNAL(ArnTreeCreated(QString)),
+                 this, SLOT(doCreateArnTree(QString)));
         connect( mpSlot.arnMountPoint, SIGNAL(ArnTreeDestroyed(QString,bool)),
                  this, SLOT(doDestroyArnTree(QString,bool)));
         _mountPoints += mpSlot;
@@ -462,6 +464,19 @@ void  ArnClient::createNewItem( const QString& path)
     Q_ASSERT(mpSlot);
 
     _arnNetSync->newNetItem( path, mpSlot->localPath, mpSlot->remotePath);
+}
+
+
+void  ArnClient::doCreateArnTree( const QString& path)
+{
+    qDebug() << "ArnClient,CreateArnTree: path=" << path;
+    ArnItemNetEar*  item = qobject_cast<ArnItemNetEar*>( sender());
+    Q_ASSERT(item);
+    MountPointSlot*  mpSlot = static_cast<MountPointSlot*>( item->reference());
+    Q_ASSERT(mpSlot);
+
+    QString  remotePath = Arn::changeBasePath( mpSlot->localPath, mpSlot->remotePath, path);
+    _arnNetSync->sendSetTree( remotePath);
 }
 
 

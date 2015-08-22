@@ -116,7 +116,7 @@ signals:
 protected:
     //// Will never be inherited, this section is separated for use by friend ArnM
     ArnLink( ArnLink* parent, const QString& name, Arn::LinkFlags flags);
-    void  setupEnd( const QString& path, Arn::ObjectSyncMode syncMode);
+    void  setupEnd( const QString& path, Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags);
     void  doModeChanged();
     ArnLink*  findLink( const QString& name);
     void  ref();
