@@ -751,7 +751,7 @@ void  ArnLink::setRetired( RetireType retireType)
 void  ArnLink::doRetired( ArnLink* startLink, bool isGlobal)
 {
     if (Arn::debugLinkDestroy)  qDebug() << "doRetired: path=" << this->linkPath();
-    if ((startLink == this) && _isFolder) {
+    if (startLink == this) {
         ArnEvRetired  arnEvRetired( startLink, true, isGlobal);
         sendEventsDirRoot( &arnEvRetired, qobject_cast<ArnLink*>( parent()));
     }

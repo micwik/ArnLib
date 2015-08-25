@@ -288,9 +288,9 @@ bool  ArnClient::addMountPoint( const QString& localPath, const QString& remoteP
         mpSlot.localPath  = localPath_;
         mpSlot.remotePath = remotePath.isEmpty() ? localPath_ : Arn::fullPath( remotePath);
         connect( mpSlot.arnMountPoint, SIGNAL(arnItemCreated(QString)), this, SLOT(createNewItem(QString)));
-        connect( mpSlot.arnMountPoint, SIGNAL(ArnTreeCreated(QString)),
+        connect( mpSlot.arnMountPoint, SIGNAL(arnTreeCreated(QString)),
                  this, SLOT(doCreateArnTree(QString)));
-        connect( mpSlot.arnMountPoint, SIGNAL(ArnTreeDestroyed(QString,bool)),
+        connect( mpSlot.arnMountPoint, SIGNAL(arnTreeDestroyed(QString,bool)),
                  this, SLOT(doDestroyArnTree(QString,bool)));
         _mountPoints += mpSlot;
         mpSlot.arnMountPoint->setReference( &_mountPoints.last());  // Give a ref to this added slot

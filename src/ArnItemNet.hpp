@@ -74,7 +74,6 @@ public:
     bool  isDirtyMode()  const;
 
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
-    virtual void  itemCreatedBelow( const QString& path);
     virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
 
     using ArnItemB::addSyncMode;
@@ -98,6 +97,8 @@ signals:
 public slots:
     void  emitArnEvent( const QByteArray& type, const QByteArray& data = QByteArray(),
                         bool isLocal = true);
+protected:
+    virtual void  customEvent( QEvent* ev);
 
 private:
     void  init();
@@ -120,8 +121,8 @@ public:
     explicit ArnItemNetEar( QObject* parent = 0);
 
 signals:
-    void  ArnTreeCreated( const QString& path);
-    void  ArnTreeDestroyed( const QString& path, bool isGlobal);
+    void  arnTreeCreated( const QString& path);
+    void  arnTreeDestroyed( const QString& path, bool isGlobal);
 
 protected:
     virtual void  customEvent( QEvent* ev);

@@ -232,13 +232,6 @@ void  ArnItemNet::itemUpdated( const ArnLinkHandle& handleData, const QByteArray
 }
 
 
-void  ArnItemNet::itemCreatedBelow( const QString& path)
-{
-    if (_isMonitor)
-        emitNewItemEvent( path);
-}
-
-
 void  ArnItemNet::modeUpdate( Arn::ObjectMode mode, bool isSetup)
 {
     ArnItemB::modeUpdate( mode, isSetup); // must be called for base-class update
@@ -257,6 +250,31 @@ void  ArnItemNet::emitArnEvent( const QByteArray& type, const QByteArray& data, 
 }
 
 
+void  ArnItemNet::customEvent( QEvent* ev)
+{
+    if (!_isMonitor)  return ArnItemB::customEvent( ev);
+
+    QEvent::Type  type = ev->type();
+    if (type == ArnEvLinkCreate::type()) {
+        ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
+        if (e->isLastLink()) {
+            // qDebug() << "ArnItemNet Mon create: path=" << e->path() << " inPath=" << path();
+            emitNewItemEvent( e->path());
+        }
+        return ArnItemB::customEvent( ev);
+    }
+    if (type == ArnEvRetired::type()) {
+        ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
+        QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : path();
+        qDebug() << "ArnItemNet Mon destroy: path=" << destroyPath << " inPath=" << path();
+        emit arnEvent( "itemDeleted", destroyPath.toUtf8(), true);
+        return ArnItemB::customEvent( ev);
+    }
+
+    return ArnItemB::customEvent( ev);
+}
+
+
 
 ArnItemNetEar::ArnItemNetEar( QObject* parent)
     : ArnItem( parent)
@@ -271,7 +289,7 @@ void  ArnItemNetEar::customEvent( QEvent* ev)
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
         if (e->isLastLink() && e->arnLink()->isFolder()) {
             qDebug() << "ArnItemNetEar create tree: path=" << e->path();
-            emit ArnTreeCreated( e->path());
+            emit arnTreeCreated( e->path());
         }
         return ArnItem::customEvent( ev);
     }
@@ -279,9 +297,10 @@ void  ArnItemNetEar::customEvent( QEvent* ev)
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : path();
         if (Arn::debugLinkDestroy)  qDebug() << "ArnItemNetEar retired: path=" << destroyPath
-                                             << " isGlobal=" << e->isGlobal();
+                                             << " isGlobal=" << e->isGlobal()
+                                             << "inPath=" << path();
         if (e->startLink()->isFolder()) {
-            emit ArnTreeDestroyed( destroyPath, e->isGlobal());
+            emit arnTreeDestroyed( destroyPath, e->isGlobal());
         }
         return ArnItem::customEvent( ev);
     }

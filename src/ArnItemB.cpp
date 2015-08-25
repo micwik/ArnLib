@@ -1092,8 +1092,8 @@ void  ArnItemB::customEvent( QEvent* ev)
     }
     if (type == ArnEvRetired::type()) {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
-        if (Arn::debugLinkDestroy)  qDebug() << "Item arnLinkDestroyed: path=" << path();
         if (!e->isBelow()) {
+            if (Arn::debugLinkDestroy)  qDebug() << "Item arnLinkDestroyed: path=" << path();
             emit arnLinkDestroyed();
             close();
         }
