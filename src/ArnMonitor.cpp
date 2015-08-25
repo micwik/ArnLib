@@ -89,8 +89,8 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
         _itemNet = _arnClient->newNetItem( _monitorPath, Arn::ObjectSyncMode::Normal, &isNew);
         if (!_itemNet)  return false;
 
-        connect( _itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,bool)),
-                 this, SLOT(dispatchArnEvent(QByteArray,QByteArray,bool)));
+        connect( _itemNet, SIGNAL(arnMonEvent(QByteArray,QByteArray,bool)),
+                 this, SLOT(dispatchArnMonEvent(QByteArray,QByteArray,bool)));
 
         if (Arn::debugMonitor)  qDebug() << "Monitor start: new=" << isNew << " path=" << _monitorPath;
         if (isNew) {
@@ -122,8 +122,8 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
         }
         _itemNet->setNetId( _itemNet->linkId());
 
-        connect( _itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,bool)),
-                 this, SLOT(dispatchArnEvent(QByteArray,QByteArray,bool)), Qt::QueuedConnection);
+        connect( _itemNet, SIGNAL(arnMonEvent(QByteArray,QByteArray,bool)),
+                 this, SLOT(dispatchArnMonEvent(QByteArray,QByteArray,bool)), Qt::QueuedConnection);
         //MW: Todo connect( _itemNet, SIGNAL(arnLinkDestroyed()),
 
         if (Arn::debugMonitor)  qDebug() << "Monitor start (local-items): path="
@@ -162,7 +162,7 @@ void  ArnMonitor::setupLocalMonitorItem()
 }
 
 
-void  ArnMonitor::dispatchArnEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
+void  ArnMonitor::dispatchArnMonEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {

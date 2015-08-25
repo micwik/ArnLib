@@ -143,8 +143,8 @@ void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
              this, SLOT(addToFluxQue(const ArnLinkHandle&)));
     connect( itemNet, SIGNAL(goneDirtyMode()), this, SLOT(addToModeQue()));
     connect( itemNet, SIGNAL(arnLinkDestroyed()), this, SLOT(linkDestroyedHandle()));
-    connect( itemNet, SIGNAL(arnEvent(QByteArray,QByteArray,bool)),
-             this, SLOT(doArnEvent(QByteArray,QByteArray,bool)));
+    connect( itemNet, SIGNAL(arnMonEvent(QByteArray,QByteArray,bool)),
+             this, SLOT(doArnMonEvent(QByteArray,QByteArray,bool)));
 }
 
 
@@ -476,7 +476,7 @@ uint  ArnSync::doCommandEvent()
         return ArnError::NotFound;
     }
 
-    itemNet->emitArnEvent( type, data, false);
+    itemNet->emitArnMonEvent( type, data, false);
     return ArnError::Ok;
 }
 
@@ -652,7 +652,7 @@ void  ArnSync::removeItemNet( ArnItemNet* itemNet)
 }
 
 
-void  ArnSync::doArnEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
+void  ArnSync::doArnMonEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {

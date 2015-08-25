@@ -81,7 +81,7 @@ private slots:
     void  addToModeQue();
     void  sendNext();
     void  linkDestroyedHandle();
-    void  doArnEvent( const QByteArray& type, const QByteArray& data, bool isLocal);
+    void  doArnMonEvent( const QByteArray& type, const QByteArray& data, bool isLocal);
 
 private:
     struct FluxRec {

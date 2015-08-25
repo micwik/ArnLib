@@ -162,7 +162,7 @@ QByteArray  ArnItemNet::getModeString()  const
 
 void  ArnItemNet::emitNewItemEvent( const QString& path, bool isOld)
 {
-    emit arnEvent( isOld ? "itemFound" : "itemCreated", path.toUtf8(), true);
+    emit arnMonEvent( isOld ? "itemFound" : "itemCreated", path.toUtf8(), true);
 }
 
 
@@ -244,9 +244,9 @@ void  ArnItemNet::modeUpdate( Arn::ObjectMode mode, bool isSetup)
 }
 
 
-void  ArnItemNet::emitArnEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
+void  ArnItemNet::emitArnMonEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
 {
-    emit arnEvent( type, data, isLocal);
+    emit arnMonEvent( type, data, isLocal);
 }
 
 
@@ -267,7 +267,7 @@ void  ArnItemNet::customEvent( QEvent* ev)
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : path();
         qDebug() << "ArnItemNet Mon destroy: path=" << destroyPath << " inPath=" << path();
-        emit arnEvent( "itemDeleted", destroyPath.toUtf8(), true);
+        emit arnMonEvent( "itemDeleted", destroyPath.toUtf8(), true);
         return ArnItemB::customEvent( ev);
     }
 
