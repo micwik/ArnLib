@@ -1,0 +1,5 @@
+#ifndef ARNMONEVENT_HPP
+#define ARNMONEVENT_HPP
+
+#endif // ARNMONEVENT_HPP
+
