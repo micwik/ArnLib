@@ -62,16 +62,18 @@ contains(ARN, client) {
         $$PWD/ArnRpc.cpp \
         $$PWD/ArnSapi.cpp \
         $$PWD/ArnMonitor.cpp \
+        $$PWD/ArnMonEvent.cpp \
         $$PWD/ArnSync.cpp
 
     HEADERS += \
         $$PWD/ArnInc/ArnClient.hpp \
+        $$PWD/ArnItemNet.hpp \
         $$PWD/ArnInc/ArnDepend.hpp \
         $$PWD/ArnInc/ArnRpc.hpp \
         $$PWD/ArnInc/ArnSapi.hpp \
         $$PWD/ArnInc/ArnPersistSapi.hpp \
         $$PWD/ArnInc/ArnMonitor.hpp \
-        $$PWD/ArnItemNet.hpp \
+        $$PWD/ArnInc/ArnMonEvent.hpp \
         $$PWD/ArnSync.hpp
 }
 
