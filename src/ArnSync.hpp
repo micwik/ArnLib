@@ -81,7 +81,7 @@ private slots:
     void  addToModeQue();
     void  sendNext();
     void  linkDestroyedHandle();
-    void  doArnMonEvent( const QByteArray& type, const QByteArray& data, bool isLocal);
+    void  doArnMonEvent( int type, const QByteArray& data, bool isLocal);
 
 private:
     struct FluxRec {
@@ -95,7 +95,7 @@ private:
     void  sendFluxItem( const ArnItemNet* itemNet);
     void  sendSyncItem( ArnItemNet* itemNet);
     void  sendModeItem( ArnItemNet* itemNet);
-    void  eventToFluxQue( uint netId, const QByteArray& type, const QByteArray& data);
+    void  eventToFluxQue( uint netId, int type, const QByteArray& data);
     void  destroyToFluxQue( ArnItemNet* itemNet);
     void  removeItemNet( ArnItemNet* itemNet);
     void  closeFinal();

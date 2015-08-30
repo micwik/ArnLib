@@ -90,13 +90,13 @@ public:
     using ArnItemB::openFolder;
 
 signals:
-    void  arnMonEvent( const QByteArray& type, const QByteArray& data, bool isLocal);
+    void  arnMonEvent( int type, const QByteArray& data, bool isLocal);
     void  goneDirty( const ArnLinkHandle& handleData);
     void  goneDirtyMode();
 
 public slots:
-    void  emitArnMonEvent( const QByteArray& type, const QByteArray& data = QByteArray(),
-                        bool isLocal = true);
+    void  emitArnMonEvent( int type, const QByteArray& data = QByteArray(),
+                           bool isLocal = true);
 protected:
     virtual void  customEvent( QEvent* ev);
 

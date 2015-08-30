@@ -31,6 +31,7 @@
 
 #include "ArnItemNet.hpp"
 #include "ArnLink.hpp"
+#include "ArnInc/ArnMonEvent.hpp"
 #include "ArnInc/ArnEvent.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include <QDebug>
@@ -162,7 +163,8 @@ QByteArray  ArnItemNet::getModeString()  const
 
 void  ArnItemNet::emitNewItemEvent( const QString& path, bool isOld)
 {
-    emit arnMonEvent( isOld ? "itemFound" : "itemCreated", path.toUtf8(), true);
+    int  type = isOld ? ArnMonEvent::Type::ItemFound : ArnMonEvent::Type::ItemCreated;
+    emit arnMonEvent( type, path.toUtf8(), true);
 }
 
 
@@ -244,7 +246,7 @@ void  ArnItemNet::modeUpdate( Arn::ObjectMode mode, bool isSetup)
 }
 
 
-void  ArnItemNet::emitArnMonEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
+void  ArnItemNet::emitArnMonEvent( int type, const QByteArray& data, bool isLocal)
 {
     emit arnMonEvent( type, data, isLocal);
 }
@@ -267,7 +269,7 @@ void  ArnItemNet::customEvent( QEvent* ev)
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : path();
         qDebug() << "ArnItemNet Mon destroy: path=" << destroyPath << " inPath=" << path();
-        emit arnMonEvent( "itemDeleted", destroyPath.toUtf8(), true);
+        emit arnMonEvent( ArnMonEvent::Type::ItemDeleted, destroyPath.toUtf8(), true);
         return ArnItemB::customEvent( ev);
     }
 

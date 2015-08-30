@@ -61,7 +61,7 @@ ArnMonEvent&  ArnMonEvent::instance()
 }
 
 
-ArnMonEvent::Type  ArnMonEvent::textToId( const QString& txt)
+ArnMonEvent::Type  ArnMonEvent::textToId( const QByteArray& txt)
 {
     TypeSlot*  typeText = _typeTab;
     while (typeText->typeId) {
@@ -74,7 +74,7 @@ ArnMonEvent::Type  ArnMonEvent::textToId( const QString& txt)
 }
 
 
-const char*  ArnMonEvent::idToText( ArnMonEvent::Type id)
+const char*  ArnMonEvent::idToText( int id)
 {
     TypeSlot*  typeText = _typeTab;
     while (typeText->typeId) {

@@ -33,6 +33,7 @@
 #include "ArnItemNet.hpp"
 #include "ArnLink.hpp"
 #include "ArnInc/ArnClient.hpp"
+#include "ArnInc/ArnMonEvent.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include <QTcpSocket>
 #include <QString>
@@ -143,8 +144,8 @@ void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
              this, SLOT(addToFluxQue(const ArnLinkHandle&)));
     connect( itemNet, SIGNAL(goneDirtyMode()), this, SLOT(addToModeQue()));
     connect( itemNet, SIGNAL(arnLinkDestroyed()), this, SLOT(linkDestroyedHandle()));
-    connect( itemNet, SIGNAL(arnMonEvent(QByteArray,QByteArray,bool)),
-             this, SLOT(doArnMonEvent(QByteArray,QByteArray,bool)));
+    connect( itemNet, SIGNAL(arnMonEvent(int,QByteArray,bool)),
+             this, SLOT(doArnMonEvent(int,QByteArray,bool)));
 }
 
 
@@ -467,15 +468,16 @@ uint  ArnSync::doCommandFlux()
 
 uint  ArnSync::doCommandEvent()
 {
-    uint       netId = _commandMap.value("id").toUInt();
-    QByteArray  type = _commandMap.value("type");
-    QByteArray  data = _commandMap.value("data");
+    uint        netId   = _commandMap.value("id").toUInt();
+    QByteArray  typeStr = _commandMap.value("type");
+    QByteArray  data    = _commandMap.value("data");
 
     ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
     if (!itemNet) {
         return ArnError::NotFound;
     }
 
+    int  type = ArnMonEvent::textToId( typeStr);
     itemNet->emitArnMonEvent( type, data, false);
     return ArnError::Ok;
 }
@@ -652,7 +654,7 @@ void  ArnSync::removeItemNet( ArnItemNet* itemNet)
 }
 
 
-void  ArnSync::doArnMonEvent( const QByteArray& type, const QByteArray& data, bool isLocal)
+void  ArnSync::doArnMonEvent( int type, const QByteArray& data, bool isLocal)
 {
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
@@ -665,7 +667,7 @@ void  ArnSync::doArnMonEvent( const QByteArray& type, const QByteArray& data, bo
         eventToFluxQue( itemNet->netId(), type, data);
     }
 
-    if (type == "monitorStart") {
+    if (type == ArnMonEvent::Type::MonitorStart) {
         if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: monitorStart Event";
 
         Arn::ObjectSyncMode  syncMode = itemNet->syncMode();
@@ -677,7 +679,7 @@ void  ArnSync::doArnMonEvent( const QByteArray& type, const QByteArray& data, bo
             itemNet->addSyncMode( syncMode.Monitor, false);  // Indicate is Monitor, prevent duplicate setup
         }
     }
-    if (type == "monitorReStart") {
+    if (type == ArnMonEvent::Type::MonitorReStart) {
         if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: monitorReStart Event";
 
         if (!isLocal && !_isClientSide) {  // Server side
@@ -757,16 +759,17 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
 }
 
 
-void  ArnSync::eventToFluxQue( uint netId, const QByteArray& type, const QByteArray& data)
+void  ArnSync::eventToFluxQue( uint netId, int type, const QByteArray& data)
 {
     if (!netId)  return;  // Not valid id, item was disabled
     if (_isClosed)  return;
 
+    const char*  typeStr = ArnMonEvent::idToText( type);
     FluxRec*  fluxRec = getFreeFluxRec();
     _syncMap.clear();
     _syncMap.add(ARNRECNAME, "event");
     _syncMap.add("id", QByteArray::number( netId));
-    _syncMap.add("type", type);
+    _syncMap.add("type", typeStr);
     _syncMap.add("data", data);
     fluxRec->xString += _syncMap.toXString();
     _fluxPipeQueue.enqueue( fluxRec);

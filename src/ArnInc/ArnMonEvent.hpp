@@ -66,8 +66,8 @@ public:
     };
 
     static ArnMonEvent&  instance();
-    static Type  textToId( const QString& txt);
-    static const char*  idToText( Type id);
+    static Type  textToId( const QByteArray& txt);
+    static const char*  idToText( int id);
 
 private:
     struct TypeSlot {
