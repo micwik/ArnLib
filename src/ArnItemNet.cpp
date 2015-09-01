@@ -290,7 +290,7 @@ void  ArnItemNetEar::customEvent( QEvent* ev)
     if (type == ArnEvLinkCreate::type()) {
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
         if (e->isLastLink() && e->arnLink()->isFolder()) {
-            qDebug() << "ArnItemNetEar create tree: path=" << e->path();
+            // qDebug() << "ArnItemNetEar create tree: path=" << e->path();
             emit arnTreeCreated( e->path());
         }
         return ArnItem::customEvent( ev);

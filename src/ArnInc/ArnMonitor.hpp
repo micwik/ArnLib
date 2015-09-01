@@ -150,7 +150,7 @@ signals:
     //! Signal emitted when an _Arn Data Object_ is created in the tree below.
     /*! The ArnMonitor monitors a folder. Created objects in this folder or its
      *  children below will give this signal.
-     *  Only created non folder objects will give this signal.
+     *  Both created folder and leaf objects will give this signal.
      *  \param[in] path to the created _Arn Data Object_
      */
     void  arnItemCreated( const QString& path);
@@ -158,14 +158,13 @@ signals:
     //! Signal emitted for present and newly created childs in the monitor folder
     /*! The ArnMonitor monitors a folder. Present and newly created objects in this
      *  folder will give this signal.
-     *  For newly created objects, the origin comes from the arnItemCreated() signal,
-     *  so only non folder objects will then give this signal.
+     *  For newly created objects, the origin comes from the arnItemCreated() signal.
      *
      *  Example 1: monitorPath = "//Sensors/", created object = "//Sensors/Temp1/value"
      *  ==> path to child = "//Sensors/Temp1/"
      *
      *  Example 2: monitorPath = "//Sensors/", created object = "//Sensors/Temp2/folder/"
-     *  ==> will not give this signal as the created object is a folder.
+     *  ==> path to child = "//Sensors/Temp2/"
      *  \param[in] path to the child
      *  \see arnItemCreated()
      */
@@ -174,8 +173,7 @@ signals:
     //! Signal emitted for present and newly created folder childs in the monitor folder
     /*! The ArnMonitor monitors a folder. Present and newly created folder objects in this
      *  folder will give this signal.
-     *  For newly created childs, the origin comes from the arnItemCreated() signal,
-     *  so only non folder objects will then give this signal.
+     *  For newly created childs, the origin comes from the arnItemCreated() signal.
      *
      *  Example: monitorPath = "//Sensors/", created object = "//Sensors/Temp1/value"
      *  ==> path to child = "//Sensors/Temp1/"
@@ -188,6 +186,7 @@ signals:
     //! Signal emitted for present and newly created leaf childs in the monitor folder
     /*! The ArnMonitor monitors a folder. Present and newly created leaf objects in this
      *  folder will give this signal.
+     *  For newly created childs, the origin comes from the arnItemCreated() signal.
      *
      *  Example: monitorPath = "//Sensors/", created object = "//Sensors/count"
      *  ==> path to child = "//Sensors/count"
@@ -196,10 +195,35 @@ signals:
      */
     void  arnChildFoundLeaf( const QString& path);
 
+    //! Signal emitted when an _Arn Data Object_ is deleted in the tree below.
+    /*! The ArnMonitor monitors a folder. Deleted objects in this folder or its
+     *  children below will give this signal.
+     *  Both deleted folder and leaf objects will give this signal.
+     *  \param[in] path to the deleted _Arn Data Object_
+     */
+    void  arnItemDeleted( const QString& path);
+
+    //! Signal emitted for deleted childs in the monitor folder
+    /*! The ArnMonitor monitors a folder. Deleted objects in this folder will give
+     *  this signal.
+     *
+     *  Example 1: monitorPath = "//Sensors/Temp1/", deleted object = "//Sensors/Temp1/value"
+     *  ==> path to child = "//Sensors/Temp1/value"
+     *
+     *  Example 2: monitorPath = "//Sensors/Temp2/", deleted object = "//Sensors/Temp2/folder/"
+     *  ==> path to child = "//Sensors/Temp2/folder/"
+     *  \param[in] path to the child
+     *  \see arnItemDeleted()
+     */
+    void  arnChildDeleted( const QString& path);
+
 public slots:
     //! Help telling the monitor about deletion of a previous found child
     /*! The monitor remembers every child it has signalled. If a deleted child
      *  reappears later it will not give a signal unless this function is used.
+     *
+     *  Since ArnLib 3.0 this function is called automatically when a child is deleted.
+     *  This function is still available to manually handle any problems.
      *  \param[in] path to the deleted child
      */
     void  foundChildDeleted( const QString& path);
@@ -211,15 +235,18 @@ protected:
     QPointer<ArnClient>  _arnClient;
     QString  _monitorPath;
 
-private:
-    QStringList  _foundChilds;
-    ArnItemNet*  _itemNet;
-    void*  _reference;
-
 private slots:
     void  dispatchArnMonEvent( int type, const QByteArray& data, bool isLocal);
     void  emitArnMonEvent( int type, const QByteArray& data = QByteArray());
     void  setupLocalMonitorItem();
+
+private:
+    void  doEventItemFoundCreated( ArnItemNet* itemNet, int type, const QByteArray& data, bool isLocal);
+    void  doEventItemDeleted( ArnItemNet* itemNet, const QByteArray& data, bool isLocal);
+
+    QStringList  _foundChilds;
+    ArnItemNet*  _itemNet;
+    void*  _reference;
 };
 
 

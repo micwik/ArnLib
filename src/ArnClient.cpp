@@ -469,7 +469,7 @@ void  ArnClient::createNewItem( const QString& path)
 
 void  ArnClient::doCreateArnTree( const QString& path)
 {
-    qDebug() << "ArnClient,CreateArnTree: path=" << path;
+    // qDebug() << "ArnClient,CreateArnTree: path=" << path;
     ArnItemNetEar*  item = qobject_cast<ArnItemNetEar*>( sender());
     Q_ASSERT(item);
     MountPointSlot*  mpSlot = static_cast<MountPointSlot*>( item->reference());

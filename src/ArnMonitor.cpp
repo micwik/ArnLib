@@ -174,33 +174,45 @@ void  ArnMonitor::dispatchArnMonEvent( int type, const QByteArray& data, bool is
 
     if (Arn::debugMonitor && isLocal) {
         qDebug() << "Dipatch Arn event (local): type=" << ArnMonEvent::idToText( type)
-                 << " data=" << data << " id=" << itemNet->netId();
+                 << " data=" << data << " monPath=" << _monitorPath;
     }
-
-    QString  foundRemotePath = QString::fromUtf8( data.constData(), data.size());
-    QString  foundLocalPath  = itemNet->toLocalPath( foundRemotePath);
 
     switch (type) {
     case ArnMonEvent::Type::ItemCreated:
-        //// "created" (new fresh) is special case of "found"
-        emit arnItemCreated( outPathConvert( foundLocalPath));
-        break;
+        // Fall throu
     case ArnMonEvent::Type::ItemFound:
+        doEventItemFoundCreated( itemNet, type, data, isLocal);
+        break;
+    case ArnMonEvent::Type::ItemDeleted:
+        doEventItemDeleted( itemNet, data, isLocal);
         break;
     case ArnMonEvent::Type::MonitorReStart:
         if (!_arnClient) {  // Local monitor event
             //// Send NewItemEvent for any existing direct children (also folders)
             ArnSync::doChildsToEvent( itemNet);
         }
-        return;
+        break;
     default:
-        return;  // This event is not handled
+        break;  // This event is not handled
+    }
+}
+
+
+void ArnMonitor::doEventItemFoundCreated( ArnItemNet* itemNet, int type, const QByteArray& data,
+                                         bool isLocal)
+{
+    QString  foundRemotePath = QString::fromUtf8( data.constData(), data.size());
+    QString  foundLocalPath  = itemNet->toLocalPath( foundRemotePath);
+
+    if (type == ArnMonEvent::Type::ItemCreated) {
+        // "created" (new fresh) is special case of "found"
+        emit arnItemCreated( outPathConvert( foundLocalPath));
     }
 
-    //// Continue with found items
     if (Arn::debugMonitor && !isLocal) {
         qDebug() << "Dipatch Arn event: type=" << ArnMonEvent::idToText( type)
-                 << " remotePath=" << foundRemotePath << " localPath=" << foundLocalPath;
+                 << " remotePath=" << foundRemotePath << " localPath=" << foundLocalPath
+                 << " monPath=" << _monitorPath;
     }
 
     QString childPath = Arn::childPath( _monitorPath, foundLocalPath);
@@ -214,6 +226,25 @@ void  ArnMonitor::dispatchArnMonEvent( int type, const QByteArray& data, bool is
             else                          emit arnChildFoundLeaf( outPathConvert( childPath));
         }
     }
+}
+
+
+void ArnMonitor::doEventItemDeleted( ArnItemNet* itemNet, const QByteArray& data, bool isLocal)
+{
+    QString  delRemotePath = QString::fromUtf8( data.constData(), data.size());
+    QString  delLocalPath  = itemNet->toLocalPath( delRemotePath);
+
+    if (Arn::debugMonitor && !isLocal) {
+        qDebug() << "Deleted Arn event: remotePath=" << delRemotePath
+                 << " localPath=" << delLocalPath << " monPath=" << _monitorPath;
+    }
+
+    QString  childPath = Arn::childPath( _monitorPath, delLocalPath);
+    if (childPath == delLocalPath) {  // A child has been deleted
+        foundChildDeleted( delLocalPath);
+        emit arnChildDeleted( childPath);
+    }
+    emit arnItemDeleted( delLocalPath);
 }
 
 
