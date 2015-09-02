@@ -147,6 +147,13 @@ public:
     void*  reference()  const {return _reference;}
 
 signals:
+    //! Signal emitted when the _Arn Monitor_ is closed down.
+    /*! There is an internal (remote) pickup _ArnItem_ at the monitor path.
+     *  When the internal _ArnItem_ is destroyed, this ArnMonitor is closed and
+     *  will give this signal
+     */
+    void  monitorClosed();
+
     //! Signal emitted when an _Arn Data Object_ is created in the tree below.
     /*! The ArnMonitor monitors a folder. Created objects in this folder or its
      *  children below will give this signal.
@@ -241,8 +248,8 @@ private slots:
     void  setupLocalMonitorItem();
 
 private:
-    void  doEventItemFoundCreated( ArnItemNet* itemNet, int type, const QByteArray& data, bool isLocal);
-    void  doEventItemDeleted( ArnItemNet* itemNet, const QByteArray& data, bool isLocal);
+    void  doEventItemFoundCreated( int type, const QByteArray& data, bool isLocal);
+    void  doEventItemDeleted( const QByteArray& data, bool isLocal);
 
     QStringList  _foundChilds;
     ArnItemNet*  _itemNet;

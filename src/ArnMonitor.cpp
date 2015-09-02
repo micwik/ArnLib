@@ -83,6 +83,13 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
     _monitorPath = inPathConvert( Arn::fullPath( path));
     if (!_monitorPath.endsWith("/"))  _monitorPath += "/";
 
+    if (_itemNet) {
+        disconnect( _itemNet, 0, this, 0);
+        if (_itemNet->parent() == this)
+            _itemNet->deleteLater();
+        _itemNet = 0;
+    }
+
     if (_arnClient) {
         // No recursion due to no emit of arnItemCreated as this is a folder
         // ItemNet is not threadsafe, only use in connect etc
@@ -134,6 +141,8 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
                                    Qt::QueuedConnection  // make sure called after all setup is done in this thread
                                    );
     }
+
+    connect( _itemNet, SIGNAL(arnLinkDestroyed()), this, SIGNAL(monitorClosed()));
     return true;
 }
 
@@ -165,13 +174,6 @@ void  ArnMonitor::setupLocalMonitorItem()
 
 void  ArnMonitor::dispatchArnMonEvent( int type, const QByteArray& data, bool isLocal)
 {
-    ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
-    if (!itemNet) {
-        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for dispatchArnEvent")),
-                            ArnError::Undef);
-        return;
-    }
-
     if (Arn::debugMonitor && isLocal) {
         qDebug() << "Dipatch Arn event (local): type=" << ArnMonEvent::idToText( type)
                  << " data=" << data << " monPath=" << _monitorPath;
@@ -181,15 +183,15 @@ void  ArnMonitor::dispatchArnMonEvent( int type, const QByteArray& data, bool is
     case ArnMonEvent::Type::ItemCreated:
         // Fall throu
     case ArnMonEvent::Type::ItemFound:
-        doEventItemFoundCreated( itemNet, type, data, isLocal);
+        doEventItemFoundCreated( type, data, isLocal);
         break;
     case ArnMonEvent::Type::ItemDeleted:
-        doEventItemDeleted( itemNet, data, isLocal);
+        doEventItemDeleted( data, isLocal);
         break;
     case ArnMonEvent::Type::MonitorReStart:
         if (!_arnClient) {  // Local monitor event
             //// Send NewItemEvent for any existing direct children (also folders)
-            ArnSync::doChildsToEvent( itemNet);
+            ArnSync::doChildsToEvent( _itemNet);
         }
         break;
     default:
@@ -198,11 +200,10 @@ void  ArnMonitor::dispatchArnMonEvent( int type, const QByteArray& data, bool is
 }
 
 
-void ArnMonitor::doEventItemFoundCreated( ArnItemNet* itemNet, int type, const QByteArray& data,
-                                         bool isLocal)
+void ArnMonitor::doEventItemFoundCreated( int type, const QByteArray& data, bool isLocal)
 {
     QString  foundRemotePath = QString::fromUtf8( data.constData(), data.size());
-    QString  foundLocalPath  = itemNet->toLocalPath( foundRemotePath);
+    QString  foundLocalPath  = _itemNet->toLocalPath( foundRemotePath);
 
     if (type == ArnMonEvent::Type::ItemCreated) {
         // "created" (new fresh) is special case of "found"
@@ -229,10 +230,10 @@ void ArnMonitor::doEventItemFoundCreated( ArnItemNet* itemNet, int type, const Q
 }
 
 
-void ArnMonitor::doEventItemDeleted( ArnItemNet* itemNet, const QByteArray& data, bool isLocal)
+void ArnMonitor::doEventItemDeleted( const QByteArray& data, bool isLocal)
 {
     QString  delRemotePath = QString::fromUtf8( data.constData(), data.size());
-    QString  delLocalPath  = itemNet->toLocalPath( delRemotePath);
+    QString  delLocalPath  = _itemNet->toLocalPath( delRemotePath);
 
     if (Arn::debugMonitor && !isLocal) {
         qDebug() << "Deleted Arn event: remotePath=" << delRemotePath
