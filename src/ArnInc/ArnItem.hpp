@@ -480,12 +480,12 @@ protected:
     virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
+    virtual void  timerEvent( QTimerEvent* ev);
 
     ArnItem( ArnItemPrivate& dd, QObject* parent);
     //! \endcond
 
 private slots:
-    void  timeoutItemUpdate();
 
 private:
     void  init();

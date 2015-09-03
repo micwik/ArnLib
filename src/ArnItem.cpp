@@ -33,7 +33,8 @@
 #include "private/ArnItem_p.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnLink.hpp"
-#include <QTimer>
+#include <QTimerEvent>
+#include <QBasicTimer>
 #include <QMetaObject>
 #include <QDebug>
 
@@ -57,6 +58,28 @@ QMetaMethod  ArnItem::_metaSignalChangedVariant(
 #endif
 
 
+class MQBasicTimer : public QBasicTimer
+{
+public:
+    MQBasicTimer()
+    {
+        _interval = 0;
+    }
+
+    int  interval()  const {return _interval;}
+    void  setInterval( int interval)  {_interval = interval;}
+    void  start(QObject* obj)  {QBasicTimer::start( _interval, obj);}
+    void  start( int msec, QObject* obj)
+    {
+        _interval = msec;
+        QBasicTimer::start( _interval, obj);
+    }
+
+private:
+    int  _interval;
+};
+
+
 ArnItemPrivate::ArnItemPrivate()
 {
     _delayTimer = 0;
@@ -73,6 +96,8 @@ ArnItemPrivate::ArnItemPrivate()
 
 ArnItemPrivate::~ArnItemPrivate()
 {
+    if (_delayTimer)
+        delete _delayTimer;
 }
 
 
@@ -131,6 +156,19 @@ void  ArnItem::itemModeChangedBelow( const QString& path, uint linkId, Arn::Obje
 }
 
 
+void  ArnItem::timerEvent( QTimerEvent* ev)
+{
+    Q_D(ArnItem);
+
+    if (d->_delayTimer && (ev->timerId() == d->_delayTimer->timerId())) {
+        // qDebug() << "ArnItem delay doUpdate: path=" << path();
+        doItemUpdate( ArnLinkHandle());
+    }
+
+    return ArnItemB::timerEvent( ev);
+}
+
+
 ArnItem&  ArnItem::setTemplate( bool isTemplate)
 {
     Q_D(ArnItem);
@@ -153,8 +191,7 @@ void  ArnItem::setDelay( int delay)
     Q_D(ArnItem);
 
     if (!d->_delayTimer) {
-        d->_delayTimer = new QTimer( this);
-        connect( d->_delayTimer, SIGNAL(timeout()), this, SLOT(timeoutItemUpdate()));
+        d->_delayTimer = new MQBasicTimer;
     }
     d->_delayTimer->setInterval( delay);
 }
@@ -356,7 +393,8 @@ void  ArnItem::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* v
     if (!value) {  // Update of item with no data supplied
         if (d->_delayTimer) {
             if (!d->_delayTimer->isActive()) {
-                d->_delayTimer->start();
+                d->_delayTimer->start( this);
+                // qDebug() << "ArnItem delay start: path=" << path();
             }
         }
         else {
@@ -430,12 +468,6 @@ void  ArnItem::doItemUpdate( const ArnLinkHandle& handleData)
 }
 
 
-void  ArnItem::timeoutItemUpdate()
-{
-    doItemUpdate( ArnLinkHandle());
-}
-
-
 void  ArnItem::modeUpdate( Arn::ObjectMode mode, bool isSetup)
 {
     ArnItemB::modeUpdate( mode, isSetup); // must be called for base-class update
@@ -455,3 +487,7 @@ QTextStream &operator<<( QTextStream& out, const ArnItem& item)
     out << item.toString();
     return out;
 }
+
+
+
+

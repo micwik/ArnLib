@@ -36,6 +36,8 @@
 
 #define ARNITEM_COUNTTYPE quint16
 
+class MQBasicTimer;
+
 
 class ArnItemPrivate : public ArnItemBPrivate
 {
@@ -45,7 +47,7 @@ public:
     virtual ~ArnItemPrivate();
 
 private:
-    QTimer*  _delayTimer;
+    MQBasicTimer*  _delayTimer;
 
     ARNITEM_COUNTTYPE  _emitChanged;
     ARNITEM_COUNTTYPE  _emitChangedInt;
