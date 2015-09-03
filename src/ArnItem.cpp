@@ -169,6 +169,16 @@ void  ArnItem::timerEvent( QTimerEvent* ev)
 }
 
 
+int ArnItem::delayTimerId()  const
+{
+    Q_D(const ArnItem);
+
+    if (!d->_delayTimer)  return 0;
+
+    return d->_delayTimer->timerId();
+}
+
+
 ArnItem&  ArnItem::setTemplate( bool isTemplate)
 {
     Q_D(ArnItem);
@@ -194,6 +204,16 @@ void  ArnItem::setDelay( int delay)
         d->_delayTimer = new MQBasicTimer;
     }
     d->_delayTimer->setInterval( delay);
+}
+
+
+int ArnItem::delay() const
+{
+    Q_D(const ArnItem);
+
+    if (!d->_delayTimer)  return 0;
+
+    return d->_delayTimer->interval();
 }
 
 

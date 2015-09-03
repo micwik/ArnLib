@@ -270,8 +270,16 @@ public:
      *  Signalling will not be faster than _delay_ as period time. The latency from
      *  a change to a signal will not be more than _delay_.
      *  \param[in] delay in ms.
+     *  \see delay()
      */
     void  setDelay( int delay);
+
+    //! Get _delay_ of data changed signal
+    /*! Read current value of the delay.
+     *  \return the delay in ms.
+     *  \see setDelay()
+     */
+    int  delay()  const;
 
     //! Import data to an _Arn Data Object_
     /*! Data blob from a previos \p arnExport() can be imported.
@@ -481,6 +489,8 @@ protected:
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
     virtual void  timerEvent( QTimerEvent* ev);
+
+    int  delayTimerId()  const;
 
     ArnItem( ArnItemPrivate& dd, QObject* parent);
     //! \endcond

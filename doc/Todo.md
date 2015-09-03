@@ -16,7 +16,6 @@ Major
 
 Minor
 -----
-* Add setDelay in ArnItemQml, rework changed().
 * ArnItemQml::updateValue() don't handle param data.
 * Optimize data transfer with minimal copying.
 * Make ArnLink none QObject to save memory and independent on main-thread-create.
@@ -35,6 +34,7 @@ Done in 3.0
 * Distributed deletion of folders.
 * Distributed create of folder.
 * ArnMonitor detects destructions of _Arn Objects_.
+* Add setDelay in ArnItemQml, rework changed() and using timer events.
 
 Done in 2.3
 -----------

@@ -321,6 +321,8 @@ class  ArnItemQml : public ArnItem, public QML_PARSER_STATUS
     Q_PROPERTY( bool autoDestroyMode READ isAutoDestroy      WRITE setAutoDestroy      NOTIFY dummyNotifier)
     //! See ArnItem::setIgnoreSameValue()
     Q_PROPERTY( bool ignoreSameValue READ isIgnoreSameValue  WRITE setIgnoreSameValue  NOTIFY dummyNotifier)
+    //! See ArnItem::setDelay()
+    Q_PROPERTY( int delay            READ delay              WRITE setDelay            NOTIFY dummyNotifier)
     // Q_PROPERTY( bool smTemplate     READ isTemplate    WRITE setTemplate)
 
 public slots:
@@ -366,7 +368,7 @@ public:
     virtual void  classBegin();
     virtual void  componentComplete();
 
-    signals:
+signals:
     void  valueChanged();
     void  pathChanged();
     void  variantTypeChanged();
@@ -376,6 +378,7 @@ protected:
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
+    virtual void  timerEvent( QTimerEvent* ev);
 //! \endcond
 
 private:

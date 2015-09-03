@@ -34,6 +34,7 @@
 #include "ArnInc/ArnInterface.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/ArnLib.hpp"
+#include <QTimerEvent>
 #include <QThread>
 #include <QDebug>
 
@@ -262,7 +263,8 @@ void  ArnItemQml::itemUpdated( const ArnLinkHandle& handleData, const QByteArray
 {
     ArnItem::itemUpdated( handleData, value);
 
-    emit valueChanged();
+    if (delayTimerId() == 0)  // No delay timer used
+        emit valueChanged();
 }
 
 
@@ -277,6 +279,17 @@ void  ArnItemQml::itemModeChangedBelow( const QString& path, uint linkId, Object
 {
     QString  qmlPath = Arn::changeBasePath( ArnQml::arnRootPath(), "/", path);
     emit arnModeChanged( qmlPath, linkId, mode);
+}
+
+
+void  ArnItemQml::timerEvent( QTimerEvent* ev)
+{
+    if (ev->timerId() == delayTimerId()) {
+        // qDebug() << "ArnItemQml delay doUpdate: path=" << path();
+        emit valueChanged();
+    }
+
+    return ArnItem::timerEvent( ev);
 }
 
 
