@@ -41,14 +41,18 @@
 #include <QDebug>
 
 
-ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, QObject* parent)
-    : QObject( parent)
+ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, ArnServer* arnServer)
+    : QObject( arnServer)
 {
+    _arnServer = arnServer;
     _arnNetSync = new ArnSync( socket, false, this);
+    _arnNetSync->setLegacy( _arnServer->legacyMode());
+    _arnNetSync->start();
 
     _arnNetEar  = new ArnItemNetEar( this);
     _arnNetEar->open("/");  // MW: Optimize to only mountPoint:s ?
 
+    connect( _arnNetSync, SIGNAL(stateChanged(int)), this, SLOT(doSyncStateChanged(int)));
     connect( _arnNetSync, SIGNAL(destroyed(QObject*)), this, SLOT(shutdown()));
     connect( _arnNetSync, SIGNAL(xcomDelete(QString)), this, SLOT(onCommandDelete(QString)));
     connect( _arnNetEar, SIGNAL(arnTreeDestroyed(QString,bool)),
@@ -81,11 +85,23 @@ void  ArnServerNetSync::onCommandDelete( const QString& path)
 }
 
 
+void  ArnServerNetSync::doSyncStateChanged( int state)
+{
+    qDebug() << "ArnServer sync state changed: state=" << state;
+    ArnSync::State  syncState = ArnSync::State::fromInt( state);
+    if (syncState == syncState.Normal) {
+        qDebug() << "ArnServer connected: remVer="
+                 << _arnNetSync->remoteVer(0) << _arnNetSync->remoteVer(1);
+    }
+}
+
+
 
 ArnServer::ArnServer( Type serverType, QObject *parent)
     : QObject( parent)
 {
     _tcpServerActive = false;
+    _legacyMode      = true;
     _tcpServer       = new QTcpServer( this);
     _serverType      = serverType;
 }
@@ -127,6 +143,12 @@ QHostAddress  ArnServer::listenAddress()
 {
     QHostAddress  addr = _tcpServer->serverAddress();
     return addr;
+}
+
+
+bool  ArnServer::legacyMode()  const
+{
+    return _legacyMode;
 }
 
 

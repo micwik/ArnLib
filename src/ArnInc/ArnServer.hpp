@@ -40,6 +40,7 @@
 
 class ArnSync;
 class ArnItemNetEar;
+class ArnServer;
 class QTcpServer;
 class QTcpSocket;
 
@@ -48,16 +49,20 @@ class ArnServerNetSync : public QObject
 {
     Q_OBJECT
 public:
-    ArnServerNetSync( QTcpSocket* socket, QObject *parent = 0);
+    ArnServerNetSync( QTcpSocket* socket, ArnServer* arnServer);
 
-private:
-    ArnSync*  _arnNetSync;
-    ArnItemNetEar*  _arnNetEar;
+signals:
 
 private slots:
     void  shutdown();
     void  doDestroyArnTree( const QString& path, bool isGlobal);
     void  onCommandDelete( const QString& path);
+    void  doSyncStateChanged( int state);
+
+private:
+    ArnServer*  _arnServer;
+    ArnSync*  _arnNetSync;
+    ArnItemNetEar*  _arnNetEar;
 };
 
 
@@ -109,10 +114,15 @@ public:
      */
     QHostAddress  listenAddress();
 
+    //! \cond ADV
+    bool  legacyMode()  const;
+    //! \endcond
+
 private:
     QTcpServer *_tcpServer;
     bool  _tcpServerActive;
     Type  _serverType;
+    bool  _legacyMode;
 
 private slots:
     void tcpConnection();

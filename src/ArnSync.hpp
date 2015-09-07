@@ -36,6 +36,7 @@
 #include "ArnInc/ArnClient.hpp"
 #include "ArnInc/XStringMap.hpp"
 #include "ArnItemNet.hpp"
+#include "ArnInc/MQFlags.hpp"
 #include <QObject>
 #include <QByteArray>
 #include <QMap>
@@ -52,8 +53,22 @@ class ArnSync : public QObject
     Q_OBJECT
 
 public:
+    struct State {
+        enum E {
+            //! Initialized, not yet any result of trying to connect ...
+            Init = 0,
+            //! Trying to connect to an Arn host
+            Version,
+            //! Normal syncing
+            Normal
+        };
+        MQ_DECLARE_ENUM( State)
+    };
+
     ArnSync( QTcpSocket* socket, bool clientSide = 0, QObject *parent = 0);
     ~ArnSync();
+    void  start();
+    void  setLegacy( bool isLegacy);
     ArnItemNet*  newNetItem( const QString& path,
                              const QString& localMountPath, const QString& remoteMountPath,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
@@ -65,6 +80,7 @@ public:
     void  sendSetTree( const QString& path);
     void  sendDelete( const QString& path);
     void  sendExit();
+    uint  remoteVer( uint index);
 
     static void  setupMonitorItem( ArnItemNet* itemNet);
     static void  doChildsToEvent( ArnItemNet* itemNet);
@@ -72,9 +88,11 @@ public:
 signals:
     void  replyRecord( Arn::XStringMap& replyMap);
     void  xcomDelete( const QString& path);
+    void  stateChanged( int state);
 
 private slots:
     void  connected();
+    void  startNormalSync();
     void  disConnected();
     void  socketInput();
     void  addToFluxQue( const ArnLinkHandle& handleData);
@@ -100,8 +118,11 @@ private:
     void  removeItemNet( ArnItemNet* itemNet);
     void  closeFinal();
     void  clearQueues();
+    void  setRemoteVer( const QByteArray& remVer);
+    void  setState( State state);
 
-    void  doCommand();
+    void  doCommands();
+    void  doSpecialStateCommands( const QByteArray& cmd);
     uint  doCommandSync();
     uint  doCommandMode();
     uint  doCommandNoSync();
@@ -130,12 +151,16 @@ private:
     QQueue<ArnItemNet*>  _syncQueue;
     QQueue<ArnItemNet*>  _modeQueue;
 
+    State  _state;
     int  _queueNumCount;
     int  _queueNumDone;
     bool  _isConnected;
     bool  _isSending;
     bool  _isClosed;
+    bool  _wasClosed;
     bool  _isClientSide;      // True if this is the client side of the connection
+    bool  _isLegacy;
+    uint  _remoteVer[2];
 };
 //! \endcond
 

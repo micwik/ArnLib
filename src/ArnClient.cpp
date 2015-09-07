@@ -135,12 +135,13 @@ ArnClient::ArnClient( QObject* parent) :
 
     _socket       = new QTcpSocket( this);
     _arnNetSync   = new ArnSync( _socket, true, this);
+    _arnNetSync->start();
     _connectTimer = new QTimer( this);
     _recTimer     = new QTimer( this);
 
-    connect( _socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
     connect( _socket, SIGNAL(disconnected()), this, SLOT(doTcpDisconnected()));
     connect( _socket, SIGNAL(disconnected()), this, SIGNAL(tcpDisConnected()));
+    connect( _arnNetSync, SIGNAL(stateChanged(int)), this, SLOT(doSyncStateChanged(int)));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SLOT(doReplyRecord(Arn::XStringMap&)));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SIGNAL(replyRecord(Arn::XStringMap&)));
     connect( _arnNetSync, SIGNAL(xcomDelete(QString)), this, SLOT(onCommandDelete(QString)));
@@ -556,15 +557,20 @@ void  ArnClient::onConnectWaitDone()
 }
 
 
-void  ArnClient::doTcpConnected()
+void  ArnClient::doSyncStateChanged( int state)
 {
-    // qDebug() << "ArnClient TcpConnected: hostAddr=" << _curConnectAP.addr;
-    if (_receiveTimeout > 0)
-        _recTimer->start( _receiveTimeout * 1000 / 2);
+    qDebug() << "ArnClient sync state changed: state=" << state;
+    ArnSync::State  syncState = ArnSync::State::fromInt( state);
+    if (syncState == syncState.Normal) {
+        qDebug() << "ArnClient connected: remVer="
+                 << _arnNetSync->remoteVer(0) << _arnNetSync->remoteVer(1);
+        if (_receiveTimeout > 0)
+            _recTimer->start( _receiveTimeout * 1000 / 2);
 
-    emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
-    _connectStat = ConnectStat::Connected;
-    emit connectionStatusChanged( _connectStat, _curPrio);
+        emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
+        _connectStat = ConnectStat::Connected;
+        emit connectionStatusChanged( _connectStat, _curPrio);
+    }
 }
 
 

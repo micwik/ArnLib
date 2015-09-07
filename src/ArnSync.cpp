@@ -41,6 +41,8 @@
 #include <QDebug>
 #include <limits.h>
 
+#define ARNSYNCVER  "2.0"
+
 using Arn::XStringMap;
 
 
@@ -49,29 +51,41 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
 {
     _socket          = socket;  // Note: client side does not own socket ...
     _isClientSide    = isClientSide;
+    _state           = State::Init;  //isClientSide ? State::Init : State::Normal;
     _isSending       = false;
     _isClosed        = isClientSide;  // Server start as not closed
+    _wasClosed       = _isClosed;
     _queueNumCount   = 0;
     _queueNumDone    = 0;
+    _isConnected     = false;
+    _isLegacy        = false;
+    _remoteVer[0]    = 1;  // Default version 1.0
+    _remoteVer[1]    = 0;
     _dataRemain.clear();
+}
 
+
+ArnSync::~ArnSync()
+{
+}
+
+
+void  ArnSync::start()
+{
     connect( _socket, SIGNAL(disconnected()), this, SLOT(disConnected()));
     connect( _socket, SIGNAL(readyRead()), this, SLOT(socketInput()));
     connect( _socket, SIGNAL(bytesWritten(qint64)), this, SLOT(sendNext()));
 
-    if (isClientSide) {
+    if (_isClientSide) {
         _isConnected = false;
         connect( _socket, SIGNAL(connected()), this, SLOT(connected()));
     }
     else {
         _socket->setParent( this);  // Server side takes ownerchip of socket
         _isConnected = true;
+        if (_isLegacy)
+            setState( State::Normal);
     }
-}
-
-
-ArnSync::~ArnSync()
-{
 }
 
 
@@ -131,6 +145,14 @@ void ArnSync::sendExit()
     xm.add(ARNRECNAME, "exit");
 
     sendXSMap( xm);
+}
+
+
+uint ArnSync::remoteVer(uint index)
+{
+    if (index >= 2)  return 0;  // Out of bound
+
+    return _remoteVer[ index];
 }
 
 
@@ -223,6 +245,25 @@ void ArnSync::clearQueues()
 }
 
 
+void ArnSync::setRemoteVer(const QByteArray& remVer)
+{
+    if (remVer.isEmpty())  return;
+
+    QList<QByteArray>  remVerParts = remVer.split('.');
+    int  partsNum = qMin( remVerParts.size(), 2);
+    for (int i = 0; i < partsNum; ++i) {
+        _remoteVer[i] = remVerParts.at(i).toUInt();
+    }
+}
+
+
+void  ArnSync::setState( ArnSync::State state)
+{
+    _state = state;
+    emit stateChanged( _state);
+}
+
+
 void  ArnSync::socketInput()
 {
     _dataReadBuf.resize( _socket->bytesAvailable());
@@ -246,7 +287,7 @@ void  ArnSync::socketInput()
         _replyMap.clear();                  // Reset reply Map
 
         if (Arn::debugRecInOut)  qDebug() << "Rec-in: " << xString;
-        doCommand();
+        doCommands();
 
         if (_replyMap.size()) {
             sendXSMap( _replyMap);
@@ -257,14 +298,17 @@ void  ArnSync::socketInput()
 }
 
 
-void  ArnSync::doCommand()
+void  ArnSync::doCommands()
 {
     // int stat = 0;
     uint stat = ArnError::Ok;
     QByteArray command = _commandMap.value(0);
 
     /// Received replies
-    if (command.startsWith('R')) {
+    if (_state != State::Normal) {
+        doSpecialStateCommands( command);
+    }
+    else if (command.startsWith('R')) {
         emit replyRecord( _commandMap);
     }
     /// Received commands
@@ -299,7 +343,8 @@ void  ArnSync::doCommand()
         stat = doCommandLs();
     }
     else if (command == "ver") {
-        _replyMap.add(ARNRECNAME, "Rver").add("data", "Arn ver 1.0");
+        setRemoteVer( _commandMap.value("ver", ""));  // ver key optional, used for setting remoteVer
+        _replyMap.add(ARNRECNAME, "Rver").add("type", "ArnNetSync").add("ver", ARNSYNCVER);
     }
     else if (command == "exit") {
         _socket->disconnectFromHost();
@@ -315,6 +360,23 @@ void  ArnSync::doCommand()
     }
     if (_replyMap.size()) {
         _replyMap.add("stat", QByteArray::number( stat));
+    }
+}
+
+
+void  ArnSync::doSpecialStateCommands( const QByteArray& cmd)
+{
+    if ((_state == State::Init) && (cmd == "ver")) {
+        setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
+        _replyMap.add(ARNRECNAME, "Rver").add("type", "ArnNetSync").add("ver", ARNSYNCVER);
+        setState( ArnSync::State::Normal);
+    }
+    else if ((_state == State::Version) && (cmd == "Rver")) {
+        setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
+
+        QMetaObject::invokeMethod( this,
+                                   "startNormalSync",
+                                   Qt::QueuedConnection);
     }
 }
 
@@ -549,13 +611,29 @@ uint  ArnSync::doCommandDelete()
 }
 
 
+void  ArnSync::setLegacy( bool isLegacy)
+{
+    _isLegacy = isLegacy;
+}
+
+
 void  ArnSync::connected()
 {
-    bool  wasClosed = _isClosed;
-    _isConnected = true;
+    _wasClosed   = _isClosed;
     _isClosed    = false;
+    _isConnected = true;
+
+    setState( State::Version);
+    XStringMap  xsm;
+    xsm.add(ARNRECNAME, "ver").add("type", "ArnNetSync").add("ver", ARNSYNCVER);
+    sendXSMap( xsm);
+}
+
+
+void  ArnSync::startNormalSync()
+{
     _syncQueue.clear();
-    if (wasClosed)
+    if (_wasClosed)
         clearQueues();
 
     /// All the existing netItems must be synced
@@ -566,7 +644,7 @@ void  ArnSync::connected()
         i.next();
         itemNet = i.value();
 
-        if (wasClosed) {
+        if (_wasClosed) {
             itemNet->resetDirty();
             itemNet->resetDirtyMode();
         }
@@ -584,6 +662,8 @@ void  ArnSync::connected()
         }
     }
     sendNext();
+
+    setState( State::Normal);
 }
 
 

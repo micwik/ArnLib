@@ -324,7 +324,7 @@ private slots:
     void  doTcpError( QAbstractSocket::SocketError socketError);
     void  doTcpError( int socketError);
     void  doTcpDisconnected();
-    void  doTcpConnected();
+    void  doSyncStateChanged( int state);
     void  doRecNotified();
     void  doRecTimeout();
     void  onCommandDelete( const QString& remotePath);
