@@ -268,7 +268,7 @@ void  ArnItemNet::customEvent( QEvent* ev)
     if (type == ArnEvRetired::type()) {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : path();
-        qDebug() << "ArnItemNet Mon destroy: path=" << destroyPath << " inPath=" << path();
+        // qDebug() << "ArnItemNet Mon destroy: path=" << destroyPath << " inPath=" << path();
         emit arnMonEvent( ArnMonEvent::Type::ItemDeleted, destroyPath.toUtf8(), true);
         return ArnItemB::customEvent( ev);
     }

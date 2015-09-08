@@ -126,7 +126,6 @@ private:
     uint  doCommandSync();
     uint  doCommandMode();
     uint  doCommandNoSync();
-    uint  doCommandDestroy();
     uint  doCommandFlux();
     uint  doCommandEvent();
     uint  doCommandSet();

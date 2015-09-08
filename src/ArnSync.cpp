@@ -333,8 +333,8 @@ void  ArnSync::doCommands()
     else if (command == "nosync") {
         stat = doCommandNoSync();
     }
-    else if (command == "destroy") {
-        stat = doCommandDestroy();
+    else if (command == "destroy") {  // Legacy: Obsolete, will be phased out
+        stat = doCommandDelete();
     }
     else if (command == "delete") {
         stat = doCommandDelete();
@@ -481,22 +481,6 @@ uint ArnSync::doCommandNoSync()
 }
 
 
-uint  ArnSync::doCommandDestroy()
-{
-    uint  netId    = _commandMap.value("id").toUInt();
-
-    ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
-    if (!itemNet) {  // Not existing item is ok, maybe destroyed before this
-        return ArnError::Ok;
-    }
-
-    itemNet->setDisable();  // Defunc the item to prevent sending destroy record (MW: problem with twin)
-    itemNet->destroyLink();
-
-    return ArnError::Ok;
-}
-
-
 uint  ArnSync::doCommandFlux()
 {
     uint       netId = _commandMap.value("id").toUInt();
@@ -603,10 +587,24 @@ uint  ArnSync::doCommandLs()
 
 uint  ArnSync::doCommandDelete()
 {
-    QByteArray  path = _commandMap.value("path");
-    if (path.isEmpty())  return ArnError::NotFound;
+    uint  netId    = _commandMap.value("id", "0").toUInt();
 
-    emit xcomDelete( path);
+    if (netId) {
+        ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+        if (!itemNet) {  // Not existing item is ok, maybe destroyed before this
+            return ArnError::Ok;
+        }
+
+        itemNet->setDisable();  // Defunc the item to prevent sending destroy record (MW: problem with twin)
+        itemNet->destroyLink();
+    }
+    else {
+        QByteArray  path = _commandMap.value("path");
+        if (path.isEmpty())  return ArnError::NotFound;
+
+        emit xcomDelete( path);
+    }
+
     return ArnError::Ok;
 }
 
@@ -871,7 +869,8 @@ void  ArnSync::destroyToFluxQue( ArnItemNet* itemNet)
     bool  isGlobal = (rt == rt.LeafGlobal) || !_isClientSide;  // Server allways Global destroy leaf
     FluxRec*  fluxRec = getFreeFluxRec();
     _syncMap.clear();
-    _syncMap.add(ARNRECNAME, isGlobal ? "destroy" : "nosync")
+    const char*  delCmd = (_remoteVer[0] > 1) ? "delete" : "destroy";
+    _syncMap.add(ARNRECNAME, isGlobal ? delCmd : "nosync")
             .add("id", QByteArray::number( itemNet->netId()));
     fluxRec->xString += _syncMap.toXString();
     _fluxPipeQueue.enqueue( fluxRec);
