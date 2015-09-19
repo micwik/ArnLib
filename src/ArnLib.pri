@@ -203,3 +203,9 @@ contains(ARN, zeroconf) {
 }
 
 }  # ARNLIB_PRI_INCLUDED
+
+HEADERS += \
+    $$PWD/ArnSyncLogin.hpp
+
+SOURCES += \
+    $$PWD/ArnSyncLogin.cpp

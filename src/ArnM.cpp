@@ -44,6 +44,7 @@
 #include <QDir>
 #include <iostream>
 #include <QTimer>
+#include <QDateTime>
 #include <QStringList>
 #include <QVector>
 #include <QDebug>
@@ -873,6 +874,8 @@ ArnM::ArnM()
     _mainThread             = QThread::currentThread();
     _root                   = new ArnLink( 0, "", Arn::LinkFlags::Folder);
 
+    qsrand( QDateTime::currentDateTimeUtc().toTime_t());
+
     qRegisterMetaType<ArnThreadCom*>();
     qRegisterMetaType<ArnLinkHandle>("ArnLinkHandle");
     qRegisterMetaType<QVariant>("QVariant");
@@ -898,6 +901,7 @@ ArnM::ArnM()
     _errTextTab[ ArnError::ScriptError]     = QString(tr("Script"));
     _errTextTab[ ArnError::RpcInvokeError]  = QString(tr("Rpc Invoke error"));
     _errTextTab[ ArnError::RpcReceiveError] = QString(tr("Rpc Receive error"));
+    _errTextTab[ ArnError::LoginBad]        = QString(tr("Login error"));
 
     if (Arn::debugSizes) {
         qDebug() << "====== Arn Sizes ======";

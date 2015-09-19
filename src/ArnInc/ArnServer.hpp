@@ -35,10 +35,13 @@
 #include "ArnLib_global.hpp"
 #include "Arn.hpp"
 #include "MQFlags.hpp"
+#include "XStringMap.hpp"
 #include <QObject>
 #include <QHostAddress>
+#include <QMap>
 
 class ArnSync;
+class ArnSyncLogin;
 class ArnItemNetEar;
 class ArnServer;
 class QTcpServer;
@@ -96,6 +99,8 @@ public:
      */
     ArnServer( Type serverType, QObject *parent = 0);
 
+    ~ArnServer();
+
     //! Start the Arn _server_
     /*! \param[in] port is the server port,
      *                  -1 gives Arn::defaultTcpPort, 0 gives [dynamic port](\ref gen_dynamicPort)
@@ -114,12 +119,26 @@ public:
      */
     QHostAddress  listenAddress();
 
+    //! Add an access entry
+    /*! This adds an entry to build an access table for the server. This access table
+     *  restricts the operations of connected clients. Each client refer to one entry
+     *  by its userName.
+     *  Each entry must have a unique userName. Any equal userName is making the entry
+     *  being replaced by the last added one.
+     *  \param[in] userName
+     *  \param[in] password
+     *  \param[in] allow have flags defining allowed basic operations (write, delete ...)
+     */
+    void  addAccess( const QString& userName, const QString& password, Arn::Allow allow);
+
     //! \cond ADV
+    ArnSyncLogin*  arnLogin()  const;
     bool  legacyMode()  const;
     //! \endcond
 
 private:
-    QTcpServer *_tcpServer;
+    QTcpServer*  _tcpServer;
+    ArnSyncLogin*  _arnLogin;
     bool  _tcpServerActive;
     Type  _serverType;
     bool  _legacyMode;

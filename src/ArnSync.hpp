@@ -45,6 +45,7 @@
 #define ARNRECNAME  ""
 
 class QTcpSocket;
+class ArnSyncLogin;
 
 
 //! \cond ADV
@@ -55,10 +56,12 @@ class ArnSync : public QObject
 public:
     struct State {
         enum E {
-            //! Initialized, not yet any result of trying to connect ...
+            //! Initialized
             Init = 0,
-            //! Trying to connect to an Arn host
+            //! Getting version of remote side
             Version,
+            //! Authenticate
+            Login,
             //! Normal syncing
             Normal
         };
@@ -67,6 +70,8 @@ public:
 
     ArnSync( QTcpSocket* socket, bool clientSide = 0, QObject *parent = 0);
     ~ArnSync();
+
+    void  setArnLogin( ArnSyncLogin* arnLogin);
     void  start();
     void  setLegacy( bool isLegacy);
     ArnItemNet*  newNetItem( const QString& path,
@@ -81,6 +86,8 @@ public:
     void  sendDelete( const QString& path);
     void  sendExit();
     uint  remoteVer( uint index);
+    void  loginToArn( const QString& userName, const QString& password,
+                      Arn::Allow allow = Arn::Allow::All);
 
     static void  setupMonitorItem( ArnItemNet* itemNet);
     static void  doChildsToEvent( ArnItemNet* itemNet);
@@ -89,6 +96,8 @@ signals:
     void  replyRecord( Arn::XStringMap& replyMap);
     void  xcomDelete( const QString& path);
     void  stateChanged( int state);
+    //! Signal emitted when the remote ArnServer demands a login.
+    void  loginRequired( int code);
 
 private slots:
     void  connected();
@@ -122,7 +131,6 @@ private:
     void  setState( State state);
 
     void  doCommands();
-    void  doSpecialStateCommands( const QByteArray& cmd);
     uint  doCommandSync();
     uint  doCommandMode();
     uint  doCommandNoSync();
@@ -132,8 +140,13 @@ private:
     uint  doCommandGet();
     uint  doCommandLs();
     uint  doCommandDelete();
+    uint  doCommandVer();
+    uint  doCommandRVer();
+    uint  doCommandLogin();
+    void  sendLogin( int seq, const Arn::XStringMap& xsMap);
 
     QTcpSocket*  _socket;
+    ArnSyncLogin* _arnLogin;
 
     QByteArray  _dataReadBuf;
     QByteArray  _dataRemain;
@@ -160,6 +173,12 @@ private:
     bool  _isClientSide;      // True if this is the client side of the connection
     bool  _isLegacy;
     uint  _remoteVer[2];
+    uint  _loginSalt1;
+    uint  _loginSalt2;
+    QString  _loginUserName;
+    QString  _loginPassword;
+    Arn::Allow  _allow;
+    Arn::Allow  _remoteAllow;
 };
 //! \endcond
 

@@ -79,6 +79,8 @@ public:
             Init = 0,
             //! Trying to connect to an Arn host
             Connecting,
+            //! Negotiating terms and compatibility with an Arn host
+            Negotiating,
             //! Successfully connected to an Arn host
             Connected,
             //! No data flow within set timeout (still connected)
@@ -157,6 +159,15 @@ public:
      *  \see connectToArn()
      */
     void  disconnectFromArn();
+
+    //! Login to an _Arn Server_
+    /*! \param[in] userName
+     *  \param[in] password
+     *  \param[in] allow is the permissions for the server actions to this client.
+     *  \see Arn::Allow
+     */
+    void  loginToArn( const QString& userName, const QString& password,
+                      Arn::Allow allow = Arn::Allow::All);
 
     //! Close sharing with an _Arn Server_
     /*! Stop sharing _Arn objects_ with the _Arn server_. Similar to disconnectFromArn().
@@ -305,6 +316,14 @@ signals:
      */
     void  connectionStatusChanged( int status, int curPrio);
 
+    //! Signal emitted when the remote ArnServer demands a login.
+    /*! \param[in] code is the situation context as:
+     *             0 = First login triel
+     *             1 = Server deny, login retry
+     *             2 = Client deny, server not ok
+     */
+    void  loginRequired( int code);
+
     //! \cond ADV
     void  replyRecord( Arn::XStringMap& replyMap);
     void  replyGet( const QString& data, const QString& path);
@@ -321,6 +340,7 @@ private slots:
     void  doReplyRecord( Arn::XStringMap& replyMap);
     void  reConnectArn();
     void  onConnectWaitDone();
+    void  doTcpConnected();
     void  doTcpError( QAbstractSocket::SocketError socketError);
     void  doTcpError( int socketError);
     void  doTcpDisconnected();

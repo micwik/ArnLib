@@ -30,6 +30,7 @@
 //
 
 #include "ArnSync.hpp"
+#include "ArnSyncLogin.hpp"
 #include "ArnItemNet.hpp"
 #include "ArnLink.hpp"
 #include "ArnInc/ArnClient.hpp"
@@ -50,6 +51,7 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     : QObject( parent)
 {
     _socket          = socket;  // Note: client side does not own socket ...
+    _arnLogin        = 0;
     _isClientSide    = isClientSide;
     _state           = State::Init;  //isClientSide ? State::Init : State::Normal;
     _isSending       = false;
@@ -70,6 +72,12 @@ ArnSync::~ArnSync()
 }
 
 
+void  ArnSync::setArnLogin( ArnSyncLogin* arnLogin)
+{
+    _arnLogin = arnLogin;
+}
+
+
 void  ArnSync::start()
 {
     connect( _socket, SIGNAL(disconnected()), this, SLOT(disConnected()));
@@ -83,9 +91,46 @@ void  ArnSync::start()
     else {
         _socket->setParent( this);  // Server side takes ownerchip of socket
         _isConnected = true;
-        if (_isLegacy)
-            setState( State::Normal);
+        // MIWI: if (_isLegacy)
+        //     setState( State::Normal);
     }
+}
+
+
+void  ArnSync::startNormalSync()
+{
+    _syncQueue.clear();
+    if (_wasClosed)
+        clearQueues();
+
+    /// All the existing netItems must be synced
+    ArnItemNet*  itemNet;
+    QByteArray  mode;
+    QMapIterator<uint,ArnItemNet*>  i( _itemNetMap);
+    while (i.hasNext()) {
+        i.next();
+        itemNet = i.value();
+
+        if (_wasClosed) {
+            itemNet->resetDirty();
+            itemNet->resetDirtyMode();
+        }
+
+        _syncQueue.enqueue( itemNet);
+        mode = itemNet->getModeString();
+        // If non default mode that isn't already in modeQueue
+        if (!mode.isEmpty()  &&  !itemNet->isDirtyMode()) {
+            _modeQueue.enqueue( itemNet);
+        }
+        if ((itemNet->type() != Arn::DataType::Null)                  // Only send non Null Value ...
+        && (!itemNet->isPipeMode())                                   // from non pipe ..
+        && (itemNet->syncMode().is( Arn::ObjectSyncMode::Master))) {  // which is master
+            itemNet->itemUpdated( ArnLinkHandle());  // Make client send the current value to server
+        }
+    }
+    sendNext();
+
+    setState( State::Normal);
 }
 
 
@@ -135,6 +180,17 @@ void  ArnSync::sendDelete( const QString& path)
     xm.add(ARNRECNAME, "delete").add("path", path);
 
     // qDebug() << "ArnSync-delete: path=" << path;
+    sendXSMap( xm);
+}
+
+
+void  ArnSync::sendLogin( int seq, const Arn::XStringMap& xsMap)
+{
+    XStringMap xm;
+    xm.add(ARNRECNAME, "login").add("seq", QByteArray::number( seq));
+    xm.add( xsMap);
+
+    qDebug() << "ArnSync-login: xs=" << xm.toXString();
     sendXSMap( xm);
 }
 
@@ -300,19 +356,11 @@ void  ArnSync::socketInput()
 
 void  ArnSync::doCommands()
 {
-    // int stat = 0;
     uint stat = ArnError::Ok;
     QByteArray command = _commandMap.value(0);
 
-    /// Received replies
-    if (_state != State::Normal) {
-        doSpecialStateCommands( command);
-    }
-    else if (command.startsWith('R')) {
-        emit replyRecord( _commandMap);
-    }
     /// Received commands
-    else if (command == "flux") {
+    if (command == "flux") {
         stat = doCommandFlux();
     }
     else if (command == "event") {
@@ -343,8 +391,13 @@ void  ArnSync::doCommands()
         stat = doCommandLs();
     }
     else if (command == "ver") {
-        setRemoteVer( _commandMap.value("ver", ""));  // ver key optional, used for setting remoteVer
-        _replyMap.add(ARNRECNAME, "Rver").add("type", "ArnNetSync").add("ver", ARNSYNCVER);
+        stat = doCommandVer();
+    }
+    else if (command == "Rver") {
+        stat = doCommandRVer();
+    }
+    else if (command == "login") {
+        stat = doCommandLogin();
     }
     else if (command == "exit") {
         _socket->disconnectFromHost();
@@ -353,31 +406,143 @@ void  ArnSync::doCommands()
     else if (command == "err") {
         qDebug() << "REC-ERR: |" << _commandMap.toXString() << "|";
     }
+    else if (command.startsWith('R'));  // No error on unhandled R-commands
     else {
         stat = ArnError::RecUnknown;
         _replyMap.add(ARNRECNAME, "err");
         _replyMap.add("data", QByteArray("Unknown record:") + command);
     }
+
     if (_replyMap.size()) {
         _replyMap.add("stat", QByteArray::number( stat));
+    }
+
+    if (command.startsWith('R')) {  // Forward all R-commands
+        emit replyRecord( _commandMap);
     }
 }
 
 
-void  ArnSync::doSpecialStateCommands( const QByteArray& cmd)
+void ArnSync::loginToArn(const QString& userName, const QString& password, Arn::Allow allow)
 {
-    if ((_state == State::Init) && (cmd == "ver")) {
-        setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
-        _replyMap.add(ARNRECNAME, "Rver").add("type", "ArnNetSync").add("ver", ARNSYNCVER);
-        setState( ArnSync::State::Normal);
-    }
-    else if ((_state == State::Version) && (cmd == "Rver")) {
-        setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
+    _loginUserName = userName;
+    _loginPassword = password;
+    _allow         = allow;
 
-        QMetaObject::invokeMethod( this,
-                                   "startNormalSync",
-                                   Qt::QueuedConnection);
+    _loginSalt1 = uint( qrand());
+    XStringMap  xsm;
+    xsm.add("salt1", QByteArray::number( _loginSalt1));
+    sendLogin( 0, xsm);
+}
+
+
+uint  ArnSync::doCommandLogin()
+{
+    if (_state != State::Login)  return ArnError::LoginBad;
+
+    int  seq =_commandMap.value("seq").toInt();
+
+    switch (seq) {
+    case 0:
+    {
+        if (_isClientSide)  return ArnError::LoginBad;
+
+        //// Server side
+        _loginSalt1 = _commandMap.value("salt1").toUInt();
+        _loginSalt2 = uint( qrand());
+        XStringMap  xsm;
+        xsm.add("salt2", QByteArray::number( _loginSalt2));
+        sendLogin( 1, xsm);
+        break;
     }
+    case 1:
+    {
+        if (!_isClientSide)  return ArnError::LoginBad;
+
+        //// Client side
+        _loginSalt2 = _commandMap.value("salt2").toUInt();
+        QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt1, _loginSalt2, _loginPassword);
+        XStringMap  xsm;
+        xsm.add("user", _loginUserName).add("pass", pwHash);
+        sendLogin( 2, xsm);
+        break;
+    }
+    case 2:
+    {
+        if (_isClientSide)  return ArnError::LoginBad;
+
+        //// Server side
+        QByteArray  userClient   = _commandMap.value("user");
+        QByteArray  pwHashClient = _commandMap.value("pass");
+        QByteArray  pwHashServer;
+
+
+        int stat = 0;
+        _allow = Arn::Allow::None;  // Deafult no access
+        const ArnSyncLogin::AccessSlot*  accSlot = _arnLogin->findAccess( userClient);
+        if (accSlot) {
+            QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt1, _loginSalt2, accSlot->password);
+            if (pwHashClient == pwHash) {
+                _allow       = accSlot->allow;
+                pwHashServer = ArnSyncLogin::pwHash( _loginSalt2, _loginSalt1, accSlot->password);
+                stat         = 1;
+            }
+        }
+
+        XStringMap  xsm;
+        xsm.add("stat", QByteArray::number( stat));
+        xsm.add("allow", QByteArray::number( _allow.toInt()));
+        xsm.add("pass", pwHashServer);
+        sendLogin( 3, xsm);
+        break;
+    }
+    case 3:
+    {
+        if (!_isClientSide)  return ArnError::LoginBad;
+
+        //// Client side
+        int  statServer = _commandMap.value("stat").toInt();
+        _remoteAllow = Arn::Allow::fromInt( _commandMap.value("allow").toInt());
+        QByteArray  pwHashServer = _commandMap.value("pass");
+
+        QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt2, _loginSalt1, _loginPassword);
+        int  loginRequiredCode = 0;
+        int  stat = 0;
+        if (!statServer)
+            loginRequiredCode = 1;  // Server deny, login retry
+        else if (pwHashServer != pwHash)
+            loginRequiredCode = 2;  // Client deny, server not ok
+        else
+            stat = 1;  // All ok
+
+        XStringMap  xsm;
+        xsm.add("stat", QByteArray::number( stat));
+        xsm.add("allow", QByteArray::number( stat ? _allow.toInt() : 0));
+        sendLogin( 4, xsm);
+
+        if (stat)
+            startNormalSync();
+        else
+            emit loginRequired( loginRequiredCode);
+        break;
+    }
+    case 4:
+    {
+        if (_isClientSide)  return ArnError::LoginBad;
+
+        //// Server side
+        int  stat = _commandMap.value("stat").toInt();
+        _remoteAllow = Arn::Allow::fromInt( _commandMap.value("allow").toInt());
+
+        if (stat)
+            setState( State::Normal);
+        break;
+    }
+    default:
+        break;
+    }
+
+    return ArnError::Ok;
 }
 
 
@@ -609,6 +774,35 @@ uint  ArnSync::doCommandDelete()
 }
 
 
+uint ArnSync::doCommandVer()
+{
+    //// Server
+    if (_state == State::Init) {
+        setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
+        setState( State::Login);
+    }
+    else {
+        setRemoteVer( _commandMap.value("ver", ""));  // ver key optional, used for setting remoteVer
+    }
+
+    _replyMap.add(ARNRECNAME, "Rver").add("type", "ArnNetSync").add("ver", ARNSYNCVER);
+    return ArnError::Ok;
+}
+
+
+uint ArnSync::doCommandRVer()
+{
+    //// Client
+    if (_state == State::Version) {
+        setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
+        setState( State::Login);
+        emit loginRequired(0);
+    }
+
+    return ArnError::Ok;
+}
+
+
 void  ArnSync::setLegacy( bool isLegacy)
 {
     _isLegacy = isLegacy;
@@ -628,43 +822,6 @@ void  ArnSync::connected()
 }
 
 
-void  ArnSync::startNormalSync()
-{
-    _syncQueue.clear();
-    if (_wasClosed)
-        clearQueues();
-
-    /// All the existing netItems must be synced
-    ArnItemNet*  itemNet;
-    QByteArray  mode;
-    QMapIterator<uint,ArnItemNet*>  i( _itemNetMap);
-    while (i.hasNext()) {
-        i.next();
-        itemNet = i.value();
-
-        if (_wasClosed) {
-            itemNet->resetDirty();
-            itemNet->resetDirtyMode();
-        }
-
-        _syncQueue.enqueue( itemNet);
-        mode = itemNet->getModeString();
-        // If non default mode that isn't already in modeQueue
-        if (!mode.isEmpty()  &&  !itemNet->isDirtyMode()) {
-            _modeQueue.enqueue( itemNet);
-        }
-        if ((itemNet->type() != Arn::DataType::Null)                  // Only send non Null Value ...
-        && (!itemNet->isPipeMode())                                   // from non pipe ..
-        && (itemNet->syncMode().is( Arn::ObjectSyncMode::Master))) {  // which is master
-            itemNet->itemUpdated( ArnLinkHandle());  // Make client send the current value to server
-        }
-    }
-    sendNext();
-
-    setState( State::Normal);
-}
-
-
 void  ArnSync::disConnected()
 {
     _isConnected = false;
@@ -676,7 +833,7 @@ void  ArnSync::disConnected()
         }
     }
     else {  // Server
-        // Make a list of netId to AutoDestroy
+        //// Make a list of netId to AutoDestroy
         QList<uint>  destroyList;
         foreach (ArnItemNet* itemNet, _itemNetMap) {
             if (itemNet->syncMode().is( Arn::ObjectSyncMode::AutoDestroy)) {
@@ -684,7 +841,7 @@ void  ArnSync::disConnected()
                 // qDebug() << "Server-disconnect: destroyList path=" << itemNet->path();
             }
         }
-        // Destroy from list, twins dissapears in pair
+        //// Destroy from list, twins dissapears in pair
         foreach (uint netId, destroyList) {
             ArnItemNet* itemNet = _itemNetMap.value( netId, 0);
             if (itemNet) {  // if this itemNet still exist

@@ -150,6 +150,22 @@ struct Coding {
     MQ_DECLARE_FLAGS( Coding)
 };
 
+struct Allow {
+    enum E {
+        //! Nothing allowed
+        None     = 0x00,
+        //! Read from Arn Objects
+        Read     = 0x01,
+        //! Write to Arn Objects
+        Write    = 0x02,
+        //! Delete Arn Objects
+        Delete   = 0x03,
+        //! Convenience, allow all_
+        All      = 0xff
+    };
+    MQ_DECLARE_FLAGS( Allow)
+};
+
 //! Convert a name to a specific format
 /*! Name is a sub part from a _path_.
  *  Example: _name_ = "value/", nameF = NoFolderMark
@@ -326,5 +342,6 @@ MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::ObjectMode)
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::ObjectSyncMode)
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::NameF)
 MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::Coding)
+MQ_DECLARE_OPERATORS_FOR_FLAGS( Arn::Allow)
 
 #endif // ARN_HPP

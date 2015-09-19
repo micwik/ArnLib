@@ -33,6 +33,7 @@
 #include "ArnInc/ArnError.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnSync.hpp"
+#include "ArnSyncLogin.hpp"
 #include "ArnItemNet.hpp"
 #include <QTcpServer>
 #include <QTcpSocket>
@@ -40,12 +41,15 @@
 #include <QNetworkInterface>
 #include <QDebug>
 
+using Arn::XStringMap;
+
 
 ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, ArnServer* arnServer)
     : QObject( arnServer)
 {
     _arnServer = arnServer;
     _arnNetSync = new ArnSync( socket, false, this);
+    _arnNetSync->setArnLogin( _arnServer->arnLogin());
     _arnNetSync->setLegacy( _arnServer->legacyMode());
     _arnNetSync->start();
 
@@ -103,7 +107,14 @@ ArnServer::ArnServer( Type serverType, QObject *parent)
     _tcpServerActive = false;
     _legacyMode      = true;
     _tcpServer       = new QTcpServer( this);
+    _arnLogin        = new ArnSyncLogin;
     _serverType      = serverType;
+}
+
+
+ArnServer::~ArnServer()
+{
+    delete _arnLogin;
 }
 
 
@@ -146,10 +157,23 @@ QHostAddress  ArnServer::listenAddress()
 }
 
 
+void ArnServer::addAccess(const QString& userName, const QString& password, Arn::Allow allow)
+{
+    _arnLogin->addAccess( userName, password, allow);
+}
+
+
 bool  ArnServer::legacyMode()  const
 {
     return _legacyMode;
 }
+
+
+ArnSyncLogin*  ArnServer::arnLogin()  const
+{
+    return _arnLogin;
+}
+
 
 
 void  ArnServer::tcpConnection()

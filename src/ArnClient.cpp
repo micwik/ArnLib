@@ -139,8 +139,10 @@ ArnClient::ArnClient( QObject* parent) :
     _connectTimer = new QTimer( this);
     _recTimer     = new QTimer( this);
 
+    connect( _socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
     connect( _socket, SIGNAL(disconnected()), this, SLOT(doTcpDisconnected()));
     connect( _socket, SIGNAL(disconnected()), this, SIGNAL(tcpDisConnected()));
+    connect( _arnNetSync, SIGNAL(loginRequired(int)), this, SIGNAL(loginRequired(int)));
     connect( _arnNetSync, SIGNAL(stateChanged(int)), this, SLOT(doSyncStateChanged(int)));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SLOT(doReplyRecord(Arn::XStringMap&)));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SIGNAL(replyRecord(Arn::XStringMap&)));
@@ -237,6 +239,12 @@ void  ArnClient::disconnectFromArn()
     _arnNetSync->sendExit();
     setAutoConnect( false);
     _socket->disconnectFromHost();
+}
+
+
+void  ArnClient::loginToArn( const QString& userName, const QString& password, Arn::Allow allow)
+{
+    _arnNetSync->loginToArn( userName, password, allow);
 }
 
 
@@ -517,7 +525,8 @@ void ArnClient::doTcpError( int socketError)
 
     if (_connectStat != ConnectStat::Disconnected) {
         _connectStat = (  (_connectStat == ConnectStat::Connected)
-                       || (_connectStat == ConnectStat::Stopped))
+                       || (_connectStat == ConnectStat::Stopped)
+                       || (_connectStat == ConnectStat::Negotiating))
                      ? ConnectStat::Disconnected : ConnectStat::Error;
         emit connectionStatusChanged( _connectStat, _curPrio);
         reConnectArn();
@@ -530,7 +539,9 @@ void ArnClient::doTcpDisconnected()
     // qDebug() << "ArnClient TcpDisconnected: hostAddr=" << _curConnectAP.addr;
     _recTimer->stop();
 
-    if ((_connectStat == ConnectStat::Connected) || (_connectStat == ConnectStat::Stopped)) {
+    if ((_connectStat == ConnectStat::Connected)
+    ||  (_connectStat == ConnectStat::Stopped)
+    ||  (_connectStat == ConnectStat::Negotiating)) {
         _connectStat = ConnectStat::Disconnected;
         emit connectionStatusChanged( _connectStat, _curPrio);
         reConnectArn();
@@ -557,6 +568,17 @@ void  ArnClient::onConnectWaitDone()
 }
 
 
+void  ArnClient::doTcpConnected()
+{
+    if (_receiveTimeout > 0)
+        _recTimer->start( _receiveTimeout * 1000 / 2);
+
+    emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
+    _connectStat = ConnectStat::Negotiating;
+    emit connectionStatusChanged( _connectStat, _curPrio);
+}
+
+
 void  ArnClient::doSyncStateChanged( int state)
 {
     qDebug() << "ArnClient sync state changed: state=" << state;
@@ -564,10 +586,6 @@ void  ArnClient::doSyncStateChanged( int state)
     if (syncState == syncState.Normal) {
         qDebug() << "ArnClient connected: remVer="
                  << _arnNetSync->remoteVer(0) << _arnNetSync->remoteVer(1);
-        if (_receiveTimeout > 0)
-            _recTimer->start( _receiveTimeout * 1000 / 2);
-
-        emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
         _connectStat = ConnectStat::Connected;
         emit connectionStatusChanged( _connectStat, _curPrio);
     }
