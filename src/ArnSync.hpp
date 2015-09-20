@@ -73,7 +73,9 @@ public:
 
     void  setArnLogin( ArnSyncLogin* arnLogin);
     void  start();
-    void  setLegacy( bool isLegacy);
+    bool  isDemandLogin()  const;
+    void  setDemandLogin( bool isDemandLogin);
+
     ArnItemNet*  newNetItem( const QString& path,
                              const QString& localMountPath, const QString& remoteMountPath,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
@@ -171,7 +173,7 @@ private:
     bool  _isClosed;
     bool  _wasClosed;
     bool  _isClientSide;      // True if this is the client side of the connection
-    bool  _isLegacy;
+    bool  _isDemandLogin;
     uint  _remoteVer[2];
     uint  _loginSalt1;
     uint  _loginSalt2;

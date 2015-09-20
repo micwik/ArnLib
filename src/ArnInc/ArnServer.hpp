@@ -131,17 +131,31 @@ public:
      */
     void  addAccess( const QString& userName, const QString& password, Arn::Allow allow);
 
+    //! Get servers demand for login
+    /*! If any of server or client demand login, it must be used.
+     *  \retval true if server demand login.
+     *  \see setDemandLogin()
+     */
+    bool  isDemandLogin()  const;
+
+    //! Set servers demand for login
+    /*! If any of server or client demand login, it must be used.
+     *  \param[in] isDemandLogin true if server demand login.
+     *  \see isDemandLogin()
+     */
+    void  setDemandLogin( bool isDemandLogin);
+
     //! \cond ADV
     ArnSyncLogin*  arnLogin()  const;
-    bool  legacyMode()  const;
     //! \endcond
+
 
 private:
     QTcpServer*  _tcpServer;
     ArnSyncLogin*  _arnLogin;
     bool  _tcpServerActive;
     Type  _serverType;
-    bool  _legacyMode;
+    bool  _isDemandLogin;
 
 private slots:
     void tcpConnection();

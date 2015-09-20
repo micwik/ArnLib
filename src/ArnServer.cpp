@@ -50,7 +50,7 @@ ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, ArnServer* arnServer)
     _arnServer = arnServer;
     _arnNetSync = new ArnSync( socket, false, this);
     _arnNetSync->setArnLogin( _arnServer->arnLogin());
-    _arnNetSync->setLegacy( _arnServer->legacyMode());
+    _arnNetSync->setDemandLogin( _arnServer->isDemandLogin());
     _arnNetSync->start();
 
     _arnNetEar  = new ArnItemNetEar( this);
@@ -105,7 +105,7 @@ ArnServer::ArnServer( Type serverType, QObject *parent)
     : QObject( parent)
 {
     _tcpServerActive = false;
-    _legacyMode      = true;
+    _isDemandLogin   = false;
     _tcpServer       = new QTcpServer( this);
     _arnLogin        = new ArnSyncLogin;
     _serverType      = serverType;
@@ -163,9 +163,15 @@ void ArnServer::addAccess(const QString& userName, const QString& password, Arn:
 }
 
 
-bool  ArnServer::legacyMode()  const
+bool  ArnServer::isDemandLogin()  const
 {
-    return _legacyMode;
+    return _isDemandLogin;
+}
+
+
+void  ArnServer::setDemandLogin( bool isDemandLogin)
+{
+    _isDemandLogin = isDemandLogin;
 }
 
 

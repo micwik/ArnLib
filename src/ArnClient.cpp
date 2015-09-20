@@ -369,6 +369,18 @@ void  ArnClient::setReceiveTimeout( int receiveTimeout)
 }
 
 
+bool  ArnClient::isDemandLogin()  const
+{
+    return _arnNetSync->isDemandLogin();
+}
+
+
+void  ArnClient::setDemandLogin( bool isDemandLogin)
+{
+    _arnNetSync->setDemandLogin( isDemandLogin);
+}
+
+
 int ArnClient::curPrio() const
 {
     return _curPrio;

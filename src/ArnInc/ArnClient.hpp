@@ -280,6 +280,20 @@ public:
      */
     void  setReceiveTimeout( int receiveTimeout);
 
+    //! Get clients demand for login
+    /*! If any of server or client demand login, it must be used.
+     *  \retval true if client demand login.
+     *  \see setDemandLogin()
+     */
+    bool  isDemandLogin()  const;
+
+    //! Set clients demand for login
+    /*! If any of server or client demand login, it must be used.
+     *  \param[in] isDemandLogin true if client demand login.
+     *  \see isDemandLogin()
+     */
+    void  setDemandLogin( bool isDemandLogin);
+
     //! \cond ADV
     int  curPrio()  const;
 

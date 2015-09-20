@@ -53,14 +53,14 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     _socket          = socket;  // Note: client side does not own socket ...
     _arnLogin        = 0;
     _isClientSide    = isClientSide;
-    _state           = State::Init;  //isClientSide ? State::Init : State::Normal;
+    _state           = State::Init;
     _isSending       = false;
     _isClosed        = isClientSide;  // Server start as not closed
     _wasClosed       = _isClosed;
     _queueNumCount   = 0;
     _queueNumDone    = 0;
     _isConnected     = false;
-    _isLegacy        = false;
+    _isDemandLogin   = false;
     _remoteVer[0]    = 1;  // Default version 1.0
     _remoteVer[1]    = 0;
     _dataRemain.clear();
@@ -91,14 +91,18 @@ void  ArnSync::start()
     else {
         _socket->setParent( this);  // Server side takes ownerchip of socket
         _isConnected = true;
-        // MIWI: if (_isLegacy)
-        //     setState( State::Normal);
+        if (!_isDemandLogin) {
+            _allow = Arn::Allow::All;
+            setState( State::Normal);
+        }
     }
 }
 
 
 void  ArnSync::startNormalSync()
 {
+    if (_state == State::Normal)  return;  // Already in normal state (has done sync)
+
     _syncQueue.clear();
     if (_wasClosed)
         clearQueues();
@@ -315,6 +319,8 @@ void ArnSync::setRemoteVer(const QByteArray& remVer)
 
 void  ArnSync::setState( ArnSync::State state)
 {
+    if (state == _state)  return;  // State already set
+
     _state = state;
     emit stateChanged( _state);
 }
@@ -438,7 +444,9 @@ void ArnSync::loginToArn(const QString& userName, const QString& password, Arn::
 
 uint  ArnSync::doCommandLogin()
 {
-    if (_state != State::Login)  return ArnError::LoginBad;
+    if (_isClientSide && (_state != State::Login)) {
+        return ArnError::LoginBad;  // Not acceptable command when client is not logging in
+    }
 
     int  seq =_commandMap.value("seq").toInt();
 
@@ -451,6 +459,7 @@ uint  ArnSync::doCommandLogin()
         _loginSalt1 = _commandMap.value("salt1").toUInt();
         _loginSalt2 = uint( qrand());
         XStringMap  xsm;
+        xsm.add("demand", QByteArray::number( _isDemandLogin));
         xsm.add("salt2", QByteArray::number( _loginSalt2));
         sendLogin( 1, xsm);
         break;
@@ -461,10 +470,16 @@ uint  ArnSync::doCommandLogin()
 
         //// Client side
         _loginSalt2 = _commandMap.value("salt2").toUInt();
-        QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt1, _loginSalt2, _loginPassword);
-        XStringMap  xsm;
-        xsm.add("user", _loginUserName).add("pass", pwHash);
-        sendLogin( 2, xsm);
+        bool  isRemoteDemandLogin = _commandMap.value("demand").toUInt() != 0;
+        if (_isDemandLogin || isRemoteDemandLogin) {
+            QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt1, _loginSalt2, _loginPassword);
+            XStringMap  xsm;
+            xsm.add("user", _loginUserName).add("pass", pwHash);
+            sendLogin( 2, xsm);
+        }
+        else {  // Login not needed
+            startNormalSync();
+        }
         break;
     }
     case 2:
@@ -779,7 +794,10 @@ uint ArnSync::doCommandVer()
     //// Server
     if (_state == State::Init) {
         setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
-        setState( State::Login);
+        if (_remoteVer[0] >= 2)
+            setState( State::Login);
+        else
+            setState( State::Normal);  // Just in case, this should not be reached ...
     }
     else {
         setRemoteVer( _commandMap.value("ver", ""));  // ver key optional, used for setting remoteVer
@@ -795,17 +813,27 @@ uint ArnSync::doCommandRVer()
     //// Client
     if (_state == State::Version) {
         setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
-        setState( State::Login);
-        emit loginRequired(0);
+        if (_remoteVer[0] >= 2) {
+            setState( State::Login);
+            emit loginRequired(0);
+        }
+        else  // Server do not support login
+            startNormalSync();
     }
 
     return ArnError::Ok;
 }
 
 
-void  ArnSync::setLegacy( bool isLegacy)
+bool  ArnSync::isDemandLogin()  const
 {
-    _isLegacy = isLegacy;
+    return _isDemandLogin;
+}
+
+
+void  ArnSync::setDemandLogin( bool isDemandLogin)
+{
+    _isDemandLogin = isDemandLogin;
 }
 
 
@@ -1026,7 +1054,7 @@ void  ArnSync::destroyToFluxQue( ArnItemNet* itemNet)
     bool  isGlobal = (rt == rt.LeafGlobal) || !_isClientSide;  // Server allways Global destroy leaf
     FluxRec*  fluxRec = getFreeFluxRec();
     _syncMap.clear();
-    const char*  delCmd = (_remoteVer[0] > 1) ? "delete" : "destroy";
+    const char*  delCmd = (_remoteVer[0] >= 2) ? "delete" : "destroy";
     _syncMap.add(ARNRECNAME, isGlobal ? delCmd : "nosync")
             .add("id", QByteArray::number( itemNet->netId()));
     fluxRec->xString += _syncMap.toXString();
