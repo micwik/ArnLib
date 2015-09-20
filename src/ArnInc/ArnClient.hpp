@@ -334,7 +334,8 @@ signals:
     /*! \param[in] code is the situation context as:
      *             0 = First login triel
      *             1 = Server deny, login retry
-     *             2 = Client deny, server not ok
+     *             2 = Client deny, server gave bad password (fake?)
+     *             3 = Client deny, server not support login
      */
     void  loginRequired( int code);
 

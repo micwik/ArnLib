@@ -563,6 +563,8 @@ uint  ArnSync::doCommandLogin()
 
 uint  ArnSync::doCommandSync()
 {
+    if (_isClientSide)  return ArnError::RecNotAllowed;
+
     QByteArray   path = _commandMap.value("path");
     QByteArray  smode = _commandMap.value("smode");
     uint        netId = _commandMap.value("id").toUInt();
@@ -711,6 +713,8 @@ uint  ArnSync::doCommandEvent()
 
 uint  ArnSync::doCommandSet()
 {
+    if (_isClientSide)  return ArnError::RecNotAllowed;
+
     QByteArray  path = _commandMap.value("path");
     QByteArray  data = _commandMap.value("data");
 
@@ -730,6 +734,8 @@ uint  ArnSync::doCommandSet()
 
 uint  ArnSync::doCommandGet()
 {
+    if (_isClientSide)  return ArnError::RecNotAllowed;
+
     QByteArray  path = _commandMap.value("path");
 
     _replyMap.add(ARNRECNAME, "Rget").add("path", path);
@@ -746,6 +752,8 @@ uint  ArnSync::doCommandGet()
 
 uint  ArnSync::doCommandLs()
 {
+    if (_isClientSide)  return ArnError::RecNotAllowed;
+
     QByteArray  path = _commandMap.value("path");
     _replyMap.add(ARNRECNAME, "Rls").add("path", path);
 
@@ -791,6 +799,8 @@ uint  ArnSync::doCommandDelete()
 
 uint ArnSync::doCommandVer()
 {
+    if (_isClientSide)  return ArnError::RecNotAllowed;
+
     //// Server
     if (_state == State::Init) {
         setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
@@ -810,6 +820,8 @@ uint ArnSync::doCommandVer()
 
 uint ArnSync::doCommandRVer()
 {
+    if (!_isClientSide)  return ArnError::RecNotAllowed;
+
     //// Client
     if (_state == State::Version) {
         setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
@@ -817,8 +829,13 @@ uint ArnSync::doCommandRVer()
             setState( State::Login);
             emit loginRequired(0);
         }
-        else  // Server do not support login
+        else if (!_isDemandLogin) {  // Old server do not support login
             startNormalSync();
+        }
+        else {
+            setState( State::Login);
+            emit loginRequired(3);
+        }
     }
 
     return ArnError::Ok;
