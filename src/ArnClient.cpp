@@ -553,7 +553,8 @@ void ArnClient::doTcpDisconnected()
 
     if ((_connectStat == ConnectStat::Connected)
     ||  (_connectStat == ConnectStat::Stopped)
-    ||  (_connectStat == ConnectStat::Negotiating)) {
+    ||  (_connectStat == ConnectStat::Negotiating))
+    {
         _connectStat = ConnectStat::Disconnected;
         emit connectionStatusChanged( _connectStat, _curPrio);
         reConnectArn();
@@ -705,7 +706,9 @@ void  ArnClient::doReplyRecord( XStringMap& replyMap)
         emit replyLs( makeItemList( replyMap), replyMap.valueString("path"));
     }
     else if (reply == "Rver") {
-        emit replyVer( replyMap.valueString("data"));
+        QString  ver  = replyMap.valueString("ver",  "1.0");  // ver key only after version 1.0
+        QString  type = replyMap.valueString("type", "ArnNetSync");
+        emit replyVer( type + " ver " + ver);
     }
 }
 

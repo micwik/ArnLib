@@ -331,13 +331,13 @@ signals:
     void  connectionStatusChanged( int status, int curPrio);
 
     //! Signal emitted when the remote ArnServer demands a login.
-    /*! \param[in] code is the situation context as:
+    /*! \param[in] contextCode is the situation context as:
      *             0 = First login triel
      *             1 = Server deny, login retry
      *             2 = Client deny, server gave bad password (fake?)
      *             3 = Client deny, server not support login
      */
-    void  loginRequired( int code);
+    void  loginRequired( int contextCode);
 
     //! \cond ADV
     void  replyRecord( Arn::XStringMap& replyMap);

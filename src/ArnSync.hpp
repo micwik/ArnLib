@@ -99,7 +99,7 @@ signals:
     void  xcomDelete( const QString& path);
     void  stateChanged( int state);
     //! Signal emitted when the remote ArnServer demands a login.
-    void  loginRequired( int code);
+    void  loginRequired( int contextCode);
 
 private slots:
     void  connected();

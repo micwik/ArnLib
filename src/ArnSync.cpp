@@ -103,6 +103,7 @@ void  ArnSync::startNormalSync()
 {
     if (_state == State::Normal)  return;  // Already in normal state (has done sync)
 
+    // qDebug() << "StartNormalSync:";
     _syncQueue.clear();
     if (_wasClosed)
         clearQueues();
