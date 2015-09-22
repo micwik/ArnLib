@@ -90,6 +90,7 @@ public:
     uint  remoteVer( uint index);
     void  loginToArn( const QString& userName, const QString& password,
                       Arn::Allow allow = Arn::Allow::All);
+    void  loginToArn();
 
     static void  setupMonitorItem( ArnItemNet* itemNet);
     static void  doChildsToEvent( ArnItemNet* itemNet);

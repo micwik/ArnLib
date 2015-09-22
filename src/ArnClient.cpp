@@ -122,6 +122,8 @@ ArnClient::ArnClient( QObject* parent) :
 {
     _arnMountPoint   = 0;
     _isAutoConnect   = false;
+    _isReConnect     = false;
+    _isValidCredent  = false;
     _receiveTimeout  = 10;
     _recTimeoutCount = 0;
     _retryTime       = 2;
@@ -142,7 +144,7 @@ ArnClient::ArnClient( QObject* parent) :
     connect( _socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
     connect( _socket, SIGNAL(disconnected()), this, SLOT(doTcpDisconnected()));
     connect( _socket, SIGNAL(disconnected()), this, SIGNAL(tcpDisConnected()));
-    connect( _arnNetSync, SIGNAL(loginRequired(int)), this, SIGNAL(loginRequired(int)));
+    connect( _arnNetSync, SIGNAL(loginRequired(int)), this, SLOT(doLoginRequired(int)));
     connect( _arnNetSync, SIGNAL(stateChanged(int)), this, SLOT(doSyncStateChanged(int)));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SLOT(doReplyRecord(Arn::XStringMap&)));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SIGNAL(replyRecord(Arn::XStringMap&)));
@@ -220,16 +222,20 @@ void  ArnClient::connectToArnList()
 {
     if (_hostTab.isEmpty())  return;
 
-    _nextHost = 0;
+    _isValidCredent = false;
+    _isReConnect    = false;
+    _nextHost       = 0;
     doConnectArnLogic();
 }
 
 
 void  ArnClient::connectToArn( const QString& arnHost, quint16 port)
 {
-    _nextHost = -1;
-    _arnHost  = arnHost;
-    _port     = port ? port : Arn::defaultTcpPort;
+    _isValidCredent = false;
+    _isReConnect    = false;
+    _nextHost       = -1;
+    _arnHost        = arnHost;
+    _port           = port ? port : Arn::defaultTcpPort;
     doConnectArnLogic();
 }
 
@@ -244,6 +250,7 @@ void  ArnClient::disconnectFromArn()
 
 void  ArnClient::loginToArn( const QString& userName, const QString& password, Arn::Allow allow)
 {
+    _isValidCredent = true;
     _arnNetSync->loginToArn( userName, password, allow);
 }
 
@@ -378,6 +385,12 @@ bool  ArnClient::isDemandLogin()  const
 void  ArnClient::setDemandLogin( bool isDemandLogin)
 {
     _arnNetSync->setDemandLogin( isDemandLogin);
+}
+
+
+bool  ArnClient::isReConnect()  const
+{
+    return _isReConnect;
 }
 
 
@@ -536,6 +549,7 @@ void ArnClient::doTcpError( int socketError)
     emit tcpError( _socket->errorString(), QAbstractSocket::SocketError( socketError));
 
     if (_connectStat != ConnectStat::Disconnected) {
+        _isReConnect = false;
         _connectStat = (  (_connectStat == ConnectStat::Connected)
                        || (_connectStat == ConnectStat::Stopped)
                        || (_connectStat == ConnectStat::Negotiating))
@@ -555,6 +569,7 @@ void ArnClient::doTcpDisconnected()
     ||  (_connectStat == ConnectStat::Stopped)
     ||  (_connectStat == ConnectStat::Negotiating))
     {
+        _isReConnect = false;
         _connectStat = ConnectStat::Disconnected;
         emit connectionStatusChanged( _connectStat, _curPrio);
         reConnectArn();
@@ -570,6 +585,7 @@ void  ArnClient::reConnectArn()
     }
     else if (_isAutoConnect) {
         _connectTimer->start( _retryTime * 1000);
+        _isReConnect = true;
     }
 }
 
@@ -709,6 +725,17 @@ void  ArnClient::doReplyRecord( XStringMap& replyMap)
         QString  ver  = replyMap.valueString("ver",  "1.0");  // ver key only after version 1.0
         QString  type = replyMap.valueString("type", "ArnNetSync");
         emit replyVer( type + " ver " + ver);
+    }
+}
+
+
+void  ArnClient::doLoginRequired( int contextCode)
+{
+    if (_isValidCredent && (contextCode == 0))  // First login for this TCP session
+        _arnNetSync->loginToArn();  // Try to use last credentials
+    else {
+        _isValidCredent = false;
+        emit loginRequired( contextCode);
     }
 }
 

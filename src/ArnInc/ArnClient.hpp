@@ -294,6 +294,13 @@ public:
      */
     void  setDemandLogin( bool isDemandLogin);
 
+    //! Is this a reconnect
+    /*! Reconnect occurs if connection is lost and then restored due to autoConnect.
+     *  \retval true if this is a reconnect.
+     *  \see setAutoConnect()
+     */
+    bool  isReConnect()  const;
+
     //! \cond ADV
     int  curPrio()  const;
 
@@ -353,6 +360,7 @@ private slots:
     void  doCreateArnTree( const QString& path);
     void  doDestroyArnTree( const QString& path, bool isGlobal);
     void  doReplyRecord( Arn::XStringMap& replyMap);
+    void  doLoginRequired( int contextCode);
     void  reConnectArn();
     void  onConnectWaitDone();
     void  doTcpConnected();
@@ -401,6 +409,8 @@ private:
     QString  _id;
     HostAddrPort  _curConnectAP;
     ConnectStat  _connectStat;
+    bool  _isValidCredent;
+    bool  _isReConnect;
 };
 
 #endif // ARNCLIENT_HPP

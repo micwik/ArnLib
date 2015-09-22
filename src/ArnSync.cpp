@@ -436,6 +436,12 @@ void ArnSync::loginToArn(const QString& userName, const QString& password, Arn::
     _loginPassword = password;
     _allow         = allow;
 
+    loginToArn();
+}
+
+
+void  ArnSync::loginToArn()
+{
     _loginSalt1 = uint( qrand());
     XStringMap  xsm;
     xsm.add("salt1", QByteArray::number( _loginSalt1));
