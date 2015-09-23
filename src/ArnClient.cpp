@@ -580,10 +580,15 @@ void ArnClient::doTcpDisconnected()
 void  ArnClient::reConnectArn()
 {
     // qDebug() << " reConnectArn";
-    if ((_nextHost >= 0) && (_nextHost < _hostTab.size())) {
+    bool wantDelayConnect = true;
+    _isReConnect = false;
+    if (_nextHost >= 0) {  // Using connection list
         doConnectArnLogic();
+        wantDelayConnect = _nextHost == 0;  // WantDelay when tried all in connection list
+        _isReConnect     = _nextHost != 0;
     }
-    else if (_isAutoConnect) {
+
+    if (wantDelayConnect && _isAutoConnect) {
         _connectTimer->start( _retryTime * 1000);
         _isReConnect = true;
     }
@@ -610,11 +615,11 @@ void  ArnClient::doTcpConnected()
 
 void  ArnClient::doSyncStateChanged( int state)
 {
-    qDebug() << "ArnClient sync state changed: state=" << state;
+    // qDebug() << "ArnClient sync state changed: state=" << state;
     ArnSync::State  syncState = ArnSync::State::fromInt( state);
     if (syncState == syncState.Normal) {
-        qDebug() << "ArnClient connected: remVer="
-                 << _arnNetSync->remoteVer(0) << _arnNetSync->remoteVer(1);
+        // qDebug() << "ArnClient connected: remVer="
+        //          << _arnNetSync->remoteVer(0) << _arnNetSync->remoteVer(1);
         _connectStat = ConnectStat::Connected;
         emit connectionStatusChanged( _connectStat, _curPrio);
     }
@@ -684,6 +689,7 @@ void  ArnClient::doConnectArnLogic()
         if (_nextHost >= _hostTab.size()) {  // Past end of list, restart
             _nextHost = 0;
             emit connectionStatusChanged( ConnectStat::TriedAll, -1);
+            return;
         }
 
         const HostAddrPort&  slot = _hostTab.at( _nextHost);

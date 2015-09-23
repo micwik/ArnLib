@@ -195,7 +195,7 @@ void  ArnSync::sendLogin( int seq, const Arn::XStringMap& xsMap)
     xm.add(ARNRECNAME, "login").add("seq", QByteArray::number( seq));
     xm.add( xsMap);
 
-    qDebug() << "ArnSync-login: xs=" << xm.toXString();
+    // qDebug() << "ArnSync-login: xs=" << xm.toXString();
     sendXSMap( xm);
 }
 

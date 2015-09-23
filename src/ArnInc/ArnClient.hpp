@@ -361,7 +361,6 @@ private slots:
     void  doDestroyArnTree( const QString& path, bool isGlobal);
     void  doReplyRecord( Arn::XStringMap& replyMap);
     void  doLoginRequired( int contextCode);
-    void  reConnectArn();
     void  onConnectWaitDone();
     void  doTcpConnected();
     void  doTcpError( QAbstractSocket::SocketError socketError);
@@ -373,6 +372,8 @@ private slots:
     void  onCommandDelete( const QString& remotePath);
 
 private:
+    void  reConnectArn();
+
     struct MountPointSlot {
         ArnItemNetEar*  arnMountPoint;
         QString  localPath;

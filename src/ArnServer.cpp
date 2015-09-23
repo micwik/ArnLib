@@ -91,11 +91,11 @@ void  ArnServerNetSync::onCommandDelete( const QString& path)
 
 void  ArnServerNetSync::doSyncStateChanged( int state)
 {
-    qDebug() << "ArnServer sync state changed: state=" << state;
+    // qDebug() << "ArnServer sync state changed: state=" << state;
     ArnSync::State  syncState = ArnSync::State::fromInt( state);
     if (syncState == syncState.Normal) {
-        qDebug() << "ArnServer connected: remVer="
-                 << _arnNetSync->remoteVer(0) << _arnNetSync->remoteVer(1);
+        // qDebug() << "ArnServer connected: remVer="
+        //          << _arnNetSync->remoteVer(0) << _arnNetSync->remoteVer(1);
     }
 }
 
