@@ -143,7 +143,6 @@ ArnClient::ArnClient( QObject* parent) :
 
     connect( _socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
     connect( _socket, SIGNAL(disconnected()), this, SLOT(doTcpDisconnected()));
-    connect( _socket, SIGNAL(disconnected()), this, SIGNAL(tcpDisConnected()));
     connect( _arnNetSync, SIGNAL(loginRequired(int)), this, SLOT(doLoginRequired(int)));
     connect( _arnNetSync, SIGNAL(stateChanged(int)), this, SLOT(doSyncStateChanged(int)));
     connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SLOT(doReplyRecord(Arn::XStringMap&)));
@@ -546,7 +545,6 @@ void ArnClient::doTcpError( int socketError)
     // qDebug() << "ArnClient TcpError: hostAddr=" << _curConnectAP.addr;
     QString  errTextSum = QString(tr("TCP Client Msg:")) + _socket->errorString();
     ArnM::errorLog( errTextSum, ArnError::ConnectionError);
-    emit tcpError( _socket->errorString(), QAbstractSocket::SocketError( socketError));
 
     if (_connectStat != ConnectStat::Disconnected) {
         _isReConnect = false;
@@ -555,6 +553,12 @@ void ArnClient::doTcpError( int socketError)
                        || (_connectStat == ConnectStat::Negotiating))
                      ? ConnectStat::Disconnected : ConnectStat::Error;
         emit connectionStatusChanged( _connectStat, _curPrio);
+
+        if (_connectStat == ConnectStat::Error)
+            emit tcpError( _socket->errorString(), QAbstractSocket::SocketError( socketError));
+        else if (_connectStat == ConnectStat::Disconnected)
+            emit tcpDisConnected();
+
         reConnectArn();
     }
 }
@@ -572,6 +576,8 @@ void ArnClient::doTcpDisconnected()
         _isReConnect = false;
         _connectStat = ConnectStat::Disconnected;
         emit connectionStatusChanged( _connectStat, _curPrio);
+        emit tcpDisConnected();
+
         reConnectArn();
     }
 }
