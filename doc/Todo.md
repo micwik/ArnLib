@@ -7,9 +7,10 @@ Major
 * Script support for Sapi.
 * ArnObject Link to other ArnObject (like in a filesystem).
 * Add atomic operations in ArnItem for: "+=", "&=", "|=" and alike.
-* General access system.
+* Simple access system for Server/Client login with session level privilege.
+* General access system with privileges at ArnObject level.
 * Add more examples.
-* Add Unit tests.
+* Add Unit/Function tests.
 * API to Sync ArnObjects with other protocols (e.g. JSON-based).
 * API to Sync ArnObjects over other media (e.g. CAN).
 * Javascript based ArnLib for Web-applications over WebSocket.
@@ -19,11 +20,12 @@ Minor
 * ArnItemQml::updateValue() don't handle param data.
 * Optimize data transfer with minimal copying.
 * Make ArnLink none QObject to save memory and independent on main-thread-create.
-* Simple access system for Server/Client.
 * Add tranfer classes for copying values.
 * Add multiplex/demultiplex-classes for pipes used by Sapi.
 * Script with "include".
 * Converter classes for ArnPipes to other streams (e.g UART, TCP etc).
+* Browsing and controlling connected clients.
+* ArnItem none native data-types like: uint, int64 etc.
 
 Done in 3.0
 -----------

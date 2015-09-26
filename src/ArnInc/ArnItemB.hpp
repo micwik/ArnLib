@@ -403,6 +403,7 @@ protected:
     virtual void  customEvent( QEvent* ev);
 
     //// Methods not to be public
+    bool  openWithFlags( const QString& path, Arn::LinkFlags linkFlags);
     void  setForceKeep( bool fk = true);
     bool  isForceKeep()  const;
     Arn::ObjectMode  getMode( ArnLink* link)  const;

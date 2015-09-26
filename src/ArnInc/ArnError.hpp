@@ -69,7 +69,8 @@ struct ArnError
         RpcInvokeError,
         RpcReceiveError,
         LoginBad,
-        RecNotAllowed,
+        RecNotExpected,
+        OpNotAllowed,
         Err_N   // Last (number of error codes)
     };
     MQ_DECLARE_ENUM( ArnError)

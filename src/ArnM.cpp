@@ -902,7 +902,8 @@ ArnM::ArnM()
     _errTextTab[ ArnError::RpcInvokeError]  = QString(tr("Rpc Invoke error"));
     _errTextTab[ ArnError::RpcReceiveError] = QString(tr("Rpc Receive error"));
     _errTextTab[ ArnError::LoginBad]        = QString(tr("Login error"));
-    _errTextTab[ ArnError::RecNotAllowed]   = QString(tr("Not allowed record type"));
+    _errTextTab[ ArnError::RecNotExpected]  = QString(tr("Not expected record type here"));
+    _errTextTab[ ArnError::OpNotAllowed]    = QString(tr("Operation denied, no privilege"));
 
     if (Arn::debugSizes) {
         qDebug() << "====== Arn Sizes ======";

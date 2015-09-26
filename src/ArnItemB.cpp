@@ -113,7 +113,7 @@ void  ArnItemB::setupOpenItem( bool isFolder)
 }
 
 
-bool  ArnItemB::open( const QString& path)
+bool  ArnItemB::openWithFlags( const QString& path, Arn::LinkFlags linkFlags)
 {
     Q_D(ArnItemB);
 
@@ -121,7 +121,7 @@ bool  ArnItemB::open( const QString& path)
         close();
 
     Arn::ObjectSyncMode  syncMode = d->_syncModeLinkShare ? d->_syncMode : Arn::ObjectSyncMode();
-    _link = ArnM::link( path,  Arn::LinkFlags::CreateAllowed, syncMode);
+    _link = ArnM::link( path, linkFlags, syncMode);
     if (!_link)  return false;
 
     _link->subscribe( this);
@@ -130,6 +130,12 @@ bool  ArnItemB::open( const QString& path)
     d->_path = path;
 #endif
     return true;
+}
+
+
+bool  ArnItemB::open( const QString& path)
+{
+    return openWithFlags( path, Arn::LinkFlags::CreateAllowed);
 }
 
 

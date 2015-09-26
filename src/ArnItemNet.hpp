@@ -80,6 +80,7 @@ public:
     using ArnItemB::syncMode;
     using ArnItemB::getMode;
     using ArnItemB::isPipeMode;
+    using ArnItemB::isFolder;
     using ArnItemB::setBlockEcho;
     using ArnItemB::isOnlyEcho;
     using ArnItemB::retireType;
@@ -88,6 +89,7 @@ public:
     using ArnItemB::arnImport;
     using ArnItemB::childItemsMain;
     using ArnItemB::openFolder;
+    using ArnItemB::openWithFlags;
 
 signals:
     void  arnMonEvent( int type, const QByteArray& data, bool isLocal);
