@@ -161,10 +161,17 @@ public:
     void  disconnectFromArn();
 
     //! Login to an _Arn Server_
-    /*! \param[in] userName
+    /*! This routine must be called when the signal loginRequired() is emitted.
+     *  Otherwise the client will not be fully conected to the server, ie the apropriate
+     *  access privileges will not be setup at server and client.
+     *  If a reconnect occurs, usually due to tcp breakage, login process is handled
+     *  automatically by ArnLib using the last used login credentials. If this automatical
+     *  login is failed, signal loginRequired() is emitted.
+     *  \param[in] userName
      *  \param[in] password
      *  \param[in] allow is the permissions for the server actions to this client.
      *  \see Arn::Allow
+     *  \see loginRequired;
      */
     void  loginToArn( const QString& userName, const QString& password,
                       Arn::Allow allow = Arn::Allow::All);
@@ -338,11 +345,14 @@ signals:
     void  connectionStatusChanged( int status, int curPrio);
 
     //! Signal emitted when the remote ArnServer demands a login.
-    /*! \param[in] contextCode is the situation context as:
+    /*! When this signal is emitted, a call to loginToArn() must be done to  complete
+     *  the connection process.
+     *  \param[in] contextCode is the situation context as:
      *             0 = First login triel
      *             1 = Server deny, login retry
-     *             2 = Client deny, server gave bad password (fake?)
+     *             2 = Client deny, server gave bad password (fake server?)
      *             3 = Client deny, server not support login
+     *  \see loginToArn()
      */
     void  loginRequired( int contextCode);
 

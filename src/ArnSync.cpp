@@ -63,6 +63,9 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     _isDemandLogin   = false;
     _remoteVer[0]    = 1;  // Default version 1.0
     _remoteVer[1]    = 0;
+    _loginNextSeq    = 0;
+    _loginSalt1      = 0;
+    _loginSalt2      = 0;
     _dataRemain.clear();
 }
 
@@ -83,6 +86,7 @@ void  ArnSync::start()
     connect( _socket, SIGNAL(disconnected()), this, SLOT(disConnected()));
     connect( _socket, SIGNAL(readyRead()), this, SLOT(socketInput()));
     connect( _socket, SIGNAL(bytesWritten(qint64)), this, SLOT(sendNext()));
+    connect( &_loginDelayTimer, SIGNAL(timeout()), this, SLOT(doLoginSeq0End()));
 
     if (_isClientSide) {
         _isConnected = false;
@@ -455,16 +459,30 @@ void  ArnSync::loginToArn()
     XStringMap  xsm;
     xsm.add("salt1", QByteArray::number( _loginSalt1));
     sendLogin( 0, xsm);
+    _loginNextSeq = 1;
+}
+
+
+void ArnSync::doLoginSeq0End()
+{
+    _loginSalt2 = uint( qrand());
+    XStringMap  xsm;
+    xsm.add("demand", QByteArray::number( _isDemandLogin));
+    xsm.add("salt2", QByteArray::number( _loginSalt2));
+    sendLogin( 1, xsm);
+    _loginNextSeq = 2;
 }
 
 
 uint  ArnSync::doCommandLogin()
 {
+    _loginDelayTimer.stop();
     if (_isClientSide && (_state != State::Login)) {
         return ArnError::LoginBad;  // Not acceptable command when client is not logging in
     }
 
     int  seq =_commandMap.value("seq").toInt();
+    if (seq && (seq != _loginNextSeq))  return ArnError::LoginBad;
 
     switch (seq) {
     case 0:
@@ -473,11 +491,13 @@ uint  ArnSync::doCommandLogin()
 
         //// Server side
         _loginSalt1 = _commandMap.value("salt1").toUInt();
-        _loginSalt2 = uint( qrand());
-        XStringMap  xsm;
-        xsm.add("demand", QByteArray::number( _isDemandLogin));
-        xsm.add("salt2", QByteArray::number( _loginSalt2));
-        sendLogin( 1, xsm);
+        if (_loginNextSeq == 0) {  // First login try
+            doLoginSeq0End();  // Continue imedialtely
+        }
+        else {  // Login retry
+            _loginNextSeq = -1;  // Temporary invalid seq while loginDelay
+            _loginDelayTimer.start(2000);  // Delayed login seq
+        }
         break;
     }
     case 1:
@@ -492,9 +512,11 @@ uint  ArnSync::doCommandLogin()
             XStringMap  xsm;
             xsm.add("user", _loginUserName).add("pass", pwHash);
             sendLogin( 2, xsm);
+            _loginNextSeq = 3;
         }
         else {  // Login not needed
             startNormalSync();
+            _loginNextSeq = -1;
         }
         break;
     }
@@ -525,6 +547,7 @@ uint  ArnSync::doCommandLogin()
         xsm.add("allow", QByteArray::number( _allow.toInt()));
         xsm.add("pass", pwHashServer);
         sendLogin( 3, xsm);
+        _loginNextSeq = 4;
         break;
     }
     case 3:
@@ -550,6 +573,7 @@ uint  ArnSync::doCommandLogin()
         xsm.add("stat", QByteArray::number( stat));
         xsm.add("allow", QByteArray::number( stat ? _allow.toInt() : 0));
         sendLogin( 4, xsm);
+        _loginNextSeq = -1;
 
         if (stat)
             startNormalSync();
@@ -564,6 +588,7 @@ uint  ArnSync::doCommandLogin()
         //// Server side
         int  stat = _commandMap.value("stat").toInt();
         _remoteAllow = Arn::Allow::fromInt( _commandMap.value("allow").toInt());
+        _loginNextSeq = -1;
 
         if (stat)
             setState( State::Normal);

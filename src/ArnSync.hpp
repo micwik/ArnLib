@@ -37,7 +37,7 @@
 #include "ArnInc/XStringMap.hpp"
 #include "ArnItemNet.hpp"
 #include "ArnInc/MQFlags.hpp"
-#include <QObject>
+#include <QTimer>
 #include <QByteArray>
 #include <QMap>
 #include <QQueue>
@@ -104,9 +104,9 @@ signals:
 
 private slots:
     void  connected();
-    void  startNormalSync();
     void  disConnected();
     void  socketInput();
+    void  doLoginSeq0End();
     void  addToFluxQue( const ArnLinkHandle& handleData);
     void  addToModeQue();
     void  sendNext();
@@ -119,6 +119,7 @@ private:
         int  queueNum;
     };
 
+    void  startNormalSync();
     void  setupItemNet( ArnItemNet* itemNet, uint netId);
     FluxRec*  getFreeFluxRec();
     QByteArray  makeFluxString( const ArnItemNet* itemNet, const ArnLinkHandle& handleData);
@@ -176,10 +177,12 @@ private:
     bool  _isClientSide;      // True if this is the client side of the connection
     bool  _isDemandLogin;
     uint  _remoteVer[2];
+    int  _loginNextSeq;
     uint  _loginSalt1;
     uint  _loginSalt2;
     QString  _loginUserName;
     QString  _loginPassword;
+    QTimer  _loginDelayTimer;
     Arn::Allow  _allow;
     Arn::Allow  _remoteAllow;
 };
