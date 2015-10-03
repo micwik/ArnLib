@@ -242,6 +242,16 @@ XStringMap&  XStringMap::add( const QVariantMap& variantMap)
 }
 
 
+XStringMap&  XStringMap::addValues( const QStringList& stringList)
+{
+    foreach (const QString& str, stringList) {
+        add("", str);
+    }
+
+    return *this;
+}
+
+
 void  XStringMap::set( int i, const QByteArray& val)
 {
     if ((i < 0) || (i >= _size))  return;  // Not valid index

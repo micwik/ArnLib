@@ -99,6 +99,8 @@ public:
     XStringMap&  add( const XStringMap& other);
     XStringMap&  add( const QVariantMap& variantMap);
 
+    XStringMap&  addValues( const QStringList& stringList);
+
     void  set( int i, const QByteArray& val);
     void  set( const char* key, const QByteArray& val);
     void  set( const char* key, const char* val);
