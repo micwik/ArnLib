@@ -75,6 +75,8 @@ public:
     void  start();
     bool  isDemandLogin()  const;
     void  setDemandLogin( bool isDemandLogin);
+    void  addFreePath( const QString& path);
+    QStringList  freePaths()  const;
 
     ArnItemNet*  newNetItem( const QString& path,
                              const QString& localMountPath, const QString& remoteMountPath,

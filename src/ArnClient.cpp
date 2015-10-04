@@ -387,6 +387,18 @@ void  ArnClient::setDemandLogin( bool isDemandLogin)
 }
 
 
+void  ArnClient::addFreePath( const QString& path)
+{
+    _arnNetSync->addFreePath( path);
+}
+
+
+QStringList  ArnClient::freePaths()  const
+{
+    return _arnNetSync->freePaths();
+}
+
+
 bool  ArnClient::isReConnect()  const
 {
     return _isReConnect;

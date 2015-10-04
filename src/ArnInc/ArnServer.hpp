@@ -145,6 +145,24 @@ public:
      */
     void  setDemandLogin( bool isDemandLogin);
 
+    //! Add a new "freePath"
+    /*! A freePath can be used even if not logged in to an ArnServer that demands login.
+     *  Also all children below freePath is free to use. Usage is restricted to read
+     *  operations and alike from ArnServer to ArnClient.
+     *  Setting a freePath at ArnServer gives the actual permision for read usage.
+     *  All wanted freePaths must be added before ArnServer is started.
+     *  \param[in] path is the freePath, eg "/Local/Sys/Licenses/".
+     *  \see freePaths()
+     */
+    void  addFreePath( const QString& path);
+
+    //! Returns current list of freePaths.
+    /*! The list of freePaths is used to give permision for read uasge of the paths.
+     *  \return the freePath list.
+     *  \see addFreePath()
+     */
+    QStringList  freePaths()  const;
+
     //! \cond ADV
     ArnSyncLogin*  arnLogin()  const;
     //! \endcond
@@ -153,6 +171,7 @@ public:
 private:
     QTcpServer*  _tcpServer;
     ArnSyncLogin*  _arnLogin;
+    QStringList  _freePathTab;
     bool  _tcpServerActive;
     Type  _serverType;
     bool  _isDemandLogin;

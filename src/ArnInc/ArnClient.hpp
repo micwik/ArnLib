@@ -301,6 +301,25 @@ public:
      */
     void  setDemandLogin( bool isDemandLogin);
 
+    //! Add a new "freePath"
+    /*! A freePath can be used even if not logged in to an ArnServer that demands login.
+     *  Also all children below freePath is free to use. Usage is restricted to read
+     *  operations and alike from ArnServer to ArnClient.
+     *  Setting a freePath at ArnClient only enabbles the operations to be transfered
+     *  to ArnServer.
+     *  \param[in] path is the freePath, eg "/Local/Sys/Licenses/".
+     *  \see freePaths()
+     */
+    void  addFreePath( const QString& path);
+
+    //! Returns current list of freePaths.
+    /*! The list of freePaths is used to enabble the operations to be transfered
+     *  to ArnServer.
+     *  \return the freePath list.
+     *  \see addFreePath()
+     */
+    QStringList  freePaths()  const;
+
     //! Is this a reconnect
     /*! Reconnect occurs if connection is lost and then restored due to autoConnect.
      *  \retval true if this is a reconnect.

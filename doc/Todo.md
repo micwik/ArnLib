@@ -7,13 +7,13 @@ Major
 * Script support for Sapi.
 * ArnObject Link to other ArnObject (like in a filesystem).
 * Add atomic operations in ArnItem for: "+=", "&=", "|=" and alike.
-* Simple access system for Server/Client login with session level privilege.
 * General access system with privileges at ArnObject level.
 * Add more examples.
 * Add Unit/Function tests.
 * API to Sync ArnObjects with other protocols (e.g. JSON-based).
 * API to Sync ArnObjects over other media (e.g. CAN).
 * Javascript based ArnLib for Web-applications over WebSocket.
+* Put ArnServer client sessions in "/Local/..." to be viewed and controlled (e.g kill).
 
 Minor
 -----
@@ -26,6 +26,7 @@ Minor
 * Converter classes for ArnPipes to other streams (e.g UART, TCP etc).
 * Browsing and controlling connected clients.
 * ArnItem none native data-types like: uint, int64 etc.
+* Addition to login a system to "pair" ArnServer and ArnClient.
 
 Done in 3.0
 -----------
@@ -37,6 +38,8 @@ Done in 3.0
 * Distributed create of folder.
 * ArnMonitor detects destructions of _Arn Objects_.
 * Add setDelay in ArnItemQml, rework changed() and using timer events.
+* Simple access system for Server/Client login with session level privilege.
+* Allow read access to "freePaths" without login. Used to view for example licenses.
 
 Done in 2.3
 -----------

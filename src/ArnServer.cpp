@@ -53,6 +53,10 @@ ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, ArnServer* arnServer)
     _arnNetSync->setDemandLogin( _arnServer->isDemandLogin());
     _arnNetSync->start();
 
+    foreach (const QString& path, _arnServer->freePaths()) {
+        _arnNetSync->addFreePath( path);
+    }
+
     _arnNetEar  = new ArnItemNetEar( this);
     _arnNetEar->open("/");  // MW: Optimize to only mountPoint:s ?
 
@@ -109,6 +113,7 @@ ArnServer::ArnServer( Type serverType, QObject *parent)
     _tcpServer       = new QTcpServer( this);
     _arnLogin        = new ArnSyncLogin;
     _serverType      = serverType;
+    _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Licenses/");
 }
 
 
@@ -172,6 +177,19 @@ bool  ArnServer::isDemandLogin()  const
 void  ArnServer::setDemandLogin( bool isDemandLogin)
 {
     _isDemandLogin = isDemandLogin;
+}
+
+
+void ArnServer::addFreePath(const QString& path)
+{
+    if (!_freePathTab.contains( path))
+        _freePathTab += path;
+}
+
+
+QStringList  ArnServer::freePaths()  const
+{
+    return _freePathTab;
 }
 
 

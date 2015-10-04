@@ -972,6 +972,19 @@ void  ArnSync::setDemandLogin( bool isDemandLogin)
 }
 
 
+void  ArnSync::addFreePath( const QString& path)
+{
+    if (!_freePathTab.contains( path))
+        _freePathTab += path;
+}
+
+
+QStringList  ArnSync::freePaths()  const
+{
+    return _freePathTab;
+}
+
+
 void  ArnSync::connected()
 {
     _wasClosed   = _isClosed;
