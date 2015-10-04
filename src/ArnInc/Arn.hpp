@@ -83,6 +83,16 @@ struct DataType {
     MQ_DECLARE_ENUM( DataType)
 };
 
+//! Info type for exchange static (meta) info between ArnClient and ArnServer
+struct InfoType {
+    enum  E {
+        //! Get list of free paths not needing login
+        FreePaths = 0,
+        N
+    };
+    MQ_DECLARE_ENUM( InfoType)
+};
+
 //! General global mode of an _Arn Data Object_
 /// Max 16 bit
 struct ObjectMode {

@@ -314,6 +314,7 @@ public:
     void  commandGet( const QString& path);
     void  commandSet( const QString& path, const QString& data);
     void  commandLs( const QString& path);
+    void  commandInfo( int type, const QByteArray& data = QByteArray());
     void  commandVersion();
     void  commandExit();
     ArnItemNet*  newNetItem( const QString& path,
@@ -360,6 +361,7 @@ signals:
     void  replyRecord( Arn::XStringMap& replyMap);
     void  replyGet( const QString& data, const QString& path);
     void  replyLs( const QStringList& subItems, const QString& path);
+    void  replyInfo( int type, const QByteArray& data);
     void  replyVer( const QString& version);
     //! \endcond
 

@@ -133,6 +133,7 @@ private:
     void  clearQueues();
     void  setRemoteVer( const QByteArray& remVer);
     void  setState( State state);
+    bool  isFreePath( const QString& path)  const;
 
     void  doCommands();
     uint  doCommandSync();
@@ -144,6 +145,7 @@ private:
     uint  doCommandGet();
     uint  doCommandLs();
     uint  doCommandDelete();
+    uint  doCommandInfo();
     uint  doCommandVer();
     uint  doCommandRVer();
     uint  doCommandLogin();
@@ -157,6 +159,7 @@ private:
     Arn::XStringMap  _commandMap;
     Arn::XStringMap  _replyMap;
     Arn::XStringMap  _syncMap;
+    QStringList  _freePathTab;
 
     QMap<uint,ArnItemNet*>  _itemNetMap;
 

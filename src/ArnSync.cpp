@@ -66,6 +66,9 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     _loginNextSeq    = 0;
     _loginSalt1      = 0;
     _loginSalt2      = 0;
+    _allow           = _isClientSide ? Arn::Allow::All  : Arn::Allow::None;
+    _remoteAllow     = Arn::Allow::None;
+    _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Licenses/");
     _dataRemain.clear();
 }
 
@@ -95,8 +98,13 @@ void  ArnSync::start()
     else {
         _socket->setParent( this);  // Server side takes ownerchip of socket
         _isConnected = true;
-        if (!_isDemandLogin) {
-            _allow = Arn::Allow::All;
+        if (_isDemandLogin) {
+            _allow       = Arn::Allow::None;
+            _remoteAllow = Arn::Allow::None;
+        }
+        else {
+            _allow       = Arn::Allow::All;
+            _remoteAllow = Arn::Allow::All;
             setState( State::Normal);
         }
     }
@@ -245,6 +253,11 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
                                   const QString& localMountPath, const QString& remoteMountPath,
                                   Arn::ObjectSyncMode syncMode, bool* isNewPtr)
 {
+    if (!_remoteAllow.isAny( _allow.ReadWrite)) {
+        QString  remotePath = Arn::changeBasePath( localMountPath, remoteMountPath, path);
+        if (!isFreePath( remotePath))  return 0;
+    }
+
     ArnItemNet*  itemNet = new ArnItemNet( this);
     if (!itemNet->open( path))  return 0;
 
@@ -335,6 +348,15 @@ void  ArnSync::setState( ArnSync::State state)
 }
 
 
+bool  ArnSync::isFreePath( const QString& path)  const
+{
+    foreach (const QString& freePath, _freePathTab) {
+        if (path.startsWith( freePath))  return true;
+    }
+    return false;
+}
+
+
 void  ArnSync::socketInput()
 {
     _dataReadBuf.resize( _socket->bytesAvailable());
@@ -405,6 +427,9 @@ void  ArnSync::doCommands()
     else if (command == "ls") {
         stat = doCommandLs();
     }
+    else if (command == "info") {
+        stat = doCommandInfo();
+    }
     else if (command == "ver") {
         stat = doCommandVer();
     }
@@ -445,6 +470,7 @@ void  ArnSync::doCommands()
 
 void ArnSync::loginToArn(const QString& userName, const QString& password, Arn::Allow allow)
 {
+    //// Client side
     _loginUserName = userName;
     _loginPassword = password;
     _allow         = allow;
@@ -455,6 +481,9 @@ void ArnSync::loginToArn(const QString& userName, const QString& password, Arn::
 
 void  ArnSync::loginToArn()
 {
+    //// Client side
+    if (_loginUserName.isEmpty())  return;  // Empty username not valid, do nothing
+
     _loginSalt1 = uint( qrand());
     XStringMap  xsm;
     xsm.add("salt1", QByteArray::number( _loginSalt1));
@@ -465,6 +494,7 @@ void  ArnSync::loginToArn()
 
 void ArnSync::doLoginSeq0End()
 {
+    //// Server side
     _loginSalt2 = uint( qrand());
     XStringMap  xsm;
     xsm.add("demand", QByteArray::number( _isDemandLogin));
@@ -605,11 +635,11 @@ uint  ArnSync::doCommandLogin()
 uint  ArnSync::doCommandSync()
 {
     if (_isClientSide)  return ArnError::RecNotExpected;
-    if (!_allow.isAny( _allow.ReadWrite))  return ArnError::OpNotAllowed;
 
     QByteArray   path = _commandMap.value("path");
     QByteArray  smode = _commandMap.value("smode");
     uint        netId = _commandMap.value("id").toUInt();
+    if (!_allow.isAny( _allow.ReadWrite) && !isFreePath( path))  return ArnError::OpNotAllowed;
 
     bool  isCreateAllow = _allow.is( _allow.Create);
     Arn::LinkFlags  createFlag = Arn::LinkFlags::flagIf( isCreateAllow, Arn::LinkFlags::CreateAllowed);
@@ -744,7 +774,8 @@ uint  ArnSync::doCommandFlux()
 
 uint  ArnSync::doCommandEvent()
 {
-    if (!_allow.is( _allow.Read))  return ArnError::OpNotAllowed;
+    //// Note: Check if _allow is ok with specific event is done later,
+    //// sync has earlier accepted the path.
 
     uint        netId   = _commandMap.value("id").toUInt();
     QByteArray  typeStr = _commandMap.value("type");
@@ -788,9 +819,9 @@ uint  ArnSync::doCommandSet()
 uint  ArnSync::doCommandGet()
 {
     if (_isClientSide)  return ArnError::RecNotExpected;
-    if (!_allow.is( _allow.Read))  return ArnError::OpNotAllowed;
 
     QByteArray  path = _commandMap.value("path");
+    if (!_allow.is( _allow.Read) && !isFreePath( path))  return ArnError::OpNotAllowed;
 
     _replyMap.add(ARNRECNAME, "Rget").add("path", path);
 
@@ -802,16 +833,17 @@ uint  ArnSync::doCommandGet()
     }
 
     _replyMap.add("data", item.arnExport());
-    return 0;
+    return ArnError::Ok;
 }
 
 
 uint  ArnSync::doCommandLs()
 {
     if (_isClientSide)  return ArnError::RecNotExpected;
-    if (!_allow.is( _allow.Read))  return ArnError::OpNotAllowed;
 
     QByteArray  path = _commandMap.value("path");
+    if (!_allow.is( _allow.Read) && !isFreePath( path))  return ArnError::OpNotAllowed;
+
     _replyMap.add(ARNRECNAME, "Rls").add("path", path);
 
    if (ArnM::isFolder( path)) {
@@ -856,6 +888,32 @@ uint  ArnSync::doCommandDelete()
 }
 
 
+uint  ArnSync::doCommandInfo()
+{
+    //// Note: Check if _allow is ok with specific info
+
+    int         type = _commandMap.value("type").toUInt();
+    QByteArray  data = _commandMap.value("data");
+
+    _replyMap.add(ARNRECNAME, "Rinfo").add("type", QByteArray::number( type));
+
+    switch (type) {
+    case Arn::InfoType::FreePaths:
+    {
+        XStringMap xm;
+        xm.addValues( _freePathTab);
+        data = xm.toXString();
+        break;
+    }
+    default:
+        return ArnError::NotFound;
+    }
+
+    _replyMap.add("data", data);
+    return ArnError::Ok;
+}
+
+
 uint ArnSync::doCommandVer()
 {
     if (_isClientSide)  return ArnError::RecNotExpected;
@@ -889,6 +947,7 @@ uint ArnSync::doCommandRVer()
             emit loginRequired(0);
         }
         else if (!_isDemandLogin) {  // Old server do not support login
+            _remoteAllow = Arn::Allow::All;
             startNormalSync();
         }
         else {
@@ -918,6 +977,7 @@ void  ArnSync::connected()
     _wasClosed   = _isClosed;
     _isClosed    = false;
     _isConnected = true;
+    _remoteAllow = Arn::Allow::None;
 
     setState( State::Version);
     XStringMap  xsm;
@@ -1001,13 +1061,24 @@ void  ArnSync::doArnMonEvent( int type, const QByteArray& data, bool isLocal)
                             ArnError::Undef);
         return;
     }
+    //// Note: Check if _allow is ok with specific event,
+    //// sync has earlier accepted the path
+
 
     if (isLocal) {  // Local events are always sent to remote side
-        eventToFluxQue( itemNet->netId(), type, data);
+        //_remoteAllow = Arn::Allow::All;  // Test
+        if (_remoteAllow.is( _allow.Read)
+        || (isFreePath( itemNet->toRemotePath())))
+        {
+            eventToFluxQue( itemNet->netId(), type, data);
+            // Allow ok, as this item has been aproved by sync
+        }
+        //_remoteAllow = Arn::Allow::None;
     }
 
     if (type == ArnMonEvent::Type::MonitorStart) {
         if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: monitorStart Event";
+        // Allow ok, as this item has been aproved by sync
 
         Arn::ObjectSyncMode  syncMode = itemNet->syncMode();
         if (isLocal && _isClientSide) {  // Client Side
@@ -1020,6 +1091,7 @@ void  ArnSync::doArnMonEvent( int type, const QByteArray& data, bool isLocal)
     }
     if (type == ArnMonEvent::Type::MonitorReStart) {
         if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: monitorReStart Event";
+        // Allow ok, as this item has been aproved by sync
 
         if (!isLocal && !_isClientSide) {  // Server side
             //// Send NewItemEvent for any existing direct children (also folders)
@@ -1042,16 +1114,19 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
 
     if (itemNet->isPipeMode()) {
         if (itemNet->isOnlyEcho()
-        ||  !_remoteAllow.is( _allow.Write)) {
+        ||   (!_remoteAllow.is( _allow.Write)
+          && (_isClientSide || !isFreePath( itemNet->path()))))
+        {
             // qDebug() << "Flux skip pipe echo: path=" << itemNet->path() << " data=" << itemNet->arnExport()
             //          << "itemId=" << itemNet->itemId();
             itemNet->resetDirty();  // Arm for more updates
-            return;  // Don't send any echo to a Pipe
+            return;  // Don't send any echo to a Pipe or not allowed op on remote side
         }
 
         FluxRec*  fluxRec = getFreeFluxRec();
         fluxRec->xString += makeFluxString( itemNet, handleData);
         itemNet->resetDirty();
+
         if (handleData.has( ArnLinkHandle::QueueFindRegexp)) {
             QRegExp  rx = handleData.valueRef( ArnLinkHandle::QueueFindRegexp).toRegExp();
             // qDebug() << "AddFluxQueue Pipe QOW: rx=" << rx.pattern();
@@ -1078,22 +1153,21 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
         else {  // Normal Pipe
             // qDebug() << "AddFluxQueue Pipe:"
             //          << fluxRec->xString;
-            if (_remoteAllow.is( _allow.Write))
-                _fluxPipeQueue.enqueue( fluxRec);
+            _fluxPipeQueue.enqueue( fluxRec);
         }
     }
     else {  // Normal Item
-        if (itemNet->syncMode().is( Arn::ObjectSyncMode::Master)
-        &&  itemNet->isOnlyEcho())
+        if ( (itemNet->syncMode().is( Arn::ObjectSyncMode::Master)
+          &&  itemNet->isOnlyEcho())
+        ||   (!_remoteAllow.is( _allow.Write)
+          && (_isClientSide || !isFreePath( itemNet->path()))))
         {
             itemNet->resetDirty();  // Arm for more updates
             return;  // Don't send any echo to a Master
         }
 
-        if (_remoteAllow.is( _allow.Write)) {
-            itemNet->setQueueNum( ++_queueNumCount);
-            _fluxItemQueue.enqueue( itemNet);
-        }
+        itemNet->setQueueNum( ++_queueNumCount);
+        _fluxItemQueue.enqueue( itemNet);
     }
 
     if (!_isSending) {
@@ -1106,7 +1180,6 @@ void  ArnSync::eventToFluxQue( uint netId, int type, const QByteArray& data)
 {
     if (!netId)  return;  // Not valid id, item was disabled
     if (_isClosed)  return;
-    if (!_remoteAllow.is( _allow.Read))  return;
 
     const char*  typeStr = ArnMonEvent::idToText( type);
     FluxRec*  fluxRec = getFreeFluxRec();
@@ -1168,12 +1241,18 @@ ArnSync::FluxRec*  ArnSync::getFreeFluxRec()
 void  ArnSync::addToModeQue()
 {
     if (_isClosed)  return;
-    if (!_remoteAllow.is( _allow.ModeChg))  return;
 
     ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
         ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for itemModeChanged")),
                             ArnError::Undef);
+        return;
+    }
+
+    if (!_remoteAllow.is( _allow.ModeChg)
+    && (_isClientSide || !isFreePath( itemNet->path())))
+    {
+        itemNet->resetDirtyMode();  // Arm for new mode update
         return;
     }
 
@@ -1274,7 +1353,6 @@ void  ArnSync::sendSyncItem( ArnItemNet* itemNet)
         sendNext();  // Warning: this is recursion while not existing items
         return;
     }
-    if (!_remoteAllow.isAny( _allow.ReadWrite))  return;
 
     _syncMap.clear();
     _syncMap.add(ARNRECNAME, "sync");
@@ -1297,7 +1375,6 @@ void  ArnSync::sendModeItem( ArnItemNet* itemNet)
         sendNext();  // Warning: this is recursion while not existing items
         return;
     }
-    if (!_remoteAllow.is( _allow.ModeChg))  return;
 
     _syncMap.clear();
     _syncMap.add(ARNRECNAME, "mode");

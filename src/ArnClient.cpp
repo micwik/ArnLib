@@ -249,7 +249,7 @@ void  ArnClient::disconnectFromArn()
 
 void  ArnClient::loginToArn( const QString& userName, const QString& password, Arn::Allow allow)
 {
-    _isValidCredent = true;
+    _isValidCredent = !userName.isEmpty();
     _arnNetSync->loginToArn( userName, password, allow);
 }
 
@@ -423,6 +423,16 @@ void  ArnClient::commandLs( const QString& path)
     _commandMap.add(ARNRECNAME, "ls").add("path", path);
 
     // qDebug() << "client-ls: path=" << path;
+    _arnNetSync->sendXSMap( _commandMap);
+}
+
+
+void  ArnClient::commandInfo( int type, const QByteArray& data)
+{
+    _commandMap.clear();
+    _commandMap.add(ARNRECNAME, "info").add("type", QByteArray::number( type));
+    _commandMap.add("data", data);
+
     _arnNetSync->sendXSMap( _commandMap);
 }
 
@@ -732,6 +742,11 @@ void  ArnClient::doReplyRecord( XStringMap& replyMap)
     }
     else if (reply == "Rls") {
         emit replyLs( makeItemList( replyMap), replyMap.valueString("path"));
+    }
+    else if (reply == "Rinfo") {
+        int         type = replyMap.value("type", "-1").toInt();
+        QByteArray  data = replyMap.value("data");
+        emit replyInfo( type, data);
     }
     else if (reply == "Rver") {
         QString  ver  = replyMap.valueString("ver",  "1.0");  // ver key only after version 1.0
