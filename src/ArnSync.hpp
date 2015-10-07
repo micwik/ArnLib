@@ -60,7 +60,7 @@ public:
             Init = 0,
             //! Getting version of remote side
             Version,
-            //! Authenticate
+            //! Getting static meta info from remote side
             Login,
             //! Normal syncing
             Normal
@@ -121,6 +121,7 @@ private:
         int  queueNum;
     };
 
+    void  startLogin();
     void  startNormalSync();
     void  setupItemNet( ArnItemNet* itemNet, uint netId);
     FluxRec*  getFreeFluxRec();
@@ -183,6 +184,7 @@ private:
     bool  _isDemandLogin;
     uint  _remoteVer[2];
     int  _loginNextSeq;
+    int  _loginReqCode;
     uint  _loginSalt1;
     uint  _loginSalt2;
     QString  _loginUserName;

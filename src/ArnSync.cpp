@@ -63,6 +63,7 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     _isDemandLogin   = false;
     _remoteVer[0]    = 1;  // Default version 1.0
     _remoteVer[1]    = 0;
+    _loginReqCode    = 0;
     _loginNextSeq    = 0;
     _loginSalt1      = 0;
     _loginSalt2      = 0;
@@ -468,6 +469,17 @@ void  ArnSync::doCommands()
 }
 
 
+void  ArnSync::startLogin()
+{
+    //// Client side
+    _loginSalt1 = uint( qrand());
+    XStringMap  xsm;
+    xsm.add("salt1", QByteArray::number( _loginSalt1));
+    sendLogin( 0, xsm);
+    _loginNextSeq = 1;
+}
+
+
 void ArnSync::loginToArn(const QString& userName, const QString& password, Arn::Allow allow)
 {
     //// Client side
@@ -483,18 +495,21 @@ void  ArnSync::loginToArn()
 {
     //// Client side
     if (_loginUserName.isEmpty())  return;  // Empty username not valid, do nothing
+    if (_loginNextSeq != -2)  return;  // Not in correct seq to perform this login step
 
-    _loginSalt1 = uint( qrand());
+    QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt1, _loginSalt2, _loginPassword);
     XStringMap  xsm;
-    xsm.add("salt1", QByteArray::number( _loginSalt1));
-    sendLogin( 0, xsm);
-    _loginNextSeq = 1;
+    xsm.add("user", _loginUserName).add("pass", pwHash);
+    sendLogin( 2, xsm);
+    _loginNextSeq = 3;
 }
 
 
 void ArnSync::doLoginSeq0End()
 {
     //// Server side
+    _loginDelayTimer.stop();
+
     _loginSalt2 = uint( qrand());
     XStringMap  xsm;
     xsm.add("demand", QByteArray::number( _isDemandLogin));
@@ -506,7 +521,6 @@ void ArnSync::doLoginSeq0End()
 
 uint  ArnSync::doCommandLogin()
 {
-    _loginDelayTimer.stop();
     if (_isClientSide && (_state != State::Login)) {
         return ArnError::LoginBad;  // Not acceptable command when client is not logging in
     }
@@ -526,7 +540,7 @@ uint  ArnSync::doCommandLogin()
         }
         else {  // Login retry
             _loginNextSeq = -1;  // Temporary invalid seq while loginDelay
-            _loginDelayTimer.start(2000);  // Delayed login seq
+            _loginDelayTimer.start(2000);  // Delayed doLoginSeq0End()
         }
         break;
     }
@@ -538,13 +552,11 @@ uint  ArnSync::doCommandLogin()
         _loginSalt2 = _commandMap.value("salt2").toUInt();
         bool  isRemoteDemandLogin = _commandMap.value("demand").toUInt() != 0;
         if (_isDemandLogin || isRemoteDemandLogin) {
-            QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt1, _loginSalt2, _loginPassword);
-            XStringMap  xsm;
-            xsm.add("user", _loginUserName).add("pass", pwHash);
-            sendLogin( 2, xsm);
-            _loginNextSeq = 3;
+            _loginNextSeq = -2;  // Temporary invalid seq while login is handled by application
+            emit loginRequired( _loginReqCode);
         }
         else {  // Login not needed
+            _remoteAllow = Arn::Allow::All;
             startNormalSync();
             _loginNextSeq = -1;
         }
@@ -590,12 +602,11 @@ uint  ArnSync::doCommandLogin()
         QByteArray  pwHashServer = _commandMap.value("pass");
 
         QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt2, _loginSalt1, _loginPassword);
-        int  loginRequiredCode = 0;
         int  stat = 0;
         if (!statServer)
-            loginRequiredCode = 1;  // Server deny, login retry
+            _loginReqCode = 1;  // Server deny, login retry
         else if (pwHashServer != pwHash)
-            loginRequiredCode = 2;  // Client deny, server not ok
+            _loginReqCode = 2;  // Client deny, server not ok
         else
             stat = 1;  // All ok
 
@@ -608,7 +619,7 @@ uint  ArnSync::doCommandLogin()
         if (stat)
             startNormalSync();
         else
-            emit loginRequired( loginRequiredCode);
+            startLogin();
         break;
     }
     case 4:
@@ -944,7 +955,8 @@ uint ArnSync::doCommandRVer()
         setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
         if (_remoteVer[0] >= 2) {
             setState( State::Login);
-            emit loginRequired(0);
+            _loginReqCode = 0;
+            startLogin();
         }
         else if (!_isDemandLogin) {  // Old server do not support login
             _remoteAllow = Arn::Allow::All;
