@@ -206,6 +206,16 @@ void  ArnSync::sendDelete( const QString& path)
 }
 
 
+void  ArnSync::sendInfo( int type, const QByteArray& data)
+{
+    _commandMap.clear();
+    _commandMap.add(ARNRECNAME, "info").add("type", QByteArray::number( type));
+    _commandMap.add("data", data);
+
+    sendXSMap( _commandMap);
+}
+
+
 void  ArnSync::sendLogin( int seq, const Arn::XStringMap& xsMap)
 {
     XStringMap xm;
@@ -430,6 +440,9 @@ void  ArnSync::doCommands()
     }
     else if (command == "info") {
         stat = doCommandInfo();
+    }
+    else if (command == "Rinfo") {
+        stat = doCommandRInfo();
     }
     else if (command == "ver") {
         stat = doCommandVer();
@@ -906,21 +919,40 @@ uint  ArnSync::doCommandInfo()
     int         type = _commandMap.value("type").toUInt();
     QByteArray  data = _commandMap.value("data");
 
-    _replyMap.add(ARNRECNAME, "Rinfo").add("type", QByteArray::number( type));
+    XStringMap xmIn( data);
+    XStringMap xmOut;
 
     switch (type) {
-    case Arn::InfoType::FreePaths:
-    {
-        XStringMap xm;
-        xm.addValues( _freePathTab);
-        data = xm.toXString();
+    //// Public info types
+    case Arn::InfoType::Custom:
+        xmOut.add( _customMap);
         break;
-    }
+    //// Internal info types
+    case InfoType::FreePaths:
+        xmOut.addValues( _freePathTab);
+        break;
     default:
         return ArnError::NotFound;
     }
 
-    _replyMap.add("data", data);
+    _replyMap.add(ARNRECNAME, "Rinfo").add("type", QByteArray::number( type));
+    _replyMap.add("data", xmOut.toXString());
+    return ArnError::Ok;
+}
+
+
+uint ArnSync::doCommandRInfo()
+{
+    if (!_isClientSide)  return ArnError::RecNotExpected;
+
+    //// Client
+    if (_state == State::Info) {
+        int         type = _commandMap.value("type").toInt();
+        QByteArray  data = _commandMap.value("data");
+
+        doInfoInternal( type, data);
+    }
+
     return ArnError::Ok;
 }
 
@@ -954,15 +986,15 @@ uint ArnSync::doCommandRVer()
     if (_state == State::Version) {
         setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
         if (_remoteVer[0] >= 2) {
-            setState( State::Login);
-            _loginReqCode = 0;
-            startLogin();
+            setState( State::Info);
+            _curInfoType = InfoType::Start;
+            doInfoInternal( InfoType::Start);
         }
-        else if (!_isDemandLogin) {  // Old server do not support login
+        else if (!_isDemandLogin) {  // Old server do not support login, Ok
             _remoteAllow = Arn::Allow::All;
             startNormalSync();
         }
-        else {
+        else {  // Old server do not support login, Fail
             setState( State::Login);
             emit loginRequired(3);
         }
@@ -1122,6 +1154,34 @@ void  ArnSync::doArnMonEvent( int type, const QByteArray& data, bool isLocal)
             //// Send NewItemEvent for any existing direct children (also folders)
             doChildsToEvent( itemNet);
         }
+    }
+}
+
+
+void  ArnSync::doInfoInternal( int infoType, const QByteArray& data)
+{
+    XStringMap  xmIn( data);
+    // XStringMap  xmOut;  // Tobe used later
+
+    if (infoType != _curInfoType) {  // Not ok sequence
+        emit loginRequired(4);
+        return;
+    }
+
+    switch (infoType) {
+    case InfoType::Start:
+        _curInfoType = InfoType::FreePaths;
+        sendInfo( InfoType::FreePaths);
+        break;
+    case InfoType::FreePaths:
+        _freePathTab = xmIn.values();
+
+        setState( State::Login);
+        _loginReqCode = 0;
+        startLogin();
+        break;
+    default:
+        break;
     }
 }
 

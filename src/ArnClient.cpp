@@ -387,12 +387,6 @@ void  ArnClient::setDemandLogin( bool isDemandLogin)
 }
 
 
-void  ArnClient::addFreePath( const QString& path)
-{
-    _arnNetSync->addFreePath( path);
-}
-
-
 QStringList  ArnClient::freePaths()  const
 {
     return _arnNetSync->freePaths();
@@ -441,11 +435,8 @@ void  ArnClient::commandLs( const QString& path)
 
 void  ArnClient::commandInfo( int type, const QByteArray& data)
 {
-    _commandMap.clear();
-    _commandMap.add(ARNRECNAME, "info").add("type", QByteArray::number( type));
-    _commandMap.add("data", data);
-
-    _arnNetSync->sendXSMap( _commandMap);
+    if (type < Arn::InfoType::N)
+        _arnNetSync->sendInfo( type, data);
 }
 
 

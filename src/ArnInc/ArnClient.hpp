@@ -301,22 +301,15 @@ public:
      */
     void  setDemandLogin( bool isDemandLogin);
 
-    //! Add a new "freePath"
+    //! Returns current list of freePaths.
     /*! A freePath can be used even if not logged in to an ArnServer that demands login.
      *  Also all children below freePath is free to use. Usage is restricted to read
      *  operations and alike from ArnServer to ArnClient.
-     *  Setting a freePath at ArnClient only enabbles the operations to be transfered
-     *  to ArnServer.
-     *  \param[in] path is the freePath, eg "/Local/Sys/Licenses/".
-     *  \see freePaths()
-     */
-    void  addFreePath( const QString& path);
-
-    //! Returns current list of freePaths.
-    /*! The list of freePaths is used to enabble the operations to be transfered
-     *  to ArnServer.
+     *  The list of freePaths is used to enabble the operation requests to be transfered
+     *  to ArnServer. ArnServer still decides what's allowed. The list is automatically
+     *  transfered from ArnServer to ArnClient during the negotiation phase.
      *  \return the freePath list.
-     *  \see addFreePath()
+     *  \see ArnServer::addFreePath()
      */
     QStringList  freePaths()  const;
 
@@ -372,6 +365,7 @@ signals:
      *             1 = Server deny, login retry
      *             2 = Client deny, server gave bad password (fake server?)
      *             3 = Client deny, server not support login
+     *             4 = Client deny, server bad negotiate sequence
      *  \see loginToArn()
      */
     void  loginRequired( int contextCode);

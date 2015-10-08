@@ -61,11 +61,25 @@ public:
             //! Getting version of remote side
             Version,
             //! Getting static meta info from remote side
+            Info,
+            //! Authenticate
             Login,
             //! Normal syncing
             Normal
         };
         MQ_DECLARE_ENUM( State)
+    };
+
+    //! Internal Info type for exchange static (meta) info between ArnClient and ArnServer
+    //! Public Info type (in Arn.hpp) takes enums from 0 to max 999
+    struct InfoType {
+        enum  E {
+            //! Get list of free paths not needing login
+            Start       = 1000,  // Start marker
+            FreePaths   = 1001,
+            End                  // End marker
+        };
+        MQ_DECLARE_ENUM( InfoType)
     };
 
     ArnSync( QTcpSocket* socket, bool clientSide = 0, QObject *parent = 0);
@@ -88,6 +102,7 @@ public:
     void  sendNoSync( const QString& path);
     void  sendSetTree( const QString& path);
     void  sendDelete( const QString& path);
+    void  sendInfo( int type, const QByteArray& data = QByteArray());
     void  sendExit();
     uint  remoteVer( uint index);
     void  loginToArn( const QString& userName, const QString& password,
@@ -121,6 +136,7 @@ private:
         int  queueNum;
     };
 
+    void  doInfoInternal( int infoType, const QByteArray& data = QByteArray());
     void  startLogin();
     void  startNormalSync();
     void  setupItemNet( ArnItemNet* itemNet, uint netId);
@@ -129,6 +145,7 @@ private:
     void  sendFluxItem( const ArnItemNet* itemNet);
     void  sendSyncItem( ArnItemNet* itemNet);
     void  sendModeItem( ArnItemNet* itemNet);
+    void  sendLogin( int seq, const Arn::XStringMap& xsMap);
     void  eventToFluxQue( uint netId, int type, const QByteArray& data);
     void  destroyToFluxQue( ArnItemNet* itemNet);
     void  removeItemNet( ArnItemNet* itemNet);
@@ -149,10 +166,10 @@ private:
     uint  doCommandLs();
     uint  doCommandDelete();
     uint  doCommandInfo();
+    uint  doCommandRInfo();
     uint  doCommandVer();
     uint  doCommandRVer();
     uint  doCommandLogin();
-    void  sendLogin( int seq, const Arn::XStringMap& xsMap);
 
     QTcpSocket*  _socket;
     ArnSyncLogin* _arnLogin;
@@ -162,6 +179,7 @@ private:
     Arn::XStringMap  _commandMap;
     Arn::XStringMap  _replyMap;
     Arn::XStringMap  _syncMap;
+    Arn::XStringMap  _customMap;
     QStringList  _freePathTab;
 
     QMap<uint,ArnItemNet*>  _itemNetMap;
@@ -174,6 +192,7 @@ private:
     QQueue<ArnItemNet*>  _modeQueue;
 
     State  _state;
+    InfoType  _curInfoType;
     int  _queueNumCount;
     int  _queueNumDone;
     bool  _isConnected;

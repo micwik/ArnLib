@@ -86,9 +86,9 @@ struct DataType {
 //! Info type for exchange static (meta) info between ArnClient and ArnServer
 struct InfoType {
     enum  E {
-        //! Get list of free paths not needing login
-        FreePaths = 0,
-        N
+        //! Get server ArnLib version
+        Custom = 0,
+        N  // Max N = 1000
     };
     MQ_DECLARE_ENUM( InfoType)
 };
