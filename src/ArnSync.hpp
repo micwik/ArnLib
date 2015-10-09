@@ -207,7 +207,7 @@ private:
     uint  _loginSalt1;
     uint  _loginSalt2;
     QString  _loginUserName;
-    QString  _loginPassword;
+    QString  _loginPwHash;
     QTimer  _loginDelayTimer;
     Arn::Allow  _allow;
     Arn::Allow  _remoteAllow;

@@ -125,8 +125,10 @@ public:
      *  by its userName.
      *  Each entry must have a unique userName. Any equal userName is making the entry
      *  being replaced by the last added one.
+     *  The password can be in clear text or a Hashed password which can be generated
+     *  by ArnClient::passwordHash() (see also ArnBrowser Settings).
      *  \param[in] userName
-     *  \param[in] password
+     *  \param[in] password in clear text or Hashed
      *  \param[in] allow have flags defining allowed basic operations (write, delete ...)
      */
     void  addAccess( const QString& userName, const QString& password, Arn::Allow allow);

@@ -301,6 +301,12 @@ public:
      */
     void  setDemandLogin( bool isDemandLogin);
 
+    //! Generate a hashed password from clear text password
+    /*! \param[in] password is the clear text password.
+     *  \return the hashed password, e.g "{A5ha62Aug}"
+     */
+    static QString  passwordHash( const QString& password);
+
     //! Returns current list of freePaths.
     /*! A freePath can be used even if not logged in to an ArnServer that demands login.
      *  Also all children below freePath is free to use. Usage is restricted to read

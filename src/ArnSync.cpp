@@ -497,7 +497,7 @@ void ArnSync::loginToArn(const QString& userName, const QString& password, Arn::
 {
     //// Client side
     _loginUserName = userName;
-    _loginPassword = password;
+    _loginPwHash   = ArnSyncLogin::passwordHash( password);
     _allow         = allow;
 
     loginToArn();
@@ -510,9 +510,9 @@ void  ArnSync::loginToArn()
     if (_loginUserName.isEmpty())  return;  // Empty username not valid, do nothing
     if (_loginNextSeq != -2)  return;  // Not in correct seq to perform this login step
 
-    QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt1, _loginSalt2, _loginPassword);
+    QByteArray  pwHashX = ArnSyncLogin::pwHashXchg( _loginSalt1, _loginSalt2, _loginPwHash);
     XStringMap  xsm;
-    xsm.add("user", _loginUserName).add("pass", pwHash);
+    xsm.add("user", _loginUserName).add("pass", pwHashX);
     sendLogin( 2, xsm);
     _loginNextSeq = 3;
 }
@@ -580,27 +580,27 @@ uint  ArnSync::doCommandLogin()
         if (_isClientSide)  return ArnError::LoginBad;
 
         //// Server side
-        QByteArray  userClient   = _commandMap.value("user");
-        QByteArray  pwHashClient = _commandMap.value("pass");
-        QByteArray  pwHashServer;
+        QByteArray  userClient    = _commandMap.value("user");
+        QByteArray  pwHashXClient = _commandMap.value("pass");
+        QByteArray  pwHashXServer;
 
 
         int stat = 0;
         _allow = Arn::Allow::None;  // Deafult no access
         const ArnSyncLogin::AccessSlot*  accSlot = _arnLogin->findAccess( userClient);
         if (accSlot) {
-            QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt1, _loginSalt2, accSlot->password);
-            if (pwHashClient == pwHash) {
-                _allow       = accSlot->allow;
-                pwHashServer = ArnSyncLogin::pwHash( _loginSalt2, _loginSalt1, accSlot->password);
-                stat         = 1;
+            QByteArray  pwHashX = ArnSyncLogin::pwHashXchg( _loginSalt1, _loginSalt2, accSlot->pwHash);
+            if (pwHashXClient == pwHashX) {
+                _allow        = accSlot->allow;
+                pwHashXServer = ArnSyncLogin::pwHashXchg( _loginSalt2, _loginSalt1, accSlot->pwHash);
+                stat          = 1;
             }
         }
 
         XStringMap  xsm;
         xsm.add("stat", QByteArray::number( stat));
         xsm.add("allow", QByteArray::number( _allow.toInt()));
-        xsm.add("pass", pwHashServer);
+        xsm.add("pass", pwHashXServer);
         sendLogin( 3, xsm);
         _loginNextSeq = 4;
         break;
@@ -612,13 +612,13 @@ uint  ArnSync::doCommandLogin()
         //// Client side
         int  statServer = _commandMap.value("stat").toInt();
         _remoteAllow = Arn::Allow::fromInt( _commandMap.value("allow").toInt());
-        QByteArray  pwHashServer = _commandMap.value("pass");
+        QByteArray  pwHashXServer = _commandMap.value("pass");
 
-        QByteArray  pwHash = ArnSyncLogin::pwHash( _loginSalt2, _loginSalt1, _loginPassword);
+        QByteArray  pwHashX = ArnSyncLogin::pwHashXchg( _loginSalt2, _loginSalt1, _loginPwHash);
         int  stat = 0;
         if (!statServer)
             _loginReqCode = 1;  // Server deny, login retry
-        else if (pwHashServer != pwHash)
+        else if (pwHashXServer != pwHashX)
             _loginReqCode = 2;  // Client deny, server not ok
         else
             stat = 1;  // All ok

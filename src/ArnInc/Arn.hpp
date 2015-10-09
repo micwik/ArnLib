@@ -168,7 +168,7 @@ struct Allow {
         Read      = 0x01,
         //! Write to Arn Objects
         Write     = 0x02,
-        //! Delete Arn Objects
+        //! Create Arn Objects
         Create    = 0x04,
         //! Delete Arn Objects
         Delete    = 0x08,

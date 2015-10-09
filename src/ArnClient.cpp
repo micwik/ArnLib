@@ -33,6 +33,7 @@
 #include "ArnInc/Arn.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include "ArnSync.hpp"
+#include "ArnSyncLogin.hpp"
 #include <QTcpSocket>
 #include <QStringList>
 #include <QTimer>
@@ -384,6 +385,12 @@ bool  ArnClient::isDemandLogin()  const
 void  ArnClient::setDemandLogin( bool isDemandLogin)
 {
     _arnNetSync->setDemandLogin( isDemandLogin);
+}
+
+
+QString  ArnClient::passwordHash( const QString& password)
+{
+    return ArnSyncLogin::passwordHash( password);
 }
 
 
