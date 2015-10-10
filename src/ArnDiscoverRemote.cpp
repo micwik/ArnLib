@@ -81,8 +81,10 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
 
             QString  path = (Arn::pathDiscoverThis + "Interfaces/Interf-%1/").arg(i);
             QString  addr = entry.ip().toString();
+            QString  mask = entry.netmask().toString();
             QString  name = interface.humanReadableName();
             ArnM::setValue( path + "addr", addr);
+            ArnM::setValue( path + "mask", mask);
             ArnM::setValue( path + "name", name);
             ArnM::setValue( path + "value", addr + "  [" + name + "]");
             ++i;
