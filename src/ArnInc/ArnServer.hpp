@@ -39,6 +39,7 @@
 #include <QObject>
 #include <QHostAddress>
 #include <QMap>
+#include <QStringList>
 
 class ArnSync;
 class ArnSyncLogin;
@@ -147,6 +148,31 @@ public:
      */
     void  setDemandLogin( bool isDemandLogin);
 
+    //! Set the nets not demanding login
+    /*! The net can be "localhost", "localnet", "any" or a subnet using syntax from
+     *  QHostAddress::parseSubnet(). The "localnet" matches direct adresses on all of the
+     *  available interfaces. The "any" will effectively turn off setDemandLogin().
+     *  \param[in] noLoginNets is the list of no login nets,
+     *                         e.g ("localhost" "192.168.1.0/255.255.255.0").
+     *  \see noLoginNets()
+     *  \see isDemandLoginNet()
+     *  \see QHostAddress::parseSubnet()
+     */
+    void  setNoLoginNets( const QStringList& noLoginNets);
+
+    //! Get the nets not demanding login
+    /*! \return the nets not demanding login.
+     *  \see setNoLoginNets()
+     */
+    QStringList  noLoginNets()  const;
+
+    //! Return if a host address demands login
+    /*! \param[in] remoteAddr is the tested host address.
+     *  \retval false if the host address belongs to any net not demanding login
+     *  \see setNoLoginNets()
+     */
+    bool  isDemandLoginNet( const QHostAddress& remoteAddr)  const;
+
     //! Add a new "freePath"
     /*! A freePath can be used even if not logged in to an ArnServer that demands login.
      *  Also all children below freePath is free to use. Usage is restricted to read
@@ -169,11 +195,11 @@ public:
     ArnSyncLogin*  arnLogin()  const;
     //! \endcond
 
-
 private:
     QTcpServer*  _tcpServer;
     ArnSyncLogin*  _arnLogin;
     QStringList  _freePathTab;
+    QStringList  _noLoginNets;
     bool  _tcpServerActive;
     Type  _serverType;
     bool  _isDemandLogin;

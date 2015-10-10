@@ -39,6 +39,7 @@
 #include <QTcpSocket>
 #include <QHostInfo>
 #include <QNetworkInterface>
+#include <QHostAddress>
 #include <QDebug>
 
 using Arn::XStringMap;
@@ -47,10 +48,18 @@ using Arn::XStringMap;
 ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, ArnServer* arnServer)
     : QObject( arnServer)
 {
+    QHostAddress  remoteAddr = socket->peerAddress();
+    // QHostAddress  localAddr  = socket->localAddress();
+    // qDebug() << "ArnServerNetSync: remoteAddr=" << remoteAddr.toString()
+    //          << " localAddr=" << localAddr.toString();
+
     _arnServer = arnServer;
     _arnNetSync = new ArnSync( socket, false, this);
     _arnNetSync->setArnLogin( _arnServer->arnLogin());
-    _arnNetSync->setDemandLogin( _arnServer->isDemandLogin());
+    _arnNetSync->setDemandLogin( _arnServer->isDemandLogin()
+                              && _arnServer->isDemandLoginNet( remoteAddr));
+    // qDebug() << "ArnServerNetSync new session: remoteAddr=" << remoteAddr.toString()
+    //          << "isDemandLoginNet=" << _arnServer->isDemandLoginNet( remoteAddr);
     _arnNetSync->start();
 
     foreach (const QString& path, _arnServer->freePaths()) {
@@ -180,6 +189,57 @@ void  ArnServer::setDemandLogin( bool isDemandLogin)
 }
 
 
+void  ArnServer::setNoLoginNets( const QStringList& noLoginNets)
+{
+    _noLoginNets = noLoginNets;
+}
+
+
+QStringList  ArnServer::noLoginNets()  const
+{
+    return _noLoginNets;
+}
+
+
+bool  ArnServer::isDemandLoginNet( const QHostAddress& remoteAddr)  const
+{
+    foreach (const QString& noLoginNet, _noLoginNets) {
+        if (noLoginNet == "localhost") {
+            if ((remoteAddr == QHostAddress( QHostAddress::LocalHost))
+            ||  (remoteAddr == QHostAddress( QHostAddress::LocalHostIPv6)))
+                return false;
+        }
+        else if (noLoginNet == "localnet") {
+            foreach (QNetworkInterface  interface, QNetworkInterface::allInterfaces()) {
+                QNetworkInterface::InterfaceFlags  flags = interface.flags();
+                if (flags.testFlag( QNetworkInterface::IsPointToPoint)
+                || flags.testFlag( QNetworkInterface::IsLoopBack))
+                    continue;
+
+                foreach (QNetworkAddressEntry  entry, interface.addressEntries()) {
+                    QAbstractSocket::NetworkLayerProtocol  prot = entry.ip().protocol();
+                    if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
+                        continue;
+
+                    QString  subNetString = entry.ip().toString() + "/" + entry.netmask().toString();
+                    if (remoteAddr.isInSubnet( QHostAddress::parseSubnet( subNetString)))
+                        return false;
+                }
+            }
+        }
+        else if (noLoginNet == "any") {
+            return false;
+        }
+        else {
+            if (remoteAddr.isInSubnet( QHostAddress::parseSubnet( noLoginNet)))
+                return false;
+        }
+    }
+
+    return true;
+}
+
+
 void ArnServer::addFreePath(const QString& path)
 {
     if (!_freePathTab.contains( path))
@@ -197,7 +257,6 @@ ArnSyncLogin*  ArnServer::arnLogin()  const
 {
     return _arnLogin;
 }
-
 
 
 void  ArnServer::tcpConnection()
