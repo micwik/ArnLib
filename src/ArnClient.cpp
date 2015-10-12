@@ -123,7 +123,6 @@ ArnClient::ArnClient( QObject* parent) :
 {
     _arnMountPoint   = 0;
     _isAutoConnect   = false;
-    _isReConnect     = false;
     _isValidCredent  = false;
     _receiveTimeout  = 10;
     _recTimeoutCount = 0;
@@ -131,6 +130,7 @@ ArnClient::ArnClient( QObject* parent) :
     _port            = 0;
     _nextHost        = -1;
     _curPrio         = -1;
+    resetConnectionFlags();
 
     QString  stdId = "std";
     if (ArnClientReg::instance().store( this, stdId))  // Only use std-id once
@@ -161,6 +161,15 @@ ArnClient::ArnClient( QObject* parent) :
 ArnClient::~ArnClient()
 {
     ArnClientReg::instance().remove( this);  // If registered, remove it
+}
+
+
+void  ArnClient::resetConnectionFlags()
+{
+    _isReContact = false;
+    _isReConnect = false;
+    _wasContact  = false;
+    _wasConnect  = false;
 }
 
 
@@ -223,8 +232,8 @@ void  ArnClient::connectToArnList()
     if (_hostTab.isEmpty())  return;
 
     _isValidCredent = false;
-    _isReConnect    = false;
     _nextHost       = 0;
+    resetConnectionFlags();
     doConnectArnLogic();
 }
 
@@ -232,10 +241,10 @@ void  ArnClient::connectToArnList()
 void  ArnClient::connectToArn( const QString& arnHost, quint16 port)
 {
     _isValidCredent = false;
-    _isReConnect    = false;
     _nextHost       = -1;
     _arnHost        = arnHost;
     _port           = port ? port : Arn::defaultTcpPort;
+    resetConnectionFlags();
     doConnectArnLogic();
 }
 
@@ -397,6 +406,12 @@ QString  ArnClient::passwordHash( const QString& password)
 QStringList  ArnClient::freePaths()  const
 {
     return _arnNetSync->freePaths();
+}
+
+
+bool  ArnClient::isReContact()  const
+{
+    return _isReContact;
 }
 
 
@@ -567,7 +582,6 @@ void ArnClient::doTcpError( int socketError)
     ArnM::errorLog( errTextSum, ArnError::ConnectionError);
 
     if (_connectStat != ConnectStat::Disconnected) {
-        _isReConnect = false;
         _connectStat = (  (_connectStat == ConnectStat::Connected)
                        || (_connectStat == ConnectStat::Stopped)
                        || (_connectStat == ConnectStat::Negotiating))
@@ -593,7 +607,6 @@ void ArnClient::doTcpDisconnected()
     ||  (_connectStat == ConnectStat::Stopped)
     ||  (_connectStat == ConnectStat::Negotiating))
     {
-        _isReConnect = false;
         _connectStat = ConnectStat::Disconnected;
         emit connectionStatusChanged( _connectStat, _curPrio);
         emit tcpDisConnected();
@@ -607,16 +620,13 @@ void  ArnClient::reConnectArn()
 {
     // qDebug() << " reConnectArn";
     bool wantDelayConnect = true;
-    _isReConnect = false;
     if (_nextHost >= 0) {  // Using connection list
         doConnectArnLogic();
         wantDelayConnect = _nextHost == 0;  // WantDelay when tried all in connection list
-        _isReConnect     = _nextHost != 0;
     }
 
     if (wantDelayConnect && _isAutoConnect) {
         _connectTimer->start( _retryTime * 1000);
-        _isReConnect = true;
     }
 }
 
@@ -630,6 +640,9 @@ void  ArnClient::onConnectWaitDone()
 
 void  ArnClient::doTcpConnected()
 {
+    _isReContact = _wasContact;
+    _wasContact  = true;
+
     if (_receiveTimeout > 0)
         _recTimer->start( _receiveTimeout * 1000 / 2);
 
@@ -646,6 +659,8 @@ void  ArnClient::doSyncStateChanged( int state)
     if (syncState == syncState.Normal) {
         // qDebug() << "ArnClient connected: remVer="
         //          << _arnNetSync->remoteVer(0) << _arnNetSync->remoteVer(1);
+        _isReConnect = _wasConnect;
+        _wasConnect  = true;
         _connectStat = ConnectStat::Connected;
         emit connectionStatusChanged( _connectStat, _curPrio);
     }

@@ -319,10 +319,25 @@ public:
      */
     QStringList  freePaths()  const;
 
-    //! Is this a reconnect
-    /*! Reconnect occurs if connection is lost and then restored due to autoConnect.
-     *  \retval true if this is a reconnect.
+    //! Is last TCP connection a reContact
+    /*! ReContact occurs if a TCP connection is successful, then lost and then restored
+     *  due to autoConnect.
+     *  Successful TCP connection gives a state change to ConnectStat::Negotiating.
+     *  \retval true if this is a reContact.
+     *  \see isReConnect()
      *  \see setAutoConnect()
+     *  \see connectionStatusChanged()
+     */
+    bool  isReContact()  const;
+
+    //! Is last Arn Connection a reConnect
+    /*! ReConnect occurs if an Arn connection is successful, then lost and then restored
+     *  due to autoConnect.
+     *  Successful Arn connection gives a state change to ConnectStat::Connected.
+     *  \retval true if this is a reConnect.
+     *  \see isReContact()
+     *  \see setAutoConnect()
+     *  \see connectionStatusChanged()
      */
     bool  isReConnect()  const;
 
@@ -403,6 +418,7 @@ private slots:
     void  onCommandDelete( const QString& remotePath);
 
 private:
+    void  resetConnectionFlags();
     void  reConnectArn();
 
     struct MountPointSlot {
@@ -442,7 +458,10 @@ private:
     HostAddrPort  _curConnectAP;
     ConnectStat  _connectStat;
     bool  _isValidCredent;
+    bool  _isReContact;
     bool  _isReConnect;
+    bool  _wasContact;
+    bool  _wasConnect;
 };
 
 #endif // ARNCLIENT_HPP
