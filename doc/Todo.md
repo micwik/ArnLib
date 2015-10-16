@@ -27,6 +27,7 @@ Minor
 * Browsing and controlling connected clients.
 * ArnItem none native data-types like: uint, int64 etc.
 * Addition to login a system to "pair" ArnServer and ArnClient.
+* A flush mechanism for ArnPersist to force saving.
 
 Done in 3.0
 -----------
@@ -38,7 +39,7 @@ Done in 3.0
 * Distributed create of folder.
 * ArnMonitor detects destructions of _Arn Objects_.
 * Add setDelay in ArnItemQml, rework changed() and using timer events.
-* Simple access system for Server/Client login with session level privilege.
+* Access system for Server/Client login with session level privilege.
 * Allow read access to "freePaths" without login. Used to view for example licenses.
 
 Done in 2.3
