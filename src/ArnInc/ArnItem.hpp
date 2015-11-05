@@ -262,6 +262,9 @@ public:
     bool  isAutoDestroy()  const
     {return ArnItemB::isAutoDestroy();}
 
+    void  setBlockEcho( bool blockEcho = true)  // MW: TODO doc
+    {return ArnItemB::setBlockEcho( blockEcho);}
+
     //! Set _delay_ of data changed signal
     /*! Normally any change of the _Arn Data Object_ is immediately signalled.
      *  By setting this _delay_, intensive updates gives predictive and fewer signals.
