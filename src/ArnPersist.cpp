@@ -164,7 +164,7 @@ ArnPersist::ArnPersist( QObject* parent) :
     _query         = 0;
     _depOffer      = 0;
 
-    setupSapi( _sapiCommon, "//.sys/Persist/Pipes/CommonPipe!");
+    setupSapi( _sapiCommon);
 }
 
 
@@ -827,10 +827,10 @@ void  ArnPersist::getFileList(QStringList& flist, const QDir& dir, const QDir* b
 }
 
 
-void  ArnPersist::setupSapi( ArnPersistSapi* sapi, const QString& pipePath)
+void  ArnPersist::setupSapi( ArnPersistSapi* sapi)
 {
     typedef ArnRpc::Mode  Mode;
-    sapi->open( pipePath, Mode::Provider);
+    sapi->open( QString(), Mode::Provider);
     sapi->batchConnect( QRegExp("^pv_(.+)"), this, "sapi\\1", Mode());
 }
 

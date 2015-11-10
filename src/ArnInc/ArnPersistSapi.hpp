@@ -42,7 +42,7 @@ class ArnPersistSapi : public ArnSapi
 {
     Q_OBJECT
 public:
-    explicit ArnPersistSapi( QObject* parent = 0) : ArnSapi( parent)  {}
+    explicit ArnPersistSapi( QObject* parent = 0) : ArnSapi("//.sys/Persist/Pipes/CommonPipe", parent)  {}
 
 signals:
 MQ_PUBLIC_ACCESS

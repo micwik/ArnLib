@@ -125,14 +125,15 @@ public:
      *  Typically the _provider_ is only using _mode_ _Provider_.
      *  The _requester_ can use default _mode_ for a static _pipe_ and typically use
      *  the _UuidAutoDestroy_ _mode_ for dynamic session _pipes_.
-     *  \param[in] pipePath is the path used for Sapi
+     *  \param[in] pipePath is the path used for Sapi. Empty string gives default.
      *  \param[in] mode
      *  \param[in] providerPrefix to set a custom prefix for _provider_ signals.
      *  \param[in] requesterPrefix to set a custom prefix for _requester_ signals.
      *  \retval false if error
      *  \see \ref gen_pipeArnobj
+     *  \see setDefaultPath()
      */
-    bool  open( const QString& pipePath, Mode mode = Mode(),
+    bool  open( const QString& pipePath = QString(), Mode mode = Mode(),
                 const char* providerPrefix = 0, const char* requesterPrefix = 0);
 
     //! Make batch connection from this ArnSapi:s signals to another receivers slots/signals
@@ -173,6 +174,22 @@ public:
     void  batchConnectFrom( const QObject* sender, const QString& prefix = QString(),
                             Mode mode = Mode());
 
+    //! Get default path for the _pipe_ to be used
+    /*! \return default path
+     */
+    QString  defaultPath()  const;
+
+protected:
+    ArnSapi( const QString& defaultPath, QObject* parent = 0);
+
+    //! Set default path for the _pipe_ to be used
+    /*! A provider path will always be converted to a non provider path.
+     *  \param[in] defaultPath
+     *  \see defaultPath()
+     *  \see open()
+     */
+    void  setDefaultPath( const QString& defaultPath);
+
 private:
     //// Hide these from SAPI base interface
     void  setPipe( ArnPipe* pipe);
@@ -187,6 +204,7 @@ private:
 
     QString  _receivePrefix;
     QString  _sendPrefix;
+    QString  _defaultPath;
 };
 
 

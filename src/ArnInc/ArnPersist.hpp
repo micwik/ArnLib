@@ -258,7 +258,7 @@ private:
     void  loadFile( const QString& relPath);
     void  doLoadMandatory();
     void  doLoadFiles();
-    void  setupSapi( ArnPersistSapi* sapi, const QString& pipePath);
+    void  setupSapi( ArnPersistSapi* sapi);
     void  convertFileList( QStringList& files, Arn::NameF nameF);
     void  dbSetupReadValue( const QString& meta, const QString& valueTxt,
                             QByteArray& value);

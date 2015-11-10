@@ -33,9 +33,16 @@
 #include <QDebug>
 
 
-ArnSapi::ArnSapi( QObject* parent) :
-    ArnRpc( parent)
+ArnSapi::ArnSapi( QObject* parent)
+    : ArnRpc( parent)
 {
+}
+
+
+ArnSapi::ArnSapi( const QString &defaultPath, QObject *parent)
+    : ArnRpc( parent)
+{
+    setDefaultPath( defaultPath);
 }
 
 
@@ -56,7 +63,7 @@ bool  ArnSapi::open( const QString& pipePath, Mode mode,
     ArnRpc::setReceiver( this, false);
     ArnRpc::setMode( mode);
 
-    return ArnRpc::open( pipePath);
+    return ArnRpc::open( pipePath.isEmpty() ? _defaultPath : pipePath);
 }
 
 
@@ -82,4 +89,16 @@ void  ArnSapi::batchConnectFrom( const QObject* sender, const QString& prefix, A
                   this,
                   _sendPrefix + "\\1",
                   mode);
+}
+
+
+QString  ArnSapi::defaultPath()  const
+{
+    return _defaultPath;
+}
+
+
+void  ArnSapi::setDefaultPath( const QString& defaultPath)
+{
+    _defaultPath = Arn::providerPath( defaultPath, false);
 }
