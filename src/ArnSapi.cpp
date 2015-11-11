@@ -39,7 +39,7 @@ ArnSapi::ArnSapi( QObject* parent)
 }
 
 
-ArnSapi::ArnSapi( const QString &defaultPath, QObject *parent)
+ArnSapi::ArnSapi( const QString& defaultPath, QObject* parent)
     : ArnRpc( parent)
 {
     setDefaultPath( defaultPath);
