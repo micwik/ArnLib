@@ -232,6 +232,7 @@ public slots:
     bool  doArchive( const QString& name = QString());
 
 private slots:
+    void  sapiFlush( const QString& path);
     void  sapiTest( const QString& str, int i=0);
     void  sapiLs( const QString& path);
     void  sapiLoad();

@@ -271,8 +271,26 @@ public:
      *  Signalling will not be faster than _delay_ as period time. The latency from
      *  a change to a signal will not be more than _delay_.
      *  \param[in] delay in ms.
+     *  \see isDelayPending()
+     *  \see resetDelayPending()
      */
     void  setDelay( int delay);
+
+    /*! Delay pending status
+     *  \retval true if the _Arn Data Object_ is changed, but the changed signal is
+     *          pending in a delay.
+     *  \see setDelay()
+     *  \see resetDelayPending()
+     */
+    bool  isDelayPending()  const;
+
+    /*! For delay pending, immediately signal changed
+     *  If the changed signal is pending in a delay, the changed signal is immediately
+     *  emitted and the delay is canceled. Otherwise nothing is done.
+     *  \see setDelay()
+     *  \see isDelayPending()
+     */
+    void  bypassDelayPending();
 
     //! Import data to an _Arn Data Object_
     /*! Data blob from a previos \p arnExport() can be imported.

@@ -337,6 +337,7 @@ void  ArnPersist::doArnUpdate()
     switch (item->storeType()) {
     case ArnItemPersist::StoreType::DataBase:
     {
+        // qDebug() << "Persist arnUpdate DB: path=" << item->path();
         int storeId = item->storeId();
         if (storeId) {
             updateDbValue( storeId, item->arnExport());
@@ -350,7 +351,7 @@ void  ArnPersist::doArnUpdate()
     case ArnItemPersist::StoreType::File:
     {
         QString  relPath = item->path( Arn::NameF::Relative);
-        qDebug() << "Persist arnUpdate: Save to relPath=" << relPath;
+        // qDebug() << "Persist arnUpdate: Save to relPath=" << relPath;
         QFile  file( _persistDir->absoluteFilePath( relPath));
         file.open( QIODevice::WriteOnly);
         QByteArray  data = item->toByteArray();
@@ -857,6 +858,21 @@ void  ArnPersist::vcsCheckoutR()
 {
     doLoadFiles();
     // emit rps_vcsCheckoutR();
+}
+
+
+void  ArnPersist::sapiFlush( const QString& path)
+{
+    bool  isOk = true;
+    QString  fullPath = Arn::fullPath( path);
+    foreach (ArnItemPersist* item, _itemPersistMap) {
+        if (path.isEmpty() || item->path().startsWith( fullPath)) {
+            // if (item->isDelayPending())
+            //     qDebug() << "Persist flush: path=" << item->path();
+            item->bypassDelayPending();
+        }
+    }
+    emit _sapiCommon->rq_flushR( isOk, path);
 }
 
 

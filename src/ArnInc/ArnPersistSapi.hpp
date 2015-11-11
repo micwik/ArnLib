@@ -61,6 +61,7 @@ MQ_PUBLIC_ACCESS
     void  pv_vcsUserSettings();
     void  pv_vcsSetUserSettings( QString userName, QString userEmail);
     void  pv_vcsCheckout( QString ref = QString(), QStringList files = QStringList());
+    void  pv_flush( const QString& path = QString());
     void  pv_test( QString str = "Hello", int i=10);
     void  pv_ls( QString path = QString());
     void  pv_load();
@@ -73,6 +74,7 @@ MQ_PUBLIC_ACCESS
     void  pv_info();
 
     //// Requester API
+    void  rq_flushR( bool isOk, const QString& path);
     void  rq_lsR( QStringList files);
     void  rq_rmR( bool isOk);
     void  rq_touchR( bool isOk);
