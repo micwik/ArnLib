@@ -34,6 +34,16 @@
 
 #include <QFlags>
 
+
+class QMetaObject;
+
+namespace Arn {
+
+QString  mqfToString( const QMetaObject* metaObj, int val);
+
+}
+
+
 /// Flags
 #define MQ_DECLARE_FLAGS( FEStruct) \
     Q_DECLARE_FLAGS(F, E) \
@@ -48,6 +58,11 @@
     inline int  toInt()  const {return f;} \
     inline operator int()  const {return f;} \
     inline bool  operator!()  const {return !f;}
+
+#define MQ_DECLARE_FLAGSTXT( FEStruct) \
+    MQ_DECLARE_FLAGS( FEStruct) \
+    inline QString toString()  const {return Arn::mqfToString( &staticMetaObject, f);}
+
 
 #define MQ_DECLARE_OPERATORS_FOR_FLAGS( FEStruct) \
     Q_DECLARE_OPERATORS_FOR_FLAGS( FEStruct::F)

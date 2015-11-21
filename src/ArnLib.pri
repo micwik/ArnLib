@@ -196,4 +196,7 @@ contains(ARN, zeroconf) {
     }
 }
 
+SOURCES += \
+    $$PWD/MQFlags.cpp
+
 }  # ARNLIB_PRI_INCLUDED

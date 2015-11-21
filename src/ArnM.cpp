@@ -39,6 +39,8 @@
 #include <QThread>
 #include <QCoreApplication>
 #include <QMetaType>
+#include <QMetaObject>
+#include <QMetaEnum>
 #include <QFile>
 #include <QDir>
 #include <iostream>
@@ -848,6 +850,17 @@ ArnM::ArnM()
     _errTextTab[ ArnError::ScriptError]     = QString(tr("Script"));
     _errTextTab[ ArnError::RpcInvokeError]  = QString(tr("Rpc Invoke error"));
     _errTextTab[ ArnError::RpcReceiveError] = QString(tr("Rpc Receive error"));
+
+    const QMetaObject*  metaObj = &AllowClassG::staticMetaObject;
+    QMetaEnum  metaEnum = metaObj->enumerator(0);
+    qDebug() << "AllowName=" << metaEnum.name();
+    for (int i = 0; i < metaEnum.keyCount(); ++i) {
+        qDebug() << "idx=" << i << " key=" << metaEnum.key(i) << " val=" << metaEnum.value(i);
+    }
+    AllowClassG allow(0);
+    qDebug() << "AllowVal2: Create=" << allow.Create;
+    allow.set( allow.Delete).set( allow.Read);
+    qDebug() << "AllowVal3: toString=" << allow.toString();
 
     QTimer::singleShot( 0, this, SLOT(postSetup()));
 }

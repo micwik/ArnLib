@@ -34,6 +34,7 @@
 
 #include "ArnLib_global.hpp"
 #include "Arn.hpp"
+#include "MQFlags.hpp"
 #include "ArnError.hpp"
 #include "ArnItem.hpp"
 #include <QIODevice>
@@ -92,6 +93,45 @@ public:
     ~ArnThreadComProxyLock();
 };
 //! \endcond
+
+
+class AllowClassG {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        //! Nothing allowed
+        None      = 0x00,
+        //! Read from Arn Objects
+        Read      = 0x01,
+        //! Write to Arn Objects
+        Write     = 0x02,
+        //! Create Arn Objects
+        Create    = Arn::Allow::Create,
+        //! Delete Arn Objects
+        Delete    = 0x08,
+        //! Change Mode of Arn Objects
+        ModeChg   = 0x10,
+        //! Convenience, allow read & write
+        ReadWrite = 0x03,
+        //! Convenience, allow all
+        All       = 0xff
+    };
+    MQ_DECLARE_FLAGSTXT( AllowClassG)
+
+    // AllowClassG();
+    // virtual ~AllowClassG();
+/*
+    static AllowClassG&  instance()
+    {
+        static AllowClassG* in = 0;
+        if (!in)
+            in = new AllowClassG();
+        return *in;
+    }
+*/
+};
+MQ_DECLARE_OPERATORS_FOR_FLAGS( AllowClassG)
 
 
 //! Arn main class
