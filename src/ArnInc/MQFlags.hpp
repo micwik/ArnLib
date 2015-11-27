@@ -48,16 +48,21 @@ class MQFTxt
 {
 public:
     MQFTxt( const QMetaObject& metaObj);
+
     void  setTxtRef( quint16 nameSpace, quint16 enumVal, const char* txt);
     void  setTxt( quint16 nameSpace, quint16 enumVal, const char* txt);
     const char*  getTxt( quint16 nameSpace, quint16 enumVal)  const;
+    void  setTxtString( quint16 nameSpace, quint16 enumVal, const QString& txt);
+    QString  getTxtString( quint16 nameSpace, quint16 enumVal)  const;
+
+    QString  makeBitSet( quint16 nameSpace);
 
 private:
     void  setupFromMetaObject();
     inline static quint32  toEnumIndex( quint16 nameSpace, quint16 enumVal);
 
     const QMetaObject&  _metaObj;
-    QMap<quint32,const char*> _enumStr;
+    QMap<quint32,const char*>  _enumStr;
     QList<QByteArray>*  _txtStore;
 };
 

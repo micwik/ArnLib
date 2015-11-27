@@ -852,12 +852,14 @@ ArnM::ArnM()
     _errTextTab[ ArnError::RpcReceiveError] = QString(tr("Rpc Receive error"));
 
     AllowClassG allow;
+    qDebug() << "AllowVal BitSet(Enum):" << allow.txt().makeBitSet( allow.NsEnum);
     qDebug() << "AllowVal1: Create=" << allow.Create;
     qDebug() << "AllowVal2: CreateTxt=" << allow.txt().getTxt( allow.NsEnum, allow.Create);
     allow.set( allow.Delete).set( allow.Read);
     qDebug() << "AllowVal3: toString=" << allow.toString();
     allow.txt().setTxt( allow.NsHuman, allow.Create, "Test - Create");
     AllowClassG allow2;
+    qDebug() << "AllowVal BitSet(Human):" << allow2.txt().makeBitSet( allow2.NsHuman);
     qDebug() << "AllowVal4: getTxt=" << allow2.txt().getTxt( allow2.NsHuman, allow2.Create);
 
     QTimer::singleShot( 0, this, SLOT(postSetup()));
