@@ -119,6 +119,11 @@ public:
     };
     MQ_DECLARE_FLAGSTXT( AllowClassG)
 
+    enum NS {
+        NsEnum,
+        NsHuman
+    };
+
     // AllowClassG();
     // virtual ~AllowClassG();
 /*

@@ -33,23 +33,39 @@
 #define MQFLAGS_HPP
 
 #include <QFlags>
+#include <QMap>
+#include <QList>
 
 
 class QMetaObject;
 
 namespace Arn {
 
-QString  mqfToString( const QMetaObject* metaObj, int val);
+QString  mqfToString( const QMetaObject& metaObj, int val);
+bool  isPower2( uint x);
+
+class MQFTxt
+{
+public:
+    MQFTxt( const QMetaObject& metaObj);
+    void  setTxtRef( int nameSpace, int enumVal, const char* txt);
+    void  setTxt( int nameSpace, int enumVal, const char* txt);
+    const char*  getTxt( int nameSpace, int enumVal)  const;
+
+private:
+    void  setupFromMetaObject();
+    const QMetaObject&  _metaObj;
+    QMap<int,const char*> _enumStr;
+    QList<QByteArray>*  _txtStore;
+};
 
 }
 
 
 /// Flags
-#define MQ_DECLARE_FLAGS( FEStruct) \
+#define MQ_DECLARE_FLAGS_BASE( FEStruct) \
     Q_DECLARE_FLAGS(F, E) \
     F  f; \
-    inline FEStruct(F v_ = F(0)) : f( v_)  {} \
-    inline FEStruct(E e_) : f( e_)  {} \
     inline static E  flagIf( bool test, E e)  {return test ? e : E(0);} \
     inline bool  is(E e)  const {return f.testFlag(e);} \
     inline bool  isAny(E e)  const {return ((f & e) != 0) && (e != 0 || f == 0 );} \
@@ -59,9 +75,17 @@ QString  mqfToString( const QMetaObject* metaObj, int val);
     inline operator int()  const {return f;} \
     inline bool  operator!()  const {return !f;}
 
+#define MQ_DECLARE_FLAGS( FEStruct) \
+    MQ_DECLARE_FLAGS_BASE( FEStruct) \
+    inline FEStruct(F v_ = F(0)) : f( v_)  {} \
+    inline FEStruct(E e_) : f( e_)  {}
+
 #define MQ_DECLARE_FLAGSTXT( FEStruct) \
-    MQ_DECLARE_FLAGS( FEStruct) \
-    inline QString toString()  const {return Arn::mqfToString( &staticMetaObject, f);}
+    MQ_DECLARE_FLAGS_BASE( FEStruct) \
+    Arn::MQFTxt&  mqfTxt()  {static Arn::MQFTxt in( staticMetaObject); return in;} \
+    inline QString toString()  const {return Arn::mqfToString( staticMetaObject, f);} \
+    inline FEStruct(F v_ = F(0)) : f( v_)  {} \
+    inline FEStruct(E e_) : f( e_)  {}
 
 
 #define MQ_DECLARE_OPERATORS_FOR_FLAGS( FEStruct) \

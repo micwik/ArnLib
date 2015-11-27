@@ -851,16 +851,14 @@ ArnM::ArnM()
     _errTextTab[ ArnError::RpcInvokeError]  = QString(tr("Rpc Invoke error"));
     _errTextTab[ ArnError::RpcReceiveError] = QString(tr("Rpc Receive error"));
 
-    const QMetaObject*  metaObj = &AllowClassG::staticMetaObject;
-    QMetaEnum  metaEnum = metaObj->enumerator(0);
-    qDebug() << "AllowName=" << metaEnum.name();
-    for (int i = 0; i < metaEnum.keyCount(); ++i) {
-        qDebug() << "idx=" << i << " key=" << metaEnum.key(i) << " val=" << metaEnum.value(i);
-    }
-    AllowClassG allow(0);
-    qDebug() << "AllowVal2: Create=" << allow.Create;
+    AllowClassG allow;
+    qDebug() << "AllowVal1: Create=" << allow.Create;
+    qDebug() << "AllowVal2: CreateTxt=" << allow.mqfTxt().getTxt( allow.NsEnum, allow.Create);
     allow.set( allow.Delete).set( allow.Read);
     qDebug() << "AllowVal3: toString=" << allow.toString();
+    allow.mqfTxt().setTxt( allow.NsHuman, allow.Create, "Test - Create");
+    AllowClassG allow2;
+    qDebug() << "AllowVal4: getTxt=" << allow2.mqfTxt().getTxt( allow2.NsHuman, allow2.Create);
 
     QTimer::singleShot( 0, this, SLOT(postSetup()));
 }
