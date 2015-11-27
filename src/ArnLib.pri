@@ -103,11 +103,13 @@ contains(ARN, qml) {
     }
     SOURCES += \
         $$PWD/ArnQml.cpp \
-        $$PWD/ArnQmlMSystem.cpp
+        $$PWD/ArnQmlMSystem.cpp \
+        $$PWD/ArnQmlMQt.cpp
 
     HEADERS += \
         $$PWD/ArnInc/ArnQml.hpp \
-        $$PWD/ArnInc/ArnQmlMSystem.hpp
+        $$PWD/ArnInc/ArnQmlMSystem.hpp \
+        $$PWD/ArnInc/ArnQmlMQt.hpp
 }
 
 
