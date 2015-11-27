@@ -42,13 +42,13 @@ MQFTxt::MQFTxt( const QMetaObject& metaObj)
 }
 
 
-void  MQFTxt::setTxtRef( int nameSpace, int enumVal, const char *txt)
+void  MQFTxt::setTxtRef( quint16 nameSpace, quint16 enumVal, const char *txt)
 {
-    _enumStr.insert( (nameSpace << 16) + enumVal, txt);
+    _enumStr.insert( toEnumIndex( nameSpace, enumVal), txt);
 }
 
 
-void MQFTxt::setTxt(int nameSpace, int enumVal, const char* txt)
+void MQFTxt::setTxt( quint16 nameSpace, quint16 enumVal, const char* txt)
 {
     if (!_txtStore)
         _txtStore = new QList<QByteArray>;
@@ -60,9 +60,9 @@ void MQFTxt::setTxt(int nameSpace, int enumVal, const char* txt)
 }
 
 
-const char *MQFTxt::getTxt( int nameSpace, int enumVal)  const
+const char *MQFTxt::getTxt( quint16 nameSpace, quint16 enumVal)  const
 {
-    return _enumStr.value( (nameSpace << 16) + enumVal);
+    return _enumStr.value( toEnumIndex( nameSpace, enumVal), "");
 }
 
 
@@ -78,6 +78,12 @@ void  MQFTxt::setupFromMetaObject()
             continue;  // Not a single bit enum
         setTxtRef( 0, enumVal, metaEnum.key(i));
     }
+}
+
+
+quint32 MQFTxt::toEnumIndex( quint16 nameSpace, quint16 enumVal)
+{
+    return (nameSpace << 16) | enumVal;
 }
 
 }

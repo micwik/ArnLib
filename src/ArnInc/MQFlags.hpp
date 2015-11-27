@@ -48,14 +48,16 @@ class MQFTxt
 {
 public:
     MQFTxt( const QMetaObject& metaObj);
-    void  setTxtRef( int nameSpace, int enumVal, const char* txt);
-    void  setTxt( int nameSpace, int enumVal, const char* txt);
-    const char*  getTxt( int nameSpace, int enumVal)  const;
+    void  setTxtRef( quint16 nameSpace, quint16 enumVal, const char* txt);
+    void  setTxt( quint16 nameSpace, quint16 enumVal, const char* txt);
+    const char*  getTxt( quint16 nameSpace, quint16 enumVal)  const;
 
 private:
     void  setupFromMetaObject();
+    inline static quint32  toEnumIndex( quint16 nameSpace, quint16 enumVal);
+
     const QMetaObject&  _metaObj;
-    QMap<int,const char*> _enumStr;
+    QMap<quint32,const char*> _enumStr;
     QList<QByteArray>*  _txtStore;
 };
 
@@ -82,7 +84,7 @@ private:
 
 #define MQ_DECLARE_FLAGSTXT( FEStruct) \
     MQ_DECLARE_FLAGS_BASE( FEStruct) \
-    Arn::MQFTxt&  mqfTxt()  {static Arn::MQFTxt in( staticMetaObject); return in;} \
+    Arn::MQFTxt&  txt()  {static Arn::MQFTxt in( staticMetaObject); return in;} \
     inline QString toString()  const {return Arn::mqfToString( staticMetaObject, f);} \
     inline FEStruct(F v_ = F(0)) : f( v_)  {} \
     inline FEStruct(E e_) : f( e_)  {}
