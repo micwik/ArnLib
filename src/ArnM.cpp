@@ -854,13 +854,13 @@ ArnM::ArnM()
     AllowClassG allow;
     qDebug() << "AllowVal BitSet(Enum):" << allow.txt().makeBitSet( allow.NsEnum);
     qDebug() << "AllowVal1: Create=" << allow.Create;
-    qDebug() << "AllowVal2: CreateTxt=" << allow.txt().getTxt( allow.NsEnum, allow.Create);
+    qDebug() << "AllowVal2: CreateTxt=" << allow.txt().getTxt( allow.Create);
     allow.set( allow.Delete).set( allow.Read);
     qDebug() << "AllowVal3: toString=" << allow.toString();
-    allow.txt().setTxt( allow.NsHuman, allow.Create, "Test - Create");
+    allow.txt().setTxt("Test - Create", allow.Create, allow.NsHuman);
     AllowClassG allow2;
     qDebug() << "AllowVal BitSet(Human):" << allow2.txt().makeBitSet( allow2.NsHuman);
-    qDebug() << "AllowVal4: getTxt=" << allow2.txt().getTxt( allow2.NsHuman, allow2.Create);
+    qDebug() << "AllowVal4: getTxt=" << allow2.txt().getTxt( allow2.Create, allow2.NsHuman);
 
     QTimer::singleShot( 0, this, SLOT(postSetup()));
 }

@@ -5,6 +5,7 @@
 #include <QMetaEnum>
 #include <QMapIterator>
 #include <QDebug>
+#include <limits.h>
 
 namespace Arn {
 
@@ -36,21 +37,22 @@ bool  isPower2( uint x)
 }
 
 
-MQFTxt::MQFTxt( const QMetaObject& metaObj)
+MQFTxt::MQFTxt( const QMetaObject& metaObj, bool isFlag)
     : _metaObj( metaObj)
 {
     _txtStore = 0;
+    _isFlag   = isFlag;
     setupFromMetaObject();
 }
 
 
-void  MQFTxt::setTxtRef( quint16 nameSpace, quint16 enumVal, const char *txt)
+void  MQFTxt::setTxtRef( const char *txt, int enumVal, quint16 nameSpace)
 {
-    _enumStr.insert( toEnumIndex( nameSpace, enumVal), txt);
+    _enumTxtTab.insert( EnumTxtKey( enumVal, nameSpace, _isFlag), txt);
 }
 
 
-void  MQFTxt::setTxt( quint16 nameSpace, quint16 enumVal, const char* txt)
+void  MQFTxt::setTxt( const char* txt, int enumVal, quint16 nameSpace)
 {
     if (!_txtStore)
         _txtStore = new QList<QByteArray>;
@@ -58,41 +60,42 @@ void  MQFTxt::setTxt( quint16 nameSpace, quint16 enumVal, const char* txt)
     int idx = _txtStore->size();
     *_txtStore += QByteArray( txt);
 
-    setTxtRef( nameSpace, enumVal, _txtStore->at( idx).constData());
+    setTxtRef( _txtStore->at( idx).constData(), enumVal, nameSpace);
 }
 
 
-const char*  MQFTxt::getTxt( quint16 nameSpace, quint16 enumVal)  const
+const char*  MQFTxt::getTxt( int enumVal, quint16 nameSpace)  const
 {
-    return _enumStr.value( toEnumIndex( nameSpace, enumVal), "");
+    return _enumTxtTab.value( EnumTxtKey( enumVal, nameSpace, _isFlag), "");
 }
 
 
-void  MQFTxt::setTxtString( quint16 nameSpace, quint16 enumVal, const QString& txt)
+void  MQFTxt::setTxtString( const QString& txt, int enumVal, quint16 nameSpace)
 {
-    setTxt( nameSpace, enumVal, txt.toUtf8().constData());
+    setTxt( txt.toUtf8().constData(), enumVal, nameSpace);
 }
 
 
-QString  MQFTxt::getTxtString( quint16 nameSpace, quint16 enumVal) const
+QString  MQFTxt::getTxtString( int enumVal, quint16 nameSpace)  const
 {
-    return QString::fromUtf8( getTxt( nameSpace, enumVal));
+    return QString::fromUtf8( getTxt( enumVal, nameSpace));
 }
 
 
 QString  MQFTxt::makeBitSet( quint16 nameSpace)
 {
-    quint32  idxStart = toEnumIndex( nameSpace, 0);
-    quint32  idxStop  = toEnumIndex( nameSpace, 0xffff);
+    EnumTxtKey  keyStart( 0,       nameSpace, _isFlag);
+    EnumTxtKey  keyStop( UINT_MAX, nameSpace, _isFlag);
     XStringMap  xsm;
-    int  bitNum = 0;
+    uint  bitNum = 0;
 
-    QMap<quint32,const char*>::iterator  i = _enumStr.lowerBound( idxStart);
-    while (i != _enumStr.end()) {
-        quint32  enumIndexStored = i.key();
-        if (enumIndexStored > idxStop)  break;
+    QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
+    while (i != _enumTxtTab.end()) {
+        const EnumTxtKey&  keyStored = i.key();
+        if (keyStop < keyStored)  break;
 
-        while (toEnumIndex( nameSpace, 1 << bitNum) < enumIndexStored)
+        uint  enumValStored = keyStored._enumVal;
+        while (uint(1 << bitNum) < enumValStored)
             ++bitNum;
         xsm.add("B" + QByteArray::number( bitNum), QByteArray( i.value()));
         ++i;
@@ -112,14 +115,20 @@ void  MQFTxt::setupFromMetaObject()
         int  enumVal = metaEnum.value(i);
         if (!isPower2( enumVal))
             continue;  // Not a single bit enum
-        setTxtRef( 0, enumVal, metaEnum.key(i));
+        setTxtRef( metaEnum.key(i), enumVal);
     }
 }
 
 
-quint32  MQFTxt::toEnumIndex( quint16 nameSpace, quint16 enumVal)
+bool  MQFTxt::EnumTxtKey::operator <( const MQFTxt::EnumTxtKey& other)  const
 {
-    return (nameSpace << 16) | enumVal;
+    if (_isFlag != other._isFlag)  qWarning() << "ERROR EnumKey isFlag diff !!!";
+    if (_nameSpace < other._nameSpace)  return true;
+    if (_nameSpace > other._nameSpace)  return false;
+    if (_isFlag)
+        return _enumVal < other._enumVal;  // Flag: unsigned compare
+    else
+        return int(_enumVal) < int(other._enumVal);
 }
 
 }

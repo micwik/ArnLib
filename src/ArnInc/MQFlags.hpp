@@ -47,23 +47,33 @@ bool  isPower2( uint x);
 class MQFTxt
 {
 public:
-    MQFTxt( const QMetaObject& metaObj);
+    MQFTxt( const QMetaObject& metaObj, bool isFlag);
 
-    void  setTxtRef( quint16 nameSpace, quint16 enumVal, const char* txt);
-    void  setTxt( quint16 nameSpace, quint16 enumVal, const char* txt);
-    const char*  getTxt( quint16 nameSpace, quint16 enumVal)  const;
-    void  setTxtString( quint16 nameSpace, quint16 enumVal, const QString& txt);
-    QString  getTxtString( quint16 nameSpace, quint16 enumVal)  const;
+    void  setTxtRef( const char* txt, int enumVal, quint16 nameSpace = 0);
+    void  setTxt( const char* txt, int enumVal, quint16 nameSpace = 0);
+    const char*  getTxt( int enumVal, quint16 nameSpace = 0)  const;
+    void  setTxtString( const QString& txt, int enumVal, quint16 nameSpace = 0);
+    QString  getTxtString( int enumVal, quint16 nameSpace = 0)  const;
 
-    QString  makeBitSet( quint16 nameSpace);
+    QString  makeBitSet( quint16 nameSpace = 0);
 
 private:
+    struct EnumTxtKey {
+        uint  _enumVal;
+        quint16  _nameSpace;
+        bool  _isFlag;
+
+        EnumTxtKey( uint enumVal, quint16 nameSpace, bool isFlag)
+        {_enumVal = enumVal;  _nameSpace = nameSpace;  _isFlag = isFlag;}
+        bool  operator <( const EnumTxtKey& other)  const;
+    };
+
     void  setupFromMetaObject();
-    inline static quint32  toEnumIndex( quint16 nameSpace, quint16 enumVal);
 
     const QMetaObject&  _metaObj;
-    QMap<quint32,const char*>  _enumStr;
+    QMap<EnumTxtKey,const char*>  _enumTxtTab;
     QList<QByteArray>*  _txtStore;
+    bool  _isFlag;
 };
 
 }
@@ -89,7 +99,7 @@ private:
 
 #define MQ_DECLARE_FLAGSTXT( FEStruct) \
     MQ_DECLARE_FLAGS_BASE( FEStruct) \
-    Arn::MQFTxt&  txt()  {static Arn::MQFTxt in( staticMetaObject); return in;} \
+    Arn::MQFTxt&  txt()  {static Arn::MQFTxt in( staticMetaObject, true); return in;} \
     inline QString toString()  const {return Arn::mqfToString( staticMetaObject, f);} \
     inline FEStruct(F v_ = F(0)) : f( v_)  {} \
     inline FEStruct(E e_) : f( e_)  {}
