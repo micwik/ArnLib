@@ -41,7 +41,6 @@ class QMetaObject;
 
 namespace Arn {
 
-QString  mqfToString( const QMetaObject& metaObj, int val);
 bool  isPower2( uint x);
 
 class MQFTxt
@@ -56,6 +55,7 @@ public:
     QString  getTxtString( int enumVal, quint16 nameSpace = 0)  const;
 
     QString  makeBitSet( quint16 nameSpace = 0);
+    QString  flagsToString( int val, quint16 nameSpace = 0);
 
 private:
     struct EnumTxtKey {
@@ -99,8 +99,8 @@ private:
 
 #define MQ_DECLARE_FLAGSTXT( FEStruct) \
     MQ_DECLARE_FLAGS_BASE( FEStruct) \
-    Arn::MQFTxt&  txt()  {static Arn::MQFTxt in( staticMetaObject, true); return in;} \
-    inline QString toString()  const {return Arn::mqfToString( staticMetaObject, f);} \
+    Arn::MQFTxt&  txt()  const {static Arn::MQFTxt in( staticMetaObject, true); return in;} \
+    inline QString  toString( quint16 nameSpace = 0)  const {return txt().flagsToString( f, nameSpace);} \
     inline FEStruct(F v_ = F(0)) : f( v_)  {} \
     inline FEStruct(E e_) : f( e_)  {}
 

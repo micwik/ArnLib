@@ -9,28 +9,6 @@
 
 namespace Arn {
 
-QString  mqfToString( const QMetaObject& metaObj, int val)
-{
-    if (metaObj.enumeratorCount() < 1)  return QString();
-
-    QString  retVal;
-    QMetaEnum  metaEnum = metaObj.enumerator(0);
-    int  nKeys = metaEnum.keyCount();
-    for (int i = 0; i < nKeys; ++i) {
-        uint  enumVal = metaEnum.value(i);
-        if (!isPower2( enumVal))
-            continue;  // Not a single bit enum
-        if (val & enumVal) {
-            if (!retVal.isEmpty())
-                retVal += " | ";
-            retVal += metaEnum.key(i);
-        }
-    }
-
-    return retVal;
-}
-
-
 bool  isPower2( uint x)
 {
     return x && ((x & (x - 1)) == 0);
@@ -84,6 +62,8 @@ QString  MQFTxt::getTxtString( int enumVal, quint16 nameSpace)  const
 
 QString  MQFTxt::makeBitSet( quint16 nameSpace)
 {
+    if (!_isFlag)  return QString();  // Only for flags
+
     EnumTxtKey  keyStart( 0,       nameSpace, _isFlag);
     EnumTxtKey  keyStop( UINT_MAX, nameSpace, _isFlag);
     XStringMap  xsm;
@@ -105,6 +85,32 @@ QString  MQFTxt::makeBitSet( quint16 nameSpace)
 }
 
 
+QString  MQFTxt::flagsToString( int val, quint16 nameSpace)
+{
+    if (!_isFlag)  return QString();  // Only for flags
+
+    EnumTxtKey  keyStart( 0,       nameSpace, _isFlag);
+    EnumTxtKey  keyStop( UINT_MAX, nameSpace, _isFlag);
+    XStringMap  xsm;
+    QString  retVal;
+
+    QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
+    while (i != _enumTxtTab.end()) {
+        const EnumTxtKey&  keyStored = i.key();
+        if (keyStop < keyStored)  break;
+
+        if (val & keyStored._enumVal) {
+            if (!retVal.isEmpty())
+                retVal += " | ";
+            retVal += QString::fromUtf8( i.value());
+        }
+        ++i;
+    }
+
+    return retVal;
+}
+
+
 void  MQFTxt::setupFromMetaObject()
 {
     if (_metaObj.enumeratorCount() < 1)  return;
@@ -113,8 +119,8 @@ void  MQFTxt::setupFromMetaObject()
     int  nKeys = metaEnum.keyCount();
     for (int i = 0; i < nKeys; ++i) {
         int  enumVal = metaEnum.value(i);
-        if (!isPower2( enumVal))
-            continue;  // Not a single bit enum
+        if (_isFlag && !isPower2( enumVal))
+            continue;  // Not a single bit for flags
         setTxtRef( metaEnum.key(i), enumVal);
     }
 }
