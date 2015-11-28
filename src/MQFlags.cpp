@@ -89,10 +89,18 @@ QString  MQFTxt::flagsToString( int val, quint16 nameSpace)
 {
     if (!_isFlag)  return QString();  // Only for flags
 
+    return flagsToStringList( val, nameSpace).join(" | ");
+}
+
+
+QStringList  MQFTxt::flagsToStringList( int val, quint16 nameSpace)
+{
+    if (!_isFlag)  return QStringList();  // Only for flags
+
     EnumTxtKey  keyStart( 0,       nameSpace, _isFlag);
     EnumTxtKey  keyStop( UINT_MAX, nameSpace, _isFlag);
     XStringMap  xsm;
-    QString  retVal;
+    QStringList  retVal;
 
     QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
     while (i != _enumTxtTab.end()) {
@@ -100,8 +108,6 @@ QString  MQFTxt::flagsToString( int val, quint16 nameSpace)
         if (keyStop < keyStored)  break;
 
         if (val & keyStored._enumVal) {
-            if (!retVal.isEmpty())
-                retVal += " | ";
             retVal += QString::fromUtf8( i.value());
         }
         ++i;

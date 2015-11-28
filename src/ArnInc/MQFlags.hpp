@@ -34,7 +34,7 @@
 
 #include <QFlags>
 #include <QMap>
-#include <QList>
+#include <QStringList>
 
 
 class QMetaObject;
@@ -56,6 +56,7 @@ public:
 
     QString  makeBitSet( quint16 nameSpace = 0);
     QString  flagsToString( int val, quint16 nameSpace = 0);
+    QStringList  flagsToStringList( int val, quint16 nameSpace = 0);
 
 private:
     struct EnumTxtKey {
