@@ -60,13 +60,12 @@ QString  MQFTxt::getTxtString( int enumVal, quint16 nameSpace)  const
 }
 
 
-QString  MQFTxt::makeBitSet( quint16 nameSpace)
+void  MQFTxt::addBitSet( XStringMap& xsm, quint16 nameSpace)
 {
-    if (!_isFlag)  return QString();  // Only for flags
+    if (!_isFlag)  return;  // Only for flags
 
     EnumTxtKey  keyStart( 0,       nameSpace, _isFlag);
     EnumTxtKey  keyStop( UINT_MAX, nameSpace, _isFlag);
-    XStringMap  xsm;
     uint  bitNum = 0;
 
     QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
@@ -80,7 +79,15 @@ QString  MQFTxt::makeBitSet( quint16 nameSpace)
         xsm.add("B" + QByteArray::number( bitNum), QByteArray( i.value()));
         ++i;
     }
+}
 
+
+QString  MQFTxt::getBitSet( quint16 nameSpace)
+{
+    if (!_isFlag)  return QString();  // Only for flags
+
+    XStringMap  xsm;
+    addBitSet( xsm, nameSpace);
     return QString::fromUtf8( xsm.toXString());
 }
 

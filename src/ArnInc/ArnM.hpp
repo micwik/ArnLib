@@ -48,6 +48,7 @@
 class ArnThreadComStorage;
 class QDir;
 
+
 //! \cond ADV
 class ArnThreadCom
 {

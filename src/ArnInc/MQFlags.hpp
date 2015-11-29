@@ -36,6 +36,10 @@
 #include <QMap>
 #include <QStringList>
 
+namespace Arn {
+class XStringMap;
+}
+
 
 class QMetaObject;
 
@@ -54,7 +58,8 @@ public:
     void  setTxtString( const QString& txt, int enumVal, quint16 nameSpace = 0);
     QString  getTxtString( int enumVal, quint16 nameSpace = 0)  const;
 
-    QString  makeBitSet( quint16 nameSpace = 0);
+    void  addBitSet( Arn::XStringMap& xsm, quint16 nameSpace = 0);
+    QString  getBitSet( quint16 nameSpace = 0);
     QString  flagsToString( int val, quint16 nameSpace = 0);
     QStringList  flagsToStringList( int val, quint16 nameSpace = 0);
 
