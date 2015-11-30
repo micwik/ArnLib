@@ -57,6 +57,8 @@ public:
     const char*  getTxt( int enumVal, quint16 nameSpace = 0)  const;
     void  setTxtString( const QString& txt, int enumVal, quint16 nameSpace = 0);
     QString  getTxtString( int enumVal, quint16 nameSpace = 0)  const;
+    int  getEnumVal( const char* txt, int defaultVal = 0, quint16 nameSpace = 0);
+    int  getEnumVal( const QString& txt, int defaultVal = 0, quint16 nameSpace = 0);
 
     void  addBitSet( Arn::XStringMap& xsm, quint16 nameSpace = 0);
     QString  getBitSet( quint16 nameSpace = 0);
@@ -86,9 +88,11 @@ private:
 
 
 /// Flags
-#define MQ_DECLARE_FLAGS_BASE( FEStruct) \
+#define MQ_DECLARE_FLAGS( FEStruct) \
     Q_DECLARE_FLAGS(F, E) \
     F  f; \
+    inline FEStruct(F v_ = F(0)) : f( v_)  {} \
+    inline FEStruct(E e_) : f( e_)  {} \
     inline static E  flagIf( bool test, E e)  {return test ? e : E(0);} \
     inline bool  is(E e)  const {return f.testFlag(e);} \
     inline bool  isAny(E e)  const {return ((f & e) != 0) && (e != 0 || f == 0 );} \
@@ -98,17 +102,10 @@ private:
     inline operator int()  const {return f;} \
     inline bool  operator!()  const {return !f;}
 
-#define MQ_DECLARE_FLAGS( FEStruct) \
-    MQ_DECLARE_FLAGS_BASE( FEStruct) \
-    inline FEStruct(F v_ = F(0)) : f( v_)  {} \
-    inline FEStruct(E e_) : f( e_)  {}
-
 #define MQ_DECLARE_FLAGSTXT( FEStruct) \
-    MQ_DECLARE_FLAGS_BASE( FEStruct) \
-    Arn::MQFTxt&  txt()  const {static Arn::MQFTxt in( staticMetaObject, true); return in;} \
-    inline QString  toString( quint16 nameSpace = 0)  const {return txt().flagsToString( f, nameSpace);} \
-    inline FEStruct(F v_ = F(0)) : f( v_)  {} \
-    inline FEStruct(E e_) : f( e_)  {}
+    MQ_DECLARE_FLAGS( FEStruct) \
+    static Arn::MQFTxt&  txt()  {static Arn::MQFTxt in( staticMetaObject, true); return in;} \
+    inline QString  toString( quint16 nameSpace = 0)  const {return txt().flagsToString( f, nameSpace);}
 
 
 #define MQ_DECLARE_OPERATORS_FOR_FLAGS( FEStruct) \
@@ -123,6 +120,13 @@ private:
     inline int  toInt()  const {return e;} \
     inline operator int()  const {return e;} \
     inline bool  operator!()  const {return !e;}
+
+#define MQ_DECLARE_ENUMTXT( EStruct) \
+    MQ_DECLARE_ENUM( EStruct) \
+    static Arn::MQFTxt&  txt()  {static Arn::MQFTxt in( staticMetaObject, false); return in;} \
+    inline QString  toString( quint16 nameSpace = 0)  const {return txt().getTxtString( e, nameSpace);} \
+    inline static EStruct  fromString( const QString& text, quint16 nameSpace = 0) \
+      {return EStruct( E( txt().getEnumVal( text, 0, nameSpace)));}
 
 
 #endif // MQFLAGS_HPP

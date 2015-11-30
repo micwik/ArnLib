@@ -60,6 +60,30 @@ QString  MQFTxt::getTxtString( int enumVal, quint16 nameSpace)  const
 }
 
 
+int  MQFTxt::getEnumVal( const char* txt, int defaultVal, quint16 nameSpace)
+{
+    EnumTxtKey  keyStart( _isFlag ? 0        : INT_MIN, nameSpace, _isFlag);
+    EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : INT_MAX, nameSpace, _isFlag);
+
+    QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
+    while (i != _enumTxtTab.end()) {
+        const EnumTxtKey&  keyStored = i.key();
+        if (keyStop < keyStored)  break;
+
+        if (qstrcmp( i.value(), txt) == 0)  return int(keyStored._enumVal);  // Matching txt
+        ++i;
+    }
+
+    return defaultVal;  // Not found
+}
+
+
+int  MQFTxt::getEnumVal( const QString& txt, int defaultVal, quint16 nameSpace)
+{
+    return getEnumVal( txt.toUtf8().constData(), defaultVal, nameSpace);
+}
+
+
 void  MQFTxt::addBitSet( XStringMap& xsm, quint16 nameSpace)
 {
     if (!_isFlag)  return;  // Only for flags

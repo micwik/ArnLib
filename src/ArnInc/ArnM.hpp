@@ -124,20 +124,30 @@ public:
         NsEnum,
         NsHuman
     };
-
-    // AllowClassG();
-    // virtual ~AllowClassG();
-/*
-    static AllowClassG&  instance()
-    {
-        static AllowClassG* in = 0;
-        if (!in)
-            in = new AllowClassG();
-        return *in;
-    }
-*/
 };
 MQ_DECLARE_OPERATORS_FOR_FLAGS( AllowClassG)
+
+class DataTypeG {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        Null       = 0,
+        Int        = 1,
+        Double     = 2,
+        Real       = -2,
+        ByteArray  = 3,
+        String     = 4,
+        Variant    = 5
+        // 16 and above (max 255) is reserved by ArnItemB::ExportCode
+    };
+    MQ_DECLARE_ENUMTXT( DataTypeG)
+
+    enum NS {
+        NsEnum,
+        NsHuman
+    };
+};
 
 
 //! Arn main class

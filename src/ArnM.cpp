@@ -861,6 +861,11 @@ ArnM::ArnM()
     AllowClassG allow2;
     qDebug() << "AllowVal BitSet(Human):" << allow2.txt().getBitSet( allow2.NsHuman);
     qDebug() << "AllowVal4: getTxt=" << allow2.txt().getTxt( allow2.Create, allow2.NsHuman);
+    DataTypeG data1;
+    data1 = DataTypeG::Real;
+    qDebug() << "DataVal1: toString=" << data1.toString() << "  val=" << data1.toInt();
+    data1 = DataTypeG::fromString("Double");
+    qDebug() << "DataVal2: toString=" << data1.toString() << "  val=" << data1.toInt();
 
     QTimer::singleShot( 0, this, SLOT(postSetup()));
 }
