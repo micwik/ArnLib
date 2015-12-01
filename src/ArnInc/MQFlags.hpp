@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2014 Michael Wiklund.
+// Copyright (C) 2010-2015 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -40,17 +40,18 @@ namespace Arn {
 class XStringMap;
 }
 
-
 class QMetaObject;
+
 
 namespace Arn {
 
 bool  isPower2( uint x);
 
-class MQFTxt
+
+class EnumTxt
 {
 public:
-    MQFTxt( const QMetaObject& metaObj, bool isFlag);
+    EnumTxt( const QMetaObject& metaObj, bool isFlag);
 
     void  setTxtRef( const char* txt, int enumVal, quint16 nameSpace = 0);
     void  setTxt( const char* txt, int enumVal, quint16 nameSpace = 0);
@@ -109,7 +110,7 @@ private:
 
 #define MQ_DECLARE_FLAGSTXT( FEStruct) \
     MQ_DECLARE_FLAGS( FEStruct) \
-    static Arn::MQFTxt&  txt()  {static Arn::MQFTxt in( staticMetaObject, true); return in;} \
+    static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( staticMetaObject, true); return in;} \
     inline QString  toString( quint16 nameSpace = 0)  const {return txt().flagsToString( f, nameSpace);} \
     inline static FEStruct  fromString( const QString& text, quint16 nameSpace = 0) \
       {return FEStruct( F( txt().flagsFromString( text, nameSpace)));}
@@ -130,7 +131,7 @@ private:
 
 #define MQ_DECLARE_ENUMTXT( EStruct) \
     MQ_DECLARE_ENUM( EStruct) \
-    static Arn::MQFTxt&  txt()  {static Arn::MQFTxt in( staticMetaObject, false); return in;} \
+    static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( staticMetaObject, false); return in;} \
     inline QString  toString( quint16 nameSpace = 0)  const {return txt().getTxtString( e, nameSpace);} \
     inline static EStruct  fromString( const QString& text, quint16 nameSpace = 0) \
       {return EStruct( E( txt().getEnumVal( text, 0, nameSpace)));}

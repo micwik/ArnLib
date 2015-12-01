@@ -1,3 +1,34 @@
+// Copyright (C) 2010-2015 Michael Wiklund.
+// All rights reserved.
+// Contact: arnlib@wiklunden.se
+//
+// This file is part of the ArnLib - Active Registry Network.
+// Parts of ArnLib depend on Qt and/or other libraries that have their own
+// licenses. ArnLib is independent of these licenses; however, use of these
+// other libraries is subject to their respective license agreements.
+//
+// GNU Lesser General Public License Usage
+// This file may be used under the terms of the GNU Lesser General Public
+// License version 2.1 as published by the Free Software Foundation and
+// appearing in the file LICENSE_LGPL.txt included in the packaging of this
+// file. In addition, as a special exception, you may use the rights described
+// in the Nokia Qt LGPL Exception version 1.1, included in the file
+// LGPL_EXCEPTION.txt in this package.
+//
+// GNU General Public License Usage
+// Alternatively, this file may be used under the terms of the GNU General Public
+// License version 3.0 as published by the Free Software Foundation and appearing
+// in the file LICENSE_GPL.txt included in the packaging of this file.
+//
+// Other Usage
+// Alternatively, this file may be used in accordance with the terms and conditions
+// contained in a signed written agreement between you and Michael Wiklund.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+//
+
 #include "ArnInc/MQFlags.hpp"
 #include <ArnInc/XStringMap.hpp>
 #include <QMetaType>
@@ -15,7 +46,7 @@ bool  isPower2( uint x)
 }
 
 
-MQFTxt::MQFTxt( const QMetaObject& metaObj, bool isFlag)
+EnumTxt::EnumTxt( const QMetaObject& metaObj, bool isFlag)
     : _metaObj( metaObj)
 {
     _txtStore = 0;
@@ -24,13 +55,13 @@ MQFTxt::MQFTxt( const QMetaObject& metaObj, bool isFlag)
 }
 
 
-void  MQFTxt::setTxtRef( const char *txt, int enumVal, quint16 nameSpace)
+void  EnumTxt::setTxtRef( const char *txt, int enumVal, quint16 nameSpace)
 {
     _enumTxtTab.insert( EnumTxtKey( enumVal, nameSpace, _isFlag), txt);
 }
 
 
-void  MQFTxt::setTxt( const char* txt, int enumVal, quint16 nameSpace)
+void  EnumTxt::setTxt( const char* txt, int enumVal, quint16 nameSpace)
 {
     if (!_txtStore)
         _txtStore = new QList<QByteArray>;
@@ -42,25 +73,25 @@ void  MQFTxt::setTxt( const char* txt, int enumVal, quint16 nameSpace)
 }
 
 
-const char*  MQFTxt::getTxt( int enumVal, quint16 nameSpace)  const
+const char*  EnumTxt::getTxt( int enumVal, quint16 nameSpace)  const
 {
     return _enumTxtTab.value( EnumTxtKey( enumVal, nameSpace, _isFlag), "");
 }
 
 
-void  MQFTxt::setTxtString( const QString& txt, int enumVal, quint16 nameSpace)
+void  EnumTxt::setTxtString( const QString& txt, int enumVal, quint16 nameSpace)
 {
     setTxt( txt.toUtf8().constData(), enumVal, nameSpace);
 }
 
 
-QString  MQFTxt::getTxtString( int enumVal, quint16 nameSpace)  const
+QString  EnumTxt::getTxtString( int enumVal, quint16 nameSpace)  const
 {
     return QString::fromUtf8( getTxt( enumVal, nameSpace));
 }
 
 
-int  MQFTxt::getEnumVal( const char* txt, int defaultVal, quint16 nameSpace)
+int  EnumTxt::getEnumVal( const char* txt, int defaultVal, quint16 nameSpace)
 {
     EnumTxtKey  keyStart( _isFlag ? 0        : INT_MIN, nameSpace, _isFlag);
     EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : INT_MAX, nameSpace, _isFlag);
@@ -78,13 +109,13 @@ int  MQFTxt::getEnumVal( const char* txt, int defaultVal, quint16 nameSpace)
 }
 
 
-int  MQFTxt::getEnumVal( const QString& txt, int defaultVal, quint16 nameSpace)
+int  EnumTxt::getEnumVal( const QString& txt, int defaultVal, quint16 nameSpace)
 {
     return getEnumVal( txt.toUtf8().constData(), defaultVal, nameSpace);
 }
 
 
-void  MQFTxt::addBitSet( XStringMap& xsm, quint16 nameSpace)
+void  EnumTxt::addBitSet( XStringMap& xsm, quint16 nameSpace)
 {
     if (!_isFlag)  return;  // Only for flags
 
@@ -106,7 +137,7 @@ void  MQFTxt::addBitSet( XStringMap& xsm, quint16 nameSpace)
 }
 
 
-QString  MQFTxt::getBitSet( quint16 nameSpace)
+QString  EnumTxt::getBitSet( quint16 nameSpace)
 {
     if (!_isFlag)  return QString();  // Only for flags
 
@@ -116,7 +147,7 @@ QString  MQFTxt::getBitSet( quint16 nameSpace)
 }
 
 
-QString  MQFTxt::flagsToString( int val, quint16 nameSpace)
+QString  EnumTxt::flagsToString( int val, quint16 nameSpace)
 {
     if (!_isFlag)  return QString();  // Only for flags
 
@@ -124,7 +155,7 @@ QString  MQFTxt::flagsToString( int val, quint16 nameSpace)
 }
 
 
-QStringList  MQFTxt::flagsToStringList( int val, quint16 nameSpace)
+QStringList  EnumTxt::flagsToStringList( int val, quint16 nameSpace)
 {
     if (!_isFlag)  return QStringList();  // Only for flags
 
@@ -147,7 +178,7 @@ QStringList  MQFTxt::flagsToStringList( int val, quint16 nameSpace)
 }
 
 
-int  MQFTxt::flagsFromString( const QString& flagString, quint16 nameSpace)
+int  EnumTxt::flagsFromString( const QString& flagString, quint16 nameSpace)
 {
     if (!_isFlag)  return 0;  // Only for flags
 
@@ -155,7 +186,7 @@ int  MQFTxt::flagsFromString( const QString& flagString, quint16 nameSpace)
 }
 
 
-int  MQFTxt::flagsFromStringList( const QStringList& flagStrings, quint16 nameSpace)
+int  EnumTxt::flagsFromStringList( const QStringList& flagStrings, quint16 nameSpace)
 {
     if (!_isFlag)  return 0;  // Only for flags
 
@@ -177,7 +208,7 @@ int  MQFTxt::flagsFromStringList( const QStringList& flagStrings, quint16 nameSp
 }
 
 
-void  MQFTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace)
+void  EnumTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace)
 {
     if (_isFlag)  return;  // Only for non flags
 
@@ -196,7 +227,7 @@ void  MQFTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace)
 }
 
 
-QString  MQFTxt::getEnumSet( quint16 nameSpace)
+QString  EnumTxt::getEnumSet( quint16 nameSpace)
 {
     if (_isFlag)  return QString();  // Only for non flags
 
@@ -206,7 +237,7 @@ QString  MQFTxt::getEnumSet( quint16 nameSpace)
 }
 
 
-void  MQFTxt::setupFromMetaObject()
+void  EnumTxt::setupFromMetaObject()
 {
     if (_metaObj.enumeratorCount() < 1)  return;
 
@@ -221,7 +252,7 @@ void  MQFTxt::setupFromMetaObject()
 }
 
 
-bool  MQFTxt::EnumTxtKey::operator <( const MQFTxt::EnumTxtKey& other)  const
+bool  EnumTxt::EnumTxtKey::operator <( const EnumTxt::EnumTxtKey& other)  const
 {
     if (_isFlag != other._isFlag)  qWarning() << "ERROR EnumKey isFlag diff !!!";
     if (_nameSpace < other._nameSpace)  return true;
