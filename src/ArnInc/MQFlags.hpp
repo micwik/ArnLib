@@ -64,6 +64,11 @@ public:
     QString  getBitSet( quint16 nameSpace = 0);
     QString  flagsToString( int val, quint16 nameSpace = 0);
     QStringList  flagsToStringList( int val, quint16 nameSpace = 0);
+    int  flagsFromString( const QString& flagString, quint16 nameSpace = 0);
+    int  flagsFromStringList( const QStringList& flagStrings, quint16 nameSpace = 0);
+
+    void  addEnumSet( Arn::XStringMap& xsm, quint16 nameSpace = 0);
+    QString  getEnumSet( quint16 nameSpace = 0);
 
 private:
     struct EnumTxtKey {
@@ -105,7 +110,9 @@ private:
 #define MQ_DECLARE_FLAGSTXT( FEStruct) \
     MQ_DECLARE_FLAGS( FEStruct) \
     static Arn::MQFTxt&  txt()  {static Arn::MQFTxt in( staticMetaObject, true); return in;} \
-    inline QString  toString( quint16 nameSpace = 0)  const {return txt().flagsToString( f, nameSpace);}
+    inline QString  toString( quint16 nameSpace = 0)  const {return txt().flagsToString( f, nameSpace);} \
+    inline static FEStruct  fromString( const QString& text, quint16 nameSpace = 0) \
+      {return FEStruct( F( txt().flagsFromString( text, nameSpace)));}
 
 
 #define MQ_DECLARE_OPERATORS_FOR_FLAGS( FEStruct) \

@@ -130,7 +130,6 @@ QStringList  MQFTxt::flagsToStringList( int val, quint16 nameSpace)
 
     EnumTxtKey  keyStart( 0,       nameSpace, _isFlag);
     EnumTxtKey  keyStop( UINT_MAX, nameSpace, _isFlag);
-    XStringMap  xsm;
     QStringList  retVal;
 
     QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
@@ -145,6 +144,65 @@ QStringList  MQFTxt::flagsToStringList( int val, quint16 nameSpace)
     }
 
     return retVal;
+}
+
+
+int  MQFTxt::flagsFromString( const QString& flagString, quint16 nameSpace)
+{
+    if (!_isFlag)  return 0;  // Only for flags
+
+    return flagsFromStringList( flagString.split(" | "), nameSpace);
+}
+
+
+int  MQFTxt::flagsFromStringList( const QStringList& flagStrings, quint16 nameSpace)
+{
+    if (!_isFlag)  return 0;  // Only for flags
+
+    EnumTxtKey  keyStart( 0,       nameSpace, _isFlag);
+    EnumTxtKey  keyStop( UINT_MAX, nameSpace, _isFlag);
+    int  retVal = 0;
+
+    QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
+    while (i != _enumTxtTab.end()) {
+        const EnumTxtKey&  keyStored = i.key();
+        if (keyStop < keyStored)  break;
+
+        if (flagStrings.contains( QString::fromUtf8( i.value())))
+            retVal |= keyStored._enumVal;
+        ++i;
+    }
+
+    return retVal;
+}
+
+
+void  MQFTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace)
+{
+    if (_isFlag)  return;  // Only for non flags
+
+    EnumTxtKey  keyStart( INT_MIN, nameSpace, _isFlag);
+    EnumTxtKey  keyStop(  INT_MAX, nameSpace, _isFlag);
+
+    QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
+    while (i != _enumTxtTab.end()) {
+        const EnumTxtKey&  keyStored = i.key();
+        if (keyStop < keyStored)  break;
+
+        int  enumValStored = int(keyStored._enumVal);
+        xsm.add(QByteArray::number( enumValStored), QByteArray( i.value()));
+        ++i;
+    }
+}
+
+
+QString  MQFTxt::getEnumSet( quint16 nameSpace)
+{
+    if (_isFlag)  return QString();  // Only for non flags
+
+    XStringMap  xsm;
+    addEnumSet( xsm, nameSpace);
+    return QString::fromUtf8( xsm.toXString());
 }
 
 

@@ -861,7 +861,10 @@ ArnM::ArnM()
     AllowClassG allow2;
     qDebug() << "AllowVal BitSet(Human):" << allow2.txt().getBitSet( allow2.NsHuman);
     qDebug() << "AllowVal4: getTxt=" << allow2.txt().getTxt( allow2.Create, allow2.NsHuman);
+    allow2 = AllowClassG::fromString("Write | Read");
+    qDebug() << "AllowVal5: toString=" << allow2.toString();
     DataTypeG data1;
+    qDebug() << "DataVal EnumSet(Enum):" << data1.txt().getEnumSet( data1.NsEnum);
     data1 = DataTypeG::Real;
     qDebug() << "DataVal1: toString=" << data1.toString() << "  val=" << data1.toInt();
     data1 = DataTypeG::fromString("Double");
