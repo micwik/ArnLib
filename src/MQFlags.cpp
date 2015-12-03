@@ -46,12 +46,13 @@ bool  isPower2( uint x)
 }
 
 
-EnumTxt::EnumTxt( const QMetaObject& metaObj, bool isFlag)
+EnumTxt::EnumTxt(const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* initTxt)
     : _metaObj( metaObj)
 {
     _txtStore = 0;
     _isFlag   = isFlag;
     setupFromMetaObject();
+    setupTxt( initTxt);
 }
 
 
@@ -234,6 +235,16 @@ QString  EnumTxt::getEnumSet( quint16 nameSpace)
     XStringMap  xsm;
     addEnumSet( xsm, nameSpace);
     return QString::fromUtf8( xsm.toXString());
+}
+
+
+void  EnumTxt::setupTxt( const _InitEnumTxt* initTxt)
+{
+    if (!initTxt)  return;  // Nothing to setup
+
+    for (int i = 0; initTxt[i].enumTxt; ++i) {
+        setTxtRef( initTxt[i].enumTxt, initTxt[i].enumVal, initTxt[i].ns);
+    }
 }
 
 

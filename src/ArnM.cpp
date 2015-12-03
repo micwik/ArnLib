@@ -865,6 +865,7 @@ ArnM::ArnM()
     qDebug() << "AllowVal5: toString=" << allow2.toString();
     DataTypeG data1;
     qDebug() << "DataVal EnumSet(Enum):" << data1.txt().getEnumSet( data1.NsEnum);
+    qDebug() << "DataVal EnumSet(Human):" << data1.txt().getEnumSet( data1.NsHuman);
     data1 = DataTypeG::Real;
     qDebug() << "DataVal1: toString=" << data1.toString() << "  val=" << data1.toInt();
     data1 = DataTypeG::fromString("Double");

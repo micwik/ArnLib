@@ -120,10 +120,13 @@ public:
     };
     MQ_DECLARE_FLAGSTXT( AllowClassG)
 
-    enum NS {
-        NsEnum,
-        NsHuman
-    };
+
+    enum NS {NsEnum, NsHuman};
+
+    MQ_DECLARE_ENUM_NSTXT(
+        { NsHuman, Read,   "Allow Read" },
+        { NsHuman, Delete, "Allow Delete" }
+    )
 };
 MQ_DECLARE_OPERATORS_FOR_FLAGS( AllowClassG)
 
@@ -143,10 +146,12 @@ public:
     };
     MQ_DECLARE_ENUMTXT( DataTypeG)
 
-    enum NS {
-        NsEnum,
-        NsHuman
-    };
+    enum NS {NsEnum, NsHuman};
+
+    MQ_DECLARE_ENUM_NSTXT(
+        { NsHuman, ByteArray, "Bytes type" },
+        { NsHuman, Variant,   "Variable type" }
+    )
 };
 
 
