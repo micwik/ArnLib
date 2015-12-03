@@ -78,6 +78,8 @@ public:
     void  addEnumSet( Arn::XStringMap& xsm, quint16 nameSpace = 0);
     QString  getEnumSet( quint16 nameSpace = 0);
 
+    void setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace = 0);
+
 private:
     struct EnumTxtKey {
         uint  _enumVal;

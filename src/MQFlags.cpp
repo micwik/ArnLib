@@ -211,10 +211,8 @@ int  EnumTxt::flagsFromStringList( const QStringList& flagStrings, quint16 nameS
 
 void  EnumTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace)
 {
-    if (_isFlag)  return;  // Only for non flags
-
-    EnumTxtKey  keyStart( INT_MIN, nameSpace, _isFlag);
-    EnumTxtKey  keyStop(  INT_MAX, nameSpace, _isFlag);
+    EnumTxtKey  keyStart( _isFlag ? 0        : INT_MIN, nameSpace, _isFlag);
+    EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : INT_MAX, nameSpace, _isFlag);
 
     QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
     while (i != _enumTxtTab.end()) {
@@ -230,11 +228,27 @@ void  EnumTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace)
 
 QString  EnumTxt::getEnumSet( quint16 nameSpace)
 {
-    if (_isFlag)  return QString();  // Only for non flags
-
     XStringMap  xsm;
     addEnumSet( xsm, nameSpace);
     return QString::fromUtf8( xsm.toXString());
+}
+
+
+void  EnumTxt::setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace)
+{
+    XStringMap  xsmFrom;
+    XStringMap  xsmTo;
+    addEnumSet( xsmFrom, fromNameSpace);
+    addEnumSet( xsmTo,   toNameSpace);
+
+    for (int i = 0; i < xsmFrom.size(); ++i) {
+        const QByteArray&  enumValKey = xsmFrom.keyRef( i);
+        if (xsmTo.indexOf( enumValKey) < 0) {  // Missing enumval in target
+            int  enumVal = enumValKey.toInt();
+            const char*  enumTxt = getTxt( enumVal, fromNameSpace);  // Get the original txt ptr
+            setTxtRef( enumTxt, enumVal, toNameSpace);
+        }
+    }
 }
 
 
