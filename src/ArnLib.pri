@@ -23,7 +23,8 @@ INCLUDEPATH += $$PWD
 SOURCES += \
     $$PWD/ArnXStringMap.cpp \
     $$PWD/Arn.cpp \
-    $$PWD/ArnLib.cpp
+    $$PWD/ArnLib.cpp \
+    $$PWD/MQFlags.cpp
 
 HEADERS += \
     $$PWD/ArnInc/ArnLib_global.hpp \
@@ -195,8 +196,5 @@ contains(ARN, zeroconf) {
         INCLUDEPATH += $$PWD/mDNS/mDNSCore $$PWD/mDNS/mDNSShared
     }
 }
-
-SOURCES += \
-    $$PWD/MQFlags.cpp
 
 }  # ARNLIB_PRI_INCLUDED

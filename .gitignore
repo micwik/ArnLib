@@ -11,6 +11,8 @@
 *.dylib
 *.exe
 *.dll
+# Other system
+*.directory
 # PROJECT (executable)
 doc/doxy_html/
 doc/latex/
@@ -26,6 +28,7 @@ ui_*.h
 Makefile
 Makefile.*
 *-build-*
+*/build/
 android/
 
 # Debug and Release (created under Windows, not Linux)

@@ -96,65 +96,6 @@ public:
 //! \endcond
 
 
-class AllowClassG {
-    Q_GADGET
-    Q_ENUMS(E)
-public:
-    enum E {
-        //! Nothing allowed
-        None      = 0x00,
-        //! Read from Arn Objects
-        Read      = 0x01,
-        //! Write to Arn Objects
-        Write     = 0x02,
-        //! Create Arn Objects
-        Create    = Arn::Allow::Create,
-        //! Delete Arn Objects
-        Delete    = 0x08,
-        //! Change Mode of Arn Objects
-        ModeChg   = 0x10,
-        //! Convenience, allow read & write
-        ReadWrite = 0x03,
-        //! Convenience, allow all
-        All       = 0xff
-    };
-    MQ_DECLARE_FLAGSTXT( AllowClassG)
-
-
-    enum NS {NsEnum, NsHuman};
-
-    MQ_DECLARE_ENUM_NSTXT(
-        { NsHuman, Read,   "Allow Read" },
-        { NsHuman, Delete, "Allow Delete" }
-    )
-};
-MQ_DECLARE_OPERATORS_FOR_FLAGS( AllowClassG)
-
-class DataTypeG {
-    Q_GADGET
-    Q_ENUMS(E)
-public:
-    enum E {
-        Null       = 0,
-        Int        = 1,
-        Double     = 2,
-        Real       = -2,
-        ByteArray  = 3,
-        String     = 4,
-        Variant    = 5
-        // 16 and above (max 255) is reserved by ArnItemB::ExportCode
-    };
-    MQ_DECLARE_ENUMTXT( DataTypeG)
-
-    enum NS {NsEnum, NsHuman};
-
-    MQ_DECLARE_ENUM_NSTXT(
-        { NsHuman, ByteArray, "Bytes type" },
-        { NsHuman, Variant,   "Variable type" }
-    )
-};
-
-
 //! Arn main class
 /*!
 [About Arn Data Object](\ref gen_arnobj)

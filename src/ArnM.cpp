@@ -851,28 +851,6 @@ ArnM::ArnM()
     _errTextTab[ ArnError::RpcInvokeError]  = QString(tr("Rpc Invoke error"));
     _errTextTab[ ArnError::RpcReceiveError] = QString(tr("Rpc Receive error"));
 
-    AllowClassG allow;
-    qDebug() << "AllowVal BitSet(Enum):" << allow.txt().getBitSet( allow.NsEnum);
-    qDebug() << "AllowVal1: Create=" << allow.Create;
-    qDebug() << "AllowVal2: CreateTxt=" << allow.txt().getTxt( allow.Create);
-    allow.set( allow.Delete).set( allow.Read);
-    qDebug() << "AllowVal3: toString=" << allow.toString();
-    allow.txt().setTxt("Test - Create", allow.Create, allow.NsHuman);
-    allow.txt().setMissingTxt( allow.NsHuman);
-    AllowClassG allow2;
-    qDebug() << "AllowVal BitSet(Human):" << allow2.txt().getBitSet( allow2.NsHuman);
-    qDebug() << "AllowVal4: getTxt=" << allow2.txt().getTxt( allow2.Create, allow2.NsHuman);
-    allow2 = AllowClassG::fromString("Write | Read");
-    qDebug() << "AllowVal5: toString=" << allow2.toString();
-    DataTypeG data1;
-    data1.txt().setMissingTxt( data1.NsHuman);
-    qDebug() << "DataVal EnumSet(Enum):" << data1.txt().getEnumSet( data1.NsEnum);
-    qDebug() << "DataVal EnumSet(Human):" << data1.txt().getEnumSet( data1.NsHuman);
-    data1 = DataTypeG::Real;
-    qDebug() << "DataVal1: toString=" << data1.toString() << "  val=" << data1.toInt();
-    data1 = DataTypeG::fromString("Double");
-    qDebug() << "DataVal2: toString=" << data1.toString() << "  val=" << data1.toInt();
-
     QTimer::singleShot( 0, this, SLOT(postSetup()));
 }
 
