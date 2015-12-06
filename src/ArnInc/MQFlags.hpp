@@ -59,7 +59,8 @@ typedef struct {
 class EnumTxt
 {
 public:
-    EnumTxt( const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* initTxt = 0);
+    EnumTxt( const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* initTxt,
+             const char* name);
 
     void  setTxtRef( const char* txt, int enumVal, quint16 nameSpace);
     void  setTxt( const char* txt, int enumVal, quint16 nameSpace);
@@ -79,7 +80,9 @@ public:
     void  addEnumSet( Arn::XStringMap& xsm, quint16 nameSpace = 0);
     QString  getEnumSet( quint16 nameSpace = 0);
 
-    void setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace = 0);
+    const char*  name()  const;
+
+    void  setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace = 0);
 
 private:
     struct EnumTxtKey {
@@ -100,6 +103,7 @@ private:
     QMap<EnumTxtKey,const char*>  _enumTxtTab;
     QList<QByteArray>*  _txtStore;
     bool  _isFlag;
+    const char*  _name;
 };
 
 }
@@ -123,8 +127,10 @@ private:
 
 #define MQ_DECLARE_FLAGSTXT( FEStruct) \
     MQ_DECLARE_FLAGS( FEStruct) \
-    static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( staticMetaObject, true, _setNs(0)); return in;} \
+    static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( staticMetaObject, true, _setNs(0), \
+                                                          #FEStruct); return in;} \
     inline static const Arn::_InitEnumTxt* _setNs( const Arn::_InitEnumTxt* ieTxt) {return ieTxt;} \
+    inline static const char*  name()  {return txt().name();} \
     inline QString  toString( quint16 nameSpace = 0)  const {return txt().flagsToString( f, nameSpace);} \
     inline static FEStruct  fromString( const QString& text, quint16 nameSpace = 0) \
       {return FEStruct( F( txt().flagsFromString( text, nameSpace)));}
@@ -154,8 +160,10 @@ private:
 
 #define MQ_DECLARE_ENUMTXT( EStruct) \
     MQ_DECLARE_ENUM( EStruct) \
-    static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( staticMetaObject, false, _setNs(0)); return in;} \
+    static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( staticMetaObject, false, _setNs(0), \
+                                                          #EStruct); return in;} \
     inline static const Arn::_InitEnumTxt* _setNs( const Arn::_InitEnumTxt* ieTxt) {return ieTxt;} \
+    inline static const char*  name()  {return txt().name();} \
     inline QString  toString( quint16 nameSpace = 0)  const {return txt().getTxtString( e, nameSpace);} \
     inline static EStruct  fromString( const QString& text, quint16 nameSpace = 0) \
       {return EStruct( E( txt().getEnumVal( text, 0, nameSpace)));}

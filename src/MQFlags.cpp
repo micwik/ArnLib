@@ -46,11 +46,13 @@ bool  isPower2( uint x)
 }
 
 
-EnumTxt::EnumTxt(const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* initTxt)
+EnumTxt::EnumTxt( const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* initTxt,
+                  const char* name)
     : _metaObj( metaObj)
 {
     _txtStore = 0;
     _isFlag   = isFlag;
+    _name     = name;
     setupFromMetaObject();
     setupTxt( initTxt);
 }
@@ -271,6 +273,12 @@ void  EnumTxt::setupTxt( const _InitEnumTxt* initTxt)
     for (int i = 0; initTxt[i].enumTxt; ++i) {
         setTxtRef( initTxt[i].enumTxt, initTxt[i].enumVal, initTxt[i].ns);
     }
+}
+
+
+const char*  EnumTxt::name()  const
+{
+    return _name;
 }
 
 
