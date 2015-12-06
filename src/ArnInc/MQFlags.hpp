@@ -35,6 +35,7 @@
 #include <QFlags>
 #include <QMap>
 #include <QStringList>
+#include <QObject>
 
 namespace Arn {
 class XStringMap;

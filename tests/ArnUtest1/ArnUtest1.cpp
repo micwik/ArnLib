@@ -42,7 +42,7 @@ ArnUtest1::ArnUtest1()
 
 void ArnUtest1::initTestCase()
 {
-    Arn::debugSizes = false;
+    // Arn::debugSizes = false;
     ArnM::setConsoleError( false);
     connect( &ArnM::instance(), SIGNAL(errorLogSig(QString,uint,void*)),
              _tsub, SLOT(ArnErrorLog(QString)));
