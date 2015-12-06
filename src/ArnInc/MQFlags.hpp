@@ -60,10 +60,10 @@ class EnumTxt
 public:
     EnumTxt( const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* initTxt = 0);
 
-    void  setTxtRef( const char* txt, int enumVal, quint16 nameSpace = 0);
-    void  setTxt( const char* txt, int enumVal, quint16 nameSpace = 0);
+    void  setTxtRef( const char* txt, int enumVal, quint16 nameSpace);
+    void  setTxt( const char* txt, int enumVal, quint16 nameSpace);
     const char*  getTxt( int enumVal, quint16 nameSpace = 0)  const;
-    void  setTxtString( const QString& txt, int enumVal, quint16 nameSpace = 0);
+    void  setTxtString( const QString& txt, int enumVal, quint16 nameSpace);
     QString  getTxtString( int enumVal, quint16 nameSpace = 0)  const;
     int  getEnumVal( const char* txt, int defaultVal = 0, quint16 nameSpace = 0);
     int  getEnumVal( const QString& txt, int defaultVal = 0, quint16 nameSpace = 0);
@@ -91,6 +91,7 @@ private:
         bool  operator <( const EnumTxtKey& other)  const;
     };
 
+    void  setTxtRefAny( const char* txt, int enumVal, quint16 nameSpace);
     void  setupFromMetaObject();
     void  setupTxt( const _InitEnumTxt* initTxt);
 

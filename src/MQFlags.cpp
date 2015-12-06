@@ -56,21 +56,30 @@ EnumTxt::EnumTxt(const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* in
 }
 
 
-void  EnumTxt::setTxtRef( const char *txt, int enumVal, quint16 nameSpace)
+void  EnumTxt::setTxtRefAny( const char* txt, int enumVal, quint16 nameSpace)
 {
     _enumTxtTab.insert( EnumTxtKey( enumVal, nameSpace, _isFlag), txt);
 }
 
 
+void  EnumTxt::setTxtRef( const char *txt, int enumVal, quint16 nameSpace)
+{
+    if (nameSpace > 0)
+        setTxtRefAny( txt, enumVal, nameSpace);
+}
+
+
 void  EnumTxt::setTxt( const char* txt, int enumVal, quint16 nameSpace)
 {
+    if (nameSpace == 0)  return;  // Not allowed to change original enum texts
+
     if (!_txtStore)
         _txtStore = new QList<QByteArray>;
 
     int idx = _txtStore->size();
     *_txtStore += QByteArray( txt);
 
-    setTxtRef( _txtStore->at( idx).constData(), enumVal, nameSpace);
+    setTxtRefAny( _txtStore->at( idx).constData(), enumVal, nameSpace);
 }
 
 
@@ -236,6 +245,9 @@ QString  EnumTxt::getEnumSet( quint16 nameSpace)
 
 void  EnumTxt::setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace)
 {
+    if (toNameSpace == 0)  return;  // Not allowed to change original enum texts
+    if (toNameSpace == fromNameSpace)  return;
+
     XStringMap  xsmFrom;
     XStringMap  xsmTo;
     addEnumSet( xsmFrom, fromNameSpace);
@@ -246,7 +258,7 @@ void  EnumTxt::setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace)
         if (xsmTo.indexOf( enumValKey) < 0) {  // Missing enumval in target
             int  enumVal = enumValKey.toInt();
             const char*  enumTxt = getTxt( enumVal, fromNameSpace);  // Get the original txt ptr
-            setTxtRef( enumTxt, enumVal, toNameSpace);
+            setTxtRefAny( enumTxt, enumVal, toNameSpace);
         }
     }
 }
@@ -272,7 +284,7 @@ void  EnumTxt::setupFromMetaObject()
         int  enumVal = metaEnum.value(i);
         if (_isFlag && !isPower2( enumVal))
             continue;  // Not a single bit for flags
-        setTxtRef( metaEnum.key(i), enumVal);
+        setTxtRefAny( metaEnum.key(i), enumVal, 0);
     }
 }
 

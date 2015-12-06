@@ -91,6 +91,17 @@ void ArnUtest1::testMQFlagsText()
     // qDebug() << "DataVal2: toString=" << data1.toString() << "  val=" << data1.toInt();
     QVERIFY( data1.toString() == "Double");
     QVERIFY( data1.toInt() == 2);
+    data1.txt().setTxt("Int - Not set", data1.Int, data1.NsEnum);  // Not allowed change, do nothing
+    // qDebug() << "DataVal EnumSet(Human):" << data1.txt().getEnumSet( data1.NsHuman);
+    QVERIFY( data1.txt().getEnumSet( data1.NsEnum) == "-2=Real 0=Null 1=Int 2=Double 3=ByteArray 4=String 5=Variant");
+    data1.txt().setTxt("Int - test", data1.Int, data1.NsHuman);
+    // qDebug() << "DataVal EnumSet(Human):" << data1.txt().getEnumSet( data1.NsHuman);
+    QVERIFY( data1.txt().getEnumSet( data1.NsHuman) == "-2=Real 0=Null 1=Int_-_test 2=Double 3=Bytes_type 4=String 5=Variable_type");
+    DataTypeT data2;
+    // qDebug() << "DataVal data2 EnumSet(Human):" << data2.txt().getEnumSet( data2.NsHuman);
+    QVERIFY( data2.txt().getEnumSet( data2.NsHuman) == "-2=Real 0=Null 1=Int_-_test 2=Double 3=Bytes_type 4=String 5=Variable_type");
+    // qDebug() << "DataVal3 data2: toString=" << data2.toString();
+    QVERIFY( data2.toString() == "Null");
 }
 
 
