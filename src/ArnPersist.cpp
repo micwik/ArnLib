@@ -164,7 +164,7 @@ ArnPersist::ArnPersist( QObject* parent) :
     _query         = 0;
     _depOffer      = 0;
 
-    setupSapi( _sapiCommon, "//.sys/Persist/Pipes/CommonPipe!");
+    setupSapi( _sapiCommon);
 }
 
 
@@ -337,6 +337,7 @@ void  ArnPersist::doArnUpdate()
     switch (item->storeType()) {
     case ArnItemPersist::StoreType::DataBase:
     {
+        // qDebug() << "Persist arnUpdate DB: path=" << item->path();
         int storeId = item->storeId();
         if (storeId) {
             updateDbValue( storeId, item->arnExport());
@@ -827,10 +828,10 @@ void  ArnPersist::getFileList(QStringList& flist, const QDir& dir, const QDir* b
 }
 
 
-void  ArnPersist::setupSapi( ArnPersistSapi* sapi, const QString& pipePath)
+void  ArnPersist::setupSapi( ArnPersistSapi* sapi)
 {
     typedef ArnRpc::Mode  Mode;
-    sapi->open( pipePath, Mode::Provider);
+    sapi->open( QString(), Mode::Provider);
     sapi->batchConnect( QRegExp("^pv_(.+)"), this, "sapi\\1", Mode());
 }
 
@@ -857,6 +858,21 @@ void  ArnPersist::vcsCheckoutR()
 {
     doLoadFiles();
     // emit rps_vcsCheckoutR();
+}
+
+
+void  ArnPersist::sapiFlush( const QString& path)
+{
+    bool  isOk = true;
+    QString  fullPath = Arn::fullPath( path);
+    foreach (ArnItemPersist* item, _itemPersistMap) {
+        if (path.isEmpty() || item->path().startsWith( fullPath)) {
+            // if (item->isDelayPending())
+            //     qDebug() << "Persist flush: path=" << item->path();
+            item->bypassDelayPending();
+        }
+    }
+    emit _sapiCommon->rq_flushR( isOk, path);
 }
 
 

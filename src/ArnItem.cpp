@@ -217,6 +217,20 @@ int ArnItem::delay() const
 }
 
 
+bool  ArnItem::isDelayPending()  const
+{
+    return _delayTimer && _delayTimer->isActive();
+}
+
+
+void ArnItem::bypassDelayPending()
+{
+    if (isDelayPending()) {
+        timeoutItemUpdate();
+    }
+}
+
+
 ArnItem&  ArnItem::operator=( const ArnItem& other)
 {
     this->setValue( other);

@@ -108,6 +108,8 @@ ArnDynamicSignals::ArnDynamicSignals( ArnRpc* rpc) :
 
 int  ArnDynamicSignals::qt_metacall( QMetaObject::Call call, int id, void **arguments)
 {
+    if (Arn::debugRPC)  qDebug() << "Rpc metaCall-1: call=" << call << " id=" << id;
+
     id = QObject::qt_metacall( call, id, arguments);
     if ((id < 0) || (call != QMetaObject::InvokeMetaMethod))
         return id;
@@ -123,6 +125,10 @@ int  ArnDynamicSignals::qt_metacall( QMetaObject::Call call, int id, void **argu
                                      slot.parNames.at(i).constData(),
                                      arguments[i + 1]);
     }
+
+    if (Arn::debugRPC)  qDebug() << "Rpc metaCall-2: call=" << call << " id=" << id
+                                 << " func=" << slot.funcName << " flags=" << slot.invokeFlags;
+
     _rpc->invoke( QString::fromLatin1( slot.funcName),
                   slot.invokeFlags,
                   args[0],
@@ -575,6 +581,9 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
 
 void  ArnRpc::pipeInput( const QByteArray& data)
 {
+    if (Arn::debugRPC)  qDebug() << "Rpc pipeInput: path=" << _pipe->path()
+                                 << " itemId=" << _pipe->itemId() << " data=" << data;
+
     if (!_receiver) {
         errorLog( QString(tr("Can't invoke method: receiver=0")), ArnError::RpcReceiveError);
         return;

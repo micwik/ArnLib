@@ -40,6 +40,8 @@
 #include <QThread>
 #include <QCoreApplication>
 #include <QMetaType>
+#include <QMetaObject>
+#include <QMetaEnum>
 #include <QFile>
 #include <QDir>
 #include <iostream>

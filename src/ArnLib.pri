@@ -23,7 +23,8 @@ INCLUDEPATH += $$PWD
 SOURCES += \
     $$PWD/ArnXStringMap.cpp \
     $$PWD/Arn.cpp \
-    $$PWD/ArnLib.cpp
+    $$PWD/ArnLib.cpp \
+    $$PWD/MQFlags.cpp
 
 HEADERS += \
     $$PWD/ArnInc/ArnLib_global.hpp \
@@ -63,7 +64,8 @@ contains(ARN, client) {
         $$PWD/ArnSapi.cpp \
         $$PWD/ArnMonitor.cpp \
         $$PWD/ArnMonEvent.cpp \
-        $$PWD/ArnSync.cpp
+        $$PWD/ArnSync.cpp \
+        $$PWD/ArnSyncLogin.hpp
 
     HEADERS += \
         $$PWD/ArnInc/ArnClient.hpp \
@@ -74,7 +76,8 @@ contains(ARN, client) {
         $$PWD/ArnInc/ArnPersistSapi.hpp \
         $$PWD/ArnInc/ArnMonitor.hpp \
         $$PWD/ArnInc/ArnMonEvent.hpp \
-        $$PWD/ArnSync.hpp
+        $$PWD/ArnSync.hpp \
+        $$PWD/ArnSyncLogin.cpp
 }
 
 
@@ -204,8 +207,3 @@ contains(ARN, zeroconf) {
 
 }  # ARNLIB_PRI_INCLUDED
 
-HEADERS += \
-    $$PWD/ArnSyncLogin.hpp
-
-SOURCES += \
-    $$PWD/ArnSyncLogin.cpp

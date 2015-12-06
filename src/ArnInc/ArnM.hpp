@@ -34,6 +34,7 @@
 
 #include "ArnLib_global.hpp"
 #include "Arn.hpp"
+#include "MQFlags.hpp"
 #include "ArnError.hpp"
 #include "ArnItem.hpp"
 #include <QIODevice>
@@ -46,6 +47,7 @@
 
 class ArnThreadComStorage;
 class QDir;
+
 
 //! \cond ADV
 class ArnThreadCom

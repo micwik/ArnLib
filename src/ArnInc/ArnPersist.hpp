@@ -226,6 +226,7 @@ public slots:
     bool  doArchive( const QString& name = QString());
 
 private slots:
+    void  sapiFlush( const QString& path);
     void  sapiTest( const QString& str, int i=0);
     void  sapiLs( const QString& path);
     void  sapiLoad();
@@ -252,7 +253,7 @@ private:
     void  loadFile( const QString& relPath);
     void  doLoadMandatory();
     void  doLoadFiles();
-    void  setupSapi( ArnPersistSapi* sapi, const QString& pipePath);
+    void  setupSapi( ArnPersistSapi* sapi);
     void  convertFileList( QStringList& files, Arn::NameF nameF);
     void  dbSetupReadValue( const QString& meta, const QString& valueTxt,
                             QByteArray& value);

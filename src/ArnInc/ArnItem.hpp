@@ -264,6 +264,9 @@ public:
     bool  isAutoDestroy()  const
     {return ArnItemB::isAutoDestroy();}
 
+    void  setBlockEcho( bool blockEcho = true)  // MW: TODO doc
+    {return ArnItemB::setBlockEcho( blockEcho);}
+
     //! Set _delay_ of data changed signal
     /*! Normally any change of the _Arn Data Object_ is immediately signalled.
      *  By setting this _delay_, intensive updates gives predictive and fewer signals.
@@ -271,6 +274,8 @@ public:
      *  a change to a signal will not be more than _delay_.
      *  \param[in] delay in ms.
      *  \see delay()
+     *  \see isDelayPending()
+     *  \see resetDelayPending()
      */
     void  setDelay( int delay);
 
@@ -280,6 +285,22 @@ public:
      *  \see setDelay()
      */
     int  delay()  const;
+
+    /*! Delay pending status
+     *  \retval true if the _Arn Data Object_ is changed, but the changed signal is
+     *          pending in a delay.
+     *  \see setDelay()
+     *  \see resetDelayPending()
+     */
+    bool  isDelayPending()  const;
+
+    /*! For delay pending, immediately signal changed
+     *  If the changed signal is pending in a delay, the changed signal is immediately
+     *  emitted and the delay is canceled. Otherwise nothing is done.
+     *  \see setDelay()
+     *  \see isDelayPending()
+     */
+    void  bypassDelayPending();
 
     //! Import data to an _Arn Data Object_
     /*! Data blob from a previos \p arnExport() can be imported.
