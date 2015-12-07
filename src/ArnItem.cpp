@@ -219,14 +219,16 @@ int ArnItem::delay() const
 
 bool  ArnItem::isDelayPending()  const
 {
-    return _delayTimer && _delayTimer->isActive();
+    Q_D(const ArnItem);
+
+    return d->_delayTimer && d->_delayTimer->isActive();
 }
 
 
 void ArnItem::bypassDelayPending()
 {
     if (isDelayPending()) {
-        timeoutItemUpdate();
+        doItemUpdate( ArnLinkHandle());
     }
 }
 

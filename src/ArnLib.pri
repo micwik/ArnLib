@@ -65,7 +65,7 @@ contains(ARN, client) {
         $$PWD/ArnMonitor.cpp \
         $$PWD/ArnMonEvent.cpp \
         $$PWD/ArnSync.cpp \
-        $$PWD/ArnSyncLogin.hpp
+        $$PWD/ArnSyncLogin.cpp
 
     HEADERS += \
         $$PWD/ArnInc/ArnClient.hpp \
@@ -77,7 +77,7 @@ contains(ARN, client) {
         $$PWD/ArnInc/ArnMonitor.hpp \
         $$PWD/ArnInc/ArnMonEvent.hpp \
         $$PWD/ArnSync.hpp \
-        $$PWD/ArnSyncLogin.cpp
+        $$PWD/ArnSyncLogin.hpp
 }
 
 
