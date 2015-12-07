@@ -49,6 +49,7 @@
 #  define QML_ENGINE            QQmlEngine
 #  define QML_PARSER_STATUS     QQmlParserStatus
 #  define QML_NETACC_FACTORY    QQmlNetworkAccessManagerFactory
+#  define QML_LIST_PROPERTY     QQmlListProperty
 #else
 #  include <QtDeclarative>
 #  include <QDeclarativeParserStatus>
@@ -59,6 +60,7 @@
 #  define QML_ENGINE            QDeclarativeEngine
 #  define QML_PARSER_STATUS     QDeclarativeParserStatus
 #  define QML_NETACC_FACTORY    QDeclarativeNetworkAccessManagerFactory
+#  define QML_LIST_PROPERTY     QDeclarativeListProperty
 #endif
 
 class QJSEngine;
@@ -185,6 +187,8 @@ public:
             ArnLib  = 0x01,
             //! Include some system fuctions like file-io
             MSystem = 0x02,
+            //! Include some Qt extensions like MQtObject
+            MQt     = 0x04,
             //! Include everything
             All     = 0xff
         };

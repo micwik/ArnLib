@@ -31,6 +31,7 @@
 
 #include "ArnInc/ArnQml.hpp"
 #include "ArnInc/ArnQmlMSystem.hpp"
+#include "ArnInc/ArnQmlMQt.hpp"
 #include "ArnInc/ArnInterface.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/ArnLib.hpp"
@@ -95,6 +96,10 @@ void  ArnQml::setup( QML_ENGINE* qmlEngine, ArnQml::UseFlags flags)
     if (flags.is( flags.MSystem) && !in._regedUse.is( flags.MSystem)) {
         in._regedUse.set( flags.MSystem);
         qmlRegisterType<QmlMFileIO>("MSystem", 1, 0, "MFileIO");
+    }
+    if (flags.is( flags.MQt) && !in._regedUse.is( flags.MQt)) {
+        in._regedUse.set( flags.MQt);
+        qmlRegisterType<QmlMQtObject>("MQtQml", 1, 0, "MQtObject");
     }
 
     if (qmlEngine) {

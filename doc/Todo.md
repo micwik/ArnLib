@@ -57,3 +57,4 @@ Done in 2.3
 * Persistent values can be flushed to storage on demand.
 * Enums (and flags) using MQFlags can use toString and more.
 * Unit test sub project with tests for enum text.
+* ArnQmlMQt with MQtObject for non gui qml (like Item/QtObject).
