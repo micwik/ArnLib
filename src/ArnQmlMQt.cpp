@@ -35,6 +35,7 @@
 namespace Arn {
 
 QmlMQtObject::QmlMQtObject( QmlMQtObject* parent)
+    : QObject(parent)
 {
 }
 
