@@ -119,6 +119,10 @@ private:
 }
 
 
+#define MQ_NSTXT_FILL_MISSING   0, 0
+#define MQ_NSTXT_FILL_MISSING_FROM( FromNs)   FromNs, 0
+
+
 /// Flags
 #define MQ_DECLARE_FLAGS( FEStruct) \
     Q_DECLARE_FLAGS(F, E) \

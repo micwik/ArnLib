@@ -280,8 +280,11 @@ void  EnumTxt::setupTxt( const _InitEnumTxt* initTxt)
 {
     if (!initTxt)  return;  // Nothing to setup
 
-    for (int i = 0; initTxt[i].enumTxt; ++i) {
-        setTxtRef( initTxt[i].enumTxt, initTxt[i].enumVal, initTxt[i].ns);
+    for (int i = 0; (initTxt[i].enumTxt || initTxt[i].enumVal || initTxt[i].ns); ++i) {
+        if (initTxt[i].enumTxt)
+            setTxtRef( initTxt[i].enumTxt, initTxt[i].enumVal, initTxt[i].ns);
+        else
+            setMissingTxt( initTxt[i].ns, initTxt[i].enumVal);
     }
 }
 

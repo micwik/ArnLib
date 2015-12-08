@@ -57,7 +57,7 @@ void ArnUtest1::cleanupTestCase()
 
 void ArnUtest1::testMQFlagsText()
 {
-    AllowClassT allow;
+    AllowClassT  allow;
     // qDebug() << "AllowVal BitSet(Enum):" << allow.txt().getBitSet( allow.NsEnum);
     QVERIFY( allow.txt().getBitSet( allow.NsEnum) == "B0=Read B1=Write B2=Create B3=Delete B4=ModeChg");
     // qDebug() << "AllowVal1: Create=" << allow.Create;
@@ -69,7 +69,8 @@ void ArnUtest1::testMQFlagsText()
     QVERIFY( allow.toString() == "Read | Delete");
     allow.txt().setTxt("Test - Create", allow.Create, allow.NsHuman);
     allow.txt().setMissingTxt( allow.NsHuman);
-    AllowClassT allow2;
+
+    AllowClassT  allow2;
     // qDebug() << "AllowVal BitSet(Human):" << allow2.txt().getBitSet( allow2.NsHuman);
     QVERIFY( allow2.txt().getBitSet( allow2.NsHuman) == "B0=Allow_Read B1=Write B2=Test_-_Create B3=Allow_Delete B4=ModeChg");
     // qDebug() << "AllowVal4: getTxt=" << allow2.txt().getTxt( allow2.Create, allow2.NsHuman);
@@ -79,7 +80,8 @@ void ArnUtest1::testMQFlagsText()
     QVERIFY( allow2.toString() == "Read | Write");
     // qDebug() << "AllowVal allow2: name=" << allow2.name();
     QVERIFY( QString( allow2.name()) == "AllowClassT");
-    DataTypeT data1;
+
+    DataTypeT  data1;
     data1.txt().setMissingTxt( data1.NsHuman);
     // qDebug() << "DataVal EnumSet(Enum):" << data1.txt().getEnumSet( data1.NsEnum);
     QVERIFY( data1.txt().getEnumSet( data1.NsEnum) == "-2=Real 0=Null 1=Int 2=Double 3=ByteArray 4=String 5=Variant");
@@ -99,13 +101,21 @@ void ArnUtest1::testMQFlagsText()
     data1.txt().setTxt("Int - test", data1.Int, data1.NsHuman);
     // qDebug() << "DataVal EnumSet(Human):" << data1.txt().getEnumSet( data1.NsHuman);
     QVERIFY( data1.txt().getEnumSet( data1.NsHuman) == "-2=Real 0=Null 1=Int_-_test 2=Double 3=Bytes_type 4=String 5=Variable_type");
-    DataTypeT data2;
+
+    DataTypeT  data2;
     // qDebug() << "DataVal data2 EnumSet(Human):" << data2.txt().getEnumSet( data2.NsHuman);
     QVERIFY( data2.txt().getEnumSet( data2.NsHuman) == "-2=Real 0=Null 1=Int_-_test 2=Double 3=Bytes_type 4=String 5=Variable_type");
     // qDebug() << "DataVal3 data2: toString=" << data2.toString();
     QVERIFY( data2.toString() == "Null");
     // qDebug() << "DataVal data2: name=" << data2.name();
     QVERIFY( QString( data2.name()) == "DataTypeT");
+
+    UsageT  usage;
+    // qDebug() << "Usage connectStat: string=" << usage._connectStat.toString();
+    QVERIFY( usage._connectStat.toString() == "Init");
+    // qDebug() << "Usage connectStat: EnumSet=" << usage._connectStat.txt().getEnumSet( UsageT::ConnectStatT::NsHuman);
+    QVERIFY( usage._connectStat.txt().getEnumSet( UsageT::ConnectStatT::NsHuman)
+             == "0=Initialized 1=Connecting 2=Negotiating 3=Connected 4=Stopped 5=Connect_error 6=Disconnected 7=Tried_all");
 }
 
 
