@@ -48,6 +48,42 @@ class QTcpSocket;
 class QTimer;
 
 
+namespace Arn {
+class ConnectStat {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        //! Initialized, not yet any result of trying to connect ...
+        Init = 0,
+        //! Trying to connect to an Arn host
+        Connecting,
+        //! Negotiating terms and compatibility with an Arn host
+        Negotiating,
+        //! Successfully connected to an Arn host
+        Connected,
+        //! No data flow within set timeout (still connected)
+        Stopped,
+        //! Unsuccessfull when trying to connect to an Arn host
+        Error,
+        //! TCP connection is broken (has been successfull)
+        Disconnected,
+        //! Unsuccessfully tried to connect to all hosts in the Arn connection List
+        TriedAll
+    };
+    MQ_DECLARE_ENUMTXT( ConnectStat)
+
+    enum NS {NsEnum, NsHuman};
+    MQ_DECLARE_ENUM_NSTXT(
+        { NsHuman, Init,     "Initialized" },
+        { NsHuman, Error,    "Connect error" },
+        { NsHuman, TriedAll, "Tried all" },
+        { NsHuman, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }
+    )
+};
+}
+
+
 //! Class for connecting to an _Arn Server_.
 /*!
 [About Sharing Arn Data Objects](\ref gen_shareArnobj)
@@ -73,27 +109,7 @@ class ARNLIBSHARED_EXPORT ArnClient : public QObject
 {
 Q_OBJECT
 public:
-    struct ConnectStat {
-        enum E {
-            //! Initialized, not yet any result of trying to connect ...
-            Init = 0,
-            //! Trying to connect to an Arn host
-            Connecting,
-            //! Negotiating terms and compatibility with an Arn host
-            Negotiating,
-            //! Successfully connected to an Arn host
-            Connected,
-            //! No data flow within set timeout (still connected)
-            Stopped,
-            //! Unsuccessfull when trying to connect to an Arn host
-            Error,
-            //! TCP connection is broken (has been successfull)
-            Disconnected,
-            //! Unsuccessfully tried to connect to all hosts in the Arn connection List
-            TriedAll
-        };
-        MQ_DECLARE_ENUM( ConnectStat)
-    };
+    typedef Arn::ConnectStat  ConnectStat;
 
     struct HostAddrPort {
         QString  addr;

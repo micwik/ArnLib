@@ -217,12 +217,7 @@ void  ArnDiscoverConnector::postSetupClient()
     ArnItem*  arnConnectStatus = new ArnItem( path + "value", this);
     *arnConnectStatus = _client->connectStatus();
     connect( _client, SIGNAL(connectionStatusChanged(int,int)), arnConnectStatus, SLOT(setValue(int)));
-    typedef ArnClient::ConnectStat CS;
-    ArnM::setValue( path + "set",
-          QString("%1=Initialized %2=Connecting %3=Negotiating %4=Connected "
-                  "%5=Stopped %6=Connect_error %7=Disconnected")
-                  .arg(CS::Init).arg(CS::Connecting).arg(CS::Negotiating).arg(CS::Connected)
-                  .arg(CS::Stopped).arg(CS::Error).arg(CS::Disconnected));
+    ArnM::setValue( path + "set", ArnClient::ConnectStat::txt().getBitSet( ArnClient::ConnectStat::NsHuman));
 
     path = connectIdPath + "Request/";
     ArnItem*  arnConnectReqPV = new ArnItem( path + "value!", this);
