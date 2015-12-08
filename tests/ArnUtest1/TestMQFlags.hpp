@@ -55,6 +55,39 @@ public:
     )
 };
 
+namespace ArnT {
+class ConnectStatT {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        Init = 0,
+        Connecting,
+        Negotiating,
+        Connected,
+        Stopped,
+        Error,
+        Disconnected,
+        TriedAll
+    };
+    MQ_DECLARE_ENUMTXT( ConnectStatT)
+
+    enum NS {NsEnum, NsHuman};
+    MQ_DECLARE_ENUM_NSTXT(
+        { NsHuman, Init,     "Initialized" },
+        { NsHuman, Error,    "Connect error" },
+        { NsHuman, TriedAll, "Tried all" },
+        { NsHuman, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }
+    )
+};
+}
+
+class UsageT {
+public:
+    typedef ArnT::ConnectStatT  ConnectStatT;
+
+    ConnectStatT  _connectStat;
+};
 
 #endif // TESTMQFLAGS_HPP
 
