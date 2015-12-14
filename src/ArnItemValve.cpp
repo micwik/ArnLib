@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2014 Michael Wiklund.
+// Copyright (C) 2010-2015 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -30,20 +30,39 @@
 //
 
 #include "ArnInc/ArnItemValve.hpp"
+#include "private/ArnItemValve_p.hpp"
 
 
-ArnItemValve::ArnItemValve( QObject *parent)
-    : ArnItemB( parent)
+ArnItemValvePrivate::ArnItemValvePrivate()
 {
     _switchValue = true;
     _targetItem  = 0;
 }
 
 
+ArnItemValvePrivate::~ArnItemValvePrivate()
+{
+}
+
+
+ArnItemValve::ArnItemValve( QObject *parent)
+    : ArnItemB( parent)
+{
+}
+
+
+ArnItemValve::ArnItemValve( ArnItemValvePrivate& dd, QObject* parent)
+    : ArnItemB( dd, parent)
+{
+}
+
+
 bool  ArnItemValve::setTarget( ArnItemB* targetItem, ArnItemValve::SwitchMode mode)
 {
-    _targetItem = targetItem;
-    _switchMode = mode;
+    Q_D(ArnItemValve);
+
+    d->_targetItem = targetItem;
+    d->_switchMode = mode;
     doControl();
 
     return true;
@@ -52,16 +71,20 @@ bool  ArnItemValve::setTarget( ArnItemB* targetItem, ArnItemValve::SwitchMode mo
 
 ArnItemValve::SwitchMode  ArnItemValve::switchMode()  const
 {
-    return _switchMode;
+    Q_D(const ArnItemValve);
+
+    return d->_switchMode;
 }
 
 
 bool  ArnItemValve::toBool()  const
 {
+    Q_D(const ArnItemValve);
+
     if (isOpen())
         return ArnItemB::toBool();
     else
-        return _switchValue;
+        return d->_switchValue;
 }
 
 
@@ -74,36 +97,42 @@ ArnItemValve&  ArnItemValve::operator=( bool value)
 
 void  ArnItemValve::setValue( bool value)
 {
+    Q_D(ArnItemValve);
+
     if (isOpen())
         ArnItemB::setValue( value, Arn::SameValue::Ignore);
-    else if (value != _switchValue) {
-        _switchValue = value;
+    else if (value != d->_switchValue) {
+        d->_switchValue = value;
         doControl();
-        emit changed( _switchValue);
+        emit changed( d->_switchValue);
     }
 }
 
 
 void  ArnItemValve::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
+    Q_D(ArnItemValve);
+
     ArnItemB::itemUpdated( handleData, value);
 
     if (value)
-        _switchValue = (value->toInt() != 0);
+        d->_switchValue = (value->toInt() != 0);
     else
-        _switchValue = ArnItemB::toBool();
+        d->_switchValue = ArnItemB::toBool();
 
     doControl();
-    emit changed( _switchValue);
+    emit changed( d->_switchValue);
 }
 
 
 void  ArnItemValve::doControl()
 {
-    if (!_targetItem)  return;  // No target to control
+    Q_D(ArnItemValve);
 
-    if (_switchMode.is( SwitchMode::InStream))
-        (_targetItem->*&ArnItemValve::setEnableUpdNotify)( _switchValue);  // Control target changed() signal
-    if (_switchMode.is( SwitchMode::OutStream))
-        (_targetItem->*&ArnItemValve::setEnableSetValue)( _switchValue);  // Control target assign value
+    if (!d->_targetItem)  return;  // No target to control
+
+    if (d->_switchMode.is( SwitchMode::InStream))
+        (d->_targetItem->*&ArnItemValve::setEnableUpdNotify)( d->_switchValue);  // Control target changed() signal
+    if (d->_switchMode.is( SwitchMode::OutStream))
+        (d->_targetItem->*&ArnItemValve::setEnableSetValue)( d->_switchValue);  // Control target assign value
 }

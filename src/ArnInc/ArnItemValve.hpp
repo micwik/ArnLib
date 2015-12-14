@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2014 Michael Wiklund.
+// Copyright (C) 2010-2015 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -34,7 +34,8 @@
 
 #include "ArnLib_global.hpp"
 #include "ArnItemB.hpp"
-#include <QPointer>
+
+class ArnItemValvePrivate;
 
 
 //! Valve for controlling stream to/from an ArnItemB.
@@ -76,6 +77,8 @@ controlled by an ArnItem.
 class ARNLIBSHARED_EXPORT ArnItemValve : public ArnItemB
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnItemValve)
+
 public:
     struct SwitchMode {
         enum E {
@@ -161,14 +164,12 @@ signals:
     //! \cond ADV
 protected:
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+
+    ArnItemValve( ArnItemValvePrivate& dd, QObject* parent);
     //! \endcond
 
 private:
     void  doControl();
-
-    bool  _switchValue;
-    SwitchMode  _switchMode;
-    QPointer<ArnItemB>  _targetItem;
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnItemValve::SwitchMode)
