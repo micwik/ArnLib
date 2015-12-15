@@ -35,6 +35,8 @@
 #include "ArnLib_global.hpp"
 #include "ArnItemB.hpp"
 
+class ArnPipePrivate;
+
 
 //! ArnItem specialized as a pipe.
 /*!
@@ -61,6 +63,7 @@ have it's own handles i.e ArnPipe instances.
 class ARNLIBSHARED_EXPORT ArnPipe : public ArnItemB
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnPipe)
 
 public:
     //! Standard constructor of a closed handle
@@ -185,6 +188,8 @@ signals:
     //! \cond ADV
 protected:
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+
+    ArnPipe( ArnPipePrivate& dd, QObject* parent);
     //! \endcond
 
 private slots:
@@ -192,11 +197,6 @@ private slots:
 private:
     void  init();
     void  setupSeq( ArnLinkHandle& handleData);
-
-    bool  _useSendSeq;
-    bool  _useCheckSeq;
-    int  _sendSeqNum;
-    int  _checkSeqNum;
 };
 
 #endif // ARNPIPE_HPP

@@ -30,16 +30,27 @@
 //
 
 #include "ArnInc/ArnPipe.hpp"
+#include "private/ArnPipe_p.hpp"
 #include "ArnInc/Arn.hpp"
 #include <QDebug>
 
 
-void  ArnPipe::init()
+ArnPipePrivate::ArnPipePrivate()
 {
     _useSendSeq  = true;
     _useCheckSeq = true;
     _sendSeqNum  = 0;
     _checkSeqNum = -1;  // Indicate first time (no history)
+}
+
+
+ArnPipePrivate::~ArnPipePrivate()
+{
+}
+
+
+void  ArnPipe::init()
+{
     setPipeMode();
 }
 
@@ -56,6 +67,12 @@ ArnPipe::ArnPipe( const QString& path, QObject* parent)
 {
     init();
     open( path);
+}
+
+
+ArnPipe::ArnPipe( ArnPipePrivate& dd, QObject* parent)
+    : ArnItemB( dd, parent)
+{
 }
 
 
@@ -101,49 +118,61 @@ void  ArnPipe::setValueOverwrite( const QByteArray& value, const QRegExp& rx)
 
 void  ArnPipe::setupSeq( ArnLinkHandle& handleData)
 {
-    if (!_useSendSeq)  return;  // Sequence not used
+    Q_D(ArnPipe);
 
-    handleData.add( ArnLinkHandle::SeqNo, QVariant( _sendSeqNum));
-    _sendSeqNum = (_sendSeqNum + 1) % 1000;
+    if (!d->_useSendSeq)  return;  // Sequence not used
+
+    handleData.add( ArnLinkHandle::SeqNo, QVariant( d->_sendSeqNum));
+    d->_sendSeqNum = (d->_sendSeqNum + 1) % 1000;
 }
 
 
 bool  ArnPipe::isSendSeq()  const
 {
-    return _useSendSeq;
+    Q_D(const ArnPipe);
+
+    return d->_useSendSeq;
 }
 
 
 void  ArnPipe::setSendSeq( bool useSeq)
 {
-    _useSendSeq = useSeq;
+    Q_D(ArnPipe);
+
+    d->_useSendSeq = useSeq;
 }
 
 
 bool  ArnPipe::isCheckSeq()  const
 {
-    return _useCheckSeq;
+    Q_D(const ArnPipe);
+
+    return d->_useCheckSeq;
 }
 
 
 void  ArnPipe::setCheckSeq( bool useCheckSeq)
 {
-    _useCheckSeq = useCheckSeq;
+    Q_D(ArnPipe);
+
+    d->_useCheckSeq = useCheckSeq;
 }
 
 
 void  ArnPipe::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
+    Q_D(ArnPipe);
+
     ArnItemB::itemUpdated( handleData, value);
 
-    if (_useCheckSeq && handleData.has( ArnLinkHandle::SeqNo)) {
+    if (d->_useCheckSeq && handleData.has( ArnLinkHandle::SeqNo)) {
         int seqNum = handleData.valueRef( ArnLinkHandle::SeqNo).toInt();
-        if (seqNum != _checkSeqNum) {  // Sequence not matching
-            if (_checkSeqNum != -1)  // If not initial, this is out of sequence
+        if (seqNum != d->_checkSeqNum) {  // Sequence not matching
+            if (d->_checkSeqNum != -1)  // If not initial, this is out of sequence
                 emit outOfSequence();
-            _checkSeqNum = seqNum;  // Resync to this received SeqNum
+            d->_checkSeqNum = seqNum;  // Resync to this received SeqNum
         }
-        _checkSeqNum = (_checkSeqNum + 1) % 1000;
+        d->_checkSeqNum = (d->_checkSeqNum + 1) % 1000;
     }
     if (value)
         emit changed( *value);
