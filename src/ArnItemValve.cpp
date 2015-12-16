@@ -46,7 +46,7 @@ ArnItemValvePrivate::~ArnItemValvePrivate()
 
 
 ArnItemValve::ArnItemValve( QObject *parent)
-    : ArnItemB( parent)
+    : ArnItemB( *new ArnItemValvePrivate, parent)
 {
 }
 

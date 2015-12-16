@@ -56,14 +56,14 @@ void  ArnPipe::init()
 
 
 ArnPipe::ArnPipe( QObject* parent)
-    : ArnItemB( parent)
+    : ArnItemB( *new ArnPipePrivate, parent)
 {
     init();
 }
 
 
 ArnPipe::ArnPipe( const QString& path, QObject* parent)
-    : ArnItemB( parent)
+    : ArnItemB( *new ArnPipePrivate, parent)
 {
     init();
     open( path);
