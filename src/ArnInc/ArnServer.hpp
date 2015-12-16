@@ -41,6 +41,7 @@
 #include <QMap>
 #include <QStringList>
 
+class ArnServerPrivate;
 class ArnSync;
 class ArnSyncLogin;
 class ArnItemNetEar;
@@ -86,6 +87,8 @@ private:
 class ARNLIBSHARED_EXPORT ArnServer : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnServer)
+
 public:
     struct Type {
         enum E {
@@ -193,19 +196,16 @@ public:
 
     //! \cond ADV
     ArnSyncLogin*  arnLogin()  const;
-    //! \endcond
 
-private:
-    QTcpServer*  _tcpServer;
-    ArnSyncLogin*  _arnLogin;
-    QStringList  _freePathTab;
-    QStringList  _noLoginNets;
-    bool  _tcpServerActive;
-    Type  _serverType;
-    bool  _isDemandLogin;
+protected:
+    ArnServer( ArnServerPrivate& dd, QObject* parent);
+    ArnServerPrivate* const  d_ptr;
+    //! \endcond
 
 private slots:
     void tcpConnection();
+
+private:
 };
 
 #endif // ARNSERVER_HPP

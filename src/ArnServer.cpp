@@ -30,6 +30,7 @@
 //
 
 #include "ArnInc/ArnServer.hpp"
+#include "private/ArnServer_p.hpp"
 #include "ArnInc/ArnError.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnSync.hpp"
@@ -114,42 +115,64 @@ void  ArnServerNetSync::doSyncStateChanged( int state)
 
 
 
-ArnServer::ArnServer( Type serverType, QObject *parent)
-    : QObject( parent)
+ArnServerPrivate::ArnServerPrivate( ArnServer::Type serverType)
 {
     _tcpServerActive = false;
     _isDemandLogin   = false;
-    _tcpServer       = new QTcpServer( this);
+    _tcpServer       = new QTcpServer;
     _arnLogin        = new ArnSyncLogin;
     _serverType      = serverType;
     _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Licenses/");
 }
 
 
+ArnServerPrivate::~ArnServerPrivate()
+{
+    delete _tcpServer;
+    delete _arnLogin;
+}
+
+
+ArnServer::ArnServer( Type serverType, QObject *parent)
+    : QObject( parent)
+    , d_ptr( new ArnServerPrivate( serverType))
+{
+}
+
+
+ArnServer::ArnServer( ArnServerPrivate& dd, QObject* parent)
+    : QObject( parent)
+    , d_ptr( &dd)
+{
+}
+
+
 ArnServer::~ArnServer()
 {
-    delete _arnLogin;
+    delete d_ptr;
 }
 
 
 void  ArnServer::start( int port, QHostAddress listenAddr)
 {
+    Q_D(ArnServer);
+
     if (port < 0) {
-        switch (_serverType) {
+        switch (d->_serverType) {
         case Type::NetSync:
             port = Arn::defaultTcpPort;
             break;
         default:
-            ArnM::errorLog( QString(tr("Unknown Arn server Type:")) + QString::number( _serverType),
+            ArnM::errorLog( QString(tr("Unknown Arn server Type:")) + QString::number( d->_serverType),
                                 ArnError::Undef);
             return;
         }
     }
 
-    if (_tcpServer->listen( listenAddr, port)) {
-        _tcpServerActive = true;
+    if (d->_tcpServer->listen( listenAddr, port)) {
+        d->_tcpServerActive = true;
 
-        connect( _tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnection()));
+        connect( d->_tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnection()));
     }
     else {
         ArnM::errorLog( QString(tr("Failed start Arn Server Port:")) + QString::number( port),
@@ -160,50 +183,66 @@ void  ArnServer::start( int port, QHostAddress listenAddr)
 
 int  ArnServer::port()
 {
-    return _tcpServer->serverPort();
+    Q_D(ArnServer);
+
+    return d->_tcpServer->serverPort();
 }
 
 
 QHostAddress  ArnServer::listenAddress()
 {
-    QHostAddress  addr = _tcpServer->serverAddress();
+    Q_D(ArnServer);
+
+    QHostAddress  addr = d->_tcpServer->serverAddress();
     return addr;
 }
 
 
 void ArnServer::addAccess(const QString& userName, const QString& password, Arn::Allow allow)
 {
-    _arnLogin->addAccess( userName, password, allow);
+    Q_D(ArnServer);
+
+    d->_arnLogin->addAccess( userName, password, allow);
 }
 
 
 bool  ArnServer::isDemandLogin()  const
 {
-    return _isDemandLogin;
+    Q_D(const ArnServer);
+
+    return d->_isDemandLogin;
 }
 
 
 void  ArnServer::setDemandLogin( bool isDemandLogin)
 {
-    _isDemandLogin = isDemandLogin;
+    Q_D(ArnServer);
+
+    d->_isDemandLogin = isDemandLogin;
 }
 
 
 void  ArnServer::setNoLoginNets( const QStringList& noLoginNets)
 {
-    _noLoginNets = noLoginNets;
+    Q_D(ArnServer);
+
+    d->_noLoginNets = noLoginNets;
 }
 
 
 QStringList  ArnServer::noLoginNets()  const
 {
-    return _noLoginNets;
+    Q_D(const ArnServer);
+
+    return d->_noLoginNets;
 }
 
 
 bool  ArnServer::isDemandLoginNet( const QHostAddress& remoteAddr)  const
 {
-    foreach (const QString& noLoginNet, _noLoginNets) {
+    Q_D(const ArnServer);
+
+    foreach (const QString& noLoginNet, d->_noLoginNets) {
         if (noLoginNet == "localhost") {
             if ((remoteAddr == QHostAddress( QHostAddress::LocalHost))
             ||  (remoteAddr == QHostAddress( QHostAddress::LocalHostIPv6)))
@@ -242,28 +281,36 @@ bool  ArnServer::isDemandLoginNet( const QHostAddress& remoteAddr)  const
 
 void ArnServer::addFreePath(const QString& path)
 {
-    if (!_freePathTab.contains( path))
-        _freePathTab += path;
+    Q_D(ArnServer);
+
+    if (!d->_freePathTab.contains( path))
+        d->_freePathTab += path;
 }
 
 
 QStringList  ArnServer::freePaths()  const
 {
-    return _freePathTab;
+    Q_D(const ArnServer);
+
+    return d->_freePathTab;
 }
 
 
 ArnSyncLogin*  ArnServer::arnLogin()  const
 {
-    return _arnLogin;
+    Q_D(const ArnServer);
+
+    return d->_arnLogin;
 }
 
 
 void  ArnServer::tcpConnection()
 {
-    QTcpSocket*  socket = _tcpServer->nextPendingConnection();
+    Q_D(ArnServer);
 
-    switch (_serverType) {
+    QTcpSocket*  socket = d->_tcpServer->nextPendingConnection();
+
+    switch (d->_serverType) {
     case Type::NetSync:
         new ArnServerNetSync( socket, this);
         break;
