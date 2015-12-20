@@ -30,6 +30,7 @@
 //
 
 #include "ArnInc/ArnClient.hpp"
+#include "private/ArnClient_p.hpp"
 #include "ArnInc/Arn.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include "ArnSync.hpp"
@@ -118,8 +119,8 @@ ArnClientReg&  ArnClientReg::instance()
 }
 
 
-ArnClient::ArnClient( QObject* parent) :
-    QObject( parent)
+
+ArnClientPrivate::ArnClientPrivate()
 {
     _arnMountPoint   = 0;
     _isAutoConnect   = false;
@@ -132,39 +133,24 @@ ArnClient::ArnClient( QObject* parent) :
     _curPrio         = -1;
     resetConnectionFlags();
 
-    QString  stdId = "std";
-    if (ArnClientReg::instance().store( this, stdId))  // Only use std-id once
-        _id = stdId;
-
-    _socket       = new QTcpSocket( this);
-    _arnNetSync   = new ArnSync( _socket, true, this);
+    _socket       = new QTcpSocket;
+    _arnNetSync   = new ArnSync( _socket, true);
     _arnNetSync->start();
-    _connectTimer = new QTimer( this);
-    _recTimer     = new QTimer( this);
-
-    connect( _socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
-    connect( _socket, SIGNAL(disconnected()), this, SLOT(doTcpDisconnected()));
-    connect( _arnNetSync, SIGNAL(loginRequired(int)), this, SLOT(doLoginRequired(int)));
-    connect( _arnNetSync, SIGNAL(stateChanged(int)), this, SLOT(doSyncStateChanged(int)));
-    connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SLOT(doReplyRecord(Arn::XStringMap&)));
-    connect( _arnNetSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SIGNAL(replyRecord(Arn::XStringMap&)));
-    connect( _arnNetSync, SIGNAL(xcomDelete(QString)), this, SLOT(onCommandDelete(QString)));
-    connect( _recTimer, SIGNAL(timeout()), this, SLOT(doRecTimeout()));
-    connect( _socket, SIGNAL(readyRead()), this, SLOT(doRecNotified()));
-
-    connect( _socket, SIGNAL(error(QAbstractSocket::SocketError)),
-             this, SLOT(doTcpError(QAbstractSocket::SocketError)));
-    connect( _connectTimer, SIGNAL(timeout()), this, SLOT(onConnectWaitDone()));
+    _connectTimer = new QTimer;
+    _recTimer     = new QTimer;
 }
 
 
-ArnClient::~ArnClient()
+ArnClientPrivate::~ArnClientPrivate()
 {
-    ArnClientReg::instance().remove( this);  // If registered, remove it
+    delete _socket;
+    delete _arnNetSync;
+    delete _connectTimer;
+    delete _recTimer;
 }
 
 
-void  ArnClient::resetConnectionFlags()
+void  ArnClientPrivate::resetConnectionFlags()
 {
     _isReContact = false;
     _isReConnect = false;
@@ -173,7 +159,7 @@ void  ArnClient::resetConnectionFlags()
 }
 
 
-void  ArnClient::clearArnList( int prioFilter)
+void  ArnClientPrivate::clearArnList( int prioFilter)
 {
     if (_nextHost > 0)
         _nextHost = 0;
@@ -194,12 +180,12 @@ void  ArnClient::clearArnList( int prioFilter)
 }
 
 
-ArnClient::HostList  ArnClient::arnList( int prioFilter)  const
+ArnClient::HostList  ArnClientPrivate::arnList( int prioFilter)  const
 {
     if ((prioFilter < 0) || _hostTab.isEmpty())
         return _hostTab;
 
-    HostList  retVal;
+    ArnClient::HostList  retVal;
     int  index = -1;
     forever {
         index = _hostPrioTab.indexOf( prioFilter, index + 1);
@@ -210,11 +196,11 @@ ArnClient::HostList  ArnClient::arnList( int prioFilter)  const
 }
 
 
-void  ArnClient::addToArnList( const QString &arnHost, quint16 port, int prio)
+void  ArnClientPrivate::addToArnList( const QString& arnHost, quint16 port, int prio)
 {
     if (arnHost.isEmpty())  return;  // Invalid
 
-    HostAddrPort  slot;
+    ArnClient::HostAddrPort  slot;
     slot.addr = arnHost;
     slot.port = port ? port : Arn::defaultTcpPort;
 
@@ -227,60 +213,148 @@ void  ArnClient::addToArnList( const QString &arnHost, quint16 port, int prio)
 }
 
 
+void  ArnClient::init()
+{
+    Q_D(ArnClient);
+
+    QString  stdId = "std";
+    if (ArnClientReg::instance().store( this, stdId))  // Only use std-id once
+        d->_id = stdId;
+
+    ArnSync*    arnSync = d->_arnNetSync;
+    QTcpSocket*  socket = d->_socket;
+    connect( socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
+    connect( socket, SIGNAL(disconnected()), this, SLOT(doTcpDisconnected()));
+    connect( arnSync, SIGNAL(loginRequired(int)), this, SLOT(doLoginRequired(int)));
+    connect( arnSync, SIGNAL(stateChanged(int)), this, SLOT(doSyncStateChanged(int)));
+    connect( arnSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SLOT(doReplyRecord(Arn::XStringMap&)));
+    connect( arnSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SIGNAL(replyRecord(Arn::XStringMap&)));
+    connect( arnSync, SIGNAL(xcomDelete(QString)), this, SLOT(onCommandDelete(QString)));
+    connect( d->_recTimer, SIGNAL(timeout()), this, SLOT(doRecTimeout()));
+    connect( socket, SIGNAL(readyRead()), this, SLOT(doRecNotified()));
+
+    connect( socket, SIGNAL(error(QAbstractSocket::SocketError)),
+             this, SLOT(doTcpError(QAbstractSocket::SocketError)));
+    connect( d->_connectTimer, SIGNAL(timeout()), this, SLOT(onConnectWaitDone()));
+}
+
+
+ArnClient::ArnClient( QObject* parent)
+    : QObject( parent)
+    , d_ptr( new ArnClientPrivate)
+{
+    init();
+}
+
+
+ArnClient::ArnClient( ArnClientPrivate& dd, QObject* parent)
+    : QObject( parent)
+    , d_ptr( &dd)
+{
+    init();
+}
+
+
+ArnClient::~ArnClient()
+{
+    ArnClientReg::instance().remove( this);  // If registered, remove it
+
+    delete d_ptr;
+}
+
+
+void  ArnClient::clearArnList( int prioFilter)
+{
+    Q_D(ArnClient);
+
+    d->clearArnList( prioFilter);
+}
+
+
+ArnClient::HostList  ArnClient::arnList( int prioFilter)  const
+{
+    Q_D(const ArnClient);
+
+    return d->arnList( prioFilter);
+}
+
+
+void  ArnClient::addToArnList( const QString &arnHost, quint16 port, int prio)
+{
+    Q_D(ArnClient);
+
+    d->addToArnList( arnHost, port, prio);
+}
+
+
 void  ArnClient::connectToArnList()
 {
-    if (_hostTab.isEmpty())  return;
+    Q_D(ArnClient);
 
-    _isValidCredent = false;
-    _nextHost       = 0;
-    resetConnectionFlags();
+    if (d->_hostTab.isEmpty())  return;
+
+    d->_isValidCredent = false;
+    d->_nextHost       = 0;
+    d->resetConnectionFlags();
     doConnectArnLogic();
 }
 
 
 void  ArnClient::connectToArn( const QString& arnHost, quint16 port)
 {
-    _isValidCredent = false;
-    _nextHost       = -1;
-    _arnHost        = arnHost;
-    _port           = port ? port : Arn::defaultTcpPort;
-    resetConnectionFlags();
+    Q_D(ArnClient);
+
+    d->_isValidCredent = false;
+    d->_nextHost       = -1;
+    d->_arnHost        = arnHost;
+    d->_port           = port ? port : Arn::defaultTcpPort;
+    d->resetConnectionFlags();
     doConnectArnLogic();
 }
 
 
 void  ArnClient::disconnectFromArn()
 {
-    _arnNetSync->sendExit();
+    Q_D(ArnClient);
+
+    d->_arnNetSync->sendExit();
     setAutoConnect( false);
-    _socket->disconnectFromHost();
+    d->_socket->disconnectFromHost();
 }
 
 
 void  ArnClient::loginToArn( const QString& userName, const QString& password, Arn::Allow allow)
 {
-    _isValidCredent = !userName.isEmpty();
-    _arnNetSync->loginToArn( userName, password, allow);
+    Q_D(ArnClient);
+
+    d->_isValidCredent = !userName.isEmpty();
+    d->_arnNetSync->loginToArn( userName, password, allow);
 }
 
 
 void ArnClient::close()
 {
+    Q_D(ArnClient);
+
     setAutoConnect( false);
-    _arnNetSync->close();
+    d->_arnNetSync->close();
 }
 
 
 ArnClient::ConnectStat  ArnClient::connectStatus()  const
 {
-    return _connectStat;
+    Q_D(const ArnClient);
+
+    return d->_connectStat;
 }
 
 
 bool  ArnClient::setMountPoint( const QString& path)
 {
-    if (_mountPoints.size() == 1)
-        removeMountPoint( _mountPoints.at(0).localPath);
+    Q_D(ArnClient);
+
+    if (d->_mountPoints.size() == 1)
+        removeMountPoint( d->_mountPoints.at(0).localPath);
 
     return addMountPoint( path);
 }
@@ -288,6 +362,8 @@ bool  ArnClient::setMountPoint( const QString& path)
 
 bool  ArnClient::addMountPoint( const QString& localPath, const QString& remotePath)
 {
+    Q_D(ArnClient);
+
     if (Arn::debugShareObj)  qDebug() << "Adding mount point: localPath=" << localPath
                                       << " remotePath=" << remotePath;
     if (localPath.isEmpty()) {
@@ -296,7 +372,7 @@ bool  ArnClient::addMountPoint( const QString& localPath, const QString& remoteP
     QString  localPath_  = Arn::fullPath( localPath);
 
     //// Make sure new path isn't within other mount points path and vice verse
-    foreach (const MountPointSlot& mpSlot, _mountPoints) {
+    foreach (const MountPointSlot& mpSlot, d->_mountPoints) {
         QString  mplPath = mpSlot.localPath;
         if (localPath_.startsWith( mplPath) || mplPath.startsWith( localPath_)) {
             ArnM::errorLog( QString(tr("Mount points not exclusive: new=")) +
@@ -317,8 +393,8 @@ bool  ArnClient::addMountPoint( const QString& localPath, const QString& remoteP
                  this, SLOT(doCreateArnTree(QString)));
         connect( mpSlot.arnMountPoint, SIGNAL(arnTreeDestroyed(QString,bool)),
                  this, SLOT(doDestroyArnTree(QString,bool)));
-        _mountPoints += mpSlot;
-        mpSlot.arnMountPoint->setReference( &_mountPoints.last());  // Give a ref to this added slot
+        d->_mountPoints += mpSlot;
+        mpSlot.arnMountPoint->setReference( &d->_mountPoints.last());  // Give a ref to this added slot
     }
     else
         delete mpSlot.arnMountPoint;
@@ -329,15 +405,17 @@ bool  ArnClient::addMountPoint( const QString& localPath, const QString& remoteP
 
 bool  ArnClient::removeMountPoint( const QString& localPath)
 {
+    Q_D(ArnClient);
+
     QString  localPath_ = Arn::fullPath( localPath);
 
-    int mpSize = _mountPoints.size();
+    int mpSize = d->_mountPoints.size();
     for (int i = 0; i < mpSize; ++ i) {
-        const MountPointSlot&  mountPoint = _mountPoints.at(i);
+        const MountPointSlot&  mountPoint = d->_mountPoints.at(i);
         if (mountPoint.localPath == localPath_) {
             if (mountPoint.arnMountPoint)
                 delete mountPoint.arnMountPoint;
-            _mountPoints.removeAt(i);
+            d->_mountPoints.removeAt(i);
             return true;
         }
     }
@@ -347,14 +425,18 @@ bool  ArnClient::removeMountPoint( const QString& localPath)
 
 void  ArnClient::setAutoConnect( bool isAuto, int retryTime)
 {
-    _isAutoConnect = isAuto;
-    _retryTime = retryTime > 1 ? retryTime : 1;
+    Q_D(ArnClient);
+
+    d->_isAutoConnect = isAuto;
+    d->_retryTime = retryTime > 1 ? retryTime : 1;
 }
 
 
 void  ArnClient::registerClient( const QString& id)
 {
-    _id = id;
+    Q_D(ArnClient);
+
+    d->_id = id;
     ArnClientReg::instance().remove( this);
     ArnClientReg::instance().remove( id);
     ArnClientReg::instance().store( this, id);
@@ -369,31 +451,41 @@ ArnClient*  ArnClient::getClient( const QString& id)
 
 QString  ArnClient::id()  const
 {
-    return _id;
+    Q_D(const ArnClient);
+
+    return d->_id;
 }
 
 
 int  ArnClient::receiveTimeout()  const
 {
-    return _receiveTimeout;
+    Q_D(const ArnClient);
+
+    return d->_receiveTimeout;
 }
 
 
 void  ArnClient::setReceiveTimeout( int receiveTimeout)
 {
-    _receiveTimeout = receiveTimeout;
+    Q_D(ArnClient);
+
+    d->_receiveTimeout = receiveTimeout;
 }
 
 
 bool  ArnClient::isDemandLogin()  const
 {
-    return _arnNetSync->isDemandLogin();
+    Q_D(const ArnClient);
+
+    return d->_arnNetSync->isDemandLogin();
 }
 
 
 void  ArnClient::setDemandLogin( bool isDemandLogin)
 {
-    _arnNetSync->setDemandLogin( isDemandLogin);
+    Q_D(ArnClient);
+
+    d->_arnNetSync->setDemandLogin( isDemandLogin);
 }
 
 
@@ -405,76 +497,96 @@ QString  ArnClient::passwordHash( const QString& password)
 
 QStringList  ArnClient::freePaths()  const
 {
-    return _arnNetSync->freePaths();
+    Q_D(const ArnClient);
+
+    return d->_arnNetSync->freePaths();
 }
 
 
 bool  ArnClient::isReContact()  const
 {
-    return _isReContact;
+    Q_D(const ArnClient);
+
+    return d->_isReContact;
 }
 
 
 bool  ArnClient::isReConnect()  const
 {
-    return _isReConnect;
+    Q_D(const ArnClient);
+
+    return d->_isReConnect;
 }
 
 
-int ArnClient::curPrio() const
+int ArnClient::curPrio()  const
 {
-    return _curPrio;
+    Q_D(const ArnClient);
+
+    return d->_curPrio;
 }
 
 
 void  ArnClient::commandGet( const QString& path)
 {
-    _commandMap.clear();
-    _commandMap.add(ARNRECNAME, "get").add("path", path);
+    Q_D(ArnClient);
 
-    _arnNetSync->sendXSMap( _commandMap);
+    d->_commandMap.clear();
+    d->_commandMap.add(ARNRECNAME, "get").add("path", path);
+
+    d->_arnNetSync->sendXSMap( d->_commandMap);
 }
 
 
 void  ArnClient::commandSet( const QString& path, const QString& data)
 {
-    _commandMap.clear();
-    _commandMap.add(ARNRECNAME, "set").add("path", path).add("data", data);
+    Q_D(ArnClient);
 
-    _arnNetSync->sendXSMap( _commandMap);
+    d->_commandMap.clear();
+    d->_commandMap.add(ARNRECNAME, "set").add("path", path).add("data", data);
+
+    d->_arnNetSync->sendXSMap( d->_commandMap);
 }
 
 
 void  ArnClient::commandLs( const QString& path)
 {
-    _commandMap.clear();
-    _commandMap.add(ARNRECNAME, "ls").add("path", path);
+    Q_D(ArnClient);
+
+    d->_commandMap.clear();
+    d->_commandMap.add(ARNRECNAME, "ls").add("path", path);
 
     // qDebug() << "client-ls: path=" << path;
-    _arnNetSync->sendXSMap( _commandMap);
+    d->_arnNetSync->sendXSMap( d->_commandMap);
 }
 
 
 void  ArnClient::commandInfo( int type, const QByteArray& data)
 {
+    Q_D(ArnClient);
+
     if (type < Arn::InfoType::N)
-        _arnNetSync->sendInfo( type, data);
+        d->_arnNetSync->sendInfo( type, data);
 }
 
 
 void  ArnClient::commandVersion()
 {
-    _commandMap.clear();
-    _commandMap.add(ARNRECNAME, "ver");
+    Q_D(ArnClient);
 
-    _arnNetSync->sendXSMap( _commandMap);
+    d->_commandMap.clear();
+    d->_commandMap.add(ARNRECNAME, "ver");
+
+    d->_arnNetSync->sendXSMap( d->_commandMap);
 }
 
 
 // MW: Should probably be deprecated (removed)
 void  ArnClient::commandExit()
 {
-    _arnNetSync->sendExit();
+    Q_D(ArnClient);
+
+    d->_arnNetSync->sendExit();
 }
 
 
@@ -491,16 +603,18 @@ void  ArnClient::newNetItemProxy( ArnThreadCom *threadCom,
 
 ArnItemNet*  ArnClient::newNetItem( const QString& path, Arn::ObjectSyncMode syncMode, bool* isNewPtr)
 {
+    Q_D(ArnClient);
+
     if (ArnM::isMainThread()) {
         QString  path_ = Arn::fullPath( path);
         MountPointSlot  mpSlot;
-        foreach (const MountPointSlot& mountPoint, _mountPoints) {
+        foreach (const MountPointSlot& mountPoint, d->_mountPoints) {
             if (path_.startsWith( mountPoint.localPath)) {
                 mpSlot = mountPoint;
                 break;
             }
         }
-        return _arnNetSync->newNetItem( path_, mpSlot.localPath, mpSlot.remotePath, syncMode, isNewPtr);
+        return d->_arnNetSync->newNetItem( path_, mpSlot.localPath, mpSlot.remotePath, syncMode, isNewPtr);
     }
     else {  // Threaded - must be threadsafe
         ArnThreadComCaller  threadCom;
@@ -525,18 +639,22 @@ ArnItemNet*  ArnClient::newNetItem( const QString& path, Arn::ObjectSyncMode syn
 
 void  ArnClient::createNewItem( const QString& path)
 {
+    Q_D(ArnClient);
+
     // qDebug() << "ArnClient,ArnItem-created: path=" << path;
     ArnItemNetEar*  item = qobject_cast<ArnItemNetEar*>( sender());
     Q_ASSERT(item);
     MountPointSlot*  mpSlot = static_cast<MountPointSlot*>( item->reference());
     Q_ASSERT(mpSlot);
 
-    _arnNetSync->newNetItem( path, mpSlot->localPath, mpSlot->remotePath);
+    d->_arnNetSync->newNetItem( path, mpSlot->localPath, mpSlot->remotePath);
 }
 
 
 void  ArnClient::doCreateArnTree( const QString& path)
 {
+    Q_D(ArnClient);
+
     // qDebug() << "ArnClient,CreateArnTree: path=" << path;
     ArnItemNetEar*  item = qobject_cast<ArnItemNetEar*>( sender());
     Q_ASSERT(item);
@@ -544,12 +662,14 @@ void  ArnClient::doCreateArnTree( const QString& path)
     Q_ASSERT(mpSlot);
 
     QString  remotePath = Arn::changeBasePath( mpSlot->localPath, mpSlot->remotePath, path);
-    _arnNetSync->sendSetTree( remotePath);
+    d->_arnNetSync->sendSetTree( remotePath);
 }
 
 
 void ArnClient::doDestroyArnTree( const QString& path, bool isGlobal)
 {
+    Q_D(ArnClient);
+
     // qDebug() << "ArnClient,DestroyArnTree: path=" << path;
     ArnItemNetEar*  item = qobject_cast<ArnItemNetEar*>( sender());
     Q_ASSERT(item);
@@ -558,15 +678,17 @@ void ArnClient::doDestroyArnTree( const QString& path, bool isGlobal)
 
     QString  remotePath = Arn::changeBasePath( mpSlot->localPath, mpSlot->remotePath, path);
     if (isGlobal)
-        _arnNetSync->sendDelete( remotePath);
+        d->_arnNetSync->sendDelete( remotePath);
     else
-        _arnNetSync->sendNoSync( remotePath);
+        d->_arnNetSync->sendNoSync( remotePath);
 }
 
 
 void  ArnClient::doTcpError( QAbstractSocket::SocketError socketError)
 {
-    _recTimer->stop();
+    Q_D(ArnClient);
+
+    d->_recTimer->stop();
 
     QMetaObject::invokeMethod( this,
                                "doTcpError",
@@ -577,20 +699,23 @@ void  ArnClient::doTcpError( QAbstractSocket::SocketError socketError)
 
 void ArnClient::doTcpError( int socketError)
 {
+    Q_D(ArnClient);
+
     // qDebug() << "ArnClient TcpError: hostAddr=" << _curConnectAP.addr;
-    QString  errTextSum = QString(tr("TCP Client Msg:")) + _socket->errorString();
+    QString  errTextSum = QString(tr("TCP Client Msg:")) + d->_socket->errorString();
     ArnM::errorLog( errTextSum, ArnError::ConnectionError);
 
-    if (_connectStat != ConnectStat::Disconnected) {
-        _connectStat = (  (_connectStat == ConnectStat::Connected)
-                       || (_connectStat == ConnectStat::Stopped)
-                       || (_connectStat == ConnectStat::Negotiating))
-                     ? ConnectStat::Disconnected : ConnectStat::Error;
-        emit connectionStatusChanged( _connectStat, _curPrio);
+    if (d->_connectStat != ConnectStat::Disconnected) {
+        d->_connectStat = (  (d->_connectStat == ConnectStat::Connected)
+                          || (d->_connectStat == ConnectStat::Stopped)
+                          || (d->_connectStat == ConnectStat::Negotiating))
+                        ? ConnectStat::Disconnected
+                        : ConnectStat::Error;
+        emit connectionStatusChanged( d->_connectStat, d->_curPrio);
 
-        if (_connectStat == ConnectStat::Error)
-            emit tcpError( _socket->errorString(), QAbstractSocket::SocketError( socketError));
-        else if (_connectStat == ConnectStat::Disconnected)
+        if (d->_connectStat == ConnectStat::Error)
+            emit tcpError( d->_socket->errorString(), QAbstractSocket::SocketError( socketError));
+        else if (d->_connectStat == ConnectStat::Disconnected)
             emit tcpDisConnected();
 
         reConnectArn();
@@ -600,15 +725,17 @@ void ArnClient::doTcpError( int socketError)
 
 void ArnClient::doTcpDisconnected()
 {
-    // qDebug() << "ArnClient TcpDisconnected: hostAddr=" << _curConnectAP.addr;
-    _recTimer->stop();
+    Q_D(ArnClient);
 
-    if ((_connectStat == ConnectStat::Connected)
-    ||  (_connectStat == ConnectStat::Stopped)
-    ||  (_connectStat == ConnectStat::Negotiating))
+    // qDebug() << "ArnClient TcpDisconnected: hostAddr=" << _curConnectAP.addr;
+    d->_recTimer->stop();
+
+    if ((d->_connectStat == ConnectStat::Connected)
+    ||  (d->_connectStat == ConnectStat::Stopped)
+    ||  (d->_connectStat == ConnectStat::Negotiating))
     {
-        _connectStat = ConnectStat::Disconnected;
-        emit connectionStatusChanged( _connectStat, _curPrio);
+        d->_connectStat = ConnectStat::Disconnected;
+        emit connectionStatusChanged( d->_connectStat, d->_curPrio);
         emit tcpDisConnected();
 
         reConnectArn();
@@ -618,83 +745,95 @@ void ArnClient::doTcpDisconnected()
 
 void  ArnClient::reConnectArn()
 {
+    Q_D(ArnClient);
+
     // qDebug() << " reConnectArn";
     bool wantDelayConnect = true;
-    if (_nextHost >= 0) {  // Using connection list
+    if (d->_nextHost >= 0) {  // Using connection list
         doConnectArnLogic();
-        wantDelayConnect = _nextHost == 0;  // WantDelay when tried all in connection list
+        wantDelayConnect = d->_nextHost == 0;  // WantDelay when tried all in connection list
     }
 
-    if (wantDelayConnect && _isAutoConnect) {
-        _connectTimer->start( _retryTime * 1000);
+    if (wantDelayConnect && d->_isAutoConnect) {
+        d->_connectTimer->start( d->_retryTime * 1000);
     }
 }
 
 
 void  ArnClient::onConnectWaitDone()
 {
-    _connectTimer->stop();
+    Q_D(ArnClient);
+
+    d->_connectTimer->stop();
     doConnectArnLogic();
 }
 
 
 void  ArnClient::doTcpConnected()
 {
-    _isReContact = _wasContact;
-    _wasContact  = true;
+    Q_D(ArnClient);
 
-    if (_receiveTimeout > 0)
-        _recTimer->start( _receiveTimeout * 1000 / 2);
+    d->_isReContact = d->_wasContact;
+    d->_wasContact  = true;
 
-    emit tcpConnected( _curConnectAP.addr, _curConnectAP.port);
-    _connectStat = ConnectStat::Negotiating;
-    emit connectionStatusChanged( _connectStat, _curPrio);
+    if (d->_receiveTimeout > 0)
+        d->_recTimer->start( d->_receiveTimeout * 1000 / 2);
+
+    emit tcpConnected( d->_curConnectAP.addr, d->_curConnectAP.port);
+    d->_connectStat = ConnectStat::Negotiating;
+    emit connectionStatusChanged( d->_connectStat, d->_curPrio);
 }
 
 
 void  ArnClient::doSyncStateChanged( int state)
 {
+    Q_D(ArnClient);
+
     // qDebug() << "ArnClient sync state changed: state=" << state;
     ArnSync::State  syncState = ArnSync::State::fromInt( state);
     if (syncState == syncState.Normal) {
         // qDebug() << "ArnClient connected: remVer="
         //          << _arnNetSync->remoteVer(0) << _arnNetSync->remoteVer(1);
-        _isReConnect = _wasConnect;
-        _wasConnect  = true;
-        _connectStat = ConnectStat::Connected;
-        emit connectionStatusChanged( _connectStat, _curPrio);
+        d->_isReConnect = d->_wasConnect;
+        d->_wasConnect  = true;
+        d->_connectStat = ConnectStat::Connected;
+        emit connectionStatusChanged( d->_connectStat, d->_curPrio);
     }
 }
 
 
 void ArnClient::doRecNotified()
 {
-    if (_recTimer->isActive())
-        _recTimer->start();
-    _recTimeoutCount = 0;
+    Q_D(ArnClient);
 
-    if (_connectStat == ConnectStat::Stopped) {
-        _connectStat = ConnectStat::Connected;
-        emit connectionStatusChanged( _connectStat, _curPrio);
+    if (d->_recTimer->isActive())
+        d->_recTimer->start();
+    d->_recTimeoutCount = 0;
+
+    if (d->_connectStat == ConnectStat::Stopped) {
+        d->_connectStat = ConnectStat::Connected;
+        emit connectionStatusChanged( d->_connectStat, d->_curPrio);
     }
 }
 
 
 void ArnClient::doRecTimeout()
 {
-    ++_recTimeoutCount;
+    Q_D(ArnClient);
 
-    if (_recTimeoutCount == 1) {
+    ++d->_recTimeoutCount;
+
+    if (d->_recTimeoutCount == 1) {
         commandVersion();  // Use version command as a flow requester
     }
-    else if (_recTimeoutCount == 6) {
-        _socket->abort();
+    else if (d->_recTimeoutCount == 6) {
+        d->_socket->abort();
     }
 
-    if (_recTimeoutCount > 1) {
-        if (_connectStat == ConnectStat::Connected) {
-            _connectStat = ConnectStat::Stopped;
-            emit connectionStatusChanged( _connectStat, _curPrio);
+    if (d->_recTimeoutCount > 1) {
+        if (d->_connectStat == ConnectStat::Connected) {
+            d->_connectStat = ConnectStat::Stopped;
+            emit connectionStatusChanged( d->_connectStat, d->_curPrio);
         }
     }
 }
@@ -702,9 +841,11 @@ void ArnClient::doRecTimeout()
 
 void  ArnClient::onCommandDelete( const QString& remotePath)
 {
+    Q_D(ArnClient);
+
     // qDebug() << "ArnClient-delete: remotePath=" << remotePath;
     QString  localPath;
-    foreach (const MountPointSlot& mountPoint, _mountPoints) {
+    foreach (const MountPointSlot& mountPoint, d->_mountPoints) {
         if (remotePath.startsWith( mountPoint.remotePath)) {
             localPath = Arn::changeBasePath( mountPoint.remotePath, mountPoint.localPath, remotePath);
             break;
@@ -717,29 +858,31 @@ void  ArnClient::onCommandDelete( const QString& remotePath)
 
 void  ArnClient::doConnectArnLogic()
 {
+    Q_D(ArnClient);
+
     QString  arnHost;
     quint16  port = 0;
     int  curPrio  = -1;
-    _curPrio = curPrio;
+    d->_curPrio = curPrio;
 
-    if (_nextHost < 0) {  // Normal single host connect
-        arnHost  = _arnHost;
-        port     = _port;
+    if (d->_nextHost < 0) {  // Normal single host connect
+        arnHost  = d->_arnHost;
+        port     = d->_port;
     }
-    else if (!_hostTab.isEmpty()) {  // Arn connection list
-        if (_nextHost >= _hostTab.size()) {  // Past end of list, restart
-            _nextHost = 0;
+    else if (!d->_hostTab.isEmpty()) {  // Arn connection list
+        if (d->_nextHost >= d->_hostTab.size()) {  // Past end of list, restart
+            d->_nextHost = 0;
             emit connectionStatusChanged( ConnectStat::TriedAll, -1);
             return;
         }
 
-        const HostAddrPort&  slot = _hostTab.at( _nextHost);
+        const HostAddrPort&  slot = d->_hostTab.at( d->_nextHost);
         arnHost = slot.addr;
         port    = slot.port;
-        curPrio = _hostPrioTab.at( _nextHost);
+        curPrio = d->_hostPrioTab.at( d->_nextHost);
         // qDebug() << "ArnClient connectlogic: hostTabSize=" << _hostTab.size() << " index=" << _nextHost
         //          << " prio=" << _hostPrioTab.at( _nextHost);
-        ++_nextHost;
+        ++d->_nextHost;
     }
 
     if (arnHost.isEmpty())  return;
@@ -747,14 +890,14 @@ void  ArnClient::doConnectArnLogic()
     if (port == 0)
         port = Arn::defaultTcpPort;
 
-    _socket->abort();
-    _socket->connectToHost( Arn::hostFromHostWithInfo( arnHost), port);
-    _curConnectAP.addr = arnHost;
-    _curConnectAP.port = port;
-    _curPrio           = curPrio;
-    _connectStat       = ConnectStat::Connecting;
+    d->_socket->abort();
+    d->_socket->connectToHost( Arn::hostFromHostWithInfo( arnHost), port);
+    d->_curConnectAP.addr = arnHost;
+    d->_curConnectAP.port = port;
+    d->_curPrio           = curPrio;
+    d->_connectStat       = ConnectStat::Connecting;
 
-    emit connectionStatusChanged( _connectStat, _curPrio);
+    emit connectionStatusChanged( d->_connectStat, d->_curPrio);
 }
 
 
@@ -783,10 +926,12 @@ void  ArnClient::doReplyRecord( XStringMap& replyMap)
 
 void  ArnClient::doLoginRequired( int contextCode)
 {
-    if (_isValidCredent && (contextCode == 0))  // First login for this TCP session
-        _arnNetSync->loginToArn();  // Try to use last credentials
+    Q_D(ArnClient);
+
+    if (d->_isValidCredent && (contextCode == 0))  // First login for this TCP session
+        d->_arnNetSync->loginToArn();  // Try to use last credentials
     else {
-        _isValidCredent = false;
+        d->_isValidCredent = false;
         emit loginRequired( contextCode);
     }
 }

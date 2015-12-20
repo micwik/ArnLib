@@ -41,14 +41,12 @@
 #include <QStringList>
 #include <QList>
 
-class ArnSync;
+class ArnClientPrivate;
 class ArnItemNet;
 class ArnItemNetEar;
-class QTcpSocket;
-class QTimer;
 
 
-namespace Arn {
+namespace ArnPrivate {
 class ConnectStat {
     Q_GADGET
     Q_ENUMS(E)
@@ -107,9 +105,11 @@ arnList().
 */
 class ARNLIBSHARED_EXPORT ArnClient : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnClient)
+
 public:
-    typedef Arn::ConnectStat  ConnectStat;
+    typedef ArnPrivate::ConnectStat  ConnectStat;
 
     struct HostAddrPort {
         QString  addr;
@@ -413,6 +413,10 @@ signals:
     void  replyLs( const QStringList& subItems, const QString& path);
     void  replyInfo( int type, const QByteArray& data);
     void  replyVer( const QString& version);
+
+protected:
+    ArnClient( ArnClientPrivate& dd, QObject* parent);
+    ArnClientPrivate* const  d_ptr;
     //! \endcond
 
 private slots:
@@ -434,9 +438,6 @@ private slots:
     void  onCommandDelete( const QString& remotePath);
 
 private:
-    void  resetConnectionFlags();
-    void  reConnectArn();
-
     struct MountPointSlot {
         ArnItemNetEar*  arnMountPoint;
         QString  localPath;
@@ -448,36 +449,11 @@ private:
         }
     };
 
-    void doConnectArnLogic();
-
-    HostList  _hostTab;
-    QList<int>  _hostPrioTab;
-    int  _nextHost;
-    int  _curPrio;
+    void  init();
+    void  reConnectArn();
+    void  doConnectArnLogic();
 
     QStringList  makeItemList( Arn::XStringMap& xsMap);
-    QTcpSocket*  _socket;
-    ArnSync*  _arnNetSync;
-
-    QString  _arnHost;
-    quint16  _port;
-    bool  _isAutoConnect;
-    int  _recTimeoutCount;
-    int  _receiveTimeout;
-    int  _retryTime;
-    QTimer*  _connectTimer;
-    QTimer*  _recTimer;
-    ArnItem*  _arnMountPoint;
-    QList<MountPointSlot>  _mountPoints;
-    Arn::XStringMap  _commandMap;
-    QString  _id;
-    HostAddrPort  _curConnectAP;
-    ConnectStat  _connectStat;
-    bool  _isValidCredent;
-    bool  _isReContact;
-    bool  _isReConnect;
-    bool  _wasContact;
-    bool  _wasConnect;
 };
 
 #endif // ARNCLIENT_HPP

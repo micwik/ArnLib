@@ -49,7 +49,8 @@ contains(ARN, server) {
 
     HEADERS += \
         $$PWD/ArnInc/ArnServer.hpp \
-        $$PWD/ArnInc/ArnPersist.hpp
+        $$PWD/ArnInc/ArnPersist.hpp \
+        $$PWD/private/ArnServer_p.hpp
 }
 
 
@@ -78,7 +79,7 @@ contains(ARN, client) {
         $$PWD/ArnInc/ArnMonEvent.hpp \
         $$PWD/ArnSync.hpp \
         $$PWD/ArnSyncLogin.hpp \
-        $$PWD/private/ArnServer_p.hpp
+        $$PWD/private/ArnClient_p.hpp
 }
 
 
