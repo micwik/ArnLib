@@ -155,7 +155,9 @@ contains(ARN, core) {
 contains(ARN, discover) {
     ARN += zeroconf
     SOURCES += $$PWD/ArnDiscover.cpp
-    HEADERS += $$PWD/ArnInc/ArnDiscover.hpp
+    HEADERS += \
+        $$PWD/ArnInc/ArnDiscover.hpp \
+        $$PWD/private/ArnDiscover_p.hpp
 
     contains(ARN, server) {
         SOURCES += $$PWD/ArnDiscoverRemote.cpp

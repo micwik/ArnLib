@@ -37,6 +37,10 @@
 #include <QHostAddress>
 #include <QVariantMap>
 
+class ArnDiscoverInfoPrivate;
+class ArnDiscoverBrowserBPrivate;
+class ArnDiscoverResolverPrivate;
+class ArnDiscoverAdvertisePrivate;
 class ArnZeroConfRegister;
 class ArnZeroConfBrowser;
 class QHostInfo;
@@ -67,7 +71,9 @@ This class holds the service info and its discover state.
 */
 class ArnDiscoverInfo
 {
+    Q_DECLARE_PRIVATE(ArnDiscoverInfo)
     friend class ArnDiscoverBrowserB;
+
 public:
     //! State of Arn discover browse data. Can be tested by relative order.
     struct State {
@@ -89,6 +95,9 @@ public:
     };
 
     ArnDiscoverInfo();
+    ArnDiscoverInfo( const ArnDiscoverInfo& other);
+    ArnDiscoverInfo&  operator=( const ArnDiscoverInfo& other);
+    ~ArnDiscoverInfo();
 
     //! Is discover in progress for this service
     /*! \retval true if discover is in progress
@@ -201,18 +210,13 @@ public:
      */
     int  resolvCode()  const;
 
+    //! \cond ADV
+protected:
+    ArnDiscoverInfo( ArnDiscoverInfoPrivate& dd);
+    ArnDiscoverInfoPrivate* const  d_ptr;
+    //! \endcond
+
 private:
-    int  _id;
-    State  _state;
-    State  _stopState;
-    ArnDiscover::Type  _type;
-    QString  _serviceName;
-    QString  _domain;
-    QString  _hostName;
-    quint16  _hostPort;
-    QHostAddress  _hostIp;
-    Arn::XStringMap  _properties;
-    int  _resolvCode;
 };
 
 
@@ -220,8 +224,11 @@ private:
 class ArnDiscoverBrowserB : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnDiscoverBrowserB)
+
 public:
     explicit ArnDiscoverBrowserB( QObject *parent = 0);
+    ~ArnDiscoverBrowserB();
 
     //! Return the number of active discover services
     /*! \return number of services
@@ -399,6 +406,9 @@ protected:
      *  \see infoUpdated()
      */
     int  resolve( const QString& serviceName, bool forceUpdate = true);
+
+    ArnDiscoverBrowserB( ArnDiscoverBrowserBPrivate& dd, QObject* parent);
+    ArnDiscoverBrowserBPrivate* const  d_ptr;
     //! \endcond
 
 private slots:
@@ -413,15 +423,12 @@ private slots:
     void  onLookuped( int id);
 
 private:
+    void  init();
     int  newServiceInfo( int id, const QString& name, const QString& domain);
     void  removeServiceInfo( int index);
     void  doNextState( ArnDiscoverInfo& info);
 
     ArnZeroConfBrowser*  _serviceBrowser;
-    QList<int>  _activeServIds;
-    QList<ArnDiscoverInfo>  _activeServInfos;
-    QString  _filter;
-    ArnDiscoverInfo::State  _defaultStopState;
 };
 
 
@@ -550,6 +557,8 @@ void  XXX::doClientResolvChanged( int index, ArnDiscoverInfo::State state)
 class ArnDiscoverResolver : public ArnDiscoverBrowserB
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnDiscoverResolver)
+
 public:
     explicit ArnDiscoverResolver( QObject *parent = 0);
 
@@ -586,8 +595,12 @@ public slots:
      */
     int  resolve( const QString& serviceName, bool forceUpdate = true);
 
+    //! \cond ADV
+protected:
+    ArnDiscoverResolver( ArnDiscoverResolverPrivate& dd, QObject* parent);
+    //! \endcond
+
 private:
-    QString  _defaultService;
 };
 
 
@@ -617,6 +630,8 @@ For higher level support, use ArnDiscoverRemote.
 class ArnDiscoverAdvertise : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnDiscoverAdvertise)
+
 public:
     //! States of DiscoverAdvertise
     //// These values must be synced with: ArnZeroConf::State
@@ -635,6 +650,7 @@ public:
     };
 
     explicit ArnDiscoverAdvertise( QObject *parent = 0);
+    ~ArnDiscoverAdvertise();
 
     //! Return service discover groups used for filter browsing
     /*! \return groups e.g. ("mydomain.se", "mydomain.se/House", "Any Group ID")
@@ -772,6 +788,9 @@ public slots:
 protected:
     bool  hasSetupAdvertise()  const;
 
+    ArnDiscoverAdvertise( ArnDiscoverAdvertisePrivate& dd, QObject* parent);
+    ArnDiscoverAdvertisePrivate* const  d_ptr;
+
 protected slots:
     //! Post setup routine called from base class
     /*! Can be derived for special setup.
@@ -796,12 +815,9 @@ protected slots:
     //! \endcond
 
 private:
+    void  init();
+
     ArnZeroConfRegister*  _arnZCReg;
-    QString  _service;
-    QStringList  _groups;
-    Arn::XStringMap  _customProperties;
-    bool  _hasSetupAdvertise;
-    ArnDiscover::Type  _discoverType;
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnDiscoverAdvertise::State)
