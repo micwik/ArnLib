@@ -166,7 +166,9 @@ contains(ARN, discover) {
 
     contains(ARN, client) {
         SOURCES += $$PWD/ArnDiscoverConnect.cpp
-        HEADERS += $$PWD/ArnInc/ArnDiscoverConnect.hpp
+        HEADERS += \
+            $$PWD/ArnInc/ArnDiscoverConnect.hpp \
+            $$PWD/private/ArnDiscoverConnect_p.hpp
     }
 }
 

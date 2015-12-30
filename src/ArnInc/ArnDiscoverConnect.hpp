@@ -35,6 +35,7 @@
 #include "ArnDiscover.hpp"
 #include "ArnItem.hpp"
 
+class ArnDiscoverConnectorPrivate;
 class ArnClient;
 class QTimer;
 class QTime;
@@ -74,8 +75,11 @@ _connector folder path_ will be "Sys/Discover/Connect/WeatherData-XYZ/".
 class ArnDiscoverConnector : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnDiscoverConnector)
+
 public:
     ArnDiscoverConnector( ArnClient& client, const QString& id);
+    ~ArnDiscoverConnector();
 
     //! Clear the _direct host_ connection list
     /*! Typically used to start making a new connection list.
@@ -214,6 +218,13 @@ signals:
      */
     void  clientReadyToConnect( ArnClient* arnClient, const QString& id);
 
+    //! \cond ADV
+protected:
+    ArnDiscoverConnector( ArnDiscoverConnectorPrivate& dd, QObject* parent,
+                          ArnClient& client, const QString& id);
+    ArnDiscoverConnectorPrivate* const  d_ptr;
+    //! \endcond
+
 private slots:
     void  doClientConnectChanged( int stat, int curPrio);
     void  doClientConnectRequest( int reqCode);
@@ -228,26 +239,6 @@ private slots:
 
 private:
     void  doClientReadyToConnect( ArnClient* arnClient, const QString& id);
-
-    ArnClient*  _client;
-    ArnDiscoverResolver*  _resolver;
-    QString  _id;
-    QString  _service;
-    int  _directHostPrio;
-    int  _discoverHostPrio;
-    int  _resolveRefreshTimeout;
-    QObject*  _directHosts;
-    QTime*  _resolveRefreshTime;
-    bool  _resolveRefreshBlocked;
-    bool  _isResolved;
-    bool  _externalClientConnect;
-    bool  _hasBeenSetupClient;
-
-    ArnItem*  _arnDisHostService;
-    ArnItem*  _arnDisHostServicePv;
-    ArnItem*  _arnDisHostAddress;
-    ArnItem*  _arnDisHostPort;
-    ArnItem*  _arnDisHostStatus;
 };
 
 

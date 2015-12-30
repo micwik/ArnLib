@@ -29,24 +29,43 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
-#ifndef ARNPIPE_P_HPP
-#define ARNPIPE_P_HPP
+#ifndef ARNDISCOVERCONNECT_P_HPP
+#define ARNDISCOVERCONNECT_P_HPP
 
-#include "ArnItemB_p.hpp"
+#include "ArnInc/ArnDiscoverConnect.hpp"
+
+class ArnClient;
+class QTimer;
+class QTime;
 
 
-class ArnPipePrivate : public ArnItemBPrivate
+class ArnDiscoverConnectorPrivate
 {
-    friend class ArnPipe;
+    friend class ArnDiscoverConnector;
 public:
-    ArnPipePrivate();
-    virtual  ~ArnPipePrivate();
+    ArnDiscoverConnectorPrivate();
+    virtual  ~ArnDiscoverConnectorPrivate();
 
-private:    
-    bool  _useSendSeq;
-    bool  _useCheckSeq;
-    int  _sendSeqNum;
-    int  _checkSeqNum;
+private:
+    ArnClient*  _client;
+    ArnDiscoverResolver*  _resolver;
+    QString  _id;
+    QString  _service;
+    int  _directHostPrio;
+    int  _discoverHostPrio;
+    int  _resolveRefreshTimeout;
+    QObject*  _directHosts;
+    QTime*  _resolveRefreshTime;
+    bool  _resolveRefreshBlocked;
+    bool  _isResolved;
+    bool  _externalClientConnect;
+    bool  _hasBeenSetupClient;
+
+    ArnItem*  _arnDisHostService;
+    ArnItem*  _arnDisHostServicePv;
+    ArnItem*  _arnDisHostAddress;
+    ArnItem*  _arnDisHostPort;
+    ArnItem*  _arnDisHostStatus;
 };
 
-#endif // ARNPIPE_P_HPP
+#endif // ARNDISCOVER_P_HPP
