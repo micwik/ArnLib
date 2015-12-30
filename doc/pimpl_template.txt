@@ -1,0 +1,198 @@
+Template for pimpl in Arn
+=========================
+
+
+Base class hpp
+--------------
+
+...
+
+class ArnClientPrivate;
+class ArnItemNet;
+
+...
+
+class ARNLIBSHARED_EXPORT ArnClient : public QObject
+{
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnClient)
+
+public:
+
+...
+
+    //! \cond ADV
+protected:
+    ArnClient( ArnClientPrivate& dd, QObject* parent);
+    ArnClientPrivate* const  d_ptr;
+    //! \endcond
+
+    
+    
+Base class private hpp
+----------------------
+
+...
+
+#include "ArnInc/ArnClient.hpp"
+
+...
+
+class ArnClientPrivate
+{
+    friend class ArnClient;
+public:
+    ArnClientPrivate();
+    virtual  ~ArnClientPrivate();
+
+private:
+    QTcpSocket*  _socket;
+    QTimer*  _connectTimer;
+    ArnItem*  _arnMountPoint;
+};
+
+
+Base class cpp
+--------------
+
+...
+
+#include "ArnInc/ArnClient.hpp"
+#include "private/ArnClient_p.hpp"
+        
+...
+
+ArnClientPrivate::ArnClientPrivate()
+{
+    _arnMountPoint   = 0;
+
+    _socket       = new QTcpSocket;
+}
+
+
+ArnClientPrivate::~ArnClientPrivate()
+{
+    delete _socket;
+}
+
+
+void  ArnClient::init()
+{
+    Q_D(ArnClient);
+
+    QTcpSocket*  socket = d->_socket;
+    connect( socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
+    connect( d->_connectTimer, SIGNAL(timeout()), this, SLOT(onConnectWaitDone()));
+}
+
+
+ArnClient::ArnClient( QObject* parent)
+    : QObject( parent)
+    , d_ptr( new ArnClientPrivate)
+{
+    init();
+}
+
+
+ArnClient::ArnClient( ArnClientPrivate& dd, QObject* parent)
+    : QObject( parent)
+    , d_ptr( &dd)
+{
+    init();
+}
+
+
+ArnClient::~ArnClient()
+{
+    delete d_ptr;
+}
+
+
+
+Derived class hpp
+-----------------
+
+...
+
+class ArnPipePrivate;
+
+
+class ARNLIBSHARED_EXPORT ArnPipe : public ArnItemB
+{
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnPipe)
+
+public:
+
+...
+
+    //! \cond ADV
+protected:
+    ArnPipe( ArnPipePrivate& dd, QObject* parent);
+    //! \endcond
+
+    
+Derived class private hpp
+-------------------------
+
+...
+
+#include "ArnItemB_p.hpp"
+
+...
+
+class ArnPipePrivate : public ArnItemBPrivate
+{
+    friend class ArnPipe;
+public:
+    ArnPipePrivate();
+    virtual  ~ArnPipePrivate();
+
+private:    
+    bool  _useSendSeq;
+};
+
+
+Derived class cpp
+-----------------
+
+...
+
+#include "ArnInc/ArnPipe.hpp"
+#include "private/ArnPipe_p.hpp"
+
+...
+
+ArnPipePrivate::ArnPipePrivate()
+{
+    _useSendSeq  = true;
+}
+
+
+ArnPipePrivate::~ArnPipePrivate()
+{
+}
+
+
+void  ArnPipe::init()
+{
+    setPipeMode();
+}
+
+
+ArnPipe::ArnPipe( QObject* parent)
+    : ArnItemB( *new ArnPipePrivate, parent)
+{
+    init();
+}
+
+
+ArnPipe::ArnPipe( ArnPipePrivate& dd, QObject* parent)
+    : ArnItemB( dd, parent)
+{
+}
+
+
+ArnPipe::~ArnPipe()
+{
+}
