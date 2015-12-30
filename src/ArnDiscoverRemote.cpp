@@ -30,6 +30,7 @@
 //
 
 #include "ArnInc/ArnDiscoverRemote.hpp"
+#include "private/ArnDiscoverRemote_p.hpp"
 #include "ArnInc/ArnZeroConf.hpp"
 #include "ArnInc/ArnServer.hpp"
 #include "ArnInc/ArnM.hpp"
@@ -43,14 +44,36 @@
 
 ///////// ArnDiscoverRemote
 
-ArnDiscoverRemote::ArnDiscoverRemote( QObject *parent) :
-    ArnDiscoverAdvertise( parent)
+ArnDiscoverRemotePrivate::ArnDiscoverRemotePrivate()
 {
-    _servTimer             = new QTimer( this);
+    _servTimer             = new QTimer;
     _arnInternalServer     = 0;
     _arnDResolver          = 0;
     _defaultService        = "Arn Default Service";
     _initialServiceTimeout = 0;
+}
+
+
+ArnDiscoverRemotePrivate::~ArnDiscoverRemotePrivate()
+{
+    delete _servTimer;
+}
+
+
+ArnDiscoverRemote::ArnDiscoverRemote( QObject *parent)
+    : ArnDiscoverAdvertise( *new ArnDiscoverRemotePrivate, parent)
+{
+}
+
+
+ArnDiscoverRemote::ArnDiscoverRemote( ArnDiscoverRemotePrivate& dd, QObject* parent)
+    : ArnDiscoverAdvertise( dd, parent)
+{
+}
+
+
+ArnDiscoverRemote::~ArnDiscoverRemote()
+{
 }
 
 
@@ -98,12 +121,14 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
 
 void  ArnDiscoverRemote::startUseNewServer( ArnDiscover::Type discoverType, int port)
 {
-    if (!_arnInternalServer)
-        delete _arnInternalServer;
-    _arnInternalServer = new ArnServer( ArnServer::Type::NetSync, this);
-    _arnInternalServer->start( port);
+    Q_D(ArnDiscoverRemote);
 
-    startUseServer( _arnInternalServer, discoverType);
+    if (!d->_arnInternalServer)
+        delete d->_arnInternalServer;
+    d->_arnInternalServer = new ArnServer( ArnServer::Type::NetSync, this);
+    d->_arnInternalServer->start( port);
+
+    startUseServer( d->_arnInternalServer, discoverType);
 }
 
 
@@ -119,15 +144,17 @@ ArnDiscoverConnector*  ArnDiscoverRemote::newConnector( ArnClient& client, const
 
 void  ArnDiscoverRemote::postSetupThis()
 {
-    _servTimer->start( _initialServiceTimeout * 1000);  // If no service name set, give time for external setting ...
-    connect( _servTimer, SIGNAL(timeout()), this, SLOT(serviceTimeout()));
+    Q_D(ArnDiscoverRemote);
 
-    connect( &_arnService,   SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
-    connect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
+    d->_servTimer->start( d->_initialServiceTimeout * 1000);  // If no service name set, give time for external setting ...
+    connect( d->_servTimer, SIGNAL(timeout()), this, SLOT(serviceTimeout()));
+
+    connect( &d->_arnService,   SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
+    connect( &d->_arnServicePv, SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
     QString  servicePath = Arn::pathDiscoverThis + "Service/value";
-    _arnServicePv.open( Arn::twinPath( servicePath));
-    _arnService.addMode( Arn::ObjectMode::Save);
-    _arnService.open( servicePath);
+    d->_arnServicePv.open( Arn::twinPath( servicePath));
+    d->_arnService.addMode( Arn::ObjectMode::Save);
+    d->_arnService.open( servicePath);
     // Any loaded persistent service name has now been sent to firstServiceSetup()
 
     ArnDiscoverAdvertise::postSetupThis();
@@ -136,14 +163,18 @@ void  ArnDiscoverRemote::postSetupThis()
 
 void  ArnDiscoverRemote::serviceTimeout()
 {
+    Q_D(ArnDiscoverRemote);
+
     if (Arn::debugDiscover)  qDebug() << "First service setup timeout, using default.";
 
-    firstServiceSetup( _defaultService, true);
+    firstServiceSetup( d->_defaultService, true);
 }
 
 
 void  ArnDiscoverRemote::firstServiceSetup( const QString& serviceName, bool forceSetup)
 {
+    Q_D(ArnDiscoverRemote);
+
     QString  useService = service();  // Priority for any previous set service name
     if (useService.isEmpty())
         useService = serviceName;
@@ -152,10 +183,10 @@ void  ArnDiscoverRemote::firstServiceSetup( const QString& serviceName, bool for
 
     if (!forceSetup && useService.isEmpty())  return;  // Try later (at timeout)
 
-    _servTimer->stop();
-    disconnect( &_arnService,   SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
-    disconnect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
-    connect( &_arnServicePv, SIGNAL(changed(QString)), this, SLOT(doServiceChanged(QString)));
+    d->_servTimer->stop();
+    disconnect( &d->_arnService,   SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
+    disconnect( &d->_arnServicePv, SIGNAL(changed(QString)), this, SLOT(firstServiceSetup(QString)));
+    connect( &d->_arnServicePv, SIGNAL(changed(QString)), this, SLOT(doServiceChanged(QString)));
 
     setService( useService);
 }
@@ -163,9 +194,11 @@ void  ArnDiscoverRemote::firstServiceSetup( const QString& serviceName, bool for
 
 void  ArnDiscoverRemote::doServiceChanged( const QString& val)
 {
+    Q_D(ArnDiscoverRemote);
+
     if (Arn::debugDiscover)  qDebug() << "DiscoverRemote Service changed: servname=" << val;
-    _arnServicePv = val;
-    ArnDiscoverAdvertise::setService( val.isEmpty() ? _defaultService : val);
+    d->_arnServicePv = val;
+    ArnDiscoverAdvertise::setService( val.isEmpty() ? d->_defaultService : val);
 }
 
 
@@ -181,12 +214,14 @@ void  ArnDiscoverRemote::serviceRegistered( const QString& serviceName)
 
 void  ArnDiscoverRemote::setService( const QString& service)
 {
+    Q_D(ArnDiscoverRemote);
+
     if (Arn::debugDiscover)  qDebug() << "DiscoverRemote setService: serviceName=" << service;
 
     if (hasSetupAdvertise()) {
         bool  isAdvertise = state().isAny( State::Advertise);
-        _arnService.setValue( service, isAdvertise ? Arn::SameValue::Ignore
-                                                   : Arn::SameValue::Accept);
+        d->_arnService.setValue( service, isAdvertise ? Arn::SameValue::Ignore
+                                                      : Arn::SameValue::Accept);
         // If advertising not yet has started, any value must trigger the "service changed logic"
     }
     else
@@ -196,24 +231,32 @@ void  ArnDiscoverRemote::setService( const QString& service)
 
 QString  ArnDiscoverRemote::defaultService()  const
 {
-    return _defaultService;
+    Q_D(const ArnDiscoverRemote);
+
+    return d->_defaultService;
 }
 
 
 void  ArnDiscoverRemote::setDefaultService( const QString& defaultService)
 {
+    Q_D(ArnDiscoverRemote);
+
     if (!defaultService.isEmpty())
-        _defaultService = defaultService;
+        d->_defaultService = defaultService;
 }
 
 
 int  ArnDiscoverRemote::initialServiceTimeout()  const
 {
-    return _initialServiceTimeout;
+    Q_D(const ArnDiscoverRemote);
+
+    return d->_initialServiceTimeout;
 }
 
 
 void  ArnDiscoverRemote::setInitialServiceTimeout( int initialServiceTimeout)
 {
-    _initialServiceTimeout = initialServiceTimeout;
+    Q_D(ArnDiscoverRemote);
+
+    d->_initialServiceTimeout = initialServiceTimeout;
 }

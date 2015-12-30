@@ -36,6 +36,7 @@
 #include "ArnDiscoverConnect.hpp"
 #include "ArnItem.hpp"
 
+class ArnDiscoverRemotePrivate;
 class ArnServer;
 class QTimer;
 class QTime;
@@ -93,8 +94,11 @@ and ServerMain.cpp files.
 class ArnDiscoverRemote : public ArnDiscoverAdvertise
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnDiscoverRemote)
+
 public:
     explicit ArnDiscoverRemote( QObject *parent = 0);
+    ~ArnDiscoverRemote();
 
     //! Return the default service name
     /*! \return default service name, e.g. "Arn Default Service"
@@ -205,6 +209,8 @@ protected:
     //// Handle Service This
     virtual void  postSetupThis();
     virtual void  serviceRegistered( const QString& serviceName);
+
+    ArnDiscoverRemote( ArnDiscoverRemotePrivate& dd, QObject* parent);
     //! \endcond
 
 private slots:
@@ -217,14 +223,6 @@ private:
     //// Hide
     void  advertiseService( ArnDiscover::Type discoverType, const QString& serviceName,
                             int port = -1, const QString& hostName = QString());
-
-    ArnServer*  _arnInternalServer;
-    ArnDiscoverResolver*  _arnDResolver;
-    ArnItem  _arnServicePv;
-    ArnItem  _arnService;
-    QTimer*  _servTimer;
-    QString  _defaultService;
-    int  _initialServiceTimeout;
 };
 
 #endif // ARNDISCOVERREMOTE_HPP

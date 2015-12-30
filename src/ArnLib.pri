@@ -161,7 +161,9 @@ contains(ARN, discover) {
 
     contains(ARN, server) {
         SOURCES += $$PWD/ArnDiscoverRemote.cpp
-        HEADERS += $$PWD/ArnInc/ArnDiscoverRemote.hpp
+        HEADERS += \
+            $$PWD/ArnInc/ArnDiscoverRemote.hpp \
+            $$PWD/private/ArnDiscoverRemote_p.hpp
     }
 
     contains(ARN, client) {
