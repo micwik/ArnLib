@@ -79,7 +79,8 @@ contains(ARN, client) {
         $$PWD/ArnInc/ArnMonEvent.hpp \
         $$PWD/ArnSync.hpp \
         $$PWD/ArnSyncLogin.hpp \
-        $$PWD/private/ArnClient_p.hpp
+        $$PWD/private/ArnClient_p.hpp \
+        $$PWD/private/ArnMonitor_p.hpp
 }
 
 

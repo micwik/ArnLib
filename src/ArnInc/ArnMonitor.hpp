@@ -38,6 +38,7 @@
 #include <QObject>
 #include <QPointer>
 
+class ArnMonitorPrivate;
 class ArnClient;
 class ArnItemNet;
 
@@ -63,10 +64,12 @@ childs. Later the signals are emmited for newly created childs.
 */
 class ARNLIBSHARED_EXPORT ArnMonitor : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnMonitor)
 
 public:
     explicit  ArnMonitor( QObject* parent = 0);
+    ~ArnMonitor();
 
     //! Set the _client_ to be used
     /*! \param[in] client to be used. If 0, local monitoring is done.
@@ -116,14 +119,13 @@ public:
      *  set to 0, i.e. local monitoring.
      *  \param[in] path
      */
-    bool  start( const QString& path)
-    { return start( path, client());}
+    bool  start( const QString& path);
 
     //! Get the monitored _path_
     /*! \return The _path_
      *  \see start()
      */
-    QString  monitorPath()  const {return _monitorPath;}
+    QString  monitorPath()  const;
 
     //! The monitor is restarted
     /*! This makes the monitor forget the signals sent for present children and
@@ -138,13 +140,13 @@ public:
      *  \param[in] reference Any external structure or id.
      *  \see reference()
      */
-    void  setReference( void* reference)  {_reference = reference;}
+    void  setReference( void* reference);
 
     //! Get the stored external reference
     /*! \return The associated external reference
      *  \see setReference()
      */
-    void*  reference()  const {return _reference;}
+    void*  reference()  const;
 
 signals:
     //! Signal emitted when the _Arn Monitor_ is closed down.
@@ -235,12 +237,14 @@ public slots:
      */
     void  foundChildDeleted( const QString& path);
 
+    //! \cond ADV
 protected:
     virtual QString  outPathConvert( const QString& path);
     virtual QString  inPathConvert( const QString& path);
 
-    QPointer<ArnClient>  _arnClient;
-    QString  _monitorPath;
+    ArnMonitor( ArnMonitorPrivate& dd, QObject* parent);
+    ArnMonitorPrivate* const  d_ptr;
+    //! \endcond
 
 private slots:
     void  dispatchArnMonEvent( int type, const QByteArray& data, bool isLocal);
@@ -250,10 +254,6 @@ private slots:
 private:
     void  doEventItemFoundCreated( int type, const QByteArray& data, bool isLocal);
     void  doEventItemDeleted( const QByteArray& data, bool isLocal);
-
-    QStringList  _foundChilds;
-    ArnItemNet*  _itemNet;
-    void*  _reference;
 };
 
 
