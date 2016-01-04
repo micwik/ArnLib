@@ -39,6 +39,7 @@
 #include <QObject>
 
 class ArnPersist;
+class ArnPersistPrivate;
 class ArnPersistSapi;
 class ArnDependOffer;
 class QSqlDatabase;
@@ -55,6 +56,7 @@ class XStringMap;
 class ArnItemPersist : public ArnItem
 {
     Q_OBJECT
+
 public:
     struct StoreType {
         enum E {
@@ -82,6 +84,7 @@ private:
 class ARNLIBSHARED_EXPORT ArnVcs : public QObject
 {
     Q_OBJECT
+
 public:
     explicit ArnVcs( QObject* parent = 0);
     ~ArnVcs();
@@ -146,7 +149,7 @@ This class is used at an _ArnServer_ to implemennt persistent objects.
 class ARNLIBSHARED_EXPORT ArnPersist : public QObject
 {
     Q_OBJECT
-    ArnVcs*  _vcs;
+    Q_DECLARE_PRIVATE(ArnPersist)
 
 public:
     explicit ArnPersist( QObject* parent = 0);
@@ -225,6 +228,12 @@ public slots:
      */
     bool  doArchive( const QString& name = QString());
 
+    //! \cond ADV
+protected:
+    ArnPersist( ArnPersistPrivate& dd, QObject* parent);
+    ArnPersistPrivate* const  d_ptr;
+    //! \endcond
+
 private slots:
     void  sapiFlush( const QString& path);
     void  sapiTest( const QString& str, int i=0);
@@ -246,6 +255,7 @@ private slots:
     void  destroyRpc();
 
 private:
+    void  init();
     ArnItemPersist*  getPersistItem( const QString& path);
     ArnItemPersist*  setupMandatory( const QString& path, bool isMandatory);
     void  removeFilePersistItem( const QString& path);
@@ -258,17 +268,6 @@ private:
     void  dbSetupReadValue( const QString& meta, const QString& valueTxt,
                             QByteArray& value);
     void  dbSetupWriteValue(QString& meta, QString& valueTxt, QByteArray& value);
-
-    QDir*  _persistDir;
-    QDir*  _archiveDir;
-    ArnItem*  _arnMountPoint;
-    ArnDependOffer* _depOffer;
-    QMap<uint,ArnItemPersist*>  _itemPersistMap;
-    QMap<QString,uint>  _pathPersistMap;
-    QSqlDatabase*  _db;
-    QSqlQuery*  _query;
-    ArnPersistSapi*  _sapiCommon;
-    Arn::XStringMap*  _xsm;
 };
 
 #endif // ARNPERSIST_HPP

@@ -30,6 +30,7 @@
 //
 
 #include "ArnInc/ArnPersist.hpp"
+#include "private/ArnPersist_p.hpp"
 #include "ArnInc/ArnPersistSapi.hpp"
 #include "ArnInc/ArnDepend.hpp"
 #include "ArnInc/XStringMap.hpp"
@@ -151,75 +152,112 @@ void  ArnVcs::checkout( QString ref, QStringList files)
 }
 
 
-ArnPersist::ArnPersist( QObject* parent) :
-    QObject( parent)
+
+ArnPersistPrivate::ArnPersistPrivate()
 {
     _db            = new QSqlDatabase;
     _archiveDir    = new QDir("archive");
     _persistDir    = new QDir("persist");
     _xsm           = new XStringMap;
-    _sapiCommon    = new ArnPersistSapi( this);
-    _vcs           = new ArnVcs( this);
+    _sapiCommon    = new ArnPersistSapi;
+    _vcs           = new ArnVcs;
     _arnMountPoint = 0;
     _query         = 0;
     _depOffer      = 0;
-
-    setupSapi( _sapiCommon);
 }
 
-
-ArnPersist::~ArnPersist()
+ArnPersistPrivate::~ArnPersistPrivate()
 {
     delete _db;
     delete _archiveDir;
     delete _persistDir;
     delete _xsm;
+    delete _sapiCommon;
+    delete _vcs;
     if (_arnMountPoint)  delete _arnMountPoint;
     if (_query)  delete _query;
     if (_depOffer)  delete _depOffer;
 }
 
 
+void ArnPersist::init()
+{
+    Q_D(ArnPersist);
+
+    setupSapi( d->_sapiCommon);
+}
+
+
+ArnPersist::ArnPersist( QObject* parent)
+    : QObject( parent)
+    , d_ptr( new ArnPersistPrivate)
+{
+    init();
+}
+
+
+ArnPersist::ArnPersist( ArnPersistPrivate& dd, QObject* parent)
+    : QObject( parent)
+    , d_ptr( &dd)
+{
+    init();
+}
+
+
+ArnPersist::~ArnPersist()
+{
+    delete d_ptr;
+}
+
+
 void  ArnPersist::setPersistDir(const QString &path)
 {
-    _persistDir->setPath( path);
+    Q_D(ArnPersist);
+
+    d->_persistDir->setPath( path);
 }
 
 
 void  ArnPersist::setArchiveDir(const QString &path)
 {
-    _archiveDir->setPath( path);
+    Q_D(ArnPersist);
+
+    d->_archiveDir->setPath( path);
 }
 
 
 void  ArnPersist::setVcs( ArnVcs* vcs)
 {
-    if (_vcs) {
-        delete _vcs;
-        _vcs = 0;
+    Q_D(ArnPersist);
+
+    if (d->_vcs) {
+        delete d->_vcs;
+        d->_vcs = 0;
     }
     if (!vcs)  return;  // No use of VCS
 
-    _vcs = vcs;
-    _vcs->setParent( this);
+    d->_vcs = vcs;
+    d->_vcs->setParent( this);
 
-    connect( _vcs, SIGNAL(checkoutR()), this, SLOT(vcsCheckoutR()));
+    connect( d->_vcs, SIGNAL(checkoutR()), this, SLOT(vcsCheckoutR()));
     ArnRpc::Mode  mode;
-    _sapiCommon->batchConnect( _vcs, QRegExp("(.+)"), "rq_vcs\\1");
-    _sapiCommon->batchConnect( QRegExp("^pv_vcs(.+)"), _vcs, "\\1");
+    d->_sapiCommon->batchConnect( d->_vcs, QRegExp("(.+)"), "rq_vcs\\1");
+    d->_sapiCommon->batchConnect( QRegExp("^pv_vcs(.+)"), d->_vcs, "\\1");
 }
 
 
 ArnItemPersist*  ArnPersist::getPersistItem( const QString& path)
 {
+    Q_D(ArnPersist);
+
     ArnItemPersist*  item = new ArnItemPersist( this);
     item->open( path);
     uint  linkId = item->linkId();
 
-    if (_itemPersistMap.contains( linkId)) { // Already as persist
+    if (d->_itemPersistMap.contains( linkId)) { // Already as persist
         qDebug() << "getPersistItem already persist: path=" << path << " link=" << linkId;
         delete item;
-        item = _itemPersistMap.value( linkId);
+        item = d->_itemPersistMap.value( linkId);
 
         return item;
     }
@@ -229,7 +267,7 @@ ArnItemPersist*  ArnPersist::getPersistItem( const QString& path)
 
     connect( item, SIGNAL(changed()), this, SLOT(doArnUpdate()));
     connect( item, SIGNAL(arnLinkDestroyed()), this, SLOT(doArnDestroy()));
-    _itemPersistMap.insert( linkId, item);
+    d->_itemPersistMap.insert( linkId, item);
 
     return item;
 }
@@ -237,28 +275,30 @@ ArnItemPersist*  ArnPersist::getPersistItem( const QString& path)
 
 ArnItemPersist*  ArnPersist::setupMandatory( const QString& path, bool isMandatory)
 {
+    Q_D(ArnPersist);
+
     ArnItemPersist::StoreType  st;
     ArnItemPersist*  item = 0;
 
     if (isMandatory) {
         item = getPersistItem( path);
         item->setMandatory(true);
-        if ((item->storeType() == st.DataBase) && !_pathPersistMap.contains( path)) {
-            _pathPersistMap.insert( path, item->linkId());
+        if ((item->storeType() == st.DataBase) && !d->_pathPersistMap.contains( path)) {
+            d->_pathPersistMap.insert( path, item->linkId());
             item->addMode( Arn::ObjectMode::Save);
         }
     }
     else {
-        uint  linkId = _pathPersistMap.value( path);
+        uint  linkId = d->_pathPersistMap.value( path);
         if (!linkId)  return 0;
 
-        item = _itemPersistMap.value( linkId);
+        item = d->_itemPersistMap.value( linkId);
         Q_ASSERT(item);
         item->setMandatory(false);
         if (item->storeType() != st.File) {  // Not persist file
-            _pathPersistMap.remove( path);  // Map only needed for mandatory & file
+            d->_pathPersistMap.remove( path);  // Map only needed for mandatory & file
             if (!item->getMode().is( Arn::ObjectMode::Save)) {
-                _itemPersistMap.remove( linkId);
+                d->_itemPersistMap.remove( linkId);
                 delete item;
             }
         }
@@ -269,10 +309,12 @@ ArnItemPersist*  ArnPersist::setupMandatory( const QString& path, bool isMandato
 
 void  ArnPersist::removeFilePersistItem( const QString& path)
 {
-    uint  linkId = _pathPersistMap.value( path);
+    Q_D(ArnPersist);
+
+    uint  linkId = d->_pathPersistMap.value( path);
     if (!linkId)  return;  // path not found
 
-    ArnItemPersist*  item = _itemPersistMap.value( linkId);
+    ArnItemPersist*  item = d->_itemPersistMap.value( linkId);
     Q_ASSERT(item);
     ArnItemPersist::StoreType  st;
     if (item->storeType() != st.File)  return;  // Not persist file
@@ -284,22 +326,26 @@ void  ArnPersist::removeFilePersistItem( const QString& path)
 
 void  ArnPersist::doArnDestroy()
 {
+    Q_D(ArnPersist);
+
     ArnItemPersist*  item = qobject_cast<ArnItemPersist*>( sender());
     if (!item)  return;  // No valid sender
 
     // qDebug() << "Persist destroyArn: path=" << item->path();
-    _itemPersistMap.remove( item->linkId());
-    _pathPersistMap.remove( item->path());
+    d->_itemPersistMap.remove( item->linkId());
+    d->_pathPersistMap.remove( item->path());
     item->deleteLater();
 }
 
 
 void  ArnPersist::doArnModeChanged( const QString& path, uint linkId, Arn::ObjectMode mode)
 {
+    Q_D(ArnPersist);
+
     // qDebug() << "Persist modeChanged: path=" << path << " mode=" << mode.f;
     if (!mode.is( mode.Save))  return;  // Not save-mode
     if (Arn::isProviderPath( path))  return;  // Only value path is used (non provider)
-    if (_itemPersistMap.contains( linkId))  return;  // Already in map
+    if (d->_itemPersistMap.contains( linkId))  return;  // Already in map
     // qDebug() << "Persist modeChanged New: path=" << path << " mode=" << mode.f;
 
     ArnItemPersist*  item = getPersistItem( path);
@@ -326,6 +372,8 @@ void  ArnPersist::doArnModeChanged( const QString& path, uint linkId, Arn::Objec
 
 void  ArnPersist::doArnUpdate()
 {
+    Q_D(ArnPersist);
+
     ArnItemPersist*  item;
     item = qobject_cast<ArnItemPersist*>( sender());
     if (!item) {
@@ -352,7 +400,7 @@ void  ArnPersist::doArnUpdate()
     {
         QString  relPath = item->path( Arn::NameF::Relative);
         // qDebug() << "Persist arnUpdate: Save to relPath=" << relPath;
-        QFile  file( _persistDir->absoluteFilePath( relPath));
+        QFile  file( d->_persistDir->absoluteFilePath( relPath));
         file.open( QIODevice::WriteOnly);
         QByteArray  data = item->toByteArray();
         file.write( data);
@@ -366,28 +414,30 @@ void  ArnPersist::doArnUpdate()
 
 bool  ArnPersist::setMountPoint( const QString& path)
 {
-    if (!_db->isOpen()) {
+    Q_D(ArnPersist);
+
+    if (!d->_db->isOpen()) {
         ArnM::errorLog( QString(tr("DataBase required before mountPoint")),
                             ArnError::NotOpen);
         return false;
     }
 
-    if (_arnMountPoint)  delete _arnMountPoint;
+    if (d->_arnMountPoint)  delete d->_arnMountPoint;
 
-    _arnMountPoint = new ArnItem( this);
-    bool  isOk = _arnMountPoint->openFolder( path);
+    d->_arnMountPoint = new ArnItem( this);
+    bool  isOk = d->_arnMountPoint->openFolder( path);
     if (isOk) {
-        connect( _arnMountPoint, SIGNAL(arnModeChanged(QString,uint,Arn::ObjectMode)),
+        connect( d->_arnMountPoint, SIGNAL(arnModeChanged(QString,uint,Arn::ObjectMode)),
                  this, SLOT(doArnModeChanged(QString,uint,Arn::ObjectMode)));
 
         // Load all persist files & mandatory into arn
         doLoadFiles();
         doLoadMandatory();
 
-        if (_depOffer)  delete _depOffer;
+        if (d->_depOffer)  delete d->_depOffer;
         // Persist service is available
-        _depOffer = new ArnDependOffer( this);
-        _depOffer->advertise("$Persist");
+        d->_depOffer = new ArnDependOffer( this);
+        d->_depOffer->advertise("$Persist");
     }
 
     return isOk;
@@ -396,29 +446,31 @@ bool  ArnPersist::setMountPoint( const QString& path)
 
 bool  ArnPersist::setupDataBase( const QString& dbName)
 {
-    if (_query)  delete _query;
+    Q_D(ArnPersist);
 
-    *_db = QSqlDatabase::addDatabase("QSQLITE", "ArnPersist");
+    if (d->_query)  delete d->_query;
+
+    *d->_db = QSqlDatabase::addDatabase("QSQLITE", "ArnPersist");
     //db.setHostName("bigblue");
-    _db->setDatabaseName( dbName);
+    d->_db->setDatabaseName( dbName);
     //db.setUserName("acarlson");
     //db.setPassword("1uTbSbAs");
-    if (!_db->open()) {
-        ArnM::errorLog( QString(tr("DataBase open: ") + _db->lastError().text()),
+    if (!d->_db->open()) {
+        ArnM::errorLog( QString(tr("DataBase open: ") + d->_db->lastError().text()),
                             ArnError::ConnectionError);
         return false;
     }
-    _query = new QSqlQuery( *_db);
+    d->_query = new QSqlQuery( *d->_db);
 
     int  curArnDbVer = 100;  // Default for db with no meta table
-    // qDebug() << "Persist-Db tables:" << _db->tables();
-    if (_db->tables().contains("meta"))
+    // qDebug() << "Persist-Db tables:" << d->_db->tables();
+    if (d->_db->tables().contains("meta"))
         curArnDbVer = metaDbValue("ver", "101").toInt();
-    bool  hasStoreTable = _db->tables().contains("store");
+    bool  hasStoreTable = d->_db->tables().contains("store");
 
     //// Legacy conversion of db
     if (curArnDbVer <= 100) {
-        _query->exec("CREATE TABLE meta ("
+        d->_query->exec("CREATE TABLE meta ("
                      "attr TEXT PRIMARY KEY,"
                      "value TEXT)");
         ArnM::errorLog("Creating Persist meta-table", ArnError::Info);
@@ -427,11 +479,11 @@ bool  ArnPersist::setupDataBase( const QString& dbName)
         setMetaDbValue("ver", "102");
 
     if ((curArnDbVer < 200) && hasStoreTable) {
-        _query->exec("ALTER TABLE store RENAME TO store_save");
+        d->_query->exec("ALTER TABLE store RENAME TO store_save");
         ArnM::errorLog("Saving old Persist data to table 'store_save'", ArnError::Info);
     }
     if ((curArnDbVer < 200) || !hasStoreTable) {
-        _query->exec("CREATE TABLE store ("
+        d->_query->exec("CREATE TABLE store ("
                      "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                      "meta TEXT,"
                      "path TEXT,"
@@ -443,9 +495,9 @@ bool  ArnPersist::setupDataBase( const QString& dbName)
         ArnM::errorLog("Creating new Persist data table", ArnError::Info);
     }
     if ((curArnDbVer < 200) && hasStoreTable) {
-        _query->exec("INSERT INTO store (path, value, isUsed, isMandatory) "
+        d->_query->exec("INSERT INTO store (path, value, isUsed, isMandatory) "
                      "SELECT path, value, isUsed, isMandatory FROM store_save");
-        _query->exec("DROP TABLE store_save");
+        d->_query->exec("DROP TABLE store_save");
         ArnM::errorLog("Converting Persist data to ArnDB 2.0", ArnError::Info);
     }
 
@@ -455,17 +507,19 @@ bool  ArnPersist::setupDataBase( const QString& dbName)
 
 QString  ArnPersist::metaDbValue( const QString& attr, const QString& def)
 {
+    Q_D(ArnPersist);
+
     QString  retVal = def;
 
-    _query->prepare("SELECT value FROM meta WHERE attr = :attr");
-    _query->bindValue(":attr", attr);
-    _query->exec();
-    if (_query->next()) {
-        retVal = _query->value(0).toString();
+    d->_query->prepare("SELECT value FROM meta WHERE attr = :attr");
+    d->_query->bindValue(":attr", attr);
+    d->_query->exec();
+    if (d->_query->next()) {
+        retVal = d->_query->value(0).toString();
         if (retVal.isNull())  // Successful query must not be null
             retVal = "";
     }
-    _query->finish();
+    d->_query->finish();
 
     return retVal;
 }
@@ -473,18 +527,20 @@ QString  ArnPersist::metaDbValue( const QString& attr, const QString& def)
 
 bool  ArnPersist::setMetaDbValue( const QString& attr, const QString& value)
 {
+    Q_D(ArnPersist);
+
     QString  curVal = metaDbValue( attr);
     if (value == curVal)  return true;  // Already set to value
 
     if (curVal.isNull())  // Meta attr not present, insert new
-        _query->prepare("INSERT INTO meta (attr, value) VALUES (:attr, :value)");
+        d->_query->prepare("INSERT INTO meta (attr, value) VALUES (:attr, :value)");
     else  // Meta attr present, update it
-        _query->prepare("UPDATE meta SET value = :value WHERE attr = :attr");
+        d->_query->prepare("UPDATE meta SET value = :value WHERE attr = :attr");
 
-    _query->bindValue(":attr", attr);
-    _query->bindValue(":value", value);
-    bool  retVal = _query->exec();
-    _query->finish();
+    d->_query->bindValue(":attr", attr);
+    d->_query->bindValue(":value", value);
+    bool  retVal = d->_query->exec();
+    d->_query->finish();
 
     return retVal;
 }
@@ -492,18 +548,20 @@ bool  ArnPersist::setMetaDbValue( const QString& attr, const QString& value)
 
 bool  ArnPersist::getDbId( const QString& path, int& storeId)
 {
+    Q_D(ArnPersist);
+
     bool  retVal = false;
     int   isUsed = 1;
 
-    _query->prepare("SELECT id, isUsed FROM store WHERE path = :path");
-    _query->bindValue(":path", path);
-    _query->exec();
-    if (_query->next()) {
-        storeId = _query->value(0).toInt();
-        isUsed  = _query->value(1).toInt();
+    d->_query->prepare("SELECT id, isUsed FROM store WHERE path = :path");
+    d->_query->bindValue(":path", path);
+    d->_query->exec();
+    if (d->_query->next()) {
+        storeId = d->_query->value(0).toInt();
+        isUsed  = d->_query->value(1).toInt();
         retVal  = true;
     }
-    _query->finish();
+    d->_query->finish();
 
     if (!isUsed)  updateDbUsed( storeId, 1);
     return retVal;
@@ -516,11 +574,13 @@ bool  ArnPersist::getDbId( const QString& path, int& storeId)
 void  ArnPersist::dbSetupReadValue( const QString& meta, const QString& valueTxt,
                                     QByteArray& value)
 {
+    Q_D(ArnPersist);
+
     if (!value.isEmpty())  return;  // Non textual is used
 
     if (!meta.isEmpty()) {
-        _xsm->fromXString( meta.toLatin1());
-        QByteArray  variantType = _xsm->value("V");
+        d->_xsm->fromXString( meta.toLatin1());
+        QByteArray  variantType = d->_xsm->value("V");
         if (!variantType.isEmpty()) {  // Variant is stored
             value = char( ArnItemB::ExportCode::VariantTxt)
                   + variantType + ":" + valueTxt.toUtf8();
@@ -541,6 +601,8 @@ void  ArnPersist::dbSetupReadValue( const QString& meta, const QString& valueTxt
  */
 void ArnPersist::dbSetupWriteValue( QString& meta, QString& valueTxt, QByteArray& value)
 {
+    Q_D(ArnPersist);
+
     valueTxt = "";
     meta = "";
     if (value.isEmpty())  return;
@@ -551,9 +613,9 @@ void ArnPersist::dbSetupWriteValue( QString& meta, QString& valueTxt, QByteArray
         Q_ASSERT(sepPos > 0);
 
         QByteArray  variantType( value.constData() + 1, sepPos - 1);
-        _xsm->clear();
-        _xsm->add("V", variantType);
-        meta = QString::fromLatin1( _xsm->toXString().constData());
+        d->_xsm->clear();
+        d->_xsm->add("V", variantType);
+        meta = QString::fromLatin1( d->_xsm->toXString().constData());
         valueTxt = QString::fromUtf8( value.constData() + sepPos + 1, value.size() - sepPos - 1);
         value = QByteArray();
     }
@@ -570,23 +632,25 @@ void ArnPersist::dbSetupWriteValue( QString& meta, QString& valueTxt, QByteArray
 
 bool  ArnPersist::getDbValue(int storeId, QString &path, QByteArray &value)
 {
+    Q_D(ArnPersist);
+
     bool  retVal = false;
     int   isUsed = 1;
     QByteArray  meta;
     QString  valueTxt;
-    _query->prepare("SELECT meta, path, valueTxt, value, isUsed FROM store WHERE id = :id");
-    _query->bindValue(":id", storeId);
-    _query->exec();
-    if (_query->next()) {
-        meta     = _query->value(0).toByteArray();
-        path     = _query->value(1).toString();
-        valueTxt = _query->value(2).toString();
-        value    = _query->value(3).toByteArray();
-        isUsed   = _query->value(4).toInt();
+    d->_query->prepare("SELECT meta, path, valueTxt, value, isUsed FROM store WHERE id = :id");
+    d->_query->bindValue(":id", storeId);
+    d->_query->exec();
+    if (d->_query->next()) {
+        meta     = d->_query->value(0).toByteArray();
+        path     = d->_query->value(1).toString();
+        valueTxt = d->_query->value(2).toString();
+        value    = d->_query->value(3).toByteArray();
+        isUsed   = d->_query->value(4).toInt();
         retVal   = true;
         dbSetupReadValue( meta, valueTxt, value);
     }
-    _query->finish();
+    d->_query->finish();
 
     if (!isUsed)  updateDbUsed( storeId, 1);
     return retVal;
@@ -595,23 +659,25 @@ bool  ArnPersist::getDbValue(int storeId, QString &path, QByteArray &value)
 
 bool  ArnPersist::getDbValue( const QString& path, QByteArray& value, int& storeId)
 {
+    Q_D(ArnPersist);
+
     bool  retVal = false;
     int   isUsed = 1;
     QByteArray  meta;
     QString  valueTxt;
-    _query->prepare("SELECT id, meta, valueTxt, value, isUsed FROM store WHERE path = :path");
-    _query->bindValue(":path", path);
-    _query->exec();
-    if (_query->next()) {
-        storeId  = _query->value(0).toInt();
-        meta     = _query->value(1).toByteArray();
-        valueTxt = _query->value(2).toString();
-        value    = _query->value(3).toByteArray();
-        isUsed   = _query->value(4).toInt();
+    d->_query->prepare("SELECT id, meta, valueTxt, value, isUsed FROM store WHERE path = :path");
+    d->_query->bindValue(":path", path);
+    d->_query->exec();
+    if (d->_query->next()) {
+        storeId  = d->_query->value(0).toInt();
+        meta     = d->_query->value(1).toByteArray();
+        valueTxt = d->_query->value(2).toString();
+        value    = d->_query->value(3).toByteArray();
+        isUsed   = d->_query->value(4).toInt();
         retVal   = true;
         dbSetupReadValue( meta, valueTxt, value);
     }
-    _query->finish();
+    d->_query->finish();
 
     if (!isUsed)  updateDbUsed( storeId, 1);
     return retVal;
@@ -620,15 +686,17 @@ bool  ArnPersist::getDbValue( const QString& path, QByteArray& value, int& store
 
 bool  ArnPersist::getDbMandatoryList( QList<int>& storeIdList)
 {
+    Q_D(ArnPersist);
+
     bool  retVal = false;
     storeIdList.clear();
-    _query->prepare("SELECT id FROM store WHERE isMandatory = 1");
-    _query->exec();
-    while (_query->next()) {
-        storeIdList += _query->value(0).toInt();
+    d->_query->prepare("SELECT id FROM store WHERE isMandatory = 1");
+    d->_query->exec();
+    while (d->_query->next()) {
+        storeIdList += d->_query->value(0).toInt();
         retVal  = true;
     }
-    _query->finish();
+    d->_query->finish();
 
     return retVal;
 }
@@ -636,16 +704,18 @@ bool  ArnPersist::getDbMandatoryList( QList<int>& storeIdList)
 
 bool  ArnPersist::getDbList( bool isUsed, QList<int> &storeIdList)
 {
+    Q_D(ArnPersist);
+
     bool  retVal = false;
     storeIdList.clear();
-    _query->prepare("SELECT id FROM store WHERE isUsed = :isUsed");
-    _query->bindValue(":isUsed", int(isUsed));
-    _query->exec();
-    while (_query->next()) {
-        storeIdList += _query->value(0).toInt();
+    d->_query->prepare("SELECT id FROM store WHERE isUsed = :isUsed");
+    d->_query->bindValue(":isUsed", int(isUsed));
+    d->_query->exec();
+    while (d->_query->next()) {
+        storeIdList += d->_query->value(0).toInt();
         retVal  = true;
     }
-    _query->finish();
+    d->_query->finish();
 
     return retVal;
 }
@@ -653,6 +723,8 @@ bool  ArnPersist::getDbList( bool isUsed, QList<int> &storeIdList)
 
 bool  ArnPersist::insertDbValue( const QString& path, const QByteArray& value)
 {
+    Q_D(ArnPersist);
+
     bool  retVal = false;
 
     QString  meta;
@@ -660,14 +732,14 @@ bool  ArnPersist::insertDbValue( const QString& path, const QByteArray& value)
     QByteArray  value_ = value;
     dbSetupWriteValue( meta, valueTxt, value_);
 
-    _query->prepare("INSERT INTO store (meta, path, valueTxt, value) "
+    d->_query->prepare("INSERT INTO store (meta, path, valueTxt, value) "
                    "VALUES (:meta, :path, :valueTxt, :value)");
-    _query->bindValue(":meta", meta);
-    _query->bindValue(":path", path);
-    _query->bindValue(":valueTxt", valueTxt);
-    _query->bindValue(":value", value_);
-    retVal = _query->exec();
-    _query->finish();
+    d->_query->bindValue(":meta", meta);
+    d->_query->bindValue(":path", path);
+    d->_query->bindValue(":valueTxt", valueTxt);
+    d->_query->bindValue(":value", value_);
+    retVal = d->_query->exec();
+    d->_query->finish();
 
     return retVal;
 }
@@ -675,6 +747,8 @@ bool  ArnPersist::insertDbValue( const QString& path, const QByteArray& value)
 
 bool  ArnPersist::updateDbValue( int storeId, const QByteArray& value)
 {
+    Q_D(ArnPersist);
+
     // qDebug() << "Persist updateDb: id=" << storeId << " value=" << value;
     bool  retVal = false;
 
@@ -683,14 +757,14 @@ bool  ArnPersist::updateDbValue( int storeId, const QByteArray& value)
     QByteArray  value_ = value;
     dbSetupWriteValue( meta, valueTxt, value_);
 
-    _query->prepare("UPDATE store SET meta = :meta, valueTxt = :valueTxt, value = :value "
+    d->_query->prepare("UPDATE store SET meta = :meta, valueTxt = :valueTxt, value = :value "
                     "WHERE id = :id");
-    _query->bindValue(":id", storeId);
-    _query->bindValue(":meta", meta);
-    _query->bindValue(":valueTxt", valueTxt);
-    _query->bindValue(":value", value_);
-    retVal = _query->exec();
-    _query->finish();
+    d->_query->bindValue(":id", storeId);
+    d->_query->bindValue(":meta", meta);
+    d->_query->bindValue(":valueTxt", valueTxt);
+    d->_query->bindValue(":value", value_);
+    retVal = d->_query->exec();
+    d->_query->finish();
 
     return retVal;
 }
@@ -698,14 +772,16 @@ bool  ArnPersist::updateDbValue( int storeId, const QByteArray& value)
 
 bool  ArnPersist::updateDbUsed( int storeId, int isUsed)
 {
+    Q_D(ArnPersist);
+
     // qDebug() << "UpdateDb: id=" << storeId << " isUsed=" << isUsed;
     bool  retVal = false;
 
-    _query->prepare("UPDATE store SET isUsed = :isUsed WHERE id = :id");
-    _query->bindValue(":id", storeId);
-    _query->bindValue(":isUsed", isUsed);
-    retVal = _query->exec();
-    _query->finish();
+    d->_query->prepare("UPDATE store SET isUsed = :isUsed WHERE id = :id");
+    d->_query->bindValue(":id", storeId);
+    d->_query->bindValue(":isUsed", isUsed);
+    retVal = d->_query->exec();
+    d->_query->finish();
 
     return retVal;
 }
@@ -713,14 +789,16 @@ bool  ArnPersist::updateDbUsed( int storeId, int isUsed)
 
 bool  ArnPersist::updateDbMandatory( int storeId, int isMandatory)
 {
+    Q_D(ArnPersist);
+
     // qDebug() << "UpdateDb: id=" << storeId << " isMandatory=" << isMandatory;
     bool  retVal = false;
 
-    _query->prepare("UPDATE store SET isMandatory = :isMandatory WHERE id = :id");
-    _query->bindValue(":id", storeId);
-    _query->bindValue(":isMandatory", isMandatory);
-    retVal = _query->exec();
-    _query->finish();
+    d->_query->prepare("UPDATE store SET isMandatory = :isMandatory WHERE id = :id");
+    d->_query->bindValue(":id", storeId);
+    d->_query->bindValue(":isMandatory", isMandatory);
+    retVal = d->_query->exec();
+    d->_query->finish();
 
     return retVal;
 }
@@ -728,17 +806,19 @@ bool  ArnPersist::updateDbMandatory( int storeId, int isMandatory)
 
 bool  ArnPersist::doArchive( const QString& name)
 {
+    Q_D(ArnPersist);
+
     QString  arFileName;
 
     if (name.isNull()) {
         QDateTime  dateTime = QDateTime::currentDateTime();
         QString  nowStr = dateTime.toString("yyMMdd-hhmmss");
-        arFileName = _archiveDir->absoluteFilePath( QString("persist_%1.db").arg( nowStr));
+        arFileName = d->_archiveDir->absoluteFilePath( QString("persist_%1.db").arg( nowStr));
     }
     else {
-        arFileName = _archiveDir->absoluteFilePath( name);
+        arFileName = d->_archiveDir->absoluteFilePath( name);
     }
-    QString  dbFileName = _db->databaseName();
+    QString  dbFileName = d->_db->databaseName();
 
     // qDebug() << "Persist Archive: src=" << dbFileName << " dst=" << arFileName;
     return QFile::copy( dbFileName, arFileName);
@@ -775,8 +855,10 @@ void  ArnPersist::doLoadMandatory()
 
 void  ArnPersist::doLoadFiles()
 {
+    Q_D(ArnPersist);
+
     QStringList  flist;
-    getFileList( flist, *_persistDir);
+    getFileList( flist, *d->_persistDir);
     foreach (const QString& relPath, flist) {
         loadFile( relPath);
     }
@@ -785,23 +867,25 @@ void  ArnPersist::doLoadFiles()
 
 void  ArnPersist::loadFile( const QString& relPath)
 {
+    Q_D(ArnPersist);
+
     QString  arnPath = Arn::convertPath( relPath, Arn::NameF::EmptyOk);
     // qDebug() << "Persist loadFile: relPath=" << relPath;
 
     ArnItemPersist*  item;
-    if (!_pathPersistMap.contains( arnPath)) {  // First time loaded
+    if (!d->_pathPersistMap.contains( arnPath)) {  // First time loaded
         item = getPersistItem( arnPath);
         item->setDelay( 500);  // MW: ok?
-        _pathPersistMap.insert( arnPath, item->linkId());
+        d->_pathPersistMap.insert( arnPath, item->linkId());
     }
     else {
-        uint  linkId = _pathPersistMap.value( arnPath);
-        item = _itemPersistMap.value( linkId);
+        uint  linkId = d->_pathPersistMap.value( arnPath);
+        item = d->_itemPersistMap.value( linkId);
         Q_ASSERT(item);
     }
     item->setStoreType( ArnItemPersist::StoreType::File);
 
-    QFile  file( _persistDir->absoluteFilePath( relPath));
+    QFile  file( d->_persistDir->absoluteFilePath( relPath));
     file.open( QIODevice::ReadOnly);
     QByteArray  data = file.readAll();
     // qDebug() << "Persist loadFile: absPath=" << file.fileName();
@@ -863,16 +947,18 @@ void  ArnPersist::vcsCheckoutR()
 
 void  ArnPersist::sapiFlush( const QString& path)
 {
+    Q_D(ArnPersist);
+
     bool  isOk = true;
     QString  fullPath = Arn::fullPath( path);
-    foreach (ArnItemPersist* item, _itemPersistMap) {
+    foreach (ArnItemPersist* item, d->_itemPersistMap) {
         if (path.isEmpty() || item->path().startsWith( fullPath)) {
             // if (item->isDelayPending())
             //     qDebug() << "Persist flush: path=" << item->path();
             item->bypassDelayPending();
         }
     }
-    emit _sapiCommon->rq_flushR( isOk, path);
+    emit d->_sapiCommon->rq_flushR( isOk, path);
 }
 
 
@@ -895,55 +981,61 @@ void  ArnPersist::sapiLoad()
 
 void  ArnPersist::sapiLs( const QString& path)
 {
+    Q_D(ArnPersist);
+
     QStringList  flist;
-    getFileList( flist, *_persistDir);
+    getFileList( flist, *d->_persistDir);
     convertFileList( flist, Arn::NameF::EmptyOk);
 
     if (path.isEmpty())
-        emit _sapiCommon->rq_lsR( flist);
+        emit d->_sapiCommon->rq_lsR( flist);
     else  // Filter only files beginning with path
-        emit _sapiCommon->rq_lsR( flist.filter( QRegExp("^" + QRegExp::escape( path))));
+        emit d->_sapiCommon->rq_lsR( flist.filter( QRegExp("^" + QRegExp::escape( path))));
 }
 
 
 void  ArnPersist::sapiRm( const QString& path)
 {
+    Q_D(ArnPersist);
+
     QString  relPath = Arn::convertPath( path, Arn::NameF::Relative);
     bool  isOk = true;
     if (Arn::isFolderPath( relPath)) {
         QStringList  flist;
-        getFileList( flist, *_persistDir);
+        getFileList( flist, *d->_persistDir);
         foreach (const QString& delPath, flist) {
             if (delPath.startsWith( relPath)) {
-                isOk &= _persistDir->remove( delPath);
+                isOk &= d->_persistDir->remove( delPath);
                 removeFilePersistItem( Arn::convertPath( delPath, Arn::NameF::EmptyOk));
                 if (isOk) {
-                    _persistDir->rmpath( Arn::parentPath( delPath));  // Remove empty paths if possible
+                    d->_persistDir->rmpath( Arn::parentPath( delPath));  // Remove empty paths if possible
                 }
             }
         }
     }
     else {
-        isOk = _persistDir->remove( relPath);
+        isOk = d->_persistDir->remove( relPath);
         removeFilePersistItem( path);
         if (isOk) {
-            _persistDir->rmpath( Arn::parentPath( relPath));  // Remove empty paths if possible
+            d->_persistDir->rmpath( Arn::parentPath( relPath));  // Remove empty paths if possible
         }
     }
 
-    emit _sapiCommon->rq_rmR( isOk);
+    emit d->_sapiCommon->rq_rmR( isOk);
 }
 
 
 void  ArnPersist::sapiTouch( const QString& path)
 {
+    Q_D(ArnPersist);
+
     if (path.endsWith('/'))  return;  // Don't touch a dir
 
     bool  isOk = true;
     QString  relPath = Arn::convertPath( path, Arn::NameF::Relative);
-    QString  filePath = _persistDir->absoluteFilePath( relPath);
+    QString  filePath = d->_persistDir->absoluteFilePath( relPath);
     // Make any needed directories
-    isOk &= _persistDir->mkpath( QFileInfo( filePath).dir().path());
+    isOk &= d->_persistDir->mkpath( QFileInfo( filePath).dir().path());
 
     //// Touch the file
     QFile  file( filePath);
@@ -952,18 +1044,20 @@ void  ArnPersist::sapiTouch( const QString& path)
     if (isOk)
         loadFile( relPath);
 
-    emit _sapiCommon->rq_touchR( isOk);
+    emit d->_sapiCommon->rq_touchR( isOk);
 }
 
 
 void  ArnPersist::sapiDbMandatory( const QString& path, bool isMandatory)
 {
+    Q_D(ArnPersist);
+
     bool isOk = true;
 
     if (Arn::isFolderPath( path)) {
         QList<int>  storeIdList;
         if (!getDbList( true, storeIdList)) {
-            emit _sapiCommon->rq_dbMandatoryR( isOk);
+            emit d->_sapiCommon->rq_dbMandatoryR( isOk);
             return;
         }
 
@@ -990,16 +1084,18 @@ void  ArnPersist::sapiDbMandatory( const QString& path, bool isMandatory)
                 isOk = false;
         }
     }
-    emit _sapiCommon->rq_dbMandatoryR( isOk);
+    emit d->_sapiCommon->rq_dbMandatoryR( isOk);
 }
 
 
 void  ArnPersist::sapiDbMandatoryLs( const QString& path)
 {
+    Q_D(ArnPersist);
+
     QStringList  retList;
     QList<int>  storeIdList;
     if (!getDbMandatoryList( storeIdList)) {
-        emit _sapiCommon->rq_dbMandatoryLsR( retList);
+        emit d->_sapiCommon->rq_dbMandatoryLsR( retList);
         return;
     }
 
@@ -1012,16 +1108,18 @@ void  ArnPersist::sapiDbMandatoryLs( const QString& path)
         retList += pathDb;
     }
 
-    emit _sapiCommon->rq_dbMandatoryLsR( retList);
+    emit d->_sapiCommon->rq_dbMandatoryLsR( retList);
 }
 
 
 void  ArnPersist::sapiDbLs( const QString& path, bool isUsed)
 {
+    Q_D(ArnPersist);
+
     QStringList  retList;
     QList<int>  storeIdList;
     if (!getDbList( isUsed, storeIdList)) {
-        emit _sapiCommon->rq_dbLsR( retList);
+        emit d->_sapiCommon->rq_dbLsR( retList);
         return;
     }
 
@@ -1034,15 +1132,17 @@ void  ArnPersist::sapiDbLs( const QString& path, bool isUsed)
         retList += pathDb;
     }
 
-    emit _sapiCommon->rq_dbLsR( retList);
+    emit d->_sapiCommon->rq_dbLsR( retList);
 }
 
 
 void  ArnPersist::sapiDbMarkUnused( const QString& path)
 {
+    Q_D(ArnPersist);
+
     QList<int>  storeIdList;
     if (!getDbList( true, storeIdList)) {
-        emit _sapiCommon->rq_dbMarkUnusedR(false);  // Error
+        emit d->_sapiCommon->rq_dbMarkUnusedR(false);  // Error
         return;
     }
 
@@ -1053,15 +1153,17 @@ void  ArnPersist::sapiDbMarkUnused( const QString& path)
         if (!pathDb.startsWith( path))  continue;
 
         if (!updateDbUsed( storeId, false)) {
-            emit _sapiCommon->rq_dbMarkUnusedR(false);  // Error
+            emit d->_sapiCommon->rq_dbMarkUnusedR(false);  // Error
             return;
         }
     }
-    emit _sapiCommon->rq_dbMarkUnusedR(true);  // Success
+    emit d->_sapiCommon->rq_dbMarkUnusedR(true);  // Success
 }
 
 
 void  ArnPersist::sapiInfo()
 {
-    emit _sapiCommon->rq_infoR("Arn Persist", "1.0");
+    Q_D(ArnPersist);
+
+    emit d->_sapiCommon->rq_infoR("Arn Persist", "1.0");
 }
