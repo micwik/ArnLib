@@ -294,23 +294,26 @@ void  ArnDiscoverResolver::setDefaultService( const QString& defaultService)
 ArnDiscoverBrowserBPrivate::ArnDiscoverBrowserBPrivate()
 {
     _defaultStopState = ArnDiscoverInfo::State::HostIp;
+    _serviceBrowser   = new ArnZeroConfBrowser;
 }
 
 
 ArnDiscoverBrowserBPrivate::~ArnDiscoverBrowserBPrivate()
 {
+    delete _serviceBrowser;
 }
 
 
 void ArnDiscoverBrowserB::init()
 {
-    _serviceBrowser = new ArnZeroConfBrowser( this);
-    connect(_serviceBrowser, SIGNAL(browseError(int)),
-            this, SLOT(onBrowseError(int)));
-    connect(_serviceBrowser, SIGNAL(serviceAdded(int,QString,QString)),
-            this, SLOT(onServiceAdded(int,QString,QString)));
-    connect(_serviceBrowser, SIGNAL(serviceRemoved(int,QString,QString)),
-            this, SLOT(onServiceRemoved(int,QString,QString)));
+    Q_D(ArnDiscoverBrowserB);
+
+    connect( d->_serviceBrowser, SIGNAL(browseError(int)),
+             this, SLOT(onBrowseError(int)));
+    connect( d->_serviceBrowser, SIGNAL(serviceAdded(int,QString,QString)),
+             this, SLOT(onServiceAdded(int,QString,QString)));
+    connect( d->_serviceBrowser, SIGNAL(serviceRemoved(int,QString,QString)),
+             this, SLOT(onServiceRemoved(int,QString,QString)));
 }
 
 
@@ -403,7 +406,9 @@ int  ArnDiscoverBrowserB::serviceNameToId( const QString& name)
 
 bool  ArnDiscoverBrowserB::isBrowsing()  const
 {
-    return _serviceBrowser->isBrowsing();
+    Q_D(const ArnDiscoverBrowserB);
+
+    return d->_serviceBrowser->isBrowsing();
 }
 
 
@@ -480,14 +485,16 @@ void  ArnDiscoverBrowserB::browse( bool enable)
     d->_activeServIds.clear();
     d->_activeServInfos.clear();
 
-    _serviceBrowser->setSubType( d->_filter);
-    _serviceBrowser->browse( enable);
+    d->_serviceBrowser->setSubType( d->_filter);
+    d->_serviceBrowser->browse( enable);
 }
 
 
 void  ArnDiscoverBrowserB::stopBrowse()
 {
-    _serviceBrowser->stopBrowse();
+    Q_D(ArnDiscoverBrowserB);
+
+    d->_serviceBrowser->stopBrowse();
 }
 
 
@@ -542,7 +549,7 @@ void  ArnDiscoverBrowserB::onServiceAdded( int id, const QString& name, const QS
     Q_D(ArnDiscoverBrowserB);
 
     if (Arn::debugDiscover)  qDebug() << "Browse Service added: name=" << name << " domain=" << domain
-                                      << " escFullDomain=" << _serviceBrowser->escapedFullDomain();
+                                      << " escFullDomain=" << d->_serviceBrowser->escapedFullDomain();
 
     int  index = newServiceInfo( id, name, domain);
     Q_ASSERT(index >= 0);
@@ -749,17 +756,18 @@ void  ArnDiscoverBrowserB::doNextState( ArnDiscoverInfo& info)
 ArnDiscoverAdvertisePrivate::ArnDiscoverAdvertisePrivate()
 {
     _hasSetupAdvertise = false;
+    _arnZCReg          = new ArnZeroConfRegister;
 }
 
 
 ArnDiscoverAdvertisePrivate::~ArnDiscoverAdvertisePrivate()
 {
+    delete _arnZCReg;
 }
 
 
 void ArnDiscoverAdvertise::init()
 {
-    _arnZCReg  = new ArnZeroConfRegister( this);
 }
 
 
@@ -800,19 +808,19 @@ void  ArnDiscoverAdvertise::advertiseService( ArnDiscover::Type discoverType, co
     xsm.add("protovers", "1.0");
     xsm.add("arnlibVers", XStringMap( ArnM::info()).value("Ver"));
     xsm.add("server", QByteArray::number( d->_discoverType == ArnDiscover::Type::Server));
-    _arnZCReg->setSubTypes( d->_groups);
-    _arnZCReg->addSubType( d->_discoverType == ArnDiscover::Type::Server ? "server" : "client");
+    d->_arnZCReg->setSubTypes( d->_groups);
+    d->_arnZCReg->addSubType( d->_discoverType == ArnDiscover::Type::Server ? "server" : "client");
     for (int i = 0; i < d->_groups.size(); ++i) {
         xsm.add("group", i, d->_groups.at(i));
     }
     xsm += d->_customProperties;
 
-    _arnZCReg->setTxtRecordMap( xsm);
-    _arnZCReg->setHost( hostName);
-    _arnZCReg->setPort( port >= 0 ? port : Arn::defaultTcpPort);
+    d->_arnZCReg->setTxtRecordMap( xsm);
+    d->_arnZCReg->setHost( hostName);
+    d->_arnZCReg->setPort( port >= 0 ? port : Arn::defaultTcpPort);
 
-    connect( _arnZCReg, SIGNAL(registered(QString)), this, SLOT(serviceRegistered(QString)));
-    connect( _arnZCReg, SIGNAL(registrationError(int)), this, SLOT(serviceRegistrationError(int)));
+    connect( d->_arnZCReg, SIGNAL(registered(QString)), this, SLOT(serviceRegistered(QString)));
+    connect( d->_arnZCReg, SIGNAL(registrationError(int)), this, SLOT(serviceRegistrationError(int)));
 
     QTimer::singleShot(0, this, SLOT(postSetupThis()));  // Ĺet persistance service etc init before ...
 }
@@ -889,13 +897,15 @@ QString  ArnDiscoverAdvertise::currentService()  const
 {
     Q_D(const ArnDiscoverAdvertise);
 
-    return d->_hasSetupAdvertise ? _arnZCReg->currentServiceName() : d->_service;
+    return d->_hasSetupAdvertise ? d->_arnZCReg->currentServiceName() : d->_service;
 }
 
 
 ArnDiscoverAdvertise::State  ArnDiscoverAdvertise::state()  const
 {
-    return State::fromInt( _arnZCReg->state());
+    Q_D(const ArnDiscoverAdvertise);
+
+    return State::fromInt( d->_arnZCReg->state());
 }
 
 
@@ -910,10 +920,10 @@ void  ArnDiscoverAdvertise::setService( const QString& service)
     if (service.isEmpty())  return;
 
     if (Arn::debugDiscover)  qDebug() << "DiscoverAdvertise Service will change: serviceName=" << d->_service;
-    if (_arnZCReg->state() != ArnZeroConf::State::None)
-        _arnZCReg->releaseService();
-    _arnZCReg->setServiceName( d->_service);
-    _arnZCReg->registerService();
+    if (d->_arnZCReg->state() != ArnZeroConf::State::None)
+        d->_arnZCReg->releaseService();
+    d->_arnZCReg->setServiceName( d->_service);
+    d->_arnZCReg->registerService();
 }
 
 

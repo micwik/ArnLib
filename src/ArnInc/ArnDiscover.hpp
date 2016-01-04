@@ -427,8 +427,6 @@ private:
     int  newServiceInfo( int id, const QString& name, const QString& domain);
     void  removeServiceInfo( int index);
     void  doNextState( ArnDiscoverInfo& info);
-
-    ArnZeroConfBrowser*  _serviceBrowser;
 };
 
 
@@ -816,8 +814,6 @@ protected slots:
 
 private:
     void  init();
-
-    ArnZeroConfRegister*  _arnZCReg;
 };
 
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnDiscoverAdvertise::State)

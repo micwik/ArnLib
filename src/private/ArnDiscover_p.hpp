@@ -69,7 +69,8 @@ public:
     ArnDiscoverBrowserBPrivate();
     virtual  ~ArnDiscoverBrowserBPrivate();
 
-private:
+private:    
+    ArnZeroConfBrowser*  _serviceBrowser;
     QList<int>  _activeServIds;
     QList<ArnDiscoverInfo>  _activeServInfos;
     QString  _filter;
@@ -96,7 +97,8 @@ public:
     ArnDiscoverAdvertisePrivate();
     virtual  ~ArnDiscoverAdvertisePrivate();
 
-private:
+private:    
+    ArnZeroConfRegister*  _arnZCReg;
     QString  _service;
     QStringList  _groups;
     Arn::XStringMap  _customProperties;
