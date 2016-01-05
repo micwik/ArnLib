@@ -36,11 +36,9 @@
 
 #include "ArnLib_global.hpp"
 #include "Arn.hpp"
-#include "ArnPipe.hpp"
-#include "XStringMap.hpp"
+#include "ArnError.hpp"
 #include "MQFlags.hpp"
 #include <QGenericArgument>
-#include <QPointer>
 #include <QString>
 #include <QByteArray>
 #include <QObject>
@@ -48,8 +46,10 @@
 //! Similar to Q_ARG but with added argument label (parameter name)
 #define MQ_ARG(type, label, data) MQArgument<type >(#type, #label, data)
 
+class ArnRpcPrivate;
 class ArnRpcReceiverStorage;
 class ArnDynamicSignals;
+class ArnPipe;
 class QMetaMethod;
 class QRegExp;
 class QTimer;
@@ -118,6 +118,8 @@ void  MyClass::rpc_ver()
 class ARNLIBSHARED_EXPORT ArnRpc : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnRpc)
+
 public:
     struct Mode {
         enum E {
@@ -160,6 +162,7 @@ public:
     };
 
     explicit  ArnRpc( QObject* parent = 0);
+    ~ArnRpc();
 
     //! Get the path for the used _pipe_
     /*! \return path
@@ -409,6 +412,9 @@ private slots:
     //! \cond ADV
 protected:
     void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0);
+
+    ArnRpc( ArnRpcPrivate& dd, QObject* parent);
+    ArnRpcPrivate* const  d_ptr;
     //! \endcond
 
 private:
@@ -452,6 +458,7 @@ private:
         QList<Params>  paramTab;
     };
 
+    void  init();
     bool  xsmAddArg( Arn::XStringMap& xsm, const MQGenericArgument& arg, uint index, int& nArg);
     bool  xsmLoadArg( const Arn::XStringMap& xsm, ArgInfo& argInfo, int& index, const QByteArray& methodName);
     bool  argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByteArray& methodName);
@@ -471,19 +478,6 @@ private:
     static const RpcTypeInfo&  typeInfoFromQt( const QByteArray& qtTypeName);
     static const RpcTypeInfo&  typeInfoFromId( int typeId);
     static const RpcTypeInfo&  typeInfoNull();
-
-    ArnDynamicSignals*  _dynamicSignals;
-    ArnRpcReceiverStorage*  _receiverStorage;
-    MethodsParam*  _receiverMethodsParam;
-    QPointer<QObject>  _receiver;
-    ArnPipe*  _pipe;
-    QByteArray  _methodPrefix;
-    bool  _isIncludeSender;
-    Mode  _mode;
-    bool  _isHeartBeatOk;
-    QTimer*  _timerHeartBeatSend;
-    QTimer*  _timerHeartBeatCheck;
-    bool  _convVariantPar;
 
     static RpcTypeInfo _rpcTypeInfoTab[];
 };

@@ -30,7 +30,9 @@
 //
 
 #include "ArnInc/ArnRpc.hpp"
+#include "private/ArnRpc_p.hpp"
 #include "ArnInc/ArnM.hpp"
+#include "ArnInc/XStringMap.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include <QMetaType>
 #include <QMetaMethod>
@@ -165,8 +167,8 @@ bool  ArnDynamicSignals::addSignal( QObject *sender, int signalId, const QByteAr
 //! \endcond
 
 
-ArnRpc::ArnRpc( QObject* parent) :
-    QObject( parent)
+
+ArnRpcPrivate::ArnRpcPrivate()
 {
     _pipe                 = 0;
     _receiver             = 0;
@@ -174,48 +176,89 @@ ArnRpc::ArnRpc( QObject* parent) :
     _receiverMethodsParam = 0;
     _convVariantPar       = false;
     _isIncludeSender      = false;
-    _dynamicSignals       = new ArnDynamicSignals( this);
+    _dynamicSignals       = 0;
     _isHeartBeatOk        = true;
-    _timerHeartBeatSend   = new QTimer( this);
-    _timerHeartBeatCheck  = new QTimer( this);
+    _timerHeartBeatSend   = new QTimer;
+    _timerHeartBeatCheck  = new QTimer;
+}
 
-    connect( _timerHeartBeatSend, SIGNAL(timeout()), this, SLOT(timeoutHeartBeatSend()));
-    connect( _timerHeartBeatCheck, SIGNAL(timeout()), this, SLOT(timeoutHeartBeatCheck()));
+
+ArnRpcPrivate::~ArnRpcPrivate()
+{
+    delete _timerHeartBeatSend;
+    delete _timerHeartBeatCheck;
+}
+
+
+void ArnRpc::init()
+{
+    Q_D(ArnRpc);
+
+    d->_dynamicSignals = new ArnDynamicSignals( this);
+
+    connect( d->_timerHeartBeatSend, SIGNAL(timeout()), this, SLOT(timeoutHeartBeatSend()));
+    connect( d->_timerHeartBeatCheck, SIGNAL(timeout()), this, SLOT(timeoutHeartBeatCheck()));
+}
+
+
+ArnRpc::ArnRpc( QObject* parent)
+    : QObject( parent)
+    , d_ptr( new ArnRpcPrivate)
+{
+    init();
+}
+
+
+ArnRpc::ArnRpc( ArnRpcPrivate& dd, QObject* parent)
+    : QObject( parent)
+    , d_ptr( &dd)
+{
+    init();
+}
+
+
+ArnRpc::~ArnRpc()
+{
+    delete d_ptr;
 }
 
 
 QString  ArnRpc::pipePath()  const
 {
-    if (!_pipe)  return QString();
+    Q_D(const ArnRpc);
 
-    return _pipe->path();
+    if (!d->_pipe)  return QString();
+
+    return d->_pipe->path();
 }
 
 
 bool  ArnRpc::open( const QString& pipePath)
 {
+    Q_D(ArnRpc);
+
     setPipe(0);  // Remove any existing pipe
 
     //// Make path allways in accordance with provider / requester mode
     QString  path = pipePath;
-    if (_mode.is(_mode.Provider) != Arn::isProviderPath( path))
+    if (d->_mode.is(d->_mode.Provider) != Arn::isProviderPath( path))
         path = Arn::twinPath( path);
 
     ArnPipe*  pipe = new ArnPipe;
-    if (!_mode.is(_mode.Provider))
+    if (!d->_mode.is( Mode::Provider))
         pipe->setMaster();
-    if (_mode.is(_mode.AutoDestroy))
+    if (d->_mode.is( Mode::AutoDestroy))
         pipe->setAutoDestroy();
 
     bool  stat;
-    if (_mode.is(_mode.UuidPipe))
+    if (d->_mode.is( Mode::UuidPipe))
         stat = pipe->openUuid( path);
     else
         stat = pipe->open( path);
 
     if (stat) {
-        pipe->setSendSeq( _mode.is(_mode.SendSequence));
-        pipe->setCheckSeq( _mode.is(_mode.CheckSequence));
+        pipe->setSendSeq( d->_mode.is( Mode::SendSequence));
+        pipe->setCheckSeq( d->_mode.is( Mode::CheckSequence));
     }
     else {
         delete pipe;
@@ -229,42 +272,48 @@ bool  ArnRpc::open( const QString& pipePath)
 
 void  ArnRpc::setPipe( ArnPipe* pipe)
 {
-    if (_pipe) {
-        if (Arn::debugRPC)  qDebug() << "Rpc delete pipe: path=" << _pipe->path();
-        _pipe->deleteLater();
+    Q_D(ArnRpc);
+
+    if (d->_pipe) {
+        if (Arn::debugRPC)  qDebug() << "Rpc delete pipe: path=" << d->_pipe->path();
+        d->_pipe->deleteLater();
     }
-    _pipe = pipe;
-    if (_pipe) {
-        _pipe->setParent( this);
-        connect( _pipe, SIGNAL(changed(QByteArray)), this, SLOT(pipeInput(QByteArray)),
+    d->_pipe = pipe;
+    if (d->_pipe) {
+        d->_pipe->setParent( this);
+        connect( d->_pipe, SIGNAL(changed(QByteArray)), this, SLOT(pipeInput(QByteArray)),
                  Qt::QueuedConnection);
-        connect( _pipe, SIGNAL(arnLinkDestroyed()), this, SLOT(destroyPipe()));
-        connect( _pipe, SIGNAL(outOfSequence()), this, SIGNAL(outOfSequence()));
+        connect( d->_pipe, SIGNAL(arnLinkDestroyed()), this, SLOT(destroyPipe()));
+        connect( d->_pipe, SIGNAL(outOfSequence()), this, SIGNAL(outOfSequence()));
     }
 }
 
 
 ArnPipe*  ArnRpc::pipe()  const
 {
-    return _pipe;
+    Q_D(const ArnRpc);
+
+    return d->_pipe;
 }
 
 
 bool ArnRpc::setReceiver( QObject* receiver, bool useTrackRpcSender)
 {
+    Q_D(ArnRpc);
+
     bool stat = true;
 
-    _receiver = receiver;
+    d->_receiver = receiver;
     deleteReceiverMethodsParam();
-    _receiverStorage = 0;  // Default: don't need be able to track rpcSender
+    d->_receiverStorage = 0;  // Default: don't need be able to track rpcSender
     if (!receiver)  return stat;
 
     bool  isSameThread = receiver->thread() == this->thread();
     if (useTrackRpcSender && isSameThread) {
-        _receiverStorage = _receiver->findChild<ArnRpcReceiverStorage*>( RPC_STORAGE_NAME);
-        if (!_receiverStorage) {
-            _receiverStorage = new ArnRpcReceiverStorage( _receiver);
-            _receiverStorage->setObjectName( RPC_STORAGE_NAME);
+        d->_receiverStorage = d->_receiver->findChild<ArnRpcReceiverStorage*>( RPC_STORAGE_NAME);
+        if (!d->_receiverStorage) {
+            d->_receiverStorage = new ArnRpcReceiverStorage( d->_receiver);
+            d->_receiverStorage->setObjectName( RPC_STORAGE_NAME);
         }
     }
     else if (useTrackRpcSender) {
@@ -279,91 +328,119 @@ bool ArnRpc::setReceiver( QObject* receiver, bool useTrackRpcSender)
 
 QObject*ArnRpc::receiver() const
 {
-    return _receiver;
+    Q_D(const ArnRpc);
+
+    return d->_receiver;
 }
 
 
 void  ArnRpc::setMethodPrefix( const QString& prefix)
 {
-    _methodPrefix = prefix.toLatin1();
+    Q_D(ArnRpc);
+
+    d->_methodPrefix = prefix.toLatin1();
     deleteReceiverMethodsParam();
 }
 
 
 QString  ArnRpc::methodPrefix()  const
 {
-    return _methodPrefix;
+    Q_D(const ArnRpc);
+
+    return d->_methodPrefix;
 }
 
 
 bool  ArnRpc::isConvVariantPar()  const
 {
-    return _convVariantPar;
+    Q_D(const ArnRpc);
+
+    return d->_convVariantPar;
 }
 
 
 void  ArnRpc::setConvVariantPar( bool convVariantPar)
 {
-    _convVariantPar = convVariantPar;
+    Q_D(ArnRpc);
+
+    d->_convVariantPar = convVariantPar;
 }
 
 
 void  ArnRpc::setIncludeSender( bool v)
 {
-    _isIncludeSender = v;
+    Q_D(ArnRpc);
+
+    d->_isIncludeSender = v;
 }
 
 
 void  ArnRpc::setMode( Mode mode)
 {
-    _mode = mode;
+    Q_D(ArnRpc);
+
+    d->_mode = mode;
 }
 
 
 ArnRpc::Mode  ArnRpc::mode()  const
 {
-    return _mode;
+    Q_D(const ArnRpc);
+
+    return d->_mode;
 }
 
 
 void  ArnRpc::setHeartBeatSend( int time)
 {
+    Q_D(ArnRpc);
+
     if (time == 0)
-        _timerHeartBeatSend->stop();
+        d->_timerHeartBeatSend->stop();
     else
-        _timerHeartBeatSend->start( time * 1000);
+        d->_timerHeartBeatSend->start( time * 1000);
 }
 
 
 int  ArnRpc::getHeartBeatSend()  const
 {
-    return _timerHeartBeatSend->interval() / 1000;
+    Q_D(const ArnRpc);
+
+    return d->_timerHeartBeatSend->interval() / 1000;
 }
 
 
 void  ArnRpc::setHeartBeatCheck( int time)
 {
+    Q_D(ArnRpc);
+
     if (time == 0)
-        _timerHeartBeatCheck->stop();
+        d->_timerHeartBeatCheck->stop();
     else
-        _timerHeartBeatCheck->start( time * 1000);
+        d->_timerHeartBeatCheck->start( time * 1000);
 }
 
 
 int  ArnRpc::getHeartBeatCheck()  const
 {
-    return _timerHeartBeatCheck->interval() / 1000;
+    Q_D(const ArnRpc);
+
+    return d->_timerHeartBeatCheck->interval() / 1000;
 }
 
 
 bool  ArnRpc::isHeartBeatOk()  const
 {
-    return _isHeartBeatOk;
+    Q_D(const ArnRpc);
+
+    return d->_isHeartBeatOk;
 }
 
 
 void  ArnRpc::addSenderSignals( QObject* sender, const QString& prefix)
 {
+    Q_D(ArnRpc);
+
     const QMetaObject*  metaObject = sender->metaObject();
     int  methodCount = metaObject->methodCount();
     QByteArray  methodSignCompHead;
@@ -381,23 +458,25 @@ void  ArnRpc::addSenderSignals( QObject* sender, const QString& prefix)
         QByteArray  methodSignComp = methodSign;
         methodSignComp.chop(1);  // Remove last ")"
 
-        if (!_mode.is( Mode::NoDefaultArgs)  // When using Default args ...
+        if (!d->_mode.is( Mode::NoDefaultArgs)  // When using Default args ...
         && methodSignCompHead.startsWith( methodSignComp)  // Starts with same signatur ...
         && hasSameParamNames( method, metaObject->method( methodIdCompHead)))  // and same param names
             continue;  // Skip it, to prohibit multiple rpc calls.
 
         methodSignCompHead = methodSignComp;
         methodIdCompHead   = methodId;
-        _dynamicSignals->addSignal( sender, methodId, funcName);
+        d->_dynamicSignals->addSignal( sender, methodId, funcName);
     }
 }
 
 
 ArnRpc*  ArnRpc::rpcSender()
 {
-    if (!_receiverStorage)  return 0;
+    Q_D(ArnRpc);
 
-    return _receiverStorage->_rpcSender;
+    if (!d->_receiverStorage)  return 0;
+
+    return d->_receiverStorage->_rpcSender;
 }
 
 
@@ -422,7 +501,9 @@ bool  ArnRpc::invoke( const QString& funcName,
                       MQGenericArgument arg7,
                       MQGenericArgument arg8)
 {
-    if (!_pipe || !_pipe->isOpen()) {
+    Q_D(ArnRpc);
+
+    if (!d->_pipe || !d->_pipe->isOpen()) {
         errorLog( QString(tr("Pipe not open")),
                   ArnError::RpcInvokeError);
         return false;
@@ -443,7 +524,7 @@ bool  ArnRpc::invoke( const QString& funcName,
     stat &= xsmAddArg( xsmCall, arg8, 8, nArg);
 
     if (stat) {
-        *_pipe = xsmCall.toXString();
+        *d->_pipe = xsmCall.toXString();
     }
     return stat;
 }
@@ -460,7 +541,9 @@ bool  ArnRpc::invoke( const QString& funcName,
                       MQGenericArgument arg7,
                       MQGenericArgument arg8)
 {
-    if (!_pipe || !_pipe->isOpen()) {
+    Q_D(ArnRpc);
+
+    if (!d->_pipe || !d->_pipe->isOpen()) {
         errorLog( QString(tr("Pipe not open")),
                   ArnError::RpcInvokeError);
         return false;
@@ -483,10 +566,10 @@ bool  ArnRpc::invoke( const QString& funcName,
     if (stat) {
         if (invokeFlags.is( Invoke::NoQueue)) {
             QRegExp rx("^" + funcName + "\\b");
-            _pipe->setValueOverwrite( xsmCall.toXString(), rx);
+            d->_pipe->setValueOverwrite( xsmCall.toXString(), rx);
         }
         else
-            *_pipe = xsmCall.toXString();
+            *d->_pipe = xsmCall.toXString();
     }
     return stat;
 }
@@ -494,6 +577,8 @@ bool  ArnRpc::invoke( const QString& funcName,
 
 bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint index, int& nArg)
 {
+    Q_D(ArnRpc);
+
     if (!arg.name() || !arg.label() || !arg.data())  return true;  // Empty arg
     if (nArg + 1 != int( index))  return true;  // Out of seq - Finished
 
@@ -544,9 +629,9 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
     else
         argKey = rpcTypeInfo.rpcTypeName;
     if (!argLabel.isEmpty()) {
-        if (_mode.is(Mode::NamedArg) && rpcTypeInfo.typeId)
+        if (d->_mode.is( Mode::NamedArg) && rpcTypeInfo.typeId)
             argKey = argLabel;
-        else if (_mode.is(Mode::NamedArg) || _mode.is(Mode::NamedTypedArg))
+        else if (d->_mode.is( Mode::NamedArg) || d->_mode.is( Mode::NamedTypedArg))
             argKey = argLabel + ":" + argKey;
         else
             argKey += "." + argLabel;
@@ -581,10 +666,12 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
 
 void  ArnRpc::pipeInput( const QByteArray& data)
 {
-    if (Arn::debugRPC)  qDebug() << "Rpc pipeInput: path=" << _pipe->path()
-                                 << " itemId=" << _pipe->itemId() << " data=" << data;
+    Q_D(ArnRpc);
 
-    if (!_receiver) {
+    if (Arn::debugRPC)  qDebug() << "Rpc pipeInput: path=" << d->_pipe->path()
+                                 << " itemId=" << d->_pipe->itemId() << " data=" << data;
+
+    if (!d->_receiver) {
         errorLog( QString(tr("Can't invoke method: receiver=0")), ArnError::RpcReceiveError);
         return;
     }
@@ -611,11 +698,11 @@ void  ArnRpc::pipeInput( const QByteArray& data)
 
     //// Check for defaultCall
     // qDebug() << "rpc pipeInput: data=" << data;
-    QByteArray  methodName = _methodPrefix + rpcFunc;
-    if (_mode.is( Mode::UseDefaultCall)) {
+    QByteArray  methodName = d->_methodPrefix + rpcFunc;
+    if (d->_mode.is( Mode::UseDefaultCall)) {
         setupReceiverMethodsParam();  // Setup searching method data structure
 
-        int  pslotIndex = _receiverMethodsParam->methodNames.indexOf( methodName);
+        int  pslotIndex = d->_receiverMethodsParam->methodNames.indexOf( methodName);
         if (pslotIndex < 0) {  // Method not found
             emit defaultCall( data);
             return;
@@ -626,7 +713,7 @@ void  ArnRpc::pipeInput( const QByteArray& data)
     ArgInfo  argInfo[21];  // 0..9: Used args, 10..19: Default args, 20: Null arg
     int  argc = 0;
 
-    if (_isIncludeSender) {
+    if (d->_isIncludeSender) {
         argInfo[ argc].arg = Q_ARG( ArnRpc*, this);
         ++argc;
     }
@@ -661,16 +748,16 @@ void  ArnRpc::pipeInput( const QByteArray& data)
 
     if (stat) {
         bool  useVarPar = checkConvVarPar( methodName, argc);
-        for (int i = _isIncludeSender; i < argc; ++i) {
+        for (int i = d->_isIncludeSender; i < argc; ++i) {
             stat = importArgData( argInfo[ int(argOrder[i])], methodName, useVarPar);
             if (!stat)  break;
         }
     }
 
     if (stat) {
-        if (_receiverStorage)
-            _receiverStorage->_rpcSender = this;
-        stat = QMetaObject::invokeMethod( _receiver,
+        if (d->_receiverStorage)
+            d->_receiverStorage->_rpcSender = this;
+        stat = QMetaObject::invokeMethod( d->_receiver,
                                           methodName.constData(),
                                           Qt::AutoConnection,
                                           argInfo[ int(argOrder[0])].arg,
@@ -683,8 +770,8 @@ void  ArnRpc::pipeInput( const QByteArray& data)
                                           argInfo[ int(argOrder[7])].arg,
                                           argInfo[ int(argOrder[8])].arg,
                                           argInfo[ int(argOrder[9])].arg);
-        if (_receiverStorage)
-            _receiverStorage->_rpcSender = 0;
+        if (d->_receiverStorage)
+            d->_receiverStorage->_rpcSender = 0;
         if(!stat) {
             errorLog( QString(tr("Can't invoke method:")) + methodName.constData(),
                       ArnError::RpcReceiveError);
@@ -693,7 +780,7 @@ void  ArnRpc::pipeInput( const QByteArray& data)
     }
 
     //// Clean up - destroy allocated argument data
-    for (int i = _isIncludeSender; i < 20; ++i) {
+    for (int i = d->_isIncludeSender; i < 20; ++i) {
         ArgInfo&  aiSlot = argInfo[i];
         if (aiSlot.isArgAlloc && aiSlot.arg.data()) {
             int  type = QMetaType::type( aiSlot.arg.name());
@@ -710,6 +797,8 @@ void  ArnRpc::pipeInput( const QByteArray& data)
 bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
                           const QByteArray& methodName)
 {
+    Q_D(ArnRpc);
+
     //// Get arg type and name
     const QByteArray&  typeKey = xsm.keyRef( index);  // MW: Why ref &typeKey not working in debugger?
     QByteArray  rpcType;
@@ -741,7 +830,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
     }
 
     //// Setup Arg info
-    const RpcTypeInfo&  rpcTypeInfo = (isTypeGen || (!argInfo.hasType && _mode.is( Mode::NamedArg)))
+    const RpcTypeInfo&  rpcTypeInfo = (isTypeGen || (!argInfo.hasType && d->_mode.is( Mode::NamedArg)))
                                     ? typeInfoNull() : typeInfoFromRpc( rpcType);
     bool  isListFormat = rpcTypeInfo.typeId == QMetaType::QStringList;
     if (isTypeGen) {
@@ -768,7 +857,7 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
         }
     }
 
-    bool  possibleNameArg = !_mode.is( Mode::OnlyPosArgIn) && !argInfo.name.isEmpty();
+    bool  possibleNameArg = !d->_mode.is( Mode::OnlyPosArgIn) && !argInfo.name.isEmpty();
 
     //// Check type (not for pure nameArg)
     if ((!argInfo.typeId)
@@ -811,8 +900,10 @@ bool  ArnRpc::xsmLoadArg( const XStringMap& xsm, ArgInfo& argInfo, int &index,
 
 bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByteArray& methodName)
 {
-    if (_mode.is( Mode::OnlyPosArgIn))  return true;  // Only allowed call by positional argument
-    if (_isIncludeSender)  return true;  // IncludeSender is deprecated and never namedArg
+    Q_D(ArnRpc);
+
+    if (d->_mode.is( Mode::OnlyPosArgIn))  return true;  // Only allowed call by positional argument
+    if (d->_isIncludeSender)  return true;  // IncludeSender is deprecated and never namedArg
 
     bool  isOnlyPositional = true;
     bool  isOnlyNamed      = true;
@@ -835,7 +926,7 @@ bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByte
     int  methodIndex = argLogicFindMethod( argInfo, argc, methodName);
     if (methodIndex < 0)  return false;  // Failed finding a method
 
-    const QMetaObject*  metaObject = _receiver->metaObject();
+    const QMetaObject*  metaObject = d->_receiver->metaObject();
     QMetaMethod  method = metaObject->method( methodIndex);
     QList<QByteArray>  parNames = method.parameterNames();
     QList<QByteArray>  parTypes = method.parameterTypes();
@@ -849,7 +940,7 @@ bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByte
                 QByteArray  parType = parTypes.at( parIndex);
                 if (!aiSlot.qtType.isEmpty()) {  // Type already known for arg
                     if ((parType != aiSlot.qtType)
-                    &&  ((parType != "QVariant") || !_convVariantPar)) {
+                    &&  ((parType != "QVariant") || !d->_convVariantPar)) {
                         errorLog( QString(tr("Type mismatch, arg=")) + parNames.at( parIndex)
                                   + tr(" in method=") + methodName.constData(),
                                   ArnError::RpcReceiveError);
@@ -861,7 +952,7 @@ bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByte
                     aiSlot.typeId = QMetaType::type( aiSlot.qtType.constData());
 
                     const RpcTypeInfo&  typeInfo = typeInfoFromId( aiSlot.typeId);
-                    if ((aiSlot.typeId == QMetaType::QVariant) && _convVariantPar) {
+                    if ((aiSlot.typeId == QMetaType::QVariant) && d->_convVariantPar) {
                         aiSlot.qtType = "QString";  // Will be QString in QVariant
                         aiSlot.typeId = QMetaType::QString;
                     }
@@ -904,16 +995,18 @@ bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByte
 
 int  ArnRpc::argLogicFindMethod( const ArnRpc::ArgInfo* argInfo, int argc, const QByteArray& methodName)
 {
+    Q_D(ArnRpc);
+
     setupReceiverMethodsParam();  // Setup searching method data structure
 
-    int  pslotIndex = _receiverMethodsParam->methodNames.indexOf( methodName);
+    int  pslotIndex = d->_receiverMethodsParam->methodNames.indexOf( methodName);
     if (pslotIndex < 0) {
         errorLog( QString(tr("Not found, method=")) + methodName.constData(),
                   ArnError::RpcReceiveError);
         return -1;
     }
 
-    const MethodsParam::Params&  pslot = _receiverMethodsParam->paramTab.at( pslotIndex);
+    const MethodsParam::Params&  pslot = d->_receiverMethodsParam->paramTab.at( pslotIndex);
 
     // Only 1 method with zero parameters, use it
     if ((pslot.paramNames.size() == 1) && pslot.paramNames.at(0).isEmpty())
@@ -950,7 +1043,7 @@ int  ArnRpc::argLogicFindMethod( const ArnRpc::ArgInfo* argInfo, int argc, const
         return methodCand.at(0);  // Match with exactly 1 method
 
     //// Filter candidates to only have same number of params as the found args
-    const QMetaObject*  metaObject = _receiver->metaObject();
+    const QMetaObject*  metaObject = d->_receiver->metaObject();
     for (int i = 0; i < methodCand.size();) {
         QMetaMethod  method = metaObject->method( methodCand.at(i));
         if (method.parameterNames().size() == foundArgCount) {
@@ -971,18 +1064,20 @@ int  ArnRpc::argLogicFindMethod( const ArnRpc::ArgInfo* argInfo, int argc, const
 
 void  ArnRpc::setupReceiverMethodsParam()
 {
-    if (_receiverMethodsParam)  return;  // Already done
+    Q_D(ArnRpc);
+
+    if (d->_receiverMethodsParam)  return;  // Already done
 
     MethodsParam*  mpar = new MethodsParam;
-    _receiverMethodsParam = mpar;
+    d->_receiverMethodsParam = mpar;
 
-    const QMetaObject*  metaObject = _receiver->metaObject();
+    const QMetaObject*  metaObject = d->_receiver->metaObject();
     int  methodCount = metaObject->methodCount();
     QByteArray  lastMethodName;
     for (int methodIndex = 0; methodIndex < methodCount; ++methodIndex) {
         QMetaMethod  method = metaObject->method( methodIndex);
         QByteArray  methodSign = methodSignature( method);
-        if (!methodSign.startsWith( _methodPrefix))  continue;
+        if (!methodSign.startsWith( d->_methodPrefix))  continue;
 
         //// Found a method
         QByteArray  methodName = methodSign.left( methodSign.indexOf('('));
@@ -1015,10 +1110,12 @@ void  ArnRpc::setupReceiverMethodsParam()
 
 void ArnRpc::deleteReceiverMethodsParam()
 {
-    if (!_receiverMethodsParam)  return;  // Already done
+    Q_D(ArnRpc);
 
-    delete _receiverMethodsParam;
-    _receiverMethodsParam = 0;
+    if (!d->_receiverMethodsParam)  return;  // Already done
+
+    delete d->_receiverMethodsParam;
+    d->_receiverMethodsParam = 0;
 }
 
 
@@ -1037,17 +1134,19 @@ bool  ArnRpc::hasSameParamNames( const QMetaMethod& method1, const QMetaMethod& 
 
 bool  ArnRpc::checkConvVarPar( const QByteArray& methodName, int argc)
 {
-    if (!_convVariantPar)  return false;
+    Q_D(ArnRpc);
+
+    if (!d->_convVariantPar)  return false;
 
     bool  useVarPar = false;
     setupReceiverMethodsParam();  // Setup searching method data structure
 
-    int  pslotIndex = _receiverMethodsParam->methodNames.indexOf( methodName);
+    int  pslotIndex = d->_receiverMethodsParam->methodNames.indexOf( methodName);
     if (pslotIndex < 0)  return false;
 
     useVarPar = true;
-    const MethodsParam::Params&  pslot = _receiverMethodsParam->paramTab.at( pslotIndex);
-    const QMetaObject*  metaObject = _receiver->metaObject();
+    const MethodsParam::Params&  pslot = d->_receiverMethodsParam->paramTab.at( pslotIndex);
+    const QMetaObject*  metaObject = d->_receiver->metaObject();
     foreach (int  methodIndex, pslot.allMethodIds) {
         QMetaMethod  method = metaObject->method( methodIndex);
         QList<QByteArray>  typesNames = method.parameterTypes();
@@ -1130,35 +1229,39 @@ bool  ArnRpc::importArgData( ArnRpc::ArgInfo& argInfo, const QByteArray& methodN
 
 void  ArnRpc::funcHeartBeat( const XStringMap& xsm)
 {
+    Q_D(ArnRpc);
+
     QByteArray  time = xsm.value(1);
     if (time == "off") {  // Remote turn off heart beat function for both directions
-        _timerHeartBeatSend->stop();
+        d->_timerHeartBeatSend->stop();
         invoke("$heartbeat", MQ_ARG( QString, time, "off1"));
     }
     if (time == "off1") {  // Remote turn off heart beat function for this direction
-        _timerHeartBeatSend->stop();
+        d->_timerHeartBeatSend->stop();
         invoke("$heartbeat", MQ_ARG( QString, time, "0"));
     }
     else if (time == "0") {  // Remote turn off heart beat checking for this direction
-        _timerHeartBeatCheck->stop();
-        _isHeartBeatOk = true;
+        d->_timerHeartBeatCheck->stop();
+        d->_isHeartBeatOk = true;
     }
     else {
         emit heartBeatReceived();
-        if (!_isHeartBeatOk) {
-            _isHeartBeatOk = true;
-            emit heartBeatChanged( _isHeartBeatOk);
+        if (!d->_isHeartBeatOk) {
+            d->_isHeartBeatOk = true;
+            emit heartBeatChanged( d->_isHeartBeatOk);
         }
     }
 
-    if (_timerHeartBeatCheck->isActive())
-        _timerHeartBeatCheck->start();  // Restart heart beat check timer
+    if (d->_timerHeartBeatCheck->isActive())
+        d->_timerHeartBeatCheck->start();  // Restart heart beat check timer
 }
 
 
 void  ArnRpc::funcHelp( const XStringMap& xsm)
 {
-    if (!_receiver) {
+    Q_D(ArnRpc);
+
+    if (!d->_receiver) {
         sendText("$help: rpc-receiver = 0");
         return;
     }
@@ -1167,8 +1270,8 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
     int  flags = -1;  // Default is faulty parameter
 
     if (modePar.isEmpty()) {  // Ok, standard
-        bool  useNamedArgHelp = _mode.isAny( Mode::AnyNamedArg) & !_mode.is( Mode::OnlyPosArgIn);
-        flags = _mode.flagIf( useNamedArgHelp, Mode::NamedArg);
+        bool  useNamedArgHelp = d->_mode.isAny( Mode::AnyNamedArg) & !d->_mode.is( Mode::OnlyPosArgIn);
+        flags = d->_mode.flagIf( useNamedArgHelp, Mode::NamedArg);
     }
     else if (modePar.startsWith("p")) {  // Positional
         flags = 0;
@@ -1181,12 +1284,12 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
     }
 
     if (flags >= 0) {
-        if (_mode.is( Mode::OnlyPosArgIn))
+        if (d->_mode.is( Mode::OnlyPosArgIn))
             sendText("* Only positional args allowed.");
-        if (_convVariantPar)
+        if (d->_convVariantPar)
             sendText("* Type VAR can be any, e.g. string or int.");
 
-        const QMetaObject*  metaObject = _receiver->metaObject();
+        const QMetaObject*  metaObject = d->_receiver->metaObject();
         int  methodIdHead = -1;
         int  parCountMin = 10;
         QByteArray  methodNameHead;
@@ -1195,13 +1298,13 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
         for (int methodId = 0; methodId < methodCount; ++methodId) {
             QMetaMethod  method = metaObject->method(methodId);
             QByteArray  methodSign = methodSignature( method);
-            if (!methodSign.startsWith( _methodPrefix))  continue;
+            if (!methodSign.startsWith( d->_methodPrefix))  continue;
 
             methodSign.chop(1);  // Remove last ")"
             QList<QByteArray>  parNames = method.parameterNames();
             int  parCount = parNames.size();
 
-            if (!_mode.is( Mode::NoDefaultArgs)  // When using Default args ...
+            if (!d->_mode.is( Mode::NoDefaultArgs)  // When using Default args ...
             && methodSignHead.startsWith( methodSign)  // Starts with same signatur ...
             && hasSameParamNames( method, metaObject->method( methodIdHead)))  // and same param names
                 parCountMin = parCount;  // Same method with less param
@@ -1227,14 +1330,16 @@ void  ArnRpc::funcHelp( const XStringMap& xsm)
 
 void  ArnRpc::funcHelpMethod( const QMetaMethod &method, const QByteArray& name, int parNumMin, int flags)
 {
-    QString  line = QString::fromLatin1( name.mid( _methodPrefix.size()));
+    Q_D(ArnRpc);
+
+    QString  line = QString::fromLatin1( name.mid( d->_methodPrefix.size()));
 
     QList<QByteArray>  typesNames = method.parameterTypes();
     QList<QByteArray>  parNames   = method.parameterNames();
 
     bool  wasListType = false;
     int  parCount = parNames.size();
-    for (int i = _isIncludeSender; i < parCount; ++i) {
+    for (int i = d->_isIncludeSender; i < parCount; ++i) {
         QByteArray  param;
         QByteArray  parName = parNames.at(i);
         QByteArray  typeName = typesNames.at(i);
@@ -1253,7 +1358,7 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, const QByteArray& name,
         else if (rpcTypeInfo.typeId) {
             rpcType = rpcTypeInfo.rpcTypeName;
         }
-        else if ((type == QMetaType::QVariant) && _convVariantPar) {
+        else if ((type == QMetaType::QVariant) && d->_convVariantPar) {
             rpcType = "VAR";
             isTypeVar = true;
         }
@@ -1274,7 +1379,7 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, const QByteArray& name,
         else {
             if (!rpcType.isEmpty()) {
                 param += rpcType;
-                if (_mode.is( Mode::NamedArg) && !isTypeGen)
+                if (d->_mode.is( Mode::NamedArg) && !isTypeGen)
                     param += ".";  // Force typename
                 param += "=";
             }
@@ -1293,19 +1398,21 @@ void  ArnRpc::funcHelpMethod( const QMetaMethod &method, const QByteArray& name,
 
 void  ArnRpc::funcArg( const Arn::XStringMap& xsm)
 {
+    Q_D(ArnRpc);
+
     QByteArray  modePar = xsm.value(1);
 
     if (modePar.startsWith("p")) {  // Positional
-        _mode.set( Mode::NamedArg,      false);
-        _mode.set( Mode::NamedTypedArg, false);
+        d->_mode.set( Mode::NamedArg,      false);
+        d->_mode.set( Mode::NamedTypedArg, false);
     }
     else if (modePar.startsWith("n")) {  // Named
-        _mode.set( Mode::NamedArg,      true);
-        _mode.set( Mode::NamedTypedArg, false);
+        d->_mode.set( Mode::NamedArg,      true);
+        d->_mode.set( Mode::NamedTypedArg, false);
     }
     else if (modePar.startsWith("t")) {  // NamedTyped
-        _mode.set( Mode::NamedArg,      false);
-        _mode.set( Mode::NamedTypedArg, true);
+        d->_mode.set( Mode::NamedArg,      false);
+        d->_mode.set( Mode::NamedTypedArg, true);
     }
     else {
         sendText("$arg: Unknown mode, use $help");
@@ -1315,7 +1422,9 @@ void  ArnRpc::funcArg( const Arn::XStringMap& xsm)
 
 void  ArnRpc::destroyPipe()
 {
-    if (Arn::debugRPC)  qDebug() << "Rpc Destroy pipe: path=" << _pipe->path();
+    Q_D(ArnRpc);
+
+    if (Arn::debugRPC)  qDebug() << "Rpc Destroy pipe: path=" << d->_pipe->path();
     emit pipeClosed();
     setPipe(0);
 }
@@ -1323,34 +1432,42 @@ void  ArnRpc::destroyPipe()
 
 void  ArnRpc::timeoutHeartBeatSend()
 {
-    if (!_pipe || !_pipe->isOpen())  return;
+    Q_D(ArnRpc);
+
+    if (!d->_pipe || !d->_pipe->isOpen())  return;
 
     invoke("$heartbeat", Invoke::NoQueue,
-           MQ_ARG( QString, time, QByteArray::number( _timerHeartBeatSend->interval() / 1000)));
+           MQ_ARG( QString, time, QByteArray::number( d->_timerHeartBeatSend->interval() / 1000)));
 }
 
 
 void  ArnRpc::timeoutHeartBeatCheck()
 {
-    if (_isHeartBeatOk) {
-        _isHeartBeatOk = false;
-        emit heartBeatChanged( _isHeartBeatOk);
+    Q_D(ArnRpc);
+
+    if (d->_isHeartBeatOk) {
+        d->_isHeartBeatOk = false;
+        emit heartBeatChanged( d->_isHeartBeatOk);
     }
 }
 
 
 void  ArnRpc::sendText( const QString& txt)
 {
-    if (_pipe)
-        *_pipe = "\"" + txt.toUtf8() + "\"";
+    Q_D(ArnRpc);
+
+    if (d->_pipe)
+        *d->_pipe = "\"" + txt.toUtf8() + "\"";
 }
 
 
 void  ArnRpc::errorLog( const QString& errText, ArnError err, void* reference)
 {
+    Q_D(ArnRpc);
+
     QString  idText;
-    if (_pipe) {
-        idText += " pipe:" + _pipe->path();
+    if (d->_pipe) {
+        idText += " pipe:" + d->_pipe->path();
     }
     ArnM::errorLog( errText + idText, err, reference);
 }
