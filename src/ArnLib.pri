@@ -81,6 +81,7 @@ contains(ARN, client) {
         $$PWD/ArnSyncLogin.hpp \
         $$PWD/private/ArnClient_p.hpp \
         $$PWD/private/ArnRpc_p.hpp \
+        $$PWD/private/ArnSapi_p.hpp \
         $$PWD/private/ArnPersist_p.hpp \
         $$PWD/private/ArnMonitor_p.hpp
 }

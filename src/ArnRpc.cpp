@@ -241,7 +241,7 @@ bool  ArnRpc::open( const QString& pipePath)
 
     //// Make path allways in accordance with provider / requester mode
     QString  path = pipePath;
-    if (d->_mode.is(d->_mode.Provider) != Arn::isProviderPath( path))
+    if (d->_mode.is( Mode::Provider) != Arn::isProviderPath( path))
         path = Arn::twinPath( path);
 
     ArnPipe*  pipe = new ArnPipe;

@@ -30,46 +30,67 @@
 //
 
 #include "ArnInc/ArnSapi.hpp"
+#include "private/ArnSapi_p.hpp"
 #include <QDebug>
 
 
+ArnSapiPrivate::ArnSapiPrivate()
+{
+}
+
+
+ArnSapiPrivate::~ArnSapiPrivate()
+{
+}
+
+
 ArnSapi::ArnSapi( QObject* parent)
-    : ArnRpc( parent)
+    : ArnRpc( *new ArnSapiPrivate, parent)
 {
 }
 
 
 ArnSapi::ArnSapi( const QString& defaultPath, QObject* parent)
-    : ArnRpc( parent)
+    : ArnRpc( *new ArnSapiPrivate, parent)
 {
     setDefaultPath( defaultPath);
+}
+
+
+ArnSapi::ArnSapi(ArnSapiPrivate& dd, QObject* parent)
+    : ArnRpc( dd, parent)
+{
 }
 
 
 bool  ArnSapi::open( const QString& pipePath, Mode mode,
                      const char *providerPrefix, const char *requesterPrefix)
 {
+    Q_D(ArnSapi);
+
     if (mode.is( mode.Provider)) {
-        _receivePrefix = providerPrefix ? providerPrefix : "pv_";
-        _sendPrefix    = requesterPrefix ? requesterPrefix : "rq_";
+        d->_receivePrefix = providerPrefix ? providerPrefix : "pv_";
+        d->_sendPrefix    = requesterPrefix ? requesterPrefix : "rq_";
     }
     else {
-        _receivePrefix = requesterPrefix ? requesterPrefix : "rq_";
-        _sendPrefix    = providerPrefix ? providerPrefix : "pv_";
+        d->_receivePrefix = requesterPrefix ? requesterPrefix : "rq_";
+        d->_sendPrefix    = providerPrefix ? providerPrefix : "pv_";
     }
 
-    ArnRpc::setMethodPrefix( _receivePrefix);
-    ArnRpc::addSenderSignals( this, _sendPrefix);
+    ArnRpc::setMethodPrefix( d->_receivePrefix);
+    ArnRpc::addSenderSignals( this, d->_sendPrefix);
     ArnRpc::setReceiver( this, false);
     ArnRpc::setMode( mode);
 
-    return ArnRpc::open( pipePath.isEmpty() ? _defaultPath : pipePath);
+    return ArnRpc::open( pipePath.isEmpty() ? d->_defaultPath : pipePath);
 }
 
 
 void  ArnSapi::batchConnectTo( const QObject* receiver, const QString& prefix, ArnRpc::Mode mode) {
+    Q_D(ArnSapi);
+
     batchConnect( this,
-                  QRegExp("^" + _receivePrefix + "(.+)"),
+                  QRegExp("^" + d->_receivePrefix + "(.+)"),
                   receiver,
                   prefix + "\\1",
                   mode);
@@ -84,21 +105,27 @@ void  ArnSapi::batchConnectTo( const QObject* receiver, const QString& prefix, A
 
 
 void  ArnSapi::batchConnectFrom( const QObject* sender, const QString& prefix, ArnRpc::Mode mode) {
+    Q_D(ArnSapi);
+
     batchConnect( sender,
                   QRegExp("^" + prefix + "(.+)"),
                   this,
-                  _sendPrefix + "\\1",
+                  d->_sendPrefix + "\\1",
                   mode);
 }
 
 
 QString  ArnSapi::defaultPath()  const
 {
-    return _defaultPath;
+    Q_D(const ArnSapi);
+
+    return d->_defaultPath;
 }
 
 
 void  ArnSapi::setDefaultPath( const QString& defaultPath)
 {
-    _defaultPath = Arn::providerPath( defaultPath, false);
+    Q_D(ArnSapi);
+
+    d->_defaultPath = Arn::providerPath( defaultPath, false);
 }

@@ -44,6 +44,8 @@
 # define MQ_PUBLIC_ACCESS
 #endif
 
+class ArnSapiPrivate;
+
 
 //! Service API.
 /*!
@@ -113,6 +115,8 @@ void  MainWindow::sapiDefault( const QByteArray& data)
 class ARNLIBSHARED_EXPORT ArnSapi : public ArnRpc
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnSapi)
+
 public:
     explicit  ArnSapi( QObject* parent = 0);
 
@@ -190,6 +194,10 @@ protected:
      */
     void  setDefaultPath( const QString& defaultPath);
 
+    //! \cond ADV
+    ArnSapi( ArnSapiPrivate& dd, QObject* parent);
+    //! \endcond
+
 private:
     //// Hide these from SAPI base interface
     void  setPipe( ArnPipe* pipe);
@@ -201,10 +209,6 @@ private:
     void  addSenderSignals( QObject* sender, const QString& prefix);
     ArnRpc*  rpcSender();
     static ArnRpc*  rpcSender( QObject* receiver);
-
-    QString  _receivePrefix;
-    QString  _sendPrefix;
-    QString  _defaultPath;
 };
 
 
