@@ -42,6 +42,7 @@
 #include "ArnInc/XStringMap.hpp"
 #include <QMetaType>
 #include <QDebug>
+#include <limits>
 
 
 namespace Arn {
@@ -265,6 +266,63 @@ XStringMap&  XStringMap::add( const QVariantMap& variantMap)
     }
 
     return *this;
+}
+
+
+XStringMap&  XStringMap::addNum( const char* key, int val)
+{
+    return add( key, QByteArray::number( val, 10));
+}
+
+
+XStringMap&  XStringMap::addNum( const QByteArray& key, int val)
+{
+    return add( key, QByteArray::number( val, 10));
+}
+
+
+XStringMap&  XStringMap::addNum( const QString& key, int val)
+{
+    return add( key, QString::number( val, 10));
+}
+
+
+XStringMap&  XStringMap::addNum( const char* key, uint val)
+{
+    return add( key, QByteArray::number( val, 10));
+}
+
+
+XStringMap&  XStringMap::addNum( const QByteArray& key, uint val)
+{
+    return add( key, QByteArray::number( val, 10));
+}
+
+
+XStringMap&  XStringMap::addNum( const QString& key, uint val)
+{
+    return add( key, QString::number( val, 10));
+}
+
+
+XStringMap&  XStringMap::addNum( const char* key, double val, int precision)
+{
+    int  prec = precision >= 0 ? precision : std::numeric_limits<double>::digits10;
+    return add( key, QByteArray::number( val, 'g', prec));
+}
+
+
+XStringMap&  XStringMap::addNum( const QByteArray& key, double val, int precision)
+{
+    int  prec = precision >= 0 ? precision : std::numeric_limits<double>::digits10;
+    return add( key, QByteArray::number( val, 'g', prec));
+}
+
+
+XStringMap&  XStringMap::addNum(const QString& key, double val, int precision)
+{
+    int  prec = precision >= 0 ? precision : std::numeric_limits<double>::digits10;
+    return add( key, QString::number( val, 'g', prec));
 }
 
 

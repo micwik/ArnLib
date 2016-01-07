@@ -140,7 +140,10 @@ void  ArnUtest1::testXStringMap()
                    "Item=/term/32/name=Test\\__\\\\_\\^_ Item=/term/32/tempSet=125 123=Null_key-prefix");
     XStringMap xsm2;
     xsm2.fromXString( xs1);
-    QVERIFY( xsm2.toXString() == xs1);
+    QVERIFY( xsm2.toXString() == xs1);    
+    xsm1.clear();
+    xsm1.addNum("a", 123);
+    QVERIFY( xsm1.toXString() == "a=123");
 
     XStringMap xsm3;
     xsm3.add("","");

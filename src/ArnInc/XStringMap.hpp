@@ -114,6 +114,16 @@ public:
     XStringMap&  add( const XStringMap& other);
     XStringMap&  add( const QVariantMap& variantMap);
 
+    XStringMap&  addNum( const char* key, int val);
+    XStringMap&  addNum( const QByteArray& key, int val);
+    XStringMap&  addNum( const QString& key, int val);
+    XStringMap&  addNum( const char* key, uint val);
+    XStringMap&  addNum( const QByteArray& key, uint val);
+    XStringMap&  addNum( const QString& key, uint val);
+    XStringMap&  addNum( const char* key, double val, int precision = -1);
+    XStringMap&  addNum( const QByteArray& key, double val, int precision = -1);
+    XStringMap&  addNum( const QString& key, double val, int precision = -1);
+
     XStringMap&  addValues( const QStringList& stringList);
 
     void  set( int i, const QByteArray& val);
