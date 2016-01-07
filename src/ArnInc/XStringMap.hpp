@@ -85,7 +85,7 @@ class ARNLIBSHARED_EXPORT XStringMap
 public:
     XStringMap();
     /// Make shallow copy (Qt style)
-    explicit  XStringMap( const XStringMap& other);
+    XStringMap( const XStringMap& other);
     explicit  XStringMap( const QByteArray& xString);
     explicit  XStringMap( const QVariantMap& variantMap);
     ~XStringMap();
