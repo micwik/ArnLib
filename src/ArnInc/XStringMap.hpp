@@ -48,6 +48,7 @@
 #include <QStringList>
 #include <QVariant>
 
+#define ARNXSTRINGMAP_VER   "3.0"
 
 namespace Arn {
 
@@ -82,10 +83,14 @@ This will print "XString: put id=level val=12"
 class ARNLIBSHARED_EXPORT XStringMap
 {
 public:
-    explicit  XStringMap();
+    XStringMap();
+    /// Make shallow copy (Qt style)
+    explicit  XStringMap( const XStringMap& other);
     explicit  XStringMap( const QByteArray& xString);
     explicit  XStringMap( const QVariantMap& variantMap);
     ~XStringMap();
+    /// Make shallow copy (Qt style)
+    XStringMap&  operator=( const XStringMap& other);
 
     int  size()  const { return _size; }
     void  clear( bool freeMem = false);
@@ -178,6 +183,8 @@ public:
     XStringMap&  operator+=( const XStringMap& other);
     XStringMap&  operator+=( const QVariantMap& other);
 
+    QByteArray  info();
+
 private:
     void  init();
     void  checkSpace();
@@ -185,13 +192,8 @@ private:
     QVector<QByteArray>  _keyList;
     QVector<QByteArray>  _valList;
     int  _size;
-    QByteArray  _nullValue;
+    static QByteArray  _nullValue;
 };
-
-
-#ifndef DOXYGEN_SKIP
-void XStringMapTest();
-#endif
 
 }  // Arn::
 

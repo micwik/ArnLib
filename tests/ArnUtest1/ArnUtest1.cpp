@@ -1,6 +1,7 @@
 #include "TestMQFlags.hpp"
 #include <ArnInc/ArnM.hpp>
 #include <ArnInc/MQFlags.hpp>
+#include <ArnInc/XStringMap.hpp>
 #include <ArnInc/ArnLib.hpp>
 #include <QString>
 #include <QtTest>
@@ -28,6 +29,7 @@ private slots:
     void  initTestCase();
     void  cleanupTestCase();
     void  testMQFlagsText();
+    void  testXStringMap();
 
 private:
     ArnUtest1Sub*  _tsub;
@@ -116,6 +118,55 @@ void ArnUtest1::testMQFlagsText()
     // qDebug() << "Usage connectStat: EnumSet=" << usage._connectStat.txt().getEnumSet( UsageT::ConnectStatT::NsHuman);
     QVERIFY( usage._connectStat.txt().getEnumSet( UsageT::ConnectStatT::NsHuman)
              == "0=Initialized 1=Connecting 2=Negotiating 3=Connected 4=Stopped 5=Connect_error 6=Disconnected 7=Tried_all");
+}
+
+
+void  ArnUtest1::testXStringMap()
+{
+    using Arn::XStringMap;
+
+    XStringMap  xsm1;
+    xsm1.add("", "putValue");
+    xsm1.add("Item", "/term/32/tempIs=12");
+    xsm1.add("Item", "/term/32/name=Lilla rummet");
+    xsm1.add("Item", "/term/32/name=Test_ \\ ^ ");
+    xsm1.add("Item", "/term/32/tempSet=125");
+    xsm1.add(0, 123, QByteArray("Null key-prefix"));
+    QVERIFY( xsm1.key( xsm1.size(), "--UNDEF--") == "--UNDEF--");
+    QVERIFY( xsm1.value( xsm1.size(), "--UNDEF--") == "--UNDEF--");
+    QByteArray  xs1 = xsm1.toXString();
+    // qDebug() << "XS: " << xs;
+    QVERIFY( xs1 == "putValue Item=/term/32/tempIs=12 Item=/term/32/name=Lilla_rummet "
+                   "Item=/term/32/name=Test\\__\\\\_\\^_ Item=/term/32/tempSet=125 123=Null_key-prefix");
+    XStringMap xsm2;
+    xsm2.fromXString( xs1);
+    QVERIFY( xsm2.toXString() == xs1);
+
+    XStringMap xsm3;
+    xsm3.add("","");
+    // qDebug() << "XStringMap empty key & val: xstring=" << xsm1.toXString();
+    QVERIFY( xsm3.toXString() == "=");
+    xsm3.add(""," \n=_");
+    // qDebug() << "XStringMap empty key & val with '=': xstring=" << xsm1.toXString();
+    QVERIFY( xsm3.toXString() == "= =_\\n=\\_");
+    xsm3.add(""," \nabc_");
+    // qDebug() << "XStringMap empty key & val without '=': xstring=" << xsm1.toXString();
+    QVERIFY( xsm3.toXString() == "= =_\\n=\\_ _\\nabc\\_");
+    xsm3.add("def"," \ncba_");
+    // qDebug() << "XStringMap normal key & val: xstring=" << xsm1.toXString();
+    QVERIFY( xsm3.toXString() == "= =_\\n=\\_ _\\nabc\\_ def=_\\ncba\\_");
+    XStringMap xsm4( xsm3.toXString());
+    QVERIFY( xsm4.toXString() == "= =_\\n=\\_ _\\nabc\\_ def=_\\ncba\\_");
+    QVERIFY( xsm4.key(0) == "");
+    QVERIFY( xsm4.key(1) == "");
+    QVERIFY( xsm4.key(2) == "");
+    QVERIFY( xsm4.key(3) == "def");
+    QVERIFY( xsm4.value(0) == "");
+    QVERIFY( xsm4.value(1) == " \n=_");
+    QVERIFY( xsm4.value(2) == " \nabc_");
+    QVERIFY( xsm4.value("def") == " \ncba_");
+    XStringMap xsm5( xsm3);
+    QVERIFY( xsm5.toXString() == "= =_\\n=\\_ _\\nabc\\_ def=_\\ncba\\_");
 }
 
 

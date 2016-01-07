@@ -46,9 +46,20 @@
 
 namespace Arn {
 
+QByteArray  XStringMap::_nullValue;
+
+
 XStringMap::XStringMap()
 {
     init();
+}
+
+
+XStringMap::XStringMap( const XStringMap& other)
+    : _keyList( other._keyList)
+    , _valList( other._valList)
+    , _size(    other._size)
+{
 }
 
 
@@ -68,6 +79,16 @@ XStringMap::XStringMap( const QVariantMap& variantMap)
 
 XStringMap::~XStringMap()
 {
+}
+
+
+XStringMap&  XStringMap::operator=( const XStringMap& other)
+{
+    _keyList = other._keyList;
+    _valList = other._valList;
+    _size    = other._size;
+
+    return *this;
 }
 
 
@@ -163,11 +184,6 @@ int  XStringMap::maxEnumOf( const char* keyPrefix)  const
 XStringMap&  XStringMap::add( const char* key, const QByteArray& val)
 {
     if (key == 0)  return *this;  // Not valid key
-    // When empty key, value must not be empty and not contain "=" sign
-    if ((*key == 0) && (val.isEmpty() || val.contains('='))) {
-        qWarning() << "XStringMap::add not valid: key=" << key << " val=" << val;
-        return *this;
-    }
 
     checkSpace();
     _keyList[ _size].resize(0);     // Avoid Heap reallocation
@@ -265,8 +281,6 @@ XStringMap&  XStringMap::addValues( const QStringList& stringList)
 void  XStringMap::set( int i, const QByteArray& val)
 {
     if ((i < 0) || (i >= _size))  return;  // Not valid index
-    // When empty key, value must not be empty or contain "=" sign
-    if (_keyList[i].isEmpty() && (val.isEmpty() || val.contains('=')))  return;
 
     _valList[i].resize(0);  // Avoid Heap reallocation
     _valList[i] += val;
@@ -549,11 +563,13 @@ QByteArray  XStringMap::toXString()  const
     for (int i = 0; i < _size; ++i) {
         if (i > 0)
             outXString += ' ';
-        if ( !_keyList.at(i).isEmpty()) {
-            outXString += _keyList.at(i);
+        const QByteArray&  key = _keyList.at(i);
+        const QByteArray&  val = _valList.at(i);
+        if (!key.isEmpty() || val.isEmpty() || val.contains('=')) {
+            outXString += key;
             outXString += '=';
         }
-        stringCode( valCoded, _valList.at(i));
+        stringCode( valCoded, val);
         outXString += valCoded;
     }
     return outXString;
@@ -725,6 +741,12 @@ XStringMap&  XStringMap::operator+=( const XStringMap& other)
 }
 
 
+QByteArray XStringMap::info()
+{
+    return "XStringMap ver=" ARNXSTRINGMAP_VER;
+}
+
+
 void  XStringMap::checkSpace()
 {
     if (_size >= _keyList.size()) {     // If out of space allocate more
@@ -735,34 +757,5 @@ void  XStringMap::checkSpace()
         _valList.resize( newCapacity);
     }
 }
-
-
-#ifndef DOXYGEN_SKIP
-void  XStringMapTest()
-{
-    XStringMap  xsm;
-
-    qDebug() << "Start adding to map";
-    xsm.add("com", "putValue");
-    xsm.add("Item", "/term/32/tempIs=12");
-    xsm.add("Item", "/term/32/tempNow=125");
-    xsm.add("Item", "/term/32/name=Lilla rummet");
-    xsm.add("Item", "/term/32/name=Test_ \\ ^ ");
-    xsm.add("Item", "/term/32/tempSet=125");
-    xsm.add(0, 123, QByteArray("Null key-prefix"));
-    for( int i=0; i <= xsm.size(); ++i) {
-        qDebug() << xsm.key( i, "--UNDEF--") << " = " << xsm.value( i, "--UNDEF--");
-    }
-    QByteArray xs = xsm.toXString();
-    qDebug() << "XS: " << xs;
-    qDebug() << "Start filling list2 from XS";
-    XStringMap xsm2;
-    xsm2.fromXString( xs);
-    qDebug() << "End filling list2";
-    for( int i=0; i < xsm2.size(); ++i) {
-        qDebug() << xsm2.key( i) << " = " << xsm2.value( i);
-    }
-}
-#endif
 
 }  // Arn::
