@@ -126,13 +126,13 @@ public:
 
     XStringMap&  addValues( const QStringList& stringList);
 
-    void  set( int i, const QByteArray& val);
-    void  set( const char* key, const QByteArray& val);
-    void  set( const char* key, const char* val);
-    void  set( const QByteArray& key, const QByteArray& val);
-    void  set( const char* key, const QString& val);
-    void  set( const QByteArray& key, const QString& val);
-    void  set( const QString& key, const QString& val);
+    XStringMap&  set( int i, const QByteArray& val);
+    XStringMap&  set( const char* key, const QByteArray& val);
+    XStringMap&  set( const char* key, const char* val);
+    XStringMap&  set( const QByteArray& key, const QByteArray& val);
+    XStringMap&  set( const char* key, const QString& val);
+    XStringMap&  set( const QByteArray& key, const QString& val);
+    XStringMap&  set( const QString& key, const QString& val);
 
     const QByteArray&  keyRef( int i)  const;
     QByteArray  key( int i, const char* def = 0)  const;
@@ -153,10 +153,10 @@ public:
     QString  valueString( const QByteArray& key, const QString& def = QString())  const;
     QString  valueString( const QString& key, const QString& def = QString())  const;
 
-    void  remove( int index);
-    void  remove( const char* key);
-    void  remove( const QByteArray& key);
-    void  remove( const QString& key);
+    XStringMap&  remove( int index);
+    XStringMap&  remove( const char* key);
+    XStringMap&  remove( const QByteArray& key);
+    XStringMap&  remove( const QString& key);
 
     QByteArray  toXString()  const;
     bool  fromXString( const QByteArray& inXString, int size=-1);

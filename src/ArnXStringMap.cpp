@@ -336,52 +336,56 @@ XStringMap&  XStringMap::addValues( const QStringList& stringList)
 }
 
 
-void  XStringMap::set( int i, const QByteArray& val)
+XStringMap&  XStringMap::set( int i, const QByteArray& val)
 {
-    if ((i < 0) || (i >= _size))  return;  // Not valid index
+    if ((i < 0) || (i >= _size))  return *this;  // Not valid index
 
     _valList[i].resize(0);  // Avoid Heap reallocation
     _valList[i] += val;
+
+    return *this;
 }
 
 
-void  XStringMap::set( const char* key, const QByteArray& val)
+XStringMap&  XStringMap::set( const char* key, const QByteArray& val)
 {
     int  i = indexOf( key);
     if (i < 0)
         add( key, val);
     else
         set( i, val);
+
+    return *this;
 }
 
 
-void  XStringMap::set( const char* key, const char* val)
+XStringMap&  XStringMap::set( const char* key, const char* val)
 {
-    set( key, QByteArray( val));
+    return set( key, QByteArray( val));
 }
 
 
-void  XStringMap::set( const QByteArray& key, const QByteArray& val)
+XStringMap&  XStringMap::set( const QByteArray& key, const QByteArray& val)
 {
-    set( key.constData(), val);
+    return set( key.constData(), val);
 }
 
 
-void  XStringMap::set( const char* key, const QString& val)
+XStringMap&  XStringMap::set( const char* key, const QString& val)
 {
-    set( key, val.toUtf8());
+    return set( key, val.toUtf8());
 }
 
 
-void  XStringMap::set( const QByteArray& key, const QString& val)
+XStringMap&  XStringMap::set( const QByteArray& key, const QString& val)
 {
-    set( key, val.toUtf8());
+    return set( key, val.toUtf8());
 }
 
 
-void  XStringMap::set( const QString& key, const QString& val)
+XStringMap&  XStringMap::set( const QString& key, const QString& val)
 {
-    set( key.toUtf8(), val.toUtf8());
+    return set( key.toUtf8(), val.toUtf8());
 }
 
 
@@ -531,9 +535,9 @@ QString  XStringMap::valueString( const QString& key, const QString& def) const
 }
 
 
-void  XStringMap::remove( int index)
+XStringMap&  XStringMap::remove( int index)
 {
-    if ((index < 0) || (index >= _size))  return;
+    if ((index < 0) || (index >= _size))  return *this;
 
     for (int i = index; i < _size; ++i) {
         _keyList[i].resize(0);     // Avoid Heap reallocation
@@ -542,24 +546,26 @@ void  XStringMap::remove( int index)
         _valList[i] += _valList.at(i + 1);
     }
     --_size;
+
+    return *this;
 }
 
 
-void  XStringMap::remove( const char* key)
+XStringMap&  XStringMap::remove( const char* key)
 {
-    remove( indexOf( key));
+    return remove( indexOf( key));
 }
 
 
-void  XStringMap::remove( const QByteArray& key)
+XStringMap&  XStringMap::remove( const QByteArray& key)
 {
-    remove( indexOf( key));
+    return remove( indexOf( key));
 }
 
 
-void  XStringMap::remove( const QString& key)
+XStringMap&  XStringMap::remove( const QString& key)
 {
-    remove( indexOf( key.toUtf8()));
+    return remove( indexOf( key.toUtf8()));
 }
 
 
