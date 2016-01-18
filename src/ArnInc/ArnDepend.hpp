@@ -34,12 +34,11 @@
 
 #include "ArnLib_global.hpp"
 #include "ArnError.hpp"
-#include "ArnItem.hpp"
-#include <QList>
 #include <QString>
 #include <QObject>
 
-class QTimer;
+class ArnDependOfferPrivate;
+class ArnDependPrivate;
 struct ArnDependSlot;
 
 //! Class for advertising that a _service_ is available.
@@ -60,8 +59,11 @@ is prefered.
 class ARNLIBSHARED_EXPORT ArnDependOffer : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnDependOffer)
+
 public:
     explicit ArnDependOffer( QObject* parent = 0);
+    ~ArnDependOffer();
 
     //! Advertise an available _service_
     /*! \param[in] serviceName is the name of the _service_.
@@ -90,14 +92,16 @@ public:
      */
     int  stateId() const;
 
+    //! \cond ADV
+protected:
+    ArnDependOffer( ArnDependOfferPrivate& dd, QObject* parent);
+    ArnDependOfferPrivate* const  d_ptr;
+    //! \endcond
+
 private slots:
     void  requestReceived( QByteArray req);
 
 private:
-    QString  _serviceName;
-    ArnItem  _arnEchoPipeFB;
-    ArnItem  _arnStateName;
-    ArnItem  _arnStateId;
 };
 
 
@@ -128,6 +132,8 @@ When all dependent services are available, the completed() signal is emitted.
 class ARNLIBSHARED_EXPORT ArnDepend : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnDepend)
+
 public:
     typedef ArnDependSlot DepSlot;
 
@@ -158,6 +164,12 @@ signals:
     //! Signal emitted when all dependent services are available.
     void  completed();
 
+    //! \cond ADV
+protected:
+    ArnDepend( ArnDependPrivate& dd, QObject* parent);
+    ArnDependPrivate* const  d_ptr;
+    //! \endcond
+
 private slots:
     void  echoRefresh();
     void  echoCheck( const QString& echo, DepSlot* slot = 0);
@@ -165,14 +177,9 @@ private slots:
     void  deleteSlot( void* slot = 0);
 
 private:
+    void  init();
     DepSlot*  setupDepSlot( const QString& name);
     void  doDepOk( DepSlot* slot);
-
-    QList<DepSlot*>  _depTab;
-    QString  _uuid;
-    QString  _name;
-    bool  _started;
-    QTimer*  _timerEchoRefresh;
 };
 
 #endif // ARNDEPEND_HPP
