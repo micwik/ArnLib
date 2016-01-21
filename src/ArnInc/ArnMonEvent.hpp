@@ -34,54 +34,38 @@
 
 #include "ArnLib_global.hpp"
 #include "MQFlags.hpp"
-#include <QObject>
 
 
-//! Arn Monitor Event
-/*!
-This is a singleton class.
- */
-class ARNLIBSHARED_EXPORT ArnMonEvent : public QObject
-{
-    Q_OBJECT
+class ARNLIBSHARED_EXPORT ArnMonEventType {
+    Q_GADGET
+    Q_ENUMS(E)
 public:
-    //! Types of Arn monitor Events
-    struct Type {
-        enum E {
-            //! Invalid
-            None = 0,
-            //! Newly created Arn object
-            ItemCreated,
-            //! Found a present Arn object
-            ItemFound,
-            //! Found a present Arn object
-            ItemDeleted,
+    enum E {
+        //! Invalid
+        None = 0,
+        //! Newly created Arn object
+        ItemCreated,
+        //! Found a present Arn object
+        ItemFound,
+        //! Found a present Arn object
+        ItemDeleted,
 
-            //! Internal: start the Monitor
-            MonitorStart,
-            //! Internal: restart the Monitor
-            MonitorReStart
-        };
-        MQ_DECLARE_ENUM( Type)
+        //! Internal: start the Monitor
+        MonitorStart,
+        //! Internal: restart the Monitor
+        MonitorReStart
     };
+    MQ_DECLARE_ENUMTXT( ArnMonEventType)
 
-    static ArnMonEvent&  instance();
-    static Type  textToId( const QByteArray& txt);
-    static const char*  idToText( int id);
-
-private:
-    struct TypeSlot {
-        const char*  typeText;
-        int  typeId;
-    };
-
-    /// Private constructor/destructor to keep this class singleton
-    ArnMonEvent();
-    ArnMonEvent( const ArnMonEvent&);
-    ~ArnMonEvent();
-    ArnMonEvent&  operator=( const ArnMonEvent&);
-
-    static TypeSlot  _typeTab[];
+    enum NS {NsEnum, NsCom};
+    MQ_DECLARE_ENUM_NSTXT(
+        { NsCom, ItemCreated,    "itemCreated" },
+        { NsCom, ItemFound,      "itemFound" },
+        { NsCom, ItemDeleted,    "itemDeleted" },
+        { NsCom, MonitorStart,   "monitorStart" },
+        { NsCom, MonitorReStart, "monitorReStart" },
+        { NsCom, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }
+    )
 };
 
 #endif // ARNMONEVENT_HPP

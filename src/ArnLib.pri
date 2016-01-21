@@ -64,7 +64,6 @@ contains(ARN, client) {
         $$PWD/ArnRpc.cpp \
         $$PWD/ArnSapi.cpp \
         $$PWD/ArnMonitor.cpp \
-        $$PWD/ArnMonEvent.cpp \
         $$PWD/ArnSync.cpp \
         $$PWD/ArnSyncLogin.cpp
 

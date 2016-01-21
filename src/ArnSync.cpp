@@ -810,7 +810,7 @@ uint  ArnSync::doCommandEvent()
         return ArnError::NotFound;
     }
 
-    int  type = ArnMonEvent::textToId( typeStr);
+    int  type = ArnMonEventType::txt().getEnumVal( typeStr.constData(), ArnMonEventType::NsCom);
     itemNet->emitArnMonEvent( type, data, false);
     return ArnError::Ok;
 }
@@ -1133,7 +1133,7 @@ void  ArnSync::doArnMonEvent( int type, const QByteArray& data, bool isLocal)
         //_remoteAllow = Arn::Allow::None;
     }
 
-    if (type == ArnMonEvent::Type::MonitorStart) {
+    if (type == ArnMonEventType::MonitorStart) {
         if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: monitorStart Event";
         // Allow ok, as this item has been aproved by sync
 
@@ -1146,7 +1146,7 @@ void  ArnSync::doArnMonEvent( int type, const QByteArray& data, bool isLocal)
             itemNet->addSyncMode( syncMode.Monitor, false);  // Indicate is Monitor, prevent duplicate setup
         }
     }
-    if (type == ArnMonEvent::Type::MonitorReStart) {
+    if (type == ArnMonEventType::MonitorReStart) {
         if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: monitorReStart Event";
         // Allow ok, as this item has been aproved by sync
 
@@ -1266,7 +1266,7 @@ void  ArnSync::eventToFluxQue( uint netId, int type, const QByteArray& data)
     if (!netId)  return;  // Not valid id, item was disabled
     if (_isClosed)  return;
 
-    const char*  typeStr = ArnMonEvent::idToText( type);
+    const char*  typeStr = ArnMonEventType::txt().getTxt( type, ArnMonEventType::NsCom);
     FluxRec*  fluxRec = getFreeFluxRec();
     _syncMap.clear();
     _syncMap.add(ARNRECNAME, "event");

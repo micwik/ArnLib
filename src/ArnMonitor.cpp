@@ -145,7 +145,7 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
             QMetaObject::invokeMethod( this,
                                        "emitArnMonEvent",
                                        Qt::QueuedConnection,  // make sure started after all setup is done in this thread
-                                       Q_ARG( int, ArnMonEvent::Type::MonitorStart));
+                                       Q_ARG( int, ArnMonEventType::MonitorStart));
             //// Check thread event sequence by big delay
             // QTime  ts = QTime::currentTime();
             // while (QTime::currentTime() < ts.addSecs(5));
@@ -156,7 +156,7 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
             QMetaObject::invokeMethod( this,
                                        "emitArnMonEvent",
                                        Qt::QueuedConnection,  // make sure restarted after all setup is done in this thread
-                                       Q_ARG( int, ArnMonEvent::Type::MonitorReStart));
+                                       Q_ARG( int, ArnMonEventType::MonitorReStart));
             if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart After (delay)";
         }
     }
@@ -205,7 +205,7 @@ void  ArnMonitor::reStart()
     Q_D(ArnMonitor);
 
     d->_foundChilds.clear();
-    emitArnMonEvent( ArnMonEvent::Type::MonitorReStart);
+    emitArnMonEvent( ArnMonEventType::MonitorReStart);
 }
 
 
@@ -252,20 +252,20 @@ void  ArnMonitor::dispatchArnMonEvent( int type, const QByteArray& data, bool is
     Q_D(ArnMonitor);
 
     if (Arn::debugMonitor && isLocal) {
-        qDebug() << "Dipatch Arn event (local): type=" << ArnMonEvent::idToText( type)
+        qDebug() << "Dipatch Arn event (local): type=" << ArnMonEventType::txt().getTxt( type)
                  << " data=" << data << " monPath=" << d->_monitorPath;
     }
 
     switch (type) {
-    case ArnMonEvent::Type::ItemCreated:
+    case ArnMonEventType::ItemCreated:
         // Fall throu
-    case ArnMonEvent::Type::ItemFound:
+    case ArnMonEventType::ItemFound:
         doEventItemFoundCreated( type, data, isLocal);
         break;
-    case ArnMonEvent::Type::ItemDeleted:
+    case ArnMonEventType::ItemDeleted:
         doEventItemDeleted( data, isLocal);
         break;
-    case ArnMonEvent::Type::MonitorReStart:
+    case ArnMonEventType::MonitorReStart:
         if (!d->_arnClient) {  // Local monitor event
             //// Send NewItemEvent for any existing direct children (also folders)
             ArnSync::doChildsToEvent( d->_itemNet);
@@ -284,13 +284,13 @@ void ArnMonitor::doEventItemFoundCreated( int type, const QByteArray& data, bool
     QString  foundRemotePath = QString::fromUtf8( data.constData(), data.size());
     QString  foundLocalPath  = d->_itemNet->toLocalPath( foundRemotePath);
 
-    if (type == ArnMonEvent::Type::ItemCreated) {
+    if (type == ArnMonEventType::ItemCreated) {
         // "created" (new fresh) is special case of "found"
         emit arnItemCreated( outPathConvert( foundLocalPath));
     }
 
     if (Arn::debugMonitor && !isLocal) {
-        qDebug() << "Dipatch Arn event: type=" << ArnMonEvent::idToText( type)
+        qDebug() << "Dipatch Arn event: type=" << ArnMonEventType::txt().getTxt( type)
                  << " remotePath=" << foundRemotePath << " localPath=" << foundLocalPath
                  << " monPath=" << d->_monitorPath;
     }
