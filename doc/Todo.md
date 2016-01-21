@@ -3,7 +3,6 @@ ArnLib Todo
 
 Major
 -----
-* Convert to d-pointer for making binary compatible library in the future.
 * Script support for Sapi.
 * ArnObject Link to other ArnObject (like in a filesystem).
 * Add atomic operations in ArnItem for: "+=", "&=", "|=" and alike.
@@ -15,6 +14,7 @@ Major
 * API to Sync ArnObjects over other media (e.g. CAN).
 * Javascript based ArnLib for Web-applications over WebSocket.
 * Put ArnServer client sessions in "/Local/..." to be viewed and controlled (e.g kill).
+* ArnBasicItem with no QObject, only inherited to give ArnEvent (QEvent). Small footprint!
 
 Minor
 -----
@@ -28,7 +28,6 @@ Minor
 * Browsing and controlling connected clients.
 * ArnItem none native data-types like: uint, int64 etc.
 * Addition to login a system to "pair" ArnServer and ArnClient.
-* A flush mechanism for ArnPersist to force saving.
 
 Done in 3.0
 -----------
@@ -42,6 +41,9 @@ Done in 3.0
 * Add setDelay in ArnItemQml, rework changed() and using timer events.
 * Access system for Server/Client login with session level privilege.
 * Allow read access to "freePaths" without login. Used to view for example licenses.
+* A flush mechanism for ArnPersist to force saving.
+* Pimpl: Convert to d-pointer for making binary compatible library in the future.
+* Started unit tests
 
 Done in 2.3
 -----------
