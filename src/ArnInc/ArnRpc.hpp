@@ -42,6 +42,7 @@
 #include <QString>
 #include <QByteArray>
 #include <QObject>
+#include <QMetaType>
 
 //! Similar to Q_ARG but with added argument label (parameter name)
 #define MQ_ARG(type, label, data) MQArgument<type >(#type, #label, data)
