@@ -810,7 +810,9 @@ uint  ArnSync::doCommandEvent()
         return ArnError::NotFound;
     }
 
-    int  type = ArnMonEventType::txt().getEnumVal( typeStr.constData(), ArnMonEventType::NsCom);
+    int  type = ArnMonEventType::txt().getEnumVal( typeStr.constData(),
+                                                   ArnMonEventType::None, ArnMonEventType::NsCom);
+    qDebug() << "ArnSync::doCommandEvent type=" << type;
     itemNet->emitArnMonEvent( type, data, false);
     return ArnError::Ok;
 }
