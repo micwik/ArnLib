@@ -160,7 +160,10 @@ struct Coding {
     MQ_DECLARE_FLAGS( Coding)
 };
 
-struct Allow {
+class Allow {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
     enum E {
         //! Nothing allowed
         None      = 0x00,
@@ -179,8 +182,9 @@ struct Allow {
         //! Convenience, allow all
         All       = 0xff
     };
-    MQ_DECLARE_FLAGS( Allow)
+    MQ_DECLARE_FLAGSTXT( Allow)
 };
+MQ_DECLARE_OPERATORS_FOR_FLAGS( Allow)
 
 //! Convert a name to a specific format
 /*! Name is a sub part from a _path_.
