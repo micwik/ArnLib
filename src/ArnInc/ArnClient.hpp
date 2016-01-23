@@ -327,7 +327,7 @@ public:
     /*! A freePath can be used even if not logged in to an ArnServer that demands login.
      *  Also all children below freePath is free to use. Usage is restricted to read
      *  operations and alike from ArnServer to ArnClient.
-     *  The list of freePaths is used to enabble the operation requests to be transfered
+     *  The list of freePaths is used to enable the operation requests to be transfered
      *  to ArnServer. ArnServer still decides what's allowed. The list is automatically
      *  transfered from ArnServer to ArnClient during the negotiation phase.
      *  \return the freePath list.
@@ -395,10 +395,10 @@ signals:
     void  connectionStatusChanged( int status, int curPrio);
 
     //! Signal emitted when the remote ArnServer demands a login.
-    /*! When this signal is emitted, a call to loginToArn() must be done to  complete
+    /*! When this signal is emitted, a call to loginToArn() must be done to complete
      *  the connection process.
      *  \param[in] contextCode is the situation context as:
-     *             0 = First login triel
+     *             0 = First login trial
      *             1 = Server deny, login retry
      *             2 = Client deny, server gave bad password (fake server?)
      *             3 = Client deny, server not support login

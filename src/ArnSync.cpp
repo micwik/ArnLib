@@ -67,7 +67,7 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     _loginNextSeq    = 0;
     _loginSalt1      = 0;
     _loginSalt2      = 0;
-    _allow           = _isClientSide ? Arn::Allow::All  : Arn::Allow::None;
+    _allow           = _isClientSide ? Arn::Allow::All : Arn::Allow::None;
     _remoteAllow     = Arn::Allow::None;
     _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Licenses/");
     _dataRemain.clear();
@@ -94,6 +94,7 @@ void  ArnSync::start()
 
     if (_isClientSide) {
         _isConnected = false;
+        _remoteAllow = Arn::Allow::All;  // No restrictions until known server permisions
         connect( _socket, SIGNAL(connected()), this, SLOT(connected()));
     }
     else {
@@ -266,7 +267,13 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
 {
     if (!_remoteAllow.isAny( _allow.ReadWrite)) {
         QString  remotePath = Arn::changeBasePath( localMountPath, remoteMountPath, path);
-        if (!isFreePath( remotePath))  return 0;
+        if (!isFreePath( remotePath)) {
+            ArnM::errorLog( QString(tr("Share ArnObject: path=")) +
+                            path + " remoteAllow=" + _remoteAllow.toString() +
+                            " (" + QString::number(_remoteAllow.toInt()) + ")",
+                            ArnError::OpNotAllowed);
+            return 0;
+        }
     }
 
     ArnItemNet*  itemNet = new ArnItemNet( this);
@@ -566,6 +573,7 @@ uint  ArnSync::doCommandLogin()
         bool  isRemoteDemandLogin = _commandMap.value("demand").toUInt() != 0;
         if (_isDemandLogin || isRemoteDemandLogin) {
             _loginNextSeq = -2;  // Temporary invalid seq while login is handled by application
+            _remoteAllow = Arn::Allow::None;
             emit loginRequired( _loginReqCode);
         }
         else {  // Login not needed
