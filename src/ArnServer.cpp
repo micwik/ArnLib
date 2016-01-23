@@ -243,12 +243,12 @@ bool  ArnServer::isDemandLoginNet( const QHostAddress& remoteAddr)  const
     Q_D(const ArnServer);
 
     foreach (const QString& noLoginNet, d->_noLoginNets) {
-        if (noLoginNet == "localhost") {
+        bool  chkLocalHost = noLoginNet == "localhost";
+        if (chkLocalHost || (noLoginNet == "localnet")) {
             if ((remoteAddr == QHostAddress( QHostAddress::LocalHost))
             ||  (remoteAddr == QHostAddress( QHostAddress::LocalHostIPv6)))
-                return false;
-        }
-        else if (noLoginNet == "localnet") {
+                return false;  // Localhost, ok for both localhost & localnet
+
             foreach (QNetworkInterface  interface, QNetworkInterface::allInterfaces()) {
                 QNetworkInterface::InterfaceFlags  flags = interface.flags();
                 if (flags.testFlag( QNetworkInterface::IsPointToPoint)
@@ -260,8 +260,11 @@ bool  ArnServer::isDemandLoginNet( const QHostAddress& remoteAddr)  const
                     if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
                         continue;
 
+                    if (entry.ip() == remoteAddr)  // Address to this host ip, ok for both localhost & localnet
+                        return false;
+
                     QString  subNetString = entry.ip().toString() + "/" + entry.netmask().toString();
-                    if (remoteAddr.isInSubnet( QHostAddress::parseSubnet( subNetString)))
+                    if (!chkLocalHost && remoteAddr.isInSubnet( QHostAddress::parseSubnet( subNetString)))
                         return false;
                 }
             }
