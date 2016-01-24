@@ -325,10 +325,17 @@ void  ArnClient::disconnectFromArn()
 
 void  ArnClient::loginToArn( const QString& userName, const QString& password, Arn::Allow allow)
 {
+    QString  pwHash = passwordHash( password);
+    loginToArnHashed( userName, pwHash, allow);
+}
+
+
+void  ArnClient::loginToArnHashed( const QString& userName, const QString& passwordHashed, Arn::Allow allow)
+{
     Q_D(ArnClient);
 
     d->_isValidCredent = !userName.isEmpty();
-    d->_arnNetSync->loginToArn( userName, password, allow);
+    d->_arnNetSync->loginToArn( userName, passwordHashed, allow);
 }
 
 

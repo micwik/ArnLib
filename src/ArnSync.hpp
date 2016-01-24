@@ -105,7 +105,7 @@ public:
     void  sendInfo( int type, const QByteArray& data = QByteArray());
     void  sendExit();
     uint  remoteVer( uint index);
-    void  loginToArn( const QString& userName, const QString& password,
+    void  loginToArn( const QString& userName, const QString& passwordHash,
                       Arn::Allow allow = Arn::Allow::All);
     void  loginToArn();
 

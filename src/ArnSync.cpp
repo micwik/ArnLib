@@ -494,17 +494,17 @@ void  ArnSync::startLogin()
     //// Client side
     _loginSalt1 = uint( qrand());
     XStringMap  xsm;
-    xsm.add("salt1", QByteArray::number( _loginSalt1));
+    xsm.addNum("demand", _isDemandLogin).addNum("salt1", _loginSalt1);
     sendLogin( 0, xsm);
     _loginNextSeq = 1;
 }
 
 
-void ArnSync::loginToArn(const QString& userName, const QString& password, Arn::Allow allow)
+void ArnSync::loginToArn( const QString& userName, const QString& passwordHash, Arn::Allow allow)
 {
     //// Client side
     _loginUserName = userName;
-    _loginPwHash   = ArnSyncLogin::passwordHash( password);
+    _loginPwHash   = passwordHash;
     _allow         = allow;
 
     loginToArn();
@@ -556,7 +556,7 @@ uint  ArnSync::doCommandLogin()
         //// Server side
         _loginSalt1 = _commandMap.value("salt1").toUInt();
         if (_loginNextSeq == 0) {  // First login try
-            doLoginSeq0End();  // Continue imedialtely
+            doLoginSeq0End();  // Continue imediately
         }
         else {  // Login retry
             _loginNextSeq = -1;  // Temporary invalid seq while loginDelay
