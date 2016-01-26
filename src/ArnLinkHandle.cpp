@@ -33,6 +33,8 @@
 #include <QDebug>
 
 
+//// WARNING !!!  This class can have a this-pointer that is zero (0), for optimization.
+
 void ArnLinkHandle::init()
 {
     _codes = Normal;
@@ -48,6 +50,11 @@ ArnLinkHandle::ArnLinkHandle()
 
 ArnLinkHandle::ArnLinkHandle( const ArnLinkHandle& other)
 {
+    if (&other == 0) {  // other is NULL
+        init();
+        return;
+    }
+
     _codes = other._codes;
     _flags = other._flags;
     if (other._data)
@@ -66,14 +73,41 @@ ArnLinkHandle::ArnLinkHandle( const ArnLinkHandle::Flags& flags)
 
 ArnLinkHandle::~ArnLinkHandle()
 {
+    if (this == 0)  return;  // Shouldn't be called ...
+
     if (_data)
         delete _data;
 }
 
 
+const ArnLinkHandle&  ArnLinkHandle::null()
+{
+    return *static_cast<ArnLinkHandle*>(0);
+}
+
+
+const ArnLinkHandle::Flags&  ArnLinkHandle::flags()  const
+{
+    static Flags  nullFlags;
+    if (this == 0)  return nullFlags;  // ArnHandle is NULL
+
+    return _flags;
+}
+
+
+ArnLinkHandle::Flags&  ArnLinkHandle::flags()
+{
+    static Flags  nullFlags;
+    if (this == 0)  return nullFlags;  // ArnHandle is NULL, should not be used ...
+
+    return _flags;
+}
+
+
 ArnLinkHandle&  ArnLinkHandle::add( Code code, const QVariant& value)
 {
-    if (code == Normal)  return *this;
+    if (this == 0)  return *this;  // ArnHandle is NULL
+    if (code == Normal)  return *this;  // Adding nothing
 
     if (!_data)
         _data = new HandleData;
@@ -85,12 +119,16 @@ ArnLinkHandle&  ArnLinkHandle::add( Code code, const QVariant& value)
 
 bool  ArnLinkHandle::has( Code code)  const
 {
+    if (this == 0)  return false;  // ArnHandle is NULL
+
     return _codes.testFlag( code);
 }
 
 
 bool  ArnLinkHandle::isNull()  const
 {
+    if (this == 0)  return true;  // ArnHandle is NULL
+
     return (_codes == Normal) && (_flags == Flags());
 }
 
@@ -98,6 +136,8 @@ bool  ArnLinkHandle::isNull()  const
 const QVariant&  ArnLinkHandle::valueRef( Code code)  const
 {
     static QVariant  nullValue;
+
+    if (this == 0)  return nullValue;  // ArnHandle is NULL
 
     if (!_data || !has( code))  // Should not be used ...
         return nullValue;

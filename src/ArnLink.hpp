@@ -66,9 +66,9 @@ public:
     void  setValue( int value, int sendId = 0, bool forceKeep = 0);
     void  setValue( ARNREAL value, int sendId = 0, bool forceKeep = 0);
     void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0,
-                    const ArnLinkHandle& handleData = ArnLinkHandle());
+                    const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  setValue( const QByteArray& value, int sendId = 0, bool forceKeep = 0,
-                    const ArnLinkHandle& handleData = ArnLinkHandle());
+                    const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  setValue( const QVariant& value, int sendId = 0, bool forceKeep = 0);
 
     int  toInt();
@@ -135,7 +135,7 @@ protected:
 
 private:
     void  resetHave();
-    void  emitChanged( int sendId, const ArnLinkHandle& handleData = ArnLinkHandle());
+    void  emitChanged( int sendId, const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  sendEventsInThread( ArnEvent* ev, const QObjectList& recipients);
     void  sendEvents( ArnEvent* ev);
     void  sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink);

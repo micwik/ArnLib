@@ -21,6 +21,8 @@ Minor
 * ArnItemQml::updateValue() don't handle param data.
 * Optimize data transfer with minimal copying.
 * Make ArnLink none QObject to save memory and independent on main-thread-create.
+  * Remove ArnLik::trfValue(), add QByteArray* valueBytes in ArnLink::setValue() & as param to emitChanged().
+  * Add ArnEvent valueChanged, implement in ArnLink & ArnItemB.
 * Add tranfer classes for copying values.
 * Add multiplex/demultiplex-classes for pipes used by Sapi.
 * Script with "include".
@@ -28,6 +30,8 @@ Minor
 * Browsing and controlling connected clients.
 * ArnItem none native data-types like: uint, int64 etc.
 * Addition to login a system to "pair" ArnServer and ArnClient.
+* Change to ArnLink::toInt(bool* isOk = 0), to make ignoreSameValue better.
+  Same for all toXXX(), also check type Null.
 
 Done in 3.0
 -----------
@@ -44,6 +48,7 @@ Done in 3.0
 * A flush mechanism for ArnPersist to force saving.
 * Pimpl: Convert to d-pointer for making binary compatible library in the future.
 * Started unit tests
+* Optimized HandleData class with Null-state can be this == 0.
 
 Done in 2.3
 -----------

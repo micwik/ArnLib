@@ -162,7 +162,7 @@ void  ArnItem::timerEvent( QTimerEvent* ev)
 
     if (d->_delayTimer && (ev->timerId() == d->_delayTimer->timerId())) {
         // qDebug() << "ArnItem delay doUpdate: path=" << path();
-        doItemUpdate( ArnLinkHandle());
+        doItemUpdate( ArnLinkHandle::null());
     }
 
     return ArnItemB::timerEvent( ev);
@@ -228,7 +228,7 @@ bool  ArnItem::isDelayPending()  const
 void ArnItem::bypassDelayPending()
 {
     if (isDelayPending()) {
-        doItemUpdate( ArnLinkHandle());
+        doItemUpdate( ArnLinkHandle::null());
     }
 }
 

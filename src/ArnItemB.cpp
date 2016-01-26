@@ -601,7 +601,7 @@ void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle
                 setValue( data.mid(1), ignoreSame, handleData);
                 return;
             case ExportCode::String:
-                handleData._flags.set( handleData._flags.Text);
+                handleData.flags().set( ArnLinkHandle::Flags::Text);
                 setValue( data.mid(1), ignoreSame, handleData);
                 //setValue( QString::fromUtf8( data.constData() + 1, data.size() - 1),
                 //          ignoreSame, handleData);
@@ -612,7 +612,7 @@ void  ArnItemB::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle
         }
     }
     // Normal printable data
-    handleData._flags.set( handleData._flags.Text);
+    handleData.flags().set( ArnLinkHandle::Flags::Text);
     setValue( data, ignoreSame, handleData);
 }
 
@@ -897,7 +897,7 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame)
         }
         if (_link->isPipeMode() && _link->isThreaded())
             trfValue( value, d->_id, d->_useForceKeep,
-                      ArnLinkHandle());
+                      ArnLinkHandle::null());
         else
             _link->setValue( value, d->_id, d->_useForceKeep);
     }
@@ -980,7 +980,7 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle
     if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
-    ArnLinkHandle::Flags&  handleFlags = handleData._flags;
+    ArnLinkHandle::Flags&  handleFlags = handleData.flags();
     QString  valueTxt;
 
     if (handleFlags.is( handleFlags.Text))

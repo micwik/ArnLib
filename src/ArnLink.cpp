@@ -293,7 +293,7 @@ void ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
 
 void ArnLink::trfValue( const QByteArray& value, int sendId, bool forceKeep, ArnLinkHandle handleData)
 {
-    ArnLinkHandle::Flags&  handleFlags = handleData._flags;
+    ArnLinkHandle::Flags&  handleFlags = handleData.flags();
 
     if (handleFlags.is( handleFlags.Text)) {
         handleFlags.set( handleFlags.Text, false);  // Text flag not needed anymore

@@ -40,6 +40,8 @@
 #include <QMap>
 
 
+/// WARNING !!!  This class can have a this-pointer that is zero (0), for optimization.
+
 //! \cond ADV
 class ArnLinkHandle
 {
@@ -68,16 +70,21 @@ public:
     ArnLinkHandle( const ArnLinkHandle& other);
     ArnLinkHandle( const Flags& flags);
     ~ArnLinkHandle();
+    static const ArnLinkHandle&  null();
+
     ArnLinkHandle&  add( Code code, const QVariant& valueRef);
     bool  has( Code code)  const;
     bool  isNull()  const;
     const QVariant&  valueRef( Code code)  const;
 
-    Flags  _flags;
+    const Flags&  flags()  const;
+    Flags&  flags();
 
 private:
+    ArnLinkHandle&  operator=( const ArnLinkHandle&);  // Protect from usage
     void  init();
 
+    Flags  _flags;
     Codes  _codes;
     typedef QMap<int,QVariant>  HandleData;
     HandleData*  _data;

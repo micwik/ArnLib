@@ -144,7 +144,7 @@ void  ArnSync::startNormalSync()
         if ((itemNet->type() != Arn::DataType::Null)                  // Only send non Null Value ...
         && (!itemNet->isPipeMode())                                   // from non pipe ..
         && (itemNet->syncMode().is( Arn::ObjectSyncMode::Master))) {  // which is master
-            itemNet->itemUpdated( ArnLinkHandle());  // Make client send the current value to server
+            itemNet->itemUpdated( ArnLinkHandle::null());  // Make client send the current value to server
         }
     }
     sendNext();
@@ -693,7 +693,7 @@ uint  ArnSync::doCommandSync()
     }
     if ((itemNet->type() != Arn::DataType::Null)
     && !(itemNet->syncMode().is( syncMode.Master))) {  // Only send non Null Value to non master
-        itemNet->itemUpdated( ArnLinkHandle()); // Make server send the current value to client
+        itemNet->itemUpdated( ArnLinkHandle::null()); // Make server send the current value to client
     }
 
     return ArnError::Ok;
@@ -1437,7 +1437,7 @@ void  ArnSync::sendFluxItem( const ArnItemNet* itemNet)
         return;
     }
 
-    send( makeFluxString( itemNet, ArnLinkHandle()));
+    send( makeFluxString( itemNet, ArnLinkHandle::null()));
 }
 
 
