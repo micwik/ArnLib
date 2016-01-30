@@ -23,9 +23,7 @@ Minor
 * Make ArnLink none QObject to save memory and independent on main-thread-create.
   * Remove ArnLik::trfValue(), add QByteArray* valueBytes in ArnLink::setValue() & as param to emitChanged().
   * Add ArnEvent valueChanged, implement in ArnLink & ArnItemB.
-* Add tranfer classes for copying values.
-* Add multiplex/demultiplex-classes for pipes used by Sapi.
-* Script with "include".
+  * New methods and data for parent() etc.
 * Converter classes for ArnPipes to other streams (e.g UART, TCP etc).
 * Browsing and controlling connected clients.
 * ArnItem none native data-types like: uint, int64 etc.

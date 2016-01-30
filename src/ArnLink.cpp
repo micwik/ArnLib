@@ -205,7 +205,13 @@ void ArnLink::setValue( int value, int sendId, bool forceKeep)
     _haveInt       = true;
     if (_mutex)  _mutex->unlock();
 
-    emitChanged( sendId);
+    if (_mutex && _isPipeMode) {
+        QByteArray  valueData = QByteArray::number( value);
+        emitChanged( sendId, &valueData);
+    }
+    else {
+        emitChanged( sendId);
+    }
 }
 
 
@@ -224,7 +230,13 @@ void ArnLink::setValue( ARNREAL value, int sendId, bool forceKeep)
     _haveReal       = true;
     if (_mutex)  _mutex->unlock();
 
-    emitChanged( sendId);
+    if (_mutex && _isPipeMode) {
+        QByteArray  valueData = QByteArray::number( value);
+        emitChanged( sendId, &valueData);
+    }
+    else {
+        emitChanged( sendId);
+    }
 }
 
 
@@ -296,7 +308,13 @@ void ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
     _haveVariant       = true;
     if (_mutex)  _mutex->unlock();
 
-    emitChanged( sendId);
+    if (_mutex && _isPipeMode) {
+        QByteArray  valueData = value.toString().toUtf8();
+        emitChanged( sendId, &valueData);
+    }
+    else {
+        emitChanged( sendId);
+    }
 }
 
 
