@@ -781,11 +781,7 @@ void  ArnItemB::setValue( int value, int ignoreSame)
                 return;
             }
         }
-        if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( QByteArray::number( value), d->_id, d->_useForceKeep,
-                      ArnLinkHandle( ArnLinkHandle::Flags::Text));
-        else
-            _link->setValue( value, d->_id, d->_useForceKeep);
+        _link->setValue( value, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning int:")) + QString::number( value),
@@ -808,11 +804,7 @@ void  ArnItemB::setValue( ARNREAL value, int ignoreSame)
                 return;
             }
         }
-        if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( QByteArray::number( value), d->_id, d->_useForceKeep,
-                      ArnLinkHandle( ArnLinkHandle::Flags::Text));
-        else
-            _link->setValue( value, d->_id, d->_useForceKeep);
+        _link->setValue( value, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning ARNREAL:")) + QString::number( value),
@@ -835,11 +827,7 @@ void  ArnItemB::setValue( bool value, int ignoreSame)
                 return;
             }
         }
-        if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( QByteArray::number( value ? 1 : 0), d->_id, d->_useForceKeep,
-                      ArnLinkHandle( ArnLinkHandle::Flags::Text));
-        else
-            _link->setValue( value ? 1 : 0, d->_id, d->_useForceKeep);
+        _link->setValue( value ? 1 : 0, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning bool:")) + QString::number( value),
@@ -862,11 +850,7 @@ void  ArnItemB::setValue( const QString& value, int ignoreSame)
                 return;
             }
         }
-        if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( value.toUtf8(), d->_id, d->_useForceKeep,
-                      ArnLinkHandle( ArnLinkHandle::Flags::Text));
-        else
-            _link->setValue( value, d->_id, d->_useForceKeep);
+        _link->setValue( value, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning string:")) + value,
@@ -889,11 +873,7 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame)
                 return;
             }
         }
-        if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( value, d->_id, d->_useForceKeep,
-                      ArnLinkHandle::null());
-        else
-            _link->setValue( value, d->_id, d->_useForceKeep);
+        _link->setValue( value, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning bytearray:")) + QString::fromUtf8( value.constData(), value.size()),
@@ -916,12 +896,7 @@ void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
                 return;
             }
         }
-        if (_link->isPipeMode() && _link->isThreaded())
-            // QVariant is not realy supported for pipe in threaded usage
-            trfValue( value.toString().toUtf8(), d->_id, d->_useForceKeep,
-                      ArnLinkHandle( ArnLinkHandle::Flags::Text));
-        else
-            _link->setValue( value, d->_id, d->_useForceKeep);
+        _link->setValue( value, d->_id, d->_useForceKeep);
     }
     else {
         errorLog( QString(tr("Assigning variant")),
@@ -992,35 +967,17 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle
                     return;
             }
         }
-        if (_link->isPipeMode() && _link->isThreaded())
-            trfValue( value, d->_id, d->_useForceKeep, handleData);
+        if (handleFlags.is( handleFlags.Text)) {
+            handleFlags.set( handleFlags.Text, false);  // Text flag not needed anymore
+            _link->setValue( valueTxt, d->_id, d->_useForceKeep, handleData);
+        }
         else
-            if (handleFlags.is( handleFlags.Text)) {
-                handleFlags.set( handleFlags.Text, false);  // Text flag not needed anymore
-                _link->setValue( valueTxt, d->_id, d->_useForceKeep, handleData);
-            }
-            else
-                _link->setValue( value, d->_id, d->_useForceKeep, handleData);
+            _link->setValue( value, d->_id, d->_useForceKeep, handleData);
     }
     else {
         errorLog( QString(tr("Assigning bytearray (ArnLinkHandle):")) + QString::fromUtf8( value.constData(), value.size()),
                   ArnError::ItemNotOpen);
     }
-}
-
-
-void  ArnItemB::trfValue( const QByteArray& value, int sendId, bool forceKeep,
-                         const ArnLinkHandle& handleData)
-{
-    Q_D(ArnItemB);
-
-    if (!d->_enableSetValue)  return;
-
-    QMetaObject::invokeMethod( _link, "trfValue", Qt::QueuedConnection,
-                               Q_ARG( QByteArray, value),
-                               Q_ARG( int, sendId),
-                               Q_ARG( bool, forceKeep),
-                               Q_ARG( ArnLinkHandle, handleData));
 }
 
 

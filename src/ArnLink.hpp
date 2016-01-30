@@ -106,9 +106,6 @@ public:
     void  deref( QObject* subscriber = 0);
     ~ArnLink();
 
-public slots:
-    void  trfValue( const QByteArray& value, int sendId, bool forceKeep, ArnLinkHandle handleData);
-
 protected:
     //// Will never be inherited, this section is separated for use by friend ArnM
     ArnLink( ArnLink* parent, const QString& name, Arn::LinkFlags flags);
@@ -131,7 +128,8 @@ protected:
 
 private:
     void  resetHave();
-    void  emitChanged( int sendId, const ArnLinkHandle& handleData = ArnLinkHandle::null());
+    void  emitChanged( int sendId, const QByteArray* valueData = 0,
+                       const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  sendEventsInThread( ArnEvent* ev, const QObjectList& recipients);
     void  sendEvents( ArnEvent* ev);
     void  sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink);

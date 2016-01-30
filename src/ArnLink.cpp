@@ -107,19 +107,12 @@ void ArnLink::resetHave()
 
 
 //// This should in threaded: preserve order of setValue, optimize return of bytearray
-void ArnLink::emitChanged( int sendId, const ArnLinkHandle& handleData)
+void ArnLink::emitChanged( int sendId, const QByteArray* valueData, const ArnLinkHandle& handleData)
 {
     // qDebug() << "emitChanged: isThr=" << _isThreaded << " isPipe=" << _isPipeMode <<
     //            " path=" << linkPath() << " value=" << toByteArray();
-    if (_mutex && (_isPipeMode || !handleData.isNull())) {
-        QByteArray  valueData = toByteArray();
-        ArnEvValueChange ev( sendId, &valueData, handleData);
-        sendEvents( &ev);
-    }
-    else {
-        ArnEvValueChange ev( sendId, 0, handleData);
-        sendEvents( &ev);
-    }
+    ArnEvValueChange ev( sendId, valueData, handleData);
+    sendEvents( &ev);
 }
 
 
@@ -252,7 +245,13 @@ void ArnLink::setValue( const QString& value, int sendId, bool forceKeep,
     _haveString        = true;
     if (_mutex)  _mutex->unlock();
 
-    emitChanged( sendId, handleData);
+    if (_mutex && (_isPipeMode || !handleData.isNull())) {
+        QByteArray  valueData = value.toUtf8();
+        emitChanged( sendId, &valueData, handleData);
+    }
+    else {
+        emitChanged( sendId, 0, handleData);
+    }
 }
 
 
@@ -273,7 +272,12 @@ void ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
     _haveByteArray        = true;
     if (_mutex)  _mutex->unlock();
 
-    emitChanged( sendId, handleData);
+    if (_mutex && (_isPipeMode || !handleData.isNull())) {
+        emitChanged( sendId, &value, handleData);
+    }
+    else {
+        emitChanged( sendId, 0, handleData);
+    }
 }
 
 
@@ -293,20 +297,6 @@ void ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
     if (_mutex)  _mutex->unlock();
 
     emitChanged( sendId);
-}
-
-
-void ArnLink::trfValue( const QByteArray& value, int sendId, bool forceKeep, ArnLinkHandle handleData)
-{
-    ArnLinkHandle::Flags&  handleFlags = handleData.flags();
-
-    if (handleFlags.is( handleFlags.Text)) {
-        handleFlags.set( handleFlags.Text, false);  // Text flag not needed anymore
-        setValue( QString::fromUtf8( value.constData(), value.size()),
-                  sendId, forceKeep, handleData);
-    }
-    else
-        setValue( value, sendId, forceKeep, handleData);
 }
 
 

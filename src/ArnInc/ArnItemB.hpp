@@ -415,8 +415,6 @@ protected:
     void  setEnableSetValue( bool enable);
     void  setEnableUpdNotify( bool enable);
     void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
-    void  trfValue( const QByteArray& value, int sendId, bool forceKeep,
-                    const ArnLinkHandle& handleData);
     void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
     QStringList  childItemsMain()  const;
     void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0)  const;
