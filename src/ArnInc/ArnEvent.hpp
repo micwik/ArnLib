@@ -37,6 +37,7 @@
 #include <QString>
 
 class ArnLink;
+class ArnLinkHandle;
 
 
 class ArnEvent : public QEvent
@@ -125,6 +126,29 @@ public:
 
     inline ArnLink*  arnLink()  const
     { return _arnLink;}
+};
+
+
+class ArnEvValueChange : public ArnEvent
+{
+    int  _sendId;
+    const QByteArray*  _valueData;
+    const ArnLinkHandle*  _handleData;
+
+public:
+    ArnEvValueChange( int sendId, const QByteArray* valueData, const ArnLinkHandle& handleData);
+    virtual  ~ArnEvValueChange();
+    static QEvent::Type  type();
+    virtual ArnEvent*  makeHeapClone();
+
+    inline int  sendId()  const
+    { return _sendId;}
+
+    inline const QByteArray*  valueData()  const
+    { return _valueData;}
+
+    inline const ArnLinkHandle&  handleData()  const
+    { return *_handleData;}
 };
 
 #endif // ARNEVENT_HPP

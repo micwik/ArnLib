@@ -37,7 +37,6 @@
 #include <limits>
 #include <QDebug>
 
-
 QAtomicInt ArnLink::_idCount(1);
 
 
@@ -112,10 +111,15 @@ void ArnLink::emitChanged( int sendId, const ArnLinkHandle& handleData)
 {
     // qDebug() << "emitChanged: isThr=" << _isThreaded << " isPipe=" << _isPipeMode <<
     //            " path=" << linkPath() << " value=" << toByteArray();
-    if (_mutex && (_isPipeMode || !handleData.isNull()))
-        emit changed( sendId, toByteArray(), handleData);
-    else
-        emit changed( sendId, handleData);
+    if (_mutex && (_isPipeMode || !handleData.isNull())) {
+        QByteArray  valueData = toByteArray();
+        ArnEvValueChange ev( sendId, &valueData, handleData);
+        sendEvents( &ev);
+    }
+    else {
+        ArnEvValueChange ev( sendId, 0, handleData);
+        sendEvents( &ev);
+    }
 }
 
 
@@ -123,7 +127,8 @@ void  ArnLink::sendEventsInThread( ArnEvent* ev, const QObjectList& recipients)
 {
     foreach (QObject* qobj, recipients) {
         ev->setAccepted( true);  // Default
-        QCoreApplication::sendEvent( qobj, ev);
+        qobj->event( ev);
+        // QCoreApplication::sendEvent( qobj, ev);  // MW: Use as option ?
     }
 }
 

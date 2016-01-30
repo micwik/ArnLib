@@ -99,15 +99,9 @@ ArnItemB::~ArnItemB()
 
 void  ArnItemB::setupOpenItem( bool isFolder)
 {
+    Q_UNUSED(isFolder)
     Q_D(ArnItemB);
 
-    if (!isFolder) {
-        //// Optimize: Only one changed() should be connected depending on thread & pipeMode
-        connect( _link, SIGNAL(changed(uint,const ArnLinkHandle&)),
-                 this, SLOT(linkValueUpdated(uint,const ArnLinkHandle&)));
-        connect( _link, SIGNAL(changed(uint,QByteArray,ArnLinkHandle)),
-                 this, SLOT(linkValueUpdated(uint,QByteArray,ArnLinkHandle)));
-    }
     addMode( d->_mode);  // Transfer modes to the link
     modeUpdate( getMode(), true);
 }
@@ -1047,37 +1041,24 @@ void  ArnItemB::errorLog( const QString& errText, ArnError err, void* reference)
 }
 
 
-void  ArnItemB::linkValueUpdated( uint sendId, const ArnLinkHandle& handleData)
-{
-    Q_D(ArnItemB);
-
-    if (d->_blockEcho  &&  sendId == d->_id)  // Update was initiated from this Item, it can be blocked ...
-        return;
-
-    d->_isOnlyEcho = (sendId == d->_id) ? d->_isOnlyEcho : false;
-
-    if (d->_enableUpdNotify)
-        itemUpdated( handleData);
-}
-
-
-void  ArnItemB::linkValueUpdated( uint sendId, const QByteArray& value, ArnLinkHandle handleData)
-{
-    Q_D(ArnItemB);
-
-    if (d->_blockEcho  &&  sendId == d->_id)  // Update was initiated from this Item, it can be blocked ...
-        return;
-
-    d->_isOnlyEcho = (sendId == d->_id) ? d->_isOnlyEcho : false;
-
-    if (d->_enableUpdNotify)
-        itemUpdated( handleData, &value);
-}
-
-
 void  ArnItemB::customEvent( QEvent* ev)
 {
+    Q_D(ArnItemB);
+
     QEvent::Type  type = ev->type();
+    if (type == ArnEvValueChange::type()) {
+        ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
+        // qDebug() << "ArnEvValueChange: inItemPath=" << path();
+        quint32  sendId = e->sendId();
+        if (d->_blockEcho  &&  sendId == d->_id)  // Update was initiated from this Item, it can be blocked ...
+            return;
+
+        d->_isOnlyEcho = (sendId == d->_id) ? d->_isOnlyEcho : false;
+
+        if (d->_enableUpdNotify)
+            itemUpdated( e->handleData(), e->valueData());
+        return;
+    }
     if (type == ArnEvLinkCreate::type()) {
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
         // qDebug() << "ArnEvLinkCreate: path=" << e->path() << " inItemPath=" << path();

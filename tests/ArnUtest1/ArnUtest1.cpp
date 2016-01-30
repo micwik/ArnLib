@@ -1,5 +1,6 @@
 #include "TestMQFlags.hpp"
 #include <ArnInc/ArnM.hpp>
+#include <ArnInc/ArnItem.hpp>
 #include <ArnInc/MQFlags.hpp>
 #include <ArnInc/XStringMap.hpp>
 #include <ArnInc/ArnLib.hpp>
@@ -15,7 +16,8 @@ public:
     ArnUtest1Sub( QObject* parent) : QObject(parent) {}
 
 public slots:
-    void  ArnErrorLog(const QString& txt);
+    void  ArnErrorLog( const QString& txt);
+    void  itemUpdated( const QByteArray& value);
 };
 
 
@@ -30,6 +32,7 @@ private slots:
     void  cleanupTestCase();
     void  testMQFlagsText();
     void  testXStringMap();
+    void  testArnItem();
 
 private:
     ArnUtest1Sub*  _tsub;
@@ -173,12 +176,35 @@ void  ArnUtest1::testXStringMap()
 }
 
 
-void ArnUtest1Sub::ArnErrorLog(const QString& txt)
+void ArnUtest1::testArnItem()
+{
+    ArnItem  arnT1a("//Test/T1/value");
+    ArnItem  arnT1b("//Test/T1/value");
+    arnT1a.setIgnoreSameValue( false);
+    arnT1b.setIgnoreSameValue( false);
+    // connect( &arnT1b, SIGNAL(changed(QByteArray)), _tsub, SLOT(itemUpdated(QByteArray)));
+
+    arnT1a = 123;
+    QCOMPARE( arnT1b.toInt(), 123);
+
+    QBENCHMARK {
+        arnT1a = 124;
+    }
+}
+
+
+void  ArnUtest1Sub::ArnErrorLog(const QString& txt)
 {
     qDebug() << "ArnErrorLog: " << txt;
 }
 
 
-QTEST_APPLESS_MAIN(ArnUtest1)
+void  ArnUtest1Sub::itemUpdated( const QByteArray& value)
+{
+    qDebug() << "Item updated: val" << value;
+}
+
+
+QTEST_MAIN(ArnUtest1)
 
 #include "ArnUtest1.moc"

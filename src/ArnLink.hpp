@@ -109,10 +109,6 @@ public:
 public slots:
     void  trfValue( const QByteArray& value, int sendId, bool forceKeep, ArnLinkHandle handleData);
 
-signals:
-    void  changed( uint sendId, const ArnLinkHandle& handleData);
-    void  changed( uint sendId, const QByteArray& value, const ArnLinkHandle& handleData);
-
 protected:
     //// Will never be inherited, this section is separated for use by friend ArnM
     ArnLink( ArnLink* parent, const QString& name, Arn::LinkFlags flags);

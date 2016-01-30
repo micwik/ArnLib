@@ -131,3 +131,42 @@ ArnEvent*  ArnEvZeroRef::makeHeapClone()
 {
     return new ArnEvZeroRef( _arnLink);
 }
+
+
+
+ArnEvValueChange::ArnEvValueChange( int sendId, const QByteArray* valueData, const ArnLinkHandle& handleData)
+    : ArnEvent( type())
+    , _sendId( sendId)
+    , _valueData( valueData)
+    , _handleData( &handleData)
+{
+    if (_valueData)
+        _valueData = new QByteArray( *valueData);
+    if (_handleData && !_handleData->isNull())
+        _handleData = new ArnLinkHandle( *_handleData);
+    else
+        _handleData = 0;
+}
+
+
+ArnEvValueChange::~ArnEvValueChange()
+{
+    if (_valueData)
+        delete _valueData;
+    if (_handleData)
+        delete _handleData;
+}
+
+
+QEvent::Type  ArnEvValueChange::type()
+{
+    static int evType = QEvent::registerEventType(2026);
+
+    return Type( evType);
+}
+
+
+ArnEvent*  ArnEvValueChange::makeHeapClone()
+{
+    return new ArnEvValueChange( _sendId, _valueData, *_handleData);
+}
