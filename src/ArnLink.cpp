@@ -266,7 +266,11 @@ void ArnLink::setValue( ARNREAL value, int sendId, bool forceKeep)
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && _isPipeMode) {
-        QByteArray  valueData = QByteArray::number( value);
+#if defined( ARNREAL_FLOAT)
+        QByteArray  valueData = QByteArray::number( value, 'g', std::numeric_limits<float>::digits10);
+#else
+        QByteArray  valueData = QByteArray::number( value, 'g', std::numeric_limits<double>::digits10);
+#endif
         emitChanged( sendId, &valueData);
     }
     else {
