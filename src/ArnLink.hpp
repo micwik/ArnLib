@@ -44,12 +44,14 @@
 
 struct ArnLinkValue;
 class ArnEvent;
+class ArnLink;
+
+typedef QList<ArnLink*>  ArnLinkList;
 
 
 //! \cond ADV
-class ArnLink : public QObject
+class ArnLink
 {
-    Q_OBJECT
     friend class ArnM;
 
 public:
@@ -106,10 +108,15 @@ public:
     void  deref( QObject* subscriber = 0);
     ~ArnLink();
 
+    QString  objectName()  const;
+    ArnLink*  parent()  const;
+    const ArnLinkList&  children()  const;
+
 protected:
     //// Will never be inherited, this section is separated for use by friend ArnM
     ArnLink( ArnLink* parent, const QString& name, Arn::LinkFlags flags);
     void  setupEnd( const QString& path, Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags);
+    void  setParent( ArnLink* parent);
     void  doModeChanged();
     ArnLink*  findLink( const QString& name);
     void  ref();
@@ -141,6 +148,9 @@ private:
     QMutex*  _mutex;
     ArnLinkValue*  _val;
     QObjectList*  _subscribeTab;
+    ArnLink*  _parent;
+    QString  _objectName;
+    ArnLinkList*  _children;
 
     quint32  _id;
     volatile qint32  _refCount;

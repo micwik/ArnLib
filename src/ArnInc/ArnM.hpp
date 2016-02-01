@@ -61,7 +61,7 @@ public:
     }
 
     //// Payload of "return value" from proxy to caller
-    QObject*  _retObj;
+    void*  _retObj;
     QStringList  _retStringList;
 
 private:

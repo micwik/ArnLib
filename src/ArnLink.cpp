@@ -55,18 +55,20 @@ struct ArnLinkValue {
 
 
 ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
-        : QObject(0)
 {
+    static ArnLinkList  nullArnLinkList;
+
     QString  name_ = Arn::convertBaseName( name, Arn::NameF());
 
-    QObject::setParent((QObject*) parent);
-    QObject::setObjectName( name_);
+    _parent          = 0;
+    _objectName      = name_;
     _isFolder        = flags.is( flags.Folder);
     _isProvider      = name_.endsWith('!');
     _type.e          = Arn::DataType::Null;
     _twin            = 0;
     _subscribeTab    = 0;
     _mutex           = 0;
+    _children        = _isFolder ? new ArnLinkList : &nullArnLinkList;
     _val             = _isFolder ? 0 : new ArnLinkValue;
     _isPipeMode      = false;
     _isSaveMode      = false;
@@ -77,6 +79,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     _zeroRefCount    = 0;
     _isRetired       = false;
     _retireType      = RetireType::None;
+    setParent( parent);
 }
 
 
@@ -93,6 +96,8 @@ ArnLink::~ArnLink()
         delete _twin;
         _twin = 0;
     }
+
+    setParent(0);
 }
 
 
@@ -103,6 +108,36 @@ void ArnLink::resetHave()
     _haveString    = false;
     _haveByteArray = false;
     _haveVariant   = false;
+}
+
+
+QString  ArnLink::objectName()  const
+{
+    return _objectName;
+}
+
+
+ArnLink*  ArnLink::parent()  const
+{
+    return _parent;
+}
+
+
+void  ArnLink::setParent( ArnLink* parent)
+{
+    if (_parent)
+        _parent->_children->removeOne( this);
+
+    _parent = parent;
+
+    if (_parent)
+       _parent->_children->append( this);
+}
+
+
+const ArnLinkList&  ArnLink::children() const
+{
+    return *_children;
 }
 
 
@@ -165,7 +200,7 @@ void  ArnLink::sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink)
     while (link) {
         // qDebug() << "sendEventsDirRoot: inLinkPath=" << link->linkPath();
         link->sendEvents( ev);
-        link = qobject_cast<ArnLink*>( link->parent());
+        link = link->parent();
     }
 }
 
@@ -526,7 +561,7 @@ QString ArnLink::linkPath( Arn::NameF nameF)
     ArnLink*  link = this;
 
     while (link) {  // Backwards until root
-        ArnLink*  parentLink = qobject_cast<ArnLink*>( link->parent());
+        ArnLink*  parentLink = link->parent();
         if (!parentLink) {
             if (nameF.is( nameF.Relative))  break;  // Skip Root
             nameF.set( nameF.EmptyOk, true);  // Root is Empty node name
@@ -563,7 +598,7 @@ void  ArnLink::setupEnd( const QString& path, Arn::ObjectSyncMode syncMode, Arn:
         addSyncMode( syncMode);
 
         ArnEvLinkCreate  arnEvLinkCreate( path, this, flags.is( flags.LastLink));
-        sendEventsDirRoot( &arnEvLinkCreate, qobject_cast<ArnLink*>( parent()));
+        sendEventsDirRoot( &arnEvLinkCreate, parent());
     }
 }
 
@@ -578,13 +613,13 @@ void  ArnLink::doModeChanged()
 ArnLink*  ArnLink::findLink( const QString& name)
 {
     QString  name_ = Arn::convertBaseName( name, Arn::NameF());
-    QObjectList  children = this->children();
 
-    for (int i = 0; i < children.size(); i++) {
-        QObject*  child = children.at(i);
+    int  childNum = _children->size();
+    for (int i = 0; i < childNum; i++) {
+        ArnLink*  child = _children->at(i);
 
         if (child->objectName() == name_) {
-            return qobject_cast<ArnLink*>( child);
+            return child;
         }
     }
 
@@ -766,7 +801,7 @@ void  ArnLink::doRetired( ArnLink* startLink, bool isGlobal)
     if (Arn::debugLinkDestroy)  qDebug() << "doRetired: path=" << this->linkPath();
     if (startLink == this) {
         ArnEvRetired  arnEvRetired( startLink, true, isGlobal);
-        sendEventsDirRoot( &arnEvRetired, qobject_cast<ArnLink*>( parent()));
+        sendEventsDirRoot( &arnEvRetired, parent());
     }
     ArnEvRetired  arnEvRetired( startLink, false, isGlobal);
     sendEvents( &arnEvRetired);

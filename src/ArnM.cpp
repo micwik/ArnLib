@@ -226,19 +226,18 @@ QStringList  ArnM::itemsMain( const ArnLink *parent)
         return QStringList();
     }
 
-    QObjectList  children = parent->children();
+    const ArnLinkList&  children = parent->children();
     QStringList  childnames;
 
     for (int i = 0; i < children.size(); i++) {
-        QObject *child = children.at(i);
-        ArnLink *childLink = qobject_cast<ArnLink*>(child);
+        ArnLink*  childLink = children.at(i);
 
         if (childLink != 0) {
             if (childLink->isFolder()) {
-                childnames << child->objectName() + "/";
+                childnames << childLink->objectName() + "/";
             }
             else {
-                childnames << child->objectName();
+                childnames << childLink->objectName();
             }
         }
     }
@@ -470,7 +469,7 @@ ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, Arn::Obje
                                Q_ARG( int, syncMode.toInt()));
     if (Arn::debugThreading)  qDebug() << "link-thread: invoked path=" << path;
     threadCom.waitCommandEnd();  // Wait main-thread gives retLink
-    ArnLink*  retLink = qobject_cast<ArnLink*>( threadCom.p()->_retObj);
+    ArnLink*  retLink = static_cast<ArnLink*>( threadCom.p()->_retObj);
     if (retLink)  if (Arn::debugThreading)  qDebug() << "link-thread: end path=" << retLink->linkPath();
 
     return retLink;
@@ -560,7 +559,7 @@ ArnLink*  ArnM::addTwin( const QString& path, ArnLink* link,
 
     /// Threaded version of addTwin
     if (!link->twinLink()) {  // This link has no twin, create one
-        ArnLink*  parent = qobject_cast<ArnLink*>( link->parent());
+        ArnLink*  parent = link->parent();
         QString  twinPath = parent->linkPath() + link->twinName();
         return linkThread( twinPath, flags.f | flags.CreateAllowed, syncMode);
         /// Reference is increased in main-thread by linkMain
@@ -579,7 +578,7 @@ ArnLink*  ArnM::addTwinMain( const QString& path, ArnLink* link,
 
     if (!link->twinLink()) {  // This link has no twin, create one
         QString  twinName = link->twinName();
-        ArnLink*  parent = qobject_cast<ArnLink*>( link->parent());
+        ArnLink*  parent = link->parent();
         ArnLink*  twinLink;
         twinLink = getRawLink( parent, twinName, flags.f | flags.CreateAllowed);
         // qDebug() << "addTwin: parent=" << parent->linkPath() << " twinName=" << twinName;
@@ -753,10 +752,10 @@ void  ArnM::destroyLinkMain( ArnLink* link, ArnLink* startLink, bool isGlobal)
         twin->setRetired( rt);
 
     /// Make all childs retired by recursion
-    QObjectList objList = link->children();
-    int  childNum = objList.size();
+    ArnLinkList  children = link->children();
+    int  childNum = children.size();
     for (int i = 0; i < childNum; ++i) {
-        ArnLink*  dLink = qobject_cast<ArnLink*>( objList.at( i));
+        ArnLink*  dLink = children.at( i);
         destroyLinkMain( dLink, startLink, isGlobal);
     }
 
@@ -779,12 +778,9 @@ void  ArnM::doZeroRefLink( ArnLink* link)
     while (link->isRetired()  &&
            link->refCount() < 0  &&
            link->children().size() == 0) {
-        ArnLink*  parent = qobject_cast<ArnLink*>( link->parent());
+        ArnLink*  parent = link->parent();
         if (Arn::debugLinkDestroy)  qDebug() << "ZeroRef: delete link path=" << link->linkPath();
-        link->setParent(0);
-        if (link->_twin)
-            link->_twin->setParent(0);
-        link->deleteLater();  // This will also delete an existing twin
+        delete link;  // This will also delete an existing twin
         link = parent;
     }
 }
@@ -912,9 +908,11 @@ ArnM::ArnM()
         qDebug() << "QObject: " << sizeof(QObject);
         qDebug() << "  QScopedPtr: " << sizeof(QScopedPointer<QObjectData>);
         qDebug() << "  QObjectData: " << sizeof(QObjectData);
+        qDebug() << "  QObjectList: " << sizeof(QObjectList);
         qDebug() << "QString: " << sizeof(QString);
         qDebug() << "QVariant: " << sizeof(QVariant);
         qDebug() << "ArnLink: " << sizeof(ArnLink);
+        qDebug() << "  AnrLinkList: " << sizeof(ArnLinkList);
         qDebug() << "ArnItemB: " << sizeof(ArnItemB);
         qDebug() << "ArnItem: " << sizeof(ArnItem);
         qDebug() << "DataType: " << sizeof(Arn::DataType);

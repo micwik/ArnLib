@@ -636,7 +636,7 @@ ArnItemNet*  ArnClient::newNetItem( const QString& path, Arn::ObjectSyncMode syn
                                    Q_ARG( int, syncMode.toInt()),
                                    Q_ARG( void*, isNewPtr));
         threadCom.waitCommandEnd();  // Wait main-thread gives retObj
-        ArnItemNet*  retItemNet = qobject_cast<ArnItemNet*>( threadCom.p()->_retObj);
+        ArnItemNet*  retItemNet = static_cast<ArnItemNet*>( threadCom.p()->_retObj);
         if (retItemNet)  if (Arn::debugThreading)  qDebug() << "newNetItem-thread: end path=" << retItemNet->path();
 
         return retItemNet;
