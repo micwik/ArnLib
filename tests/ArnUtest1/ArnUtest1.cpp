@@ -32,7 +32,8 @@ private slots:
     void  cleanupTestCase();
     void  testMQFlagsText();
     void  testXStringMap();
-    void  testArnItem();
+    void  testArnItem1();
+    void  testArnItem2();
 
 private:
     ArnUtest1Sub*  _tsub;
@@ -176,7 +177,7 @@ void  ArnUtest1::testXStringMap()
 }
 
 
-void ArnUtest1::testArnItem()
+void  ArnUtest1::testArnItem1()
 {
     ArnItem  arnT1a("//Test/T1/value");
     ArnItem  arnT1b("//Test/T1/value");
@@ -190,6 +191,24 @@ void ArnUtest1::testArnItem()
     QBENCHMARK {
         arnT1a = 124;
     }
+}
+
+
+void  ArnUtest1::testArnItem2()
+{
+    ArnItem  arnT1a("//Test/T2/value");
+    ArnItem  arnT1b("//Test/T2/value");
+    arnT1a.setIgnoreSameValue( true);
+    arnT1b.setIgnoreSameValue( true);
+    //// Check Null -> int=0
+    QVERIFY( arnT1b.toByteArray() == "");
+    arnT1a = 0;
+    QVERIFY( arnT1b.toByteArray() == "0");
+    //// Check "" -> int=0
+    arnT1a = "";
+    QVERIFY( arnT1b.toByteArray() == "");
+    arnT1a = 0;
+    QVERIFY( arnT1b.toByteArray() == "0");
 }
 
 

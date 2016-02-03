@@ -101,7 +101,7 @@ ArnLink::~ArnLink()
 }
 
 
-void ArnLink::resetHave()
+void  ArnLink::resetHave()
 {
     _haveInt       = false;
     _haveReal      = false;
@@ -142,7 +142,7 @@ const ArnLinkList&  ArnLink::children() const
 
 
 //// This should in threaded: preserve order of setValue, optimize return of bytearray
-void ArnLink::emitChanged( int sendId, const QByteArray* valueData, const ArnLinkHandle& handleData)
+void  ArnLink::emitChanged( int sendId, const QByteArray* valueData, const ArnLinkHandle& handleData)
 {
     // qDebug() << "emitChanged: isThr=" << _isThreaded << " isPipe=" << _isPipeMode <<
     //            " path=" << linkPath() << " value=" << toByteArray();
@@ -225,7 +225,7 @@ void  ArnLink::sendEventArnM( ArnEvent* ev)
 }
 
 
-void ArnLink::setValue( int value, int sendId, bool forceKeep)
+void  ArnLink::setValue( int value, int sendId, bool forceKeep)
 {
     if (!_val)  return;
     if (_twin  &&  !forceKeep) {    // support for bidirectional function
@@ -250,7 +250,7 @@ void ArnLink::setValue( int value, int sendId, bool forceKeep)
 }
 
 
-void ArnLink::setValue( ARNREAL value, int sendId, bool forceKeep)
+void  ArnLink::setValue( ARNREAL value, int sendId, bool forceKeep)
 {
     if (!_val)  return;
     if (_twin  &&  !forceKeep) {    // support for bidirectional function
@@ -279,7 +279,7 @@ void ArnLink::setValue( ARNREAL value, int sendId, bool forceKeep)
 }
 
 
-void ArnLink::setValue( const QString& value, int sendId, bool forceKeep,
+void  ArnLink::setValue( const QString& value, int sendId, bool forceKeep,
                         const ArnLinkHandle& handleData)
 {
     if (!_val)  return;
@@ -306,7 +306,7 @@ void ArnLink::setValue( const QString& value, int sendId, bool forceKeep,
 }
 
 
-void ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
+void  ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
                         const ArnLinkHandle& handleData)
 {
     if (!_val)  return;
@@ -332,7 +332,7 @@ void ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
 }
 
 
-void ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
+void  ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
 {
     if (!_val)  return;
     if (_twin  &&  !forceKeep) {    // support for bidirectional function
@@ -357,29 +357,35 @@ void ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
 }
 
 
-int ArnLink::toInt()
+int  ArnLink::toInt( bool* isOk)
 {
+    if (isOk)
+        *isOk = true;  // Default
     if (!_val)  return 0;
     if (_mutex)  _mutex->lock();
 
     if (!_haveInt) {
+        bool  isOk2 = true;  // Default
         switch (_type.e) {
         case Arn::DataType::Real:
-            _val->valueInt = (int)_val->valueReal;
+            _val->valueInt = int( _val->valueReal);
             break;
         case Arn::DataType::String:
-            _val->valueInt = _val->valueString.toInt();
+            _val->valueInt = _val->valueString.toInt( &isOk2);
             break;
         case Arn::DataType::ByteArray:
-            _val->valueInt = _val->valueByteArray.toInt();
+            _val->valueInt = _val->valueByteArray.toInt( &isOk2);
             break;
         case Arn::DataType::Variant:
-            _val->valueInt = _val->valueVariant.toInt();
+            _val->valueInt = _val->valueVariant.toInt( &isOk2);
             break;
         default:
             _val->valueInt = 0;
+            isOk2 = false;
         }
-        _haveInt = true;
+        _haveInt = isOk2;
+        if (isOk)
+            *isOk = isOk2;
     }
 
     if (_mutex) {
@@ -391,41 +397,47 @@ int ArnLink::toInt()
 }
 
 
-ARNREAL  ArnLink::toReal()
+ARNREAL  ArnLink::toReal( bool* isOk)
 {
+    if (isOk)
+        *isOk = true;  // Default
     if (!_val)  return 0.0;
     if (_mutex)  _mutex->lock();
 
     if (!_haveReal) {
+        bool  isOk2 = true;  // Default
         switch (_type.e) {
         case Arn::DataType::Int:
             _val->valueReal = (ARNREAL)_val->valueInt;
             break;
 #if defined( ARNREAL_FLOAT)
         case Arn::DataType::String:
-            _val->valueReal = _val->valueString.toFloat();
+            _val->valueReal = _val->valueString.toFloat( &isOk2);
             break;
         case Arn::DataType::ByteArray:
-            _val->valueReal = _val->valueByteArray.toFloat();
+            _val->valueReal = _val->valueByteArray.toFloat( &isOk2);
             break;
         case Arn::DataType::Variant:
-            _val->valueReal = _val->valueVariant.toFloat();
+            _val->valueReal = _val->valueVariant.toFloat( &isOk2);
             break;
 #else
         case Arn::DataType::String:
-            _val->valueReal = _val->valueString.toDouble();
+            _val->valueReal = _val->valueString.toDouble( &isOk2);
             break;
         case Arn::DataType::ByteArray:
-            _val->valueReal = _val->valueByteArray.toDouble();
+            _val->valueReal = _val->valueByteArray.toDouble( &isOk2);
             break;
         case Arn::DataType::Variant:
-            _val->valueReal = _val->valueVariant.toDouble();
-            break;
+            _val->valueReal = _val->valueVariant.toDouble( &isOk2);
+            break; 
 #endif
         default:
             _val->valueReal = 0.0;
+            isOk2 = false;
         }
-        _haveReal = true;
+        _haveReal = isOk2;
+        if (isOk)
+            *isOk = isOk2;
     }
 
     if (_mutex) {
@@ -437,12 +449,15 @@ ARNREAL  ArnLink::toReal()
 }
 
 
-QString ArnLink::toString()
+QString  ArnLink::toString( bool* isOk)
 {
+    if (isOk)
+        *isOk = true;  // Default
     if (!_val)  return QString();
     if (_mutex)  _mutex->lock();
 
     if (!_haveString) {
+        bool  isOk2 = true;  // Default
         _val->valueString.resize(0);     // Avoid heap defragmentation
         switch (_type.e) {
         case Arn::DataType::Int:
@@ -459,11 +474,15 @@ QString ArnLink::toString()
             _val->valueString += QString::fromUtf8( _val->valueByteArray.constData(), _val->valueByteArray.size());
             break;
         case Arn::DataType::Variant:
+            isOk2 = _val->valueVariant.canConvert( QVariant::String);
             _val->valueString += _val->valueVariant.toString();
             break;
-        default:;
+        default:
+            isOk2 = false;
         }
-        _haveString  = true;
+        _haveString = isOk2;
+        if (isOk)
+            *isOk = isOk2;
     }
 
     if (_mutex) {
@@ -475,12 +494,15 @@ QString ArnLink::toString()
 }
 
 
-QByteArray ArnLink::toByteArray()
+QByteArray  ArnLink::toByteArray( bool* isOk)
 {
+    if (isOk)
+        *isOk = true;  // Default
     if (!_val)  return QByteArray();
     if (_mutex)  _mutex->lock();
 
     if (!_haveByteArray) {
+        bool  isOk2 = true;  // Default
         _val->valueByteArray.resize(0);     // Avoid heap defragmentation
         switch (_type.e) {
         case Arn::DataType::Int:
@@ -497,11 +519,15 @@ QByteArray ArnLink::toByteArray()
             _val->valueByteArray += _val->valueString.toUtf8();
             break;
         case Arn::DataType::Variant:
+            isOk2 = _val->valueVariant.canConvert( QVariant::String);
             _val->valueByteArray += _val->valueVariant.toString().toUtf8();
             break;
-        default:;
+        default:
+            isOk2 = false;
         }
-        _haveByteArray  = true;
+        _haveByteArray = isOk2;
+        if (isOk)
+            *isOk = isOk2;
     }
 
     if (_mutex) {
@@ -513,12 +539,15 @@ QByteArray ArnLink::toByteArray()
 }
 
 
-QVariant ArnLink::toVariant( void)
+QVariant  ArnLink::toVariant( bool* isOk)
 {
+    if (isOk)
+        *isOk = true;  // Default
     if (!_val)  return QVariant();
     if (_mutex)  _mutex->lock();
 
     if (!_haveVariant) {
+        bool  isOk2 = true;  // Default
         switch (_type.e) {
         case Arn::DataType::Int:
             _val->valueVariant = _val->valueInt;
@@ -530,12 +559,16 @@ QVariant ArnLink::toVariant( void)
             _val->valueVariant = _val->valueString;
             break;
         case Arn::DataType::ByteArray:
-            _val->valueVariant = _val->valueByteArray;
+            _val->valueVariant = QString::fromUtf8( _val->valueByteArray.constData(),
+                                                    _val->valueByteArray.size());
             break;
         default:
             _val->valueVariant = QVariant();
+            isOk2 = false;
         }
-        _haveVariant = true;
+        _haveVariant = isOk2;
+        if (isOk)
+            *isOk = isOk2;
     }
 
     if (_mutex) {
@@ -557,7 +590,7 @@ Arn::DataType  ArnLink::type()
 }
 
 
-QString ArnLink::linkPath( Arn::NameF nameF)
+QString  ArnLink::linkPath( Arn::NameF nameF)
 {
     nameF.set( nameF.NoFolderMark, false);  // Foldermark '/' must be ...
     QString  path;
@@ -579,7 +612,7 @@ QString ArnLink::linkPath( Arn::NameF nameF)
 }
 
 
-QString ArnLink::linkName( Arn::NameF nameF)
+QString  ArnLink::linkName( Arn::NameF nameF)
 {
     QString  retVal = convertBaseName( objectName(), nameF);
     if (this->isFolder() && !nameF.is(( nameF.NoFolderMark)))
@@ -631,7 +664,7 @@ ArnLink*  ArnLink::findLink( const QString& name)
 }
 
 
-bool ArnLink::isFolder( void)
+bool  ArnLink::isFolder( void)
 {
     return _isFolder;
 }
@@ -747,13 +780,13 @@ void  ArnLink::setThreaded()
 }
 
 
-void ArnLink::lock()
+void  ArnLink::lock()
 {
     if (_mutex)  _mutex->lock();
 }
 
 
-void ArnLink::unlock()
+void  ArnLink::unlock()
 {
     if (_mutex)  _mutex->unlock();
 }
@@ -901,7 +934,7 @@ void  ArnLink::setRefCount( int count)
 }
 
 
-void ArnLink::decZeroRefs()
+void  ArnLink::decZeroRefs()
 {
     int  zeroRefCount = 0;
     ArnLink*  vLink = valueLink();
@@ -917,7 +950,7 @@ void ArnLink::decZeroRefs()
 }
 
 
-bool ArnLink::isLastZeroRef()
+bool  ArnLink::isLastZeroRef()
 {
     bool  retVal    = false;
     ArnLink*  vLink = valueLink();

@@ -777,7 +777,8 @@ void  ArnItemB::setValue( int value, int ignoreSame)
     if (_link) {
         if (isIgnoreSame) {
             ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
-            if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toInt())) {
+            bool  isOk;
+            if ((value == holderLink->toInt( &isOk)) && isOk) {
                 return;
             }
         }
@@ -800,7 +801,8 @@ void  ArnItemB::setValue( ARNREAL value, int ignoreSame)
     if (_link) {
         if (isIgnoreSame) {
             ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
-            if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toReal())) {
+            bool  isOk;
+            if ((value == holderLink->toReal( &isOk)) && isOk) {
                 return;
             }
         }
@@ -823,7 +825,8 @@ void  ArnItemB::setValue( bool value, int ignoreSame)
     if (_link) {
         if (isIgnoreSame) {
             ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
-            if ((holderLink->type() != Arn::DataType::Null) && (value == (holderLink->toInt() != 0))) {
+            bool  isOk;
+            if ((value == (holderLink->toInt( &isOk) != 0)) && isOk) {
                 return;
             }
         }
@@ -846,7 +849,8 @@ void  ArnItemB::setValue( const QString& value, int ignoreSame)
     if (_link) {
         if (isIgnoreSame) {
             ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
-            if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toString())) {
+            bool  isOk;
+            if ((value == holderLink->toString( &isOk)) && isOk) {
                 return;
             }
         }
@@ -869,7 +873,8 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame)
     if (_link) {
         if (isIgnoreSame) {
             ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
-            if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toByteArray())) {
+            bool  isOk;
+            if ((value == holderLink->toByteArray( &isOk)) && isOk) {
                 return;
             }
         }
@@ -892,7 +897,8 @@ void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
     if (_link) {
         if (isIgnoreSame) {
             ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
-            if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toVariant())) {
+            bool  isOk;
+            if ((value == holderLink->toVariant( &isOk)) && isOk) {
                 return;
             }
         }
@@ -958,12 +964,13 @@ void  ArnItemB::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle
     if (_link) {
         if (isIgnoreSame) {
             ArnLink*  holderLink = _link->holderLink( d->_useForceKeep);
+            bool  isOk;
             if (handleFlags.is( handleFlags.Text)) {
-                if ((holderLink->type() != Arn::DataType::Null) && (valueTxt == holderLink->toString()))
+                if ((valueTxt == holderLink->toString( &isOk)) && isOk)
                     return;
             }
             else {
-                if ((holderLink->type() != Arn::DataType::Null) && (value == holderLink->toByteArray()))
+                if ((value == holderLink->toByteArray( &isOk)) && isOk)
                     return;
             }
         }

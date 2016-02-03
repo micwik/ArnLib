@@ -73,11 +73,11 @@ public:
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  setValue( const QVariant& value, int sendId = 0, bool forceKeep = 0);
 
-    int  toInt();
-    ARNREAL toReal();
-    QString  toString();
-    QByteArray  toByteArray();
-    QVariant  toVariant();
+    int  toInt( bool* isOk = 0);
+    ARNREAL  toReal( bool* isOk = 0);
+    QString  toString( bool* isOk = 0);
+    QByteArray  toByteArray( bool* isOk = 0);
+    QVariant  toVariant( bool* isOk = 0);
 
     Arn::DataType  type();
 

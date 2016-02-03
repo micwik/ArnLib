@@ -24,30 +24,29 @@ Minor
 * Browsing and controlling connected clients.
 * ArnItem none native data-types like: uint, int64 etc.
 * Addition to login a system to "pair" ArnServer and ArnClient.
-* Change to ArnLink::toInt(bool* isOk = 0), to make ignoreSameValue better.
-  Same for all toXXX(), also check type Null.
-* Check ArnM::destroyLinkMain, realy use startLink for doRetired ?
 
 Done in 3.0
 -----------
 * Delete ArnObject, but only local (remove any sync of it).
 * ArnClient disconnect and close.
-* Optimize memory consumption with pointers to different data in ArnLink.
+* Optimized memory consumption with pointers to different data in ArnLink.
 * Minimized signal/slot:s in ArnLink by change to ArnEvent.
 * Distributed deletion of folders.
 * Distributed create of folder.
 * ArnMonitor detects destructions of _Arn Objects_.
-* Add setDelay in ArnItemQml, rework changed() and using timer events.
+* Added setDelay in ArnItemQml, rework changed() and using timer events.
 * Access system for Server/Client login with session level privilege.
 * Allow read access to "freePaths" without login. Used to view for example licenses.
 * A flush mechanism for ArnPersist to force saving.
-* Pimpl: Convert to d-pointer for making binary compatible library in the future.
+* Pimpl: Converted to d-pointer for making binary compatible library in the future.
 * Started unit tests
-* Optimized HandleData class with Null-state can be this == 0.
+* Optimized HandleData class with Null-state that can be this == 0.
 * Made ArnLink none QObject to save memory and independent on main-thread-create.
   * Removed ArnLik::trfValue(), add QByteArray* valueBytes in ArnLink::setValue() & as param to emitChanged().
   * Added ArnEvent valueChanged, implement in ArnLink & ArnItemB.
   * New methods and data for parent() etc.
+* Changed to ArnLink::toInt(bool* isOk = 0).
+  To make ignoreSameValue work as expected for "" -> int=0 and similar. Same for all toXXX().
 
 Done in 2.3
 -----------
