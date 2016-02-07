@@ -34,6 +34,7 @@ private slots:
     void  testXStringMap();
     void  testArnItem1();
     void  testArnItem2();
+    void  testArnItemDestroy();
 
 private:
     ArnUtest1Sub*  _tsub;
@@ -209,6 +210,20 @@ void  ArnUtest1::testArnItem2()
     QVERIFY( arnT1b.toByteArray() == "");
     arnT1a = 0;
     QVERIFY( arnT1b.toByteArray() == "0");
+}
+
+
+void ArnUtest1::testArnItemDestroy()
+{
+    QVERIFY( ArnM::exist("//Test/T3/") == false);
+    ArnM::setValue("//Test/T3/value", 1);
+    ArnM::setValue("//Test/T3/xxx", 1);
+    ArnItem  arnT1a("//Test/T3/yyy");
+    QVERIFY( ArnM::exist("//Test/T3/") == true);
+    QVERIFY( ArnM::exist("//Test/T3/value") == true);
+    ArnM::destroyLink("//Test/T3/");
+    QVERIFY( ArnM::exist("//Test/T3/") == false);
+    QVERIFY( ArnM::exist("//Test/T3/value") == false);
 }
 
 

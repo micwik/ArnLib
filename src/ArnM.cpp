@@ -750,6 +750,7 @@ void  ArnM::destroyLinkMain( ArnLink* link, ArnLink* startLink, bool isGlobal)
     link->setRetired( rt);
     if (twin)
         twin->setRetired( rt);
+    link->ref();  // At least one ref to protect this link
 
     /// Make all childs retired by recursion
     ArnLinkList  children = link->children();
@@ -763,6 +764,8 @@ void  ArnM::destroyLinkMain( ArnLink* link, ArnLink* startLink, bool isGlobal)
     link->doRetired( startLink, isGlobal);
     if (twin)
         twin->doRetired( startLink, isGlobal);
+    link->deref();  // Remove link protection, can also trigger zero-ref event
+    /// Now link might be deleted
 }
 
 

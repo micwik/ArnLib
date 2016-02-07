@@ -1000,6 +1000,7 @@ void  ArnLink::deref( QObject* subscriber)
     if (isZeroRefs) {  // This is last reference
         ArnEvZeroRef  arnEvZeroRef( this);
         sendEventArnM( &arnEvZeroRef);  // Will allways be received in main-thread (ArnM)
+        //// Now this link might have been deleted
     }
 }
 
