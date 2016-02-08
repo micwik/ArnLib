@@ -30,6 +30,8 @@ public:
 private slots:
     void  initTestCase();
     void  cleanupTestCase();
+    void  measureMisc1();
+    void  measureMisc2();
     void  testMQFlagsText();
     void  testXStringMap();
     void  testArnItem1();
@@ -59,6 +61,30 @@ void ArnUtest1::initTestCase()
 
 void ArnUtest1::cleanupTestCase()
 {
+}
+
+
+void ArnUtest1::measureMisc1()
+{
+    QByteArray t1;
+    t1 = "qwertyuiopqwertyuiopqwertyuiop";
+    QString  t2;
+    QBENCHMARK {
+        t2.resize(0);
+        t2 += QString::fromUtf8( t1.constData());
+    }
+}
+
+
+void ArnUtest1::measureMisc2()
+{
+    QString  t1;
+    t1 = "qwertyuiopqwertyuiopqwertyuiop";
+    QString  t2;
+    QBENCHMARK {
+        t2.resize(0);
+        t2 += t1;
+    }
 }
 
 
