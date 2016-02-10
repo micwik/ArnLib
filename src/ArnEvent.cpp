@@ -35,6 +35,7 @@
 
 ArnEvent::ArnEvent( QEvent::Type type)
     : QEvent( type)
+    , _target(0)
 {
 }
 

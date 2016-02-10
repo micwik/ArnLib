@@ -42,10 +42,19 @@ class ArnLinkHandle;
 
 class ArnEvent : public QEvent
 {
+    void*  _target;
+    void*  _spare;  // Can be used later as d-ptr
+
 public:
     ArnEvent( QEvent::Type type);
 
     virtual ArnEvent*  makeHeapClone() = 0;
+
+    inline void*  target()  const
+    { return _target;}
+
+    inline void  setTarget( void* target)
+    { _target = target;}
 };
 
 

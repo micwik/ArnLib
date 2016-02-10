@@ -35,6 +35,7 @@
 #include "ArnInc/ArnLib_global.hpp"
 #include "ArnInc/ArnLinkHandle.hpp"
 #include "ArnInc/Arn.hpp"
+#include "ArnInc/ArnBasicItem.hpp"
 #include "ArnInc/MQFlags.hpp"
 #include <QObject>
 #include <QString>
@@ -47,6 +48,7 @@ class ArnEvent;
 class ArnLink;
 
 typedef QList<ArnLink*>  ArnLinkList;
+typedef QList<ArnBasicItem*>  ArnBasicItemList;
 
 
 //! \cond ADV
@@ -106,6 +108,9 @@ public:
     bool  subscribe( QObject* subscriber);
     bool  unsubscribe( QObject* subscriber);
     void  deref( QObject* subscriber = 0);
+    bool  subscribe( ArnBasicItem* subscriber);
+    bool  unsubscribe( ArnBasicItem* subscriber);
+    void  deref( ArnBasicItem* subscriber);
     ~ArnLink();
 
     QString  objectName()  const;
@@ -138,6 +143,7 @@ private:
     void  emitChanged( int sendId, const QByteArray* valueData = 0,
                        const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  sendEventsInThread( ArnEvent* ev, const QObjectList& recipients);
+    void  sendEventsInThread( ArnEvent* ev, const ArnBasicItemList& recipients);
     void  sendEvents( ArnEvent* ev);
     void  sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink);
     void  sendEventArnM( ArnEvent* ev);
@@ -148,6 +154,7 @@ private:
     QMutex*  _mutex;
     ArnLinkValue*  _val;
     QObjectList*  _subscribeTab;
+    ArnBasicItemList*  _subscribeTabBI;
     ArnLink*  _parent;
     QString  _objectName;
     ArnLinkList*  _children;

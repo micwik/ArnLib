@@ -1,5 +1,6 @@
 #include "TestMQFlags.hpp"
 #include <ArnInc/ArnM.hpp>
+#include <ArnInc/ArnBasicItem.hpp>
 #include <ArnInc/ArnItem.hpp>
 #include <ArnInc/MQFlags.hpp>
 #include <ArnInc/XStringMap.hpp>
@@ -34,6 +35,8 @@ private slots:
     void  measureMisc2();
     void  testMQFlagsText();
     void  testXStringMap();
+    void  testArnBasicItem1();
+    void  testArnBasicItemDestroy();
     void  testArnItem1();
     void  testArnItem2();
     void  testArnItemDestroy();
@@ -204,6 +207,41 @@ void  ArnUtest1::testXStringMap()
 }
 
 
+void ArnUtest1::testArnBasicItem1()
+{
+    //qDebug() << "---------testArnBasicItem1 Start";
+    ArnBasicItem  arnT1a;
+    ArnBasicItem  arnT1b;
+    arnT1a.open("//Test/Tb1/value");
+    arnT1b.open("//Test/Tb1/value");
+    arnT1a.setIgnoreSameValue( false);
+    arnT1b.setIgnoreSameValue( false);
+
+    arnT1a.setValue( 123);
+    QCOMPARE( arnT1b.toInt(), 123);
+
+    QBENCHMARK {
+        arnT1a.setValue( 124);
+    }
+    //qDebug() << "---------testArnBasicItem1 End";
+}
+
+
+void ArnUtest1::testArnBasicItemDestroy()
+{
+    QVERIFY( ArnM::exist("//Test/Tb3/") == false);
+    ArnM::setValue("//Test/Tb3/value", 1);
+    ArnM::setValue("//Test/Tb3/xxx", 1);
+    ArnBasicItem  arnT1a;
+    arnT1a.open("//Test/Tb3/yyy");
+    QVERIFY( ArnM::exist("//Test/Tb3/") == true);
+    QVERIFY( ArnM::exist("//Test/Tb3/value") == true);
+    ArnM::destroyLink("//Test/Tb3/");
+    QVERIFY( ArnM::exist("//Test/Tb3/") == false);
+    QVERIFY( ArnM::exist("//Test/Tb3/value") == false);
+}
+
+
 void  ArnUtest1::testArnItem1()
 {
     ArnItem  arnT1a("//Test/T1/value");
@@ -230,6 +268,7 @@ void  ArnUtest1::testArnItem2()
     //// Check Null -> int=0
     QVERIFY( arnT1b.toByteArray() == "");
     arnT1a = 0;
+    // qDebug() << "testArnItem2: toByteArray()=" << arnT1b.toByteArray();
     QVERIFY( arnT1b.toByteArray() == "0");
     //// Check "" -> int=0
     arnT1a = "";

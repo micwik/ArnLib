@@ -59,7 +59,7 @@ class ArnThreadComStorage : public QThreadStorage<ArnThreadCom*> {};
 //! \endcond
 
 
-ArnThreadComStorage  *ArnThreadCom::getThreadComStorage()
+ArnThreadComStorage*  ArnThreadCom::getThreadComStorage()
 {
     static ArnThreadComStorage  threadComStorage;
   

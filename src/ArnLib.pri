@@ -132,6 +132,7 @@ contains(ARN, script_qml) {
 contains(ARN, core) {
     SOURCES += \
         $$PWD/ArnM.cpp \
+        $$PWD/ArnBasicItem.cpp \
         $$PWD/ArnItem.cpp \
         $$PWD/ArnItemValve.cpp \
         $$PWD/ArnLinkHandle.cpp \
@@ -142,6 +143,7 @@ contains(ARN, core) {
 
     HEADERS += \
         $$PWD/ArnInc/ArnM.hpp \
+        $$PWD/ArnInc/ArnBasicItem.hpp \
         $$PWD/ArnInc/ArnItem.hpp \
         $$PWD/ArnInc/ArnItemValve.hpp \
         $$PWD/ArnInc/ArnPipe.hpp \
@@ -149,6 +151,7 @@ contains(ARN, core) {
         $$PWD/ArnInc/ArnLinkHandle.hpp \
         $$PWD/ArnInc/ArnEvent.hpp \
         $$PWD/ArnLink.hpp \
+        $$PWD/private/ArnBasicItem_p.hpp \
         $$PWD/private/ArnItemB_p.hpp \
         $$PWD/private/ArnItem_p.hpp \
         $$PWD/private/ArnItemValve_p.hpp \
