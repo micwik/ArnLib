@@ -80,6 +80,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     _isRetired       = false;
     _retireType      = RetireType::None;
     setParent( parent);
+    resetHave();
 }
 
 
