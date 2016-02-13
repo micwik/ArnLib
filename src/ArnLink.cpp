@@ -175,7 +175,6 @@ void  ArnLink::sendEvents( ArnEvent* ev)
 
     _mutex->lock();
 
-    QObjectList  subscrInThread;
     ArnBasicItemList  subscrInThread;
     QThread*  curThread = QThread::currentThread();
 
