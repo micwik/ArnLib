@@ -32,8 +32,6 @@
 #ifndef ARNITEMB_P_HPP
 #define ARNITEMB_P_HPP
 
-// #define ARNITEMB_INCPATH
-
 
 class ArnItemBPrivate
 {
@@ -43,23 +41,9 @@ public:
     virtual ~ArnItemBPrivate();
 
 private:
-    /// Source for unique id to all ArnItem ..
-    static QAtomicInt  _idCount;
-
-    void*  _reference;
-#ifdef ARNITEMB_INCPATH
-    QString _path;
-#endif
-    quint32  _id;
-    Arn::ObjectSyncMode  _syncMode;
-    Arn::ObjectMode  _mode;
-    bool  _syncModeLinkShare : 1;
-    bool  _useForceKeep : 1;
     bool  _blockEcho : 1;
-    bool  _enableSetValue : 1;
     bool  _enableUpdNotify : 1;
-    bool  _ignoreSameValue : 1;
-    bool  _isOnlyEcho : 1;
+    bool  _enableSetValue : 1;
 };
 
 #endif // ARNITEMB_P_HPP

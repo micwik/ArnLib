@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2015 Michael Wiklund.
+// Copyright (C) 2010-2016 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -58,9 +58,6 @@ private:
     Arn::ObjectMode  _mode;
     bool  _syncModeLinkShare : 1;
     bool  _useForceKeep : 1;
-    bool  _blockEcho : 1;
-    bool  _enableSetValue : 1;
-    bool  _enableUpdNotify : 1;
     bool  _ignoreSameValue : 1;
     bool  _isOnlyEcho : 1;
     bool  _isStdEvHandler : 1;

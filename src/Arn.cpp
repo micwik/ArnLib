@@ -32,6 +32,7 @@
 #include "ArnInc/Arn.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include <QRegExp>
+#include <QUuid>
 #include <QStringList>
 
 
@@ -209,6 +210,19 @@ bool  isFolderPath( const QString& path)
 bool  isProviderPath( const QString& path)
 {
     return path.endsWith('!');
+}
+
+
+QString  uuidPath( const QString& path)
+{
+    QUuid  uuid = QUuid::createUuid();
+    bool  isProvider = Arn::isProviderPath( path);
+
+    QString  retVal = providerPath( path, false);  // Allways Requester path (no "!")
+    retVal += uuid.toString();
+    retVal = providerPath( retVal, isProvider);  // Restore original "!"
+
+    return retVal;
 }
 
 

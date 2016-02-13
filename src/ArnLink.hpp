@@ -105,12 +105,9 @@ public:
     ArnLink*  providerLink();
     ArnLink*  holderLink( bool forceKeep);
     QString  twinName();
-    bool  subscribe( QObject* subscriber);
-    bool  unsubscribe( QObject* subscriber);
-    void  deref( QObject* subscriber = 0);
     bool  subscribe( ArnBasicItem* subscriber);
     bool  unsubscribe( ArnBasicItem* subscriber);
-    void  deref( ArnBasicItem* subscriber);
+    void  deref( ArnBasicItem* subscriber = 0);
     ~ArnLink();
 
     QString  objectName()  const;
@@ -142,7 +139,6 @@ private:
     void  resetHave();
     void  emitChanged( int sendId, const QByteArray* valueData = 0,
                        const ArnLinkHandle& handleData = ArnLinkHandle::null());
-    void  sendEventsInThread( ArnEvent* ev, const QObjectList& recipients);
     void  sendEventsInThread( ArnEvent* ev, const ArnBasicItemList& recipients);
     void  sendEvents( ArnEvent* ev);
     void  sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink);
@@ -153,8 +149,7 @@ private:
 
     QMutex*  _mutex;
     ArnLinkValue*  _val;
-    QObjectList*  _subscribeTab;
-    ArnBasicItemList*  _subscribeTabBI;
+    ArnBasicItemList*  _subscribeTab;
     ArnLink*  _parent;
     QString  _objectName;
     ArnLinkList*  _children;

@@ -67,7 +67,6 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     _type.e          = Arn::DataType::Null;
     _twin            = 0;
     _subscribeTab    = 0;
-    _subscribeTabBI  = 0;
     _mutex           = 0;
     _children        = _isFolder ? new ArnLinkList : &nullArnLinkList;
     _val             = _isFolder ? 0 : new ArnLinkValue;
@@ -92,8 +91,6 @@ ArnLink::~ArnLink()
         delete _mutex;
     if (_subscribeTab)
         delete _subscribeTab;
-    if (_subscribeTabBI)
-        delete _subscribeTabBI;
 
     if (_twin) {
         _twin->_twin = 0;  // points to this object
@@ -155,18 +152,6 @@ void  ArnLink::emitChanged( int sendId, const QByteArray* valueData, const ArnLi
 }
 
 
-void  ArnLink::sendEventsInThread( ArnEvent* ev, const QObjectList& recipients)
-{
-    int  len = recipients.size();
-    for (int i = 0; i < len; ++i) {
-        QObject*  qobj = recipients[i];
-        ev->setAccepted( true);  // Default
-        qobj->event( ev);
-        // QCoreApplication::sendEvent( qobj, ev);  // MW: Use as option ?
-    }
-}
-
-
 void ArnLink::sendEventsInThread(ArnEvent* ev, const ArnBasicItemList& recipients)
 {
     int  len = recipients.size();
@@ -184,34 +169,20 @@ void  ArnLink::sendEvents( ArnEvent* ev)
     if (!_mutex) {  // Fast non threaded version
         // Copy of subsribeTab due to destroyEvent can change it
         if (_subscribeTab)
-            sendEventsInThread( ev, QObjectList( *_subscribeTab));
-        if (_subscribeTabBI)
-            sendEventsInThread( ev, ArnBasicItemList( *_subscribeTabBI));
+            sendEventsInThread( ev, ArnBasicItemList( *_subscribeTab));
         return;
     }
 
     _mutex->lock();
 
     QObjectList  subscrInThread;
-    ArnBasicItemList  subscrInThreadBI;
+    ArnBasicItemList  subscrInThread;
     QThread*  curThread = QThread::currentThread();
 
     if (_subscribeTab && !_subscribeTab->isEmpty()) {
-        foreach (QObject* qobj, *_subscribeTab) {
-            if (qobj->thread() == curThread) {
-                subscrInThread += qobj;
-            }
-            else {
-                // Recipient in different thread
-                ArnEvent*  evClone = ev->makeHeapClone();
-                QCoreApplication::postEvent( qobj, evClone);
-            }
-        }
-    }
-    if (_subscribeTabBI && !_subscribeTabBI->isEmpty()) {
-        foreach (ArnBasicItem* basicItem, *_subscribeTabBI) {
+        foreach (ArnBasicItem* basicItem, *_subscribeTab) {
             if (basicItem->thread() == curThread) {
-                subscrInThreadBI += basicItem;
+                subscrInThread += basicItem;
             }
             else {
                 // Recipient in different thread
@@ -225,7 +196,6 @@ void  ArnLink::sendEvents( ArnEvent* ev)
     _mutex->unlock();
 
     sendEventsInThread( ev, subscrInThread);
-    sendEventsInThread( ev, subscrInThreadBI);
 }
 
 
@@ -927,36 +897,6 @@ QString  ArnLink::twinName()
 }
 
 
-/// Can be called from any thread any time
-bool  ArnLink::subscribe( QObject* subscriber)
-{
-    if (!subscriber)  return false;  // Not valid subscriber
-
-    if (_mutex)  _mutex->lock();
-    if (!_subscribeTab)
-        _subscribeTab = new QObjectList;
-
-    *_subscribeTab += subscriber;
-    if (_mutex)  _mutex->unlock();
-
-    return true;  // Subsciber added Ok
-}
-
-
-/// Can be called from any thread any time
-bool  ArnLink::unsubscribe( QObject* subscriber)
-{
-    if (!subscriber)  return false;  // Not valid subscriber
-    if (!_subscribeTab)   return false;  // Not valid subscribe table
-
-    if (_mutex)  _mutex->lock();
-    bool  stat = _subscribeTab->removeOne( subscriber);
-    if (_mutex)  _mutex->unlock();
-
-    return stat;
-}
-
-
 /// Can only be called from main-thread
 void  ArnLink::setRefCount( int count)
 {
@@ -1012,8 +952,35 @@ void  ArnLink::ref()
 }
 
 
-/// Can be called from any thread any time
-void  ArnLink::deref( QObject* subscriber)
+bool  ArnLink::subscribe( ArnBasicItem* subscriber)
+{
+    if (!subscriber)  return false;  // Not valid subscriber
+
+    if (_mutex)  _mutex->lock();
+    if (!_subscribeTab)
+        _subscribeTab = new ArnBasicItemList;
+
+    *_subscribeTab += subscriber;
+    if (_mutex)  _mutex->unlock();
+
+    return true;  // Subsciber added Ok
+}
+
+
+bool  ArnLink::unsubscribe( ArnBasicItem* subscriber)
+{
+    if (!subscriber)  return false;  // Not valid subscriber
+    if (!_subscribeTab)   return false;  // Not valid subscribe table
+
+    if (_mutex)  _mutex->lock();
+    bool  stat = _subscribeTab->removeOne( subscriber);
+    if (_mutex)  _mutex->unlock();
+
+    return stat;
+}
+
+
+void  ArnLink::deref( ArnBasicItem* subscriber)
 {
     unsubscribe( subscriber);
 
@@ -1039,42 +1006,6 @@ void  ArnLink::deref( QObject* subscriber)
 }
 
 
-bool  ArnLink::subscribe( ArnBasicItem* subscriber)
-{
-    if (!subscriber)  return false;  // Not valid subscriber
-
-    if (_mutex)  _mutex->lock();
-    if (!_subscribeTabBI)
-        _subscribeTabBI = new ArnBasicItemList;
-
-    *_subscribeTabBI += subscriber;
-    if (_mutex)  _mutex->unlock();
-
-    return true;  // Subsciber added Ok
-}
-
-
-bool  ArnLink::unsubscribe( ArnBasicItem* subscriber)
-{
-    if (!subscriber)  return false;  // Not valid subscriber
-    if (!_subscribeTabBI)   return false;  // Not valid subscribe table
-
-    if (_mutex)  _mutex->lock();
-    bool  stat = _subscribeTabBI->removeOne( subscriber);
-    if (_mutex)  _mutex->unlock();
-
-    return stat;
-}
-
-
-void  ArnLink::deref( ArnBasicItem* subscriber)
-{
-    unsubscribe( subscriber);
-
-    deref( (QObject*) 0);
-}
-
-
 int  ArnLink::refCount()
 {
     int  retVal     = 0;
@@ -1086,5 +1017,3 @@ int  ArnLink::refCount()
 
     return retVal;
 }
-
-

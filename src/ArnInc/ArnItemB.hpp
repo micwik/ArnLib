@@ -36,18 +36,13 @@
 #include "ArnLinkHandle.hpp"
 #include "ArnError.hpp"
 #include "Arn.hpp"
-#include "MQFlags.hpp"
-#include <QTextStream>
+#include "ArnBasicItem.hpp"
 #include <QObject>
-#include <QMetaMethod>
 #include <QString>
 #include <QByteArray>
 #include <QVariant>
-#include <QAtomicInt>
 
 class ArnItemBPrivate;
-class QTimer;
-class ArnLink;
 
 
 //! Base class handle for an _Arn Data Object_.
@@ -61,24 +56,12 @@ make any of them public.
 
 See ArnItem.
 */
-class ARNLIBSHARED_EXPORT ArnItemB : public QObject
+class ARNLIBSHARED_EXPORT ArnItemB : public QObject, public ArnBasicItem
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ArnItemB)
 
 public:
-    //! Code used in blob for arnExport() and arnImport()
-    struct ExportCode {
-        enum _ARN_ENUM_PACKED_  E {
-            ByteArray  = 3,
-            String     = 4,
-            Variant    = 5,  // Legacy
-            VariantTxt = 16,
-            VariantBin = 17
-        };
-        MQ_DECLARE_ENUM( ExportCode)
-    };
-
     //! Standard constructor of a closed handle
     /*! \param[in] parent
      */
@@ -91,76 +74,6 @@ public:
      *  \retval false if error
      */
     bool  open( const QString& path);
-
-    //! Close the handle
-    void  close();
-
-    //! Destroy the _Arn Data Object_
-    /*! The link (_Arn Data Object_) will be removed locally and optionally from server
-     *  and all connected clients. Server is allways forcing global destroy.
-     *  \param[in] isGlobal If true, removes from server and all connected clients,
-     *                      otherwise only local link.
-     *  \see destroyLinkLocal()
-     */
-    void  destroyLink( bool isGlobal = true);
-
-    //! Destroy the local _Arn Data Object_
-    /*! The link (_Arn Data Object_) will be removed locally. Server is allways forcing
-     *  global destroy.
-     *  \see destroyLink()
-     */
-    void  destroyLinkLocal()
-    { destroyLink( false);}
-
-    //! State of the handle
-    /*! \retval true if this ArnItem is open
-     */
-    bool  isOpen()  const;
-
-    //! Path of the _Arn Data Object_
-    /*! \param[in] nameF The format of the returned path
-     *  \return The object path
-     */
-    QString  path( Arn::NameF nameF = Arn::NameF::EmptyOk)  const;
-
-    //! Name of the _Arn Data Object_
-    /*! \param[in] nameF The format of the returned name
-     *  \return The object name
-     */
-    QString  name( Arn::NameF nameF)  const;
-
-    //! Set an associated external reference
-    /*! This is typically used when having many _ArnItems_ changed signal connected
-     *  to a common slot.
-     *  The slot can then discover the signalling ArnItem:s associated structure
-     *  for further processing.
-     *  \param[in] reference Any external structure or id.
-     *  \see reference()
-     */
-    void  setReference( void* reference);
-
-    //! Get the stored external reference
-    /*! \return The associated external reference
-     *  \see setReference()
-     */
-    void*  reference()  const;
-
-    //! Get the _id_ for this ArnItem
-    /*! The ArnItem _id_ is unique within its running program. Even if 2 ArnItems are
-     *  pointing to the same _Arn Data Object_, they have different _item id_.
-     *  \return _id_ for this ArnItem
-     *  \see linkId()
-     */
-    uint  itemId()  const;
-
-    //! Get the _id_ for this _Arn Data Object_
-    /*! The link (_Arn Data Object_) _id_ is unique within its running program.
-     *  If 2 ArnItems are pointing to the same _Arn Data Object_, they have same
-     *  _link id_.
-     *  \return Id for the _Arn Data Object_, 0 if closed
-     *  \see itemId()
-     */
-    uint  linkId()  const;
 
 signals:
     //! Signal emitted when the _Arn Data Object_ is destroyed.
@@ -193,121 +106,6 @@ protected:
      */
     bool  openFolder( const QString& path);
 
-    /*! \retval true if this ArnItem is a folder
-     */
-    bool  isFolder()  const;
-
-    /*! \retval true if this ArnItem is a provider
-     *  \see setBiDirMode()
-     *  \see \ref gen_arnobjModes
-     */
-    bool  isProvider()  const;
-
-    //! The type stored in the _Arn Data Object_
-    /*! \return The type stored
-     */
-    Arn::DataType  type()  const;
-
-    //! Set skipping of equal value
-    /*! \param[in] isIgnore If true, assignment of equal value don't give a changed signal.
-     */
-    void  setIgnoreSameValue( bool isIgnore = true);
-
-    /*! \retval true if skipping equal values
-     *  \see setIgnoreSameValue()
-     */
-    bool  isIgnoreSameValue()  const;
-
-    //! Add _general mode_ settings for this _Arn Data Object_
-    /*! If this ArnItem is in closed state, the added modes will be stored and
-     *  the real mode change is done when this ArnItem is opened to an
-     *  _Arn Data Object_. This implies that ArnItems can benefit from setting
-     *  _modes_ before opening.
-     *  \param[in] mode The _modes_ to be added.
-     *  \see getMode()
-     *  \see \ref gen_arnobjModes
-     */
-    void  addMode( Arn::ObjectMode mode);
-
-    /*! \return The _general mode_ of the _Arn Data Object_
-     *  \see addMode()
-     *  \see \ref gen_arnobjModes
-     */
-    Arn::ObjectMode  getMode()  const;
-
-    /*! \return The client session _sync mode_ of an _Arn Data Object_
-     *  \see addSyncMode()
-     *  \see \ref gen_arnobjModes
-     */
-    Arn::ObjectSyncMode  syncMode()  const;
-
-    //! Set _general mode_ as Bidirectional for this _Arn Data Object_
-    /*! A two way object, typically for validation or pipe
-     *  \see \ref gen_arnobjModes
-     *  \see \ref gen_bidirArnobj
-     */
-    ArnItemB&  setBiDirMode();
-
-    /*! \retval true if Bidirectional
-     *  \see setBiDirMode()
-     *  \see \ref gen_arnobjModes
-     *  \see \ref gen_bidirArnobj
-     */
-    bool  isBiDirMode()  const;
-
-    //! Set _general mode_ as Pipe for this _Arn Data Object_
-    /*! Implies _Bidir_.
-     *  \see \ref gen_arnobjModes
-     *  \see \ref gen_pipeArnobj
-     */
-    ArnItemB&  setPipeMode();
-
-    /*! \retval true if _Pipe mode_
-     *  \see setPipeMode()
-     *  \see \ref gen_arnobjModes
-     *  \see \ref gen_pipeArnobj
-     */
-    bool  isPipeMode()  const;
-
-    //! Set _general mode_ as _Save_ for this _Arn Data Object_
-    /*! Data is persistent and will be saved
-     *  \pre The persistent service must be started at the server.
-     *  \see \ref gen_arnobjModes
-     *  \see \ref gen_persistArnobj
-     */
-    ArnItemB&  setSaveMode();
-
-    /*! \retval true if _Save mode_
-     *  \see setSaveMode()
-     *  \see \ref gen_arnobjModes
-     *  \see \ref gen_persistArnobj
-     */
-    bool  isSaveMode()  const;
-
-    //! Set client session _sync mode_ as _Master_ for this ArnItem
-    /*! This ArnItem at client side is set as default generator of data.
-     *  \pre This must be set before open().
-     *  \see \ref gen_arnobjModes
-     */
-    ArnItemB&  setMaster();
-
-    /*! \retval true if _Master mode_
-     *  \see setMaster()
-     *  \see \ref gen_arnobjModes
-     */
-    bool  isMaster()  const;
-
-    //! Set client session _sync mode_ as _AutoDestroy_ for this ArnItem
-    /*! This ArnItem at client side is setup for auto destruction.
-     *  \pre This must be set before open().
-     */
-    ArnItemB&  setAutoDestroy();
-
-    /*! \retval true if _AutoDestroy mode_
-     *  \see setAutoDestroy()
-     */
-    bool  isAutoDestroy()  const;
-
     //! Import data to an _Arn Data Object_
     /*! Data blob from a previos \p arnExport() can be imported.
      *  This is essentially assigning the _Arn Data Object_ with same as exported.
@@ -317,39 +115,6 @@ protected:
      *  \see setIgnoreSameValue()
      */
     void  arnImport( const QByteArray& data, int ignoreSame = Arn::SameValue::DefaultAction);
-
-    /*! \return A data blob representing the _Arn Data Object_
-     *  \see arnImport()
-     */
-    QByteArray  arnExport()  const;
-
-    /*! \return Convert _Arn Data Object_ to a _integer_
-     */
-    int  toInt()  const;
-
-    /*! \return Convert _Arn Data Object_ to a _double_
-     */
-    double  toDouble()  const;
-
-    /*! \return Convert _Arn Data Object_ to an _ARNREAL_
-     */
-    ARNREAL  toReal()  const;
-
-    /*! \return Convert _Arn Data Object_ to a _bool_
-     */
-    bool  toBool()  const;
-
-    /*! \return Convert _Arn Data Object_ to a _QString_
-     */
-    QString  toString()  const;
-
-    /*! \return Convert _Arn Data Object_ to a _QByteArray_
-     */
-    QByteArray  toByteArray()  const;
-
-    /*! \return Convert _Arn Data Object_ to a _QVariant_
-     */
-    QVariant  toVariant()  const;
 
     void  setValue( const ArnItemB& other, int ignoreSame = Arn::SameValue::DefaultAction);
 
@@ -400,37 +165,25 @@ protected:
     virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
+
+    virtual void  arnEvent( QEvent* ev, bool isAlienThread);
     virtual void  customEvent( QEvent* ev);
 
     //// Methods not to be public
     bool  openWithFlags( const QString& path, Arn::LinkFlags linkFlags);
-    void  setForceKeep( bool fk = true);
-    bool  isForceKeep()  const;
-    Arn::ObjectMode  getMode( ArnLink* link)  const;
-    void  addSyncMode( Arn::ObjectSyncMode syncMode, bool linkShare);
-    void  resetOnlyEcho();
-    bool  isOnlyEcho()  const;
     void  setBlockEcho( bool blockEcho);
-    uint  retireType();
     void  setEnableSetValue( bool enable);
     void  setEnableUpdNotify( bool enable);
     void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
     void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
-    QStringList  childItemsMain()  const;
-    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0)  const;
 
     ArnItemB( ArnItemBPrivate& dd, QObject* parent);
     ArnItemBPrivate* const  d_ptr;
     //! \endcond
 
-private slots:
-
 private:
     void  init();
-    void  setupOpenItem( bool isFolder);
-    //bool  open( const ArnItemB& folder, const QString& itemName, bool isFolder);
-
-    ArnLink*  _link;
+    inline void  doEvent( QEvent* ev);
 };
 
 #endif // ARNITEMB_HPP

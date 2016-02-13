@@ -36,6 +36,7 @@ private slots:
     void  testMQFlagsText();
     void  testXStringMap();
     void  testArnBasicItem1();
+    void  testArnBasicItem2();
     void  testArnBasicItemDestroy();
     void  testArnItem1();
     void  testArnItem2();
@@ -224,6 +225,30 @@ void ArnUtest1::testArnBasicItem1()
         arnT1a.setValue( 124);
     }
     //qDebug() << "---------testArnBasicItem1 End";
+}
+
+
+void ArnUtest1::testArnBasicItem2()
+{
+    ArnBasicItem  arnT1a;
+    ArnBasicItem  arnT1b;
+    ArnBasicItem  arnT2a;
+    arnT1a.open("//Test/Tbb1/value");
+    arnT1b.open("//Test/Tbb1/value");
+    arnT2a.open("//Test/Tbb2/value");
+
+    QCOMPARE( arnT1a.isIgnoreSameValue(), true);
+    arnT1a.setIgnoreSameValue( false);
+    QCOMPARE( arnT1a.isIgnoreSameValue(), false);
+    QCOMPARE( arnT1b.isIgnoreSameValue(), true);
+    arnT1b.setIgnoreSameValue( false);
+    QCOMPARE( arnT1b.isIgnoreSameValue(), false);
+
+    QCOMPARE( arnT2a.isIgnoreSameValue(), true);
+    arnT2a.setPipeMode();
+    QCOMPARE( arnT2a.isIgnoreSameValue(), false);
+    QCOMPARE( arnT2a.isBiDirMode(), true);
+    QCOMPARE( arnT2a.isPipeMode(), true);
 }
 
 

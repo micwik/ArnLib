@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2014 Michael Wiklund.
+// Copyright (C) 2010-2016 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -36,9 +36,6 @@
 #include "ArnInc/ArnLib.hpp"
 #include "ArnLink.hpp"
 #include <QDataStream>
-#include <QUuid>
-#include <QTimer>
-#include <QMetaObject>
 #include <QThreadStorage>
 #include <QCoreApplication>
 #include <QDebug>
@@ -54,9 +51,6 @@ ArnBasicItemPrivate::ArnBasicItemPrivate()
     _id              = _idCount.fetchAndAddRelaxed(1);
 
     _useForceKeep    = false;
-    _blockEcho       = false;
-    _enableSetValue  = true;
-    _enableUpdNotify = true;
     _isStdEvHandler  = true;
     _ignoreSameValue = ArnM::defaultIgnoreSameValue();
     _isOnlyEcho      = true;  // Nothing else yet ...
@@ -108,7 +102,6 @@ void  ArnBasicItem::setupOpenItem( bool isFolder)
     Q_D(ArnBasicItem);
 
     addMode( d->_mode);  // Transfer modes to the link
-    // MW:Fix modeUpdate( getMode(), true);
 }
 
 
@@ -135,40 +128,6 @@ bool  ArnBasicItem::openWithFlags( const QString& path, Arn::LinkFlags linkFlags
 bool  ArnBasicItem::open( const QString& path)
 {
     return openWithFlags( path, Arn::LinkFlags::CreateAllowed);
-}
-
-
-bool  ArnBasicItem::openUuid( const QString& path)
-{
-    QUuid  uuid = QUuid::createUuid();
-    bool  isProvider = Arn::isProviderPath( path);
-
-    QString  uuidPath = isProvider ? Arn::twinPath( path) : path;  // Allways Requester path (no "!")
-    uuidPath += uuid.toString();
-    if (isProvider)
-        uuidPath = Arn::twinPath( uuidPath);  // Restore original "!"
-
-    bool  stat = open( uuidPath);
-    return stat;
-}
-
-
-bool  ArnBasicItem::openUuidPipe( const QString& path)
-{
-    bool  stat = openUuid( path);
-
-    setPipeMode();
-    return stat;
-}
-
-
-bool  ArnBasicItem::openFolder( const QString& path)
-{
-    QString  folderPath = path;
-    if (!Arn::isFolderPath( folderPath))
-        folderPath += '/';
-
-    return open( folderPath);
 }
 
 
@@ -228,16 +187,6 @@ uint  ArnBasicItem::linkId()  const
     return _link->linkId();
 }
 
-/* MW:Fix
-void  ArnBasicItem::modeUpdate( Arn::ObjectMode mode, bool isSetup)
-{
-    Q_UNUSED(isSetup);
-
-    if (mode.is( mode.Pipe)) {  // Pipe-mode never IgnoreSameValue
-        setIgnoreSameValue(false);
-    }
-}
-*/
 
 void  ArnBasicItem::addSyncMode( Arn::ObjectSyncMode syncMode, bool linkShare)
 {
@@ -259,6 +208,15 @@ void  ArnBasicItem::resetOnlyEcho()
 }
 
 
+void  ArnBasicItem::addIsOnlyEcho( quint32 sendId)
+{
+    Q_D(ArnBasicItem);
+
+    if (sendId != d->_id)  // Originate from different Item, not an echo
+        d->_isOnlyEcho = false;
+}
+
+
 bool  ArnBasicItem::isOnlyEcho() const
 {
     Q_D(const ArnBasicItem);
@@ -267,33 +225,9 @@ bool  ArnBasicItem::isOnlyEcho() const
 }
 
 
-void  ArnBasicItem::setBlockEcho( bool blockEcho)
-{
-    Q_D(ArnBasicItem);
-
-    d->_blockEcho = blockEcho;
-}
-
-
 uint  ArnBasicItem::retireType()
 {
     return _link ? _link->retireType() : uint( ArnLink::RetireType::None);
-}
-
-
-void  ArnBasicItem::setEnableSetValue( bool enable)
-{
-    Q_D(ArnBasicItem);
-
-    d->_enableSetValue = enable;
-}
-
-
-void  ArnBasicItem::setEnableUpdNotify( bool enable)
-{
-    Q_D(ArnBasicItem);
-
-    d->_enableUpdNotify = enable;
 }
 
 
@@ -520,10 +454,6 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame)
 
 void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData)
 {
-    Q_D(ArnBasicItem);
-
-    if (!d->_enableSetValue)  return;
-
     if (!data.isEmpty()) {
         if (data.at(0) < 32) {  // Assume Export-code
             switch (ExportCode::fromInt( data.at(0))) {
@@ -728,10 +658,6 @@ bool  ArnBasicItem::toBool() const
 
 void  ArnBasicItem::setValue( const ArnBasicItem& other, int ignoreSame)
 {
-    Q_D(ArnBasicItem);
-
-    if (!d->_enableSetValue)  return;
-
     ArnLink *link = other._link;
 
     if (link) {
@@ -776,8 +702,6 @@ void  ArnBasicItem::setValue( int value, int ignoreSame)
 {
     Q_D(ArnBasicItem);
 
-    if (!d->_enableSetValue)  return;
-
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
@@ -799,8 +723,6 @@ void  ArnBasicItem::setValue( int value, int ignoreSame)
 void  ArnBasicItem::setValue( ARNREAL value, int ignoreSame)
 {
     Q_D(ArnBasicItem);
-
-    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
@@ -824,8 +746,6 @@ void  ArnBasicItem::setValue( bool value, int ignoreSame)
 {
     Q_D(ArnBasicItem);
 
-    if (!d->_enableSetValue)  return;
-
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
@@ -847,8 +767,6 @@ void  ArnBasicItem::setValue( bool value, int ignoreSame)
 void  ArnBasicItem::setValue( const QString& value, int ignoreSame)
 {
     Q_D(ArnBasicItem);
-
-    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
@@ -872,8 +790,6 @@ void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame)
 {
     Q_D(ArnBasicItem);
 
-    if (!d->_enableSetValue)  return;
-
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
@@ -895,8 +811,6 @@ void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame)
 void  ArnBasicItem::setValue( const QVariant& value, int ignoreSame)
 {
     Q_D(ArnBasicItem);
-
-    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
@@ -927,27 +841,14 @@ QThread*  ArnBasicItem::thread()  const
 }
 
 
-/*
-void  ArnBasicItem::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
+void  ArnBasicItem::setEventHandler( QObject* eventHandler)
 {
-    Q_UNUSED(handleData);
-    Q_UNUSED(value);
+    Q_D(ArnBasicItem);
+
+    d->_eventHandler   = eventHandler;
+    d->_isStdEvHandler = false;
 }
 
-
-void  ArnBasicItem::itemCreatedBelow( const QString& path)
-{
-    Q_UNUSED(path);
-}
-
-
-void  ArnBasicItem::itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode)
-{
-    Q_UNUSED(path);
-    Q_UNUSED(linkId);
-    Q_UNUSED(mode);
-}
-*/
 
 void  ArnBasicItem::setForceKeep( bool fk)
 {
@@ -968,8 +869,6 @@ bool  ArnBasicItem::isForceKeep()  const
 void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData)
 {
     Q_D(ArnBasicItem);
-
-    if (!d->_enableSetValue)  return;
 
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     ArnLinkHandle::Flags&  handleFlags = handleData.flags();
@@ -1043,52 +942,6 @@ void  ArnBasicItem::arnEvent( QEvent* ev, bool isAlienThread)
             d->_eventHandler->event( ev);
         }
     }
-
-/*  MW:Fix
-    Q_D(ArnBasicItem);
-
-    QEvent::Type  type = ev->type();
-    if (type == ArnEvValueChange::type()) {
-        ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
-        // qDebug() << "ArnEvValueChange: inItemPath=" << path();
-        quint32  sendId = e->sendId();
-        if (d->_blockEcho  &&  sendId == d->_id)  // Update was initiated from this Item, it can be blocked ...
-            return;
-
-        d->_isOnlyEcho = (sendId == d->_id) ? d->_isOnlyEcho : false;
-
-        if (d->_enableUpdNotify)
-            itemUpdated( e->handleData(), e->valueData());
-        return;
-    }
-    if (type == ArnEvLinkCreate::type()) {
-        ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
-        // qDebug() << "ArnEvLinkCreate: path=" << e->path() << " inItemPath=" << path();
-        if (!Arn::isFolderPath( e->path())) {  // Only created leaves are passed on
-            itemCreatedBelow( e->path());
-        }
-        return;
-    }
-    if (type == ArnEvModeChange::type()) {
-        ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
-        // qDebug() << "ArnEvModeChange: path=" << e->path() << " mode=" << e->mode()
-        //          << " inItemPath=" << path();
-        if (isFolder())
-            itemModeChangedBelow( e->path(), e->linkId(),e->mode());
-        else
-            modeUpdate( e->mode());
-        return;
-    }
-    if (type == ArnEvRetired::type()) {
-        ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
-        if (!e->isBelow()) {
-            if (Arn::debugLinkDestroy)  qDebug() << "Item arnLinkDestroyed: path=" << path();
-            emit arnLinkDestroyed();
-            close();
-        }
-        return;
-    }
-*/
 }
 
 
@@ -1118,10 +971,36 @@ ArnBasicItemEventHandler::~ArnBasicItemEventHandler()
 void  ArnBasicItemEventHandler::defaultEvent( QEvent* ev)
 {
     QEvent::Type  type = ev->type();
+    if (type == ArnEvValueChange::type()) {
+        ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
+        ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
+        if (!target)  return;  // No target, should be ...
+        // qDebug() << "ArnEvValueChange: inItemPath=" << path();
+
+        quint32  sendId = e->sendId();
+        target->addIsOnlyEcho( sendId);
+        return;
+    }
+    if (type == ArnEvModeChange::type()) {
+        ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
+        ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
+        if (!target)  return;  // No target, should be ...
+        // qDebug() << "ArnBasicEvModeChange: path=" << e->path() << " mode=" << e->mode()
+        //          << " inItemPath=" << target->path();
+
+        if (!target->isFolder()) {
+            if (e->mode().is( Arn::ObjectMode::Pipe)) {  // Pipe-mode never IgnoreSameValue
+                target->setIgnoreSameValue(false);
+            }
+        }
+        return;
+    }
     if (type == ArnEvRetired::type()) {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
-        if (!e->isBelow() && target) {
+        if (!target)  return;  // No target, should be ...
+
+        if (!e->isBelow()) {
             if (Arn::debugLinkDestroy)  qDebug() << "BasicItem arnLinkDestroyed: path=" << target->path();
             target->close();
         }

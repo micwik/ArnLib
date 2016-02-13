@@ -319,6 +319,12 @@ QString  twinPath( const QString& path);
  */
 QString  providerPath( const QString& path, bool giveProviderPath = true);
 
+//! Get a path to an Arn Object with a unique uuid name
+/*! \param[in] path The prefix for Arn uuid path e.g. "//Names/name"
+ *  \return the unique path
+ */
+QString  uuidPath( const QString& path);
+
 //! Make a combined host and info string, i.e. _HostWithInfo_
 /*! This is typically used to pass some extra information about the host,
  *  but still be used for connection to the host.

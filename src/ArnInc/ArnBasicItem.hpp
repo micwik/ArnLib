@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2014 Michael Wiklund.
+// Copyright (C) 2010-2016 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -37,9 +37,6 @@
 #include "ArnError.hpp"
 #include "Arn.hpp"
 #include "MQFlags.hpp"
-#include <QTextStream>
-#include <QObject>
-#include <QMetaMethod>
 #include <QString>
 #include <QByteArray>
 #include <QVariant>
@@ -47,7 +44,6 @@
 #include <QObject>
 
 class ArnBasicItemPrivate;
-class QTimer;
 class ArnLink;
 
 
@@ -82,6 +78,7 @@ See ArnItem.
 class ARNLIBSHARED_EXPORT ArnBasicItem
 {
     Q_DECLARE_PRIVATE(ArnBasicItem)
+    friend class ArnBasicItemEventHandler;
 
 public:
     //! Code used in blob for arnExport() and arnImport()
@@ -182,26 +179,6 @@ public:
     //! \cond ADV
 // protected:
 public:
-    //! Open a handle to an Arn Object with a unique uuid name
-    /*! If _path_ is marked as provider, the "!" marker will be moved to after uuid.
-     *  \param[in] path The prefix for Arn uuid path e.g. "//Names/name"
-     *  \retval false if error
-     */
-    bool  openUuid( const QString& path);
-
-    //! Open a handle to an Arn Pipe Object with a unique uuid name
-    /*! If _path_ is marked as provider, the "!" marker will be moved to after uuid.
-     *  \param[in] path The prefix for Arn uuid pipe path e.g. "//Pipes/pipe"
-     *  \retval false if error
-     */
-    bool  openUuidPipe( const QString& path);
-
-    //! Open a handle to an Arn folder
-    /*! \param[in] path The Arn folder path e.g. "//Measure/Water" (the / is appended)
-     *  \retval false if error
-     */
-    bool  openFolder( const QString& path);
-
     /*! \retval true if this ArnItem is a folder
      */
     bool  isFolder()  const;
@@ -406,15 +383,11 @@ public:
 
     QThread*  thread()  const;
 
-    virtual void  arnEvent( QEvent* ev, bool isAlienThread);  // MW:Fix
+    void  setEventHandler( QObject* eventHandler);
+
+    virtual void  arnEvent( QEvent* ev, bool isAlienThread);
 
 protected:
-    //// To be reimplemented
-    //virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
-    //virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
-    //virtual void  itemCreatedBelow( const QString& path);
-    //virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
-
     //// Methods not to be public
     bool  openWithFlags( const QString& path, Arn::LinkFlags linkFlags);
     void  setForceKeep( bool fk = true);
@@ -422,11 +395,9 @@ protected:
     Arn::ObjectMode  getMode( ArnLink* link)  const;
     void  addSyncMode( Arn::ObjectSyncMode syncMode, bool linkShare);
     void  resetOnlyEcho();
+    void  addIsOnlyEcho( quint32 sendId);
     bool  isOnlyEcho()  const;
-    void  setBlockEcho( bool blockEcho);
     uint  retireType();
-    void  setEnableSetValue( bool enable);
-    void  setEnableUpdNotify( bool enable);
     void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
     void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
     QStringList  childItemsMain()  const;
