@@ -55,6 +55,9 @@ public:
 
     inline void  setTarget( void* target)
     { _target = target;}
+
+protected:
+    ArnEvent*  copyOpt( const ArnEvent* other);
 };
 
 

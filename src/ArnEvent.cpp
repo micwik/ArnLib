@@ -40,6 +40,14 @@ ArnEvent::ArnEvent( QEvent::Type type)
 }
 
 
+ArnEvent*  ArnEvent::copyOpt( const ArnEvent* other)
+{
+    _target = other->_target;
+
+    return this;
+}
+
+
 
 ArnEvLinkCreate::ArnEvLinkCreate( const QString& path, ArnLink* arnLink, bool isLastLink)
     : ArnEvent( type())
@@ -60,7 +68,7 @@ QEvent::Type  ArnEvLinkCreate::type()
 
 ArnEvent*  ArnEvLinkCreate::makeHeapClone()
 {
-    return new ArnEvLinkCreate( _path, _arnLink, _isLastLink);
+    return (new ArnEvLinkCreate( _path, _arnLink, _isLastLink))->copyOpt( this);
 }
 
 
@@ -84,7 +92,7 @@ QEvent::Type  ArnEvModeChange::type()
 
 ArnEvent*  ArnEvModeChange::makeHeapClone()
 {
-    return new ArnEvModeChange( _path, _linkId, _mode);
+    return (new ArnEvModeChange( _path, _linkId, _mode))->copyOpt( this);
 }
 
 
@@ -108,7 +116,7 @@ QEvent::Type ArnEvRetired::type()
 
 ArnEvent*ArnEvRetired::makeHeapClone()
 {
-    return new ArnEvRetired( _startLink, _isBelow, _isGlobal);
+    return (new ArnEvRetired( _startLink, _isBelow, _isGlobal))->copyOpt( this);
 }
 
 
@@ -130,7 +138,7 @@ QEvent::Type  ArnEvZeroRef::type()
 
 ArnEvent*  ArnEvZeroRef::makeHeapClone()
 {
-    return new ArnEvZeroRef( _arnLink);
+    return (new ArnEvZeroRef( _arnLink))->copyOpt( this);
 }
 
 
@@ -169,5 +177,5 @@ QEvent::Type  ArnEvValueChange::type()
 
 ArnEvent*  ArnEvValueChange::makeHeapClone()
 {
-    return new ArnEvValueChange( _sendId, _valueData, *_handleData);
+    return (new ArnEvValueChange( _sendId, _valueData, *_handleData))->copyOpt( this);
 }
