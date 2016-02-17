@@ -4,6 +4,7 @@
 #include <ArnInc/ArnItem.hpp>
 #include <ArnInc/MQFlags.hpp>
 #include <ArnInc/XStringMap.hpp>
+#include <ArnInc/ArnEvent.hpp>
 #include <ArnInc/ArnLib.hpp>
 #include <QString>
 #include <QtTest>
@@ -35,6 +36,7 @@ private slots:
     void  measureMisc2();
     void  testMQFlagsText();
     void  testXStringMap();
+    void  testArnEvent();
     void  testArnBasicItem1();
     void  testArnBasicItem2();
     void  testArnBasicItemDestroy();
@@ -205,6 +207,14 @@ void  ArnUtest1::testXStringMap()
     QVERIFY( xsm4.value("def") == " \ncba_");
     XStringMap xsm5( xsm3);
     QVERIFY( xsm5.toXString() == "= =_\\n=\\_ _\\nabc\\_ def=_\\ncba\\_");
+}
+
+
+void ArnUtest1::testArnEvent()
+{
+    ArnEvValueChange  ev(123, 0, ArnLinkHandle::null());
+    // qDebug() << "Ev-name: " << ev.toString();
+    QVERIFY( ev.toString() == "ValueChange(2022)");
 }
 
 

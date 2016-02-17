@@ -40,105 +40,85 @@ ArnEvent::ArnEvent( QEvent::Type type)
 }
 
 
+int  ArnEvent::baseType( int setVal)
+{
+    static int bt = -1;
+
+    if (bt > 0)  return bt;
+
+    //// Set base type and check its validity
+    bt = setVal;
+    if (bt < 0)
+        bt = 2022;  // Arn default
+    Q_ASSERT_X((bt >= QEvent::User) && (bt + Idx::N <= QEvent::MaxUser), "ArnEvent::baseType()",
+               "Selected base for ArnEvent number is out of boundary for Qt User event");
+
+    //// Register all ArnEvents
+    for (int i = 0; i < Idx::N; ++i) {
+        int wantType = bt + i;
+        int gotType  = QEvent::registerEventType( wantType);
+        Q_ASSERT_X(gotType == wantType, "ArnEvent::baseType()",
+                   "Assigning event number for ArnEvent is already taken,"
+                   " use ArnEvent::baseType() to set other base event number for ArnEvents.");
+    }
+
+    return bt;
+}
+
+
+bool  ArnEvent::isArnEvent( int evType)
+{
+    int  bt = baseType();
+
+    return (evType >= bt) && (evType < bt + Idx::N);
+}
+
+
+#define TO_IDX_RETVAL(evType) \
+    int  retVal = (evType) - baseType(); \
+    retVal = ((retVal >= 0) && (retVal < Idx::N)) ? retVal : Idx::QtEvent;
+
+
+int  ArnEvent::toIdx( QEvent::Type type)
+{
+    TO_IDX_RETVAL(type)
+    return retVal;
+}
+
+
+int  ArnEvent::toIdx()  const
+{
+    TO_IDX_RETVAL(type())
+    return retVal;
+/*
+    int  retVal = type() - baseType();
+
+    if ((retVal >= 0) && (retVal < Idx::N))
+        return retVal;
+    else
+        return Idx::QtEvent;
+*/
+}
+
+
+QString  ArnEvent::toString( QEvent::Type type)
+{
+    return Idx::txt().getTxtString( toIdx( type)) +
+            "(" + QString::number( type) + ")";
+}
+
+
+QString  ArnEvent::toString()  const
+{
+    return toString( type());
+}
+
+
 ArnEvent*  ArnEvent::copyOpt( const ArnEvent* other)
 {
     _target = other->_target;
 
     return this;
-}
-
-
-
-ArnEvLinkCreate::ArnEvLinkCreate( const QString& path, ArnLink* arnLink, bool isLastLink)
-    : ArnEvent( type())
-    , _path( path)
-    , _arnLink( arnLink)
-    , _isLastLink( isLastLink)
-{
-}
-
-
-QEvent::Type  ArnEvLinkCreate::type()
-{
-    static int evType = QEvent::registerEventType(2022);
-
-    return Type( evType);
-}
-
-
-ArnEvent*  ArnEvLinkCreate::makeHeapClone()
-{
-    return (new ArnEvLinkCreate( _path, _arnLink, _isLastLink))->copyOpt( this);
-}
-
-
-
-ArnEvModeChange::ArnEvModeChange( const QString& path, uint linkId, Arn::ObjectMode mode)
-    : ArnEvent( type())
-    , _path( path)
-    , _linkId( linkId)
-    , _mode( mode)
-{
-}
-
-
-QEvent::Type  ArnEvModeChange::type()
-{
-    static int evType = QEvent::registerEventType(2023);
-
-    return Type( evType);
-}
-
-
-ArnEvent*  ArnEvModeChange::makeHeapClone()
-{
-    return (new ArnEvModeChange( _path, _linkId, _mode))->copyOpt( this);
-}
-
-
-
-ArnEvRetired::ArnEvRetired( ArnLink* startLink, bool isBelow, bool isGlobal)
-    : ArnEvent( type())
-    , _startLink( startLink)
-    , _isBelow( isBelow)
-    , _isGlobal( isGlobal)
-{
-}
-
-
-QEvent::Type ArnEvRetired::type()
-{
-    static int evType = QEvent::registerEventType(2024);
-
-    return Type( evType);
-}
-
-
-ArnEvent*ArnEvRetired::makeHeapClone()
-{
-    return (new ArnEvRetired( _startLink, _isBelow, _isGlobal))->copyOpt( this);
-}
-
-
-
-ArnEvZeroRef::ArnEvZeroRef( ArnLink* arnLink)
-    : ArnEvent( type())
-    , _arnLink (arnLink)
-{
-}
-
-
-QEvent::Type  ArnEvZeroRef::type()
-{
-    static int evType = QEvent::registerEventType(2025);
-
-    return Type( evType);
-}
-
-
-ArnEvent*  ArnEvZeroRef::makeHeapClone()
-{
-    return (new ArnEvZeroRef( _arnLink))->copyOpt( this);
 }
 
 
@@ -169,7 +149,7 @@ ArnEvValueChange::~ArnEvValueChange()
 
 QEvent::Type  ArnEvValueChange::type()
 {
-    static int evType = QEvent::registerEventType(2026);
+    static int evType = baseType() + Idx::ValueChange;
 
     return Type( evType);
 }
@@ -178,4 +158,98 @@ QEvent::Type  ArnEvValueChange::type()
 ArnEvent*  ArnEvValueChange::makeHeapClone()
 {
     return (new ArnEvValueChange( _sendId, _valueData, *_handleData))->copyOpt( this);
+}
+
+
+
+ArnEvLinkCreate::ArnEvLinkCreate( const QString& path, ArnLink* arnLink, bool isLastLink)
+    : ArnEvent( type())
+    , _path( path)
+    , _arnLink( arnLink)
+    , _isLastLink( isLastLink)
+{
+}
+
+
+QEvent::Type  ArnEvLinkCreate::type()
+{
+    static int evType = baseType() + Idx::LinkCreate;
+
+    return Type( evType);
+}
+
+
+ArnEvent*  ArnEvLinkCreate::makeHeapClone()
+{
+    return (new ArnEvLinkCreate( _path, _arnLink, _isLastLink))->copyOpt( this);
+}
+
+
+
+ArnEvModeChange::ArnEvModeChange( const QString& path, uint linkId, Arn::ObjectMode mode)
+    : ArnEvent( type())
+    , _path( path)
+    , _linkId( linkId)
+    , _mode( mode)
+{
+}
+
+
+QEvent::Type  ArnEvModeChange::type()
+{
+    static int evType = baseType() + Idx::ModeChange;
+
+    return Type( evType);
+}
+
+
+ArnEvent*  ArnEvModeChange::makeHeapClone()
+{
+    return (new ArnEvModeChange( _path, _linkId, _mode))->copyOpt( this);
+}
+
+
+
+ArnEvRetired::ArnEvRetired( ArnLink* startLink, bool isBelow, bool isGlobal)
+    : ArnEvent( type())
+    , _startLink( startLink)
+    , _isBelow( isBelow)
+    , _isGlobal( isGlobal)
+{
+}
+
+
+QEvent::Type ArnEvRetired::type()
+{
+    static int evType = baseType() + Idx::Retired;
+
+    return Type( evType);
+}
+
+
+ArnEvent*  ArnEvRetired::makeHeapClone()
+{
+    return (new ArnEvRetired( _startLink, _isBelow, _isGlobal))->copyOpt( this);
+}
+
+
+
+ArnEvZeroRef::ArnEvZeroRef( ArnLink* arnLink)
+    : ArnEvent( type())
+    , _arnLink (arnLink)
+{
+}
+
+
+QEvent::Type  ArnEvZeroRef::type()
+{
+    static int evType = baseType() + Idx::ZeroRef;
+
+    return Type( evType);
+}
+
+
+ArnEvent*  ArnEvZeroRef::makeHeapClone()
+{
+    return (new ArnEvZeroRef( _arnLink))->copyOpt( this);
 }

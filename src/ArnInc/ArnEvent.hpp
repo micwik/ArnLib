@@ -32,7 +32,8 @@
 #ifndef ARNEVENT_HPP
 #define ARNEVENT_HPP
 
-#include <ArnInc/Arn.hpp>
+#include "ArnInc/Arn.hpp"
+#include "ArnInc/MQFlags.hpp"
 #include <QEvent>
 #include <QString>
 
@@ -40,13 +41,43 @@ class ArnLink;
 class ArnLinkHandle;
 
 
-class ArnEvent : public QEvent
+namespace ArnPrivate {
+class Idx {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        QtEvent     = -1,
+        ValueChange = 0,
+        LinkCreate,
+        ModeChange,
+        Retired,
+        ZeroRef,
+        //! Max index
+        N
+    };
+    MQ_DECLARE_ENUMTXT( Idx)
+};
+}
+
+
+class ARNLIBSHARED_EXPORT ArnEvent : public QEvent
 {
     void*  _target;
     void*  _spare;  // Can be used later as d-ptr
 
 public:
+    typedef ArnPrivate::Idx  Idx;
+
     ArnEvent( QEvent::Type type);
+
+    static int  baseType( int setVal = -1);
+    static bool  isArnEvent( int evType);
+    static int  toIdx( QEvent::Type type);
+    static QString  toString( QEvent::Type type);
+
+    int  toIdx()  const;
+    QString  toString()  const;
 
     virtual ArnEvent*  makeHeapClone() = 0;
 
