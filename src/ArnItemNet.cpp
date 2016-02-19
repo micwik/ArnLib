@@ -34,18 +34,24 @@
 #include "ArnInc/ArnMonEvent.hpp"
 #include "ArnInc/ArnEvent.hpp"
 #include "ArnInc/ArnLib.hpp"
+#include <QCoreApplication>
+#include <QThread>
 #include <QDebug>
 
 
 void  ArnItemNet::init()
 {
-    setForceKeep();
-    setIgnoreSameValue( false);
     _netId     = 0;
     _dirty     = false;
     _dirtyMode = false;
     _disable   = false;
     _isMonitor = false;
+
+    _monEventHandler  = 0;
+    _isMonEventQueued = false;
+
+    setForceKeep();
+    setIgnoreSameValue( false);
 }
 
 
@@ -76,10 +82,24 @@ uint  ArnItemNet::netId()  const
 }
 
 
+QObject* ArnItemNet::getMonEventHandler() const
+{
+    return _monEventHandler;
+}
+
+
+void ArnItemNet::setMonEventHandler( QObject* monEventHandler, bool isQueued)
+{
+    _monEventHandler  = monEventHandler;
+    _isMonEventQueued = isQueued;
+}
+
+
 QString  ArnItemNet::remoteMountPath()  const
 {
     return _remoteMountPath;
 }
+
 
 void  ArnItemNet::setRemoteMountPath( const QString& remoteMountPath)
 {
@@ -164,7 +184,7 @@ QByteArray  ArnItemNet::getModeString()  const
 void  ArnItemNet::emitNewItemEvent( const QString& path, bool isOld)
 {
     int  type = isOld ? ArnMonEventType::ItemFound : ArnMonEventType::ItemCreated;
-    emit arnMonEvent( type, path.toUtf8(), true);
+    emitArnMonEvent( type, path.toUtf8(), true);
 }
 
 
@@ -248,7 +268,21 @@ void  ArnItemNet::modeUpdate( Arn::ObjectMode mode, bool isSetup)
 
 void  ArnItemNet::emitArnMonEvent( int type, const QByteArray& data, bool isLocal)
 {
-    emit arnMonEvent( type, data, isLocal);
+    ArnEvMonitor  ev( type, data, isLocal);
+    ev.setTarget( static_cast<ArnBasicItem*>( this));
+    sendArnEvent( &ev, _monEventHandler,
+                  _isMonEventQueued ? Qt::QueuedConnection : Qt::AutoConnection);
+    sendArnEvent( &ev, eventHandler());
+}
+
+
+void  ArnItemNet::arnEvent( QEvent* ev, bool isAlienThread)
+{
+    if (_monEventHandler) {
+        sendArnEvent( ev, _monEventHandler);
+    }
+
+    ArnItemB::arnEvent( ev, isAlienThread);
 }
 
 
@@ -265,14 +299,6 @@ void  ArnItemNet::customEvent( QEvent* ev)
         }
         return ArnItemB::customEvent( ev);
     }
-    if (type == ArnEvRetired::type()) {
-        ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
-        QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : path();
-        // qDebug() << "ArnItemNet Mon destroy: path=" << destroyPath << " inPath=" << path();
-        emit arnMonEvent( ArnMonEventType::ItemDeleted, destroyPath.toUtf8(), true);
-        return ArnItemB::customEvent( ev);
-    }
-
     return ArnItemB::customEvent( ev);
 }
 

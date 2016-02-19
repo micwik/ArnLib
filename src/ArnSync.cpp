@@ -35,6 +35,7 @@
 #include "ArnLink.hpp"
 #include "ArnInc/ArnClient.hpp"
 #include "ArnInc/ArnMonEvent.hpp"
+#include "ArnInc/ArnEvent.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include <QTcpSocket>
 #include <QString>
@@ -254,9 +255,7 @@ void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
     connect( itemNet, SIGNAL(goneDirty(const ArnLinkHandle&)),
              this, SLOT(addToFluxQue(const ArnLinkHandle&)));
     connect( itemNet, SIGNAL(goneDirtyMode()), this, SLOT(addToModeQue()));
-    connect( itemNet, SIGNAL(arnLinkDestroyed()), this, SLOT(linkDestroyedHandle()));
-    connect( itemNet, SIGNAL(arnMonEvent(int,QByteArray,bool)),
-             this, SLOT(doArnMonEvent(int,QByteArray,bool)));
+    itemNet->setEventHandler( this);
 }
 
 
@@ -1119,9 +1118,8 @@ void  ArnSync::removeItemNet( ArnItemNet* itemNet)
 }
 
 
-void  ArnSync::doArnMonEvent( int type, const QByteArray& data, bool isLocal)
+void  ArnSync::doArnMonEvent( int type, const QByteArray& data, bool isLocal, ArnItemNet* itemNet)
 {
-    ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
     if (!itemNet) {
         ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for doArnEvent")),
                             ArnError::Undef);
@@ -1475,4 +1473,43 @@ void  ArnSync::sendModeItem( ArnItemNet* itemNet)
     _syncMap.add("id", QByteArray::number( itemNet->netId()));
     _syncMap.add("data", itemNet->getModeString());
     sendXSMap( _syncMap);
+}
+
+
+void  ArnSync::customEvent( QEvent* ev)
+{
+    int  evIdx = ev->type() - ArnEvent::baseType();
+    switch (evIdx) {
+    case ArnEvent::Idx::Monitor:
+    {
+        ArnEvMonitor*  e = static_cast<ArnEvMonitor*>( ev);
+        ArnItemNet*  itemNet = static_cast<ArnItemNet*>( static_cast<ArnBasicItem*>( e->target()));
+        Q_ASSERT(itemNet);
+        // qDebug() << "ArnSync Ev Monitor: type=" << ArnMonEventType::txt().getTxt( e->monEvType())
+        //          << " data=" << e->data() << " isLocal=" << e->isLocal()
+        //          << " isMon=" << itemNet->isMonitor() << " target=" << itemNet->path();
+        doArnMonEvent( e->monEvType(), e->data(), e->isLocal(), itemNet);
+        break;
+    }
+    case ArnEvent::Idx::Retired:
+    {
+        ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
+        ArnItemNet*  itemNet = static_cast<ArnItemNet*>( static_cast<ArnBasicItem*>( e->target()));
+        Q_ASSERT(itemNet);
+        if (itemNet->isMonitor()) {
+            QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : itemNet->path();
+            // qDebug() << "ArnSync Ev Retired: path=" << destroyPath << " inPath=" << itemNet->path();
+            doArnMonEvent( ArnMonEventType::ItemDeleted, destroyPath.toUtf8(), true, itemNet);
+        }
+
+        if (Arn::debugLinkDestroy)  qDebug() << "itemRemove: netId=" << itemNet->netId() << " path=" << itemNet->path();
+        removeItemNet( itemNet);
+        destroyToFluxQue( itemNet);
+        break;
+    }
+    default:
+        break;
+    }
+
+    ArnBasicItemEventHandler::defaultEvent( ev);
 }

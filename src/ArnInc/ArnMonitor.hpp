@@ -242,6 +242,8 @@ protected:
     virtual QString  outPathConvert( const QString& path);
     virtual QString  inPathConvert( const QString& path);
 
+    virtual void  customEvent( QEvent* ev);
+
     ArnMonitor( ArnMonitorPrivate& dd, QObject* parent);
     ArnMonitorPrivate* const  d_ptr;
     //! \endcond

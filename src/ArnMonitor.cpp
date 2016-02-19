@@ -34,8 +34,10 @@
 #include "ArnInc/ArnMonEvent.hpp"
 #include "ArnInc/ArnClient.hpp"
 #include "ArnInc/ArnLib.hpp"
+#include "ArnInc/ArnEvent.hpp"
 #include "ArnSync.hpp"
 #include "ArnItemNet.hpp"
+#include "ArnLink.hpp"
 #include <QDebug>
 #include <QTime>
 
@@ -136,8 +138,7 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
         d->_itemNet = d->_arnClient->newNetItem( d->_monitorPath, Arn::ObjectSyncMode::Normal, &isNew);
         if (!d->_itemNet)  return false;
 
-        connect( d->_itemNet, SIGNAL(arnMonEvent(int,QByteArray,bool)),
-                 this, SLOT(dispatchArnMonEvent(int,QByteArray,bool)));
+        d->_itemNet->setMonEventHandler( this, false);
 
         if (Arn::debugMonitor)  qDebug() << "Monitor start: new=" << isNew << " path=" << d->_monitorPath;
         if (isNew) {
@@ -169,9 +170,7 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
         }
         d->_itemNet->setNetId( d->_itemNet->linkId());
 
-        connect( d->_itemNet, SIGNAL(arnMonEvent(int,QByteArray,bool)),
-                 this, SLOT(dispatchArnMonEvent(int,QByteArray,bool)), Qt::QueuedConnection);
-        //MW: Todo connect( _itemNet, SIGNAL(arnLinkDestroyed()),
+        d->_itemNet->setMonEventHandler( this, true);
 
         if (Arn::debugMonitor)  qDebug() << "Monitor start (local-items): path="
                                          << d->_monitorPath << " id=" << d->_itemNet->netId();
@@ -351,4 +350,33 @@ QString  ArnMonitor::outPathConvert( const QString& path)
 QString  ArnMonitor::inPathConvert( const QString& path)
 {
     return path;  // No conversion as standard
+}
+
+
+void  ArnMonitor::customEvent( QEvent* ev)
+{
+    int  evIdx = ev->type() - ArnEvent::baseType();
+    switch (evIdx) {
+    case ArnEvent::Idx::Monitor:
+    {
+        ArnEvMonitor*  e = static_cast<ArnEvMonitor*>( ev);
+        ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
+        Q_ASSERT(target);
+        // qDebug() << "ArnMonitor Ev Monitor:";
+        dispatchArnMonEvent( e->monEvType(), e->data(), e->isLocal());
+        break;
+    }
+    case ArnEvent::Idx::Retired:
+    {
+        ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
+        ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
+        Q_ASSERT(target);
+        QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : target->path();
+        // qDebug() << "ArnMonitor Ev Retired: path=" << destroyPath << " inPath=" << target->path();
+        dispatchArnMonEvent( ArnMonEventType::ItemDeleted, destroyPath.toUtf8(), true);
+        break;
+    }
+    default:
+        break;
+    }
 }

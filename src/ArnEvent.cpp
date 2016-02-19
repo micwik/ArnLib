@@ -210,6 +210,30 @@ ArnEvent*  ArnEvModeChange::makeHeapClone()
 
 
 
+ArnEvMonitor::ArnEvMonitor( int monEvType, const QByteArray& data, bool isLocal)
+    : ArnEvent( type())
+    , _monEvType( monEvType)
+    , _data( data)
+    , _isLocal( isLocal)
+{
+}
+
+
+QEvent::Type  ArnEvMonitor::type()
+{
+    static int evType = baseType() + Idx::Monitor;
+
+    return Type( evType);
+}
+
+
+ArnEvent*  ArnEvMonitor::makeHeapClone()
+{
+    return (new ArnEvMonitor( _monEvType, _data, _isLocal))->copyOpt( this);
+}
+
+
+
 ArnEvRetired::ArnEvRetired( ArnLink* startLink, bool isBelow, bool isGlobal)
     : ArnEvent( type())
     , _startLink( startLink)

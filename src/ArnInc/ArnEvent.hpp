@@ -42,7 +42,7 @@ class ArnLinkHandle;
 
 
 namespace ArnPrivate {
-class Idx {
+class ArnEventIdx {
     Q_GADGET
     Q_ENUMS(E)
 public:
@@ -51,12 +51,13 @@ public:
         ValueChange = 0,
         LinkCreate,
         ModeChange,
+        Monitor,
         Retired,
         ZeroRef,
         //! Max index
         N
     };
-    MQ_DECLARE_ENUMTXT( Idx)
+    MQ_DECLARE_ENUMTXT( ArnEventIdx)
 };
 }
 
@@ -67,7 +68,7 @@ class ARNLIBSHARED_EXPORT ArnEvent : public QEvent
     void*  _spare;  // Can be used later as d-ptr
 
 public:
-    typedef ArnPrivate::Idx  Idx;
+    typedef ArnPrivate::ArnEventIdx  Idx;
 
     ArnEvent( QEvent::Type type);
 
@@ -133,6 +134,28 @@ public:
 
     inline Arn::ObjectMode  mode()  const
     { return _mode;}
+};
+
+
+class ArnEvMonitor : public ArnEvent
+{
+    int  _monEvType;
+    QByteArray  _data;
+    bool  _isLocal;
+
+public:
+    ArnEvMonitor( int monEvType, const QByteArray& data, bool isLocal);
+    static QEvent::Type  type();
+    virtual ArnEvent*  makeHeapClone();
+
+    inline int  monEvType()  const
+    { return _monEvType;}
+
+    inline const QByteArray&  data()  const
+    { return _data;}
+
+    inline bool  isLocal()  const
+    { return _isLocal;}
 };
 
 

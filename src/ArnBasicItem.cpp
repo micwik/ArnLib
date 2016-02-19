@@ -38,6 +38,7 @@
 #include <QDataStream>
 #include <QThreadStorage>
 #include <QCoreApplication>
+#include <QThread>
 #include <QDebug>
 
 
@@ -847,6 +848,31 @@ void  ArnBasicItem::setEventHandler( QObject* eventHandler)
 
     d->_eventHandler   = eventHandler;
     d->_isStdEvHandler = false;
+}
+
+
+QObject*  ArnBasicItem::eventHandler()  const
+{
+    Q_D(const ArnBasicItem);
+
+    return d->_eventHandler;
+}
+
+
+bool  ArnBasicItem::sendArnEvent( QEvent* ev, QObject* receiver, Qt::ConnectionType connectType)
+{
+    if (!receiver || !ev || !ArnEvent::isArnEvent( ev->type()))  return false;
+
+    if ((connectType != Qt::QueuedConnection) && (receiver->thread() == QThread::currentThread())) {
+        receiver->event( ev);
+    }
+    else {
+        // Recipient in different thread or queued
+        ArnEvent*  evClone = static_cast<ArnEvent*>(ev)->makeHeapClone();
+        QCoreApplication::postEvent( receiver, evClone);
+    }
+
+    return true;
 }
 
 

@@ -66,15 +66,20 @@ public:
     bool  isDisable()  const;
     bool  isMonitor()  const;
     void  setMonitor( bool isMonitor);
-
     void  setQueueNum( int num);
     int  queueNum()  const;
+
+    QObject*  getMonEventHandler()  const;
+    void  setMonEventHandler( QObject* monEventHandler, bool isQueued);
+
     void  resetDirty();
     void  resetDirtyMode();
     bool  isDirtyMode()  const;
 
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
+
+    virtual void  arnEvent( QEvent* ev, bool isAlienThread);
 
     using ArnItemB::addSyncMode;
     using ArnItemB::syncMode;
@@ -92,7 +97,6 @@ public:
     using ArnItemB::openWithFlags;
 
 signals:
-    void  arnMonEvent( int type, const QByteArray& data, bool isLocal);
     void  goneDirty( const ArnLinkHandle& handleData);
     void  goneDirtyMode();
 
@@ -113,6 +117,9 @@ private:
     bool  _isMonitor;  // item is used as a Monitor
     QString  _localMountPath;
     QString  _remoteMountPath;
+
+    QObject*  _monEventHandler;
+    bool  _isMonEventQueued;
 };
 
 

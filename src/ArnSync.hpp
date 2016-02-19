@@ -119,6 +119,9 @@ signals:
     //! Signal emitted when the remote ArnServer demands a login.
     void  loginRequired( int contextCode);
 
+protected:
+    virtual void  customEvent( QEvent* ev);
+
 private slots:
     void  connected();
     void  disConnected();
@@ -128,7 +131,7 @@ private slots:
     void  addToModeQue();
     void  sendNext();
     void  linkDestroyedHandle();
-    void  doArnMonEvent( int type, const QByteArray& data, bool isLocal);
+    void  doArnMonEvent( int type, const QByteArray& data, bool isLocal, ArnItemNet* itemNet);
 
 private:
     struct FluxRec {
