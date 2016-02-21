@@ -284,8 +284,11 @@ void  ArnItemB::arnEvent( QEvent* ev, bool isAlienThread)
 
 void  ArnItemB::customEvent( QEvent* ev)
 {
+    // This has to handle all demands of ArnEvent handling, i.e finish with ArnBasicItem::arnEvent(...)
+    // customEvent() in inherited class to ArnItemB must call this member at end.
+
     doEvent( ev);
-    ArnBasicItem::arnEvent( ev, false);
+    ArnBasicItem::arnEvent( ev, false);  // Will call selected ArnEventhandler
 }
 
 

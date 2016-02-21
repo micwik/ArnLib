@@ -71,6 +71,11 @@ ArnMonitor::ArnMonitor( ArnMonitorPrivate& dd, QObject* parent)
 
 ArnMonitor::~ArnMonitor()
 {
+    Q_D(ArnMonitor);
+
+    if (d->_itemNet)
+        d->_itemNet->setMonEventHandler( 0, false);
+
     delete d_ptr;
 }
 

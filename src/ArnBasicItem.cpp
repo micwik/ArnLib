@@ -949,6 +949,9 @@ void  ArnBasicItem::errorLog( const QString& errText, ArnError err, void* refere
 
 void  ArnBasicItem::arnEvent( QEvent* ev, bool isAlienThread)
 {
+    // Selected ArnEvent handler is called. Default is internal handler.
+    // Selected handler must finish with ArnBasicItemEventHandler::defaultEvent( ev).
+
     Q_D(ArnBasicItem);
 
     if (!ev)  return;  // No event ...

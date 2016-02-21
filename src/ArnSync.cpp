@@ -1478,6 +1478,9 @@ void  ArnSync::sendModeItem( ArnItemNet* itemNet)
 
 void  ArnSync::customEvent( QEvent* ev)
 {
+    // Is setup as ArnEvent handler for ArnItemNet
+    // Selected handler must finish with ArnBasicItemEventHandler::defaultEvent( ev).
+
     int  evIdx = ev->type() - ArnEvent::baseType();
     switch (evIdx) {
     case ArnEvent::Idx::Monitor:
