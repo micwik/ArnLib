@@ -69,6 +69,14 @@ class ARNLIBSHARED_EXPORT ArnMonitor : public ArnItemB
 
 public:
     explicit  ArnMonitor( QObject* parent = 0);
+
+    //! Starts local monitoring
+    /*! \param[in] path
+     *  \param{in] parent
+     *  \see start()
+     */
+    ArnMonitor( const QString& path, QObject* parent = 0);
+
     ~ArnMonitor();
 
     //! Set the _client_ to be used

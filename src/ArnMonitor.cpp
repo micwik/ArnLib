@@ -69,6 +69,15 @@ ArnMonitor::ArnMonitor( QObject* parent)
 }
 
 
+ArnMonitor::ArnMonitor(const QString& path, QObject* parent)
+    : ArnItemB( parent)
+    , d_ptr( new ArnMonitorPrivate)
+{
+    init();
+    start( path);
+}
+
+
 ArnMonitor::ArnMonitor( ArnMonitorPrivate& dd, QObject* parent)
     : ArnItemB( parent)
     , d_ptr( &dd)
