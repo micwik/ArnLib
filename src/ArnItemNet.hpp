@@ -44,8 +44,7 @@ class ArnItemNet : public ArnItemB
 {
 Q_OBJECT
 public:
-    explicit ArnItemNet( QObject *parent = 0);
-    explicit ArnItemNet( const QString& path, QObject *parent = 0);
+    explicit ArnItemNet( void* sessionHandler, QObject *parent);
 
     void  setNetId( uint netId);
     uint  netId()  const;
@@ -68,9 +67,6 @@ public:
     void  setMonitor( bool isMonitor);
     void  setQueueNum( int num);
     int  queueNum()  const;
-
-    QObject*  getMonEventHandler()  const;
-    void  setMonEventHandler( QObject* monEventHandler, bool isQueued);
 
     void  resetDirty();
     void  resetDirtyMode();
@@ -118,8 +114,7 @@ private:
     QString  _localMountPath;
     QString  _remoteMountPath;
 
-    QObject*  _monEventHandler;
-    bool  _isMonEventQueued;
+    void*  _sessionHandler;
 };
 
 

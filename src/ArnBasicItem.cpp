@@ -842,6 +842,15 @@ QThread*  ArnBasicItem::thread()  const
 }
 
 
+bool  ArnBasicItem::sendArnEvent( ArnEvent* ev)
+{
+    if (!_link)  return false;
+
+    _link->sendArnEvent( ev);
+    return true;
+}
+
+
 void  ArnBasicItem::setEventHandler( QObject* eventHandler)
 {
     Q_D(ArnBasicItem);

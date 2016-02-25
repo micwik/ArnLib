@@ -47,10 +47,13 @@ public:
 
 private:
     QStringList  _foundChilds;
-    ArnItemNet*  _itemNet;
+    ArnItemNet*  _localMonItem;
     void*  _reference;
     QPointer<ArnClient>  _arnClient;
     QString  _monitorPath;
+
+    QString  _localMountPath;
+    QString  _remoteMountPath;
 };
 
 #endif // ARNMONITOR_P_HPP

@@ -88,6 +88,7 @@ public:
     uint  linkId()  const;
     bool  isFolder();
 
+    void  sendArnEvent( ArnEvent* ev);
     void  addSyncMode( Arn::ObjectSyncMode syncMode);
     Arn::ObjectSyncMode  syncMode();
     Arn::ObjectMode  getMode();

@@ -2,6 +2,7 @@
 #include <ArnInc/ArnM.hpp>
 #include <ArnInc/ArnBasicItem.hpp>
 #include <ArnInc/ArnItem.hpp>
+#include <ArnInc/ArnMonitor.hpp>
 #include <ArnInc/MQFlags.hpp>
 #include <ArnInc/XStringMap.hpp>
 #include <ArnInc/ArnEvent.hpp>
@@ -17,9 +18,12 @@ class ArnUtest1Sub : public QObject
 public:
     ArnUtest1Sub( QObject* parent) : QObject(parent) {}
 
+    QString  _path;
+
 public slots:
     void  ArnErrorLog( const QString& txt);
     void  itemUpdated( const QByteArray& value);
+    void  monChildFound( const QString& path);
 };
 
 
@@ -43,6 +47,7 @@ private slots:
     void  testArnItem1();
     void  testArnItem2();
     void  testArnItemDestroy();
+    void  testArnMonitorLocal();
 
 private:
     ArnUtest1Sub*  _tsub;
@@ -327,6 +332,23 @@ void ArnUtest1::testArnItemDestroy()
 }
 
 
+void ArnUtest1::testArnMonitorLocal()
+{
+    ArnMonitor  arnMon;
+    ArnM::setValue("//Test/Mon/T1/value", 1);
+    arnMon.start("//Test/Mon/", 0);
+    connect( &arnMon, SIGNAL(arnChildFound(QString)), _tsub, SLOT(monChildFound(QString)));
+    QSignalSpy spy(&arnMon, SIGNAL(arnChildFound(QString)));
+    while (spy.count() == 0)
+        QTest::qWait(200);
+    // qDebug() << "Monitor childs 1: path=" << _tsub->_path;
+    QVERIFY( _tsub->_path == "//Test/Mon/T1/");
+    ArnM::setValue("//Test/Mon/T2/value", 1);
+    // qDebug() << "Monitor childs 2: path=" << _tsub->_path;
+    QVERIFY( _tsub->_path == "//Test/Mon/T2/");
+}
+
+
 void  ArnUtest1Sub::ArnErrorLog(const QString& txt)
 {
     qDebug() << "ArnErrorLog: " << txt;
@@ -335,7 +357,14 @@ void  ArnUtest1Sub::ArnErrorLog(const QString& txt)
 
 void  ArnUtest1Sub::itemUpdated( const QByteArray& value)
 {
-    qDebug() << "Item updated: val" << value;
+    //qDebug() << "Item updated: val" << value;
+}
+
+
+void  ArnUtest1Sub::monChildFound( const QString& path)
+{
+    //qDebug() << "Monitor updated: path=" << path;
+    _path = path;
 }
 
 

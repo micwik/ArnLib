@@ -381,6 +381,8 @@ public:
     void  commandInfo( int type, const QByteArray& data = QByteArray());
     void  commandVersion();
     void  commandExit();
+    bool  getLocalRemotePath( const QString& path,
+                              QString& localMountPath, QString& remoteMountPath)  const;
     ArnItemNet*  newNetItem( const QString& path,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
                              bool* isNewPtr = 0);

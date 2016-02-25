@@ -673,6 +673,12 @@ bool  ArnLink::isFolder( void)
 }
 
 
+void  ArnLink::sendArnEvent( ArnEvent* ev)
+{
+    sendEvents( ev);
+}
+
+
 void  ArnLink::addSyncMode( Arn::ObjectSyncMode syncMode)
 {
     if (_mutex)  _mutex->lock();

@@ -34,13 +34,13 @@
 
 
 #include "ArnLib_global.hpp"
+#include "ArnInc/ArnItemB.hpp"
 #include <QStringList>
 #include <QObject>
 #include <QPointer>
 
 class ArnMonitorPrivate;
 class ArnClient;
-class ArnItemNet;
 
 
 //! A client remote monitor to detect changes at server.
@@ -62,7 +62,7 @@ childs. Later the signals are emmited for newly created childs.
     connect( _arnMon, SIGNAL(arnChildFound(QString)), this, SLOT(netChildFound(QString)));
 \endcode
 */
-class ARNLIBSHARED_EXPORT ArnMonitor : public QObject
+class ARNLIBSHARED_EXPORT ArnMonitor : public ArnItemB
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ArnMonitor)
@@ -244,6 +244,8 @@ protected:
 
     virtual void  customEvent( QEvent* ev);
 
+    QString  toLocalPath( const QString& remotePath)  const;
+
     ArnMonitor( ArnMonitorPrivate& dd, QObject* parent);
     ArnMonitorPrivate* const  d_ptr;
     //! \endcond
@@ -254,6 +256,7 @@ private slots:
     void  setupLocalMonitorItem();
 
 private:
+    void  init();
     void  doEventItemFoundCreated( int type, const QByteArray& data, bool isLocal);
     void  doEventItemDeleted( const QByteArray& data, bool isLocal);
 };

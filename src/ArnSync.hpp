@@ -82,7 +82,7 @@ public:
         MQ_DECLARE_ENUM( InfoType)
     };
 
-    ArnSync( QTcpSocket* socket, bool clientSide = 0, QObject *parent = 0);
+    ArnSync( QTcpSocket* socket, bool clientSide, QObject *parent);
     ~ArnSync();
 
     void  setArnLogin( ArnSyncLogin* arnLogin);
@@ -111,6 +111,8 @@ public:
 
     static void  setupMonitorItem( ArnItemNet* itemNet);
     static void  doChildsToEvent( ArnItemNet* itemNet);
+
+    void  setSessionHandler( void* sessionHandler);
 
 signals:
     void  replyRecord( Arn::XStringMap& replyMap);
@@ -176,6 +178,7 @@ private:
 
     QTcpSocket*  _socket;
     ArnSyncLogin* _arnLogin;
+    void*  _sessionHandler;
 
     QByteArray  _dataReadBuf;
     QByteArray  _dataRemain;

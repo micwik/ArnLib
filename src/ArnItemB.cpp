@@ -80,9 +80,9 @@ ArnItemB::~ArnItemB()
 
 bool  ArnItemB::openWithFlags( const QString& path, Arn::LinkFlags linkFlags)
 {
-    ArnBasicItem::openWithFlags( path, linkFlags);
+    bool  retVal = ArnBasicItem::openWithFlags( path, linkFlags);
     modeUpdate( getMode(), true);
-    return true;
+    return retVal;
 }
 
 

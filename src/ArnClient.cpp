@@ -134,7 +134,7 @@ ArnClientPrivate::ArnClientPrivate()
     resetConnectionFlags();
 
     _socket       = new QTcpSocket;
-    _arnNetSync   = new ArnSync( _socket, true);
+    _arnNetSync   = new ArnSync( _socket, true, 0);
     _arnNetSync->start();
     _connectTimer = new QTimer;
     _recTimer     = new QTimer;
@@ -223,6 +223,7 @@ void  ArnClient::init()
 
     ArnSync*    arnSync = d->_arnNetSync;
     QTcpSocket*  socket = d->_socket;
+    arnSync->setSessionHandler( this);
     connect( socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
     connect( socket, SIGNAL(disconnected()), this, SLOT(doTcpDisconnected()));
     connect( arnSync, SIGNAL(loginRequired(int)), this, SLOT(doLoginRequired(int)));
@@ -608,20 +609,39 @@ void  ArnClient::newNetItemProxy( ArnThreadCom *threadCom,
 }
 
 
+// MW: Fixme threadsafe (?)
+bool  ArnClient::getLocalRemotePath( const QString& path,
+                                     QString& localMountPath, QString& remoteMountPath)  const
+{
+    Q_D(const ArnClient);
+
+    bool  retVal = false;
+    QString  path_ = Arn::fullPath( path);
+    MountPointSlot  mpSlot;
+    foreach (const MountPointSlot& mountPoint, d->_mountPoints) {
+        if (path_.startsWith( mountPoint.localPath)) {
+            mpSlot = mountPoint;
+            retVal = true;
+            break;
+        }
+    }
+    localMountPath  = mpSlot.localPath;
+    remoteMountPath = mpSlot.remotePath;
+    return retVal;
+}
+
+
 ArnItemNet*  ArnClient::newNetItem( const QString& path, Arn::ObjectSyncMode syncMode, bool* isNewPtr)
 {
     Q_D(ArnClient);
 
     if (ArnM::isMainThread()) {
         QString  path_ = Arn::fullPath( path);
+        QString  localMountPath;
+        QString  remoteMountPath;
         MountPointSlot  mpSlot;
-        foreach (const MountPointSlot& mountPoint, d->_mountPoints) {
-            if (path_.startsWith( mountPoint.localPath)) {
-                mpSlot = mountPoint;
-                break;
-            }
-        }
-        return d->_arnNetSync->newNetItem( path_, mpSlot.localPath, mpSlot.remotePath, syncMode, isNewPtr);
+        getLocalRemotePath( path, localMountPath, remoteMountPath);
+        return d->_arnNetSync->newNetItem( path_, localMountPath, remoteMountPath, syncMode, isNewPtr);
     }
     else {  // Threaded - must be threadsafe
         ArnThreadComCaller  threadCom;

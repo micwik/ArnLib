@@ -27,7 +27,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 
 ArnLibCompile {
     ARN += core
-    #ARN += client
+    ARN += client
     #ARN += discover
     include(../../src/ArnLib.pri)
     INCLUDEPATH += $$PWD/../../src

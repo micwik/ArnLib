@@ -142,9 +142,10 @@ class ArnEvMonitor : public ArnEvent
     int  _monEvType;
     QByteArray  _data;
     bool  _isLocal;
+    void*  _sessionHandler;
 
 public:
-    ArnEvMonitor( int monEvType, const QByteArray& data, bool isLocal);
+    ArnEvMonitor( int monEvType, const QByteArray& data, bool isLocal, void* sessionHandler);
     static QEvent::Type  type();
     virtual ArnEvent*  makeHeapClone();
 
@@ -156,6 +157,9 @@ public:
 
     inline bool  isLocal()  const
     { return _isLocal;}
+
+    inline void*  sessionHandler()  const
+    { return _sessionHandler;}
 };
 
 

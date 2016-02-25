@@ -45,6 +45,7 @@
 
 class ArnBasicItemPrivate;
 class ArnLink;
+class ArnEvent;
 
 
 //! \cond ADV
@@ -383,6 +384,7 @@ public:
 
     QThread*  thread()  const;
 
+    bool  sendArnEvent( ArnEvent* ev);
     void  setEventHandler( QObject* eventHandler);
     QObject*  eventHandler()  const;
     static bool sendArnEvent( QEvent* ev, QObject* receiver,

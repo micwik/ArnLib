@@ -47,26 +47,16 @@ void  ArnItemNet::init()
     _disable   = false;
     _isMonitor = false;
 
-    _monEventHandler  = 0;
-    _isMonEventQueued = false;
-
     setForceKeep();
     setIgnoreSameValue( false);
 }
 
 
-ArnItemNet::ArnItemNet( QObject *parent) :
+ArnItemNet::ArnItemNet( void* sessionHandler, QObject *parent) :
     ArnItemB( parent)
 {
     init();
-}
-
-
-ArnItemNet::ArnItemNet( const QString& path, QObject *parent) :
-    ArnItemB( parent)
-{
-    open( path);
-    init();
+    _sessionHandler = sessionHandler;
 }
 
 
@@ -79,19 +69,6 @@ void  ArnItemNet::setNetId( uint netId)
 uint  ArnItemNet::netId()  const
 {
     return _netId;
-}
-
-
-QObject* ArnItemNet::getMonEventHandler() const
-{
-    return _monEventHandler;
-}
-
-
-void ArnItemNet::setMonEventHandler( QObject* monEventHandler, bool isQueued)
-{
-    _monEventHandler  = monEventHandler;
-    _isMonEventQueued = isQueued;
 }
 
 
@@ -268,20 +245,13 @@ void  ArnItemNet::modeUpdate( Arn::ObjectMode mode, bool isSetup)
 
 void  ArnItemNet::emitArnMonEvent( int type, const QByteArray& data, bool isLocal)
 {
-    ArnEvMonitor  ev( type, data, isLocal);
-    ev.setTarget( static_cast<ArnBasicItem*>( this));
-    sendArnEvent( &ev, _monEventHandler,
-                  _isMonEventQueued ? Qt::QueuedConnection : Qt::AutoConnection);
-    sendArnEvent( &ev, eventHandler());
+    ArnEvMonitor  ev( type, data, isLocal, _sessionHandler);
+    sendArnEvent( &ev);
 }
 
 
 void  ArnItemNet::arnEvent( QEvent* ev, bool isAlienThread)
 {
-    if (_monEventHandler) {
-        sendArnEvent( ev, _monEventHandler);
-    }
-
     ArnItemB::arnEvent( ev, isAlienThread);
 }
 

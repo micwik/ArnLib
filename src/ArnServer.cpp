@@ -56,6 +56,7 @@ ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, ArnServer* arnServer)
 
     _arnServer = arnServer;
     _arnNetSync = new ArnSync( socket, false, this);
+    _arnNetSync->setSessionHandler( this);
     _arnNetSync->setArnLogin( _arnServer->arnLogin());
     _arnNetSync->setDemandLogin( _arnServer->isDemandLogin()
                               && _arnServer->isDemandLoginNet( remoteAddr));

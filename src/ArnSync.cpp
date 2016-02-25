@@ -52,6 +52,7 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     : QObject( parent)
 {
     _socket          = socket;  // Note: client side does not own socket ...
+    _sessionHandler  = 0;
     _arnLogin        = 0;
     _isClientSide    = isClientSide;
     _state           = State::Init;
@@ -275,7 +276,7 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
         }
     }
 
-    ArnItemNet*  itemNet = new ArnItemNet( this);
+    ArnItemNet*  itemNet = new ArnItemNet( _sessionHandler, this);
     if (!itemNet->open( path))  return 0;
 
     uint  netId = itemNet->linkId(); // Use clients linkId as netID for this Item
@@ -311,6 +312,12 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
         sendNext();
 
     return itemNet;
+}
+
+
+void  ArnSync::setSessionHandler( void* sessionHandler)
+{
+    _sessionHandler = sessionHandler;
 }
 
 
@@ -674,7 +681,7 @@ uint  ArnSync::doCommandSync()
 
     bool  isCreateAllow = _allow.is( _allow.Create);
     Arn::LinkFlags  createFlag = Arn::LinkFlags::flagIf( isCreateAllow, Arn::LinkFlags::CreateAllowed);
-    ArnItemNet*  itemNet = new ArnItemNet;
+    ArnItemNet*  itemNet = new ArnItemNet( _sessionHandler, 0);  // MW: check for destruction
     if (!itemNet->openWithFlags( path, createFlag)) {
         delete itemNet;
         return isCreateAllow ? ArnError::CreateError : ArnError::OpNotAllowed;
@@ -836,7 +843,7 @@ uint  ArnSync::doCommandSet()
 
     bool  isCreateAllow = _allow.is( _allow.Create);
     Arn::LinkFlags  createFlag = Arn::LinkFlags::flagIf( isCreateAllow, Arn::LinkFlags::CreateAllowed);
-    ArnItemNet  item;
+    ArnItemNet  item( _sessionHandler, 0);
     if (!item.openWithFlags( path, createFlag)) {
         return createFlag ? ArnError::CreateError : ArnError::OpNotAllowed;
     }
@@ -1491,7 +1498,8 @@ void  ArnSync::customEvent( QEvent* ev)
         // qDebug() << "ArnSync Ev Monitor: type=" << ArnMonEventType::txt().getTxt( e->monEvType())
         //          << " data=" << e->data() << " isLocal=" << e->isLocal()
         //          << " isMon=" << itemNet->isMonitor() << " target=" << itemNet->path();
-        doArnMonEvent( e->monEvType(), e->data(), e->isLocal(), itemNet);
+        if (e->sessionHandler() == _sessionHandler)  // Event is for this session
+            doArnMonEvent( e->monEvType(), e->data(), e->isLocal(), itemNet);
         break;
     }
     case ArnEvent::Idx::Retired:
