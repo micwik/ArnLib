@@ -48,12 +48,6 @@ public:
 
     void  setNetId( uint netId);
     uint  netId()  const;
-    QString  localMountPath()  const;
-    void  setLocalMountPath( const QString& localMountPath);
-    QString  remoteMountPath()  const;
-    void  setRemoteMountPath( const QString& remoteMountPath);
-    QString  toRemotePath( const QString& localPath = QString())  const;
-    QString  toLocalPath( const QString& remotePath)  const;
 
     void  addSyncModeString( const QByteArray& smode, bool linkShare);
     QByteArray  getSyncModeString()  const;
@@ -111,10 +105,8 @@ private:
     bool  _dirtyMode;  // item Mode has been updated but not yet sent
     bool  _disable;    // item is defunct and should not send (destroy command)
     bool  _isMonitor;  // item is used as a Monitor
-    QString  _localMountPath;
-    QString  _remoteMountPath;
 
-    void*  _sessionHandler;
+    void*  _sessionHandler;  // E.g ArnClient
 };
 
 

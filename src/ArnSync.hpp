@@ -82,6 +82,8 @@ public:
         MQ_DECLARE_ENUM( InfoType)
     };
 
+    typedef QString (*ConVertPathCB)(void* context, const QString& path);
+
     ArnSync( QTcpSocket* socket, bool clientSide, QObject *parent);
     ~ArnSync();
 
@@ -93,7 +95,6 @@ public:
     QStringList  freePaths()  const;
 
     ArnItemNet*  newNetItem( const QString& path,
-                             const QString& localMountPath, const QString& remoteMountPath,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
                              bool* isNewPtr = 0);
     void  close();
@@ -113,6 +114,8 @@ public:
     static void  doChildsToEvent( ArnItemNet* itemNet);
 
     void  setSessionHandler( void* sessionHandler);
+    void  setToRemotePathCB( ConVertPathCB toRemotePathCB);
+    static QString  nullConvertPath( void* context, const QString& path);
 
 signals:
     void  replyRecord( Arn::XStringMap& replyMap);
@@ -179,6 +182,7 @@ private:
     QTcpSocket*  _socket;
     ArnSyncLogin* _arnLogin;
     void*  _sessionHandler;
+    ConVertPathCB  _toRemotePathCB;
 
     QByteArray  _dataReadBuf;
     QByteArray  _dataRemain;

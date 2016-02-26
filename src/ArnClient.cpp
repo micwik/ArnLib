@@ -224,6 +224,7 @@ void  ArnClient::init()
     ArnSync*    arnSync = d->_arnNetSync;
     QTcpSocket*  socket = d->_socket;
     arnSync->setSessionHandler( this);
+    arnSync->setToRemotePathCB( &toRemotePathCB);
     connect( socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));
     connect( socket, SIGNAL(disconnected()), this, SLOT(doTcpDisconnected()));
     connect( arnSync, SIGNAL(loginRequired(int)), this, SLOT(doLoginRequired(int)));
@@ -631,17 +632,26 @@ bool  ArnClient::getLocalRemotePath( const QString& path,
 }
 
 
+QString  ArnClient::toRemotePathCB( void* context, const QString& path)
+{
+    ArnClient*  that = static_cast<ArnClient*>( context);
+    Q_ASSERT(that);
+
+    QString  localMountPath;
+    QString  remoteMountPath;
+    that->getLocalRemotePath( path, localMountPath, remoteMountPath);
+
+    return Arn::changeBasePath( localMountPath,remoteMountPath, path);
+}
+
+
 ArnItemNet*  ArnClient::newNetItem( const QString& path, Arn::ObjectSyncMode syncMode, bool* isNewPtr)
 {
     Q_D(ArnClient);
 
     if (ArnM::isMainThread()) {
         QString  path_ = Arn::fullPath( path);
-        QString  localMountPath;
-        QString  remoteMountPath;
-        MountPointSlot  mpSlot;
-        getLocalRemotePath( path, localMountPath, remoteMountPath);
-        return d->_arnNetSync->newNetItem( path_, localMountPath, remoteMountPath, syncMode, isNewPtr);
+        return d->_arnNetSync->newNetItem( path_, syncMode, isNewPtr);
     }
     else {  // Threaded - must be threadsafe
         ArnThreadComCaller  threadCom;
@@ -669,12 +679,8 @@ void  ArnClient::createNewItem( const QString& path)
     Q_D(ArnClient);
 
     // qDebug() << "ArnClient,ArnItem-created: path=" << path;
-    ArnItemNetEar*  item = qobject_cast<ArnItemNetEar*>( sender());
-    Q_ASSERT(item);
-    MountPointSlot*  mpSlot = static_cast<MountPointSlot*>( item->reference());
-    Q_ASSERT(mpSlot);
 
-    d->_arnNetSync->newNetItem( path, mpSlot->localPath, mpSlot->remotePath);
+    d->_arnNetSync->newNetItem( path);
 }
 
 

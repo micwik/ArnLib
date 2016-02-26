@@ -72,43 +72,6 @@ uint  ArnItemNet::netId()  const
 }
 
 
-QString  ArnItemNet::remoteMountPath()  const
-{
-    return _remoteMountPath;
-}
-
-
-void  ArnItemNet::setRemoteMountPath( const QString& remoteMountPath)
-{
-    _remoteMountPath = remoteMountPath;
-}
-
-
-QString  ArnItemNet::localMountPath()  const
-{
-    return _localMountPath;
-}
-
-
-void  ArnItemNet::setLocalMountPath( const QString& localMountPath)
-{
-    _localMountPath = localMountPath;
-}
-
-
-QString  ArnItemNet::toRemotePath( const QString& localPath)  const
-{
-    return Arn::changeBasePath( _localMountPath, _remoteMountPath,
-                                localPath.isNull() ? path() : localPath);
-}
-
-
-QString  ArnItemNet::toLocalPath( const QString& remotePath)  const
-{
-    return Arn::changeBasePath( _remoteMountPath, _localMountPath, remotePath);
-}
-
-
 void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
 {
     Arn::ObjectSyncMode  syncMode;

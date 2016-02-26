@@ -53,6 +53,7 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
 {
     _socket          = socket;  // Note: client side does not own socket ...
     _sessionHandler  = 0;
+    _toRemotePathCB  = &nullConvertPath;
     _arnLogin        = 0;
     _isClientSide    = isClientSide;
     _state           = State::Init;
@@ -262,11 +263,10 @@ void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
 
 /// Client ...
 ArnItemNet*  ArnSync::newNetItem( const QString& path,
-                                  const QString& localMountPath, const QString& remoteMountPath,
                                   Arn::ObjectSyncMode syncMode, bool* isNewPtr)
 {
     if (!_remoteAllow.isAny( _allow.ReadWrite)) {
-        QString  remotePath = Arn::changeBasePath( localMountPath, remoteMountPath, path);
+        QString  remotePath = (*_toRemotePathCB)( _sessionHandler, path);
         if (!isFreePath( remotePath)) {
             ArnM::errorLog( QString(tr("Share ArnObject: path=")) +
                             path + " remoteAllow=" + _remoteAllow.toString() +
@@ -297,8 +297,6 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
     if (isNewPtr)
         *isNewPtr = true;
 
-    itemNet->setLocalMountPath( localMountPath);
-    itemNet->setRemoteMountPath( remoteMountPath);
     itemNet->addSyncMode( syncMode, true);
     setupItemNet( itemNet, netId);
     itemNet->setBlockEcho( true);    // Client gives no echo to avoid endless looping
@@ -318,6 +316,20 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
 void  ArnSync::setSessionHandler( void* sessionHandler)
 {
     _sessionHandler = sessionHandler;
+}
+
+
+void  ArnSync::setToRemotePathCB( ArnSync::ConVertPathCB toRemotePathCB)
+{
+    _toRemotePathCB = toRemotePathCB;
+}
+
+
+QString ArnSync::nullConvertPath(void* context, const QString& path)
+{
+    Q_UNUSED(context)
+
+    return path;
 }
 
 
@@ -1139,7 +1151,7 @@ void  ArnSync::doArnMonEvent( int type, const QByteArray& data, bool isLocal, Ar
     if (isLocal) {  // Local events are always sent to remote side
         //_remoteAllow = Arn::Allow::All;  // Test
         if (_remoteAllow.is( _allow.Read)
-        || (isFreePath( itemNet->toRemotePath())))
+        || (isFreePath( (*_toRemotePathCB)( _sessionHandler, itemNet->path()))))
         {
             eventToFluxQue( itemNet->netId(), type, data);
             // Allow ok, as this item has been aproved by sync
@@ -1455,7 +1467,7 @@ void  ArnSync::sendSyncItem( ArnItemNet* itemNet)
 
     _syncMap.clear();
     _syncMap.add(ARNRECNAME, "sync");
-    _syncMap.add("path", itemNet->toRemotePath());
+    _syncMap.add("path", (*_toRemotePathCB)( _sessionHandler, itemNet->path()));
     _syncMap.add("id", QByteArray::number( itemNet->netId()));
     QByteArray  smode = itemNet->getSyncModeString();
     if (!smode.isEmpty()) {

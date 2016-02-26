@@ -469,6 +469,7 @@ private:
     void  init();
     void  reConnectArn();
     void  doConnectArnLogic();
+    static QString  toRemotePathCB( void* context, const QString& path);
 
     QStringList  makeItemList( Arn::XStringMap& xsMap);
 };
