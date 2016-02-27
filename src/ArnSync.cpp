@@ -147,7 +147,7 @@ void  ArnSync::startNormalSync()
         if ((itemNet->type() != Arn::DataType::Null)                  // Only send non Null Value ...
         && (!itemNet->isPipeMode())                                   // from non pipe ..
         && (itemNet->syncMode().is( Arn::ObjectSyncMode::Master))) {  // which is master
-            itemNet->itemUpdated( ArnLinkHandle::null());  // Make client send the current value to server
+            itemNet->itemUpdater( ArnLinkHandle::null());  // Make client send the current value to server
         }
     }
     sendNext();
@@ -707,11 +707,11 @@ uint  ArnSync::doCommandSync()
         setupMonitorItem( itemNet);
     }
     if (!itemNet->getModeString().isEmpty()) {   // If non default mode
-        itemNet->modeUpdate( Arn::ObjectMode());    // Make server send the current mode to client
+        itemNet->modeUpdater( Arn::ObjectMode());    // Make server send the current mode to client
     }
     if ((itemNet->type() != Arn::DataType::Null)
     && !(itemNet->syncMode().is( syncMode.Master))) {  // Only send non Null Value to non master
-        itemNet->itemUpdated( ArnLinkHandle::null()); // Make server send the current value to client
+        itemNet->itemUpdater( ArnLinkHandle::null()); // Make server send the current value to client
     }
 
     return ArnError::Ok;

@@ -46,6 +46,7 @@ void  ArnItemNet::init()
     _dirtyMode = false;
     _disable   = false;
     _isMonitor = false;
+    _blockEcho = false;
 
     setForceKeep();
     setIgnoreSameValue( false);
@@ -128,6 +129,12 @@ void  ArnItemNet::emitNewItemEvent( const QString& path, bool isOld)
 }
 
 
+void  ArnItemNet::setBlockEcho( bool blockEcho)
+{
+    _blockEcho = blockEcho;
+}
+
+
 void  ArnItemNet::setDisable( bool disable)
 {
     _disable = disable;
@@ -183,10 +190,8 @@ bool  ArnItemNet::isDirtyMode()  const
 }
 
 
-void  ArnItemNet::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
+void  ArnItemNet::itemUpdater( const ArnLinkHandle& handleData)
 {
-    Q_UNUSED(value);
-
     if (!_dirty) {
         _dirty = true;
         emit goneDirty( handleData);
@@ -194,10 +199,9 @@ void  ArnItemNet::itemUpdated( const ArnLinkHandle& handleData, const QByteArray
 }
 
 
-void  ArnItemNet::modeUpdate( Arn::ObjectMode mode, bool isSetup)
+void  ArnItemNet::modeUpdater( Arn::ObjectMode mode)
 {
-    ArnItemB::modeUpdate( mode, isSetup); // must be called for base-class update
-    if (isSetup)  return;
+    Q_UNUSED(mode)
 
     if (!_dirtyMode) {
         _dirtyMode = true;
@@ -221,14 +225,35 @@ void  ArnItemNet::arnEvent( QEvent* ev, bool isAlienThread)
 
 void  ArnItemNet::customEvent( QEvent* ev)
 {
-    if (!_isMonitor)  return ArnItemB::customEvent( ev);
-
     int  evIdx = ev->type() - ArnEvent::baseType();
     switch (evIdx) {
+    case ArnEvent::Idx::ValueChange:
+    {
+        ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
+        quint32  sendId = e->sendId();
+        quint32  id = itemId();
+        // qDebug() << "ArnItemNet ArnEvValueChange: inItemPath=" << path()
+        //          << " blockedUpdate=" << (_blockEcho  &&  sendId == id);
+        if (_blockEcho  &&  sendId == id)  // Update was initiated from this Item, it can be blocked ...
+            break;
+
+        addIsOnlyEcho( sendId);
+        itemUpdater( e->handleData());
+        break;
+    }
+    case ArnEvent::Idx::ModeChange:
+    {
+        ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
+        // qDebug() << "ArnItemNet ArnEvModeChange: path=" << e->path() << " mode=" << e->mode()
+        //          << " inItemPath=" << path();
+        if (!isFolder())
+            modeUpdater( e->mode());
+        break;
+    }
     case ArnEvent::Idx::LinkCreate:
     {
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
-        if (e->isLastLink()) {
+        if (_isMonitor && e->isLastLink()) {
             // qDebug() << "ArnItemNet Mon create: path=" << e->path() << " inPath=" << path();
             emitNewItemEvent( e->path());
         }

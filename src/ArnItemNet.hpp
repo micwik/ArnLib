@@ -55,6 +55,7 @@ public:
     QByteArray  getModeString()  const;
     void  emitNewItemEvent( const QString& path, bool isOld = 0);
 
+    void  setBlockEcho( bool blockEcho);
     void  setDisable( bool disable = true);
     bool  isDisable()  const;
     bool  isMonitor()  const;
@@ -66,8 +67,8 @@ public:
     void  resetDirtyMode();
     bool  isDirtyMode()  const;
 
-    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
-    virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
+    void  itemUpdater( const ArnLinkHandle& handleData);
+    void  modeUpdater( Arn::ObjectMode mode);
 
     virtual void  arnEvent( QEvent* ev, bool isAlienThread);
 
@@ -99,14 +100,15 @@ protected:
 private:
     void  init();
 
+    void*  _sessionHandler;  // E.g ArnClient
+
     uint  _netId;      // id used during sync over net
     int  _queueNum;    // number used in itemQueue
     bool  _dirty;      // item has been updated but not yet sent
     bool  _dirtyMode;  // item Mode has been updated but not yet sent
     bool  _disable;    // item is defunct and should not send (destroy command)
     bool  _isMonitor;  // item is used as a Monitor
-
-    void*  _sessionHandler;  // E.g ArnClient
+    bool  _blockEcho;
 };
 
 
