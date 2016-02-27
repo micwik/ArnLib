@@ -54,7 +54,8 @@ public:
     void  setModeString( const QByteArray& mode);
     QByteArray  getModeString()  const;
     void  emitNewItemEvent( const QString& path, bool isOld = 0);
-
+    void  emitArnMonEvent( int type, const QByteArray& data = QByteArray(),
+                           bool isLocal = true);
     void  setBlockEcho( bool blockEcho);
     void  setDisable( bool disable = true);
     bool  isDisable()  const;
@@ -63,12 +64,12 @@ public:
     void  setQueueNum( int num);
     int  queueNum()  const;
 
-    void  resetDirty();
+    void  resetDirtyValue();
     void  resetDirtyMode();
     bool  isDirtyMode()  const;
-
-    void  itemUpdater( const ArnLinkHandle& handleData);
-    void  modeUpdater( Arn::ObjectMode mode);
+    bool  isLeadValueUpdate();
+    bool  isLeadModeUpdate();
+    bool  isBlock( quint32 sendId);
 
     virtual void  arnEvent( QEvent* ev, bool isAlienThread);
 
@@ -78,6 +79,7 @@ public:
     using ArnItemB::isPipeMode;
     using ArnItemB::isFolder;
     using ArnItemB::setBlockEcho;
+    using ArnItemB::addIsOnlyEcho;
     using ArnItemB::isOnlyEcho;
     using ArnItemB::retireType;
     using ArnItemB::type;
@@ -87,13 +89,6 @@ public:
     using ArnItemB::openFolder;
     using ArnItemB::openWithFlags;
 
-signals:
-    void  goneDirty( const ArnLinkHandle& handleData);
-    void  goneDirtyMode();
-
-public slots:
-    void  emitArnMonEvent( int type, const QByteArray& data = QByteArray(),
-                           bool isLocal = true);
 protected:
     virtual void  customEvent( QEvent* ev);
 
@@ -102,13 +97,13 @@ private:
 
     void*  _sessionHandler;  // E.g ArnClient
 
-    uint  _netId;      // id used during sync over net
-    int  _queueNum;    // number used in itemQueue
-    bool  _dirty;      // item has been updated but not yet sent
-    bool  _dirtyMode;  // item Mode has been updated but not yet sent
-    bool  _disable;    // item is defunct and should not send (destroy command)
-    bool  _isMonitor;  // item is used as a Monitor
-    bool  _blockEcho;
+    uint  _netId;          // id used during sync over net
+    int  _queueNum;        // number used in itemQueue
+    bool  _dirty : 1;      // item has been updated but not yet sent
+    bool  _dirtyMode : 1;  // item Mode has been updated but not yet sent
+    bool  _disable : 1;    // item is defunct and should not send (destroy command)
+    bool  _isMonitor : 1;  // item is used as a Monitor
+    bool  _blockEcho : 1;
 };
 
 

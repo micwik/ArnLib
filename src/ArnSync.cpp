@@ -134,7 +134,7 @@ void  ArnSync::startNormalSync()
         itemNet = i.value();
 
         if (_wasClosed) {
-            itemNet->resetDirty();
+            itemNet->resetDirtyValue();
             itemNet->resetDirtyMode();
         }
 
@@ -147,7 +147,7 @@ void  ArnSync::startNormalSync()
         if ((itemNet->type() != Arn::DataType::Null)                  // Only send non Null Value ...
         && (!itemNet->isPipeMode())                                   // from non pipe ..
         && (itemNet->syncMode().is( Arn::ObjectSyncMode::Master))) {  // which is master
-            itemNet->itemUpdater( ArnLinkHandle::null());  // Make client send the current value to server
+            itemValueUpdater( ArnLinkHandle::null(), itemNet);  // Make client send the current value to server
         }
     }
     sendNext();
@@ -254,10 +254,25 @@ void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
     itemNet->setNetId( netId);
     _itemNetMap.insert( netId, itemNet);
 
-    connect( itemNet, SIGNAL(goneDirty(const ArnLinkHandle&)),
-             this, SLOT(addToFluxQue(const ArnLinkHandle&)));
-    connect( itemNet, SIGNAL(goneDirtyMode()), this, SLOT(addToModeQue()));
     itemNet->setEventHandler( this);
+}
+
+
+void  ArnSync::itemValueUpdater( const ArnLinkHandle& handleData, ArnItemNet* itemNet)
+{
+    if (!itemNet)  return;
+
+    if (itemNet->isLeadValueUpdate())
+        addToFluxQue( handleData, itemNet);
+}
+
+
+void  ArnSync::itemModeUpdater( ArnItemNet* itemNet)
+{
+    if (!itemNet)  return;
+
+    if (itemNet->isLeadModeUpdate())
+        addToModeQue( itemNet);
 }
 
 
@@ -707,11 +722,11 @@ uint  ArnSync::doCommandSync()
         setupMonitorItem( itemNet);
     }
     if (!itemNet->getModeString().isEmpty()) {   // If non default mode
-        itemNet->modeUpdater( Arn::ObjectMode());    // Make server send the current mode to client
+        itemModeUpdater( itemNet);    // Make server send the current mode to client
     }
     if ((itemNet->type() != Arn::DataType::Null)
     && !(itemNet->syncMode().is( syncMode.Master))) {  // Only send non Null Value to non master
-        itemNet->itemUpdater( ArnLinkHandle::null()); // Make server send the current value to client
+        itemValueUpdater( ArnLinkHandle::null(), itemNet); // Make server send the current value to client
     }
 
     return ArnError::Ok;
@@ -1212,16 +1227,10 @@ void  ArnSync::doInfoInternal( int infoType, const QByteArray& data)
 }
 
 
-void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
+void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData, ArnItemNet* itemNet)
 {
     if (_isClosed)  return;
-
-    ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
-    if (!itemNet) {
-        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for itemChanged")),
-                            ArnError::Undef);
-        return;
-    }
+    if (!itemNet)  return;
 
     if (itemNet->isPipeMode()) {
         if (itemNet->isOnlyEcho()
@@ -1230,13 +1239,13 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
         {
             // qDebug() << "Flux skip pipe echo: path=" << itemNet->path() << " data=" << itemNet->arnExport()
             //          << "itemId=" << itemNet->itemId();
-            itemNet->resetDirty();  // Arm for more updates
+            itemNet->resetDirtyValue();  // Arm for more updates
             return;  // Don't send any echo to a Pipe or not allowed op on remote side
         }
 
         FluxRec*  fluxRec = getFreeFluxRec();
         fluxRec->xString += makeFluxString( itemNet, handleData);
-        itemNet->resetDirty();
+        itemNet->resetDirtyValue();
 
         if (handleData.has( ArnLinkHandle::QueueFindRegexp)) {
             QRegExp  rx = handleData.valueRef( ArnLinkHandle::QueueFindRegexp).toRegExp();
@@ -1273,7 +1282,7 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData)
         ||   (!_remoteAllow.is( _allow.Write)
           && (_isClientSide || !isFreePath( itemNet->path()))))
         {
-            itemNet->resetDirty();  // Arm for more updates
+            itemNet->resetDirtyValue();  // Arm for more updates
             return;  // Don't send any echo to a Master
         }
 
@@ -1349,16 +1358,10 @@ ArnSync::FluxRec*  ArnSync::getFreeFluxRec()
 }
 
 
-void  ArnSync::addToModeQue()
+void  ArnSync::addToModeQue( ArnItemNet* itemNet)
 {
     if (_isClosed)  return;
-
-    ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
-    if (!itemNet) {
-        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for itemModeChanged")),
-                            ArnError::Undef);
-        return;
-    }
+    if (!itemNet)  return;
 
     if (!_remoteAllow.is( _allow.ModeChg)
     && (_isClientSide || !isFreePath( itemNet->path())))
@@ -1406,7 +1409,7 @@ void  ArnSync::sendNext()
 
                 itemNet = _fluxItemQueue.dequeue();
                 sendFluxItem( itemNet);
-                itemNet->resetDirty();
+                itemNet->resetDirtyValue();
             }
             else {  // Pipe flux queue
                 _queueNumDone = pipeQueueNum;
@@ -1502,6 +1505,33 @@ void  ArnSync::customEvent( QEvent* ev)
 
     int  evIdx = ev->type() - ArnEvent::baseType();
     switch (evIdx) {
+    case ArnEvent::Idx::ValueChange:
+    {
+        ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
+        ArnItemNet*  itemNet = static_cast<ArnItemNet*>( static_cast<ArnBasicItem*>( e->target()));
+        Q_ASSERT(itemNet);
+        quint32  sendId = e->sendId();
+        bool  isBlocked = itemNet->isBlock( sendId);
+        // qDebug() << "ArnSync ArnEvValueChange: inItemPath=" << itemNet->path()
+        //          << " blockedUpdate=" << isBlocked;
+        if (isBlocked)  // Update was initiated from this Item, it can be blocked ...
+            break;
+
+        itemNet->addIsOnlyEcho( sendId);
+        itemValueUpdater( e->handleData(), itemNet);
+        break;
+    }
+    case ArnEvent::Idx::ModeChange:
+    {
+        ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
+        ArnItemNet*  itemNet = static_cast<ArnItemNet*>( static_cast<ArnBasicItem*>( e->target()));
+        Q_ASSERT(itemNet);
+        // qDebug() << "ArnSync ArnEvModeChange: path=" << e->path() << " mode=" << e->mode()
+        //          << " inItemPath=" << itemNet->path();
+        if (!itemNet->isFolder())
+            itemModeUpdater( itemNet);
+        break;
+    }
     case ArnEvent::Idx::Monitor:
     {
         ArnEvMonitor*  e = static_cast<ArnEvMonitor*>( ev);

@@ -132,8 +132,6 @@ private slots:
     void  disConnected();
     void  socketInput();
     void  doLoginSeq0End();
-    void  addToFluxQue( const ArnLinkHandle& handleData);
-    void  addToModeQue();
     void  sendNext();
     void  linkDestroyedHandle();
     void  doArnMonEvent( int type, const QByteArray& data, bool isLocal, ArnItemNet* itemNet);
@@ -148,8 +146,12 @@ private:
     void  startLogin();
     void  startNormalSync();
     void  setupItemNet( ArnItemNet* itemNet, uint netId);
+    void  itemValueUpdater( const ArnLinkHandle& handleData, ArnItemNet* itemNet);
+    void  itemModeUpdater( ArnItemNet* itemNet);
     FluxRec*  getFreeFluxRec();
     QByteArray  makeFluxString( const ArnItemNet* itemNet, const ArnLinkHandle& handleData);
+    void  addToFluxQue( const ArnLinkHandle& handleData, ArnItemNet* itemNet);
+    void  addToModeQue( ArnItemNet* itemNet);
     void  sendFluxItem( const ArnItemNet* itemNet);
     void  sendSyncItem( ArnItemNet* itemNet);
     void  sendModeItem( ArnItemNet* itemNet);

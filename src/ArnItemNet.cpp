@@ -129,6 +129,13 @@ void  ArnItemNet::emitNewItemEvent( const QString& path, bool isOld)
 }
 
 
+void  ArnItemNet::emitArnMonEvent( int type, const QByteArray& data, bool isLocal)
+{
+    ArnEvMonitor  ev( type, data, isLocal, _sessionHandler);
+    sendArnEvent( &ev);
+}
+
+
 void  ArnItemNet::setBlockEcho( bool blockEcho)
 {
     _blockEcho = blockEcho;
@@ -171,7 +178,7 @@ int  ArnItemNet::queueNum()  const
 }
 
 
-void  ArnItemNet::resetDirty()
+void  ArnItemNet::resetDirtyValue()
 {
     _dirty = false;
     resetOnlyEcho();
@@ -190,30 +197,27 @@ bool  ArnItemNet::isDirtyMode()  const
 }
 
 
-void  ArnItemNet::itemUpdater( const ArnLinkHandle& handleData)
+bool  ArnItemNet::isLeadValueUpdate()
 {
-    if (!_dirty) {
-        _dirty = true;
-        emit goneDirty( handleData);
-    }
+    if (_dirty)  return false;
+
+    _dirty = true;
+    return true;
 }
 
 
-void  ArnItemNet::modeUpdater( Arn::ObjectMode mode)
+bool  ArnItemNet::isLeadModeUpdate()
 {
-    Q_UNUSED(mode)
+    if (_dirtyMode)  return false;
 
-    if (!_dirtyMode) {
-        _dirtyMode = true;
-        emit goneDirtyMode();
-    }
+    _dirtyMode = true;
+    return true;
 }
 
 
-void  ArnItemNet::emitArnMonEvent( int type, const QByteArray& data, bool isLocal)
+bool ArnItemNet::isBlock( quint32 sendId)
 {
-    ArnEvMonitor  ev( type, data, isLocal, _sessionHandler);
-    sendArnEvent( &ev);
+    return (_blockEcho && (sendId == itemId()));  // Update was initiated from this Item, it can be blocked ...
 }
 
 
@@ -227,29 +231,6 @@ void  ArnItemNet::customEvent( QEvent* ev)
 {
     int  evIdx = ev->type() - ArnEvent::baseType();
     switch (evIdx) {
-    case ArnEvent::Idx::ValueChange:
-    {
-        ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
-        quint32  sendId = e->sendId();
-        quint32  id = itemId();
-        // qDebug() << "ArnItemNet ArnEvValueChange: inItemPath=" << path()
-        //          << " blockedUpdate=" << (_blockEcho  &&  sendId == id);
-        if (_blockEcho  &&  sendId == id)  // Update was initiated from this Item, it can be blocked ...
-            break;
-
-        addIsOnlyEcho( sendId);
-        itemUpdater( e->handleData());
-        break;
-    }
-    case ArnEvent::Idx::ModeChange:
-    {
-        ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
-        // qDebug() << "ArnItemNet ArnEvModeChange: path=" << e->path() << " mode=" << e->mode()
-        //          << " inItemPath=" << path();
-        if (!isFolder())
-            modeUpdater( e->mode());
-        break;
-    }
     case ArnEvent::Idx::LinkCreate:
     {
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
