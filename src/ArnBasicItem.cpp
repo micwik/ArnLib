@@ -1008,8 +1008,10 @@ ArnBasicItemEventHandler::~ArnBasicItemEventHandler()
 //// Must be threadsafe
 void  ArnBasicItemEventHandler::defaultEvent( QEvent* ev)
 {
-    QEvent::Type  type = ev->type();
-    if (type == ArnEvValueChange::type()) {
+    int  evIdx = ev->type() - ArnEvent::baseType();
+    switch (evIdx) {
+    case ArnEvent::Idx::ValueChange:
+    {
         ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
         ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
         if (!target)  return;  // No target, should be ...
@@ -1019,7 +1021,8 @@ void  ArnBasicItemEventHandler::defaultEvent( QEvent* ev)
         target->addIsOnlyEcho( sendId);
         return;
     }
-    if (type == ArnEvModeChange::type()) {
+    case ArnEvent::Idx::ModeChange:
+    {
         ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
         ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
         if (!target)  return;  // No target, should be ...
@@ -1033,7 +1036,8 @@ void  ArnBasicItemEventHandler::defaultEvent( QEvent* ev)
         }
         return;
     }
-    if (type == ArnEvRetired::type()) {
+    case ArnEvent::Idx::Retired:
+    {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
         if (!target)  return;  // No target, should be ...
@@ -1043,6 +1047,8 @@ void  ArnBasicItemEventHandler::defaultEvent( QEvent* ev)
             target->close();
         }
         return;
+    }
+    default:;
     }
 }
 

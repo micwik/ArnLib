@@ -401,6 +401,8 @@ void  ArnMonitor::customEvent( QEvent* ev)
     default:
         break;
     }
+
+    ArnItemB::customEvent( ev);
 }
 
 

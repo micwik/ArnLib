@@ -223,15 +223,20 @@ void  ArnItemNet::customEvent( QEvent* ev)
 {
     if (!_isMonitor)  return ArnItemB::customEvent( ev);
 
-    QEvent::Type  type = ev->type();
-    if (type == ArnEvLinkCreate::type()) {
+    int  evIdx = ev->type() - ArnEvent::baseType();
+    switch (evIdx) {
+    case ArnEvent::Idx::LinkCreate:
+    {
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
         if (e->isLastLink()) {
             // qDebug() << "ArnItemNet Mon create: path=" << e->path() << " inPath=" << path();
             emitNewItemEvent( e->path());
         }
-        return ArnItemB::customEvent( ev);
+        break;
     }
+    default:;
+    }
+
     return ArnItemB::customEvent( ev);
 }
 
@@ -245,16 +250,19 @@ ArnItemNetEar::ArnItemNetEar( QObject* parent)
 
 void  ArnItemNetEar::customEvent( QEvent* ev)
 {
-    QEvent::Type  type = ev->type();
-    if (type == ArnEvLinkCreate::type()) {
+    int  evIdx = ev->type() - ArnEvent::baseType();
+    switch (evIdx) {
+    case ArnEvent::Idx::LinkCreate:
+    {
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
         if (e->isLastLink() && e->arnLink()->isFolder()) {
             // qDebug() << "ArnItemNetEar create tree: path=" << e->path();
             emit arnTreeCreated( e->path());
         }
-        return ArnItem::customEvent( ev);
+        break;
     }
-    if (type == ArnEvRetired::type()) {
+    case ArnEvent::Idx::Retired:
+    {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : path();
         if (Arn::debugLinkDestroy)  qDebug() << "ArnItemNetEar retired: path=" << destroyPath
@@ -263,7 +271,9 @@ void  ArnItemNetEar::customEvent( QEvent* ev)
         if (e->startLink()->isFolder()) {
             emit arnTreeDestroyed( destroyPath, e->isGlobal());
         }
-        return ArnItem::customEvent( ev);
+        break;
+    }
+    default:;
     }
 
     return ArnItem::customEvent( ev);

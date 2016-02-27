@@ -296,8 +296,10 @@ void  ArnItemB::doEvent( QEvent* ev)
 {
     Q_D(ArnItemB);
 
-    QEvent::Type  type = ev->type();
-    if (type == ArnEvValueChange::type()) {
+    int  evIdx = ev->type() - ArnEvent::baseType();
+    switch (evIdx) {
+    case ArnEvent::Idx::ValueChange:
+    {
         ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
         // qDebug() << "ArnEvValueChange: inItemPath=" << path();
         quint32  sendId = e->sendId();
@@ -311,7 +313,8 @@ void  ArnItemB::doEvent( QEvent* ev)
             itemUpdated( e->handleData(), e->valueData());
         return;
     }
-    if (type == ArnEvLinkCreate::type()) {
+    case ArnEvent::Idx::LinkCreate:
+    {
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
         // qDebug() << "ArnEvLinkCreate: path=" << e->path() << " inItemPath=" << path();
         if (!Arn::isFolderPath( e->path())) {  // Only created leaves are passed on
@@ -319,7 +322,8 @@ void  ArnItemB::doEvent( QEvent* ev)
         }
         return;
     }
-    if (type == ArnEvModeChange::type()) {
+    case ArnEvent::Idx::ModeChange:
+    {
         ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
         // qDebug() << "ArnEvModeChange: path=" << e->path() << " mode=" << e->mode()
         //          << " inItemPath=" << path();
@@ -329,12 +333,15 @@ void  ArnItemB::doEvent( QEvent* ev)
             modeUpdate( e->mode());
         return;
     }
-    if (type == ArnEvRetired::type()) {
+    case ArnEvent::Idx::Retired:
+    {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         if (!e->isBelow()) {
             if (Arn::debugLinkDestroy)  qDebug() << "Item arnLinkDestroyed: path=" << path();
             emit arnLinkDestroyed();
         }
         return;
+    }
+    default:;
     }
 }
