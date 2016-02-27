@@ -2,6 +2,7 @@
 #include <ArnInc/ArnM.hpp>
 #include <ArnInc/ArnBasicItem.hpp>
 #include <ArnInc/ArnItem.hpp>
+#include <ArnItemNet.hpp>
 #include <ArnInc/ArnMonitor.hpp>
 #include <ArnInc/MQFlags.hpp>
 #include <ArnInc/XStringMap.hpp>
@@ -47,6 +48,7 @@ private slots:
     void  testArnItem1();
     void  testArnItem2();
     void  testArnItemDestroy();
+    void  testArnItemNet1();
     void  testArnMonitorLocal();
 
 private:
@@ -284,8 +286,8 @@ void ArnUtest1::testArnBasicItemDestroy()
 
 void  ArnUtest1::testArnItem1()
 {
-    ArnItem  arnT1a("//Test/T1/value");
-    ArnItem  arnT1b("//Test/T1/value");
+    ArnItem  arnT1a("//Test/Tf1/value");
+    ArnItem  arnT1b("//Test/Tf1/value");
     arnT1a.setIgnoreSameValue( false);
     arnT1b.setIgnoreSameValue( false);
     // connect( &arnT1b, SIGNAL(changed(QByteArray)), _tsub, SLOT(itemUpdated(QByteArray)));
@@ -301,8 +303,8 @@ void  ArnUtest1::testArnItem1()
 
 void  ArnUtest1::testArnItem2()
 {
-    ArnItem  arnT1a("//Test/T2/value");
-    ArnItem  arnT1b("//Test/T2/value");
+    ArnItem  arnT1a("//Test/Tf2/value");
+    ArnItem  arnT1b("//Test/Tf2/value");
     arnT1a.setIgnoreSameValue( true);
     arnT1b.setIgnoreSameValue( true);
     //// Check Null -> int=0
@@ -315,20 +317,52 @@ void  ArnUtest1::testArnItem2()
     QVERIFY( arnT1b.toByteArray() == "");
     arnT1a = 0;
     QVERIFY( arnT1b.toByteArray() == "0");
+
+    ArnItem  arnT2aPv("//Test/Tf3/value!");
+    ArnItem  arnT2a("//Test/Tf3/value");
+    arnT2aPv = 0;
+    arnT2a   = 0;
+    QVERIFY( arnT2a.toInt() == 0);
+    QVERIFY( arnT2aPv.toInt() == 0);
+    arnT2aPv = 123;
+    QVERIFY( arnT2a.toInt() == 123);
+    QVERIFY( arnT2aPv.toInt() == 0);
+    arnT2a = 321;
+    QVERIFY( arnT2a.toInt() == 123);
+    QVERIFY( arnT2aPv.toInt() == 321);
 }
 
 
 void ArnUtest1::testArnItemDestroy()
 {
-    QVERIFY( ArnM::exist("//Test/T3/") == false);
-    ArnM::setValue("//Test/T3/value", 1);
-    ArnM::setValue("//Test/T3/xxx", 1);
-    ArnItem  arnT1a("//Test/T3/yyy");
-    QVERIFY( ArnM::exist("//Test/T3/") == true);
-    QVERIFY( ArnM::exist("//Test/T3/value") == true);
-    ArnM::destroyLink("//Test/T3/");
-    QVERIFY( ArnM::exist("//Test/T3/") == false);
-    QVERIFY( ArnM::exist("//Test/T3/value") == false);
+    QVERIFY( ArnM::exist("//Test/Td1/") == false);
+    ArnM::setValue("//Test/Td1/value", 1);
+    ArnM::setValue("//Test/Td1/xxx", 1);
+    ArnItem  arnT1a("//Test/Td1/yyy");
+    QVERIFY( ArnM::exist("//Test/Td1/") == true);
+    QVERIFY( ArnM::exist("//Test/Td1/value") == true);
+    ArnM::destroyLink("//Test/Td1/");
+    QVERIFY( ArnM::exist("//Test/Td1/") == false);
+    QVERIFY( ArnM::exist("//Test/Td1/value") == false);
+}
+
+
+void  ArnUtest1::testArnItemNet1()
+{
+    ArnItemNet  arnT2aPv(0, 0);
+    ArnItemNet  arnT2a(0, 0);
+    arnT2aPv.open("//Test/Tn1/value!");
+    arnT2a.open("//Test/Tn1/value");
+    arnT2aPv.arnImport("0");
+    arnT2a.arnImport("0");
+    QVERIFY( arnT2a.toInt() == 0);
+    QVERIFY( arnT2aPv.toInt() == 0);
+    arnT2aPv.arnImport("123");
+    QVERIFY( arnT2a.toInt() == 0);
+    QVERIFY( arnT2aPv.toInt() == 123);
+    arnT2a.arnImport("321");
+    QVERIFY( arnT2a.toInt() == 321);
+    QVERIFY( arnT2aPv.toInt() == 123);
 }
 
 
