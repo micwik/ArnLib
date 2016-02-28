@@ -53,9 +53,9 @@ public:
     QByteArray  getSyncModeString()  const;
     void  setModeString( const QByteArray& mode);
     QByteArray  getModeString()  const;
-    void  emitNewItemEvent( const QString& path, bool isOld = 0);
-    void  emitArnMonEvent( int type, const QByteArray& data = QByteArray(),
-                           bool isLocal = true);
+
+    void  sendNewItemMonEvent( const QString& path, bool isOld = 0);
+    void  sendMonEvent( int type, const QByteArray& data = QByteArray(), bool isLocal = true);
     void  setBlockEcho( bool blockEcho);
     void  setDisable( bool disable = true);
     bool  isDisable()  const;
@@ -88,9 +88,6 @@ public:
     using ArnItemB::childItemsMain;
     using ArnItemB::openFolder;
     using ArnItemB::openWithFlags;
-
-protected:
-    virtual void  customEvent( QEvent* ev);
 
 private:
     void  init();

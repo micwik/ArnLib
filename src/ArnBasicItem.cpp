@@ -842,6 +842,7 @@ QThread*  ArnBasicItem::thread()  const
 }
 
 
+/// Must be threaded
 bool  ArnBasicItem::sendArnEvent( ArnEvent* ev)
 {
     if (!_link)  return false;

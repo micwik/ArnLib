@@ -164,7 +164,7 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
         if (isNew) {
             if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: Invoke monitorStart Before";
             QMetaObject::invokeMethod( this,
-                                       "emitArnMonEvent",
+                                       "sendArnMonEvent",
                                        Qt::QueuedConnection,  // make sure started after all setup is done in this thread
                                        Q_ARG( int, ArnMonEventType::MonitorStart));
             //// Check thread event sequence by big delay
@@ -175,7 +175,7 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
         else {
             if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart Before";
             QMetaObject::invokeMethod( this,
-                                       "emitArnMonEvent",
+                                       "sendArnMonEvent",
                                        Qt::QueuedConnection,  // make sure restarted after all setup is done in this thread
                                        Q_ARG( int, ArnMonEventType::MonitorReStart));
             if (Arn::debugMonitorTest)  qDebug() << "ArnMonitor-Test: Invoke monitorReStart After (delay)";
@@ -224,7 +224,7 @@ void  ArnMonitor::reStart()
     Q_D(ArnMonitor);
 
     d->_foundChilds.clear();
-    emitArnMonEvent( ArnMonEventType::MonitorReStart);
+    sendArnMonEvent( ArnMonEventType::MonitorReStart);
 }
 
 
@@ -244,7 +244,7 @@ void*  ArnMonitor::reference()  const
 }
 
 
-void  ArnMonitor::emitArnMonEvent( int type, const QByteArray& data)
+void  ArnMonitor::sendArnMonEvent( int type, const QByteArray& data)
 {
     Q_D(ArnMonitor);
 

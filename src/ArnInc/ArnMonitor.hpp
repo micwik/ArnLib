@@ -260,7 +260,7 @@ protected:
 
 private slots:
     void  dispatchArnMonEvent( int type, const QByteArray& data, bool isLocal);
-    void  emitArnMonEvent( int type, const QByteArray& data = QByteArray());
+    void  sendArnMonEvent( int type, const QByteArray& data = QByteArray());
     void  setupLocalMonitorItem();
 
 private:

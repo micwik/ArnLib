@@ -41,8 +41,8 @@ Done in 3.0
 * Pimpl: Converted to d-pointer for making binary compatible library in the future.
 * Started unit tests
 * Optimized HandleData class with Null-state that can be this == 0.
-* Made ArnLink none QObject to save memory and independent on main-thread-create.
-  * Removed ArnLik::trfValue(), add QByteArray* valueBytes in ArnLink::setValue() & as param to emitChanged().
+* Made ArnObject (ArnLink) none QObject to save memory and independent on main-thread-create.
+  * Removed ArnLik::trfValue(), add QByteArray* valueBytes in ArnLink::setValue() & as param to doValueChanged().
   * Added ArnEvent valueChanged, implement in ArnLink & ArnItemB.
   * New methods and data for parent() etc.
 * Changed to ArnLink::toInt(bool* isOk = 0).

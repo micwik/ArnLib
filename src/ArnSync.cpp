@@ -750,7 +750,7 @@ void  ArnSync::doChildsToEvent( ArnItemNet *itemNet)
     QString  path = itemNet->path();
     QStringList  childList = itemNet->childItemsMain();
     foreach (QString childName, childList) {
-        itemNet->emitNewItemEvent( Arn::makePath( path, childName), true);
+        itemNet->sendNewItemMonEvent( Arn::makePath( path, childName), true);
     }
 }
 
@@ -853,7 +853,7 @@ uint  ArnSync::doCommandEvent()
 
     int  type = ArnMonEventType::txt().getEnumVal( typeStr.constData(),
                                                    ArnMonEventType::None, ArnMonEventType::NsCom);
-    itemNet->emitArnMonEvent( type, data, false);
+    itemNet->sendMonEvent( type, data, false);
     return ArnError::Ok;
 }
 

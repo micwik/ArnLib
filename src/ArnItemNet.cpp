@@ -122,14 +122,16 @@ QByteArray  ArnItemNet::getModeString()  const
 }
 
 
-void  ArnItemNet::emitNewItemEvent( const QString& path, bool isOld)
+/// Must be threaded
+void  ArnItemNet::sendNewItemMonEvent( const QString& path, bool isOld)
 {
     int  type = isOld ? ArnMonEventType::ItemFound : ArnMonEventType::ItemCreated;
-    emitArnMonEvent( type, path.toUtf8(), true);
+    sendMonEvent( type, path.toUtf8(), true);
 }
 
 
-void  ArnItemNet::emitArnMonEvent( int type, const QByteArray& data, bool isLocal)
+/// Must be threaded
+void  ArnItemNet::sendMonEvent( int type, const QByteArray& data, bool isLocal)
 {
     ArnEvMonitor  ev( type, data, isLocal, _sessionHandler);
     sendArnEvent( &ev);
@@ -224,26 +226,24 @@ bool ArnItemNet::isBlock( quint32 sendId)
 void  ArnItemNet::arnEvent( QEvent* ev, bool isAlienThread)
 {
     ArnItemB::arnEvent( ev, isAlienThread);
-}
 
+    //// Must support threaded
+    //// Only for a Monitor
+    if (!_isMonitor)  return;
 
-void  ArnItemNet::customEvent( QEvent* ev)
-{
     int  evIdx = ev->type() - ArnEvent::baseType();
     switch (evIdx) {
     case ArnEvent::Idx::LinkCreate:
     {
         ArnEvLinkCreate*  e = static_cast<ArnEvLinkCreate*>( ev);
-        if (_isMonitor && e->isLastLink()) {
+        if (e->isLastLink()) {
             // qDebug() << "ArnItemNet Mon create: path=" << e->path() << " inPath=" << path();
-            emitNewItemEvent( e->path());
+            sendNewItemMonEvent( e->path());
         }
         break;
     }
     default:;
     }
-
-    return ArnItemB::customEvent( ev);
 }
 
 

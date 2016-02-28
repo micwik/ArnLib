@@ -138,10 +138,9 @@ protected:
 
 private:
     void  resetHave();
-    void  emitChanged( int sendId, const QByteArray* valueData = 0,
-                       const ArnLinkHandle& handleData = ArnLinkHandle::null());
+    void  doValueChanged( int sendId, const QByteArray* valueData = 0,
+                          const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  sendEventsInThread( ArnEvent* ev, const ArnBasicItemList& recipients);
-    void  sendEvents( ArnEvent* ev);
     void  sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink);
     void  sendEventArnM( ArnEvent* ev);
 

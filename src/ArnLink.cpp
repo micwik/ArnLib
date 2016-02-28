@@ -143,12 +143,13 @@ const ArnLinkList&  ArnLink::children() const
 
 
 //// This should in threaded: preserve order of setValue, optimize return of bytearray
-void  ArnLink::emitChanged( int sendId, const QByteArray* valueData, const ArnLinkHandle& handleData)
+void  ArnLink::doValueChanged( int sendId, const QByteArray* valueData,
+                               const ArnLinkHandle& handleData)
 {
-    // qDebug() << "emitChanged: isThr=" << _isThreaded << " isPipe=" << _isPipeMode <<
+    // qDebug() << "doValueChanged: isThr=" << _isThreaded << " isPipe=" << _isPipeMode <<
     //            " path=" << linkPath() << " value=" << toByteArray();
     ArnEvValueChange ev( sendId, valueData, handleData);
-    sendEvents( &ev);
+    sendArnEvent( &ev);
 }
 
 
@@ -164,7 +165,8 @@ void ArnLink::sendEventsInThread(ArnEvent* ev, const ArnBasicItemList& recipient
 }
 
 
-void  ArnLink::sendEvents( ArnEvent* ev)
+/// Must be threaded
+void  ArnLink::sendArnEvent( ArnEvent* ev)
 {
     if (!_mutex) {  // Fast non threaded version
         // Copy of subsribeTab due to destroyEvent can change it
@@ -203,7 +205,7 @@ void  ArnLink::sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink)
     ArnLink*  link = startLink;
     while (link) {
         // qDebug() << "sendEventsDirRoot: inLinkPath=" << link->linkPath();
-        link->sendEvents( ev);
+        link->sendArnEvent( ev);
         link = link->parent();
     }
 }
@@ -245,10 +247,10 @@ void  ArnLink::setValue( int value, int sendId, bool forceKeep)
 
     if (_mutex && _isPipeMode) {
         QByteArray  valueData = QByteArray::number( value);
-        emitChanged( sendId, &valueData);
+        doValueChanged( sendId, &valueData);
     }
     else {
-        emitChanged( sendId);
+        doValueChanged( sendId);
     }
 }
 
@@ -274,10 +276,10 @@ void  ArnLink::setValue( ARNREAL value, int sendId, bool forceKeep)
 #else
         QByteArray  valueData = QByteArray::number( value, 'g', std::numeric_limits<double>::digits10);
 #endif
-        emitChanged( sendId, &valueData);
+        doValueChanged( sendId, &valueData);
     }
     else {
-        emitChanged( sendId);
+        doValueChanged( sendId);
     }
 }
 
@@ -301,10 +303,10 @@ void  ArnLink::setValue( const QString& value, int sendId, bool forceKeep,
 
     if (_mutex && (_isPipeMode || !handleData.isNull())) {
         QByteArray  valueData = value.toUtf8();
-        emitChanged( sendId, &valueData, handleData);
+        doValueChanged( sendId, &valueData, handleData);
     }
     else {
-        emitChanged( sendId, 0, handleData);
+        doValueChanged( sendId, 0, handleData);
     }
 }
 
@@ -327,10 +329,10 @@ void  ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && (_isPipeMode || !handleData.isNull())) {
-        emitChanged( sendId, &value, handleData);
+        doValueChanged( sendId, &value, handleData);
     }
     else {
-        emitChanged( sendId, 0, handleData);
+        doValueChanged( sendId, 0, handleData);
     }
 }
 
@@ -352,10 +354,10 @@ void  ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
 
     if (_mutex && _isPipeMode) {
         QByteArray  valueData = value.toString().toUtf8();
-        emitChanged( sendId, &valueData);
+        doValueChanged( sendId, &valueData);
     }
     else {
-        emitChanged( sendId);
+        doValueChanged( sendId);
     }
 }
 
@@ -673,12 +675,6 @@ bool  ArnLink::isFolder( void)
 }
 
 
-void  ArnLink::sendArnEvent( ArnEvent* ev)
-{
-    sendEvents( ev);
-}
-
-
 void  ArnLink::addSyncMode( Arn::ObjectSyncMode syncMode)
 {
     if (_mutex)  _mutex->lock();
@@ -850,7 +846,7 @@ void  ArnLink::doRetired( ArnLink* startLink, bool isGlobal)
         sendEventsDirRoot( &arnEvRetired, parent());
     }
     ArnEvRetired  arnEvRetired( startLink, false, isGlobal);
-    sendEvents( &arnEvRetired);
+    sendArnEvent( &arnEvRetired);
 }
 
 
