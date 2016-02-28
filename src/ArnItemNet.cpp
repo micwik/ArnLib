@@ -53,8 +53,7 @@ void  ArnItemNet::init()
 }
 
 
-ArnItemNet::ArnItemNet( void* sessionHandler, QObject *parent) :
-    ArnItemB( parent)
+ArnItemNet::ArnItemNet( void* sessionHandler)
 {
     init();
     _sessionHandler = sessionHandler;
@@ -88,7 +87,7 @@ void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
 QByteArray  ArnItemNet::getSyncModeString()  const
 {
     QByteArray  smode;
-    Arn::ObjectSyncMode  syncMode = ArnItemB::syncMode();
+    Arn::ObjectSyncMode  syncMode = ArnBasicItem::syncMode();
 
     if (syncMode.is( syncMode.Master))       smode += "master ";
     if (syncMode.is( syncMode.AutoDestroy))  smode += "autodestroy ";
@@ -225,7 +224,7 @@ bool ArnItemNet::isBlock( quint32 sendId)
 
 void  ArnItemNet::arnEvent( QEvent* ev, bool isAlienThread)
 {
-    ArnItemB::arnEvent( ev, isAlienThread);
+    ArnBasicItem::arnEvent( ev, isAlienThread);
 
     //// Must support threaded
     //// Only for a Monitor

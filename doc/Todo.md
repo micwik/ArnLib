@@ -14,7 +14,6 @@ Major
 * API to Sync ArnObjects over other media (e.g. CAN).
 * Javascript based ArnLib for Web-applications over WebSocket.
 * Put ArnServer client sessions in "/Local/..." to be viewed and controlled (e.g kill).
-* ArnBasicItem with no QObject, only inherited to give ArnEvent (QEvent). Small footprint!
 
 Minor
 -----
@@ -47,6 +46,9 @@ Done in 3.0
   * New methods and data for parent() etc.
 * Changed to ArnLink::toInt(bool* isOk = 0).
   To make ignoreSameValue work as expected for "" -> int=0 and similar. Same for all toXXX().
+* ArnBasicItem with no QObject, only inherited to give ArnEvent (QEvent). Small footprint!
+* ArnItemNet inherited from ArnBasicItem.
+* ArnMonitor no dependendency to ArnItemNet that can be in other thread.
 
 Done in 2.3
 -----------

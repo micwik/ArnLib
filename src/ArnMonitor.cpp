@@ -184,7 +184,7 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
     else {  // No client, do local monitor. 2 items used, "sensor" (ArnItemNet) and this ArnMonitor to same path.
         if (!open( d->_monitorPath))  return false;
 
-        d->_localMonItem = new ArnItemNet( 0, 0);
+        d->_localMonItem = new ArnItemNet(0);
         if (!d->_localMonItem->open( d->_monitorPath)) {
             close();
             return false;

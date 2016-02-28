@@ -133,7 +133,6 @@ private slots:
     void  socketInput();
     void  doLoginSeq0End();
     void  sendNext();
-    void  linkDestroyedHandle();
     void  doArnMonEvent( int type, const QByteArray& data, bool isLocal, ArnItemNet* itemNet);
 
 private:
@@ -158,7 +157,7 @@ private:
     void  sendLogin( int seq, const Arn::XStringMap& xsMap);
     void  eventToFluxQue( uint netId, int type, const QByteArray& data);
     void  destroyToFluxQue( ArnItemNet* itemNet);
-    void  removeItemNet( ArnItemNet* itemNet);
+    void  removeItemNetRefs( ArnItemNet* itemNet);
     void  closeFinal();
     void  clearQueues();
     void  setRemoteVer( const QByteArray& remVer);

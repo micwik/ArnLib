@@ -33,18 +33,16 @@
 #define ARNITEMNET_HPP
 
 
-#include "ArnInc/ArnItemB.hpp"
+#include "ArnInc/ArnBasicItem.hpp"
 #include "ArnInc/ArnItem.hpp"  // MW: tobe removed?
 #include <QStringList>
 
 
 //! \cond ADV
-// Must only be used in main thread
-class ArnItemNet : public ArnItemB
+class ArnItemNet : public ArnBasicItem
 {
-Q_OBJECT
 public:
-    explicit ArnItemNet( void* sessionHandler, QObject *parent);
+    explicit ArnItemNet( void* sessionHandler);
 
     void  setNetId( uint netId);
     uint  netId()  const;
@@ -73,21 +71,19 @@ public:
 
     virtual void  arnEvent( QEvent* ev, bool isAlienThread);
 
-    using ArnItemB::addSyncMode;
-    using ArnItemB::syncMode;
-    using ArnItemB::getMode;
-    using ArnItemB::isPipeMode;
-    using ArnItemB::isFolder;
-    using ArnItemB::setBlockEcho;
-    using ArnItemB::addIsOnlyEcho;
-    using ArnItemB::isOnlyEcho;
-    using ArnItemB::retireType;
-    using ArnItemB::type;
-    using ArnItemB::arnExport;
-    using ArnItemB::arnImport;
-    using ArnItemB::childItemsMain;
-    using ArnItemB::openFolder;
-    using ArnItemB::openWithFlags;
+    using ArnBasicItem::addSyncMode;
+    using ArnBasicItem::syncMode;
+    using ArnBasicItem::getMode;
+    using ArnBasicItem::isPipeMode;
+    using ArnBasicItem::isFolder;
+    using ArnBasicItem::addIsOnlyEcho;
+    using ArnBasicItem::isOnlyEcho;
+    using ArnBasicItem::retireType;
+    using ArnBasicItem::type;
+    using ArnBasicItem::arnExport;
+    using ArnBasicItem::arnImport;
+    using ArnBasicItem::childItemsMain;
+    using ArnBasicItem::openWithFlags;
 
 private:
     void  init();

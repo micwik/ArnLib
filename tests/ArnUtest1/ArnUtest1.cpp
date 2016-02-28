@@ -349,8 +349,8 @@ void ArnUtest1::testArnItemDestroy()
 
 void  ArnUtest1::testArnItemNet1()
 {
-    ArnItemNet  arnT2aPv(0, 0);
-    ArnItemNet  arnT2a(0, 0);
+    ArnItemNet  arnT2aPv(0);
+    ArnItemNet  arnT2a(0);
     arnT2aPv.open("//Test/Tn1/value!");
     arnT2a.open("//Test/Tn1/value");
     arnT2aPv.arnImport("0");

@@ -79,6 +79,7 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
 
 ArnSync::~ArnSync()
 {
+    qDeleteAll( _itemNetMap);
 }
 
 
@@ -291,7 +292,7 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
         }
     }
 
-    ArnItemNet*  itemNet = new ArnItemNet( _sessionHandler, this);
+    ArnItemNet*  itemNet = new ArnItemNet( _sessionHandler);
     if (!itemNet->open( path))  return 0;
 
     uint  netId = itemNet->linkId(); // Use clients linkId as netID for this Item
@@ -708,7 +709,7 @@ uint  ArnSync::doCommandSync()
 
     bool  isCreateAllow = _allow.is( _allow.Create);
     Arn::LinkFlags  createFlag = Arn::LinkFlags::flagIf( isCreateAllow, Arn::LinkFlags::CreateAllowed);
-    ArnItemNet*  itemNet = new ArnItemNet( _sessionHandler, 0);  // MW: check for destruction
+    ArnItemNet*  itemNet = new ArnItemNet( _sessionHandler);
     if (!itemNet->openWithFlags( path, createFlag)) {
         delete itemNet;
         return isCreateAllow ? ArnError::CreateError : ArnError::OpNotAllowed;
@@ -782,7 +783,8 @@ uint ArnSync::doCommandNoSync()
             return ArnError::Ok;
         }
 
-        removeItemNet( itemNet);
+        removeItemNetRefs( itemNet);
+        delete itemNet;
         return ArnError::Ok;
     }
 
@@ -798,7 +800,8 @@ uint ArnSync::doCommandNoSync()
     }
     // Make NoSync from list
     foreach (ArnItemNet* itemNet, noSyncList) {
-        removeItemNet( itemNet);
+        removeItemNetRefs( itemNet);
+        delete itemNet;
     }
     return ArnError::Ok;
 }
@@ -870,7 +873,7 @@ uint  ArnSync::doCommandSet()
 
     bool  isCreateAllow = _allow.is( _allow.Create);
     Arn::LinkFlags  createFlag = Arn::LinkFlags::flagIf( isCreateAllow, Arn::LinkFlags::CreateAllowed);
-    ArnItemNet  item( _sessionHandler, 0);
+    ArnItemNet  item( _sessionHandler);
     if (!item.openWithFlags( path, createFlag)) {
         return createFlag ? ArnError::CreateError : ArnError::OpNotAllowed;
     }
@@ -1118,22 +1121,7 @@ void  ArnSync::disConnected()
 }
 
 
-void  ArnSync::linkDestroyedHandle()
-{
-    ArnItemNet*  itemNet = qobject_cast<ArnItemNet*>( sender());
-    if (!itemNet) {
-        ArnM::errorLog( QString(tr("Can't get ArnItemNet sender for itemRemove")),
-                            ArnError::Undef);
-        return;
-    }
-
-    if (Arn::debugLinkDestroy)  qDebug() << "itemRemove: netId=" << itemNet->netId() << " path=" << itemNet->path();
-    removeItemNet( itemNet);
-    destroyToFluxQue( itemNet);
-}
-
-
-void  ArnSync::removeItemNet( ArnItemNet* itemNet)
+void  ArnSync::removeItemNetRefs( ArnItemNet* itemNet)
 {
     if (!itemNet)  return;
 
@@ -1147,8 +1135,6 @@ void  ArnSync::removeItemNet( ArnItemNet* itemNet)
     s = _fluxItemQueue.removeAll( itemNet);
     // qDebug() << "... remove from fluxQueue num=" << s;
     ++s;  // Gets rid of warning
-
-    itemNet->deleteLater();
 }
 
 
@@ -1556,8 +1542,9 @@ void  ArnSync::customEvent( QEvent* ev)
         }
 
         if (Arn::debugLinkDestroy)  qDebug() << "itemRemove: netId=" << itemNet->netId() << " path=" << itemNet->path();
-        removeItemNet( itemNet);
-        destroyToFluxQue( itemNet);
+        removeItemNetRefs( itemNet);
+        destroyToFluxQue( itemNet);  // This queue contains text not the itemNet
+        delete itemNet;
         break;
     }
     default:
