@@ -256,6 +256,15 @@ void  ArnSync::setupItemNet( ArnItemNet* itemNet, uint netId)
     _itemNetMap.insert( netId, itemNet);
 
     itemNet->setEventHandler( this);
+
+#if 0
+    if (itemNet->path() == "/") {
+        qDebug() << "ArnSync setupItemNet root: eventH=" << itemNet->eventHandler()
+                 << " sessionH=" << itemNet->sessionHandler()
+                 << " isMon=" << itemNet->isMonitor() << " netId=" << itemNet->netId()
+                 << " itemNet=" << itemNet;
+    }
+#endif
 }
 
 
@@ -293,7 +302,10 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
     }
 
     ArnItemNet*  itemNet = new ArnItemNet( _sessionHandler);
-    if (!itemNet->open( path))  return 0;
+    if (!itemNet->open( path)) {
+        delete itemNet;
+        return 0;
+    }
 
     uint  netId = itemNet->linkId(); // Use clients linkId as netID for this Item
     if (_itemNetMap.contains( netId)) {  // Item is already synced by this client
@@ -706,6 +718,14 @@ uint  ArnSync::doCommandSync()
     QByteArray  smode = _commandMap.value("smode");
     uint        netId = _commandMap.value("id").toUInt();
     if (!_allow.isAny( _allow.ReadWrite) && !isFreePath( path))  return ArnError::OpNotAllowed;
+
+    if (_itemNetMap.contains( netId)) {  // Item is already synced by this server session
+        //// Remove old syncing item
+        ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+        qDebug() << "ArnSync CommandSync Item already synced: path=" << itemNet->path();
+        removeItemNetRefs( itemNet);
+        delete itemNet;
+    }
 
     bool  isCreateAllow = _allow.is( _allow.Create);
     Arn::LinkFlags  createFlag = Arn::LinkFlags::flagIf( isCreateAllow, Arn::LinkFlags::CreateAllowed);

@@ -43,9 +43,12 @@ class ArnItemNet : public ArnBasicItem
 {
 public:
     explicit ArnItemNet( void* sessionHandler);
+    virtual  ~ArnItemNet();
+    bool  openWithFlags( const QString& path, Arn::LinkFlags linkFlags);
 
     void  setNetId( uint netId);
     uint  netId()  const;
+    void*  sessionHandler()  const;
 
     void  addSyncModeString( const QByteArray& smode, bool linkShare);
     QByteArray  getSyncModeString()  const;

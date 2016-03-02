@@ -60,6 +60,32 @@ ArnItemNet::ArnItemNet( void* sessionHandler)
 }
 
 
+ArnItemNet::~ArnItemNet()
+{
+#if 0
+    if (path() == "/") {
+        qDebug() << "ArnItemNet destruct root: eventH=" << eventHandler() << " sessionH=" << _sessionHandler
+                 << " isMon=" << _isMonitor << " netId=" << _netId
+                 << " itemNet=" << this;
+    }
+#endif
+}
+
+
+bool  ArnItemNet::openWithFlags( const QString& path, Arn::LinkFlags linkFlags)
+{
+#if 0
+    if (path == "/") {
+        qDebug() << "ArnItemNet open root: eventH=" << eventHandler() << " sessionH=" << _sessionHandler
+                 << " isMon=" << _isMonitor << " netId=" << _netId
+                 << " itemNet=" << this;
+    }
+#endif
+
+    return ArnBasicItem::openWithFlags( path, linkFlags);
+}
+
+
 void  ArnItemNet::setNetId( uint netId)
 {
     _netId = netId;
@@ -69,6 +95,12 @@ void  ArnItemNet::setNetId( uint netId)
 uint  ArnItemNet::netId()  const
 {
     return _netId;
+}
+
+
+void*  ArnItemNet::sessionHandler()  const
+{
+    return _sessionHandler;
 }
 
 
