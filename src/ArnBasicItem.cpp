@@ -1015,9 +1015,9 @@ void  ArnBasicItemEventHandler::defaultEvent( QEvent* ev)
     {
         ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
         ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
-        if (!target)  return;  // No target, should be ...
-        // qDebug() << "ArnEvValueChange: inItemPath=" << path();
+        if (!target)  return;  // No target, deleted/closed ...
 
+        // qDebug() << "ArnEvValueChange: inItemPath=" << path();
         quint32  sendId = e->sendId();
         target->addIsOnlyEcho( sendId);
         return;
@@ -1026,10 +1026,10 @@ void  ArnBasicItemEventHandler::defaultEvent( QEvent* ev)
     {
         ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
         ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
-        if (!target)  return;  // No target, should be ...
+        if (!target)  return;  // No target, deleted/closed ...
+
         // qDebug() << "ArnBasicEvModeChange: path=" << e->path() << " mode=" << e->mode()
         //          << " inItemPath=" << target->path();
-
         if (!target->isFolder()) {
             if (e->mode().is( Arn::ObjectMode::Pipe)) {  // Pipe-mode never IgnoreSameValue
                 target->setIgnoreSameValue(false);
@@ -1041,11 +1041,12 @@ void  ArnBasicItemEventHandler::defaultEvent( QEvent* ev)
     {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
-        if (!target)  return;  // No target, should be ...
+        if (!target)  return;  // No target, deleted/closed ...
 
         if (!e->isBelow()) {
             if (Arn::debugLinkDestroy)  qDebug() << "BasicItem arnLinkDestroyed: path=" << target->path();
             target->close();
+            e->setTarget(0);  // target is not available any more
         }
         return;
     }

@@ -1515,7 +1515,8 @@ void  ArnSync::customEvent( QEvent* ev)
     {
         ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
         ArnItemNet*  itemNet = static_cast<ArnItemNet*>( static_cast<ArnBasicItem*>( e->target()));
-        Q_ASSERT(itemNet);
+        if (!itemNet)  break;  // No target, deleted/closed ...
+
         quint32  sendId = e->sendId();
         bool  isBlocked = itemNet->isBlock( sendId);
         // qDebug() << "ArnSync ArnEvValueChange: inItemPath=" << itemNet->path()
@@ -1531,7 +1532,8 @@ void  ArnSync::customEvent( QEvent* ev)
     {
         ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
         ArnItemNet*  itemNet = static_cast<ArnItemNet*>( static_cast<ArnBasicItem*>( e->target()));
-        Q_ASSERT(itemNet);
+        if (!itemNet)  break;  // No target, deleted/closed ...
+
         // qDebug() << "ArnSync ArnEvModeChange: path=" << e->path() << " mode=" << e->mode()
         //          << " inItemPath=" << itemNet->path();
         if (!itemNet->isFolder())
@@ -1542,7 +1544,8 @@ void  ArnSync::customEvent( QEvent* ev)
     {
         ArnEvMonitor*  e = static_cast<ArnEvMonitor*>( ev);
         ArnItemNet*  itemNet = static_cast<ArnItemNet*>( static_cast<ArnBasicItem*>( e->target()));
-        Q_ASSERT(itemNet);
+        if (!itemNet)  break;  // No target, deleted/closed ...
+
         // qDebug() << "ArnSync Ev Monitor: type=" << ArnMonEventType::txt().getTxt( e->monEvType())
         //          << " data=" << e->data() << " isLocal=" << e->isLocal()
         //          << " isMon=" << itemNet->isMonitor() << " target=" << itemNet->path();
@@ -1554,17 +1557,21 @@ void  ArnSync::customEvent( QEvent* ev)
     {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         ArnItemNet*  itemNet = static_cast<ArnItemNet*>( static_cast<ArnBasicItem*>( e->target()));
-        Q_ASSERT(itemNet);
+        if (!itemNet)  break;  // No target, deleted/closed ...
+
         if (itemNet->isMonitor()) {
             QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : itemNet->path();
             // qDebug() << "ArnSync Ev Retired: path=" << destroyPath << " inPath=" << itemNet->path();
             doArnMonEvent( ArnMonEventType::ItemDeleted, destroyPath.toUtf8(), true, itemNet);
         }
 
-        if (Arn::debugLinkDestroy)  qDebug() << "itemRemove: netId=" << itemNet->netId() << " path=" << itemNet->path();
-        removeItemNetRefs( itemNet);
-        destroyToFluxQue( itemNet);  // This queue contains text not the itemNet
-        delete itemNet;
+        if (!e->isBelow()) {  // Retire is to this item
+            if (Arn::debugLinkDestroy)  qDebug() << "itemRemove: netId=" << itemNet->netId() << " path=" << itemNet->path();
+            removeItemNetRefs( itemNet);
+            destroyToFluxQue( itemNet);  // This queue contains text not the itemNet
+            delete itemNet;
+            e->setTarget(0);  // Target is now deleted
+        }
         break;
     }
     default:

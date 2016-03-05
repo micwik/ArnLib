@@ -382,7 +382,8 @@ void  ArnMonitor::customEvent( QEvent* ev)
     {
         ArnEvMonitor*  e = static_cast<ArnEvMonitor*>( ev);
         ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
-        Q_ASSERT(target);
+        if (!target)  break;  // No target, deleted/closed ...
+
         // qDebug() << "ArnMonitor Ev Monitor:";
         if (e->sessionHandler() == d->_arnClient)  // Event is for this session (client)
             dispatchArnMonEvent( e->monEvType(), e->data(), e->isLocal());
@@ -392,7 +393,8 @@ void  ArnMonitor::customEvent( QEvent* ev)
     {
         ArnEvRetired*  e = static_cast<ArnEvRetired*>( ev);
         ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
-        Q_ASSERT(target);
+        if (!target)  break;  // No target, deleted/closed ...
+
         QString  destroyPath = e->isBelow() ? e->startLink()->linkPath() : target->path();
         // qDebug() << "ArnMonitor Ev Retired: path=" << destroyPath << " inPath=" << target->path();
         dispatchArnMonEvent( ArnMonEventType::ItemDeleted, destroyPath.toUtf8(), true);

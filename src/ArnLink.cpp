@@ -204,7 +204,7 @@ void  ArnLink::sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink)
 {
     ArnLink*  link = startLink;
     while (link) {
-        // qDebug() << "sendEventsDirRoot: inLinkPath=" << link->linkPath();
+        // qDebug() << "sendEventsDirRoot: inLinkPath=" << link->linkPath() << " ev=" << ev->toString();
         link->sendArnEvent( ev);
         link = link->parent();
     }
