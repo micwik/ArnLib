@@ -924,23 +924,6 @@ QObject*  ArnBasicItem::eventHandler()  const
     return d->_eventHandler;
 }
 
-/*
-bool  ArnBasicItem::sendArnEvent( QEvent* ev, QObject* receiver, Qt::ConnectionType connectType)
-{
-    if (!receiver || !ev || !ArnEvent::isArnEvent( ev->type()))  return false;
-
-    if ((connectType != Qt::QueuedConnection) && (receiver->thread() == QThread::currentThread())) {
-        receiver->event( ev);
-    }
-    else {
-        // Recipient in different thread or queued
-        ArnEvent*  evClone = static_cast<ArnEvent*>(ev)->makeHeapClone();
-        QCoreApplication::postEvent( receiver, evClone);
-    }
-
-    return true;
-}
-*/
 
 void  ArnBasicItem::setForceKeep( bool fk)
 {
@@ -1041,17 +1024,6 @@ void  ArnBasicItemEventHandler::defaultEvent( QEvent* ev)
 {
     int  evIdx = ev->type() - ArnEvent::baseType();
     switch (evIdx) {
-    case ArnEvent::Idx::ValueChange:
-    {
-        ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
-        ArnBasicItem*  target = static_cast<ArnBasicItem*>( e->target());
-        if (!target)  return;  // No target, deleted/closed ...
-
-        // qDebug() << "ArnEvValueChange: inItemPath=" << path();
-        quint32  sendId = e->sendId();
-        target->addIsOnlyEcho( sendId);
-        return;
-    }
     case ArnEvent::Idx::ModeChange:
     {
         ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);

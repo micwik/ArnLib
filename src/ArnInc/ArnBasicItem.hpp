@@ -389,9 +389,6 @@ public:
     void  setEventHandler( QObject* eventHandler);
     QObject*  eventHandler()  const;
 
-    // static bool sendArnEvent( QEvent* ev, QObject* receiver,
-    //                           Qt::ConnectionType connectType = Qt::AutoConnection);
-
 protected:
     virtual void  arnEvent( QEvent* ev, bool isAlienThread);
 

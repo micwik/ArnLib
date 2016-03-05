@@ -136,7 +136,7 @@ void  ArnLink::setParent( ArnLink* parent)
 }
 
 
-const ArnLinkList&  ArnLink::children() const
+const ArnLinkList&  ArnLink::children()  const
 {
     return *_children;
 }
@@ -153,11 +153,11 @@ void  ArnLink::doValueChanged( int sendId, const QByteArray* valueData,
 }
 
 
-void ArnLink::sendEventsInThread(ArnEvent* ev, const ArnBasicItemList& recipients)
+void  ArnLink::sendEventsInThread( ArnEvent* ev, const ArnBasicItemList& recipients)
 {
     int  len = recipients.size();
     for (int i = 0; i < len; ++i) {
-        ArnBasicItem*  basicItem = recipients[i];
+        ArnBasicItem*  basicItem = recipients.at(i);
         ev->setAccepted( true);  // Default
         basicItem->sendArnEventItem( ev, false);
     }
