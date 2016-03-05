@@ -39,6 +39,8 @@
 
 class ArnLink;
 class ArnLinkHandle;
+class ArnEvent;
+class QMutex;
 
 
 namespace ArnPrivate {
@@ -65,12 +67,17 @@ public:
 class ARNLIBSHARED_EXPORT ArnEvent : public QEvent
 {
     void*  _target;
+    QMutex*  _targetMutex;
+    ArnEvent*  _targetNextPending;
+    ArnEvent**  _targetPendingChain;
+
     void*  _spare;  // Can be used later as d-ptr
 
 public:
     typedef ArnPrivate::ArnEventIdx  Idx;
 
     ArnEvent( QEvent::Type type);
+    virtual  ~ArnEvent();
 
     static int  baseType( int setVal = -1);
     static bool  isArnEvent( int evType);
@@ -85,8 +92,10 @@ public:
     inline void*  target()  const
     { return _target;}
 
-    inline void  setTarget( void* target)
-    { _target = target;}
+    void  setTarget( void* target);
+    void  setTargetPendingChain( ArnEvent** targetPendingChain = 0);
+    void  setTargetMutex( QMutex* targetMutex);
+    void  inhibitPendingChain();
 
 protected:
     ArnEvent*  copyOpt( const ArnEvent* other);

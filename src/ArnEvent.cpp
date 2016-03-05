@@ -31,12 +31,30 @@
 
 #include <ArnInc/ArnEvent.hpp>
 #include <ArnLink.hpp>
+#include <QMutex>
 
 
 ArnEvent::ArnEvent( QEvent::Type type)
     : QEvent( type)
     , _target(0)
+    , _targetMutex(0)
+    , _targetNextPending(0)
+    , _targetPendingChain(0)
 {
+}
+
+
+ArnEvent::~ArnEvent()
+{
+    if (_targetMutex)  _targetMutex->lock();
+
+    if (_targetPendingChain) {  // If pending chain used, remove this event from it
+        *_targetPendingChain = _targetNextPending;
+        if (_targetNextPending)
+            _targetNextPending->_targetPendingChain = _targetPendingChain;
+    }
+
+    if (_targetMutex)  _targetMutex->unlock();
 }
 
 
@@ -90,14 +108,6 @@ int  ArnEvent::toIdx()  const
 {
     TO_IDX_RETVAL(type())
     return retVal;
-/*
-    int  retVal = type() - baseType();
-
-    if ((retVal >= 0) && (retVal < Idx::N))
-        return retVal;
-    else
-        return Idx::QtEvent;
-*/
 }
 
 
@@ -116,9 +126,60 @@ QString  ArnEvent::toString()  const
 
 ArnEvent*  ArnEvent::copyOpt( const ArnEvent* other)
 {
-    _target = other->_target;
+    _target      = other->_target;
+    _targetMutex = other->_targetMutex;
 
     return this;
+}
+
+
+void  ArnEvent::setTarget( void* target)
+{
+    _target = target;
+}
+
+
+void  ArnEvent::setTargetPendingChain( ArnEvent** targetPendingChain)
+{
+    if (_targetMutex)  _targetMutex->lock();
+
+    _targetPendingChain = targetPendingChain;
+
+    if (_targetPendingChain) {  // If pending chain used, link this event to it
+        _targetNextPending   = *_targetPendingChain;
+        *_targetPendingChain = this;
+        if (_targetNextPending)
+            _targetNextPending->_targetPendingChain = &_targetNextPending;
+    }
+
+    if (_targetMutex)  _targetMutex->unlock();
+}
+
+
+void  ArnEvent::setTargetMutex( QMutex* targetMutex)
+{
+    _targetMutex = targetMutex;
+}
+
+
+void  ArnEvent::inhibitPendingChain()
+{
+    QMutex*  targetMutex = _targetMutex;
+    if (targetMutex)  targetMutex->lock();
+
+    if (_targetPendingChain) {  // If pending chain used, inhibit all events in it
+        ArnEvent*  ev = this;
+        do {
+            ArnEvent*  evNext = ev->_targetNextPending;
+            ev->_target              = 0;  // Inhibit event, i.e. it will be dropped when delivered
+            ev->_targetMutex         = 0;
+            *ev->_targetPendingChain = 0;
+            ev->_targetNextPending   = 0;
+            ev = evNext;
+        } while (ev);
+    }
+
+    if (targetMutex)  targetMutex->unlock();
 }
 
 

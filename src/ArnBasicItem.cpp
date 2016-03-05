@@ -49,6 +49,7 @@ ArnBasicItemPrivate::ArnBasicItemPrivate()
 {
     _reference       = 0;
     _eventHandler    = 0;
+    _pendingEvChain  = 0;
     _id              = _idCount.fetchAndAddRelaxed(1);
 
     _useForceKeep    = false;
@@ -138,7 +139,15 @@ void  ArnBasicItem::close()
 
     if (!_link)  return;
 
-    _link->deref( this);
+    _link->unsubscribe( this);
+    // Now this item will not get ArnEvent updates in its
+
+    if (d->_pendingEvChain) {
+        d->_pendingEvChain->setTargetMutex(0);  // No mutex needed anymore
+        d->_pendingEvChain->inhibitPendingChain();
+    }
+
+    _link->deref();
     _link        = 0;
     d->_syncMode = Arn::ObjectSyncMode();
     d->_mode     = Arn::ObjectMode();
@@ -843,12 +852,59 @@ QThread*  ArnBasicItem::thread()  const
 
 
 /// Must be threaded
-bool  ArnBasicItem::sendArnEvent( ArnEvent* ev)
+bool  ArnBasicItem::sendArnEventLink( ArnEvent* ev)
 {
     if (!_link)  return false;
 
     _link->sendArnEvent( ev);
     return true;
+}
+
+
+void  ArnBasicItem::sendArnEventItem( ArnEvent* ev, bool isAlienThread, bool isLocked)
+{
+    Q_D(ArnBasicItem);
+
+    if (!ev)  return;  // No event ...
+
+    ev->setTarget( this);
+    if (isAlienThread) {
+        QMutex*  targetMutex = _link ? _link->getMutex() : 0;
+        if (!isLocked)  // Not locked yet, assign mutex for target locking
+            ev->setTargetMutex( targetMutex);
+
+        ev->setTargetPendingChain( &d->_pendingEvChain);  //
+
+        if (isLocked)  // Already locked, mutex will be used from now on
+            ev->setTargetMutex( targetMutex);
+    }
+
+    arnEvent( ev, isAlienThread);
+}
+
+
+void  ArnBasicItem::arnEvent( QEvent* ev, bool isAlienThread)
+{
+    // Selected ArnEvent handler is called. Default is internal handler.
+    // Selected handler must finish with ArnBasicItemEventHandler::defaultEvent( ev).
+
+    Q_D(ArnBasicItem);
+
+    if (isAlienThread) {
+        if (!d->_eventHandler) {  // No handler
+            delete ev;
+            return;
+        }
+        QCoreApplication::postEvent( d->_eventHandler, ev);
+    }
+    else {
+        if (d->_isStdEvHandler || !d->_eventHandler) {
+            ArnBasicItemEventHandler::defaultEvent( ev);  // Optimized direct call
+        }
+        else {
+            d->_eventHandler->event( ev);
+        }
+    }
 }
 
 
@@ -868,7 +924,7 @@ QObject*  ArnBasicItem::eventHandler()  const
     return d->_eventHandler;
 }
 
-
+/*
 bool  ArnBasicItem::sendArnEvent( QEvent* ev, QObject* receiver, Qt::ConnectionType connectType)
 {
     if (!receiver || !ev || !ArnEvent::isArnEvent( ev->type()))  return false;
@@ -884,7 +940,7 @@ bool  ArnBasicItem::sendArnEvent( QEvent* ev, QObject* receiver, Qt::ConnectionT
 
     return true;
 }
-
+*/
 
 void  ArnBasicItem::setForceKeep( bool fk)
 {
@@ -956,32 +1012,6 @@ void  ArnBasicItem::errorLog( const QString& errText, ArnError err, void* refere
     ArnM::errorLog( errText + itemText, err, reference);
 }
 
-
-void  ArnBasicItem::arnEvent( QEvent* ev, bool isAlienThread)
-{
-    // Selected ArnEvent handler is called. Default is internal handler.
-    // Selected handler must finish with ArnBasicItemEventHandler::defaultEvent( ev).
-
-    Q_D(ArnBasicItem);
-
-    if (!ev)  return;  // No event ...
-
-    if (isAlienThread) {
-        if (!d->_eventHandler) {  // No handler
-            delete ev;
-            return;
-        }
-        QCoreApplication::postEvent( d->_eventHandler, ev);
-    }
-    else {
-        if (d->_isStdEvHandler || !d->_eventHandler) {
-            ArnBasicItemEventHandler::defaultEvent( ev);  // Optimized direct call
-        }
-        else {
-            d->_eventHandler->event( ev);
-        }
-    }
-}
 
 
 ArnBasicItemEventHandler*  ArnBasicItem::getThreadEventHandler()

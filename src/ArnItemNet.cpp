@@ -165,7 +165,7 @@ void  ArnItemNet::sendNewItemMonEvent( const QString& path, bool isOld)
 void  ArnItemNet::sendMonEvent( int type, const QByteArray& data, bool isLocal)
 {
     ArnEvMonitor  ev( type, data, isLocal, _sessionHandler);
-    sendArnEvent( &ev);
+    sendArnEventLink( &ev);
 }
 
 

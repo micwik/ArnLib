@@ -159,8 +159,7 @@ void ArnLink::sendEventsInThread(ArnEvent* ev, const ArnBasicItemList& recipient
     for (int i = 0; i < len; ++i) {
         ArnBasicItem*  basicItem = recipients[i];
         ev->setAccepted( true);  // Default
-        ev->setTarget( basicItem);
-        basicItem->arnEvent( ev, false);
+        basicItem->sendArnEventItem( ev, false);
     }
 }
 
@@ -188,8 +187,7 @@ void  ArnLink::sendArnEvent( ArnEvent* ev)
             else {
                 // Recipient in different thread
                 ArnEvent*  evClone = ev->makeHeapClone();
-                evClone->setTarget( basicItem);
-                basicItem->arnEvent( evClone, true);
+                basicItem->sendArnEventItem( evClone, true, true);
             }
         }
     }
@@ -797,6 +795,12 @@ void  ArnLink::unlock()
 }
 
 
+QMutex*  ArnLink::getMutex()  const
+{
+    return _mutex;
+}
+
+
 QObject*  ArnLink::arnM( QObject* inArnM)
 {
     static QObject*  storeArnM = 0;
@@ -971,7 +975,7 @@ bool  ArnLink::subscribe( ArnBasicItem* subscriber)
 bool  ArnLink::unsubscribe( ArnBasicItem* subscriber)
 {
     if (!subscriber)  return false;  // Not valid subscriber
-    if (!_subscribeTab)   return false;  // Not valid subscribe table
+    if (!_subscribeTab)  return false;  // Not valid subscribe table
 
     if (_mutex)  _mutex->lock();
     bool  stat = _subscribeTab->removeOne( subscriber);
@@ -981,10 +985,8 @@ bool  ArnLink::unsubscribe( ArnBasicItem* subscriber)
 }
 
 
-void  ArnLink::deref( ArnBasicItem* subscriber)
+void  ArnLink::deref()
 {
-    unsubscribe( subscriber);
-
     bool  isZeroRefs = false;
     ArnLink*  vLink  = valueLink();
 

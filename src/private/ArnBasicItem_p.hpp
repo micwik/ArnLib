@@ -35,6 +35,7 @@
 // #define ARNITEMB_INCPATH
 
 class QObject;
+class ArnEvent;
 
 
 class ArnBasicItemPrivate
@@ -50,6 +51,7 @@ private:
 
     void*  _reference;
     QObject*  _eventHandler;
+    ArnEvent*  _pendingEvChain;
 #ifdef ARNITEMB_INCPATH
     QString _path;
 #endif

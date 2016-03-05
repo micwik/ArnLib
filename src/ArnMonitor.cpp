@@ -251,7 +251,7 @@ void  ArnMonitor::sendArnMonEvent( int type, const QByteArray& data)
     if (!isOpen())  return;
 
     ArnEvMonitor  ev( type, data, true, d->_arnClient);
-    sendArnEvent( &ev);
+    sendArnEventLink( &ev);
 }
 
 

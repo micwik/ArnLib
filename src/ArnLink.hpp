@@ -108,12 +108,14 @@ public:
     QString  twinName();
     bool  subscribe( ArnBasicItem* subscriber);
     bool  unsubscribe( ArnBasicItem* subscriber);
-    void  deref( ArnBasicItem* subscriber = 0);
+    void  deref();
     ~ArnLink();
 
     QString  objectName()  const;
     ArnLink*  parent()  const;
     const ArnLinkList&  children()  const;
+
+    QMutex*  getMutex()  const;
 
 protected:
     //// Will never be inherited, this section is separated for use by friend ArnM

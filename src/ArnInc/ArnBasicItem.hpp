@@ -384,15 +384,17 @@ public:
 
     QThread*  thread()  const;
 
-    bool  sendArnEvent( ArnEvent* ev);
+    bool  sendArnEventLink( ArnEvent* ev);
+    void  sendArnEventItem( ArnEvent* ev, bool isAlienThread, bool isLocked = false);
     void  setEventHandler( QObject* eventHandler);
     QObject*  eventHandler()  const;
-    static bool sendArnEvent( QEvent* ev, QObject* receiver,
-                              Qt::ConnectionType connectType = Qt::AutoConnection);
 
-    virtual void  arnEvent( QEvent* ev, bool isAlienThread);
+    // static bool sendArnEvent( QEvent* ev, QObject* receiver,
+    //                           Qt::ConnectionType connectType = Qt::AutoConnection);
 
 protected:
+    virtual void  arnEvent( QEvent* ev, bool isAlienThread);
+
     //// Methods not to be public
     bool  openWithFlags( const QString& path, Arn::LinkFlags linkFlags);
     void  setForceKeep( bool fk = true);
