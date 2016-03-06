@@ -177,9 +177,6 @@ public:
      */
     uint  linkId()  const;
 
-    //! \cond ADV
-// protected:
-public:
     /*! \retval true if this ArnItem is a folder
      */
     bool  isFolder()  const;
@@ -382,12 +379,33 @@ public:
      */
     void  setValue( const QVariant& value, int ignoreSame = Arn::SameValue::DefaultAction);
 
+    //! Get the thread affinity of this ArnBasicItem
+    /*! The affinity (see QObject) is set when the ArnBasicItem is created and bound to an
+     *  internal QObject based event handler. When a custom event handler is set, its
+     *  affinity is used.
+     *  \return the thread affinity
+     *  \see setEventHandler()
+     */
     QThread*  thread()  const;
 
+    //! Set event handler for this ArnBasicItem
+    /*! The event handler must be QObject based
+     *  \param[in] eventHandler to be assigned
+     *  \see eventHandler()
+     *  \see thread()
+     */
+    void  setEventHandler( QObject* eventHandler);
+
+    //! Get the event handler of this ArnBasicItem
+    /*! \return the event handler
+     *  \see setEventHandler()
+     *  \see thread()
+     */
+    QObject*  eventHandler()  const;
+
+    //! \cond ADV
     bool  sendArnEventLink( ArnEvent* ev);
     void  sendArnEventItem( ArnEvent* ev, bool isAlienThread, bool isLocked = false);
-    void  setEventHandler( QObject* eventHandler);
-    QObject*  eventHandler()  const;
 
 protected:
     virtual void  arnEvent( QEvent* ev, bool isAlienThread);

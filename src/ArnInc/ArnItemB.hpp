@@ -179,6 +179,32 @@ protected:
 
     ArnItemB( ArnItemBPrivate& dd, QObject* parent);
     ArnItemBPrivate* const  d_ptr;
+
+    using ArnBasicItem::isFolder;
+    using ArnBasicItem::isProvider;
+    using ArnBasicItem::type;
+    using ArnBasicItem::setIgnoreSameValue;
+    using ArnBasicItem::addMode;
+    using ArnBasicItem::getMode;
+    using ArnBasicItem::syncMode;
+    using ArnBasicItem::setBiDirMode;
+    using ArnBasicItem::isBiDirMode;
+    using ArnBasicItem::setPipeMode;
+    using ArnBasicItem::isPipeMode;
+    using ArnBasicItem::setSaveMode;
+    using ArnBasicItem::isSaveMode;
+    using ArnBasicItem::setMaster;
+    using ArnBasicItem::isMaster;
+    using ArnBasicItem::setAutoDestroy;
+    using ArnBasicItem::isAutoDestroy;
+    using ArnBasicItem::arnExport;
+    using ArnBasicItem::toInt;
+    using ArnBasicItem::toDouble;
+    using ArnBasicItem::toReal;
+    using ArnBasicItem::toBool;
+    using ArnBasicItem::toByteArray;
+    using ArnBasicItem::toString;
+    using ArnBasicItem::toVariant;
     //! \endcond
 
 private:
