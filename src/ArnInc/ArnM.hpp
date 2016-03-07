@@ -105,7 +105,6 @@ This singleton class is the main reference to the Active Registry Network.
 class ARNLIBSHARED_EXPORT ArnM : public QObject
 {
     Q_OBJECT
-    friend class ArnItemB;  // MW:Remove
     friend class ArnBasicItem;
 
 public:

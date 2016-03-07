@@ -107,17 +107,6 @@ void  QmlMQtObject::data_clear(QML_LIST_PROPERTY<QObject>* prop)
     int  childCount = children.count();
     for (int index = 0; index < childCount; ++index)
         children.at(0)->setParent(0);
-#if 0
-// MW: needed logic ?
-    if (that->componentComplete) {
-        for (int index = 0; index < childCount; ++index)
-            children.at(0)->setParent(0);
-    }
-    else {
-        for (int index = 0 ;index < childCount; index++)
-            QGraphicsItemPrivate::get(d->children.at(0))->setParentItemHelper(0, /*newParentVariant=*/0, /*thisPointerVariant=*/0);
-    }
-#endif
 }
 
 

@@ -34,7 +34,7 @@
 
 
 #include "ArnInc/ArnBasicItem.hpp"
-#include "ArnInc/ArnItem.hpp"  // MW: tobe removed?
+#include "ArnInc/ArnItem.hpp"
 #include <QStringList>
 
 

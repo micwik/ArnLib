@@ -264,7 +264,12 @@ public:
     bool  isAutoDestroy()  const
     {return ArnItemB::isAutoDestroy();}
 
-    void  setBlockEcho( bool blockEcho = true)  // MW: TODO doc
+    //! Control echo cancellation for this item
+    /*! When an ArnObject is changed via this item, the changed() signal on this item
+     *  can be blocked.
+     *  \param[blockEcho] if true echo is blocked.
+     */
+    void  setBlockEcho( bool blockEcho = true)
     {return ArnItemB::setBlockEcho( blockEcho);}
 
     //! Set _delay_ of data changed signal
@@ -275,7 +280,7 @@ public:
      *  \param[in] delay in ms.
      *  \see delay()
      *  \see isDelayPending()
-     *  \see resetDelayPending()
+     *  \see bypassDelayPending()
      */
     void  setDelay( int delay);
 
@@ -290,7 +295,7 @@ public:
      *  \retval true if the _Arn Data Object_ is changed, but the changed signal is
      *          pending in a delay.
      *  \see setDelay()
-     *  \see resetDelayPending()
+     *  \see bypassDelayPending()
      */
     bool  isDelayPending()  const;
 

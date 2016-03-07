@@ -865,7 +865,7 @@ ArnLink*  ArnLink::twinLink()
 
 ArnLink*  ArnLink::valueLink()
 {
-    // MW: Mutex not needed, all values are stable (?)
+    // Mutex not needed, all values are stable
     ArnLink*  retVal = _isProvider ? _twin : this;
     return retVal;
 }

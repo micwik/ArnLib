@@ -590,15 +590,6 @@ void  ArnClient::commandVersion()
 }
 
 
-// MW: Should probably be deprecated (removed)
-void  ArnClient::commandExit()
-{
-    Q_D(ArnClient);
-
-    d->_arnNetSync->sendExit();
-}
-
-
 void  ArnClient::newNetItemProxy( ArnThreadCom *threadCom,
                                        const QString &path, int syncMode, void* isNewPtr)
 {
@@ -610,7 +601,7 @@ void  ArnClient::newNetItemProxy( ArnThreadCom *threadCom,
 }
 
 
-// MW: Fixme threadsafe (?)
+// MW: Fixme threadsafe
 bool  ArnClient::getLocalRemotePath( const QString& path,
                                      QString& localMountPath, QString& remoteMountPath)  const
 {
