@@ -362,14 +362,28 @@ bool  ArnClient::setMountPoint( const QString& path)
 {
     Q_D(ArnClient);
 
-    if (d->_mountPoints.size() == 1)
-        removeMountPoint( d->_mountPoints.at(0).localPath);
+    QMutexLocker  locker( &d->_mutex);
 
-    return addMountPoint( path);
+    if (d->_mountPoints.size() == 1)
+        removeMountPointNL( d->_mountPoints.at(0).localPath);
+
+    return addMountPointNL( path, QString());
 }
 
 
 bool  ArnClient::addMountPoint( const QString& localPath, const QString& remotePath)
+{
+    Q_D(ArnClient);
+
+    d->_mutex.lock();
+    bool  retVal = addMountPointNL( localPath, remotePath);
+    d->_mutex.unlock();
+
+    return retVal;
+}
+
+
+bool  ArnClient::addMountPointNL( const QString& localPath, const QString& remotePath)
 {
     Q_D(ArnClient);
 
@@ -413,6 +427,18 @@ bool  ArnClient::addMountPoint( const QString& localPath, const QString& remoteP
 
 
 bool  ArnClient::removeMountPoint( const QString& localPath)
+{
+    Q_D(ArnClient);
+
+    d->_mutex.lock();
+    bool  retVal = removeMountPointNL( localPath);
+    d->_mutex.unlock();
+
+    return retVal;
+}
+
+
+bool  ArnClient::removeMountPointNL( const QString& localPath)
 {
     Q_D(ArnClient);
 
@@ -601,11 +627,12 @@ void  ArnClient::newNetItemProxy( ArnThreadCom *threadCom,
 }
 
 
-// MW: Fixme threadsafe
 bool  ArnClient::getLocalRemotePath( const QString& path,
-                                     QString& localMountPath, QString& remoteMountPath)  const
+                                     QString& localMountPath, QString& remoteMountPath)
 {
-    Q_D(const ArnClient);
+    Q_D(ArnClient);
+
+    QMutexLocker  locker( &d->_mutex);
 
     bool  retVal = false;
     QString  path_ = Arn::fullPath( path);
@@ -619,6 +646,7 @@ bool  ArnClient::getLocalRemotePath( const QString& path,
     }
     localMountPath  = mpSlot.localPath;
     remoteMountPath = mpSlot.remotePath;
+
     return retVal;
 }
 
@@ -866,6 +894,8 @@ void ArnClient::doRecTimeout()
 void  ArnClient::onCommandDelete( const QString& remotePath)
 {
     Q_D(ArnClient);
+
+    QMutexLocker  locker( &d->_mutex);
 
     // qDebug() << "ArnClient-delete: remotePath=" << remotePath;
     QString  localPath;

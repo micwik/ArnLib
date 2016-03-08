@@ -381,7 +381,7 @@ public:
     void  commandInfo( int type, const QByteArray& data = QByteArray());
     void  commandVersion();
     bool  getLocalRemotePath( const QString& path,
-                              QString& localMountPath, QString& remoteMountPath)  const;
+                              QString& localMountPath, QString& remoteMountPath);
     ArnItemNet*  newNetItem( const QString& path,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
                              bool* isNewPtr = 0);
@@ -471,6 +471,11 @@ private:
     static QString  toRemotePathCB( void* context, const QString& path);
 
     QStringList  makeItemList( Arn::XStringMap& xsMap);
+
+    //// Not mutex locked base functions
+    bool  addMountPointNL( const QString& localPath, const QString& remotePath);
+    bool  removeMountPointNL( const QString& localPath);
+
 };
 
 #endif // ARNCLIENT_HPP

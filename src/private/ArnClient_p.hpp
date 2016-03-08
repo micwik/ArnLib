@@ -33,6 +33,7 @@
 #define ARNCLIENT_P_HPP
 
 #include "ArnInc/ArnClient.hpp"
+#include <QMutex>
 
 class ArnSync;
 class QTcpSocket;
@@ -59,7 +60,7 @@ private:
 
     QTcpSocket*  _socket;
     ArnSync*  _arnNetSync;
-
+    QMutex  _mutex;
     QString  _arnHost;
     quint16  _port;
     bool  _isAutoConnect;
