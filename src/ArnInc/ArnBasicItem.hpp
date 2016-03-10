@@ -95,7 +95,7 @@ public:
     };
 
     //! Standard constructor of a closed handle
-    /*! \param[in] parent
+    /*!
      */
     ArnBasicItem();
 

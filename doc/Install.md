@@ -1,8 +1,10 @@
-Installation and usage
+Installation and usage    {#ins_page}
 ======================
 
+[TOC]
+
 Introduction    {#ins_intro}
-------------
+============
 
 This software uses qmake to build all its components. 
 qmake is part of a Qt distribution. 
@@ -18,7 +20,7 @@ them to your needs. Take care to select your deployment directories.
 
 
 Documentation    {#ins_doc}
--------------
+=============
 
 The documentation is built by:
 > qmake <Br>
@@ -40,13 +42,14 @@ ArnLib includes a class documentation, that is available in various formats:
 
 
 Building ArnLib    {#ins_build}
----------------
+===============
 
 The software can be built both by command line and IDE (Qt Creator).
 When using IDE, don't forget the "make install" step.
 
 
-### A) Unix 
+A) Unix    {#ins_buildUnix}
+-------
 
 > qmake <Br>
 > make <Br>
@@ -71,7 +74,8 @@ The examples is built this way:
 > make
 
 
-### B) Win32/MSVC 
+B) Win32/MSVC    {#ins_buildWin32Msvc}
+-------------
 
 Has not been tested yet ...
 
@@ -96,7 +100,8 @@ In windows it's possible to install the dll files together with the application 
 as the application directory always is included in the search path for dll.
 
 
-### C) Win32/MinGW 
+C) Win32/MinGW    {#ins_buildWin32Mingw}
+--------------
 
 Using Qt Creator for windows, will give you the needed tools for building a Qt project.
 
@@ -121,7 +126,8 @@ In windows it's possible to install the dll files together with the application 
 as the application directory always is included in the search path for dll.
 
 
-### D) MacOSX
+D) MacOSX    {#ins_buildMacosx}
+---------
 
 Has not been tested yet ...
 
@@ -133,7 +139,8 @@ following:
 > qmake -spec macx-g++
 
 
-### E) Qt Embedded
+E) Qt Embedded    {#ins_buildEmbedded}
+--------------
 
 ArnLib has been built with Qt Embedded using a Raspberry Pi. To build was as simple as
 for a regular Unix build.
@@ -141,17 +148,22 @@ for a regular Unix build.
 
 
 Using ArnLib    {#ins_usage}
-------------
+============
 In the *.pro file of the application the below lines can be used.
 
 This will give a starting point for the configuration. It works well when using the same
-base directory for ArnLib as the application, e.g. basedir/ArnLib and basedir/myApp. In Unix
-alike systems it's also needed to install the library files in a path known by the system,
+base directory for ArnLib as the application, e.g. basedir/ArnLib and basedir/myApp. In
+Unix-alike systems it's also needed to install the library files in a path known by the system,
 see a) Unix.
 
 It's possible to include the ArnLib source in the application compiling by adding
 ArnLibCompile to CONFIG. The included part of the source can be selected by addings to ARN,
 e.g. ARN += server.
+
+WARNING! Using source inclusion (static linking) excludes the right to use LGPL for ArnLib.
+Options are then to use GPL for the whole application or have a written agreement with
+Michael Wiklund for other terms using the ArnLib.
+
 
 Internal mDNS (ZeroConfig) is selected by adding mDnsIntern to CONFIG.
 

@@ -1,4 +1,4 @@
-General Description
+General Description    {#gen_page}
 ===================
 
 [TOC]
@@ -8,7 +8,7 @@ This document describes the general concepts of the ArnLib.
 
 
 Arn Data Objects    {#gen_arnobj}
-----------------
+================
 All objects are stored in a tree hierarchy and the naming is similar to typical
 file systems, e.g. "//Measure/Water/Temperature/value".
 
@@ -27,7 +27,8 @@ Each part in a given path is dynamically added as needed, i.e. any path can be u
 explicitly creating each folder in advance.
 <Br><Br>
 
-### Modes ###    {#gen_arnobjModes}
+Modes    {#gen_arnobjModes}
+-----
 _Mode_ change is a one direction process. Once a specific _mode_ is set, it can't be reset.
 
 If the ArnItem is in a closed state when the _mode_ change is done, the added modes will
@@ -67,7 +68,8 @@ Note: It's convenient to always set all the needed modes before an ArnItem is op
 an ArnItem is used as a template. See ArnItem::setTemplate().
 <Br><Br>
 
-### Local path ###    {#gen_localPath}
+Local    {#gen_localPath}
+-----
 A relative path is also called the _local path_, e.g. the
 [Discover remote](#gen_discoverRemote) _service name_ at path
 "Sys/Discover/This/Service/value". The _local path_ is mapped to the absolute path
@@ -88,7 +90,8 @@ will share and access the [Discover remote](#gen_discoverRemote) _service name_ 
 "/@HostLocal/Sys/Discover/This/Service/value".
 <Br><Br>
 
-### Naming conventions ###    {#gen_naming}
+Naming conventions    {#gen_naming}
+------------------
 These rules must not be obeyed, but are recommended, to get the most benefits of the
 %Arn echo system, like the ArnBrowser tool.
 
@@ -274,7 +277,7 @@ ArnServer, this can be used together with ArnDiscoverRemote / ArnDiscover.
 
 
 RPC and SAPI    {#gen_rpc}
-------------
+============
 ArnRpc is the basic functionality of RPC (Remote Procedure Call). ArnSapi implements SAPI
 (Service Application Programming Interface) and is using ArnRpc as its base.
 It's recommended to use ArnSapi which has a higher level model.
@@ -323,7 +326,8 @@ The _service_ slot can get the emitting _custom SAPI_ object by using normal
 QObject::sender() functionality.
 <Br><Br>
 
-### RPC and SAPI method name overload ###    {#gen_rpcoverload}
+RPC and SAPI method name overload    {#gen_rpcoverload}
+---------------------------------
 Under the hood Qt converts a signal that uses default argument(s) into methods with same
 name and all variation of the arguments. I.e. One method with all arguments, one with
 all but the last default argument, and so on until there is no more default arguments.
@@ -345,7 +349,8 @@ These are the alternatives, how you can help ArnRpc make your SAPI work:
   then ok to use any kind of normal overloading.
 <Br><Br>
 
-### RPC and SAPI communication format ###    {#gen_rpcformat}
+RPC and SAPI communication format    {#gen_rpcformat}
+---------------------------------
 The RPC calling has a basic format as XString (see Arn::XStringMap). A call message can
 have 3 possible argument formats: positional, named and typed. The positional format is
 always possible to use and is most comparable to a standard c++ call.
@@ -445,7 +450,7 @@ This can be changed to named format by giving "$help named".
 
 
 ZeroConfig    {#gen_zeroconf}
-----------
+==========
 For getting a basic understanding of ZeroConfig and further references to relevant
 documentation, see: http://zeroconf.org/
 
@@ -469,12 +474,15 @@ and resolves it into its _host name_ and _port number_. Finally ArnZeroConfLooku
 a given _host name_ and makes a DNS (mDNS) lookup to get its ip-address. Each of these
 classes are stand alone and has to be combined with glue logic for the complete process.
 
-A service has a _service type_, that preferably should be registered at IANA. Examples of
-_service types_ are "http", "ftp" and "arn". This type is mandatory when advertising a
-_service_. Also the _service_ must have a _service name_.
+ZeroConfig definitions    {#gen_zeroconfDef}
+----------------------
+A ZeroConfig _service_ has a _service type_, that preferably should be registered at IANA.
+Examples of _service types_ are "http", "ftp" and "arn". This type is mandatory when
+advertising a _service_. Also the _service_ must have a _service name_.
 <Br><Br>
 
 ### Service name ###    {#gen_zeroconfServiceName}
+
 _Service names_ can be any human readable id. It should be easy to understand, without
 any cryptic coding. There should not be any attempts to make the _service name_ unique
 as this is taken care of by the ZeroConfig system. It's common that the _service name_
@@ -603,7 +611,7 @@ Connecting via resolver uses the logic:
 
 
 Application notations    {#gen_appnote}
----------------------
+=====================
 * If any graphics are used, Gui must be included.
 
 * Qt4: For console application only using QImage, Windowing system can be off, like:

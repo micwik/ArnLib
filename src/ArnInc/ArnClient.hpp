@@ -314,7 +314,7 @@ public:
      *  Default base time T is set to 10 seconds.
      *  \param[in] receiveTimeout is the base time T in seconds. 0 = off (no timeout).
      *  \see receiveTimeout()
-     *  \Note Must be set before client is connected
+     *  \note Must be set before client is connected
      */
     void  setReceiveTimeout( int receiveTimeout);
 

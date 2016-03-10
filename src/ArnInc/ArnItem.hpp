@@ -267,7 +267,7 @@ public:
     //! Control echo cancellation for this item
     /*! When an ArnObject is changed via this item, the changed() signal on this item
      *  can be blocked.
-     *  \param[blockEcho] if true echo is blocked.
+     *  \param[in] blockEcho if true echo is blocked.
      */
     void  setBlockEcho( bool blockEcho = true)
     {return ArnItemB::setBlockEcho( blockEcho);}

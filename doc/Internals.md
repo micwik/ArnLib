@@ -1,4 +1,4 @@
-ArnLib Internals
+ArnLib Internals    {#int_page}
 ================
 
 [TOC]
@@ -7,7 +7,7 @@ This document describes internal processes that are relatively complex and by th
 
 
 ScriptJobs    {#int_scriptjobs}
-----------
+==========
 * Each jobstack ScriptJobs is setup with a ScriptJobFactory wich makes custom interfaces etc.
 
 * ScriptJobControl is setup with: Sriptfile, Config (QObject) and InterfaceList.
@@ -57,10 +57,10 @@ ScriptJobs    {#int_scriptjobs}
 
 
 ArnMonitor    {#int_arnmonitor}
-----------
-* Monitor starts its actual connection job when monitorPath is set.
+==========
+* Monitor starts its actual connection job when its start method is called.
 
-* Monitor (at client-side) creates an ItemNet with path to monitorPath.
+* Monitor (at client-side) results in creates an ItemNet with path to monitorPath.
 
 * The ItemNet is also put in syncQueue (always main-thread).
 
@@ -72,19 +72,19 @@ ArnMonitor    {#int_arnmonitor}
 
 * Now 2 possibilities depending on threading:
     1. The ItemNet was sent before syncMode Monitor was set. Then server will receive an ordinary
-       Itemnet and do standard setup.
+       ItemNet and do standard setup.
     2. The ItemNet was sent with syncMode Monitor set. The server will detect this and do
        MonitorSetup on the ItemNet.
 
 * When arn-event "monitorStart" is received on server-side, if SyncMode is not already set to "Monitor",
   server will do MonitorSetup on the ItemNet.
 
-* When doing MonitorSetup (at server-side), connections are made to send arn-events when new
+* When doing MonitorSetup (at server-side), logic are made to send arn-events when new
   childs are created, and present childs are directly sent as arn-event.
 
 
 Destroy    {#int_destroy}
--------
+=======
 * Destruction can be locally initiated and affects one link. Destruction can be set as
   local or global.
 
@@ -101,14 +101,16 @@ Destroy    {#int_destroy}
   Also the retire type is set as LeafLocal, LeafGlobal or Tree.
 
 * As the last thing in this recursion each link is sending a Retired ArnEvent, ie the leaves are
-  the first to send. The event is sent to the subscriptions (ArnItems) of each link.
+  the first to send. The event is sent to the subscriptions (ArnBasicItems or derived) of each
+  link.
 
 * If it's a destroy of a tree (folder), a Retired ArnEvent is also sent to the tree:s parent
-  and all the way up to the root. The event is sent to the subscriptions (ArnItems) of each link.
-  These events have a marking telling destroy is below.
+  and all the way up to the root. The event is sent to the subscriptions (ArnBasicItems) of each
+  link. These events have a marking telling destroy is below.
 
-* The Retired ArnEvent is handled by each connected Item. Each Item is sending a linkDestroyed
-  signal to be handled by application code.
+* The Retired ArnEvent is handled by each subscribing Item. For ArnBasicItem this is done by
+  its eventhandler, which by default is an internal handler. For ArnItem this is done by
+  sending a linkDestroyed signal to be handled by application code.
   The Items is finally closed and by this the link ref counter is decremented.
 
 * When the links ref counter is reaching zero, a ZeroRef ArnEvent is sent. Also a ZeroRef pending
@@ -126,19 +128,20 @@ Destroy    {#int_destroy}
   The link and parent (and grand parants ...) are deleted if they don't have any children
   and ref = -1 and they are marked retired.
 
-* When the ItemNet is sending the linkDestroyed signal, it will be deleted from sync map
-  and all queues. Finally a command can be sent with its netId.
+* When the ArnSync, which is eventHandler for ItemNet, is handling the Retired ArnEvent, it
+  will delete the corresponding ItemNet from sync map and all queues. Finally a command can
+  be sent with its netId.
 
 * The sent command depends on retire type. For Leaflocal, a nosync command is used.
-  For LeafGlobal, a destroy command is used to spread the destruction to server and other
+  For LeafGlobal, a delete command is used to spread the destruction to server and other
   clients. The Tree type doesn't send a command at item level.
 
-* For tree destroy, ArnClient is using a monitoring ArnItem at each mount point to catch
+* For tree destroy, ArnClient is using a monitoring ArnItemNetEar at each mount point to catch
   the Retire ArnEvent for a tree below. Such an event is resulting in a delete or noSync
   command is sent, depending on global or local destroy. The command is sent with the path
   to the destroyed tree.
 
-* For tree destroy, ArnServer is using a monitoring ArnItem at root to catch the Retire
+* For tree destroy, ArnServer is using a monitoring ArnItemNetEar at root to catch the Retire
   ArnEvent  for a tree below. Such an event is resulting in a delete command is sent.
   The command is sent with the path to the destroyed tree.
 

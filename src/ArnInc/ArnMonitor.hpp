@@ -72,7 +72,7 @@ public:
 
     //! Starts local monitoring
     /*! \param[in] path
-     *  \param{in] parent
+     *  \param[in] parent
      *  \see start()
      */
     ArnMonitor( const QString& path, QObject* parent = 0);
