@@ -23,7 +23,7 @@
  * - and for allocating and freeing memory.
  */
 
-// Modified 2014 by Michael Wiklund.
+// Modified 2014-2016 by Michael Wiklund.
 // Contact: arnlib@wiklunden.se
 //
 // This file is part of the ArnLib - Active Registry Network.

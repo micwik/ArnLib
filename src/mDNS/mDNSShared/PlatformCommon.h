@@ -1,11 +1,11 @@
-// Copyright (C) 2010-2014 Michael Wiklund.
+// Copyright (C) 2010-2016 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
 // This file is part of the ArnLib - Active Registry Network.
 // Parts of ArnLib depend on Qt and/or other libraries that have their own
-// licenses. ArnLib is independent of these licenses; however, use of these other
-// libraries is subject to their respective license agreements.
+// licenses. Usage of these other libraries is subject to their respective
+// license agreements.
 // This file must also be used in compliance with Apache License, Version 2.0 (see below).
 //
 // GNU Lesser General Public License Usage
