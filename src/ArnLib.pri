@@ -16,7 +16,10 @@ win32 {
     DEFINES += ARNBUILDDATE=\\\"$$system(date '+%y-%m-%d')\\\"
 }
 
-DEFINES += ARNLIB_COMPILE
+ArnLibCompile {
+    DEFINES += ARNLIB_COMPILE
+    warning("Warning: LGPL is not valid!!! ArnLib is statically linked into application")
+}
 
 INCLUDEPATH += $$PWD
 
@@ -36,7 +39,8 @@ HEADERS += \
 
 RESOURCES += \
     $$PWD/../resource/ArnLib.qrc \
-    $$PWD/../legal/ArnLicences.qrc
+    $$PWD/../legal/ArnLicenses.qrc
+
 
 
 contains(ARN, server) {
@@ -225,4 +229,3 @@ contains(ARN, zeroconf) {
 }
 
 }  # ARNLIB_PRI_INCLUDED
-

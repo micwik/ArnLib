@@ -72,7 +72,7 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     _loginSalt2      = 0;
     _allow           = _isClientSide ? Arn::Allow::All : Arn::Allow::None;
     _remoteAllow     = Arn::Allow::None;
-    _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Licenses/");
+    _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Legal/");
     _dataRemain.clear();
 }
 

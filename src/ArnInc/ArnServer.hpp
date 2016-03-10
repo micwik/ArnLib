@@ -182,7 +182,7 @@ public:
      *  operations and alike from ArnServer to ArnClient.
      *  Setting a freePath at ArnServer gives the actual permision for read usage.
      *  All wanted freePaths must be added before ArnServer is started.
-     *  \param[in] path is the freePath, eg "/Local/Sys/Licenses/".
+     *  \param[in] path is the freePath, eg "/Local/Sys/Legal/".
      *  \see freePaths()
      */
     void  addFreePath( const QString& path);

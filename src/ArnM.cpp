@@ -933,10 +933,19 @@ ArnM::ArnM()
 
 void  ArnM::postSetup()
 {
+    QString  legalPath = Arn::pathLocalSys + "Legal/";
+
+    int  lgplStat = 0;
+#if defined(ARNLIB_COMPILE)
+    lgplStat = 1;
+#endif
+    setValue( legalPath + "ArnLib_LGPL/value", lgplStat);
+    setValue( legalPath + "ArnLib_LGPL/set", "0=Seemes_Ok 1=Not_Ok,_statically_linked_to_application");
+
     if (_skipLocalSysLoading)  return;
 
     //// Loading Licence files
-    QString  licensesPath = Arn::pathLocalSys + "Licenses/";
+    QString  licensesPath = legalPath + "Licenses/";
     QDir  dirArnRoot( Arn::resourceArnRoot);
     loadFromDirRoot( licensesPath + "LICENSE_ARNLIB.txt",  dirArnRoot, Arn::Coding::Text);
     loadFromDirRoot( licensesPath + "LICENSE_LGPL.txt",    dirArnRoot, Arn::Coding::Text);

@@ -123,7 +123,7 @@ ArnServerPrivate::ArnServerPrivate( ArnServer::Type serverType)
     _tcpServer       = new QTcpServer;
     _arnLogin        = new ArnSyncLogin;
     _serverType      = serverType;
-    _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Licenses/");
+    _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Legal/");
 }
 
 

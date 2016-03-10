@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/ArnLib/ArnRoot/Local/Sys/Licenses">
+    <qresource prefix="/ArnLib/ArnRoot/Local/Sys/Legal/Licenses">
         <file>LICENSE_ARNLIB.txt</file>
         <file>LICENSE_LGPL.txt</file>
         <file>LGPL_EXCEPTION.txt</file>
