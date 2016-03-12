@@ -610,7 +610,7 @@ QByteArray  ArnBasicItem::arnExport()  const
 }
 
 
-QString  ArnBasicItem::toString() const
+QString  ArnBasicItem::toString()  const
 {
     if (!_link)  return QString();
 
@@ -618,7 +618,7 @@ QString  ArnBasicItem::toString() const
 }
 
 
-QByteArray  ArnBasicItem::toByteArray() const
+QByteArray  ArnBasicItem::toByteArray()  const
 {
     if (!_link)  return QByteArray();
 
@@ -626,7 +626,7 @@ QByteArray  ArnBasicItem::toByteArray() const
 }
 
 
-QVariant  ArnBasicItem::toVariant() const
+QVariant  ArnBasicItem::toVariant()  const
 {
     if (!_link)  return QVariant();
 
@@ -634,7 +634,7 @@ QVariant  ArnBasicItem::toVariant() const
 }
 
 
-int  ArnBasicItem::toInt() const
+int  ArnBasicItem::toInt()  const
 {
     if (!_link)  return 0;
 
@@ -642,7 +642,7 @@ int  ArnBasicItem::toInt() const
 }
 
 
-double  ArnBasicItem::toDouble() const
+double  ArnBasicItem::toDouble()  const
 {
     if (!_link)  return 0.0;
 
@@ -650,7 +650,7 @@ double  ArnBasicItem::toDouble() const
 }
 
 
-ARNREAL  ArnBasicItem::toReal() const
+ARNREAL  ArnBasicItem::toReal()  const
 {
     if (!_link)  return 0.0;
 
@@ -658,11 +658,35 @@ ARNREAL  ArnBasicItem::toReal() const
 }
 
 
-bool  ArnBasicItem::toBool() const
+bool  ArnBasicItem::toBool()  const
 {
     if (!_link)  return false;
 
     return _link->toInt() != 0;
+}
+
+
+uint  ArnBasicItem::toUInt()  const
+{
+    if (!_link)  return 0;
+
+    return _link->toByteArray().toUInt();
+}
+
+
+qint64  ArnBasicItem::toInt64()  const
+{
+    if (!_link)  return 0;
+
+    return _link->toByteArray().toLongLong();
+}
+
+
+quint64  ArnBasicItem::toUInt64()  const
+{
+    if (!_link)  return 0;
+
+    return _link->toByteArray().toULongLong();
 }
 
 
@@ -835,6 +859,42 @@ void  ArnBasicItem::setValue( const QVariant& value, int ignoreSame)
     }
     else {
         errorLog( QString("Assigning variant"),
+                  ArnError::ItemNotOpen);
+    }
+}
+
+
+void  ArnBasicItem::setValue( uint value, int ignoreSame)
+{
+    if (_link) {
+        setValue( QByteArray::number( value), ignoreSame);
+    }
+    else {
+        errorLog( QString("Assigning uint:") + QString::number( value),
+                  ArnError::ItemNotOpen);
+    }
+}
+
+
+void  ArnBasicItem::setValue( qint64 value, int ignoreSame)
+{
+    if (_link) {
+        setValue( QByteArray::number( qlonglong( value)), ignoreSame);
+    }
+    else {
+        errorLog( QString("Assigning int64:") + QString::number( qlonglong( value)),
+                  ArnError::ItemNotOpen);
+    }
+}
+
+
+void  ArnBasicItem::setValue( quint64 value, int ignoreSame)
+{
+    if (_link) {
+        setValue( QByteArray::number( qulonglong( value)), ignoreSame);
+    }
+    else {
+        errorLog( QString("Assigning uint64:") + QString::number( qulonglong( value)),
                   ArnError::ItemNotOpen);
     }
 }

@@ -238,6 +238,36 @@ void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
 }
 
 
+void  ArnItemB::setValue( uint value, int ignoreSame)
+{
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
+
+    ArnBasicItem::setValue( value, ignoreSame);
+}
+
+
+void  ArnItemB::setValue( qint64 value, int ignoreSame)
+{
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
+
+    ArnBasicItem::setValue( value, ignoreSame);
+}
+
+
+void  ArnItemB::setValue( quint64 value, int ignoreSame)
+{
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
+
+    ArnBasicItem::setValue( value, ignoreSame);
+}
+
+
 void  ArnItemB::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
     Q_UNUSED(handleData);

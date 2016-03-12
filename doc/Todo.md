@@ -21,7 +21,6 @@ Minor
 * Optimize data transfer with minimal copying.
 * Converter classes for ArnPipes to other streams (e.g UART, TCP etc).
 * Browsing and controlling connected clients.
-* ArnItem none native data-types like: uint, int64 etc.
 * Addition to login a system to "pair" ArnServer and ArnClient.
 
 Done in 3.0
@@ -48,7 +47,8 @@ Done in 3.0
   To make ignoreSameValue work as expected for "" -> int=0 and similar. Same for all toXXX().
 * ArnBasicItem with no QObject, only inherited to give ArnEvent (QEvent). Small footprint!
 * ArnItemNet inherited from ArnBasicItem.
-* ArnMonitor no dependendency to ArnItemNet that can be in other thread.
+* ArnMonitor no dependendency to ArnItemNet, that can be in other thread.
+* ArnItem none native data-types: uint, int64 & uint64.
 
 Done in 2.3
 -----------

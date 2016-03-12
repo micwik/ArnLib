@@ -307,7 +307,7 @@ public:
      */
     QByteArray  arnExport()  const;
 
-    /*! \return Convert _Arn Data Object_ to a _integer_
+    /*! \return Convert _Arn Data Object_ to an _integer_
      */
     int  toInt()  const;
 
@@ -318,10 +318,6 @@ public:
     /*! \return Convert _Arn Data Object_ to an _ARNREAL_
      */
     ARNREAL  toReal()  const;
-
-    /*! \return Convert _Arn Data Object_ to a _bool_
-     */
-    bool  toBool()  const;
 
     /*! \return Convert _Arn Data Object_ to a _QString_
      */
@@ -334,6 +330,26 @@ public:
     /*! \return Convert _Arn Data Object_ to a _QVariant_
      */
     QVariant  toVariant()  const;
+
+    /*! \return Convert _Arn Data Object_ to a _bool_
+     *  \note Not native ARN datatype. It's converted from Int.
+     */
+    bool  toBool()  const;
+
+    /*! \return Convert _Arn Data Object_ to an _unsigned int_
+     *  \note Not native ARN datatype. It's converted from ByteArray.
+     */
+    uint  toUInt()  const;
+
+    /*! \return Convert _Arn Data Object_ to an _int 64 bit_
+     *  \note Not native ARN datatype. It's converted from ByteArray.
+     */
+    qint64  toInt64()  const;
+
+    /*! \return Convert _Arn Data Object_ to an _unsigned int 64 bit_
+     *  \note Not native ARN datatype. It's converted from ByteArray.
+     */
+    quint64  toUInt64()  const;
 
     void  setValue( const ArnBasicItem& other, int ignoreSame = Arn::SameValue::DefaultAction);
 
@@ -378,6 +394,30 @@ public:
      *  \see setIgnoreSameValue()
      */
     void  setValue( const QVariant& value, int ignoreSame = Arn::SameValue::DefaultAction);
+
+    //! Assign an _unsigned int_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     *  \note Not native ARN datatype. ByteArray is assigned.
+     */
+    void  setValue( uint value, int ignoreSame = Arn::SameValue::DefaultAction);
+
+    //! Assign an _int 64 bit_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     *  \note Not native ARN datatype. ByteArray is assigned.
+     */
+    void  setValue( qint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
+
+    //! Assign an _unsigned int 64 bit_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     *  \note Not native ARN datatype. ByteArray is assigned.
+     */
+    void  setValue( quint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
 
     //! Get the thread affinity of this ArnBasicItem
     /*! The affinity (see QObject) is set when the ArnBasicItem is created and bound to an

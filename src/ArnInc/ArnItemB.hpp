@@ -160,6 +160,30 @@ protected:
      */
     void  setValue( const QVariant& value, int ignoreSame = Arn::SameValue::DefaultAction);
 
+    //! Assign an _unsigned int_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     *  \note Not native ARN datatype. ByteArray is assigned.
+     */
+    void  setValue( uint value, int ignoreSame = Arn::SameValue::DefaultAction);
+
+    //! Assign an _int 64 bit_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     *  \note Not native ARN datatype. ByteArray is assigned.
+     */
+    void  setValue( qint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
+
+    //! Assign an _unsigned int 64 bit_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     *  \note Not native ARN datatype. ByteArray is assigned.
+     */
+    void  setValue( quint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
+
     //// To be reimplemented
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);

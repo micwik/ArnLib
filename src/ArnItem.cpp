@@ -275,6 +275,27 @@ ArnItem&  ArnItem::operator=( const char* other)
 }
 
 
+ArnItem&  ArnItem::operator=( uint other)
+{
+    this->setValue( other);
+    return *this;
+}
+
+
+ArnItem&  ArnItem::operator=( qint64 other)
+{
+    this->setValue( other);
+    return *this;
+}
+
+
+ArnItem&  ArnItem::operator=( quint64 other)
+{
+    this->setValue( other);
+    return *this;
+}
+
+
 ArnItem&  ArnItem::operator=( const QVariant& other)
 {
     this->setValue( other);
