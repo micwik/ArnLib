@@ -46,7 +46,7 @@
 using Arn::XStringMap;
 
 
-ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, ArnServer* arnServer)
+ArnServerSession::ArnServerSession( QTcpSocket* socket, ArnServer* arnServer)
     : QObject( arnServer)
 {
     QHostAddress  remoteAddr = socket->peerAddress();
@@ -79,7 +79,7 @@ ArnServerNetSync::ArnServerNetSync( QTcpSocket* socket, ArnServer* arnServer)
 }
 
 
-void  ArnServerNetSync::shutdown()
+void  ArnServerSession::shutdown()
 {
     _arnNetSync = 0;
     _arnNetEar->close();
@@ -87,7 +87,7 @@ void  ArnServerNetSync::shutdown()
 }
 
 
-void  ArnServerNetSync::doDestroyArnTree( const QString& path, bool isGlobal)
+void  ArnServerSession::doDestroyArnTree( const QString& path, bool isGlobal)
 {
     Q_UNUSED(isGlobal)  // Destruction of tree on server will allways be global
 
@@ -97,14 +97,14 @@ void  ArnServerNetSync::doDestroyArnTree( const QString& path, bool isGlobal)
 }
 
 
-void  ArnServerNetSync::onCommandDelete( const QString& path)
+void  ArnServerSession::onCommandDelete( const QString& path)
 {
     // qDebug() << "ArnServerNetSync-delete: path=" << path;
     ArnM::destroyLink( path);
 }
 
 
-void  ArnServerNetSync::doSyncStateChanged( int state)
+void  ArnServerSession::doSyncStateChanged( int state)
 {
     // qDebug() << "ArnServer sync state changed: state=" << state;
     ArnSync::State  syncState = ArnSync::State::fromInt( state);
@@ -316,7 +316,7 @@ void  ArnServer::tcpConnection()
 
     switch (d->_serverType) {
     case Type::NetSync:
-        new ArnServerNetSync( socket, this);
+        new ArnServerSession( socket, this);
         break;
     }
 }

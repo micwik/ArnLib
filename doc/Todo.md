@@ -17,7 +17,6 @@ Major
 
 Minor
 -----
-* ArnItemQml::updateValue() don't handle param data.
 * Optimize data transfer with minimal copying.
 * Converter classes for ArnPipes to other streams (e.g UART, TCP etc).
 * Browsing and controlling connected clients.
@@ -40,13 +39,11 @@ Done in 3.0
 * Started unit tests
 * Optimized HandleData class with Null-state that can be this == 0.
 * Made ArnObject (ArnLink) none QObject to save memory and independent on main-thread-create.
-  * Removed ArnLik::trfValue(), add QByteArray* valueBytes in ArnLink::setValue() & as param to doValueChanged().
-  * Added ArnEvent valueChanged, implement in ArnLink & ArnItemB.
-  * New methods and data for parent() etc.
+  New methods and data for parent() etc.
 * Changed to ArnLink::toInt(bool* isOk = 0).
   To make ignoreSameValue work as expected for "" -> int=0 and similar. Same for all toXXX().
 * ArnBasicItem with no QObject, only inherited to give ArnEvent (QEvent). Small footprint!
-* ArnItemNet inherited from ArnBasicItem.
+* ArnItemNet (Arn syncing item) inherited from ArnBasicItem for small footprint.
 * ArnMonitor no dependendency to ArnItemNet, that can be in other thread.
 * ArnItem none native data-types: uint, int64 & uint64.
 

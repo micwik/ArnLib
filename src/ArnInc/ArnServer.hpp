@@ -50,11 +50,11 @@ class QTcpServer;
 class QTcpSocket;
 
 
-class ArnServerNetSync : public QObject
+class ArnServerSession : public QObject
 {
     Q_OBJECT
 public:
-    ArnServerNetSync( QTcpSocket* socket, ArnServer* arnServer);
+    ArnServerSession( QTcpSocket* socket, ArnServer* arnServer);
 
 signals:
 

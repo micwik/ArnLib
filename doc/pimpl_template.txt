@@ -5,6 +5,7 @@ Template for pimpl in Arn
 Base class hpp
 --------------
 
+#include "ArnLib_global.hpp"
 ...
 
 class ArnClientPrivate;
@@ -19,6 +20,8 @@ class ARNLIBSHARED_EXPORT ArnClient : public QObject
 
 public:
 
+...
+    ~ArnClient();
 ...
 
     //! \cond ADV
