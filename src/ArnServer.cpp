@@ -54,6 +54,7 @@ ArnServerSession::ArnServerSession( QTcpSocket* socket, ArnServer* arnServer)
     // qDebug() << "ArnServerNetSync: remoteAddr=" << remoteAddr.toString()
     //          << " localAddr=" << localAddr.toString();
 
+    _socket    = socket;
     _arnServer = arnServer;
     _arnNetSync = new ArnSync( socket, false, this);
     _arnNetSync->setSessionHandler( this);
@@ -115,6 +116,12 @@ void  ArnServerSession::doSyncStateChanged( int state)
 }
 
 
+QTcpSocket*  ArnServerSession::socket()  const
+{
+    return _socket;
+}
+
+
 
 ArnServerPrivate::ArnServerPrivate( ArnServer::Type serverType)
 {
@@ -122,6 +129,7 @@ ArnServerPrivate::ArnServerPrivate( ArnServer::Type serverType)
     _isDemandLogin   = false;
     _tcpServer       = new QTcpServer;
     _arnLogin        = new ArnSyncLogin;
+    _newSession      = 0;
     _serverType      = serverType;
     _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Legal/");
 }
@@ -308,6 +316,14 @@ ArnSyncLogin*  ArnServer::arnLogin()  const
 }
 
 
+ArnServerSession*  ArnServer::getSession()  const
+{
+    Q_D(const ArnServer);
+
+    return d->_newSession;
+}
+
+
 void  ArnServer::tcpConnection()
 {
     Q_D(ArnServer);
@@ -316,7 +332,9 @@ void  ArnServer::tcpConnection()
 
     switch (d->_serverType) {
     case Type::NetSync:
-        new ArnServerSession( socket, this);
+        d->_newSession = new ArnServerSession( socket, this);
+        emit newSession();
+        d->_newSession = 0;
         break;
     }
 }

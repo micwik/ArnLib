@@ -54,6 +54,7 @@ namespace Arn {
     extern const QString  pathDiscover;
     extern const QString  pathDiscoverThis;
     extern const QString  pathDiscoverConnect;
+    extern const QString  pathServerSessions;
 
 //! Action when assigning same value to an ArnItem
 struct SameValue {

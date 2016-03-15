@@ -49,12 +49,16 @@ contains(ARN, server) {
     QT += sql
     SOURCES += \
         $$PWD/ArnServer.cpp \
+        $$PWD/ArnServerRemote.cpp \
         $$PWD/ArnPersist.cpp
 
     HEADERS += \
         $$PWD/ArnInc/ArnServer.hpp \
+        $$PWD/ArnInc/ArnServerRemote.hpp \
         $$PWD/ArnInc/ArnPersist.hpp \
-        $$PWD/private/ArnServer_p.hpp
+        $$PWD/private/ArnServer_p.hpp \
+        $$PWD/private/ArnServerRemote_p.hpp \
+        $$PWD/private/ArnPersist_p.hpp
 }
 
 
@@ -86,7 +90,6 @@ contains(ARN, client) {
         $$PWD/private/ArnDepend_p.hpp \
         $$PWD/private/ArnRpc_p.hpp \
         $$PWD/private/ArnSapi_p.hpp \
-        $$PWD/private/ArnPersist_p.hpp \
         $$PWD/private/ArnMonitor_p.hpp
 }
 

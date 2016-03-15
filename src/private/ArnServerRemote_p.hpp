@@ -29,29 +29,22 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
-#ifndef ARNSERVER_P_HPP
-#define ARNSERVER_P_HPP
+#ifndef ARNSERVERREMOTE_P_HPP
+#define ARNSERVERREMOTE_P_HPP
 
-#include "ArnInc/ArnServer.hpp"
+class ArnServer;
 
 
-class ArnServerPrivate
+class ArnServerRemotePrivate
 {
-    friend class ArnServer;
+    friend class ArnServerRemote;
 public:
-    ArnServerPrivate( ArnServer::Type serverType);
-    virtual ~ArnServerPrivate();
+    ArnServerRemotePrivate();
+    virtual ~ArnServerRemotePrivate();
 
 private:
-    QTcpServer*  _tcpServer;
-    ArnSyncLogin*  _arnLogin;
-    ArnServerSession*  _newSession;
-    QStringList  _freePathTab;
-    QStringList  _noLoginNets;
-    bool  _tcpServerActive;
-    ArnServer::Type  _serverType;
-    bool  _isDemandLogin;
+    ArnServer*  _arnServer;
 };
 
-#endif // ARNSERVER_P_HPP
+#endif // ARNSERVERREMOTE_P_HPP
 

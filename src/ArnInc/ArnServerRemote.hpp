@@ -29,29 +29,64 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
-#ifndef ARNSERVER_P_HPP
-#define ARNSERVER_P_HPP
+#ifndef ARNSERVERREMOTE_HPP
+#define ARNSERVERREMOTE_HPP
 
-#include "ArnInc/ArnServer.hpp"
+#include "ArnLib_global.hpp"
+#include <QObject>
+
+class ArnServer;
+class ArnServerSession;
+class ArnServerRemote;
+class ArnServerRemotePrivate;
 
 
-class ArnServerPrivate
+class ArnServerRemoteSession : public QObject
 {
-    friend class ArnServer;
+    Q_OBJECT
 public:
-    ArnServerPrivate( ArnServer::Type serverType);
-    virtual ~ArnServerPrivate();
+    ArnServerRemoteSession( ArnServerSession* arnServerSession, ArnServerRemote* arnServerRemote);
+
+signals:
+
+private slots:
+    void  shutdown();
+    // void  doSyncStateChanged( int state);
 
 private:
-    QTcpServer*  _tcpServer;
-    ArnSyncLogin*  _arnLogin;
-    ArnServerSession*  _newSession;
-    QStringList  _freePathTab;
-    QStringList  _noLoginNets;
-    bool  _tcpServerActive;
-    ArnServer::Type  _serverType;
-    bool  _isDemandLogin;
+    ArnServerRemote*  _arnServerRemote;
+    ArnServerSession*  _arnServerSession;
+    QString  _sessionPath;
 };
 
-#endif // ARNSERVER_P_HPP
 
+class ARNLIBSHARED_EXPORT ArnServerRemote : public QObject
+{
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(ArnServerRemote)
+
+public:
+    explicit ArnServerRemote( QObject* parent = 0);
+
+    void  startUseServer( ArnServer* arnServer);
+
+    ~ArnServerRemote();
+
+signals:
+
+public slots:
+
+    //! \cond ADV
+protected:
+    ArnServerRemote( ArnServerRemotePrivate& dd, QObject* parent);
+    ArnServerRemotePrivate* const  d_ptr;
+    //! \endcond
+
+private slots:
+    void  onNewSession();
+
+private:
+    void  init();
+};
+
+#endif // ARNSERVERREMOTE_HPP

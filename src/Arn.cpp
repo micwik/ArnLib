@@ -43,6 +43,7 @@ const QString  pathLocalSys        = "Sys/";
 const QString  pathDiscover        = "Sys/Discover/";
 const QString  pathDiscoverThis    = "Sys/Discover/This/";
 const QString  pathDiscoverConnect = "Sys/Discover/Connect/";
+const QString  pathServerSessions  = "Sys/Server/Sessions/";
 
 
 QString  convertName( const QString& name, NameF nameF)

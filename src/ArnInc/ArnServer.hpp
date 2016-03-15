@@ -56,6 +56,8 @@ class ArnServerSession : public QObject
 public:
     ArnServerSession( QTcpSocket* socket, ArnServer* arnServer);
 
+    QTcpSocket*  socket()  const;
+
 signals:
 
 private slots:
@@ -65,6 +67,7 @@ private slots:
     void  doSyncStateChanged( int state);
 
 private:
+    QTcpSocket*  _socket;
     ArnServer*  _arnServer;
     ArnSync*  _arnNetSync;
     ArnItemNetEar*  _arnNetEar;
@@ -196,6 +199,10 @@ public:
 
     //! \cond ADV
     ArnSyncLogin*  arnLogin()  const;
+    ArnServerSession*  getSession()  const;
+
+signals:
+    void  newSession();
 
 protected:
     ArnServer( ArnServerPrivate& dd, QObject* parent);
