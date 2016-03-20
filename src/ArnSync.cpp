@@ -221,6 +221,16 @@ void  ArnSync::sendInfo( int type, const QByteArray& data)
 }
 
 
+void  ArnSync::sendMessage( int type, const QByteArray& data)
+{
+    _commandMap.clear();
+    _commandMap.add(ARNRECNAME, "message").add("type", QByteArray::number( type));
+    _commandMap.add("data", data);
+
+    sendXSMap( _commandMap);
+}
+
+
 void  ArnSync::sendLogin( int seq, const Arn::XStringMap& xsMap)
 {
     XStringMap xm;
@@ -361,6 +371,24 @@ QString ArnSync::nullConvertPath(void* context, const QString& path)
 }
 
 
+void  ArnSync::setWhoIAm( const QByteArray& whoIAm)
+{
+    _whoIAm = whoIAm;
+}
+
+
+QByteArray  ArnSync::remoteWhoIAm()  const
+{
+    return _remoteWhoIAm;
+}
+
+
+QString  ArnSync::loginUserName()  const
+{
+    return _loginUserName;
+}
+
+
 void ArnSync::close()
 {
     if (_isClosed)  return;
@@ -487,6 +515,9 @@ void  ArnSync::doCommands()
     }
     else if (command == "delete") {
         stat = doCommandDelete();
+    }
+    else if (command == "message") {
+        stat = doCommandMessage();
     }
     else if (command == "ls") {
         stat = doCommandLs();
@@ -637,7 +668,7 @@ uint  ArnSync::doCommandLogin()
         QByteArray  userClient    = _commandMap.value("user");
         QByteArray  pwHashXClient = _commandMap.value("pass");
         QByteArray  pwHashXServer;
-
+        _loginUserName = QString::fromUtf8( userClient.constData(), userClient.size());
 
         int stat = 0;
         _allow = Arn::Allow::None;  // Deafult no access
@@ -683,10 +714,13 @@ uint  ArnSync::doCommandLogin()
         sendLogin( 4, xsm);
         _loginNextSeq = -1;
 
-        if (stat)
+        if (stat) {
+            emit loginCompleted();
             startNormalSync();
-        else
+        }
+        else {
             startLogin();
+        }
         break;
     }
     case 4:
@@ -698,8 +732,10 @@ uint  ArnSync::doCommandLogin()
         _remoteAllow = Arn::Allow::fromInt( _commandMap.value("allow").toInt());
         _loginNextSeq = -1;
 
-        if (stat)
+        if (stat) {
+            emit loginCompleted();
             setState( State::Normal);
+        }
         break;
     }
     default:
@@ -977,10 +1013,23 @@ uint  ArnSync::doCommandDelete()
 }
 
 
+uint  ArnSync::doCommandMessage()
+{
+    int         type = _commandMap.value("type").toUInt();
+    QByteArray  data = _commandMap.value("data");
+
+    emit messageReceived( type, data);
+
+    return ArnError::Ok;
+}
+
+
 uint  ArnSync::doCommandInfo()
 {
-    //// Note: Check if _allow is ok with specific info
+    if (_isClientSide)  return ArnError::RecNotExpected;
 
+    //// Server
+    //// Note: Check if _allow is ok with specific info
     int         type = _commandMap.value("type").toUInt();
     QByteArray  data = _commandMap.value("data");
 
@@ -996,9 +1045,16 @@ uint  ArnSync::doCommandInfo()
     case InfoType::FreePaths:
         xmOut.addValues( _freePathTab);
         break;
-    default:
-        return ArnError::NotFound;
+    case InfoType::WhoIAm:
+        _remoteWhoIAm = data;
+        xmOut.fromXString( _whoIAm);
+        break;
+    default:;
+        // Not supported info-type, send empty data reply.
+        // Client will ask all internal types it support. That chain shall not be broken.
     }
+
+    emit infoReceived( type);
 
     _replyMap.add(ARNRECNAME, "Rinfo").add("type", QByteArray::number( type));
     _replyMap.add("data", xmOut.toXString());
@@ -1016,6 +1072,8 @@ uint ArnSync::doCommandRInfo()
         QByteArray  data = _commandMap.value("data");
 
         doInfoInternal( type, data);
+
+        emit infoReceived( type);
     }
 
     return ArnError::Ok;
@@ -1222,6 +1280,11 @@ void  ArnSync::doInfoInternal( int infoType, const QByteArray& data)
         break;
     case InfoType::FreePaths:
         _freePathTab = xmIn.values();
+        _curInfoType = InfoType::WhoIAm;
+        sendInfo( InfoType::WhoIAm, _whoIAm);
+        break;
+    case InfoType::WhoIAm:
+        _remoteWhoIAm = data;
 
         setState( State::Login);
         _loginReqCode = 0;

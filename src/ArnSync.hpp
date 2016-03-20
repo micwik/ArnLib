@@ -74,12 +74,27 @@ public:
     //! Public Info type (in Arn.hpp) takes enums from 0 to max 999
     struct InfoType {
         enum  E {
-            //! Get list of free paths not needing login
             Start       = 1000,  // Start marker
+            //! Get list of free paths not needing login
             FreePaths   = 1001,
+            //! Parameters defining server and client (Agent, User, Location ...)
+            WhoIAm      = 1002,
             End                  // End marker
         };
         MQ_DECLARE_ENUM( InfoType)
+    };
+
+    //! Internal Info type for exchange static (meta) info between ArnClient and ArnServer
+    //! Public Info type (in Arn.hpp) takes enums from 0 to max 999
+    struct MessageType {
+        enum  E {
+            KillRequest      = 1001,
+            AbortKillRequest = 1002,
+            ChatNormal       = 1008,
+            ChatPrio         = 1009,
+            End                  // End marker
+        };
+        MQ_DECLARE_ENUM( MessageType)
     };
 
     typedef QString (*ConVertPathCB)(void* context, const QString& path);
@@ -104,6 +119,7 @@ public:
     void  sendSetTree( const QString& path);
     void  sendDelete( const QString& path);
     void  sendInfo( int type, const QByteArray& data = QByteArray());
+    void  sendMessage( int type, const QByteArray& data = QByteArray());
     void  sendExit();
     uint  remoteVer( uint index);
     void  loginToArn( const QString& userName, const QString& passwordHash,
@@ -116,13 +132,19 @@ public:
     void  setSessionHandler( void* sessionHandler);
     void  setToRemotePathCB( ConVertPathCB toRemotePathCB);
     static QString  nullConvertPath( void* context, const QString& path);
+    void  setWhoIAm( const QByteArray& whoIAm);
+    QByteArray  remoteWhoIAm()  const;
+    QString  loginUserName()  const;
 
 signals:
     void  replyRecord( Arn::XStringMap& replyMap);
     void  xcomDelete( const QString& path);
     void  stateChanged( int state);
+    void  infoReceived( int type);
+    void  messageReceived( int type, const QByteArray& data);
     //! Signal emitted when the remote ArnServer demands a login.
     void  loginRequired( int contextCode);
+    void  loginCompleted();
 
 protected:
     virtual void  customEvent( QEvent* ev);
@@ -174,6 +196,7 @@ private:
     uint  doCommandGet();
     uint  doCommandLs();
     uint  doCommandDelete();
+    uint  doCommandMessage();
     uint  doCommandInfo();
     uint  doCommandRInfo();
     uint  doCommandVer();
@@ -192,6 +215,8 @@ private:
     Arn::XStringMap  _syncMap;
     Arn::XStringMap  _customMap;
     QStringList  _freePathTab;
+    QByteArray  _whoIAm;
+    QByteArray  _remoteWhoIAm;
 
     QMap<uint,ArnItemNet*>  _itemNetMap;
 

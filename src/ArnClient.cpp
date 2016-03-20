@@ -232,6 +232,8 @@ void  ArnClient::init()
     connect( arnSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SLOT(doReplyRecord(Arn::XStringMap&)));
     connect( arnSync, SIGNAL(replyRecord(Arn::XStringMap&)), this, SIGNAL(replyRecord(Arn::XStringMap&)));
     connect( arnSync, SIGNAL(xcomDelete(QString)), this, SLOT(onCommandDelete(QString)));
+    connect( arnSync, SIGNAL(messageReceived(int,QByteArray)),
+             this, SLOT(onMessageReceived(int,QByteArray)));
     connect( d->_recTimer, SIGNAL(timeout()), this, SLOT(doRecTimeout()));
     connect( socket, SIGNAL(readyRead()), this, SLOT(doRecNotified()));
 
@@ -538,6 +540,22 @@ QStringList  ArnClient::freePaths()  const
 }
 
 
+void  ArnClient::setWhoIAm( const Arn::XStringMap& whoIAmXsm)
+{
+    Q_D(ArnClient);
+
+    d->_arnNetSync->setWhoIAm( whoIAmXsm.toXString());
+}
+
+
+Arn::XStringMap  ArnClient::remoteWhoIAm()  const
+{
+    Q_D(const ArnClient);
+
+    return XStringMap( d->_arnNetSync->remoteWhoIAm());
+}
+
+
 bool  ArnClient::isReContact()  const
 {
     Q_D(const ArnClient);
@@ -559,6 +577,24 @@ int ArnClient::curPrio()  const
     Q_D(const ArnClient);
 
     return d->_curPrio;
+}
+
+
+void  ArnClient::chatSend( const QString& text, int prioType)
+{
+    Q_D(ArnClient);
+
+    d->_arnNetSync->sendMessage( prioType == 1 ? ArnSync::MessageType::ChatPrio
+                                               : ArnSync::MessageType::ChatNormal,
+                                 text.toUtf8());
+}
+
+
+void ArnClient::abortKillRequest()
+{
+    Q_D(ArnClient);
+
+    d->_arnNetSync->sendMessage( ArnSync::MessageType::AbortKillRequest);
 }
 
 
@@ -907,6 +943,31 @@ void  ArnClient::onCommandDelete( const QString& remotePath)
     }
     if (!localPath.isEmpty())
         ArnM::destroyLink( localPath);
+}
+
+
+void  ArnClient::onMessageReceived( int type, const QByteArray& data)
+{
+    // XStringMap xmIn( data);
+
+    switch (type) {
+    //// Internal message types
+    case ArnSync::MessageType::KillRequest:
+        emit killRequested();
+        close();
+        break;
+    case ArnSync::MessageType::AbortKillRequest:
+        // Not valid for client
+        break;
+    case ArnSync::MessageType::ChatPrio:
+        emit chatReceived( QString::fromUtf8( data.constData(), data.size()), 1);
+        break;
+    case ArnSync::MessageType::ChatNormal:
+        emit chatReceived( QString::fromUtf8( data.constData(), data.size()), 2);
+        break;
+    default:;
+        // Not supported message-type.
+    }
 }
 
 

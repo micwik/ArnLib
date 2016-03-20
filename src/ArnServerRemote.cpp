@@ -32,9 +32,12 @@
 #include "ArnInc/ArnServerRemote.hpp"
 #include "private/ArnServerRemote_p.hpp"
 #include "ArnInc/ArnServer.hpp"
+#include "ArnSync.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/Arn.hpp"
 #include <QTcpSocket>
+#include <QHostInfo>
+#include <QTimer>
 
 
 ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSession,
@@ -43,20 +46,145 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
 {
     _arnServerSession = arnServerSession;
     _arnServerRemote  = arnServerRemote;
+    _killCountdown    = 0;
 
     QTcpSocket*  socket = _arnServerSession->socket();
     QHostAddress  remAddr = socket->peerAddress();
-    bool  isOk;
-    quint32  remAddrV4 = remAddr.toIPv4Address( &isOk);
-    if (isOk)
+    quint32  remAddrV4 = remAddr.toIPv4Address();
+    if (remAddrV4)  // MW: TODO Check if this is ok for IPV6
         remAddr = QHostAddress( remAddrV4);
 
+    QString  remIp = remAddr.toString();
     _sessionPath = Arn::pathServerSessions +
-                   remAddr.toString() + ":" + QString::number( socket->peerPort()) + "/";
+                   remIp + ":" + QString::number( socket->peerPort()) + "/";
 
-    ArnM::setValue( _sessionPath + "Name/value", socket->peerName());
+    ArnM::setValue( _sessionPath + "HostIp/value", remIp);
 
+    connect( _arnServerSession, SIGNAL(infoReceived(int)), this, SLOT(onInfoReceived(int)));
+    connect( _arnServerSession, SIGNAL(loginCompleted()), this, SLOT(onLoginCompleted()));
     connect( _arnServerSession, SIGNAL(destroyed(QObject*)), SLOT(shutdown()));
+
+    int  lookupId = QHostInfo::lookupHost( remIp, this, SLOT(onIpLookup(QHostInfo)));
+    Q_UNUSED(lookupId);
+
+    _timerKill = new QTimer( this);
+    _timerKill->setInterval( 1000);
+    connect( _timerKill, SIGNAL(timeout()), this, SLOT(doKillCountdown()));
+
+    _arnKill.open( _sessionPath + "Kill/value");
+    _arnKill = KillMode::Off;
+    ArnM::setValue( _sessionPath + "Kill/set", KillMode::txt().getEnumSet());
+    connect( &_arnKill, SIGNAL(changed()), this, SLOT(doKillChanged()));
+
+    _arnChatPv.setPipeMode();
+    _arnChatPv.open(_sessionPath + "Chat!");
+    connect( &_arnChatPv, SIGNAL(changed(QString)), this, SLOT(doChatAdd(QString)));
+    connect( _arnServerSession, SIGNAL(messageReceived(int,QByteArray)),
+             this, SLOT(onMessageReceived(int,QByteArray)));
+}
+
+
+void  ArnServerRemoteSession::onInfoReceived( int type)
+{
+    switch (type) {
+    case ArnSync::InfoType::WhoIAm:
+    {
+        Arn::XStringMap  wimXsm = _arnServerSession->remoteWhoIAm();
+        for (int i = 0; i < wimXsm.size(); ++i) {
+            ArnM::setValue( _sessionPath + wimXsm.key(i) + "/value", wimXsm.value(i));
+        }
+        break;
+    }
+    default:;
+    }
+}
+
+
+void  ArnServerRemoteSession::onLoginCompleted()
+{
+    ArnM::setValue( _sessionPath + "LoginName/value", _arnServerSession->loginUserName());
+}
+
+
+void  ArnServerRemoteSession::onIpLookup( const QHostInfo& host)
+{
+    if (host.error() == QHostInfo::NoError) {
+        ArnM::setValue( _sessionPath + "HostName/value", host.hostName());
+    }
+    else {
+        qDebug() << "ServerRemoteSession Lookup failed:" << host.errorString();
+    }
+}
+
+
+void  ArnServerRemoteSession::doKillChanged()
+{
+    KillMode  kMode = KillMode::fromInt( _arnKill.toInt());
+
+    switch (kMode) {
+    case KillMode::Off:
+        _killCountdown = 0;
+        _timerKill->stop();
+        break;
+    case KillMode::Delay10Sec:
+        _killCountdown = 10;
+        _timerKill->start();
+        break;
+    case KillMode::Delay60Sec:
+        _killCountdown = 60;
+        _timerKill->start();
+        break;
+    default:
+        break;
+    }
+}
+
+
+
+void  ArnServerRemoteSession::doKillCountdown()
+{
+    if (_killCountdown == 0) {
+        _timerKill->stop();
+        return;
+    }
+    --_killCountdown;
+    QString txt = QString("Arn Connection killed in %1 sec.").arg( _killCountdown);
+    _arnChatPv = txt;
+    _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
+    if (_killCountdown)  return;
+
+    _timerKill->stop();
+    _arnKill = KillMode::Off;
+    _arnServerSession->sendMessage( ArnSync::MessageType::KillRequest);
+}
+
+
+void  ArnServerRemoteSession::doChatAdd( const QString& txt)
+{
+    _arnServerSession->sendMessage( ArnSync::MessageType::ChatNormal, txt.toUtf8());
+}
+
+
+void  ArnServerRemoteSession::onMessageReceived( int type, const QByteArray& data)
+{
+    // XStringMap xmIn( data);
+
+    switch (type) {
+    //// Internal message types
+    case ArnSync::MessageType::KillRequest:
+        // Not valid for server
+        break;
+    case ArnSync::MessageType::AbortKillRequest:
+        _arnKill = KillMode::Off;
+        break;
+    case ArnSync::MessageType::ChatPrio:
+        // Fall throu
+    case ArnSync::MessageType::ChatNormal:
+        _arnChatPv = QString::fromUtf8( data.constData(), data.size());
+        break;
+    default:;
+        // Not supported message-type.
+    }
 }
 
 

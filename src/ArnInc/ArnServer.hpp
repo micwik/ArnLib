@@ -57,8 +57,14 @@ public:
     ArnServerSession( QTcpSocket* socket, ArnServer* arnServer);
 
     QTcpSocket*  socket()  const;
+    Arn::XStringMap  remoteWhoIAm()  const;
+    QString  loginUserName()  const;
+    void  sendMessage( int type, const QByteArray& data = QByteArray());
 
 signals:
+    void  infoReceived( int type);
+    void  loginCompleted();
+    void  messageReceived( int type, const QByteArray& data);
 
 private slots:
     void  shutdown();
@@ -197,9 +203,12 @@ public:
      */
     QStringList  freePaths()  const;
 
+    void  setWhoIAm( const Arn::XStringMap& whoIAmXsm);
+
     //! \cond ADV
     ArnSyncLogin*  arnLogin()  const;
     ArnServerSession*  getSession()  const;
+    QByteArray  whoIAm()  const;
 
 signals:
     void  newSession();

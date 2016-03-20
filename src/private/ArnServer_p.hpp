@@ -48,6 +48,7 @@ private:
     ArnServerSession*  _newSession;
     QStringList  _freePathTab;
     QStringList  _noLoginNets;
+    QByteArray  _whoIAm;
     bool  _tcpServerActive;
     ArnServer::Type  _serverType;
     bool  _isDemandLogin;

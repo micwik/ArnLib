@@ -68,6 +68,7 @@ ArnServerSession::ArnServerSession( QTcpSocket* socket, ArnServer* arnServer)
     foreach (const QString& path, _arnServer->freePaths()) {
         _arnNetSync->addFreePath( path);
     }
+    _arnNetSync->setWhoIAm( _arnServer->whoIAm());
 
     _arnNetEar  = new ArnItemNetEar( this);
     _arnNetEar->open("/");  // MW: Optimize to only mountPoint:s ?
@@ -75,6 +76,10 @@ ArnServerSession::ArnServerSession( QTcpSocket* socket, ArnServer* arnServer)
     connect( _arnNetSync, SIGNAL(stateChanged(int)), this, SLOT(doSyncStateChanged(int)));
     connect( _arnNetSync, SIGNAL(destroyed(QObject*)), this, SLOT(shutdown()));
     connect( _arnNetSync, SIGNAL(xcomDelete(QString)), this, SLOT(onCommandDelete(QString)));
+    connect( _arnNetSync, SIGNAL(infoReceived(int)), this, SIGNAL(infoReceived(int)));
+    connect( _arnNetSync, SIGNAL(loginCompleted()), this, SIGNAL(loginCompleted()));
+    connect( _arnNetSync, SIGNAL(messageReceived(int,QByteArray)),
+             this, SIGNAL(messageReceived(int,QByteArray)));
     connect( _arnNetEar, SIGNAL(arnTreeDestroyed(QString,bool)),
              this, SLOT(doDestroyArnTree(QString,bool)));
 }
@@ -119,6 +124,24 @@ void  ArnServerSession::doSyncStateChanged( int state)
 QTcpSocket*  ArnServerSession::socket()  const
 {
     return _socket;
+}
+
+
+Arn::XStringMap  ArnServerSession::remoteWhoIAm()  const
+{
+    return XStringMap( _arnNetSync->remoteWhoIAm());
+}
+
+
+QString  ArnServerSession::loginUserName()  const
+{
+    return _arnNetSync->loginUserName();
+}
+
+
+void  ArnServerSession::sendMessage( int type, const QByteArray& data)
+{
+    _arnNetSync->sendMessage( type, data);
 }
 
 
@@ -321,6 +344,22 @@ ArnServerSession*  ArnServer::getSession()  const
     Q_D(const ArnServer);
 
     return d->_newSession;
+}
+
+
+QByteArray  ArnServer::whoIAm()  const
+{
+    Q_D(const ArnServer);
+
+    return d->_whoIAm;
+}
+
+
+void  ArnServer::setWhoIAm( const Arn::XStringMap& whoIAmXsm)
+{
+    Q_D(ArnServer);
+
+    d->_whoIAm = whoIAmXsm.toXString();
 }
 
 

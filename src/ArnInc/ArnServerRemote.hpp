@@ -33,23 +33,49 @@
 #define ARNSERVERREMOTE_HPP
 
 #include "ArnLib_global.hpp"
+#include "ArnItem.hpp"
+#include "MQFlags.hpp"
 #include <QObject>
 
 class ArnServer;
 class ArnServerSession;
 class ArnServerRemote;
 class ArnServerRemotePrivate;
+class QHostInfo;
+class QTimer;
 
+namespace ArnPrivate {
+class KillMode {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        Off,
+        Delay10Sec,
+        Delay60Sec
+    };
+    MQ_DECLARE_ENUMTXT( KillMode)
+};
+}
 
 class ArnServerRemoteSession : public QObject
 {
     Q_OBJECT
 public:
+    typedef ArnPrivate::KillMode  KillMode;
+
     ArnServerRemoteSession( ArnServerSession* arnServerSession, ArnServerRemote* arnServerRemote);
 
 signals:
 
 private slots:
+    void  onInfoReceived( int type);
+    void  onLoginCompleted();
+    void  onIpLookup( const QHostInfo& host);
+    void  doKillChanged();
+    void  doKillCountdown();
+    void  doChatAdd( const QString& txt);
+    void  onMessageReceived( int type, const QByteArray& data);
     void  shutdown();
     // void  doSyncStateChanged( int state);
 
@@ -57,6 +83,11 @@ private:
     ArnServerRemote*  _arnServerRemote;
     ArnServerSession*  _arnServerSession;
     QString  _sessionPath;
+    QTimer*  _timerKill;
+    ArnItem  _arnKill;
+    uint  _killCountdown;
+    ArnItem  _arnChatPv;
+    ArnItem  _arnChat;
 };
 
 

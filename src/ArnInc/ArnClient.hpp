@@ -350,6 +350,10 @@ public:
      */
     QStringList  freePaths()  const;
 
+    void  setWhoIAm( const Arn::XStringMap& whoIAmXsm);
+
+    Arn::XStringMap  remoteWhoIAm()  const;
+
     //! Is last TCP connection a reContact
     /*! ReContact occurs if a TCP connection is successful, then lost and then restored
      *  due to autoConnect.
@@ -371,6 +375,10 @@ public:
      *  \see connectionStatusChanged()
      */
     bool  isReConnect()  const;
+
+    void  chatSend( const QString& text, int prioType);
+
+    void  abortKillRequest();
 
     //! \cond ADV
     int  curPrio()  const;
@@ -423,6 +431,10 @@ signals:
      */
     void  loginRequired( int contextCode);
 
+    void  killRequested();
+
+    void  chatReceived( const QString& text, int prioType);
+
     //! \cond ADV
     void  replyRecord( Arn::XStringMap& replyMap);
     void  replyGet( const QString& data, const QString& path);
@@ -452,6 +464,7 @@ private slots:
     void  doRecNotified();
     void  doRecTimeout();
     void  onCommandDelete( const QString& remotePath);
+    void  onMessageReceived( int type, const QByteArray& data);
 
 private:
     struct MountPointSlot {
