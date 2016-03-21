@@ -80,19 +80,21 @@ public:
     int  getEnumVal( const char* txt, int defaultVal = 0, quint16 nameSpace = 0);
     int  getEnumVal( const QString& txt, int defaultVal = 0, quint16 nameSpace = 0);
 
-    void  addBitSet( Arn::XStringMap& xsm, quint16 nameSpace = 0);
-    QString  getBitSet( quint16 nameSpace = 0);
+    void  addBitSet( Arn::XStringMap& xsm, quint16 nameSpace = 0, bool neverHumanize = false);
+    QString  getBitSet( quint16 nameSpace = 0, bool neverHumanize = false);
     QString  flagsToString( int val, quint16 nameSpace = 0);
     QStringList  flagsToStringList( int val, quint16 nameSpace = 0);
     int  flagsFromString( const QString& flagString, quint16 nameSpace = 0);
     int  flagsFromStringList( const QStringList& flagStrings, quint16 nameSpace = 0);
 
-    void  addEnumSet( Arn::XStringMap& xsm, quint16 nameSpace = 0);
-    QString  getEnumSet( quint16 nameSpace = 0);
+    void  addEnumSet( Arn::XStringMap& xsm, quint16 nameSpace = 0, bool neverHumanize = false);
+    QString  getEnumSet( quint16 nameSpace = 0, bool neverHumanize = false);
 
     const char*  name()  const;
 
-    void  setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace = 0);
+    void  setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace = 0, bool neverHumanize = false);
+
+    static QString  humanize( const QString& txt);
 
 private:
     struct EnumTxtKey {

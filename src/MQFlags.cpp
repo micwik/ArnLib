@@ -137,7 +137,7 @@ int  EnumTxt::getEnumVal( const QString& txt, int defaultVal, quint16 nameSpace)
 }
 
 
-void  EnumTxt::addBitSet( XStringMap& xsm, quint16 nameSpace)
+void  EnumTxt::addBitSet( XStringMap& xsm, quint16 nameSpace, bool neverHumanize)
 {
     if (!_isFlag)  return;  // Only for flags
 
@@ -153,18 +153,26 @@ void  EnumTxt::addBitSet( XStringMap& xsm, quint16 nameSpace)
         uint  enumValStored = keyStored._enumVal;
         while (uint(1 << bitNum) < enumValStored)
             ++bitNum;
-        xsm.add("B" + QByteArray::number( bitNum), QByteArray( i.value()));
+
+        QByteArray  enumTxt;
+        if ((nameSpace > 0) || neverHumanize) {  // Enum name is used as is
+            enumTxt = i.value();
+        }
+        else {  // Enum name is humanized (Leading capital and separated words)
+            enumTxt = humanize( QString::fromUtf8( i.value())).toUtf8();
+        }
+        xsm.add("B" + QByteArray::number( bitNum), enumTxt);
         ++i;
     }
 }
 
 
-QString  EnumTxt::getBitSet( quint16 nameSpace)
+QString  EnumTxt::getBitSet( quint16 nameSpace, bool neverHumanize)
 {
     if (!_isFlag)  return QString();  // Only for flags
 
     XStringMap  xsm;
-    addBitSet( xsm, nameSpace);
+    addBitSet( xsm, nameSpace, neverHumanize);
     return QString::fromUtf8( xsm.toXString());
 }
 
@@ -230,7 +238,7 @@ int  EnumTxt::flagsFromStringList( const QStringList& flagStrings, quint16 nameS
 }
 
 
-void  EnumTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace)
+void  EnumTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace, bool neverHumanize)
 {
     EnumTxtKey  keyStart( _isFlag ? 0        : INT_MIN, nameSpace, _isFlag);
     EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : INT_MAX, nameSpace, _isFlag);
@@ -241,21 +249,28 @@ void  EnumTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace)
         if (keyStop < keyStored)  break;
 
         int  enumValStored = int(keyStored._enumVal);
-        xsm.add(QByteArray::number( enumValStored), QByteArray( i.value()));
+        QByteArray  enumTxt;
+        if ((nameSpace > 0) || neverHumanize) {  // Enum name is used as is
+            enumTxt = i.value();
+        }
+        else {  // Enum name is humanized (Leading capital and separated words)
+            enumTxt = humanize( QString::fromUtf8( i.value())).toUtf8();
+        }
+        xsm.add(QByteArray::number( enumValStored), enumTxt);
         ++i;
     }
 }
 
 
-QString  EnumTxt::getEnumSet( quint16 nameSpace)
+QString  EnumTxt::getEnumSet(quint16 nameSpace, bool neverHumanize)
 {
     XStringMap  xsm;
-    addEnumSet( xsm, nameSpace);
+    addEnumSet( xsm, nameSpace, neverHumanize);
     return QString::fromUtf8( xsm.toXString());
 }
 
 
-void  EnumTxt::setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace)
+void  EnumTxt::setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace, bool neverHumanize)
 {
     if (toNameSpace == 0)  return;  // Not allowed to change original enum texts
     if (toNameSpace == fromNameSpace)  return;
@@ -270,9 +285,64 @@ void  EnumTxt::setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace)
         if (xsmTo.indexOf( enumValKey) < 0) {  // Missing enumval in target
             int  enumVal = enumValKey.toInt();
             const char*  enumTxt = getTxt( enumVal, fromNameSpace);  // Get the original txt ptr
-            setTxtRefAny( enumTxt, enumVal, toNameSpace);
+
+            if ((fromNameSpace > 0) || neverHumanize) {  // Enum name is used as is
+                setTxtRefAny( enumTxt, enumVal, toNameSpace);
+            }
+            else {  // Enum name is humanized (Leading capital and separated words)
+                QByteArray  enumTxtHuman = humanize( QString::fromUtf8( enumTxt)).toUtf8();
+                setTxt( enumTxtHuman.constData(), enumVal, toNameSpace);
+            }
         }
     }
+}
+
+
+QString  EnumTxt::humanize( const QString& txt)
+{
+    QString  retVal;
+    bool  wasDigit     = false;
+    bool  wasUpper     = false;
+    bool  wasLower     = false;
+    bool  wasWantSpace = false;
+    bool  wasSpace     = false;
+
+    for (int i = 0; i < txt.size(); ++i) {
+        QChar c = txt.at(i);
+        bool isDigit   = c.isDigit();
+        bool isUpper   = c.isUpper();
+        bool isLower   = c.isLower();
+        bool wantSpace = false;
+
+        if (i > 0)
+            c = c.toLower();
+
+        if (i == 0)
+            c = c.toUpper();
+        else if (c == '_')
+            c = ' ';
+        else if ((i >= 2) && wasUpper && isLower && !wasWantSpace)
+            retVal.insert( retVal.size() - 1, ' ');
+        else if (wasLower && isUpper)
+            wantSpace = true;
+        else if (!wasDigit && isDigit && !wasSpace)
+            wantSpace = true;
+        else if (wasDigit && !isDigit)
+            wantSpace = true;
+
+        if (wantSpace)
+            retVal += ' ';
+
+        retVal += c;
+
+        wasSpace     = c.isSpace();
+        wasDigit     = isDigit;
+        wasUpper     = isUpper;
+        wasLower     = isLower;
+        wasWantSpace = wantSpace;
+    }
+
+    return retVal;
 }
 
 

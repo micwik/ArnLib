@@ -167,21 +167,21 @@ class Allow {
 public:
     enum E {
         //! Nothing allowed
-        None      = 0x00,
+        None       = 0x00,
         //! Read from Arn Objects
-        Read      = 0x01,
+        Read       = 0x01,
         //! Write to Arn Objects
-        Write     = 0x02,
+        Write      = 0x02,
         //! Create Arn Objects
-        Create    = 0x04,
+        Create     = 0x04,
         //! Delete Arn Objects
-        Delete    = 0x08,
+        Delete     = 0x08,
         //! Change Mode of Arn Objects
-        ModeChg   = 0x10,
+        ModeChange = 0x10,
         //! Convenience, allow read & write
-        ReadWrite = 0x03,
+        ReadWrite  = 0x03,
         //! Convenience, allow all
-        All       = 0xff
+        All        = 0xff
     };
     MQ_DECLARE_FLAGSTXT( Allow)
 };

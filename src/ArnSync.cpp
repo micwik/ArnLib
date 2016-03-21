@@ -814,7 +814,7 @@ void  ArnSync::doChildsToEvent( ArnItemNet *itemNet)
 
 uint  ArnSync::doCommandMode()
 {
-    if (!_allow.is( _allow.ModeChg))  return ArnError::OpNotAllowed;
+    if (!_allow.is( _allow.ModeChange))  return ArnError::OpNotAllowed;
 
     uint  netId = _commandMap.value("id").toUInt();
     QByteArray  data = _commandMap.value("data");
@@ -1432,7 +1432,7 @@ void  ArnSync::addToModeQue( ArnItemNet* itemNet)
     if (_isClosed)  return;
     if (!itemNet)  return;
 
-    if (!_remoteAllow.is( _allow.ModeChg)
+    if (!_remoteAllow.is( _allow.ModeChange)
     && (_isClientSide || !isFreePath( itemNet->path())))
     {
         itemNet->resetDirtyMode();  // Arm for new mode update

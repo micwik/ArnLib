@@ -104,8 +104,10 @@ void ArnUtest1::measureMisc2()
 void ArnUtest1::testMQFlagsText()
 {
     AllowClassT  allow;
+    // qDebug() << "AllowVal BitSet(Enum,humanized):" << allow.txt().getBitSet( allow.NsEnum);
+    QVERIFY( allow.txt().getBitSet( allow.NsEnum) == "B0=Read B1=Write B2=Create B3=Delete B4=Mode_chg");
     // qDebug() << "AllowVal BitSet(Enum):" << allow.txt().getBitSet( allow.NsEnum);
-    QVERIFY( allow.txt().getBitSet( allow.NsEnum) == "B0=Read B1=Write B2=Create B3=Delete B4=ModeChg");
+    QVERIFY( allow.txt().getBitSet( allow.NsEnum, true) == "B0=Read B1=Write B2=Create B3=Delete B4=ModeChg");
     // qDebug() << "AllowVal1: Create=" << allow.Create;
     QVERIFY( allow.Create == 4);
     // qDebug() << "AllowVal2: CreateTxt=" << allow.txt().getTxt( allow.Create);
@@ -118,7 +120,7 @@ void ArnUtest1::testMQFlagsText()
 
     AllowClassT  allow2;
     // qDebug() << "AllowVal BitSet(Human):" << allow2.txt().getBitSet( allow2.NsHuman);
-    QVERIFY( allow2.txt().getBitSet( allow2.NsHuman) == "B0=Allow_Read B1=Write B2=Test_-_Create B3=Allow_Delete B4=ModeChg");
+    QVERIFY( allow2.txt().getBitSet( allow2.NsHuman) == "B0=Allow_Read B1=Write B2=Test_-_Create B3=Allow_Delete B4=Mode_chg");
     // qDebug() << "AllowVal4: getTxt=" << allow2.txt().getTxt( allow2.Create, allow2.NsHuman);
     QVERIFY( QString( allow2.txt().getTxt( allow2.Create, allow2.NsHuman)) == "Test - Create");
     allow2 = AllowClassT::fromString("Write | Read");
@@ -129,8 +131,10 @@ void ArnUtest1::testMQFlagsText()
 
     DataTypeT  data1;
     data1.txt().setMissingTxt( data1.NsHuman);
+    // qDebug() << "DataVal EnumSet(Enum,humanized):" << data1.txt().getEnumSet( data1.NsEnum);
+    QVERIFY( data1.txt().getEnumSet( data1.NsEnum) == "-2=Real 0=Null 1=Int 2=Double 3=Byte_array 4=String 5=Variant");
     // qDebug() << "DataVal EnumSet(Enum):" << data1.txt().getEnumSet( data1.NsEnum);
-    QVERIFY( data1.txt().getEnumSet( data1.NsEnum) == "-2=Real 0=Null 1=Int 2=Double 3=ByteArray 4=String 5=Variant");
+    QVERIFY( data1.txt().getEnumSet( data1.NsEnum, true) == "-2=Real 0=Null 1=Int 2=Double 3=ByteArray 4=String 5=Variant");
     // qDebug() << "DataVal EnumSet(Human):" << data1.txt().getEnumSet( data1.NsHuman);
     QVERIFY( data1.txt().getEnumSet( data1.NsHuman) == "-2=Real 0=Null 1=Int 2=Double 3=Bytes_type 4=String 5=Variable_type");
     data1 = DataTypeT::Real;
@@ -142,8 +146,10 @@ void ArnUtest1::testMQFlagsText()
     QVERIFY( data1.toString() == "Double");
     QVERIFY( data1.toInt() == 2);
     data1.txt().setTxt("Int - Not set", data1.Int, data1.NsEnum);  // Not allowed change, do nothing
-    // qDebug() << "DataVal EnumSet(Human):" << data1.txt().getEnumSet( data1.NsHuman);
-    QVERIFY( data1.txt().getEnumSet( data1.NsEnum) == "-2=Real 0=Null 1=Int 2=Double 3=ByteArray 4=String 5=Variant");
+    // qDebug() << "DataVal EnumSet(Enum,humanized):" << data1.txt().getEnumSet( data1.NsEnum);
+    QVERIFY( data1.txt().getEnumSet( data1.NsEnum) == "-2=Real 0=Null 1=Int 2=Double 3=Byte_array 4=String 5=Variant");
+    // qDebug() << "DataVal EnumSet(Enum):" << data1.txt().getEnumSet( data1.NsEnum);
+    QVERIFY( data1.txt().getEnumSet( data1.NsEnum, true) == "-2=Real 0=Null 1=Int 2=Double 3=ByteArray 4=String 5=Variant");
     data1.txt().setTxt("Int - test", data1.Int, data1.NsHuman);
     // qDebug() << "DataVal EnumSet(Human):" << data1.txt().getEnumSet( data1.NsHuman);
     QVERIFY( data1.txt().getEnumSet( data1.NsHuman) == "-2=Real 0=Null 1=Int_-_test 2=Double 3=Bytes_type 4=String 5=Variable_type");
@@ -391,6 +397,7 @@ void  ArnUtest1Sub::ArnErrorLog(const QString& txt)
 
 void  ArnUtest1Sub::itemUpdated( const QByteArray& value)
 {
+    Q_UNUSED(value)
     //qDebug() << "Item updated: val" << value;
 }
 

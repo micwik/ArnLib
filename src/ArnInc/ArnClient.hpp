@@ -75,7 +75,6 @@ public:
     MQ_DECLARE_ENUM_NSTXT(
         { NsHuman, Init,     "Initialized" },
         { NsHuman, Error,    "Connect error" },
-        { NsHuman, TriedAll, "Tried all" },
         { NsHuman, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }
     )
 };
