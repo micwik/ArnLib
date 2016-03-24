@@ -137,6 +137,16 @@ void  ArnServerRemoteSession::doKillChanged()
     default:
         break;
     }
+
+    QString txt;
+    if (_killCountdown) {
+        txt = QString("Arn Connection kill countdown started (%1 sec)").arg( _killCountdown);
+    }
+    else {
+        txt = "Arn Connection kill Aborted at server";
+    }
+    _arnChatPv = txt;
+    _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
 }
 
 
@@ -147,14 +157,20 @@ void  ArnServerRemoteSession::doKillCountdown()
         _timerKill->stop();
         return;
     }
+
     --_killCountdown;
-    QString txt = QString("Arn Connection killed in %1 sec.").arg( _killCountdown);
-    _arnChatPv = txt;
-    _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
+    QString txt;
+    if ((_killCountdown % 5 == 0) || (_killCountdown < 10)) {
+        txt = QString("Arn Connection kill in %1 sec.").arg( _killCountdown);
+        _arnChatPv = txt;
+        _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
+    }
     if (_killCountdown)  return;
 
     _timerKill->stop();
-    _arnKill = KillMode::Off;
+    txt = "Arn Connection kill Request from server";
+    _arnChatPv = txt;
+    _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
     _arnServerSession->sendMessage( ArnSync::MessageType::KillRequest);
 }
 
@@ -168,6 +184,7 @@ void  ArnServerRemoteSession::doChatAdd( const QString& txt)
 void  ArnServerRemoteSession::onMessageReceived( int type, const QByteArray& data)
 {
     // XStringMap xmIn( data);
+    Arn::Allow  allow = _arnServerSession->getAllow();
 
     switch (type) {
     //// Internal message types
@@ -175,12 +192,17 @@ void  ArnServerRemoteSession::onMessageReceived( int type, const QByteArray& dat
         // Not valid for server
         break;
     case ArnSync::MessageType::AbortKillRequest:
-        _arnKill = KillMode::Off;
+        if (allow.isAny( allow.ReadWrite) && (_arnKill.toInt() != KillMode::Off)) {
+            _arnChatPv = "Arn Connection kill Abort request from client";
+            _arnKill = KillMode::Off;
+        }
         break;
     case ArnSync::MessageType::ChatPrio:
         // Fall throu
     case ArnSync::MessageType::ChatNormal:
-        _arnChatPv = QString::fromUtf8( data.constData(), data.size());
+        if (allow.isAny( allow.ReadWrite)) {
+            _arnChatPv = "Client ==>" + QString::fromUtf8( data.constData(), data.size());
+        }
         break;
     default:;
         // Not supported message-type.

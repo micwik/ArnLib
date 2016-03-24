@@ -135,6 +135,7 @@ public:
     void  setWhoIAm( const QByteArray& whoIAm);
     QByteArray  remoteWhoIAm()  const;
     QString  loginUserName()  const;
+    Arn::Allow  getAllow()  const;
 
 signals:
     void  replyRecord( Arn::XStringMap& replyMap);

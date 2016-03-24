@@ -77,7 +77,6 @@ private slots:
     void  doChatAdd( const QString& txt);
     void  onMessageReceived( int type, const QByteArray& data);
     void  shutdown();
-    // void  doSyncStateChanged( int state);
 
 private:
     ArnServerRemote*  _arnServerRemote;
@@ -87,7 +86,6 @@ private:
     ArnItem  _arnKill;
     uint  _killCountdown;
     ArnItem  _arnChatPv;
-    ArnItem  _arnChat;
 };
 
 

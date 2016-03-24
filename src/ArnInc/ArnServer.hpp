@@ -59,6 +59,7 @@ public:
     QTcpSocket*  socket()  const;
     Arn::XStringMap  remoteWhoIAm()  const;
     QString  loginUserName()  const;
+    Arn::Allow  getAllow()  const;
     void  sendMessage( int type, const QByteArray& data = QByteArray());
 
 signals:

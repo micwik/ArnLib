@@ -389,6 +389,12 @@ QString  ArnSync::loginUserName()  const
 }
 
 
+Arn::Allow  ArnSync::getAllow()  const
+{
+    return _allow;
+}
+
+
 void ArnSync::close()
 {
     if (_isClosed)  return;

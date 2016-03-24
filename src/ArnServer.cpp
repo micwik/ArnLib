@@ -139,6 +139,12 @@ QString  ArnServerSession::loginUserName()  const
 }
 
 
+Arn::Allow  ArnServerSession::getAllow()  const
+{
+    return _arnNetSync->getAllow();
+}
+
+
 void  ArnServerSession::sendMessage( int type, const QByteArray& data)
 {
     _arnNetSync->sendMessage( type, data);
