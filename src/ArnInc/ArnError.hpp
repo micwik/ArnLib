@@ -35,25 +35,19 @@
 #include "MQFlags.hpp"
 
 
-struct ArnError
+class ArnError
 {
-    struct StdCode
-    {
-        enum E  {
-            Ok         = 0,
-            Info       = 1,
-            Warning    = 2,
-            Err_Undef  = 15,
-            Err_Custom = 16
-        };
-    };
-
+    Q_GADGET
+    Q_ENUMS(E)
+public:
     enum E  {
         Ok          = 0,
-        Info        = StdCode::Info,
-        Warning     = StdCode::Warning,
-        Undef       = StdCode::Err_Undef,
-        CreateError = StdCode::Err_Custom,
+        Info        = 1,
+        Warning     = 2,
+        Undef       = 15,
+        Err_Undef   = 15,  // MW: TODO To be removed
+        CreateError = 16,
+        Err_Custom  = 16,  // MW: TODO To be removed
         NotFound,
         NotOpen,
         AlreadyExist,
@@ -73,7 +67,18 @@ struct ArnError
         OpNotAllowed,
         Err_N   // Last (number of error codes)
     };
-    MQ_DECLARE_ENUM( ArnError)
+    MQ_DECLARE_ENUMTXT( ArnError)
+
+    struct StdCode  // MW: TODO To be removed ?
+    {
+        enum E  {
+            Ok         = 0,
+            Info       = 1,
+            Warning    = 2,
+            Err_Undef  = 15,
+            Err_Custom = 16
+        };
+    };
 };
 
 #endif // ARNERROR_HPP

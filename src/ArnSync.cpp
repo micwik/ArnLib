@@ -559,7 +559,8 @@ void  ArnSync::doCommands()
 
     if ((_replyMap.size() == 0) && (stat != ArnError::Ok)) {
         _replyMap.add(ARNRECNAME, "err");
-        _replyMap.add("data", QByteArray("record:") + command);
+        _replyMap.add("data", QByteArray("record:") + command +
+                      " errTxt:" + ArnError::txt().getTxt( stat));
     }
 
     if (_replyMap.size()) {
@@ -911,13 +912,16 @@ uint  ArnSync::doCommandEvent()
     QByteArray  typeStr = _commandMap.value("type");
     QByteArray  data    = _commandMap.value("data");
 
+    int  type = ArnMonEventType::txt().getEnumVal( typeStr.constData(),
+                                                   ArnMonEventType::None, ArnMonEventType::NsCom);
     ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
     if (!itemNet) {
+        if (type == ArnMonEventType::ItemDeleted)  return ArnError::Ok;  // Item already deleted
+
+        // qDebug() << "doCommandEvent NotFound xs:" << _commandMap.toXString();
         return ArnError::NotFound;
     }
 
-    int  type = ArnMonEventType::txt().getEnumVal( typeStr.constData(),
-                                                   ArnMonEventType::None, ArnMonEventType::NsCom);
     itemNet->sendMonEvent( type, data, false);
     return ArnError::Ok;
 }
