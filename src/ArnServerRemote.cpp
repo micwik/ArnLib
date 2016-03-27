@@ -84,12 +84,27 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
 }
 
 
+void  ArnServerRemoteSession::updateSessionValue()
+{
+    QString val = _clientUserName.isEmpty() ? _clientAgent : _clientUserName;
+    if (!_clientHostName.isEmpty()) {
+        if (!val.isEmpty())
+            val += " ";
+        val += "@ " + _clientHostName;
+    }
+    ArnM::setValue( _sessionPath + "value", val);
+}
+
+
 void  ArnServerRemoteSession::onInfoReceived( int type)
 {
     switch (type) {
     case ArnSync::InfoType::WhoIAm:
     {
         Arn::XStringMap  wimXsm = _arnServerSession->remoteWhoIAm();
+        _clientAgent    = wimXsm.valueString("Agent");
+        _clientUserName = wimXsm.valueString("UserName");
+        updateSessionValue();
         for (int i = 0; i < wimXsm.size(); ++i) {
             ArnM::setValue( _sessionPath + wimXsm.key(i) + "/value", wimXsm.value(i));
         }
@@ -109,7 +124,9 @@ void  ArnServerRemoteSession::onLoginCompleted()
 void  ArnServerRemoteSession::onIpLookup( const QHostInfo& host)
 {
     if (host.error() == QHostInfo::NoError) {
-        ArnM::setValue( _sessionPath + "HostName/value", host.hostName());
+        _clientHostName = host.hostName();
+        updateSessionValue();
+        ArnM::setValue( _sessionPath + "HostName/value", _clientHostName);
     }
     else {
         qDebug() << "ServerRemoteSession Lookup failed:" << host.errorString();

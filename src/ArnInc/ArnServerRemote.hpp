@@ -79,6 +79,7 @@ private slots:
     void  shutdown();
 
 private:
+    void  updateSessionValue();
     ArnServerRemote*  _arnServerRemote;
     ArnServerSession*  _arnServerSession;
     QString  _sessionPath;
@@ -86,6 +87,9 @@ private:
     ArnItem  _arnKill;
     uint  _killCountdown;
     ArnItem  _arnChatPv;
+    QString  _clientHostName;
+    QString  _clientAgent;
+    QString  _clientUserName;
 };
 
 
