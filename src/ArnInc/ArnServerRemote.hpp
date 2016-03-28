@@ -83,10 +83,12 @@ private:
     ArnServerRemote*  _arnServerRemote;
     ArnServerSession*  _arnServerSession;
     QString  _sessionPath;
+    QString  _sessionValue;
     QTimer*  _timerKill;
     ArnItem  _arnKill;
     uint  _killCountdown;
     ArnItem  _arnChatPv;
+    ArnItem  _arnChatAllPv;
     QString  _clientHostName;
     QString  _clientAgent;
     QString  _clientUserName;

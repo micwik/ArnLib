@@ -55,10 +55,14 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
         remAddr = QHostAddress( remAddrV4);
 
     QString  remIp = remAddr.toString();
+    QString  remIpPort = remIp + ":" + QString::number( socket->peerPort());
     _sessionPath = Arn::pathServerSessions +
-                   remIp + ":" + QString::number( socket->peerPort()) + "/";
+                   remIpPort + "/";
 
     ArnM::setValue( _sessionPath + "HostIp/value", remIp);
+
+    _clientHostName = remIpPort;  // Preliminary name
+    updateSessionValue();
 
     connect( _arnServerSession, SIGNAL(infoReceived(int)), this, SLOT(onInfoReceived(int)));
     connect( _arnServerSession, SIGNAL(loginCompleted()), this, SLOT(onLoginCompleted()));
@@ -77,8 +81,13 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
     connect( &_arnKill, SIGNAL(changed()), this, SLOT(doKillChanged()));
 
     _arnChatPv.setPipeMode();
-    _arnChatPv.open(_sessionPath + "Chat!");
+    _arnChatPv.open( _sessionPath + "Chat!");
     connect( &_arnChatPv, SIGNAL(changed(QString)), this, SLOT(doChatAdd(QString)));
+
+    _arnChatAllPv.setPipeMode();
+    _arnChatAllPv.open( Arn::pathServer + "ChatSessions!");
+    connect( &_arnChatAllPv, SIGNAL(changed(QString)), this, SLOT(doChatAdd(QString)));
+
     connect( _arnServerSession, SIGNAL(messageReceived(int,QByteArray)),
              this, SLOT(onMessageReceived(int,QByteArray)));
 }
@@ -86,13 +95,13 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
 
 void  ArnServerRemoteSession::updateSessionValue()
 {
-    QString val = _clientUserName.isEmpty() ? _clientAgent : _clientUserName;
+    _sessionValue = _clientUserName.isEmpty() ? _clientAgent : _clientUserName;
     if (!_clientHostName.isEmpty()) {
-        if (!val.isEmpty())
-            val += " ";
-        val += "@ " + _clientHostName;
+        if (!_sessionValue.isEmpty())
+            _sessionValue += " ";
+        _sessionValue += "@ " + _clientHostName;
     }
-    ArnM::setValue( _sessionPath + "value", val);
+    ArnM::setValue( _sessionPath + "value", _sessionValue);
 }
 
 
@@ -162,7 +171,8 @@ void  ArnServerRemoteSession::doKillChanged()
     else {
         txt = "Arn Connection kill Aborted at server";
     }
-    _arnChatPv = txt;
+    _arnChatPv    = txt;
+    _arnChatAllPv = _sessionValue + ": " + txt;
     _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
 }
 
@@ -186,7 +196,8 @@ void  ArnServerRemoteSession::doKillCountdown()
 
     _timerKill->stop();
     txt = "Arn Connection kill Request from server";
-    _arnChatPv = txt;
+    _arnChatPv    = txt;
+    _arnChatAllPv = _sessionValue + ": " + txt;
     _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
     _arnServerSession->sendMessage( ArnSync::MessageType::KillRequest);
 }
@@ -202,6 +213,7 @@ void  ArnServerRemoteSession::onMessageReceived( int type, const QByteArray& dat
 {
     // XStringMap xmIn( data);
     Arn::Allow  allow = _arnServerSession->getAllow();
+    QString  txt;
 
     switch (type) {
     //// Internal message types
@@ -210,7 +222,9 @@ void  ArnServerRemoteSession::onMessageReceived( int type, const QByteArray& dat
         break;
     case ArnSync::MessageType::AbortKillRequest:
         if (allow.isAny( allow.ReadWrite) && (_arnKill.toInt() != KillMode::Off)) {
-            _arnChatPv = "Arn Connection kill Abort request from client";
+            txt = "Arn Connection kill Abort request from client";
+            _arnChatPv    = txt;
+            _arnChatAllPv = _sessionValue + ": " + txt;
             _arnKill = KillMode::Off;
         }
         break;
@@ -218,7 +232,8 @@ void  ArnServerRemoteSession::onMessageReceived( int type, const QByteArray& dat
         // Fall throu
     case ArnSync::MessageType::ChatNormal:
         if (allow.isAny( allow.ReadWrite)) {
-            _arnChatPv = "Client ==>" + QString::fromUtf8( data.constData(), data.size());
+            _arnChatPv    = "Client ==>" + QString::fromUtf8( data.constData(), data.size());
+            _arnChatAllPv = _sessionValue + " ==>" + QString::fromUtf8( data.constData(), data.size());
         }
         break;
     default:;
