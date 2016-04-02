@@ -201,9 +201,18 @@ public:
     //! Setup the persistent database
     /*! Starting a SQLite database to store persistent _Arn Data Object_ in.
      *  \param[in] dbName is the name (and path) of the SQLite database file.
+     *  \retval false if error.
      *  \see \ref gen_persistArnobj
      */
     bool  setupDataBase( const QString& dbName = "persist.db");
+
+    //! Save any pending values now
+    /*! Persistent values are normally delayed before saving.
+     *  \param[in] path is the starting path (tree) as filter. If empty, no filter.
+     *  \retval false if error.
+     *  \see \ref gen_persistArnobj
+     */
+    bool  flush( const QString& path = QString());
 
     //! \cond ADV
     QString  metaDbValue( const QString& attr, const QString& def = QString());

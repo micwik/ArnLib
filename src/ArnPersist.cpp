@@ -505,6 +505,23 @@ bool  ArnPersist::setupDataBase( const QString& dbName)
 }
 
 
+bool  ArnPersist::flush( const QString& path)
+{
+    Q_D(ArnPersist);
+
+    bool  isOk = true;
+    QString  fullPath = Arn::fullPath( path);
+    foreach (ArnItemPersist* item, d->_itemPersistMap) {
+        if (path.isEmpty() || item->path().startsWith( fullPath)) {
+            // if (item->isDelayPending())
+            //     qDebug() << "Persist flush: path=" << item->path();
+            item->bypassDelayPending();
+        }
+    }
+    return isOk;
+}
+
+
 QString  ArnPersist::metaDbValue( const QString& attr, const QString& def)
 {
     Q_D(ArnPersist);
@@ -949,15 +966,7 @@ void  ArnPersist::sapiFlush( const QString& path)
 {
     Q_D(ArnPersist);
 
-    bool  isOk = true;
-    QString  fullPath = Arn::fullPath( path);
-    foreach (ArnItemPersist* item, d->_itemPersistMap) {
-        if (path.isEmpty() || item->path().startsWith( fullPath)) {
-            // if (item->isDelayPending())
-            //     qDebug() << "Persist flush: path=" << item->path();
-            item->bypassDelayPending();
-        }
-    }
+    bool  isOk = flush( path);
     emit d->_sapiCommon->rq_flushR( isOk, path);
 }
 
