@@ -95,6 +95,8 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
 
 void  ArnServerRemoteSession::updateSessionValue()
 {
+    if (_sessionPath.isNull())  return;  // Retired
+
     _sessionValue = _clientUserName.isEmpty() ? _clientAgent : _clientUserName;
     if (!_clientHostName.isEmpty()) {
         if (!_sessionValue.isEmpty())
@@ -107,6 +109,8 @@ void  ArnServerRemoteSession::updateSessionValue()
 
 void  ArnServerRemoteSession::onInfoReceived( int type)
 {
+    if (_sessionPath.isNull())  return;  // Retired
+
     switch (type) {
     case ArnSync::InfoType::WhoIAm:
     {
@@ -126,12 +130,16 @@ void  ArnServerRemoteSession::onInfoReceived( int type)
 
 void  ArnServerRemoteSession::onLoginCompleted()
 {
+    if (_sessionPath.isNull())  return;  // Retired
+
     ArnM::setValue( _sessionPath + "LoginName/value", _arnServerSession->loginUserName());
 }
 
 
 void  ArnServerRemoteSession::onIpLookup( const QHostInfo& host)
 {
+    if (_sessionPath.isNull())  return;  // Retired
+
     if (host.error() == QHostInfo::NoError) {
         _clientHostName = host.hostName();
         updateSessionValue();
@@ -145,6 +153,8 @@ void  ArnServerRemoteSession::onIpLookup( const QHostInfo& host)
 
 void  ArnServerRemoteSession::doKillChanged()
 {
+    if (_sessionPath.isNull())  return;  // Retired
+
     KillMode  kMode = KillMode::fromInt( _arnKill.toInt());
 
     switch (kMode) {
@@ -180,6 +190,8 @@ void  ArnServerRemoteSession::doKillChanged()
 
 void  ArnServerRemoteSession::doKillCountdown()
 {
+    if (_sessionPath.isNull())  return;  // Retired
+
     if (_killCountdown == 0) {
         _timerKill->stop();
         return;
@@ -205,12 +217,16 @@ void  ArnServerRemoteSession::doKillCountdown()
 
 void  ArnServerRemoteSession::doChatAdd( const QString& txt)
 {
+    if (_sessionPath.isNull())  return;  // Retired
+
     _arnServerSession->sendMessage( ArnSync::MessageType::ChatNormal, txt.toUtf8());
 }
 
 
 void  ArnServerRemoteSession::onMessageReceived( int type, const QByteArray& data)
 {
+    if (_sessionPath.isNull())  return;  // Retired
+
     // XStringMap xmIn( data);
     Arn::Allow  allow = _arnServerSession->getAllow();
     QString  txt;
@@ -245,6 +261,7 @@ void  ArnServerRemoteSession::onMessageReceived( int type, const QByteArray& dat
 void  ArnServerRemoteSession::shutdown()
 {
     ArnM::destroyLink( _sessionPath);
+    _sessionPath = QString();  // Mark retired
     deleteLater();
 }
 

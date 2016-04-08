@@ -56,7 +56,8 @@ ArnServerSession::ArnServerSession( QTcpSocket* socket, ArnServer* arnServer)
 
     _socket    = socket;
     _arnServer = arnServer;
-    _arnNetSync = new ArnSync( socket, false, this);
+    _socket->setParent( this);  // Session takes ownership of socket
+    _arnNetSync = new ArnSync( _socket, false, this);
     _arnNetSync->setSessionHandler( this);
     _arnNetSync->setArnLogin( _arnServer->arnLogin());
     _arnNetSync->setDemandLogin( _arnServer->isDemandLogin()
@@ -87,7 +88,7 @@ ArnServerSession::ArnServerSession( QTcpSocket* socket, ArnServer* arnServer)
 
 void  ArnServerSession::shutdown()
 {
-    _arnNetSync = 0;
+    _arnNetSync = 0;  // Mark retired
     _arnNetEar->close();
     deleteLater();
 }
@@ -97,7 +98,7 @@ void  ArnServerSession::doDestroyArnTree( const QString& path, bool isGlobal)
 {
     Q_UNUSED(isGlobal)  // Destruction of tree on server will allways be global
 
-    if (!_arnNetSync)  return;
+    if (!_arnNetSync)  return;  // Retired
 
     _arnNetSync->sendDelete( path);
 }
@@ -105,6 +106,8 @@ void  ArnServerSession::doDestroyArnTree( const QString& path, bool isGlobal)
 
 void  ArnServerSession::onCommandDelete( const QString& path)
 {
+    if (!_arnNetSync)  return;  // Retired
+
     // qDebug() << "ArnServerNetSync-delete: path=" << path;
     ArnM::destroyLink( path);
 }
@@ -112,6 +115,8 @@ void  ArnServerSession::onCommandDelete( const QString& path)
 
 void  ArnServerSession::doSyncStateChanged( int state)
 {
+    if (!_arnNetSync)  return;  // Retired
+
     // qDebug() << "ArnServer sync state changed: state=" << state;
     ArnSync::State  syncState = ArnSync::State::fromInt( state);
     if (syncState == syncState.Normal) {
@@ -129,24 +134,32 @@ QTcpSocket*  ArnServerSession::socket()  const
 
 Arn::XStringMap  ArnServerSession::remoteWhoIAm()  const
 {
+    if (!_arnNetSync)  return XStringMap();  // Retired
+
     return XStringMap( _arnNetSync->remoteWhoIAm());
 }
 
 
 QString  ArnServerSession::loginUserName()  const
 {
+    if (!_arnNetSync)  return QString();  // Retired
+
     return _arnNetSync->loginUserName();
 }
 
 
 Arn::Allow  ArnServerSession::getAllow()  const
 {
+    if (!_arnNetSync)  return Arn::Allow();  // Retired
+
     return _arnNetSync->getAllow();
 }
 
 
 void  ArnServerSession::sendMessage( int type, const QByteArray& data)
 {
+    if (!_arnNetSync)  return;  // Retired
+
     _arnNetSync->sendMessage( type, data);
 }
 
@@ -374,10 +387,14 @@ void  ArnServer::tcpConnection()
     Q_D(ArnServer);
 
     QTcpSocket*  socket = d->_tcpServer->nextPendingConnection();
+    if (socket->peerPort() == 0) {  // Socket not connected ok
+        socket->deleteLater();
+        return;
+    }
 
     switch (d->_serverType) {
     case Type::NetSync:
-        d->_newSession = new ArnServerSession( socket, this);
+        d->_newSession = new ArnServerSession( socket, this);        
         emit newSession();
         d->_newSession = 0;
         break;

@@ -51,7 +51,7 @@ using Arn::XStringMap;
 ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     : QObject( parent)
 {
-    _socket          = socket;  // Note: client side does not own socket ...
+    _socket          = socket;  // Note: ArnSync does not own socket ...
     _sessionHandler  = 0;
     _toRemotePathCB  = &nullConvertPath;
     _arnLogin        = 0;
@@ -102,7 +102,6 @@ void  ArnSync::start()
         connect( _socket, SIGNAL(connected()), this, SLOT(connected()));
     }
     else {
-        _socket->setParent( this);  // Server side takes ownerchip of socket
         _isConnected = true;
         if (_isDemandLogin) {
             _allow       = Arn::Allow::None;
