@@ -73,7 +73,7 @@ private slots:
     void  onLoginCompleted();
     void  onIpLookup( const QHostInfo& host);
     void  doKillChanged();
-    void  doKillCountdown();
+    void  doPoll();
     void  doChatAdd( const QString& txt);
     void  onMessageReceived( int type, const QByteArray& data);
     void  shutdown();
@@ -84,7 +84,7 @@ private:
     ArnServerSession*  _arnServerSession;
     QString  _sessionPath;
     QString  _sessionValue;
-    QTimer*  _timerKill;
+    QTimer*  _timerPoll;
     ArnItem  _arnKill;
     uint  _killCountdown;
     ArnItem  _arnChatPv;

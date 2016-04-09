@@ -71,9 +71,9 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
     int  lookupId = QHostInfo::lookupHost( remIp, this, SLOT(onIpLookup(QHostInfo)));
     Q_UNUSED(lookupId);
 
-    _timerKill = new QTimer( this);
-    _timerKill->setInterval( 1000);
-    connect( _timerKill, SIGNAL(timeout()), this, SLOT(doKillCountdown()));
+    _timerPoll = new QTimer( this);
+    _timerPoll->start( 1000);
+    connect( _timerPoll, SIGNAL(timeout()), this, SLOT(doPoll()));
 
     _arnKill.open( _sessionPath + "Kill/value");
     _arnKill = KillMode::Off;
@@ -160,22 +160,19 @@ void  ArnServerRemoteSession::doKillChanged()
     switch (kMode) {
     case KillMode::Off:
         _killCountdown = 0;
-        _timerKill->stop();
         break;
     case KillMode::Delay10Sec:
         _killCountdown = 10;
-        _timerKill->start();
         break;
     case KillMode::Delay60Sec:
         _killCountdown = 60;
-        _timerKill->start();
         break;
     default:
         break;
     }
 
     QString txt;
-    if (_killCountdown) {
+    if (_killCountdown > 0) {
         txt = QString("Arn Connection kill countdown started (%1 sec)").arg( _killCountdown);
     }
     else {
@@ -187,31 +184,27 @@ void  ArnServerRemoteSession::doKillChanged()
 }
 
 
-
-void  ArnServerRemoteSession::doKillCountdown()
+void  ArnServerRemoteSession::doPoll()
 {
     if (_sessionPath.isNull())  return;  // Retired
 
-    if (_killCountdown == 0) {
-        _timerKill->stop();
-        return;
+    //// Connection Kill
+    if (_killCountdown > 0) {
+        --_killCountdown;
+        QString txt;
+        if ((_killCountdown % 5 == 0) || (_killCountdown < 10)) {
+            txt = QString("Arn Connection kill in %1 sec.").arg( _killCountdown);
+            _arnChatPv = txt;
+            _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
+        }
+        if (_killCountdown == 0) {
+            txt = "Arn Connection kill Request from server";
+            _arnChatPv    = txt;
+            _arnChatAllPv = _sessionValue + ": " + txt;
+            _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
+            _arnServerSession->sendMessage( ArnSync::MessageType::KillRequest);
+        }
     }
-
-    --_killCountdown;
-    QString txt;
-    if ((_killCountdown % 5 == 0) || (_killCountdown < 10)) {
-        txt = QString("Arn Connection kill in %1 sec.").arg( _killCountdown);
-        _arnChatPv = txt;
-        _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
-    }
-    if (_killCountdown)  return;
-
-    _timerKill->stop();
-    txt = "Arn Connection kill Request from server";
-    _arnChatPv    = txt;
-    _arnChatAllPv = _sessionValue + ": " + txt;
-    _arnServerSession->sendMessage( ArnSync::MessageType::ChatPrio, txt.toUtf8());
-    _arnServerSession->sendMessage( ArnSync::MessageType::KillRequest);
 }
 
 
