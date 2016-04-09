@@ -598,6 +598,15 @@ void ArnClient::abortKillRequest()
 }
 
 
+bool  ArnClient::getTraffic( quint64& in, quint64& out)  const
+{
+    Q_D(const ArnClient);
+
+    d->_arnNetSync->getTraffic( in, out);
+    return true;
+}
+
+
 void  ArnClient::commandGet( const QString& path)
 {
     Q_D(ArnClient);

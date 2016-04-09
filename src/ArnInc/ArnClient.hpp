@@ -379,6 +379,8 @@ public:
 
     void  abortKillRequest();
 
+    bool  getTraffic( quint64& in, quint64& out)  const;
+
     //! \cond ADV
     int  curPrio()  const;
 
