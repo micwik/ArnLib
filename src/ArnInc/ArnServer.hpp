@@ -61,6 +61,7 @@ public:
     QString  loginUserName()  const;
     Arn::Allow  getAllow()  const;
     void  sendMessage( int type, const QByteArray& data = QByteArray());
+    bool  getTraffic( quint64& in, quint64& out)  const;
 
 signals:
     void  infoReceived( int type);

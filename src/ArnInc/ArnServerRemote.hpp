@@ -87,8 +87,12 @@ private:
     QTimer*  _timerPoll;
     ArnItem  _arnKill;
     uint  _killCountdown;
+    uint  _pollCount;
     ArnItem  _arnChatPv;
     ArnItem  _arnChatAllPv;
+    ArnBasicItem  _arnTraffic;
+    ArnBasicItem  _arnTrafficIn;
+    ArnBasicItem  _arnTrafficOut;
     QString  _clientHostName;
     QString  _clientAgent;
     QString  _clientUserName;

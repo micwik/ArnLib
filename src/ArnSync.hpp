@@ -136,6 +136,7 @@ public:
     QByteArray  remoteWhoIAm()  const;
     QString  loginUserName()  const;
     Arn::Allow  getAllow()  const;
+    void  getTraffic( quint64& in, quint64& out)  const;
 
 signals:
     void  replyRecord( Arn::XStringMap& replyMap);
@@ -243,6 +244,8 @@ private:
     int  _loginReqCode;
     uint  _loginSalt1;
     uint  _loginSalt2;
+    quint64  _trafficIn;
+    quint64  _trafficOut;
     QString  _loginUserName;
     QString  _loginPwHash;
     QTimer  _loginDelayTimer;

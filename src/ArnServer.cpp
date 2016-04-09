@@ -164,6 +164,15 @@ void  ArnServerSession::sendMessage( int type, const QByteArray& data)
 }
 
 
+bool  ArnServerSession::getTraffic( quint64& in, quint64& out)  const
+{
+    if (!_arnNetSync)  return false;  // Retired
+
+    _arnNetSync->getTraffic( in, out);
+    return true;
+}
+
+
 
 ArnServerPrivate::ArnServerPrivate( ArnServer::Type serverType)
 {

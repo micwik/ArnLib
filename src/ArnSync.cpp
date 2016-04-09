@@ -70,6 +70,8 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     _loginNextSeq    = 0;
     _loginSalt1      = 0;
     _loginSalt2      = 0;
+    _trafficIn       = 0;
+    _trafficOut      = 0;
     _allow           = _isClientSide ? Arn::Allow::All : Arn::Allow::None;
     _remoteAllow     = Arn::Allow::None;
     _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Legal/");
@@ -173,6 +175,7 @@ void  ArnSync::send( const QByteArray& xString)
     if (Arn::debugRecInOut)  qDebug() << "Rec-Out: " << sendString;
     sendString += "\r\n";
     _socket->write( sendString);
+    _trafficOut += sendString.size();
 }
 
 
@@ -463,6 +466,7 @@ void  ArnSync::socketInput()
 
     _dataReadBuf.resize( nbytes);
     _dataRemain += _dataReadBuf;
+    _trafficIn  += nbytes;
 
     QByteArray  xString;
     int pos;
@@ -749,6 +753,13 @@ uint  ArnSync::doCommandLogin()
     }
 
     return ArnError::Ok;
+}
+
+
+void  ArnSync::getTraffic( quint64& in, quint64& out)  const
+{
+    in  = _trafficIn;
+    out = _trafficOut;
 }
 
 

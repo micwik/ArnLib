@@ -47,6 +47,7 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
     _arnServerSession = arnServerSession;
     _arnServerRemote  = arnServerRemote;
     _killCountdown    = 0;
+    _pollCount        = 0;
 
     QTcpSocket*  socket = _arnServerSession->socket();
     QHostAddress  remAddr = socket->peerAddress();
@@ -74,6 +75,10 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
     _timerPoll = new QTimer( this);
     _timerPoll->start( 1000);
     connect( _timerPoll, SIGNAL(timeout()), this, SLOT(doPoll()));
+
+    _arnTraffic.open( _sessionPath + "Traffic/value");
+    _arnTrafficIn.open( _sessionPath + "Traffic/In/value");
+    _arnTrafficOut.open( _sessionPath + "Traffic/Out/value");
 
     _arnKill.open( _sessionPath + "Kill/value");
     _arnKill = KillMode::Off;
@@ -205,6 +210,20 @@ void  ArnServerRemoteSession::doPoll()
             _arnServerSession->sendMessage( ArnSync::MessageType::KillRequest);
         }
     }
+
+    //// Traffic
+    if (_pollCount % 5 == 0) {
+        quint64  trafficIn;
+        quint64  trafficOut;
+        bool isOk = _arnServerSession->getTraffic( trafficIn, trafficOut);
+        if (isOk) {
+            _arnTraffic.setValue( trafficIn + trafficOut);
+            _arnTrafficIn.setValue( trafficIn);
+            _arnTrafficOut.setValue( trafficOut);
+        }
+    }
+
+    ++_pollCount;
 }
 
 
