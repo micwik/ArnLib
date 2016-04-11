@@ -96,6 +96,8 @@ private:
     QString  _clientHostName;
     QString  _clientAgent;
     QString  _clientUserName;
+    uint  _startTime;
+    ArnBasicItem  _arnUpTime;
 };
 
 
@@ -111,10 +113,6 @@ public:
 
     ~ArnServerRemote();
 
-signals:
-
-public slots:
-
     //! \cond ADV
 protected:
     ArnServerRemote( ArnServerRemotePrivate& dd, QObject* parent);
@@ -123,6 +121,7 @@ protected:
 
 private slots:
     void  onNewSession();
+    void  doPoll();
 
 private:
     void  init();

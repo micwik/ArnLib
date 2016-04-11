@@ -38,6 +38,7 @@
 #include <QTcpSocket>
 #include <QHostInfo>
 #include <QTimer>
+#include <QDateTime>
 
 
 ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSession,
@@ -95,6 +96,10 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
 
     connect( _arnServerSession, SIGNAL(messageReceived(int,QByteArray)),
              this, SLOT(onMessageReceived(int,QByteArray)));
+
+    _startTime = QDateTime::currentDateTime().toTime_t();
+    _arnUpTime.open( _sessionPath + "UpTime/value");
+    ArnM::setValue( _sessionPath + "UpTime/property", "prec=2 unit=h");
 }
 
 
@@ -193,8 +198,8 @@ void  ArnServerRemoteSession::doPoll()
 {
     if (_sessionPath.isNull())  return;  // Retired
 
-    //// Connection Kill
     if (_killCountdown > 0) {
+        //// Connection Kill
         --_killCountdown;
         QString txt;
         if ((_killCountdown % 5 == 0) || (_killCountdown < 10)) {
@@ -211,8 +216,12 @@ void  ArnServerRemoteSession::doPoll()
         }
     }
 
-    //// Traffic
     if (_pollCount % 5 == 0) {
+        //// Uptime
+        double upTime = double( QDateTime::currentDateTime().toTime_t() - _startTime) / 3600.;
+        _arnUpTime.setValue( upTime);
+
+        //// Traffic
         quint64  trafficIn;
         quint64  trafficOut;
         bool isOk = _arnServerSession->getTraffic( trafficIn, trafficOut);
@@ -282,6 +291,7 @@ void  ArnServerRemoteSession::shutdown()
 ArnServerRemotePrivate::ArnServerRemotePrivate()
 {
     _arnServer = 0;
+    _startTime = 0;
 }
 
 
@@ -326,6 +336,13 @@ void  ArnServerRemote::startUseServer( ArnServer* arnServer)
 
     d->_arnServer = arnServer;
     connect( arnServer, SIGNAL(newSession()), this, SLOT(onNewSession()));
+
+    d->_timerPoll.start(5000);
+    connect( &d->_timerPoll, SIGNAL(timeout()), this, SLOT(doPoll()));
+
+    d->_startTime = QDateTime::currentDateTime().toTime_t();
+    d->_arnUpTime.open( Arn::pathServer + "ServerUpTime/value");
+    ArnM::setValue( Arn::pathServer + "ServerUpTime/property", "prec=2 unit=h");
 }
 
 
@@ -336,4 +353,13 @@ void  ArnServerRemote::onNewSession()
     Q_ASSERT(d->_arnServer);
     ArnServerSession*  serverSession = d->_arnServer->getSession();
     new ArnServerRemoteSession( serverSession, this);
+}
+
+
+void  ArnServerRemote::doPoll()
+{
+    Q_D(ArnServerRemote);
+
+    double upTime = double( QDateTime::currentDateTime().toTime_t() - d->_startTime) / 3600.;
+    d->_arnUpTime.setValue( upTime);
 }

@@ -32,6 +32,9 @@
 #ifndef ARNSERVERREMOTE_P_HPP
 #define ARNSERVERREMOTE_P_HPP
 
+#include "ArnInc/ArnBasicItem.hpp"
+#include <QTimer>
+
 class ArnServer;
 
 
@@ -44,6 +47,9 @@ public:
 
 private:
     ArnServer*  _arnServer;
+    QTimer  _timerPoll;
+    uint  _startTime;
+    ArnBasicItem  _arnUpTime;
 };
 
 #endif // ARNSERVERREMOTE_P_HPP
