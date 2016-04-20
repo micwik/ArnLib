@@ -249,7 +249,10 @@ QStringList  ArnM::itemsMain( const ArnLink *parent)
 QStringList  ArnM::itemsMain( const QString& path)
 {
     ArnLink*  link = ArnM::link( path, Arn::LinkFlags::Folder);
-    return itemsMain( link);
+    QStringList  retVal = itemsMain( link);
+    link->deref();
+
+    return retVal;
 }
 
 
