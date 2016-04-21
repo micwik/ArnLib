@@ -257,7 +257,9 @@ void ArnUtest1::testArnBasicItem2()
     ArnBasicItem  arnT1b;
     ArnBasicItem  arnT2a;
     arnT1a.open("//Test/Tbb1/value");
+    QCOMPARE( arnT1a.refCount(), 1);
     arnT1b.open("//Test/Tbb1/value");
+    QCOMPARE( arnT1a.refCount(), 2);
     arnT2a.open("//Test/Tbb2/value");
 
     QCOMPARE( arnT1a.isIgnoreSameValue(), true);

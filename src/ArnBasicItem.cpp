@@ -118,11 +118,15 @@ bool  ArnBasicItem::openWithFlags( const QString& path, Arn::LinkFlags linkFlags
     _link = ArnM::link( path, linkFlags, syncMode);
     if (!_link)  return false;
 
+    ArnEvRefChange ev(+1);
+    sendArnEventLink( &ev);
+
     _link->subscribe( this);
     setupOpenItem( _link->isFolder());
 #ifdef ArnBasicItem_INCPATH
     d->_path = path;
 #endif
+
     return true;
 }
 
@@ -141,6 +145,9 @@ void  ArnBasicItem::close()
 
     _link->unsubscribe( this);
     // Now this item will not get ArnEvent updates in its
+
+    ArnEvRefChange ev(-1);
+    sendArnEventLink( &ev);
 
     if (d->_pendingEvChain) {
         d->_pendingEvChain->setTargetMutex(0);  // No mutex needed anymore
@@ -195,6 +202,14 @@ uint  ArnBasicItem::linkId()  const
     if (!_link)  return 0;
 
     return _link->linkId();
+}
+
+
+int ArnBasicItem::refCount()  const
+{
+    if (!_link)  return -1;
+
+    return qMax( _link->refCount(), 0);
 }
 
 

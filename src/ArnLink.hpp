@@ -109,6 +109,7 @@ public:
     bool  subscribe( ArnBasicItem* subscriber);
     bool  unsubscribe( ArnBasicItem* subscriber);
     void  deref();
+    int  refCount();
     ~ArnLink();
 
     QString  objectName()  const;
@@ -125,7 +126,6 @@ protected:
     void  doModeChanged();
     ArnLink*  findLink( const QString& name);
     void  ref();
-    int  refCount();
     void  setRefCount( int count);
     void  decZeroRefs();
     bool  isLastZeroRef();

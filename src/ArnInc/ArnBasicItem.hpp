@@ -177,6 +177,11 @@ public:
      */
     uint  linkId()  const;
 
+    //! Get the number of refs to this _Arn Data Object_
+    /*! \return The number of refs for the _Arn Data Object_, -1 if closed
+     */
+    int  refCount()  const;
+
     /*! \retval true if this ArnItem is a folder
      */
     bool  isFolder()  const;

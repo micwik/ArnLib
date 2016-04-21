@@ -339,3 +339,30 @@ ArnEvent*  ArnEvZeroRef::makeHeapClone()
 {
     return (new ArnEvZeroRef( _arnLink))->copyOpt( this);
 }
+
+
+
+ArnEvRefChange::ArnEvRefChange( int refStep)
+    : ArnEvent( type())
+    , _refStep( refStep)
+{
+}
+
+
+ArnEvRefChange::~ArnEvRefChange()
+{
+}
+
+
+QEvent::Type  ArnEvRefChange::type()
+{
+    static int evType = baseType() + Idx::RefChange;
+
+    return Type( evType);
+}
+
+
+ArnEvent*  ArnEvRefChange::makeHeapClone()
+{
+    return (new ArnEvRefChange( _refStep))->copyOpt( this);
+}

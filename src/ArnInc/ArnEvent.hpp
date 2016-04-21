@@ -56,6 +56,7 @@ public:
         Monitor,
         Retired,
         ZeroRef,
+        RefChange,
         //! Max index
         N
     };
@@ -228,6 +229,21 @@ public:
 
     inline const ArnLinkHandle&  handleData()  const
     { return *_handleData;}
+};
+
+
+class ArnEvRefChange : public ArnEvent
+{
+    int  _refStep;
+
+public:
+    ArnEvRefChange( int refStep);
+    virtual  ~ArnEvRefChange();
+    static QEvent::Type  type();
+    virtual ArnEvent*  makeHeapClone();
+
+    inline int  refStep()  const
+    { return _refStep;}
 };
 
 #endif // ARNEVENT_HPP
