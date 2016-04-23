@@ -625,83 +625,83 @@ QByteArray  ArnBasicItem::arnExport()  const
 }
 
 
-QString  ArnBasicItem::toString()  const
+QString  ArnBasicItem::toString( bool* isOk)  const
 {
     if (!_link)  return QString();
 
-    return _link->toString();
+    return _link->toString( isOk);
 }
 
 
-QByteArray  ArnBasicItem::toByteArray()  const
+QByteArray  ArnBasicItem::toByteArray( bool* isOk)  const
 {
     if (!_link)  return QByteArray();
 
-    return _link->toByteArray();
+    return _link->toByteArray( isOk);
 }
 
 
-QVariant  ArnBasicItem::toVariant()  const
+QVariant  ArnBasicItem::toVariant( bool* isOk)  const
 {
     if (!_link)  return QVariant();
 
-    return _link->toVariant();
+    return _link->toVariant( isOk);
 }
 
 
-int  ArnBasicItem::toInt()  const
+int  ArnBasicItem::toInt( bool* isOk)  const
 {
     if (!_link)  return 0;
 
-    return _link->toInt();
+    return _link->toInt( isOk);
 }
 
 
-double  ArnBasicItem::toDouble()  const
+double  ArnBasicItem::toDouble( bool* isOk)  const
 {
     if (!_link)  return 0.0;
 
-    return _link->toReal();
+    return _link->toReal( isOk);
 }
 
 
-ARNREAL  ArnBasicItem::toReal()  const
+ARNREAL  ArnBasicItem::toReal( bool* isOk)  const
 {
     if (!_link)  return 0.0;
 
-    return _link->toReal();
+    return _link->toReal( isOk);
 }
 
 
-bool  ArnBasicItem::toBool()  const
+bool  ArnBasicItem::toBool( bool* isOk)  const
 {
     if (!_link)  return false;
 
-    return _link->toInt() != 0;
+    return _link->toInt( isOk) != 0;
 }
 
 
-uint  ArnBasicItem::toUInt()  const
+uint  ArnBasicItem::toUInt( bool* isOk)  const
 {
     if (!_link)  return 0;
 
-    return _link->toByteArray().toUInt();
+    return _link->toByteArray( isOk).toUInt( isOk);
 }
 
 
-qint64  ArnBasicItem::toInt64()  const
+qint64  ArnBasicItem::toInt64( bool* isOk)  const
 {
     if (!_link)  return 0;
 
-    return _link->toByteArray().toLongLong();
+    return _link->toByteArray( isOk).toLongLong( isOk);
 }
 
 
-quint64  ArnBasicItem::toUInt64()  const
+quint64  ArnBasicItem::toUInt64( bool* isOk)  const
 {
     if (!_link)  return 0;
 
-    return _link->toByteArray().toULongLong();
+    return _link->toByteArray( isOk).toULongLong( isOk);
 }
 
 
@@ -876,6 +876,12 @@ void  ArnBasicItem::setValue( const QVariant& value, int ignoreSame)
         errorLog( QString("Assigning variant"),
                   ArnError::ItemNotOpen);
     }
+}
+
+
+void  ArnBasicItem::setValue( const char* value, int ignoreSame)
+{
+    setValue( QString::fromUtf8( value), ignoreSame);
 }
 
 

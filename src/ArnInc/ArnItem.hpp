@@ -325,57 +325,77 @@ public:
     {return ArnItemB::arnExport();}
 
     /*! \return Convert _Arn Data Object_ to a _integer_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    int  toInt()  const
-    {return ArnItemB::toInt();}
+    int  toInt( bool* isOk = 0)  const
+    {return ArnItemB::toInt( isOk);}
 
     /*! \return Convert _Arn Data Object_ to a _double_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    double  toDouble()  const
-    {return ArnItemB::toDouble();}
+    double  toDouble( bool* isOk = 0)  const
+    {return ArnItemB::toDouble( isOk);}
 
     /*! \return Convert _Arn Data Object_ to an _ARNREAL_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    ARNREAL  toReal()  const
-    {return ArnItemB::toReal();}
+    ARNREAL  toReal( bool* isOk = 0)  const
+    {return ArnItemB::toReal( isOk);}
 
     /*! \return Convert _Arn Data Object_ to a _bool_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    bool  toBool()  const
-    {return ArnItemB::toBool();}
+    bool  toBool( bool* isOk = 0)  const
+    {return ArnItemB::toBool( isOk);}
 
     /*! \return Convert _Arn Data Object_ to a _QString_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    QString  toString()  const
-    {return ArnItemB::toString();}
+    QString  toString( bool* isOk = 0)  const
+    {return ArnItemB::toString( isOk);}
 
     /*! \return Convert _Arn Data Object_ to a _QByteArray_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    QByteArray  toByteArray()  const
-    {return ArnItemB::toByteArray();}
+    QByteArray  toByteArray( bool* isOk = 0)  const
+    {return ArnItemB::toByteArray( isOk);}
 
     /*! \return Convert _Arn Data Object_ to a _QVariant_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    QVariant  toVariant()  const
-    {return ArnItemB::toVariant();}
+    QVariant  toVariant( bool* isOk = 0)  const
+    {return ArnItemB::toVariant( isOk);}
 
     /*! \return Convert _Arn Data Object_ to an _unsigned int_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    uint  toUInt()  const
-    {return ArnItemB::toUInt();}
+    uint  toUInt( bool* isOk = 0)  const
+    {return ArnItemB::toUInt( isOk);}
 
     /*! \return Convert _Arn Data Object_ to an _int 64 bit_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    qint64  toInt64()  const
-    {return ArnItemB::toInt64();}
+    qint64  toInt64( bool* isOk = 0)  const
+    {return ArnItemB::toInt64( isOk);}
 
     /*! \return Convert _Arn Data Object_ to an _unsigned int 64 bit_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    quint64  toUInt64()  const
-    {return ArnItemB::toUInt64();}
+    quint64  toUInt64( bool* isOk = 0)  const
+    {return ArnItemB::toUInt64( isOk);}
 
     ArnItem&  operator=( const ArnItem& other);
     ArnItem&  operator=( int other);
@@ -481,7 +501,8 @@ public slots:
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const char* value, int ignoreSame = Arn::SameValue::DefaultAction);
+    void  setValue( const char* value, int ignoreSame = Arn::SameValue::DefaultAction)
+    {ArnItemB::setValue( value, ignoreSame);}
 
     //! Toggle the _bool_ at the _Arn Data Object_
     /*! The _Arn Data Object_ is first converted to a _bool_, then the toggled value

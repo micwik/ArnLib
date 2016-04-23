@@ -160,6 +160,13 @@ protected:
      */
     void  setValue( const QVariant& value, int ignoreSame = Arn::SameValue::DefaultAction);
 
+    //! Assign a _char*_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     */
+    void  setValue( const char* value, int ignoreSame = Arn::SameValue::DefaultAction);
+
     //! Assign an _unsigned int_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
      *  \param[in] ignoreSame can override default ignoreSameValue setting.

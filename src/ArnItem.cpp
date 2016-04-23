@@ -303,12 +303,6 @@ ArnItem&  ArnItem::operator=( const QVariant& other)
 }
 
 
-void  ArnItem::setValue( const char* value, int ignoreSame)
-{
-    setValue( QString::fromUtf8( value), ignoreSame);
-}
-
-
 void  ArnItem::toggleBool()
 {
     bool value = toBool();

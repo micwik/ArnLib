@@ -274,6 +274,20 @@ void ArnUtest1::testArnBasicItem2()
     QCOMPARE( arnT2a.isIgnoreSameValue(), false);
     QCOMPARE( arnT2a.isBiDirMode(), true);
     QCOMPARE( arnT2a.isPipeMode(), true);
+
+    bool  isOk;
+    arnT1a.setValue("1234");
+    isOk = false;
+    QCOMPARE( arnT1a.toInt( &isOk), 1234);
+    QCOMPARE( isOk, true);
+    arnT1a.setValue("T1234");
+    isOk = true;
+    QCOMPARE( arnT1a.toInt( &isOk), 0);
+    QCOMPARE( isOk, false);
+    arnT1a.setValue("1234T");
+    isOk = true;
+    QCOMPARE( arnT1a.toInt( &isOk), 0);
+    QCOMPARE( isOk, false);
 }
 
 

@@ -238,6 +238,16 @@ void  ArnItemB::setValue( const QVariant& value, int ignoreSame)
 }
 
 
+void  ArnItemB::setValue( const char* value, int ignoreSame)
+{
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
+
+    ArnBasicItem::setValue( value, ignoreSame);
+}
+
+
 void  ArnItemB::setValue( uint value, int ignoreSame)
 {
     Q_D(ArnItemB);

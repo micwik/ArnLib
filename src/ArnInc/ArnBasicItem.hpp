@@ -69,6 +69,16 @@ protected:
 /*!
 [About Arn Data Object](\ref gen_arnobj)
 
+ArnBasicItem is the basic way to get a handle for accessing an Arn Data Object.
+It is fast, small and is not based on QObject. As such it can not use signals and slots,
+but it can provide ArnEvents (based on QEvents) to be sent to any QObject based receiver.
+
+Normally ArnItem should be used, as it has a higher level interface with QObject signals
+and slots. Typically ArnBasicItem is used when no signal is needed, i.e only using direct
+access with setValue and toXXX methods.
+If you need a lot of ArnBasicItems and memory foot print (or speed) is important, You can
+consider to use ArnBasicItem with ArnEvents even if it will be harder to program.
+
 This class contains the basic services, that should be apropriate for any derived class
 as public methods. Other non generic services that might be needed is available as
 protected methods. Typically derived classes can select among these protected methods and
@@ -313,48 +323,68 @@ public:
     QByteArray  arnExport()  const;
 
     /*! \return Convert _Arn Data Object_ to an _integer_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    int  toInt()  const;
+    int  toInt( bool* isOk = 0)  const;
 
     /*! \return Convert _Arn Data Object_ to a _double_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    double  toDouble()  const;
+    double  toDouble( bool* isOk = 0)  const;
 
     /*! \return Convert _Arn Data Object_ to an _ARNREAL_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    ARNREAL  toReal()  const;
+    ARNREAL  toReal( bool* isOk = 0)  const;
 
     /*! \return Convert _Arn Data Object_ to a _QString_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    QString  toString()  const;
+    QString  toString( bool* isOk = 0)  const;
 
     /*! \return Convert _Arn Data Object_ to a _QByteArray_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    QByteArray  toByteArray()  const;
+    QByteArray  toByteArray( bool* isOk = 0)  const;
 
     /*! \return Convert _Arn Data Object_ to a _QVariant_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      */
-    QVariant  toVariant()  const;
+    QVariant  toVariant( bool* isOk = 0)  const;
 
     /*! \return Convert _Arn Data Object_ to a _bool_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from Int.
      */
-    bool  toBool()  const;
+    bool  toBool( bool* isOk = 0)  const;
 
     /*! \return Convert _Arn Data Object_ to an _unsigned int_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    uint  toUInt()  const;
+    uint  toUInt( bool* isOk = 0)  const;
 
     /*! \return Convert _Arn Data Object_ to an _int 64 bit_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    qint64  toInt64()  const;
+    qint64  toInt64( bool* isOk = 0)  const;
 
     /*! \return Convert _Arn Data Object_ to an _unsigned int 64 bit_
+     *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
+     *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    quint64  toUInt64()  const;
+    quint64  toUInt64( bool* isOk = 0)  const;
 
     void  setValue( const ArnBasicItem& other, int ignoreSame = Arn::SameValue::DefaultAction);
 
@@ -399,6 +429,13 @@ public:
      *  \see setIgnoreSameValue()
      */
     void  setValue( const QVariant& value, int ignoreSame = Arn::SameValue::DefaultAction);
+
+    //! Assign a _char*_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     */
+    void  setValue( const char* value, int ignoreSame = Arn::SameValue::DefaultAction);
 
     //! Assign an _unsigned int_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
