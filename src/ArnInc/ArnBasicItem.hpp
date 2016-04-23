@@ -386,6 +386,17 @@ public:
      */
     quint64  toUInt64( bool* isOk = 0)  const;
 
+    ArnBasicItem&  operator=( const ArnBasicItem& other);
+    ArnBasicItem&  operator=( int val);
+    ArnBasicItem&  operator=( ARNREAL val);
+    ArnBasicItem&  operator=( const QString& val);
+    ArnBasicItem&  operator=( const QByteArray& val);
+    ArnBasicItem&  operator=( const QVariant& val);
+    ArnBasicItem&  operator=( const char* val);
+    ArnBasicItem&  operator=( uint val);
+    ArnBasicItem&  operator=( qint64 val);
+    ArnBasicItem&  operator=( quint64 val);
+
     void  setValue( const ArnBasicItem& other, int ignoreSame = Arn::SameValue::DefaultAction);
 
     //! Assign an _integer_ to an _Arn Data Object_

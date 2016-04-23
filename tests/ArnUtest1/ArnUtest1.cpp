@@ -276,7 +276,7 @@ void ArnUtest1::testArnBasicItem2()
     QCOMPARE( arnT2a.isPipeMode(), true);
 
     bool  isOk;
-    arnT1a.setValue("1234");
+    arnT1a = "1234";
     isOk = false;
     QCOMPARE( arnT1a.toInt( &isOk), 1234);
     QCOMPARE( isOk, true);

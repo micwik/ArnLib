@@ -398,15 +398,15 @@ public:
     {return ArnItemB::toUInt64( isOk);}
 
     ArnItem&  operator=( const ArnItem& other);
-    ArnItem&  operator=( int other);
+    ArnItem&  operator=( int val);
     ArnItem&  operator=( ARNREAL other);
-    ArnItem&  operator=( const QString& other);
-    ArnItem&  operator=( const QByteArray& other);
-    ArnItem&  operator=( const QVariant& other);
-    ArnItem&  operator=( const char* other);
-    ArnItem&  operator=( uint other);
-    ArnItem&  operator=( qint64 other);
-    ArnItem&  operator=( quint64 other);
+    ArnItem&  operator=( const QString& val);
+    ArnItem&  operator=( const QByteArray& val);
+    ArnItem&  operator=( const QVariant& val);
+    ArnItem&  operator=( const char* val);
+    ArnItem&  operator=( uint val);
+    ArnItem&  operator=( qint64 val);
+    ArnItem&  operator=( quint64 val);
 
     //! Assign the value of an other ArnItem to an _Arn Data Object_
     /*! \param[in] other is the ArnItem containing the value to assign

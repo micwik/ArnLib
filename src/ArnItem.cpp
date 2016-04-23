@@ -240,65 +240,65 @@ ArnItem&  ArnItem::operator=( const ArnItem& other)
 }
 
 
-ArnItem&  ArnItem::operator=( int other)
+ArnItem&  ArnItem::operator=( int val)
 {
-    this->setValue( other);
+    this->setValue( val);
     return *this;
 }
 
 
-ArnItem&  ArnItem::operator=( ARNREAL other)
+ArnItem&  ArnItem::operator=( ARNREAL val)
 {
-    this->setValue( other);
+    this->setValue( val);
     return *this;
 }
 
 
-ArnItem&  ArnItem::operator=( const QString& other)
+ArnItem&  ArnItem::operator=( const QString& val)
 {
-    this->setValue( other);
+    this->setValue( val);
     return *this;
 }
 
 
-ArnItem&  ArnItem::operator=( const QByteArray& other)
+ArnItem&  ArnItem::operator=( const QByteArray& val)
 {
-    this->setValue( other);
+    this->setValue( val);
     return *this;
 }
 
 
-ArnItem&  ArnItem::operator=( const char* other)
+ArnItem&  ArnItem::operator=( const char* val)
 {
-    this->setValue( other);
+    this->setValue( val);
     return *this;
 }
 
 
-ArnItem&  ArnItem::operator=( uint other)
+ArnItem&  ArnItem::operator=( uint val)
 {
-    this->setValue( other);
+    this->setValue( val);
     return *this;
 }
 
 
-ArnItem&  ArnItem::operator=( qint64 other)
+ArnItem&  ArnItem::operator=( qint64 val)
 {
-    this->setValue( other);
+    this->setValue( val);
     return *this;
 }
 
 
-ArnItem&  ArnItem::operator=( quint64 other)
+ArnItem&  ArnItem::operator=( quint64 val)
 {
-    this->setValue( other);
+    this->setValue( val);
     return *this;
 }
 
 
-ArnItem&  ArnItem::operator=( const QVariant& other)
+ArnItem&  ArnItem::operator=( const QVariant& val)
 {
-    this->setValue( other);
+    this->setValue( val);
     return *this;
 }
 

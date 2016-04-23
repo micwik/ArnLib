@@ -705,6 +705,76 @@ quint64  ArnBasicItem::toUInt64( bool* isOk)  const
 }
 
 
+ArnBasicItem&  ArnBasicItem::operator=( const ArnBasicItem& other)
+{
+    this->setValue( other);
+    return *this;
+}
+
+
+ArnBasicItem&  ArnBasicItem::operator=( int val)
+{
+    this->setValue( val);
+    return *this;
+}
+
+
+ArnBasicItem&  ArnBasicItem::operator=( ARNREAL val)
+{
+    this->setValue( val);
+    return *this;
+}
+
+
+ArnBasicItem&  ArnBasicItem::operator=( const QString& val)
+{
+    this->setValue( val);
+    return *this;
+}
+
+
+ArnBasicItem&  ArnBasicItem::operator=( const QByteArray& val)
+{
+    this->setValue( val);
+    return *this;
+}
+
+
+ArnBasicItem&  ArnBasicItem::operator=( const char* val)
+{
+    this->setValue( val);
+    return *this;
+}
+
+
+ArnBasicItem&  ArnBasicItem::operator=( uint val)
+{
+    this->setValue( val);
+    return *this;
+}
+
+
+ArnBasicItem&  ArnBasicItem::operator=( qint64 val)
+{
+    this->setValue( val);
+    return *this;
+}
+
+
+ArnBasicItem&  ArnBasicItem::operator=( quint64 val)
+{
+    this->setValue( val);
+    return *this;
+}
+
+
+ArnBasicItem&  ArnBasicItem::operator=( const QVariant& val)
+{
+    this->setValue( val);
+    return *this;
+}
+
+
 void  ArnBasicItem::setValue( const ArnBasicItem& other, int ignoreSame)
 {
     ArnLink *link = other._link;
