@@ -191,6 +191,13 @@ protected:
      */
     void  setValue( quint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
 
+    //! Control echo cancellation for this item
+    /*! When an ArnObject is changed via this item, the changed() signal on this item
+     *  can be blocked.
+     *  \param[in] blockEcho if true echo is blocked.
+     */
+    void  setBlockEcho( bool blockEcho);
+
     //// To be reimplemented
     virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
     virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
@@ -202,7 +209,6 @@ protected:
 
     //// Methods not to be public
     bool  openWithFlags( const QString& path, Arn::LinkFlags linkFlags);
-    void  setBlockEcho( bool blockEcho);
     void  setEnableSetValue( bool enable);
     void  setEnableUpdNotify( bool enable);
     void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
@@ -236,6 +242,7 @@ protected:
     using ArnBasicItem::toByteArray;
     using ArnBasicItem::toString;
     using ArnBasicItem::toVariant;
+    using ArnBasicItem::operator=;
     //! \endcond
 
 private:

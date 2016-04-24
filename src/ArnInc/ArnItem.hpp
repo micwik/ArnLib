@@ -166,7 +166,6 @@ public:
     {return ArnItemB::getMode();}
 
     /*! \return The client session _sync mode_ of an _Arn Data Object_
-     *  \see addSyncMode()
      *  \see \ref gen_arnobjModes
      */
     Arn::ObjectSyncMode  syncMode()  const

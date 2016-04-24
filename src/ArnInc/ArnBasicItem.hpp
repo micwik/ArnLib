@@ -69,6 +69,8 @@ protected:
 /*!
 [About Arn Data Object](\ref gen_arnobj)
 
+See ArnItem.
+
 ArnBasicItem is the basic way to get a handle for accessing an Arn Data Object.
 It is fast, small and is not based on QObject. As such it can not use signals and slots,
 but it can provide ArnEvents (based on QEvents) to be sent to any QObject based receiver.
@@ -77,14 +79,42 @@ Normally ArnItem should be used, as it has a higher level interface with QObject
 and slots. Typically ArnBasicItem is used when no signal is needed, i.e only using direct
 access with setValue and toXXX methods.
 If you need a lot of ArnBasicItems and memory foot print (or speed) is important, You can
-consider to use ArnBasicItem with ArnEvents even if it will be harder to program.
+consider to use ArnBasicItem with ArnEvents even if it will be harder to code.
 
-This class contains the basic services, that should be apropriate for any derived class
-as public methods. Other non generic services that might be needed is available as
-protected methods. Typically derived classes can select among these protected methods and
-make any of them public.
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnBasicItem  _arnTime;
+    MyReceiver  _myRec;  // QObject derived
 
-See ArnItem.
+    // In class code
+    _arnTime.open("//Chat/Time/value");
+    _arnTime.setEventHandler( &_myRec);
+    _arnTime = "Undefined ...";
+
+void  MyReceiver::customEvent( QEvent* ev)
+{
+    // Is setup as ArnEvent handler for my ArnBasicItem.
+    // Handler must finish with ArnBasicItemEventHandler::defaultEvent( ev).
+
+    int  evIdx = ev->type() - ArnEvent::baseType();
+    switch (evIdx) {
+    case ArnEvent::Idx::ValueChange:
+    {
+        ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
+        ArnBasicItem*  item = static_cast<ArnBasicItem*>( e->target());
+        if (!item)  break;  // No target, deleted/closed ...
+
+        QByteArray  val = e->valueData() ? *e->valueData() : item->toByteArray();
+        qDebug() << "MyReceiver ArnEvValueChange: inItemPath=" << item->path()
+                 << " value=" << val;
+    }
+    default:
+        break;
+    }
+
+    ArnBasicItemEventHandler::defaultEvent( ev);
+}
+\endcode
 */
 class ARNLIBSHARED_EXPORT ArnBasicItem
 {
@@ -235,7 +265,6 @@ public:
     Arn::ObjectMode  getMode()  const;
 
     /*! \return The client session _sync mode_ of an _Arn Data Object_
-     *  \see addSyncMode()
      *  \see \ref gen_arnobjModes
      */
     Arn::ObjectSyncMode  syncMode()  const;
