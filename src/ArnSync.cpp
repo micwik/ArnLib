@@ -82,6 +82,8 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
 ArnSync::~ArnSync()
 {
     qDeleteAll( _itemNetMap);
+    qDeleteAll( _fluxRecPool);
+    qDeleteAll( _fluxPipeQueue);
 }
 
 
