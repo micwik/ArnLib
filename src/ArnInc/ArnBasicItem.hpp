@@ -122,18 +122,6 @@ class ARNLIBSHARED_EXPORT ArnBasicItem
     friend class ArnBasicItemEventHandler;
 
 public:
-    //! Code used in blob for arnExport() and arnImport()
-    struct ExportCode {
-        enum _ARN_ENUM_PACKED_  E {
-            ByteArray  = 3,
-            String     = 4,
-            Variant    = 5,  // Legacy
-            VariantTxt = 16,
-            VariantBin = 17
-        };
-        MQ_DECLARE_ENUM( ExportCode)
-    };
-
     //! Standard constructor of a closed handle
     /*!
      */

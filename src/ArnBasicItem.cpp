@@ -481,8 +481,8 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
 {
     if (!data.isEmpty()) {
         if (data.at(0) < 32) {  // Assume Export-code
-            switch (ExportCode::fromInt( data.at(0))) {
-            case ExportCode::Variant: {  // Legacy
+            switch (Arn::ExportCode::fromInt( data.at(0))) {
+            case Arn::ExportCode::Variant: {  // Legacy
                 QVariant  value;
                 QDataStream  stream( data);
                 stream.setVersion( DATASTREAM_VER);
@@ -491,7 +491,7 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
                 setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
                 return;
             }
-            case ExportCode::VariantTxt: {
+            case Arn::ExportCode::VariantTxt: {
                 int  sepPos = data.indexOf(':', 1);
                 Q_ASSERT(sepPos > 0);
 
@@ -513,7 +513,7 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
                 setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
                 return;
             }
-            case ExportCode::VariantBin: {
+            case Arn::ExportCode::VariantBin: {
                 if ((data.size() < 3) || (data.at(2) != DATASTREAM_VER)) {
                     errorLog( QString("Import not same DataStream version"),
                               ArnError::Undef);
@@ -551,10 +551,10 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
                 setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
                 return;
             }
-            case ExportCode::ByteArray:
+            case Arn::ExportCode::ByteArray:
                 setValue( data.mid(1), ignoreSame, handleData);
                 return;
-            case ExportCode::String:
+            case Arn::ExportCode::String:
                 handleData.flags().set( ArnLinkHandle::Flags::Text);
                 setValue( data.mid(1), ignoreSame, handleData);
                 //setValue( QString::fromUtf8( data.constData() + 1, data.size() - 1),
@@ -589,7 +589,7 @@ QByteArray  ArnBasicItem::arnExport()  const
         }
 
         if (value.canConvert( QVariant::String)) {  // Textual Variant
-            retVal += char( ExportCode::VariantTxt);
+            retVal += char( Arn::ExportCode::VariantTxt);
             retVal += typeName;
             retVal += ':';
             retVal += value.toString().toUtf8();
@@ -597,7 +597,7 @@ QByteArray  ArnBasicItem::arnExport()  const
         else { // Binary Variant
             QDataStream  stream( &retVal, QIODevice::WriteOnly);
             stream.setVersion( DATASTREAM_VER);
-            stream << quint8( ExportCode::VariantBin);
+            stream << quint8( Arn::ExportCode::VariantBin);
             stream << quint8(0);  // Spare
             stream << quint8( DATASTREAM_VER);
             stream.writeRawData( typeName.constData(), typeName.size());
@@ -610,13 +610,13 @@ QByteArray  ArnBasicItem::arnExport()  const
         }
     }
     else if (arnType == Arn::DataType::ByteArray) {
-        retVal = char( ExportCode::ByteArray) + toByteArray();
+        retVal = char( Arn::ExportCode::ByteArray) + toByteArray();
     }
     else {  // Expect only normal printable (could also be \n etc)
         retVal = toString().toUtf8();
         if (!retVal.isEmpty()) {
             if (retVal.at(0) < 32) {  // Starting char conflicting with Export-code
-                retVal.insert( 0, char( ExportCode::String));  // Stuff String-code at pos 0
+                retVal.insert( 0, char( Arn::ExportCode::String));  // Stuff String-code at pos 0
             }
         }
     }

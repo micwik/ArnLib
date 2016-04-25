@@ -169,11 +169,14 @@ private:
     void  startLogin();
     void  startNormalSync();
     void  setupItemNet( ArnItemNet* itemNet, uint netId);
-    void  itemValueUpdater( const ArnLinkHandle& handleData, ArnItemNet* itemNet);
+    void  itemValueUpdater( const ArnLinkHandle& handleData, const QByteArray* valueData,
+                            ArnItemNet* itemNet);
     void  itemModeUpdater( ArnItemNet* itemNet);
     FluxRec*  getFreeFluxRec();
-    QByteArray  makeFluxString( const ArnItemNet* itemNet, const ArnLinkHandle& handleData);
-    void  addToFluxQue( const ArnLinkHandle& handleData, ArnItemNet* itemNet);
+    QByteArray  makeFluxString( const ArnItemNet* itemNet, const ArnLinkHandle& handleData,
+                                const QByteArray* valueData);
+    void  addToFluxQue( const ArnLinkHandle& handleData, const QByteArray* valueData,
+                        ArnItemNet* itemNet);
     void  addToModeQue( ArnItemNet* itemNet);
     void  sendFluxItem( const ArnItemNet* itemNet);
     void  sendSyncItem( ArnItemNet* itemNet);

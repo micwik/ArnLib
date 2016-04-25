@@ -599,7 +599,7 @@ void  ArnPersist::dbSetupReadValue( const QString& meta, const QString& valueTxt
         d->_xsm->fromXString( meta.toLatin1());
         QByteArray  variantType = d->_xsm->value("V");
         if (!variantType.isEmpty()) {  // Variant is stored
-            value = char( ArnItemB::ExportCode::VariantTxt)
+            value = char( Arn::ExportCode::VariantTxt)
                   + variantType + ":" + valueTxt.toUtf8();
             return;
         }
@@ -607,7 +607,7 @@ void  ArnPersist::dbSetupReadValue( const QString& meta, const QString& valueTxt
     value = valueTxt.toUtf8();
     if (!value.isEmpty()) {
         if (value.at(0) < 32) {  // Starting char conflicting with Export-code
-            value.insert( 0, char( ArnItemB::ExportCode::String));  // Stuff String-code
+            value.insert( 0, char( Arn::ExportCode::String));  // Stuff String-code
         }
     }
 }
@@ -625,7 +625,7 @@ void ArnPersist::dbSetupWriteValue( QString& meta, QString& valueTxt, QByteArray
     if (value.isEmpty())  return;
 
     uchar  c = value.at(0);
-    if (c == ArnItemB::ExportCode::VariantTxt) {
+    if (c == Arn::ExportCode::VariantTxt) {
         int  sepPos = value.indexOf(':', 1);
         Q_ASSERT(sepPos > 0);
 
@@ -636,7 +636,7 @@ void ArnPersist::dbSetupWriteValue( QString& meta, QString& valueTxt, QByteArray
         valueTxt = QString::fromUtf8( value.constData() + sepPos + 1, value.size() - sepPos - 1);
         value = QByteArray();
     }
-    else if (c == ArnItemB::ExportCode::String) {
+    else if (c == Arn::ExportCode::String) {
         valueTxt = QString::fromUtf8( value.constData() + 1, value.size() - 1);
         value = QByteArray();
     }

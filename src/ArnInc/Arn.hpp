@@ -85,6 +85,18 @@ struct DataType {
     MQ_DECLARE_ENUM( DataType)
 };
 
+//! Code used in blob for arnExport() and arnImport()
+struct ExportCode {
+    enum _ARN_ENUM_PACKED_  E {
+        ByteArray  = 3,
+        String     = 4,
+        Variant    = 5,  // Legacy
+        VariantTxt = 16,
+        VariantBin = 17
+    };
+    MQ_DECLARE_ENUM( ExportCode)
+};
+
 //! Info type for exchange static (meta) info between ArnClient and ArnServer
 struct InfoType {
     enum  E {

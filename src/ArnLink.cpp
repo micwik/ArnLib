@@ -146,8 +146,8 @@ const ArnLinkList&  ArnLink::children()  const
 void  ArnLink::doValueChanged( int sendId, const QByteArray* valueData,
                                const ArnLinkHandle& handleData)
 {
-    // qDebug() << "doValueChanged: isThr=" << _isThreaded << " isPipe=" << _isPipeMode <<
-    //            " path=" << linkPath() << " value=" << toByteArray();
+    // qDebug() << "doValueChanged: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
+    //             " path=" << linkPath() << " value=" << (valueData ? *valueData : toByteArray());
     ArnEvValueChange ev( sendId, valueData, handleData);
     sendArnEvent( &ev);
 }
@@ -244,7 +244,8 @@ void  ArnLink::setValue( int value, int sendId, bool forceKeep)
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && _isPipeMode) {
-        QByteArray  valueData = QByteArray::number( value);
+        QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
+                                QByteArray::number( value);
         doValueChanged( sendId, &valueData);
     }
     else {
@@ -270,9 +271,11 @@ void  ArnLink::setValue( ARNREAL value, int sendId, bool forceKeep)
 
     if (_mutex && _isPipeMode) {
 #if defined( ARNREAL_FLOAT)
-        QByteArray  valueData = QByteArray::number( value, 'g', std::numeric_limits<float>::digits10);
+        QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
+                                QByteArray::number( value, 'g', std::numeric_limits<float>::digits10);
 #else
-        QByteArray  valueData = QByteArray::number( value, 'g', std::numeric_limits<double>::digits10);
+        QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
+                                QByteArray::number( value, 'g', std::numeric_limits<double>::digits10);
 #endif
         doValueChanged( sendId, &valueData);
     }
@@ -300,7 +303,8 @@ void  ArnLink::setValue( const QString& value, int sendId, bool forceKeep,
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && (_isPipeMode || !handleData.isNull())) {
-        QByteArray  valueData = value.toUtf8();
+        QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
+                                value.toUtf8();
         doValueChanged( sendId, &valueData, handleData);
     }
     else {
@@ -327,7 +331,8 @@ void  ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && (_isPipeMode || !handleData.isNull())) {
-        doValueChanged( sendId, &value, handleData);
+        QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::ByteArray)) + value;
+        doValueChanged( sendId, &valueData, handleData);
     }
     else {
         doValueChanged( sendId, 0, handleData);
@@ -351,7 +356,8 @@ void  ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && _isPipeMode) {
-        QByteArray  valueData = value.toString().toUtf8();
+        QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
+                                value.toString().toUtf8();
         doValueChanged( sendId, &valueData);
     }
     else {

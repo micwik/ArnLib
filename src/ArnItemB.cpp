@@ -349,8 +349,15 @@ void  ArnItemB::doEvent( QEvent* ev)
 
         addIsOnlyEcho( sendId);
 
-        if (d->_enableUpdNotify)
-            itemUpdated( e->handleData(), e->valueData());
+        if (d->_enableUpdNotify) {
+            const QByteArray*  valueData = e->valueData();
+            if (valueData && !valueData->isEmpty()) {
+                QByteArray  value = QByteArray::fromRawData( valueData->constData() + 1, valueData->size() - 1);
+                itemUpdated( e->handleData(), &value);
+            }
+            else
+                itemUpdated( e->handleData());
+        }
         return;
     }
     case ArnEvent::Idx::LinkCreate:
