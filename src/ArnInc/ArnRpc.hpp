@@ -81,6 +81,42 @@ public:
 };
 
 
+class ArnRpcMode {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        //! Provider side (opposed to requester)
+        Provider        = 0x0001,
+        //! Use _AutoDestroy_ for the pipe, i.e. it is closed when tcp/ip is broken
+        AutoDestroy     = 0x0002,
+        //! Use an unique uuid in the pipe name
+        UuidPipe        = 0x0004,
+        //! If guarantied no default arguments, full member name overload is ok
+        NoDefaultArgs   = 0x0008,
+        //! Send sequence order information to pipe
+        SendSequence    = 0x0010,
+        //! Check sequence order information from pipe. Can generate signal outOfSequence().
+        CheckSequence   = 0x0020,
+        //! Only allow calling in with positional argument (typed)
+        OnlyPosArgIn    = 0x0040,
+        //! When calling out, uses named argument e.g "myFunc count=123"
+        NamedArg        = 0x0080,
+        //! When calling out, uses named argument with type e.g "myFunc count:int=123"
+        NamedTypedArg   = 0x0100,
+        //! When receiver method missing, send defaultCall() signal instead of error
+        UseDefaultCall  = 0x0200,
+        //! Debug mode, dumping info for the batch connections
+        Debug           = 0x8000,
+        //! Convenience, combined _UuidPipe_ and _AutoDestroy_
+        UuidAutoDestroy = UuidPipe | AutoDestroy,
+        //! Convenience, combined _NamedArg_ and _NamedTypedArg_
+        AnyNamedArg     = NamedArg | NamedTypedArg
+    };
+    MQ_DECLARE_FLAGSTXT( ArnRpcMode)
+};
+
+
 //! Remote Procedure Call.
 /*!
 [About RPC and SAPI](\ref gen_rpc)
@@ -122,37 +158,7 @@ class ARNLIBSHARED_EXPORT ArnRpc : public QObject
     Q_DECLARE_PRIVATE(ArnRpc)
 
 public:
-    struct Mode {
-        enum E {
-            //! Provider side (opposed to requester)
-            Provider        = 0x0001,
-            //! Use _AutoDestroy_ for the pipe, i.e. it is closed when tcp/ip is broken
-            AutoDestroy     = 0x0002,
-            //! Use an unique uuid in the pipe name
-            UuidPipe        = 0x0004,
-            //! If guarantied no default arguments, full member name overload is ok
-            NoDefaultArgs   = 0x0008,
-            //! Send sequence order information to pipe
-            SendSequence    = 0x0010,
-            //! Check sequence order information from pipe. Can generate signal outOfSequence().
-            CheckSequence   = 0x0020,
-            //! Only allow calling in with positional argument (typed)
-            OnlyPosArgIn    = 0x0040,
-            //! When calling out, uses named argument e.g "myFunc count=123"
-            NamedArg        = 0x0080,
-            //! When calling out, uses named argument with type e.g "myFunc count:int=123"
-            NamedTypedArg   = 0x0100,
-            //! When receiver method missing, send defaultCall() signal instead of error
-            UseDefaultCall  = 0x0200,
-            //! Debug mode, dumping info for the batch connections
-            Debug           = 0x8000,
-            //! Convenience, combined _UuidPipe_ and _AutoDestroy_
-            UuidAutoDestroy = UuidPipe | AutoDestroy,
-            //! Convenience, combined _NamedArg_ and _NamedTypedArg_
-            AnyNamedArg     = NamedArg | NamedTypedArg
-        };
-        MQ_DECLARE_FLAGS( Mode)
-    };
+    typedef ArnRpcMode  Mode;
 
     struct Invoke {
         enum E {
@@ -483,7 +489,7 @@ private:
     static RpcTypeInfo _rpcTypeInfoTab[];
 };
 
-MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnRpc::Mode)
+MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnRpcMode)
 MQ_DECLARE_OPERATORS_FOR_FLAGS( ArnRpc::Invoke)
 Q_DECLARE_METATYPE(ArnRpc*)
 

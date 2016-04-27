@@ -71,7 +71,10 @@ struct SameValue {
 };
 
 //! Data type of an _Arn Data Object_
-struct DataType {
+class DataType {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
     enum E {
         Null       = 0,
         Int        = 1,
@@ -82,11 +85,14 @@ struct DataType {
         Variant    = 5
         // 16 and above (max 255) is reserved by ArnItemB::ExportCode
     };
-    MQ_DECLARE_ENUM( DataType)
+    MQ_DECLARE_ENUMTXT( DataType)
 };
 
 //! Code used in blob for arnExport() and arnImport()
-struct ExportCode {
+class ExportCode {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
     enum E {
         ByteArray  = 3,
         String     = 4,
@@ -94,7 +100,7 @@ struct ExportCode {
         VariantTxt = 16,
         VariantBin = 17
     };
-    MQ_DECLARE_ENUM( ExportCode)
+    MQ_DECLARE_ENUMTXT( ExportCode)
 };
 
 //! Info type for exchange static (meta) info between ArnClient and ArnServer
@@ -108,22 +114,30 @@ struct InfoType {
 };
 
 //! General global mode of an _Arn Data Object_
-/// Max 16 bit
-struct ObjectMode {
+/// Max 8 bit
+class ObjectMode {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
     enum E {
+        //! default
+        Normal = 0x00,
         //! A two way object, typically for validation or pipe
-        BiDir = 0x01,
+        BiDir  = 0x01,
         //! Implies _BiDir_ and all data is preserved as a stream
-        Pipe  = 0x02,
+        Pipe   = 0x02,
         //! Data is persistent and will be saved
-        Save  = 0x04
+        Save   = 0x04
     };
-    MQ_DECLARE_FLAGS( ObjectMode)
+    MQ_DECLARE_FLAGSTXT( ObjectMode)
 };
 
 //! The client session sync mode of an _Arn Data Object_
-/// Max 16 bit
-struct ObjectSyncMode {  // This mode is sent with sync-command
+/// Max 8 bit
+class ObjectSyncMode {  // This mode is sent with sync-command
+    Q_GADGET
+    Q_ENUMS(E)
+public:
     enum E {
         //! default
         Normal      = 0x00,
@@ -134,7 +148,7 @@ struct ObjectSyncMode {  // This mode is sent with sync-command
         //! Destroy this _Arn Data Object_ when client (tcp/ip) closes
         AutoDestroy = 0x04
     };
-    MQ_DECLARE_FLAGS( ObjectSyncMode)
+    MQ_DECLARE_FLAGSTXT( ObjectSyncMode)
 };
 
 //! Link flags when accessing an _Arn Data Object_
@@ -198,7 +212,6 @@ public:
     };
     MQ_DECLARE_FLAGSTXT( Allow)
 };
-MQ_DECLARE_OPERATORS_FOR_FLAGS( Allow)
 
 //! Convert a name to a specific format
 /*! Name is a sub part from a _path_.

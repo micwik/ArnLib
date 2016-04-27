@@ -46,8 +46,7 @@ class ArnItemNet;
 class ArnItemNetEar;
 
 
-namespace ArnPrivate {
-class ConnectStat {
+class ArnClientConnectStat {
     Q_GADGET
     Q_ENUMS(E)
 public:
@@ -69,7 +68,7 @@ public:
         //! Unsuccessfully tried to connect to all hosts in the Arn connection List
         TriedAll
     };
-    MQ_DECLARE_ENUMTXT( ConnectStat)
+    MQ_DECLARE_ENUMTXT( ArnClientConnectStat)
 
     enum NS {NsEnum, NsHuman};
     MQ_DECLARE_ENUM_NSTXT(
@@ -78,7 +77,6 @@ public:
         { NsHuman, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }
     )
 };
-}
 
 
 //! Class for connecting to an _Arn Server_.
@@ -108,7 +106,7 @@ class ARNLIBSHARED_EXPORT ArnClient : public QObject
     Q_DECLARE_PRIVATE(ArnClient)
 
 public:
-    typedef ArnPrivate::ConnectStat  ConnectStat;
+    typedef ArnClientConnectStat  ConnectStat;
 
     struct HostAddrPort {
         QString  addr;

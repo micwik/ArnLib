@@ -44,8 +44,7 @@ class ArnServerRemotePrivate;
 class QHostInfo;
 class QTimer;
 
-namespace ArnPrivate {
-class KillMode {
+class ArnServerRemoteSessionKillMode {
     Q_GADGET
     Q_ENUMS(E)
 public:
@@ -54,15 +53,15 @@ public:
         Delay10Sec,
         Delay60Sec
     };
-    MQ_DECLARE_ENUMTXT( KillMode)
+    MQ_DECLARE_ENUMTXT( ArnServerRemoteSessionKillMode)
 };
-}
+
 
 class ArnServerRemoteSession : public QObject
 {
     Q_OBJECT
 public:
-    typedef ArnPrivate::KillMode  KillMode;
+    typedef ArnServerRemoteSessionKillMode  KillMode;
 
     ArnServerRemoteSession( ArnServerSession* arnServerSession, ArnServerRemote* arnServerRemote);
 

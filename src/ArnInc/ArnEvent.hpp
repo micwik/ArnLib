@@ -43,7 +43,6 @@ class ArnEvent;
 class QMutex;
 
 
-namespace ArnPrivate {
 class ArnEventIdx {
     Q_GADGET
     Q_ENUMS(E)
@@ -62,7 +61,6 @@ public:
     };
     MQ_DECLARE_ENUMTXT( ArnEventIdx)
 };
-}
 
 
 class ARNLIBSHARED_EXPORT ArnEvent : public QEvent
@@ -75,7 +73,7 @@ class ARNLIBSHARED_EXPORT ArnEvent : public QEvent
     void*  _spare;  // Can be used later as d-ptr
 
 public:
-    typedef ArnPrivate::ArnEventIdx  Idx;
+    typedef ArnEventIdx  Idx;
 
     ArnEvent( QEvent::Type type);
     virtual  ~ArnEvent();
