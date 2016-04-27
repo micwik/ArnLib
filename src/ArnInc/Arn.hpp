@@ -72,7 +72,7 @@ struct SameValue {
 
 //! Data type of an _Arn Data Object_
 struct DataType {
-    enum _ARN_ENUM_PACKED_  E {
+    enum E {
         Null       = 0,
         Int        = 1,
         Double     = 2,
@@ -87,7 +87,7 @@ struct DataType {
 
 //! Code used in blob for arnExport() and arnImport()
 struct ExportCode {
-    enum _ARN_ENUM_PACKED_  E {
+    enum E {
         ByteArray  = 3,
         String     = 4,
         Variant    = 5,  // Legacy
@@ -110,7 +110,7 @@ struct InfoType {
 //! General global mode of an _Arn Data Object_
 /// Max 16 bit
 struct ObjectMode {
-    enum _ARN_ENUM_PACKED_  E {
+    enum E {
         //! A two way object, typically for validation or pipe
         BiDir = 0x01,
         //! Implies _BiDir_ and all data is preserved as a stream
@@ -124,15 +124,15 @@ struct ObjectMode {
 //! The client session sync mode of an _Arn Data Object_
 /// Max 16 bit
 struct ObjectSyncMode {  // This mode is sent with sync-command
-    enum _ARN_ENUM_PACKED_  E {
+    enum E {
         //! default
-        Normal      = 0x000,
+        Normal      = 0x00,
         //! Monitor of server object for client
-        Monitor     = 0x001,
+        Monitor     = 0x01,
         //! The client is default generator of data
-        Master      = 0x100,
+        Master      = 0x02,
         //! Destroy this _Arn Data Object_ when client (tcp/ip) closes
-        AutoDestroy = 0x200
+        AutoDestroy = 0x04
     };
     MQ_DECLARE_FLAGS( ObjectSyncMode)
 };
@@ -331,7 +331,7 @@ QString  twinPath( const QString& path);
  *  \see twinPath()
  *  \see isProviderPath()
  */
-QString  providerPath( const QString& path, bool giveProviderPath = true);
+QString  providerPathIf( const QString& path, bool giveProviderPath = true);
 
 //! Get a path to an Arn Object with a unique uuid name
 /*! \param[in] path The prefix for Arn uuid path e.g. "//Names/name"

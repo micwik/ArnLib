@@ -64,7 +64,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     _objectName      = name_;
     _isFolder        = flags.is( flags.Folder);
     _isProvider      = name_.endsWith('!');
-    _type.e          = Arn::DataType::Null;
+    _type            = Arn::DataType::Null;
     _twin            = 0;
     _subscribeTab    = 0;
     _mutex           = 0;
@@ -239,7 +239,7 @@ void  ArnLink::setValue( int value, int sendId, bool forceKeep)
     if (_mutex)  _mutex->lock();
     resetHave();
     _val->valueInt = value;
-    _type.e        = _type.Int;
+    _type          = Arn::DataType::Int;
     _haveInt       = true;
     if (_mutex)  _mutex->unlock();
 
@@ -265,7 +265,7 @@ void  ArnLink::setValue( ARNREAL value, int sendId, bool forceKeep)
     if (_mutex)  _mutex->lock();
     resetHave();
     _val->valueReal = value;
-    _type.e         = _type.Real;
+    _type           = Arn::DataType::Real;
     _haveReal       = true;
     if (_mutex)  _mutex->unlock();
 
@@ -298,7 +298,7 @@ void  ArnLink::setValue( const QString& value, int sendId, bool forceKeep,
     resetHave();
     _val->valueString.resize(0);     // Avoid heap defragmentation
     _val->valueString += value;
-    _type.e            = _type.String;
+    _type              = Arn::DataType::String;
     _haveString        = true;
     if (_mutex)  _mutex->unlock();
 
@@ -326,7 +326,7 @@ void  ArnLink::setValue( const QByteArray& value, int sendId, bool forceKeep,
     resetHave();
     _val->valueByteArray.resize(0);     // Avoid heap defragmentation
     _val->valueByteArray += value;
-    _type.e               = _type.ByteArray;
+    _type                 = Arn::DataType::ByteArray;
     _haveByteArray        = true;
     if (_mutex)  _mutex->unlock();
 
@@ -351,7 +351,7 @@ void  ArnLink::setValue( const QVariant& value, int sendId, bool forceKeep)
     if (_mutex)  _mutex->lock();
     resetHave();
     _val->valueVariant = value;
-    _type.e            = _type.Variant;
+    _type              = Arn::DataType::Variant;
     _haveVariant       = true;
     if (_mutex)  _mutex->unlock();
 
@@ -375,7 +375,7 @@ int  ArnLink::toInt( bool* isOk)
 
     if (!_haveInt) {
         bool  isOk2 = true;  // Default
-        switch (_type.e) {
+        switch (_type) {
         case Arn::DataType::Real:
             _val->valueInt = int( _val->valueReal);
             break;
@@ -415,7 +415,7 @@ ARNREAL  ArnLink::toReal( bool* isOk)
 
     if (!_haveReal) {
         bool  isOk2 = true;  // Default
-        switch (_type.e) {
+        switch (_type) {
         case Arn::DataType::Int:
             _val->valueReal = (ARNREAL)_val->valueInt;
             break;
@@ -468,7 +468,7 @@ QString  ArnLink::toString( bool* isOk)
     if (!_haveString) {
         bool  isOk2 = true;  // Default
         _val->valueString.resize(0);     // Avoid heap defragmentation
-        switch (_type.e) {
+        switch (_type) {
         case Arn::DataType::Int:
             _val->valueString += QString::number(_val->valueInt, 10);
             break;
@@ -513,7 +513,7 @@ QByteArray  ArnLink::toByteArray( bool* isOk)
     if (!_haveByteArray) {
         bool  isOk2 = true;  // Default
         _val->valueByteArray.resize(0);     // Avoid heap defragmentation
-        switch (_type.e) {
+        switch (_type) {
         case Arn::DataType::Int:
             _val->valueByteArray += QByteArray::number( _val->valueInt, 10);
             break;
@@ -557,7 +557,7 @@ QVariant  ArnLink::toVariant( bool* isOk)
 
     if (!_haveVariant) {
         bool  isOk2 = true;  // Default
-        switch (_type.e) {
+        switch (_type) {
         case Arn::DataType::Int:
             _val->valueVariant = _val->valueInt;
             break;
@@ -592,7 +592,7 @@ QVariant  ArnLink::toVariant( bool* isOk)
 Arn::DataType  ArnLink::type()
 {
     if (_mutex)  _mutex->lock();
-    Arn::DataType  retVal = Arn::DataType( _type.e);
+    Arn::DataType  retVal = Arn::DataType::fromInt( _type);
     if (_mutex)  _mutex->unlock();
 
     return retVal;

@@ -187,7 +187,7 @@ public slots:
 
     //! See Arn::providerPath()
     QString  providerPath( const QString& path, bool giveProviderPath = true)
-    {return  Arn::providerPath( path, giveProviderPath);}
+    {return  Arn::providerPathIf( path, giveProviderPath);}
 
 //! \cond ADV
 signals:

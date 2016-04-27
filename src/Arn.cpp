@@ -197,7 +197,7 @@ QString  twinPath( const QString& path)
 }
 
 
-QString  providerPath( const QString& path, bool giveProviderPath)
+QString  providerPathIf( const QString& path, bool giveProviderPath)
 {
     return (giveProviderPath == isProviderPath( path)) ? path : twinPath( path);
 }
@@ -220,9 +220,9 @@ QString  uuidPath( const QString& path)
     QUuid  uuid = QUuid::createUuid();
     bool  isProvider = Arn::isProviderPath( path);
 
-    QString  retVal = providerPath( path, false);  // Allways Requester path (no "!")
+    QString  retVal = providerPathIf( path, false);  // Allways Requester path (no "!")
     retVal += uuid.toString();
-    retVal = providerPath( retVal, isProvider);  // Restore original "!"
+    retVal = providerPathIf( retVal, isProvider);  // Restore original "!"
 
     return retVal;
 }

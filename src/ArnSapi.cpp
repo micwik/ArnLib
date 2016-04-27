@@ -127,5 +127,5 @@ void  ArnSapi::setDefaultPath( const QString& defaultPath)
 {
     Q_D(ArnSapi);
 
-    d->_defaultPath = Arn::providerPath( defaultPath, false);
+    d->_defaultPath = Arn::providerPathIf( defaultPath, false);
 }

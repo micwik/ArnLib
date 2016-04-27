@@ -159,9 +159,9 @@ private:
     quint32  _id;
     volatile qint32  _refCount;
 
-    volatile qint16   _syncMode;
+    volatile quint8   _syncMode;
 
-    volatile Arn::DataType  _type;
+    volatile quint8  _type;
     volatile quint8  _zeroRefCount;
 
     bool  _hasBeenSetup : 1;

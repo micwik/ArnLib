@@ -45,6 +45,9 @@ public:
     ArnBasicItemPrivate();
     virtual ~ArnBasicItemPrivate();
 
+    Arn::ObjectMode mode()  const
+    { return Arn::ObjectMode::fromInt( _mode);}
+
 private:
     /// Source for unique id to all ArnItem ..
     static QAtomicInt  _idCount;
@@ -56,8 +59,8 @@ private:
     QString _path;
 #endif
     quint32  _id;
-    Arn::ObjectSyncMode  _syncMode;
-    Arn::ObjectMode  _mode;
+    quint8  _syncMode;
+    quint8  _mode;
     bool  _syncModeLinkShare : 1;
     bool  _useForceKeep : 1;
     bool  _ignoreSameValue : 1;
