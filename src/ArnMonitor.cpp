@@ -283,6 +283,9 @@ void  ArnMonitor::dispatchArnMonEvent( int type, const QByteArray& data, bool is
     case ArnMonEventType::ItemDeleted:
         doEventItemDeleted( data, isLocal);
         break;
+    case ArnMonEventType::ItemModeChg:
+        doEventItemModeChg( data, isLocal);
+        break;
     case ArnMonEventType::MonitorReStart:
         if (!d->_arnClient && d->_localMonItem) {  // Local monitor event
             //// Send NewItemEvent for any existing direct children (also folders)
@@ -295,7 +298,7 @@ void  ArnMonitor::dispatchArnMonEvent( int type, const QByteArray& data, bool is
 }
 
 
-void ArnMonitor::doEventItemFoundCreated( int type, const QByteArray& data, bool isLocal)
+void  ArnMonitor::doEventItemFoundCreated( int type, const QByteArray& data, bool isLocal)
 {
     Q_D(ArnMonitor);
 
@@ -327,7 +330,7 @@ void ArnMonitor::doEventItemFoundCreated( int type, const QByteArray& data, bool
 }
 
 
-void ArnMonitor::doEventItemDeleted( const QByteArray& data, bool isLocal)
+void  ArnMonitor::doEventItemDeleted( const QByteArray& data, bool isLocal)
 {
     Q_D(ArnMonitor);
 
@@ -345,6 +348,26 @@ void ArnMonitor::doEventItemDeleted( const QByteArray& data, bool isLocal)
         emit arnChildDeleted( childPath);
     }
     emit arnItemDeleted( delLocalPath);
+}
+
+
+void  ArnMonitor::doEventItemModeChg( const QByteArray& data, bool isLocal)
+{
+    Q_D(ArnMonitor);
+
+    QString  itemRemotePath = QString::fromUtf8( data.constData(), data.size());
+    QString  itemLocalPath  = toLocalPath( itemRemotePath);
+
+    if (Arn::debugMonitor && !isLocal) {
+        qDebug() << "ModeChg Arn event: remotePath=" << itemRemotePath
+                 << " localPath=" << itemLocalPath << " monPath=" << d->_monitorPath;
+    }
+
+    QString  childPath = Arn::childPath( d->_monitorPath, itemLocalPath);
+    if (childPath == itemLocalPath) {  // A child has been deleted
+        emit arnChildModeChanged( childPath);
+    }
+    emit arnItemModeChanged( itemLocalPath);
 }
 
 

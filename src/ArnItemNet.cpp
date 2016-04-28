@@ -273,6 +273,13 @@ void  ArnItemNet::arnEvent( QEvent* ev, bool isAlienThread)
         }
         break;
     }
+    case ArnEvent::Idx::ModeChange:
+    {
+        ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
+        // qDebug() << "ArnItemNet Mode change: path=" << e->path() << " inPath=" << path();
+        sendMonEvent( ArnMonEventType::ItemModeChg, e->path().toUtf8(), true);
+        break;
+    }
     default:;
     }
 }

@@ -49,6 +49,8 @@ public:
         ItemFound,
         //! An Arn object was deleted
         ItemDeleted,
+        //! An Arn object changed mode
+        ItemModeChg,
 
         //! Internal: start the Monitor
         MonitorStart,
@@ -62,6 +64,7 @@ public:
         { NsCom, ItemCreated,    "itemCreated" },
         { NsCom, ItemFound,      "itemFound" },
         { NsCom, ItemDeleted,    "itemDeleted" },
+        { NsCom, ItemModeChg,    "itemModeChg" },
         { NsCom, MonitorStart,   "monitorStart" },
         { NsCom, MonitorReStart, "monitorReStart" },
         { NsCom, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }

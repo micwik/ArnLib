@@ -234,6 +234,24 @@ signals:
      */
     void  arnChildDeleted( const QString& path);
 
+    //! Signal emitted when an _Arn Data Object_ changes mode in the tree below.
+    /*! The ArnMonitor monitors a folder. Objects chnging mode in this folder or its
+     *  children below will give this signal.
+     *  \param[in] path to the mode changing _Arn Data Object_
+     */
+    void  arnItemModeChanged( const QString& path);
+
+    //! Signal emitted for mode changing childs in the monitor folder
+    /*! The ArnMonitor monitors a folder. Objects changing mode in this folder will give
+     *  this signal.
+     *
+     *  Example: monitorPath = "//Sensors/Temp1/", changing mode object = "//Sensors/Temp1/value"
+     *  ==> path to child = "//Sensors/Temp1/value"
+     *  \param[in] path to the child
+     *  \see arnItemModeChanged()
+     */
+    void  arnChildModeChanged( const QString& path);
+
 public slots:
     //! Help telling the monitor about deletion of a previous found child
     /*! The monitor remembers every child it has signalled. If a deleted child
@@ -267,6 +285,7 @@ private:
     void  init();
     void  doEventItemFoundCreated( int type, const QByteArray& data, bool isLocal);
     void  doEventItemDeleted( const QByteArray& data, bool isLocal);
+    void  doEventItemModeChg( const QByteArray& data, bool isLocal);
 };
 
 
