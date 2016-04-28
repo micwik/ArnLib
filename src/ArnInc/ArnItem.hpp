@@ -562,6 +562,7 @@ signals:
      *  will give this signal.
      *  Only created non folder objects will give this signal.
      *  \param[in] path to the created _Arn Data Object_
+     *  \deprecated use ArnMonitor instead.
      */
     void  arnItemCreated( const QString& path);
 
@@ -573,6 +574,7 @@ signals:
      *  \param[in] mode is the new _general mode_
      *  \see linkId()
      *  \see \ref gen_arnobjModes
+     *  \deprecated use ArnMonitor instead.
      */
     void  arnModeChanged( const QString& path, uint linkId, Arn::ObjectMode mode);
 

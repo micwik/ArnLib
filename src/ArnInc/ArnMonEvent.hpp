@@ -47,7 +47,7 @@ public:
         ItemCreated,
         //! Found a present Arn object
         ItemFound,
-        //! Found a present Arn object
+        //! An Arn object was deleted
         ItemDeleted,
 
         //! Internal: start the Monitor

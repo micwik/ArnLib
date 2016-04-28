@@ -347,8 +347,28 @@ public:
      */
     QStringList  freePaths()  const;
 
+    //! Set clients human readable identification information
+    /*! This is used to identify the client session.
+     *  Standard keys to use are: Agent, UserName, Contact, Location.
+     *
+     *  <b>Example usage</b> \n \code
+     *  Arn::XStringMap  wimXsm;
+     *  wimXsm.add("Agent",    "Arn Browser");
+     *  wimXsm.add("UserName", "Arn Magnusson");
+     *  wimXsm.add("Contact",  "arn@arnas.se");
+     *  wimXsm.add("Location", "The Longhouse");
+     *  _arnClient->setWhoIAm( wimXsm);
+     *  \endcode
+     *  \param[in] whoIAmXsm contains the information.
+     *  \see remoteWhoIAm()
+     */
     void  setWhoIAm( const Arn::XStringMap& whoIAmXsm);
 
+    //! Returns remote side (server) readable identification information.
+    /*! This is used to identify the server side in session.
+     *  \return the inforamtion.
+     *  \see setWhoIAm()
+     */
     Arn::XStringMap  remoteWhoIAm()  const;
 
     //! Is last TCP connection a reContact
@@ -373,10 +393,27 @@ public:
      */
     bool  isReConnect()  const;
 
+    //! Send chat message to server
+    /*! This is used for a chat session between client and server.
+     *  \param[in] text is the message.
+     *  \param[in] prioType is the priority of the message (1=Hi 2=Normal).
+     *  \see chatReceived()
+     */
     void  chatSend( const QString& text, int prioType);
 
+    //! Send abort kill requst to server
+    /*! The server can request client to kill connection. This method is used to request
+     *  an abort of the kill request. This method can be called any time but it will only
+     *  be considered during a kill countdown.
+     *  \see killRequested()
+     */
     void  abortKillRequest();
 
+    //! Get traffic metrics
+    /*! \retval true if ok.
+     *  \param[out] in is the clients received number of bytes.
+     *  \param[out] out is the clients sent number of bytes.
+     */
     bool  getTraffic( quint64& in, quint64& out)  const;
 
     //! \cond ADV
@@ -430,8 +467,18 @@ signals:
      */
     void  loginRequired( int contextCode);
 
+    //! Signal emitted when the server request this client to kill its connection.
+    /*! This request should normally be obeyed by the client. I.e. it should usually
+     *  result in a call to close().
+     *  \see abortKillRequest()
+     */
     void  killRequested();
 
+    //! Signal emitted when a chat message is received from the server.
+    /*! \param[in] text is the message.
+     *  \param[in] prioType is the priority of the message (1=Hi 2=Normal).
+     *  \see chatSend()
+     */
     void  chatReceived( const QString& text, int prioType);
 
     //! \cond ADV
