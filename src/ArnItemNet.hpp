@@ -74,6 +74,9 @@ public:
 
     virtual void  arnEvent( QEvent* ev, bool isAlienThread);
 
+    static Arn::ObjectMode  stringToObjectMode( const QByteArray& modeString);
+    static QByteArray  ObjectModeToString( Arn::ObjectMode mode);
+
     using ArnBasicItem::addSyncMode;
     using ArnBasicItem::syncMode;
     using ArnBasicItem::getMode;

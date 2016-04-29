@@ -238,8 +238,9 @@ signals:
     /*! The ArnMonitor monitors a folder. Objects chnging mode in this folder or its
      *  children below will give this signal.
      *  \param[in] path to the mode changing _Arn Data Object_
+     *  \param[in] mode is the new Arn::ObjectMode
      */
-    void  arnItemModeChanged( const QString& path);
+    void  arnItemModeChanged( const QString& path, int mode);
 
     //! Signal emitted for mode changing childs in the monitor folder
     /*! The ArnMonitor monitors a folder. Objects changing mode in this folder will give
@@ -248,9 +249,10 @@ signals:
      *  Example: monitorPath = "//Sensors/Temp1/", changing mode object = "//Sensors/Temp1/value"
      *  ==> path to child = "//Sensors/Temp1/value"
      *  \param[in] path to the child
+     *  \param[in] mode is the new Arn::ObjectMode
      *  \see arnItemModeChanged()
      */
-    void  arnChildModeChanged( const QString& path);
+    void  arnChildModeChanged( const QString& path, int mode);
 
 public slots:
     //! Help telling the monitor about deletion of a previous found child

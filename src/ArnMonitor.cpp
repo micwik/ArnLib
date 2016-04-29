@@ -355,19 +355,22 @@ void  ArnMonitor::doEventItemModeChg( const QByteArray& data, bool isLocal)
 {
     Q_D(ArnMonitor);
 
-    QString  itemRemotePath = QString::fromUtf8( data.constData(), data.size());
+    Arn::XStringMap  xsm( data);
+    QString  itemRemotePath = xsm.valueString("path");
     QString  itemLocalPath  = toLocalPath( itemRemotePath);
+    Arn::ObjectMode  mode = ArnItemNet::stringToObjectMode( xsm.value("mode"));
 
     if (Arn::debugMonitor && !isLocal) {
         qDebug() << "ModeChg Arn event: remotePath=" << itemRemotePath
-                 << " localPath=" << itemLocalPath << " monPath=" << d->_monitorPath;
+                 << " localPath=" << itemLocalPath << "mode=" << mode.toString()
+                 << " monPath=" << d->_monitorPath;
     }
 
     QString  childPath = Arn::childPath( d->_monitorPath, itemLocalPath);
     if (childPath == itemLocalPath) {  // A child has been deleted
-        emit arnChildModeChanged( childPath);
+        emit arnChildModeChanged( childPath, mode);
     }
-    emit arnItemModeChanged( itemLocalPath);
+    emit arnItemModeChanged( itemLocalPath, mode);
 }
 
 

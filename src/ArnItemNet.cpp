@@ -33,6 +33,7 @@
 #include "ArnLink.hpp"
 #include "ArnInc/ArnMonEvent.hpp"
 #include "ArnInc/ArnEvent.hpp"
+#include "ArnInc/XStringMap.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include <QCoreApplication>
 #include <QThread>
@@ -129,7 +130,7 @@ QByteArray  ArnItemNet::getSyncModeString()  const
 }
 
 
-void  ArnItemNet::setModeString( const QByteArray& modeString)
+Arn::ObjectMode  ArnItemNet::stringToObjectMode( const QByteArray& modeString)
 {
     Arn::ObjectMode  mode;
     if (modeString.contains('P'))  mode.set( mode.Pipe);
@@ -137,6 +138,24 @@ void  ArnItemNet::setModeString( const QByteArray& modeString)
     if (modeString.contains('B'))  mode.set( mode.BiDir);
     if (modeString.contains('S'))  mode.set( mode.Save);
 
+    return mode;
+}
+
+
+QByteArray  ArnItemNet::ObjectModeToString( Arn::ObjectMode mode)
+{
+    QByteArray  modeString;
+    if (mode.is( mode.Pipe))   modeString += "P";
+    if (mode.is( mode.BiDir))  modeString += "B";
+    if (mode.is( mode.Save))   modeString += "S";
+
+    return modeString;
+}
+
+
+void  ArnItemNet::setModeString( const QByteArray& modeString)
+{
+    Arn::ObjectMode  mode = stringToObjectMode( modeString);
     addMode( mode);
 }
 
@@ -144,12 +163,7 @@ void  ArnItemNet::setModeString( const QByteArray& modeString)
 QByteArray  ArnItemNet::getModeString()  const
 {
     Arn::ObjectMode  mode = getMode();
-    QByteArray  modeString;
-    if (mode.is( mode.Pipe))   modeString += "P";
-    if (mode.is( mode.BiDir))  modeString += "B";
-    if (mode.is( mode.Save))   modeString += "S";
-
-    return modeString;
+    return ObjectModeToString( mode);
 }
 
 
@@ -276,8 +290,10 @@ void  ArnItemNet::arnEvent( QEvent* ev, bool isAlienThread)
     case ArnEvent::Idx::ModeChange:
     {
         ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
-        // qDebug() << "ArnItemNet Mode change: path=" << e->path() << " inPath=" << path();
-        sendMonEvent( ArnMonEventType::ItemModeChg, e->path().toUtf8(), true);
+        Arn::XStringMap  xsm;
+        xsm.add("path", e->path()).add("mode", ObjectModeToString( e->mode()));
+        // qDebug() << "ArnItemNet Mode change: data=" << xsm.toXString() << " inPath=" << path();
+        sendMonEvent( ArnMonEventType::ItemModeChg, xsm.toXString(), true);
         break;
     }
     default:;
