@@ -100,6 +100,24 @@ private:
 };
 
 
+//! Class for remote controlling an _Arn Server_.
+/*!
+[About Sharing Arn Data Objects](\ref gen_shareArnobj)
+
+The remote objects are available at Arn path "/Local/Sys/Server/".
+
+<b>Example usage</b> \n \code
+    // In class declare
+    ArnServer*  _server;
+    ArnServerRemote*  _serverRemote;
+
+    // In class code
+    _server = new ArnServer( ArnServer::Type::NetSync, this);
+    _server->start();
+    _serverRemote = new ArnServerRemote( this);
+    _serverRemote->startUseServer( _server);
+\endcode
+*/
 class ARNLIBSHARED_EXPORT ArnServerRemote : public QObject
 {
     Q_OBJECT
@@ -107,10 +125,14 @@ class ARNLIBSHARED_EXPORT ArnServerRemote : public QObject
 
 public:
     explicit ArnServerRemote( QObject* parent = 0);
-
-    void  startUseServer( ArnServer* arnServer);
-
     ~ArnServerRemote();
+
+    //! Start making remote control objects for the ArnServer
+    /*! The remote objects are available at Arn path "/Local/Sys/Server/".
+     *  \param[in] arnServer is the ArnServer to make remote controlled
+     *  \see ArnClient
+     */
+    void  startUseServer( ArnServer* arnServer);
 
     //! \cond ADV
 protected:

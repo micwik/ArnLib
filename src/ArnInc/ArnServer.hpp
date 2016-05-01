@@ -205,6 +205,20 @@ public:
      */
     QStringList  freePaths()  const;
 
+    //! Set servers human readable identification information
+    /*! This is used to identify the server.
+     *  Standard keys to use are: Contact, Location, Description.
+     *
+     *  <b>Example usage</b> \n \code
+     *  Arn::XStringMap  xsm;
+     *  xsm.add("Contact",     "arn@arnas.se");
+     *  xsm.add("Location",    "The Longhouse");
+     *  xsm.add("Description", "Bring connection and integration to the people");
+     *  _arnServer->setWhoIAm( xsm);
+     *  \endcode
+     *  \param[in] whoIAmXsm contains the information.
+     *  \see remoteWhoIAm()
+     */
     void  setWhoIAm( const Arn::XStringMap& whoIAmXsm);
 
     //! \cond ADV

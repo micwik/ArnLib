@@ -66,6 +66,55 @@ typedef struct {
 } _InitEnumTxt;
 
 
+//! Class Enum text.
+/*!
+<b>Example usage</b> \n \code
+class AllowClassT {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        None      = 0x00,
+        Read      = 0x01,
+        Create    = 0x04,
+        Delete    = 0x08,
+        //! Convenience, allow all
+        All       = 0xff
+    };
+    MQ_DECLARE_FLAGSTXT( AllowClassT)
+
+    enum NS {NsEnum, NsHuman};
+
+    MQ_DECLARE_ENUM_NSTXT(
+        { NsHuman, Read,   "Allow Read" },
+        { NsHuman, Delete, "Allow Delete" }
+    )
+};
+MQ_DECLARE_OPERATORS_FOR_FLAGS( AllowClassT)
+
+class ConnectStatT {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        Init = 0,
+        Connected,
+        Error,
+        Disconnected,
+        TriedAll
+    };
+    MQ_DECLARE_ENUMTXT( ConnectStatT)
+
+    enum NS {NsEnum, NsHuman};
+    MQ_DECLARE_ENUM_NSTXT(
+        { NsHuman, Init,     "Initialized" },
+        { NsHuman, Error,    "Connect error" },
+        { NsHuman, TriedAll, "Tried all" },
+        { NsHuman, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }
+    )
+};
+\endcode
+*/
 class EnumTxt
 {
 public:
@@ -73,27 +122,205 @@ public:
              const char* name);
 
     void  setTxtRef( const char* txt, int enumVal, quint16 nameSpace);
+
+    //! Set an additional text for an enum val in a namespace
+    /*! The namespace with index 0 is the standard namespace that automatically
+     *  gets its texts from the definition of the enum.
+     *
+     *  <b>Example usage</b> \n \code
+     *  AllowClassT  allow;
+     *  allow.txt().setTxt("Test - Create", allow.Create, AllowClassT::NsHuman);
+     *  allow = allow.Create;
+     *  qDebug() << allow.toString() << allow.toString( AllowClassT::NsHuman)
+     *  \endcode
+     *  \param[in] txt is the new enum text.
+     *  \param[in] enumVal is the referenced value.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \see getTxt();
+     */
     void  setTxt( const char* txt, int enumVal, quint16 nameSpace);
+
+    //! Returns the text for a enum value in a namespace.
+    /*! \param[in] enumVal is the referenced value.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \return the enum text.
+     *  \see setTxt();
+     */
     const char*  getTxt( int enumVal, quint16 nameSpace = 0)  const;
+
+    //! Set an additional text for an enum val in a namespace
+    /*! \param[in] txt is the new enum text.
+     *  \param[in] enumVal is the referenced value.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \see setTxt();
+     *  \see getTxtString();
+     */
     void  setTxtString( const QString& txt, int enumVal, quint16 nameSpace);
+
+    //! Returns the text for a enum value in a namespace.
+    /*! \param[in] enumVal is the referenced value.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \return the enum text.
+     *  \see setTxt();
+     *  \see setTxtString();
+     */
     QString  getTxtString( int enumVal, quint16 nameSpace = 0)  const;
+
+    //! Returns the enum value for a text in a namespace.
+    /*! \param[in] txt is the enum text.
+     *  \param[in] defaultVal is the returned value when txt is not found.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \return the enum value.
+     *  \see setTxt();
+     */
     int  getEnumVal( const char* txt, int defaultVal = 0, quint16 nameSpace = 0);
+
+    //! Returns the enum value for a text in a namespace.
+    /*! \param[in] txt is the enum text.
+     *  \param[in] defaultVal is the returned value when txt is not found.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \return the enum value.
+     *  \see setTxt();
+     *  \see setTxtString();
+     */
     int  getEnumVal( const QString& txt, int defaultVal = 0, quint16 nameSpace = 0);
 
+    //! Adds bit set for enum flags to a XStringMap
+    /*! <b>Example</b> \n \code
+     *  Arn::XStringMap  xsm;
+     *  xsm.add("T", "Test");
+     *  AllowClassT::txt().addBitSet( xsm);
+     *  \endcode
+     *  wiil give xsm containing: T=Test B0=Read B2=Create B3=Delete
+     *  \param[out] xsm is the XStringMap to be added to.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
+     *  \see humanize()
+     */
     void  addBitSet( Arn::XStringMap& xsm, quint16 nameSpace = 0, bool neverHumanize = false);
+
+    //! returns the bit set string for enum flags
+    /*! Example
+     *  > qDebug() << AllowClassT::txt().getBitSet();
+     *  wiil print: "B0=Read B2=Create B3=Delete"
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
+     *  \return the bit set string.
+     *  \see humanize()
+     */
     QString  getBitSet( quint16 nameSpace = 0, bool neverHumanize = false);
+
+    //! returns text string for enum flags
+    /*! <b>Example</b> \n \code
+     *  AllowClassT  allow;
+     *  allow = allow.Create | allow.Delete;
+     *  qDebug() << AllowClassT::txt().flagsToString( allow);
+     *  \endcode
+     *  wiil print: "Create | Delete"
+     *  \param[in] val is the flags enum value.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \return the flags text string.
+     */
     QString  flagsToString( int val, quint16 nameSpace = 0);
+
+    //! returns string list for enum flags
+    /*! <b>Example</b> \n \code
+     *  AllowClassT  allow;
+     *  allow = allow.Create | allow.Delete;
+     *  QStringList  allowList = AllowClassT::txt().flagsToStringList( allow);
+     *  \endcode
+     *  wiil give allowList containing: "Create", "Delete"
+     *  \param[in] val is the flags enum value.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \return the flags string list.
+     */
     QStringList  flagsToStringList( int val, quint16 nameSpace = 0);
+
+    //! returns enum flags from string
+    /*! <b>Example</b> \n \code
+     *  QString flagString = "Create | Delete";
+     *  int val = AllowClassT::txt().flagsFromString( flagString);
+     *  \endcode
+     *  wiil give val containing: 0xc (0x4 + 0x8)
+     *  \param[in] flagString is the flags text.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \return the flags enum value.
+     */
     int  flagsFromString( const QString& flagString, quint16 nameSpace = 0);
+
+    //! returns enum flags from string list
+    /*! <b>Example</b> \n \code
+     *  QStringList flagStrings;
+     *  flagStrings << "Create" << "Delete";
+     *  int val = AllowClassT::txt().flagsFromString( flagStrings);
+     *  \endcode
+     *  wiil give val containing: 0xc (0x4 + 0x8)
+     *  \param[in] flagStrings is the flags text list.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \return the flags enum value.
+     */
     int  flagsFromStringList( const QStringList& flagStrings, quint16 nameSpace = 0);
 
+    //! Adds enum set to a XStringMap
+    /*! <b>Example</b> \n \code
+     *  Arn::XStringMap  xsm;
+     *  xsm.add("T", "Test");
+     *  ConnectStatT::txt().addEnumSet( xsm);
+     *  \endcode
+     *  wiil give xsm containing: T=Test 0=Init 1=Connected 2=Error 3=Disconnected 4=Tried all
+     *  \param[out] xsm is the XStringMap to be added to.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
+     *  \see humanize()
+     */
     void  addEnumSet( Arn::XStringMap& xsm, quint16 nameSpace = 0, bool neverHumanize = false);
+
+    //! returns the enum set string
+    /*! Example
+     *  > qDebug() << ConnectStatT::txt().getEnumSet();
+     *  wiil print: "0=Init 1=Connected 2=Error 3=Disconnected 4=Tried_all"
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
+     *  \return the enum set string.
+     *  \see humanize()
+     */
     QString  getEnumSet( quint16 nameSpace = 0, bool neverHumanize = false);
 
+    //! returns the name of the enum (class)
+    /*! Example
+     *  > qDebug() << ConnectStatT::txt().name();
+     *  wiil print: "ConnectStatT"
+     *  \return the enum (class) name.
+     */
     const char*  name()  const;
 
+    //! Copies missing enum texts from one namespace to another
+    /*! The standard 0 namespace contains all enum texts as defined and can not be altered.
+     *  All the other wanted namespaces can have customized enum texts, but then there
+     *  can be enum values without a text in such namespace.
+     *  This function can be used to fill in those missing texts from another namespace,
+     *  which typically is 0 as it contains all texts.
+     *  \param[in] toNameSpace is the altered one. Can not be 0.
+     *  \param[in] fromNameSpace is the one to copy from.
+     *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
+     *  \see humanize()
+     */
     void  setMissingTxt( quint16 toNameSpace, quint16 fromNameSpace = 0, bool neverHumanize = false);
 
+    //! returns the humanized text
+    /*! The input text can be Chamel-case or '_' word separeted.
+     *  First output char will always be upper case and the following chars will always
+     *  be lower case.
+     *
+     *  <b>Example output</b> \n \code
+     *  "MySimpelCase" ==> "My simpel case"
+     *  "My_Simpel_case" ==> "My simpel case"
+     *  "count123ms" ==> "Count 123 ms"
+     *  "DDTIsBad" ==> "DDT is bad"
+     *  \endcode
+     *  \param[in] txt is the text to be humanized.
+     *  \return the humanized text.
+     */
     static QString  humanize( const QString& txt);
 
 private:

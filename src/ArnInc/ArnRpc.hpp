@@ -177,10 +177,18 @@ public:
     QString  pipePath() const;
 
     bool  open( const QString& pipePath);
+
+    //! Set pipe for this Rpc
+    /*! The Rpc will take ownership of the pip.
+     *  \param[in] pipe
+     *  \see pipe()
+     *  \see pipePath()
+     */
     void  setPipe( ArnPipe* pipe);
 
     //! Get the used _pipe_
     /*! \return pipe
+     *  \see setPipe()
      */
     ArnPipe*  pipe()  const;
 
