@@ -123,6 +123,7 @@ bool  ArnBasicItem::openWithFlags( const QString& path, Arn::LinkFlags linkFlags
 
     ArnEvRefChange ev(+1);
     sendArnEventLink( &ev);
+    ArnM::changeRefCounter(+1);
 
     _link->subscribe( this);
     setupOpenItem( _link->isFolder());
@@ -151,6 +152,7 @@ void  ArnBasicItem::close()
 
     ArnEvRefChange ev(-1);
     sendArnEventLink( &ev);
+    ArnM::changeRefCounter(-1);
 
     if (d->_pendingEvChain) {
         d->_pendingEvChain->setTargetMutex(0);  // No mutex needed anymore

@@ -33,7 +33,6 @@
 #include "ArnInc/ArnLib.hpp"
 #include "ArnInc/ArnEvent.hpp"
 #include "ArnLink.hpp"
-//#include <QEvent>
 #include <QMutex>
 #include <QWaitCondition>
 #include <QThreadStorage>
@@ -121,6 +120,11 @@ ArnThreadComProxyLock::~ArnThreadComProxyLock()
 
 
 /////////////// ArnM
+
+
+int  ArnM::_countFolder(0);
+int  ArnM::_countLeaf(0);
+QAtomicInt  ArnM::_countRef(0);
 
 
 int  ArnM::valueInt( const QString& path)
@@ -661,6 +665,10 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
         }
         // Create folders or items when needed
         child = new ArnLink(parent, name, flags);
+        if (flags.is( flags.Folder))
+            ++_countFolder;
+        else
+            ++_countLeaf;
     }
     else {
         if (child->isRetired()) {
@@ -786,9 +794,24 @@ void  ArnM::doZeroRefLink( ArnLink* link)
            link->children().size() == 0) {
         ArnLink*  parent = link->parent();
         if (Arn::debugLinkDestroy)  qDebug() << "ZeroRef: delete link path=" << link->linkPath();
+
+        if (link->isFolder())
+            --_countFolder;
+        else {
+            --_countLeaf;
+            if (link->isBiDirMode())
+                --_countLeaf;
+        }
         delete link;  // This will also delete an existing twin
+
         link = parent;
     }
+}
+
+
+void  ArnM::changeRefCounter( int step)
+{
+    _countRef.fetchAndAddRelaxed( step);
 }
 
 
@@ -832,6 +855,14 @@ void  ArnM::setupErrorlog( QObject* errLog)
 }
 
 
+void  ArnM::onTimerMetrics()
+{
+    _countFolderLink->setValue( _countFolder);
+    _countLeafLink->setValue( _countLeaf);
+    _countRefLink->setValue( _countRef);
+}
+
+
 void  ArnM::customEvent( QEvent* ev)
 {
     int  evIdx = ev->type() - ArnEvent::baseType();
@@ -872,9 +903,18 @@ void  ArnM::errorLog( QString errText, ArnError err, void* reference )
 
 
 /// Creator is run by first usage of Arn (see instance())
+// FIXME: Move up
 ArnM::ArnM()
 {
     ArnLink::arnM( this);
+
+    _countFolder            = 0;
+    _countLeaf              = 0;
+    _countRef               = 0;
+    _countFolderLink        = 0;
+    _countLeafLink          = 0;
+    _countRefLink           = 0;
+    _timerMetrics           = new QTimer( this);
 
     _defaultIgnoreSameValue = false;
     _skipLocalSysLoading    = false;
@@ -891,6 +931,7 @@ ArnM::ArnM()
     //// Error setup
     _consoleError = true;
     _errorLogger  = 0;
+
     _errTextTab.resize( ArnError::Err_N);
     _errTextTab[ ArnError::Ok]              = QString(tr("Ok"));
     _errTextTab[ ArnError::Warning]         = QString(tr("Warning"));
@@ -944,6 +985,14 @@ void  ArnM::postSetup()
 #endif
     setValue( legalPath + "ArnLib_LGPL/value", lgplStat);
     setValue( legalPath + "ArnLib_LGPL/set", "0=Seemes_Ok 1=Not_Ok,_statically_linked_to_application");
+
+    QString  metricPath = Arn::pathLocalSys + "Metric/";
+    _countFolderLink  = ArnM::link( metricPath + "ObjectFolders/value", Arn::LinkFlags::CreateAllowed);
+    _countLeafLink    = ArnM::link( metricPath + "ObjectLeaves/value",  Arn::LinkFlags::CreateAllowed);
+    _countRefLink     = ArnM::link( metricPath + "ObjectRef/value",     Arn::LinkFlags::CreateAllowed);
+    _timerMetrics->start( 5000);
+    connect( _timerMetrics, SIGNAL(timeout()), this, SLOT(onTimerMetrics()));
+    onTimerMetrics();
 
     if (_skipLocalSysLoading)  return;
 

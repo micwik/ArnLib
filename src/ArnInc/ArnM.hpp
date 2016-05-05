@@ -47,6 +47,7 @@
 
 class ArnThreadComStorage;
 class QDir;
+class QTimer;
 
 
 //! \cond ADV
@@ -311,10 +312,12 @@ protected:
                               Arn::LinkFlags flags = Arn::LinkFlags());
     static void  destroyLink( ArnLink* link, bool isGlobal);
     static void  destroyLinkMain( ArnLink* link, ArnLink* startLink, bool isGlobal);
+    static void  changeRefCounter( int step);
 #endif
 
 private slots:
     void  postSetup();
+    void  onTimerMetrics();
     static void  linkProxy( ArnThreadCom* threadCom, const QString& path,
                             int flagValue, int syncMode = 0);
     static void  itemsProxy( ArnThreadCom* threadCom, const QString& path);
@@ -352,6 +355,14 @@ private:
 
     volatile bool  _isThreadedApp;
     QThread*  _mainThread;
+
+    static int  _countFolder;
+    static int  _countLeaf;
+    static QAtomicInt  _countRef;
+    ArnLink*  _countFolderLink;
+    ArnLink*  _countLeafLink;
+    ArnLink*  _countRefLink;
+    QTimer*  _timerMetrics;
 };
 
 #endif // ARNM_HPP

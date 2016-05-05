@@ -44,7 +44,6 @@
 #include <QAtomicInt>
 
 class ArnItemPrivate;
-class QTimer;
 
 
 //! Handle for an _Arn Data Object_.

@@ -971,7 +971,7 @@ bool  ArnLink::subscribe( ArnBasicItem* subscriber)
     if (!_subscribeTab)
         _subscribeTab = new ArnBasicItemList;
 
-    *_subscribeTab += subscriber;
+    *_subscribeTab += subscriber;    
     if (_mutex)  _mutex->unlock();
 
     return true;  // Subsciber added Ok
