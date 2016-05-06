@@ -67,19 +67,19 @@ protected:
 
 //! Base class handle for an _Arn Data Object_.
 /*!
-[About Arn Data Object](\ref gen_arnobj)
+[About ArnItem access](\ref gen_arnItem)
 
 See ArnItem.
 
-ArnBasicItem is the basic way to get a handle for accessing an Arn Data Object.
+ArnBasicItem is the basic way to get a handle (pointer) for accessing an Arn Data Object.
 It is fast, small and is not based on QObject. As such it can not use signals and slots,
 but it can provide ArnEvents (based on QEvents) to be sent to any QObject based receiver.
 
-Normally ArnItem should be used, as it has a higher level interface with QObject signals
-and slots. Typically ArnBasicItem is used when no signal is needed, i.e only using direct
-access with setValue and toXXX methods.
-If you need a lot of ArnBasicItems and memory foot print (or speed) is important, You can
-consider to use ArnBasicItem with ArnEvents even if it will be harder to code.
+There can be any amount of ArnBasicItem:s opened (pointing) to the same
+_Arn Data object_. Deleting the ArnBasicItem won't effect the _Arn Data object_.
+
+This class is not thread-safe, but the _Arn Data object_ is, so each thread should
+have it's own handles i.e ArnBasicItem instances.
 
 <b>Example usage</b> \n \code
     // In class declare

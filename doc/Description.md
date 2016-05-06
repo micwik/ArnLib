@@ -27,6 +27,31 @@ Each part in a given path is dynamically added as needed, i.e. any path can be u
 explicitly creating each folder in advance.
 <Br><Br>
 
+ArnItem access   {#gen_arnItem}
+--------------
+To access an _ARN Data Object_ one can use ArnM::setValue() and ArnM::valueInt() etc. This is
+a polled access, and gives no signals / events for changed objects. Also this method is rather
+slow as it has to locate the object via a path lookup. However its good for application assign
+object "once".
+
+For continous access to an _ARN Data Object_ its better to use an ArnItem. This will be a handle
+to the object that give fast access. It will also provide signals for changed object. ArnItem
+is QObject based and has its charateristics.
+
+Yet another way to access an _ARN Data Object_, is an ArnBasicItem.  This will give a a basic
+handle to the object. It is fast, small and is not based on QObject. As such it can not use
+signals and slots, but it can provide ArnEvents.
+
+Normally ArnItem should be used, as it has a higher level interface with QObject signals
+and slots. Typically ArnBasicItem is used when no signal is needed, i.e only using direct
+access with setValue and toXXX methods.
+If you need a lot of ArnBasicItems and memory foot print (or speed) is important, You can
+consider to use ArnBasicItem with ArnEvents even if it will be harder to code.
+
+You can expect ArnBasicItem to be lees than a third of the size of an ArnItem. Tests has
+shown ArnBasicItem to take half the time assigning an integer, compared to ArnItem.
+<Br><Br>
+
 Modes    {#gen_arnobjModes}
 -----
 _Mode_ change is a one direction process. Once a specific _mode_ is set, it can't be reset.
@@ -105,8 +130,10 @@ These rules must not be obeyed, but are recommended, to get the most benefits of
 * Path is relative, e.g "Key/value", is a [local path](#gen_localPath)
   and is not [shared](#gen_shareArnobj).
 * When a leaf is used as an attribute, the following names are reserved:
-    + **value** the value of the above closest folder denotation, e.g. "Temperature".
+    + **value** the value of the above closest folder denotation, e.g. "Temperature/value" (=10).
+    + **name** the describtion of the above closest folder denotation, e.g. "Server-1/name" (="Hugin").
     + **set** allowed values and conversion to a more descriptive form, e.g. "0=Off 1=On".
+    + **bitSet** used bits and conversion to a more descriptive form, e.g. "B0=Read B1=Write".
     + **property** like precision and unit, e.g. "prec=1 unit=°C".
     + **info** like tool tips, e.g. "<tt\>Standard UV radiation index</tt\>".
     + **help.**XXX like "help.xhtml" contains help in xhtml format.

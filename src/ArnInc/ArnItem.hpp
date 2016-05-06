@@ -48,7 +48,9 @@ class ArnItemPrivate;
 
 //! Handle for an _Arn Data Object_.
 /*!
-[About Arn Data Object](\ref gen_arnobj)
+[About ArnItem access](\ref gen_arnItem)
+
+See ArnBasicItem.
 
 When opening an ArnItem to an _Arn Data object_, the ArnItem act as a handle (pointer)
 to the object. There can be any amount of ArnItem:s opened (pointing) to the same
