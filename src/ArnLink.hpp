@@ -67,6 +67,8 @@ public:
         MQ_DECLARE_ENUM( RetireType)
     };
 
+    ~ArnLink();
+
     void  setValue( int value, int sendId = 0, bool forceKeep = 0);
     void  setValue( ARNREAL value, int sendId = 0, bool forceKeep = 0);
     void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0,
@@ -110,7 +112,6 @@ public:
     bool  unsubscribe( ArnBasicItem* subscriber);
     void  deref();
     int  refCount();
-    ~ArnLink();
 
     QString  objectName()  const;
     ArnLink*  parent()  const;

@@ -127,6 +127,117 @@ int  ArnM::_countLeaf(0);
 QAtomicInt  ArnM::_countRef(0);
 
 
+/// Creator is run by first usage of Arn (see instance())
+ArnM::ArnM()
+{
+    ArnLink::arnM( this);
+
+    _countFolder            = 0;
+    _countLeaf              = 0;
+    _countRef               = 0;
+    _countFolderLink        = 0;
+    _countLeafLink          = 0;
+    _countRefLink           = 0;
+    _timerMetrics           = new QTimer( this);
+
+    _defaultIgnoreSameValue = false;
+    _skipLocalSysLoading    = false;
+    _isThreadedApp          = false;
+    _mainThread             = QThread::currentThread();
+    _root                   = new ArnLink( 0, "", Arn::LinkFlags::Folder);
+
+    qsrand( QDateTime::currentDateTimeUtc().toTime_t());
+
+    qRegisterMetaType<ArnThreadCom*>();
+    qRegisterMetaType<ArnLinkHandle>("ArnLinkHandle");
+    qRegisterMetaType<QVariant>("QVariant");
+
+    //// Error setup
+    _consoleError = true;
+    _errorLogger  = 0;
+
+    _errTextTab.resize( ArnError::Err_N);
+    _errTextTab[ ArnError::Ok]              = QString(tr("Ok"));
+    _errTextTab[ ArnError::Warning]         = QString(tr("Warning"));
+    _errTextTab[ ArnError::CreateError]     = QString(tr("Can't create"));
+    _errTextTab[ ArnError::NotFound]        = QString(tr("Not found"));
+    _errTextTab[ ArnError::NotOpen]         = QString(tr("Not open"));
+    _errTextTab[ ArnError::AlreadyExist]    = QString(tr("Already exist"));
+    _errTextTab[ ArnError::AlreadyOpen]     = QString(tr("Already open"));
+    _errTextTab[ ArnError::FolderNotOpen]   = QString(tr("Folder is not open"));
+    _errTextTab[ ArnError::ItemNotOpen]     = QString(tr("Item is not open"));
+    _errTextTab[ ArnError::ItemNotSet]      = QString(tr("Item is not set"));
+    _errTextTab[ ArnError::Retired]         = QString(tr("Access to retired"));
+    _errTextTab[ ArnError::NotMainThread]   = QString(tr("Not main thread"));
+    _errTextTab[ ArnError::ConnectionError] = QString(tr("Connection error"));
+    _errTextTab[ ArnError::RecUnknown]      = QString(tr("Unknown record type"));
+    _errTextTab[ ArnError::ScriptError]     = QString(tr("Script"));
+    _errTextTab[ ArnError::RpcInvokeError]  = QString(tr("Rpc Invoke error"));
+    _errTextTab[ ArnError::RpcReceiveError] = QString(tr("Rpc Receive error"));
+    _errTextTab[ ArnError::LoginBad]        = QString(tr("Login error"));
+    _errTextTab[ ArnError::RecNotExpected]  = QString(tr("Not expected record type here"));
+    _errTextTab[ ArnError::OpNotAllowed]    = QString(tr("Operation denied, no privilege"));
+
+    if (Arn::debugSizes) {
+        qDebug() << "====== Arn Sizes ======";
+        qDebug() << "QObject: " << sizeof(QObject);
+        qDebug() << "  QScopedPtr: " << sizeof(QScopedPointer<QObjectData>);
+        qDebug() << "  QObjectData: " << sizeof(QObjectData);
+        qDebug() << "  QObjectList: " << sizeof(QObjectList);
+        qDebug() << "QString: " << sizeof(QString);
+        qDebug() << "QVariant: " << sizeof(QVariant);
+        qDebug() << "ArnLink: " << sizeof(ArnLink);
+        qDebug() << "  AnrLinkList: " << sizeof(ArnLinkList);
+        qDebug() << "ArnItemB: " << sizeof(ArnItemB);
+        qDebug() << "ArnItem: " << sizeof(ArnItem);
+        qDebug() << "DataType: " << sizeof(Arn::DataType);
+        qDebug() << "DataType::E: " << sizeof(Arn::DataType::E);
+        qDebug() << "=======================";
+    }
+
+    QTimer::singleShot( 0, this, SLOT(postSetup()));
+}
+
+
+void  ArnM::postSetup()
+{
+    QString  legalPath = Arn::pathLocalSys + "Legal/";
+
+    int  lgplStat = 0;
+#if defined(ARNLIB_COMPILE)
+    lgplStat = 1;
+#endif
+    setValue( legalPath + "ArnLib_LGPL/value", lgplStat);
+    setValue( legalPath + "ArnLib_LGPL/set", "0=Seemes_Ok 1=Not_Ok,_statically_linked_to_application");
+
+    QString  metricPath = Arn::pathLocalSys + "Metric/";
+    _countFolderLink  = ArnM::link( metricPath + "ObjectFolders/value", Arn::LinkFlags::CreateAllowed);
+    _countLeafLink    = ArnM::link( metricPath + "ObjectLeaves/value",  Arn::LinkFlags::CreateAllowed);
+    _countRefLink     = ArnM::link( metricPath + "ObjectRef/value",     Arn::LinkFlags::CreateAllowed);
+    _timerMetrics->start( 5000);
+    connect( _timerMetrics, SIGNAL(timeout()), this, SLOT(onTimerMetrics()));
+    onTimerMetrics();
+
+    if (_skipLocalSysLoading)  return;
+
+    //// Loading Licence files
+    QString  licensesPath = legalPath + "Licenses/";
+    QDir  dirArnRoot( Arn::resourceArnRoot);
+    loadFromDirRoot( licensesPath + "LICENSE_ARNLIB.txt",  dirArnRoot, Arn::Coding::Text);
+    loadFromDirRoot( licensesPath + "LICENSE_LGPL.txt",    dirArnRoot, Arn::Coding::Text);
+    loadFromDirRoot( licensesPath + "LGPL_EXCEPTION.txt",  dirArnRoot, Arn::Coding::Text);
+    loadFromDirRoot( licensesPath + "LICENSE_GPL3.txt",    dirArnRoot, Arn::Coding::Text);
+    loadFromDirRoot( licensesPath + "LICENSE_MDNS.txt",    dirArnRoot, Arn::Coding::Text);
+    loadFromDirRoot( licensesPath + "LICENSE_APACHE2.txt", dirArnRoot, Arn::Coding::Text);
+}
+
+
+ArnM::~ArnM()
+{
+    // Should never be used;
+}
+
+
 int  ArnM::valueInt( const QString& path)
 {
     ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
@@ -899,118 +1010,6 @@ void  ArnM::errorLog( QString errText, ArnError err, void* reference )
                 << (QString(tr(" In ")) + errorSysName()).toUtf8().constData() << std::endl;
     }
     emit instance().errorLogSig( errTextSum, err.e, reference);
-}
-
-
-/// Creator is run by first usage of Arn (see instance())
-// FIXME: Move up
-ArnM::ArnM()
-{
-    ArnLink::arnM( this);
-
-    _countFolder            = 0;
-    _countLeaf              = 0;
-    _countRef               = 0;
-    _countFolderLink        = 0;
-    _countLeafLink          = 0;
-    _countRefLink           = 0;
-    _timerMetrics           = new QTimer( this);
-
-    _defaultIgnoreSameValue = false;
-    _skipLocalSysLoading    = false;
-    _isThreadedApp          = false;
-    _mainThread             = QThread::currentThread();
-    _root                   = new ArnLink( 0, "", Arn::LinkFlags::Folder);
-
-    qsrand( QDateTime::currentDateTimeUtc().toTime_t());
-
-    qRegisterMetaType<ArnThreadCom*>();
-    qRegisterMetaType<ArnLinkHandle>("ArnLinkHandle");
-    qRegisterMetaType<QVariant>("QVariant");
-
-    //// Error setup
-    _consoleError = true;
-    _errorLogger  = 0;
-
-    _errTextTab.resize( ArnError::Err_N);
-    _errTextTab[ ArnError::Ok]              = QString(tr("Ok"));
-    _errTextTab[ ArnError::Warning]         = QString(tr("Warning"));
-    _errTextTab[ ArnError::CreateError]     = QString(tr("Can't create"));
-    _errTextTab[ ArnError::NotFound]        = QString(tr("Not found"));
-    _errTextTab[ ArnError::NotOpen]         = QString(tr("Not open"));
-    _errTextTab[ ArnError::AlreadyExist]    = QString(tr("Already exist"));
-    _errTextTab[ ArnError::AlreadyOpen]     = QString(tr("Already open"));
-    _errTextTab[ ArnError::FolderNotOpen]   = QString(tr("Folder is not open"));
-    _errTextTab[ ArnError::ItemNotOpen]     = QString(tr("Item is not open"));
-    _errTextTab[ ArnError::ItemNotSet]      = QString(tr("Item is not set"));
-    _errTextTab[ ArnError::Retired]         = QString(tr("Access to retired"));
-    _errTextTab[ ArnError::NotMainThread]   = QString(tr("Not main thread"));
-    _errTextTab[ ArnError::ConnectionError] = QString(tr("Connection error"));
-    _errTextTab[ ArnError::RecUnknown]      = QString(tr("Unknown record type"));
-    _errTextTab[ ArnError::ScriptError]     = QString(tr("Script"));
-    _errTextTab[ ArnError::RpcInvokeError]  = QString(tr("Rpc Invoke error"));
-    _errTextTab[ ArnError::RpcReceiveError] = QString(tr("Rpc Receive error"));
-    _errTextTab[ ArnError::LoginBad]        = QString(tr("Login error"));
-    _errTextTab[ ArnError::RecNotExpected]  = QString(tr("Not expected record type here"));
-    _errTextTab[ ArnError::OpNotAllowed]    = QString(tr("Operation denied, no privilege"));
-
-    if (Arn::debugSizes) {
-        qDebug() << "====== Arn Sizes ======";
-        qDebug() << "QObject: " << sizeof(QObject);
-        qDebug() << "  QScopedPtr: " << sizeof(QScopedPointer<QObjectData>);
-        qDebug() << "  QObjectData: " << sizeof(QObjectData);
-        qDebug() << "  QObjectList: " << sizeof(QObjectList);
-        qDebug() << "QString: " << sizeof(QString);
-        qDebug() << "QVariant: " << sizeof(QVariant);
-        qDebug() << "ArnLink: " << sizeof(ArnLink);
-        qDebug() << "  AnrLinkList: " << sizeof(ArnLinkList);
-        qDebug() << "ArnItemB: " << sizeof(ArnItemB);
-        qDebug() << "ArnItem: " << sizeof(ArnItem);
-        qDebug() << "DataType: " << sizeof(Arn::DataType);
-        qDebug() << "DataType::E: " << sizeof(Arn::DataType::E);
-        qDebug() << "=======================";
-    }
-
-    QTimer::singleShot( 0, this, SLOT(postSetup()));
-}
-
-
-void  ArnM::postSetup()
-{
-    QString  legalPath = Arn::pathLocalSys + "Legal/";
-
-    int  lgplStat = 0;
-#if defined(ARNLIB_COMPILE)
-    lgplStat = 1;
-#endif
-    setValue( legalPath + "ArnLib_LGPL/value", lgplStat);
-    setValue( legalPath + "ArnLib_LGPL/set", "0=Seemes_Ok 1=Not_Ok,_statically_linked_to_application");
-
-    QString  metricPath = Arn::pathLocalSys + "Metric/";
-    _countFolderLink  = ArnM::link( metricPath + "ObjectFolders/value", Arn::LinkFlags::CreateAllowed);
-    _countLeafLink    = ArnM::link( metricPath + "ObjectLeaves/value",  Arn::LinkFlags::CreateAllowed);
-    _countRefLink     = ArnM::link( metricPath + "ObjectRef/value",     Arn::LinkFlags::CreateAllowed);
-    _timerMetrics->start( 5000);
-    connect( _timerMetrics, SIGNAL(timeout()), this, SLOT(onTimerMetrics()));
-    onTimerMetrics();
-
-    if (_skipLocalSysLoading)  return;
-
-    //// Loading Licence files
-    QString  licensesPath = legalPath + "Licenses/";
-    QDir  dirArnRoot( Arn::resourceArnRoot);
-    loadFromDirRoot( licensesPath + "LICENSE_ARNLIB.txt",  dirArnRoot, Arn::Coding::Text);
-    loadFromDirRoot( licensesPath + "LICENSE_LGPL.txt",    dirArnRoot, Arn::Coding::Text);
-    loadFromDirRoot( licensesPath + "LGPL_EXCEPTION.txt",  dirArnRoot, Arn::Coding::Text);
-    loadFromDirRoot( licensesPath + "LICENSE_GPL3.txt",    dirArnRoot, Arn::Coding::Text);
-    loadFromDirRoot( licensesPath + "LICENSE_MDNS.txt",    dirArnRoot, Arn::Coding::Text);
-    loadFromDirRoot( licensesPath + "LICENSE_APACHE2.txt", dirArnRoot, Arn::Coding::Text);
-}
-
-
-ArnM::~ArnM()
-{
-    // Should never be used;
 }
 
 
