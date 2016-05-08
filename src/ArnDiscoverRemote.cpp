@@ -102,14 +102,14 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
             if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
                 continue;
 
-            QString  path = (Arn::pathDiscoverThis + "Interfaces/Interf-%1/").arg(i);
-            QString  addr = entry.ip().toString();
-            QString  mask = entry.netmask().toString();
-            QString  name = interface.humanReadableName();
+            QString  path    = (Arn::pathDiscoverThis + "Interfaces/Interf-%1/").arg(i);
+            QString  addr    = entry.ip().toString();
+            QString  mask    = entry.netmask().toString();
+            QString  sysName = interface.humanReadableName();
             ArnM::setValue( path + "addr", addr);
             ArnM::setValue( path + "mask", mask);
-            ArnM::setValue( path + "name", name);
-            ArnM::setValue( path + "value", addr + "  [" + name + "]");
+            ArnM::setValue( path + "sysName", sysName);
+            ArnM::setValue( path + "name", addr + "  [" + sysName + "]");
             ++i;
         }
     }

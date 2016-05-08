@@ -113,7 +113,7 @@ void  ArnServerRemoteSession::updateSessionValue()
             _sessionValue += " ";
         _sessionValue += "@ " + _clientHostName;
     }
-    ArnM::setValue( _sessionPath + "value", _sessionValue);
+    ArnM::setValue( _sessionPath + "name", _sessionValue);
 }
 
 
