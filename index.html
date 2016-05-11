@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/core.css" media="screen">
     <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
 
     <script type="text/javascript" src="javascripts/modernizr.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -17,7 +17,7 @@
         $('#main_content').headsmart()
       })
     </script>
-    <title>Arnlib 2.3 by micwik</title>
+    <title>Arnlib 3.0 by micwik</title>
   </head>
 
   <body>
@@ -27,7 +27,7 @@
       <header>
         <span class="ribbon-outer">
           <span class="ribbon-inner">
-            <h1>Arnlib 2.3</h1>
+            <h1>Arnlib 3.0</h1>
             <h2>Active Registry Network</h2>
           </span>
           <span class="left-tail"></span>
@@ -46,34 +46,39 @@
 
 
       <section id="main_content">
-        <pre><code>Copyright (C) 2010-2014 Michael Wiklund.
+        <pre><code>Copyright (C) 2010-2016 Michael Wiklund.
 All rights reserved.
 Contact: arnlib@wiklunden.se
 </code></pre>
 
 <h1>
-<a name="arnlib---active-registry-network" class="anchor" href="#arnlib---active-registry-network"><span class="octicon octicon-link"></span></a>ArnLib - Active Registry Network.</h1>
+<a id="arnlib---active-registry-network" class="anchor" href="#arnlib---active-registry-network" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ArnLib - Active Registry Network.</h1>
 
 <p>This Qt 4 &amp; 5 based library makes it easy to distribute changing data objects. It also gives a
 central place to find all your systems' current data. By using the ArnBrowser, all data
 objects are real time presented in a tree view.</p>
 
-<hr><p><a href="https://github.com/micwik/ArnLib/wiki">ArnLib Wiki</a><br><a href="doxy_html/index.html">ArnLib Doxygen</a>         <a href="ArnLib_doxy.pdf">ArnLib PDF</a></p>
+<hr>
+
+<p><a href="https://github.com/micwik/ArnLib/wiki">ArnLib Wiki</a><br>
+<a href="doxy_html/index.html">ArnLib Doxygen</a>         <a href="ArnLib_doxy.pdf">ArnLib PDF</a></p>
 
 <h3>
-<a name="comparison-to-similar-concepts" class="anchor" href="#comparison-to-similar-concepts"><span class="octicon octicon-link"></span></a>Comparison to similar concepts</h3>
+<a id="comparison-to-similar-concepts" class="anchor" href="#comparison-to-similar-concepts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Comparison to similar concepts</h3>
 
 <ul>
 <li><p><strong>Data mart:</strong> Statistical data gathered from different systems. This makes it possible
 to run cross system analysis.</p></li>
-<li><p><strong>Windows Registry &amp; AD:</strong> Centralized configuration data. All in one place easily shared.</p></li>
+<li><p><strong>Windows Active Directory (R):</strong> Centralized configuration data. All in one place easily shared.</p></li>
 <li><p><strong>ArnLib:</strong> Hot changing data from different systems. Enables easy cross system data
 exchange, debugging, etc.
 <br><br></p></li>
-</ul><h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+</ul>
 
-<p>One example of professional use is in fire-fighting vehicles. This application has run for some years in 80 vehicles. Most of the hundreds of sensors and controls in the vehicle, are present in an Arn Registry. A graphical user interface is used for monitoring and control during a fire mission.</p>
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>One example of professional use is in fire-fighting vehicles. This application has run for some years in 100+ vehicles. Most of the hundreds of sensors and controls in the vehicle, are present in an Arn Registry. A graphical user interface is used for monitoring and control during a fire mission.</p>
 
 <p><img src="http://www.martinsson.se/App_Data/Cache/Thumbs/4/5/45b8e587-8769-4fe7-bcad-a10800f6d699-460x0.jpg" alt="alt text" title="Example fire figher vehicle"></p>
 
@@ -99,15 +104,19 @@ easy example in the ArnLib package, showing a simple chat Client and Server.</p>
 Helps advertise and browse a service (ftp, http, arn, ...) on a local network.
 This is similar to UPNP discovery of units.
 <br><br></p></li>
-</ul><h2>
-<a name="main-features" class="anchor" href="#main-features"><span class="octicon octicon-link"></span></a>Main features</h2>
+</ul>
+
+<h2>
+<a id="main-features" class="anchor" href="#main-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Main features</h2>
 
 <ul>
 <li>Based on Qt 4 &amp; 5, multiple platform and OS support.</li>
 <li>Qt based Arn browser available. Allows you to access all data objects in a tree view (see <a href="https://github.com/micwik/ArnBrowser/wiki/example-gallery">ArnBrowser</a>).</li>
 <li>Web based Arn browser available, allowing you to use a standard web browser (see <a href="https://github.com/micwik/WebArnBrowser/wiki/example-gallery">WebArnBrowser</a>).</li>
-</ul><h4>
-<a name="arn-data-objects" class="anchor" href="#arn-data-objects"><span class="octicon octicon-link"></span></a>Arn Data Objects</h4>
+</ul>
+
+<h4>
+<a id="arn-data-objects" class="anchor" href="#arn-data-objects" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Arn Data Objects</h4>
 
 <ul>
 <li><p>Hierarchical storage of hot changing data objects.</p></li>
@@ -116,8 +125,11 @@ This is similar to UPNP discovery of units.
 <li><p>Data objects can typically be: measures, settings, datastreams, documents, scripts (js), etc.</p></li>
 <li><p><em>Arn Data objects</em> are thread-safe.</p></li>
 <li><p>Native support for data validation and double direction pipes (streams).</p></li>
-</ul><h4>
-<a name="sharing" class="anchor" href="#sharing"><span class="octicon octicon-link"></span></a>Sharing</h4>
+<li><p>Metrics of Arn available in Arn tree.</p></li>
+</ul>
+
+<h4>
+<a id="sharing" class="anchor" href="#sharing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sharing</h4>
 
 <ul>
 <li><p>Data objects can be shared in a single program, among threads or between programs, at
@@ -127,23 +139,31 @@ to usage of ArnLib.</p></li>
 Optional auto-delete of objects when tcp/ip closes and unique uuid names.</p></li>
 <li><p>Dependency system with custom offered services and getting signals when all needed services
 are available.</p></li>
-<li><p>Monitoring of newly created data objects and any mode change.</p></li>
-</ul><h4>
-<a name="persistent-storage" class="anchor" href="#persistent-storage"><span class="octicon octicon-link"></span></a>Persistent storage</h4>
+<li><p>Monitoring of newly created data objects, any mode change and deletion.</p></li>
+<li><p>Login system, to give access protection and different privileges.</p></li>
+<li><p>Remote access to Arn sessions, to view and control currently connected clients. </p></li>
+</ul>
+
+<h4>
+<a id="persistent-storage" class="anchor" href="#persistent-storage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Persistent storage</h4>
 
 <ul>
 <li><p>Optional persistent storage of object in SQLight or in a file.</p></li>
-<li><p>Support for version control (VCS) of objects stored in files.</p></li>
-</ul><h4>
-<a name="java-script" class="anchor" href="#java-script"><span class="octicon octicon-link"></span></a>Java Script</h4>
+<li><p>Support for version control (VCS) of objects stored in files.
+This can be git.</p></li>
+</ul>
+
+<h4>
+<a id="java-script" class="anchor" href="#java-script" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Java Script</h4>
 
 <ul>
 <li><p>Native support in JavaScript for: <em>Arn Data Objects</em>, Dependency system and
 Monitoring of changed objects.</p></li>
 <li><p>Java Script jobstack with preemptive and cooperative scripts running at different priorities.</p></li>
-<li><p>Hot swap of changed Java Script in jobstack.</p></li>
-</ul><h4>
-<a name="data-streams-and-remote-procedure-call" class="anchor" href="#data-streams-and-remote-procedure-call"><span class="octicon octicon-link"></span></a>Data streams and <em>Remote Procedure Call</em>
+</ul>
+
+<h4>
+<a id="data-streams-and-remote-procedure-call" class="anchor" href="#data-streams-and-remote-procedure-call" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data streams and <em>Remote Procedure Call</em>
 </h4>
 
 <ul>
@@ -153,25 +173,32 @@ Monitoring of changed objects.</p></li>
 <em>Remote Procedure call</em> (RPC) simple to use as "remote signal slots".</p></li>
 <li><p>Service Api has an automatically generated help for giving syntax when doing debug manual
 typed calls to a RPC service.</p></li>
-</ul><h4>
-<a name="zeroconfig-and-discover" class="anchor" href="#zeroconfig-and-discover"><span class="octicon octicon-link"></span></a>ZeroConfig and Discover</h4>
+</ul>
+
+<h4>
+<a id="zeroconfig-and-discover" class="anchor" href="#zeroconfig-and-discover" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ZeroConfig and Discover</h4>
 
 <ul>
 <li><p>Any service (ftp, http, arn, etc) can be advertised, browsed and resolved for its host
 address and port number.</p></li>
 <li><p>High level, fully automatic support specialised for <em>arn</em> service, can e.g. remotely
 change the advertised <em>service name</em>.</p></li>
-<li><p>Simple integration together with a custom GUI for browsing, etc.</p></li>
 <li><p>Optional internal DNS_SD/mDNS routines for no dependency to any extra library.</p></li>
-</ul><h4>
-<a name="qml" class="anchor" href="#qml"><span class="octicon octicon-link"></span></a>Qml</h4>
+</ul>
+
+<h4>
+<a id="qml" class="anchor" href="#qml" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Qml</h4>
 
 <ul>
 <li><p>Support in Qml for: <em>Arn Data Objects</em>, monitoring of changed objects and Service Api (RPC).</p></li>
 <li><p>Added support in Qml for url like "arn:///test.qml".</p></li>
 <li><p>Possibility to create a remote generic Qml running environment, comparable to a web browser
 running an arbitrary web application. This is done by ArnBrowser.</p></li>
-</ul><hr><p><img src="https://github.com/micwik/ArnBrowser/wiki/images/ArnBrowser_3.png" alt="alt text" title="ArnBrowser"></p>
+</ul>
+
+<hr>
+
+<p><img src="https://github.com/micwik/ArnBrowser/wiki/images/ArnBrowser_3.png" alt="alt text" title="ArnBrowser"></p>
       </section>
 
       <footer>
@@ -182,7 +209,7 @@ running an arbitrary web application. This is done by ArnBrowser.</p></li>
           <span class="left-tail"></span>
           <span class="right-tail"></span>
         </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
         <span class="octocat"></span>
       </footer>
 
