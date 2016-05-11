@@ -1,3 +1,5 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arn_monitor_qml.html" title="ARN Monitor QML." alt="" coords="5,80,115,107"/>
+<map id="ArnMonitor" name="ArnMonitor">
+<area shape="rect" id="node5" href="$class_arn_monitor_qml.html" title="ARN Monitor QML. " alt="" coords="40,229,151,256"/>
+<area shape="rect" id="node2" href="$class_arn_item_b.html" title="Base class handle for an Arn Data Object. " alt="" coords="57,80,133,107"/>
+<area shape="rect" id="node4" href="$class_arn_basic_item.html" title="Base class handle for an Arn Data Object. " alt="" coords="101,5,202,32"/>
 </map>

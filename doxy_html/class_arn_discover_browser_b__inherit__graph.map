@@ -1,4 +1,4 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arn_discover_browser.html" title="Browsing for Arn services." alt="" coords="5,80,144,107"/>
-<area shape="rect" id="node5" href="$class_arn_discover_resolver.html" title="Resolv an Arn service." alt="" coords="169,80,308,107"/>
+<map id="ArnDiscoverBrowserB" name="ArnDiscoverBrowserB">
+<area shape="rect" id="node3" href="$class_arn_discover_browser.html" title="Browsing for Arn services. " alt="" coords="5,155,152,181"/>
+<area shape="rect" id="node4" href="$class_arn_discover_resolver.html" title="Resolv an Arn service. " alt="" coords="177,155,327,181"/>
 </map>

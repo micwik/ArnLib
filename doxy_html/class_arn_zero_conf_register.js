@@ -9,7 +9,7 @@ var class_arn_zero_conf_register =
     [ "getTxtRecordMap", "class_arn_zero_conf_register.html#a6ec72cf2e5cbbe0dbed785d131d6f810", null ],
     [ "host", "class_arn_zero_conf_register.html#adf9e2bd5cb9c8a3c6c0cd787822313eb", null ],
     [ "port", "class_arn_zero_conf_register.html#ac577f3038928a55244b1544cd06613fa", null ],
-    [ "registered", "class_arn_zero_conf_register.html#a5d02e9b08f451c74c73724f7afa05f31", null ],
+    [ "registered", "class_arn_zero_conf_register.html#a8c6b89ba079c872b4d39f0c25ecd552b", null ],
     [ "registerService", "class_arn_zero_conf_register.html#a0dc1609f667d716b1a1312c06e7634b5", null ],
     [ "registrationError", "class_arn_zero_conf_register.html#a1d0cc8e4668020ee0c03c60c36e3d292", null ],
     [ "releaseService", "class_arn_zero_conf_register.html#a2c12c5465ad0d1858a34e15743b279f1", null ],

@@ -12,11 +12,15 @@ var _arn_8cpp =
     [ "itemName", "_arn_8cpp.html#a0edc95f31e49e60899a7be23888c556c", null ],
     [ "makeHostWithInfo", "_arn_8cpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a", null ],
     [ "makePath", "_arn_8cpp.html#af7033a4ea5ac45c0bbc136000fd2ccca", null ],
-    [ "providerPath", "_arn_8cpp.html#aac061f2a56bc7a0ee9f89638dbdede0e", null ],
+    [ "parentPath", "_arn_8cpp.html#a0d02953cb790dcb2f29ed93b9e46886c", null ],
+    [ "providerPathIf", "_arn_8cpp.html#a9c31f349046542217a13ccf6e3ec5bd4", null ],
     [ "twinPath", "_arn_8cpp.html#a4de17e4c5a7e225b5d0cbd974c3fd794", null ],
+    [ "uuidPath", "_arn_8cpp.html#af28f68f3e50e85712f31210b2a53fa7a", null ],
     [ "pathDiscover", "_arn_8cpp.html#aac20bdfa60a3d566d6000e333724aa44", null ],
     [ "pathDiscoverConnect", "_arn_8cpp.html#a556d0c5ce01a0b3146a929137c7b786d", null ],
     [ "pathDiscoverThis", "_arn_8cpp.html#a04a2b2fe19cd660f18316a9e66f65056", null ],
     [ "pathLocal", "_arn_8cpp.html#a690f9202c122418e5dfd8784529da8d9", null ],
-    [ "pathLocalSys", "_arn_8cpp.html#a668d00708a3b3c4d9943465b7cb21590", null ]
+    [ "pathLocalSys", "_arn_8cpp.html#a668d00708a3b3c4d9943465b7cb21590", null ],
+    [ "pathServer", "_arn_8cpp.html#a5946f880ec2640e3b24e8148b4658265", null ],
+    [ "pathServerSessions", "_arn_8cpp.html#a2aa8ea4215a582c3bfc69d942595de04", null ]
 ];

@@ -1,12 +1,16 @@
 var _arn_8hpp =
 [
     [ "SameValue", "struct_arn_1_1_same_value.html", "struct_arn_1_1_same_value" ],
-    [ "DataType", "struct_arn_1_1_data_type.html", "struct_arn_1_1_data_type" ],
-    [ "ObjectMode", "struct_arn_1_1_object_mode.html", "struct_arn_1_1_object_mode" ],
-    [ "ObjectSyncMode", "struct_arn_1_1_object_sync_mode.html", "struct_arn_1_1_object_sync_mode" ],
+    [ "DataType", "class_arn_1_1_data_type.html", "class_arn_1_1_data_type" ],
+    [ "ExportCode", "class_arn_1_1_export_code.html", "class_arn_1_1_export_code" ],
+    [ "InfoType", "struct_arn_1_1_info_type.html", "struct_arn_1_1_info_type" ],
+    [ "ObjectMode", "class_arn_1_1_object_mode.html", "class_arn_1_1_object_mode" ],
+    [ "ObjectSyncMode", "class_arn_1_1_object_sync_mode.html", "class_arn_1_1_object_sync_mode" ],
     [ "LinkFlags", "struct_arn_1_1_link_flags.html", "struct_arn_1_1_link_flags" ],
     [ "NameF", "struct_arn_1_1_name_f.html", "struct_arn_1_1_name_f" ],
     [ "Coding", "struct_arn_1_1_coding.html", "struct_arn_1_1_coding" ],
+    [ "Allow", "class_arn_1_1_allow.html", "class_arn_1_1_allow" ],
+    [ "ARNREAL", "_arn_8hpp.html#abb40611001876432a01cdf283c8b7a0c", null ],
     [ "DATASTREAM_VER", "_arn_8hpp.html#af5ae3f693fc5aea910733fbbceb24ad8", null ],
     [ "addPath", "_arn_8hpp.html#abf5062a3262fb12eef2feedf03c8b4ae", null ],
     [ "changeBasePath", "_arn_8hpp.html#a197a8ae8b61ad386b09af26a6f457671", null ],
@@ -20,7 +24,9 @@ var _arn_8hpp =
     [ "itemName", "_arn_8hpp.html#a0edc95f31e49e60899a7be23888c556c", null ],
     [ "makeHostWithInfo", "_arn_8hpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a", null ],
     [ "makePath", "_arn_8hpp.html#af7033a4ea5ac45c0bbc136000fd2ccca", null ],
-    [ "providerPath", "_arn_8hpp.html#aac061f2a56bc7a0ee9f89638dbdede0e", null ],
+    [ "parentPath", "_arn_8hpp.html#a0d02953cb790dcb2f29ed93b9e46886c", null ],
+    [ "providerPathIf", "_arn_8hpp.html#a9c31f349046542217a13ccf6e3ec5bd4", null ],
     [ "twinPath", "_arn_8hpp.html#a4de17e4c5a7e225b5d0cbd974c3fd794", null ],
+    [ "uuidPath", "_arn_8hpp.html#af28f68f3e50e85712f31210b2a53fa7a", null ],
     [ "defaultTcpPort", "_arn_8hpp.html#a7dc869a2e500fff4982652f576c9207a", null ]
 ];

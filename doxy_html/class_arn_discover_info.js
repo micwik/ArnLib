@@ -2,6 +2,8 @@ var class_arn_discover_info =
 [
     [ "State", "struct_arn_discover_info_1_1_state.html", "struct_arn_discover_info_1_1_state" ],
     [ "ArnDiscoverInfo", "class_arn_discover_info.html#af1f32a2e8c4da07f92fe55342fb49f02", null ],
+    [ "ArnDiscoverInfo", "class_arn_discover_info.html#a059ebdaac94b5594f8f5e7a5903669c9", null ],
+    [ "~ArnDiscoverInfo", "class_arn_discover_info.html#af335f1da5c0e33497af194147fcda320", null ],
     [ "domain", "class_arn_discover_info.html#a29ab7e567122b0d102c029131344f803", null ],
     [ "groups", "class_arn_discover_info.html#a3670eb6c1a5a0dfe338761c9498b883c", null ],
     [ "hostIp", "class_arn_discover_info.html#a79ab59dbd983e6f0ea4cd323d6ac3b88", null ],
@@ -12,6 +14,7 @@ var class_arn_discover_info =
     [ "hostWithInfo", "class_arn_discover_info.html#aa0efbc1763e30abace9647db7f02a2c2", null ],
     [ "inProgress", "class_arn_discover_info.html#aff41b39ce7fb194d2f8a616b9316bc24", null ],
     [ "isError", "class_arn_discover_info.html#a47af503b5ff3afc21695e1288190371a", null ],
+    [ "operator=", "class_arn_discover_info.html#a78ebd9a19d74512fc32020c98eba5791", null ],
     [ "properties", "class_arn_discover_info.html#a379e4102fc5c330031c45555c13df32c", null ],
     [ "resolvCode", "class_arn_discover_info.html#a5e6ea5001301cdbfca5b29a6596b034f", null ],
     [ "serviceName", "class_arn_discover_info.html#a45d4a824d7680840012b98d2bf07455b", null ],

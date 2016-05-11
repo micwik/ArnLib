@@ -1,3 +1,4 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" href="$class_arn_item_b.html" title="Base class handle for an Arn Data Object." alt="" coords="5,5,80,32"/>
+<map id="ArnPipe" name="ArnPipe">
+<area shape="rect" id="node2" href="$class_arn_item_b.html" title="Base class handle for an Arn Data Object. " alt="" coords="57,80,133,107"/>
+<area shape="rect" id="node4" href="$class_arn_basic_item.html" title="Base class handle for an Arn Data Object. " alt="" coords="101,5,202,32"/>
 </map>

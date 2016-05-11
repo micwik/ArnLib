@@ -5,6 +5,7 @@ var class_arn_item_qml =
     [ "autoDestroyMode", "class_arn_item_qml.html#ae65519366d2ea64195382d3615e0659c", null ],
     [ "biDirMode", "class_arn_item_qml.html#a30b16737d99ea8c7286dbfa48fb31097", null ],
     [ "bytes", "class_arn_item_qml.html#a0bf1fbd1f5ffea29260f33fcef16af9e", null ],
+    [ "delay", "class_arn_item_qml.html#ac9fa9249a678b66251cf10a0a71a898c", null ],
     [ "ignoreSameValue", "class_arn_item_qml.html#afc44109732a03598dd556a5092e24d6d", null ],
     [ "intNum", "class_arn_item_qml.html#aa29aa2ec5f444a1b428aae2b1a92609e", null ],
     [ "masterMode", "class_arn_item_qml.html#a1735788687648774686f6a3aa862b8d7", null ],

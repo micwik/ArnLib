@@ -1,8 +1,9 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$_arn_client_8cpp.html" title="src/ArnClient.cpp" alt="" coords="5,155,128,181"/>
-<area shape="rect" id="node5" href="$_arn_sync_8hpp.html" title="src/ArnSync.hpp" alt="" coords="257,80,375,107"/>
-<area shape="rect" id="node8" href="$_arn_monitor_8cpp.html" title="src/ArnMonitor.cpp" alt="" coords="153,155,284,181"/>
-<area shape="rect" id="node12" href="$_arn_sync_8cpp.html" title="src/ArnSync.cpp" alt="" coords="459,155,577,181"/>
-<area shape="rect" id="node14" href="$_arn_discover_connect_8cpp.html" title="src/ArnDiscoverConnect.cpp" alt="" coords="451,80,637,107"/>
-<area shape="rect" id="node10" href="$_arn_server_8cpp.html" title="src/ArnServer.cpp" alt="" coords="309,155,435,181"/>
+<map id="src/ArnInc/ArnClient.hpp" name="src/ArnInc/ArnClient.hpp">
+<area shape="rect" id="node2" href="$_arn_client_8cpp.html" title="src/ArnClient.cpp" alt="" coords="5,155,128,181"/>
+<area shape="rect" id="node3" href="$_arn_sync_8hpp.html" title="src/ArnSync.hpp" alt="" coords="317,80,435,107"/>
+<area shape="rect" id="node4" href="$_arn_monitor_8cpp.html" title="src/ArnMonitor.cpp" alt="" coords="153,155,285,181"/>
+<area shape="rect" id="node7" href="$_arn_sync_8cpp.html" title="src/ArnSync.cpp" alt="" coords="661,155,779,181"/>
+<area shape="rect" id="node8" href="$_arn_discover_connect_8cpp.html" title="src/ArnDiscoverConnect.cpp" alt="" coords="511,80,703,107"/>
+<area shape="rect" id="node5" href="$_arn_server_8cpp.html" title="src/ArnServer.cpp" alt="" coords="508,155,636,181"/>
+<area shape="rect" id="node6" href="$_arn_server_remote_8cpp.html" title="src/ArnServerRemote.cpp" alt="" coords="309,155,483,181"/>
 </map>

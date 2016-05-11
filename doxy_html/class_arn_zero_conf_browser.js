@@ -6,7 +6,6 @@ var class_arn_zero_conf_browser =
     [ "activeServiceNames", "class_arn_zero_conf_browser.html#a91579cadd80a395c9fd6aba6d514f360", null ],
     [ "browse", "class_arn_zero_conf_browser.html#ad40f7e842f64f9e210a90b13b98bf252", null ],
     [ "browseError", "class_arn_zero_conf_browser.html#aa6ce3d92810a7197eb6ac02524892ee4", null ],
-    [ "getNextId", "class_arn_zero_conf_browser.html#a69091a1b190a72c8ea84d5213e5eaa60", null ],
     [ "isBrowsing", "class_arn_zero_conf_browser.html#aee808642bb6e5206008efde8f2d03d96", null ],
     [ "serviceAdded", "class_arn_zero_conf_browser.html#aed55b9215585f60ac050dcc27ba88d4a", null ],
     [ "serviceChanged", "class_arn_zero_conf_browser.html#a56f21a5ee9e62733f19771ed44d7717d", null ],

@@ -1,4 +1,4 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$class_arn_sapi.html" title="Service API." alt="" coords="5,80,72,107"/>
-<area shape="rect" id="node5" href="$class_arn_sapi_qml.html" title="ARN Sapi QML." alt="" coords="97,80,188,107"/>
+<map id="ArnRpc" name="ArnRpc">
+<area shape="rect" id="node3" href="$class_arn_sapi.html" title="Service API. " alt="" coords="5,155,75,181"/>
+<area shape="rect" id="node4" href="$class_arn_sapi_qml.html" title="ARN Sapi QML. " alt="" coords="99,155,192,181"/>
 </map>

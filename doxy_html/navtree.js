@@ -2,48 +2,57 @@ var NAVTREE =
 [
   [ "ArnLib", "index.html", [
     [ "README", "md__r_e_a_d_m_e.html", null ],
-    [ "General Description", "md__description.html", [
-      [ "Arn Data Objects    ", "md__description.html#gen_arnobj", [
-        [ "Modes", "md__description.html#gen_arnobjModes", null ],
-        [ "Local path", "md__description.html#gen_localPath", null ],
-        [ "Naming conventions", "md__description.html#gen_naming", null ]
+    [ "General Description", "gen_page.html", [
+      [ "Arn Data Objects    ", "gen_page.html#gen_arnobj", [
+        [ "ArnItem access   ", "gen_page.html#gen_arnItem", null ],
+        [ "Modes    ", "gen_page.html#gen_arnobjModes", null ],
+        [ "Local    ", "gen_page.html#gen_localPath", null ],
+        [ "Naming conventions    ", "gen_page.html#gen_naming", null ],
+        [ "Bidirectional Arn Data Objects    ", "gen_page.html#gen_bidirArnobj", null ],
+        [ "Pipe Arn Data Objects    ", "gen_page.html#gen_pipeArnobj", [
+          [ "Pipe sequence check", "gen_page.html#gen_pipeSeqCheck", null ],
+          [ "Pipe anti congest", "gen_page.html#gen_pipeAntiCongest", null ]
+        ] ],
+        [ "Persistent Arn Data Objects    ", "gen_page.html#gen_persistArnobj", [
+          [ "Saving objects in files", "gen_page.html#gen_fileArnobj", null ]
+        ] ],
+        [ "Sharing Arn Data Objects    ", "gen_page.html#gen_shareArnobj", [
+          [ "Dynamic port", "gen_page.html#gen_dynamicPort", null ]
+        ] ]
       ] ],
-      [ "Bidirectional Arn Data Objects    ", "md__description.html#gen_bidirArnobj", null ],
-      [ "Pipe Arn Data Objects    ", "md__description.html#gen_pipeArnobj", [
-        [ "Pipe sequence check", "md__description.html#gen_pipeSeqCheck", null ],
-        [ "Pipe anti congest", "md__description.html#gen_pipeAntiCongest", null ]
+      [ "RPC and SAPI    ", "gen_page.html#gen_rpc", [
+        [ "RPC and SAPI method name overload    ", "gen_page.html#gen_rpcoverload", null ],
+        [ "RPC and SAPI communication format    ", "gen_page.html#gen_rpcformat", null ]
       ] ],
-      [ "Persistent Arn Data Objects    ", "md__description.html#gen_persistArnobj", [
-        [ "Saving objects in files", "md__description.html#gen_fileArnobj", null ]
+      [ "ZeroConfig    ", "gen_page.html#gen_zeroconf", [
+        [ "ZeroConfig definitions    ", "gen_page.html#gen_zeroconfDef", [
+          [ "Service name", "gen_page.html#gen_zeroconfServiceName", null ],
+          [ "Sub types", "gen_page.html#gen_zeroconfSubTypes", null ],
+          [ "Text record", "gen_page.html#gen_zeroconfTextRecord", null ]
+        ] ],
+        [ "Discover    ", "gen_page.html#gen_discover", null ],
+        [ "Discover remote    ", "gen_page.html#gen_discoverRemote", null ]
       ] ],
-      [ "Sharing Arn Data Objects    ", "md__description.html#gen_shareArnobj", [
-        [ "Dynamic port", "md__description.html#gen_dynamicPort", null ]
-      ] ],
-      [ "RPC and SAPI    ", "md__description.html#gen_rpc", [
-        [ "RPC and SAPI method name overload", "md__description.html#gen_rpcoverload", null ],
-        [ "RPC and SAPI communication format", "md__description.html#gen_rpcformat", null ]
-      ] ],
-      [ "ZeroConfig    ", "md__description.html#gen_zeroconf", [
-        [ "Service name", "md__description.html#gen_zeroconfServiceName", null ],
-        [ "Sub types", "md__description.html#gen_zeroconfSubTypes", null ],
-        [ "Text record", "md__description.html#gen_zeroconfTextRecord", null ]
-      ] ],
-      [ "Discover    ", "md__description.html#gen_discover", null ],
-      [ "Discover remote    ", "md__description.html#gen_discoverRemote", null ],
-      [ "Application notations    ", "md__description.html#gen_appnote", null ]
+      [ "Application notations    ", "gen_page.html#gen_appnote", null ]
     ] ],
-    [ "Installation and usage", "md__install.html", [
-      [ "Introduction    ", "md__install.html#ins_intro", null ],
-      [ "Documentation    ", "md__install.html#ins_doc", null ],
-      [ "Building ArnLib    ", "md__install.html#ins_build", null ],
-      [ "Using ArnLib    ", "md__install.html#ins_usage", null ]
+    [ "Installation and usage", "ins_page.html", [
+      [ "Introduction    ", "ins_page.html#ins_intro", null ],
+      [ "Documentation    ", "ins_page.html#ins_doc", null ],
+      [ "Building ArnLib    ", "ins_page.html#ins_build", [
+        [ "A) Unix    ", "ins_page.html#ins_buildUnix", null ],
+        [ "B) Win32/MSVC    ", "ins_page.html#ins_buildWin32Msvc", null ],
+        [ "C) Win32/MinGW    ", "ins_page.html#ins_buildWin32Mingw", null ],
+        [ "D) MacOSX    ", "ins_page.html#ins_buildMacosx", null ],
+        [ "E) Qt Embedded    ", "ins_page.html#ins_buildEmbedded", null ]
+      ] ],
+      [ "Using ArnLib    ", "ins_page.html#ins_usage", null ]
     ] ],
-    [ "ArnLib Internals", "md__internals.html", [
-      [ "ScriptJobs    ", "md__internals.html#int_scriptjobs", null ],
-      [ "ArnMonitor    ", "md__internals.html#int_arnmonitor", null ],
-      [ "Destroy    ", "md__internals.html#int_destroy", null ]
+    [ "ArnLib Internals", "int_page.html", [
+      [ "ScriptJobs    ", "int_page.html#int_scriptjobs", null ],
+      [ "ArnMonitor    ", "int_page.html#int_arnmonitor", null ],
+      [ "Destroy    ", "int_page.html#int_destroy", null ]
     ] ],
-    [ "ArnLib Todo", "md__todo.html", null ],
+    [ "ArnLib Todo", "md_doc__todo.html", null ],
     [ "Example Collection", "exampleindex.html", "exampleindex" ],
     [ "Help descriptions", "help_disc_index.html", "help_disc_index" ],
     [ "Deprecated List", "deprecated.html", null ],
@@ -57,7 +66,7 @@ var NAVTREE =
     ] ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],
-      [ "Class Index", "classes.html", "classes" ],
+      [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
@@ -84,14 +93,25 @@ var NAVTREE =
   ] ]
 ];
 
-var navTreeIndex;
+var NAVTREEINDEX =
+[
+"_arn_8cpp.html",
+"chatdemo.html#c_MainWindow_hpp",
+"class_arn_client.html#a59103a7a1a93e738dba68c71247dfa9b",
+"class_arn_event_idx.html#aa3439ccc2489b839f69e1aad5555a20ba8c903a1ef8213f8e4bd9bfd7176168d6",
+"class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0",
+"class_m_q_generic_argument.html#a74dacc77abd33a7e74b19a2f86b352ed"
+];
+
+var SYNCONMSG = 'click to disable panel synchronisation';
+var SYNCOFFMSG = 'click to enable panel synchronisation';
 var navTreeSubIndices = new Array();
 
 function getData(varName)
 {
   var i = varName.lastIndexOf('/');
   var n = i>=0 ? varName.substring(i+1) : varName;
-  return eval(n);
+  return eval(n.replace(/\-/g,'_'));
 }
 
 function stripPath(uri)
@@ -107,6 +127,55 @@ function stripPath2(uri)
   return m ? uri.substring(i-6) : s;
 }
 
+function hashValue()
+{
+  return $(location).attr('hash').substring(1).replace(/[^\w\-]/g,'');
+}
+
+function hashUrl()
+{
+  return '#'+hashValue();
+}
+
+function pathName()
+{
+  return $(location).attr('pathname').replace(/[^-A-Za-z0-9+&@#/%?=~_|!:,.;\(\)]/g, '');
+}
+
+function localStorageSupported()
+{
+  try {
+    return 'localStorage' in window && window['localStorage'] !== null && window.localStorage.getItem;
+  }
+  catch(e) {
+    return false;
+  }
+}
+
+
+function storeLink(link)
+{
+  if (!$("#nav-sync").hasClass('sync') && localStorageSupported()) {
+      window.localStorage.setItem('navpath',link);
+  }
+}
+
+function deleteLink()
+{
+  if (localStorageSupported()) {
+    window.localStorage.setItem('navpath','');
+  }
+}
+
+function cachedLink()
+{
+  if (localStorageSupported()) {
+    return window.localStorage.getItem('navpath');
+  } else {
+    return '';
+  }
+}
+
 function getScript(scriptName,func,show)
 {
   var head = document.getElementsByTagName("head")[0]; 
@@ -116,7 +185,7 @@ function getScript(scriptName,func,show)
   script.onload = func; 
   script.src = scriptName+'.js'; 
   if ($.browser.msie && $.browser.version<=8) { 
-    // script.onload does work with older versions of IE
+    // script.onload does not work with older versions of IE
     script.onreadystatechange = function() {
       if (script.readyState=='complete' || script.readyState=='loaded') { 
         func(); if (show) showRoot(); 
@@ -128,24 +197,22 @@ function getScript(scriptName,func,show)
 
 function createIndent(o,domNode,node,level)
 {
-  if (node.parentNode && node.parentNode.parentNode) {
-    createIndent(o,domNode,node.parentNode,level+1);
-  }
-  var imgNode = document.createElement("img");
-  imgNode.width = 16;
-  imgNode.height = 22;
-  if (level==0 && node.childrenData) {
+  var level=-1;
+  var n = node;
+  while (n.parentNode) { level++; n=n.parentNode; }
+  if (node.childrenData) {
+    var imgNode = document.createElement("img");
+    imgNode.style.paddingLeft=(16*level).toString()+'px';
+    imgNode.width  = 16;
+    imgNode.height = 22;
+    imgNode.border = 0;
     node.plus_img = imgNode;
     node.expandToggle = document.createElement("a");
     node.expandToggle.href = "javascript:void(0)";
     node.expandToggle.onclick = function() {
       if (node.expanded) {
         $(node.getChildrenUL()).slideUp("fast");
-        if (node.isLast) {
-          node.plus_img.src = node.relpath+"ftv2plastnode.png";
-        } else {
-          node.plus_img.src = node.relpath+"ftv2pnode.png";
-        }
+        node.plus_img.src = node.relpath+"ftv2pnode.png";
         node.expanded = false;
       } else {
         expandNode(o, node, false, false);
@@ -153,33 +220,45 @@ function createIndent(o,domNode,node,level)
     }
     node.expandToggle.appendChild(imgNode);
     domNode.appendChild(node.expandToggle);
+    imgNode.src = node.relpath+"ftv2pnode.png";
   } else {
-    domNode.appendChild(imgNode);
+    var span = document.createElement("span");
+    span.style.display = 'inline-block';
+    span.style.width   = 16*(level+1)+'px';
+    span.style.height  = '22px';
+    span.innerHTML = '&#160;';
+    domNode.appendChild(span);
+  } 
+}
+
+var animationInProgress = false;
+
+function gotoAnchor(anchor,aname,updateLocation)
+{
+  var pos, docContent = $('#doc-content');
+  var ancParent = $(anchor.parent());
+  if (ancParent.hasClass('memItemLeft') ||
+      ancParent.hasClass('fieldname') ||
+      ancParent.hasClass('fieldtype') ||
+      ancParent.is(':header'))
+  {
+    pos = ancParent.position().top;
+  } else if (anchor.position()) {
+    pos = anchor.position().top;
   }
-  if (level==0) {
-    if (node.isLast) {
-      if (node.childrenData) {
-        imgNode.src = node.relpath+"ftv2plastnode.png";
-      } else {
-        imgNode.src = node.relpath+"ftv2lastnode.png";
-        domNode.appendChild(imgNode);
-      }
-    } else {
-      if (node.childrenData) {
-        imgNode.src = node.relpath+"ftv2pnode.png";
-      } else {
-        imgNode.src = node.relpath+"ftv2node.png";
-        domNode.appendChild(imgNode);
-      }
-    }
-  } else {
-    if (node.isLast) {
-      imgNode.src = node.relpath+"ftv2blank.png";
-    } else {
-      imgNode.src = node.relpath+"ftv2vertline.png";
-    }
+  if (pos) {
+    var dist = Math.abs(Math.min(
+               pos-docContent.offset().top,
+               docContent[0].scrollHeight-
+               docContent.height()-docContent.scrollTop()));
+    animationInProgress=true;
+    docContent.animate({
+      scrollTop: pos + docContent.scrollTop() - docContent.offset().top
+    },Math.max(50,Math.min(500,dist)),function(){
+      if (updateLocation) window.location.href=aname;
+      animationInProgress=false;
+    });
   }
-  imgNode.border = "0";
 }
 
 function newNode(o, po, text, link, childrenData, lastNode)
@@ -221,10 +300,11 @@ function newNode(o, po, text, link, childrenData, lastNode)
     a.className = stripPath(link.replace('#',':'));
     if (link.indexOf('#')!=-1) {
       var aname = '#'+link.split('#')[1];
-      var srcPage = stripPath($(location).attr('pathname'));
+      var srcPage = stripPath(pathName());
       var targetPage = stripPath(link.split('#')[0]);
-      a.href = srcPage!=targetPage ? url : '#';
+      a.href = srcPage!=targetPage ? url : "javascript:void(0)"; 
       a.onclick = function(){
+        storeLink(link);
         if (!$(a).parent().parent().hasClass('selected'))
         {
           $('.item').removeClass('selected');
@@ -232,26 +312,12 @@ function newNode(o, po, text, link, childrenData, lastNode)
           $(a).parent().parent().addClass('selected');
           $(a).parent().parent().attr('id','selected');
         }
-        var pos, anchor = $(aname), docContent = $('#doc-content');
-        if (anchor.parent().attr('class')=='memItemLeft') {
-          pos = anchor.parent().position().top;
-        } else if (anchor.position()) {
-          pos = anchor.position().top;
-        }
-        if (pos) {
-          var dist = Math.abs(Math.min(
-                     pos-docContent.offset().top,
-                     docContent[0].scrollHeight-
-                     docContent.height()-docContent.scrollTop()));
-          docContent.animate({
-            scrollTop: pos + docContent.scrollTop() - docContent.offset().top
-          },Math.max(50,Math.min(500,dist)),function(){
-            window.location.replace(aname);
-          });
-        }
+        var anchor = $(aname);
+        gotoAnchor(anchor,aname,true);
       };
     } else {
       a.href = url;
+      a.onclick = function() { storeLink(link); }
     }
   } else {
     if (childrenData != null) 
@@ -328,24 +394,28 @@ function glowEffect(n,duration)
 
 function highlightAnchor()
 {
-  var anchor = $($(location).attr('hash'));
+  var aname = hashUrl();
+  var anchor = $(aname);
   if (anchor.parent().attr('class')=='memItemLeft'){
-    var rows = $('.memberdecls tr[class$="'+
-               window.location.hash.substring(1)+'"]');
-    glowEffect(rows.children(),300);
+    var rows = $('.memberdecls tr[class$="'+hashValue()+'"]');
+    glowEffect(rows.children(),300); // member without details
+  } else if (anchor.parent().attr('class')=='fieldname'){
+    glowEffect(anchor.parent().parent(),1000); // enum value
+  } else if (anchor.parent().attr('class')=='fieldtype'){
+    glowEffect(anchor.parent().parent(),1000); // struct field
   } else if (anchor.parent().is(":header")) {
-    glowEffect(anchor.parent(),1000);
+    glowEffect(anchor.parent(),1000); // section header
   } else {
-    glowEffect(anchor.next(),1000);
+    glowEffect(anchor.next(),1000); // normal member
   }
+  gotoAnchor(anchor,aname,false);
 }
 
-function selectAndHighlight(n)
+function selectAndHighlight(hash,n)
 {
   var a;
-  if ($(location).attr('hash')) {
-    var link=stripPath($(location).attr('pathname'))+':'+
-      $(location).attr('hash').substring(1);
+  if (hash) {
+    var link=stripPath(pathName())+':'+hash.substring(1);
     a=$('.item a[class$="'+link+'"]');
   }
   if (a && a.length) {
@@ -356,23 +426,28 @@ function selectAndHighlight(n)
     $(n.itemDiv).addClass('selected');
     $(n.itemDiv).attr('id','selected');
   }
+  if ($('#nav-tree-contents .item:first').hasClass('selected')) {
+    $('#nav-sync').css('top','30px');
+  } else {
+    $('#nav-sync').css('top','5px');
+  }
   showRoot();
 }
 
-function showNode(o, node, index)
+function showNode(o, node, index, hash)
 {
   if (node && node.childrenData) {
     if (typeof(node.childrenData)==='string') {
       var varName    = node.childrenData;
       getScript(node.relpath+varName,function(){
         node.childrenData = getData(varName);
-        showNode(o,node,index);
+        showNode(o,node,index,hash);
       },true);
     } else {
       if (!node.childrenVisited) {
         getNode(o, node);
       }
-      $(node.getChildrenUL()).show();
+      $(node.getChildrenUL()).css({'display':'block'});
       if (node.isLast) {
         node.plus_img.src = node.relpath+"ftv2mlastnode.png";
       } else {
@@ -381,31 +456,45 @@ function showNode(o, node, index)
       node.expanded = true;
       var n = node.children[o.breadcrumbs[index]];
       if (index+1<o.breadcrumbs.length) {
-        showNode(o,n,index+1);
+        showNode(o,n,index+1,hash);
       } else {
         if (typeof(n.childrenData)==='string') {
           var varName = n.childrenData;
           getScript(n.relpath+varName,function(){
             n.childrenData = getData(varName);
             node.expanded=false;
-            showNode(o,node,index); // retry with child node expanded
+            showNode(o,node,index,hash); // retry with child node expanded
           },true);
         } else {
-          var rootBase = o.toroot.replace(/\..+$/, '');
-          if (rootBase=="index" || rootBase=="pages") {
+          var rootBase = stripPath(o.toroot.replace(/\..+$/, ''));
+          if (rootBase=="index" || rootBase=="pages" || rootBase=="search") {
             expandNode(o, n, true, true);
           }
-          selectAndHighlight(n);
+          selectAndHighlight(hash,n);
         }
       }
     }
   } else {
-    selectAndHighlight();
+    selectAndHighlight(hash);
   }
+}
+
+function removeToInsertLater(element) {
+  var parentNode = element.parentNode;
+  var nextSibling = element.nextSibling;
+  parentNode.removeChild(element);
+  return function() {
+    if (nextSibling) {
+      parentNode.insertBefore(element, nextSibling);
+    } else {
+      parentNode.appendChild(element);
+    }
+  };
 }
 
 function getNode(o, po)
 {
+  var insertFunction = removeToInsertLater(po.li);
   po.childrenVisited = true;
   var l = po.childrenData.length-1;
   for (var i in po.childrenData) {
@@ -413,52 +502,76 @@ function getNode(o, po)
     po.children[i] = newNode(o, po, nodeData[0], nodeData[1], nodeData[2],
       i==l);
   }
+  insertFunction();
 }
 
-function gotoNode(o,subIndex,root,hash)
+function gotoNode(o,subIndex,root,hash,relpath)
 {
   var nti = navTreeSubIndices[subIndex][root+hash];
-  o.breadcrumbs = nti ? nti : navTreeSubIndices[subIndex][root];
-  if (o.breadcrumbs)
-  {
+  o.breadcrumbs = $.extend(true, [], nti ? nti : navTreeSubIndices[subIndex][root]);
+  if (!o.breadcrumbs && root!=NAVTREE[0][1]) { // fallback: show index
+    navTo(o,NAVTREE[0][1],"",relpath);
+    $('.item').removeClass('selected');
+    $('.item').removeAttr('id');
+  }
+  if (o.breadcrumbs) {
     o.breadcrumbs.unshift(0); // add 0 for root node
-    showNode(o, o.node, 0);
-  }
-}
-
-function gotoSubIndex(o,root,hash,relpath)
-{
-  if (hash.match(/^#l\d+$/)) 
-  {
-    hash=''; // strip line number anchors
-  }
-  var url=root+hash;
-  var i=-1;
-  while (navTreeIndex[i+1]<=url) i++;
-  if (navTreeSubIndices[i]) {
-    gotoNode(o,i,root,hash)
-  } else {
-    getScript(relpath+'navtreeindex'+i,function(){
-      navTreeSubIndices[i] = eval('NAVTREEINDEX'+i);
-      if (navTreeSubIndices[i]) {
-        gotoNode(o,i,root,hash);
-      }
-    },true);
+    showNode(o, o.node, 0, hash);
   }
 }
 
 function navTo(o,root,hash,relpath)
 {
-  if (navTreeIndex){
-    gotoSubIndex(o,root,hash,relpath);
+  var link = cachedLink();
+  if (link) {
+    var parts = link.split('#');
+    root = parts[0];
+    if (parts.length>1) hash = '#'+parts[1].replace(/[^\w\-]/g,'');
+    else hash='';
+  }
+  if (hash.match(/^#l\d+$/)) {
+    var anchor=$('a[name='+hash.substring(1)+']');
+    glowEffect(anchor.parent(),1000); // line number
+    hash=''; // strip line number anchors
+  }
+  var url=root+hash;
+  var i=-1;
+  while (NAVTREEINDEX[i+1]<=url) i++;
+  if (i==-1) { i=0; root=NAVTREE[0][1]; } // fallback: show index
+  if (navTreeSubIndices[i]) {
+    gotoNode(o,i,root,hash,relpath)
   } else {
-    getScript(relpath+"navtreeindex",function(){
-      navTreeIndex = eval('NAVTREEINDEX');
-      if (navTreeIndex){
-        gotoSubIndex(o,root,hash,relpath);
+    getScript(relpath+'navtreeindex'+i,function(){
+      navTreeSubIndices[i] = eval('NAVTREEINDEX'+i);
+      if (navTreeSubIndices[i]) {
+        gotoNode(o,i,root,hash,relpath);
       }
     },true);
-  } 
+  }
+}
+
+function showSyncOff(n,relpath)
+{
+    n.html('<img src="'+relpath+'sync_off.png" title="'+SYNCOFFMSG+'"/>');
+}
+
+function showSyncOn(n,relpath)
+{
+    n.html('<img src="'+relpath+'sync_on.png" title="'+SYNCONMSG+'"/>');
+}
+
+function toggleSyncButton(relpath)
+{
+  var navSync = $('#nav-sync');
+  if (navSync.hasClass('sync')) {
+    navSync.removeClass('sync');
+    showSyncOff(navSync,relpath);
+    storeLink(stripPath2(pathName())+hashUrl());
+  } else {
+    navSync.addClass('sync');
+    showSyncOn(navSync,relpath);
+    deleteLink();
+  }
 }
 
 function initNavTree(toroot,relpath)
@@ -481,25 +594,41 @@ function initNavTree(toroot,relpath)
   o.node.plus_img.width = 16;
   o.node.plus_img.height = 22;
 
-  navTo(o,toroot,window.location.hash,relpath);
+  if (localStorageSupported()) {
+    var navSync = $('#nav-sync');
+    if (cachedLink()) {
+      showSyncOff(navSync,relpath);
+      navSync.removeClass('sync');
+    } else {
+      showSyncOn(navSync,relpath);
+    }
+    navSync.click(function(){ toggleSyncButton(relpath); });
+  }
+
+  $(window).load(function(){
+    navTo(o,toroot,hashUrl(),relpath);
+    showRoot();
+  });
 
   $(window).bind('hashchange', function(){
      if (window.location.hash && window.location.hash.length>1){
        var a;
        if ($(location).attr('hash')){
-         var clslink=stripPath($(location).attr('pathname'))+':'+
-                               $(location).attr('hash').substring(1);
-         a=$('.item a[class$="'+clslink+'"]');
+         var clslink=stripPath(pathName())+':'+hashValue();
+         a=$('.item a[class$="'+clslink.replace(/</g,'\\3c ')+'"]');
        }
        if (a==null || !$(a).parent().parent().hasClass('selected')){
          $('.item').removeClass('selected');
          $('.item').removeAttr('id');
        }
-       var link=stripPath2($(location).attr('pathname'));
-       navTo(o,link,$(location).attr('hash'),relpath);
+       var link=stripPath2(pathName());
+       navTo(o,link,hashUrl(),relpath);
+     } else if (!animationInProgress) {
+       $('#doc-content').scrollTop(0);
+       $('.item').removeClass('selected');
+       $('.item').removeAttr('id');
+       navTo(o,toroot,hashUrl(),relpath);
      }
   })
-
-  $(window).load(showRoot);
 }
 
