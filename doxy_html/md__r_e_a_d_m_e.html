@@ -103,13 +103,13 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Copyright (C) 2010-2014 Michael Wiklund. All rights reserved. Contact: <a href="#" onclick="location.href='mai'+'lto:'+'arn'+'li'+'b@w'+'ik'+'lun'+'de'+'n.s'+'e'; return false;">arnli<span style="display: none;">.nosp@m.</span>b@wi<span style="display: none;">.nosp@m.</span>klund<span style="display: none;">.nosp@m.</span>en.s<span style="display: none;">.nosp@m.</span>e</a></p>
+<div class="textblock"><p>Copyright (C) 2010-2016 Michael Wiklund. All rights reserved. Contact: <a href="#" onclick="location.href='mai'+'lto:'+'arn'+'li'+'b@w'+'ik'+'lun'+'de'+'n.s'+'e'; return false;">arnli<span style="display: none;">.nosp@m.</span>b@wi<span style="display: none;">.nosp@m.</span>klund<span style="display: none;">.nosp@m.</span>en.s<span style="display: none;">.nosp@m.</span>e</a></p>
 <h1>ArnLib - Active Registry Network.</h1>
 <p>This Qt based library makes it easy to distribute changing data objects. It also gives a central place to find all your systems' current data. By using the ArnBrowser, all data objects are real time presented in a tree view.</p>
 <h3>Comparison to similar concepts</h3>
 <ul>
 <li><b>Data mart:</b> Statistical data gathered from different systems. This makes it possible to run cross system analysis.</li>
-<li><b>Windows Registry &amp; AD:</b> Centralized configuration data. All in one place easily shared.</li>
+<li><b>Windows Active Directory (R):</b> Centralized configuration data. All in one place easily shared.</li>
 <li><b>ArnLib:</b> Hot changing data from different systems. Enables easy cross system data exchange, debugging, etc. <br />
 <br />
 </li>
@@ -144,6 +144,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <li>Data objects can typically be: measures, settings, data streams, documents, scripts (js), etc.</li>
 <li><em><a class="el" href="namespace_arn.html">Arn</a> Data objects</em> are thread-safe.</li>
 <li>Native support for data validation and double direction pipes (streams).</li>
+<li>Metrics of <a class="el" href="namespace_arn.html">Arn</a> available in <a class="el" href="namespace_arn.html">Arn</a> tree.</li>
 </ul>
 <h4>Sharing</h4>
 <ul>
@@ -151,17 +152,18 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <li>Support for temporary session data objects. Optional auto-delete of objects when tcp/ip closes and unique uuid names.</li>
 <li>Dependency system with custom offered services and getting signals when all needed services are available.</li>
 <li>Monitoring of newly created data objects and any mode change.</li>
+<li>Login system, to give access protection and different privileges.</li>
+<li>Remote access to <a class="el" href="namespace_arn.html">Arn</a> sessions, to view and control currently connected clients.</li>
 </ul>
 <h4>Persistent storage</h4>
 <ul>
 <li>Optional persistent storage of object in SQLight or in a file.</li>
-<li>Support for version control (VCS) of objects stored in files.</li>
+<li>Support for version control (VCS) of objects stored in files. This can be git.</li>
 </ul>
 <h4>Java Script</h4>
 <ul>
 <li>Native support in JavaScript for: <em><a class="el" href="namespace_arn.html">Arn</a> Data Objects</em>, Dependency system and Monitoring of changed objects.</li>
 <li>Java Script jobstack with preemptive and cooperative scripts running at different priorities.</li>
-<li>Hot swap of changed Java Script in jobstack.</li>
 </ul>
 <h4>Data streams and <em>Remote Procedure Call</em></h4>
 <ul>
@@ -173,7 +175,6 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <ul>
 <li>Any service (ftp, http, arn, etc) can be advertised, browsed and resolved for its host address and port number.</li>
 <li>High level, fully automatic support specialised for <em>arn</em> service, can e.g. remotely change the advertised <em>service name</em>.</li>
-<li>Simple integration together with a custom GUI for browsing, etc.</li>
 <li>Optional internal DNS_SD/mDNS routines for no dependency to any extra library.</li>
 </ul>
 <h4>Qml</h4>
@@ -187,7 +188,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed May 11 2016 12:00:00 for ArnLib by
+    <li class="footer">Generated on Wed May 11 2016 21:37:24 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

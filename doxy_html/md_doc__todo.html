@@ -115,13 +115,11 @@ $(document).ready(function(){initNavTree('md_doc__todo.html','');});
 <li>API to Sync ArnObjects with other protocols (e.g. JSON-based).</li>
 <li>API to Sync ArnObjects over other media (e.g. CAN).</li>
 <li>Javascript based ArnLib for Web-applications over WebSocket.</li>
-<li>Put <a class="el" href="class_arn_server.html" title="Class for making an Arn Server. ">ArnServer</a> client sessions in "/Local/..." to be viewed and controlled (e.g kill).</li>
 </ul>
 <h2>Minor </h2>
 <ul>
 <li>Optimize data transfer with minimal copying.</li>
 <li>Converter classes for ArnPipes to other streams (e.g UART, TCP etc).</li>
-<li>Browsing and controlling connected clients.</li>
 <li>Addition to login a system to "pair" <a class="el" href="class_arn_server.html" title="Class for making an Arn Server. ">ArnServer</a> and <a class="el" href="class_arn_client.html" title="Class for connecting to an Arn Server. ">ArnClient</a>.</li>
 </ul>
 <h2>Done in 3.0 </h2>
@@ -136,16 +134,23 @@ $(document).ready(function(){initNavTree('md_doc__todo.html','');});
 <li>Added setDelay in <a class="el" href="class_arn_item_qml.html" title="ARN Item QML. ">ArnItemQml</a>, rework changed() and using timer events.</li>
 <li>Access system for Server/Client login with session level privilege.</li>
 <li>Allow read access to "freePaths" without login. Used to view for example licenses.</li>
+<li>Option for free nets, e.g. "localnet", that don't need login for full access.</li>
 <li>A flush mechanism for <a class="el" href="class_arn_persist.html" title="Class for handling persistent Arn Data object. ">ArnPersist</a> to force saving.</li>
 <li>Pimpl: Converted to d-pointer for making binary compatible library in the future.</li>
 <li>Started unit tests</li>
 <li>Optimized HandleData class with Null-state that can be this == 0.</li>
 <li>Made ArnObject (ArnLink) none QObject to save memory and independent on main-thread-create. New methods and data for parent() etc.</li>
 <li>Changed to ArnLink::toInt(bool* isOk = 0). To make ignoreSameValue work as expected for "" -&gt; int=0 and similar. Same for all toXXX().</li>
+<li>Changed to <a class="el" href="class_arn_item.html#acb56869d213095752d74868ef0cd450c">ArnItem::toInt</a>(bool* isOk = 0). To give application the possibility to detect data type conversion errors.</li>
 <li><a class="el" href="class_arn_basic_item.html" title="Base class handle for an Arn Data Object. ">ArnBasicItem</a> with no QObject, only inherited to give <a class="el" href="class_arn_event.html">ArnEvent</a> (QEvent). Small footprint!</li>
 <li>ArnItemNet (<a class="el" href="namespace_arn.html">Arn</a> syncing item) inherited from <a class="el" href="class_arn_basic_item.html" title="Base class handle for an Arn Data Object. ">ArnBasicItem</a> for small footprint.</li>
 <li><a class="el" href="class_arn_monitor.html" title="A client remote monitor to detect changes at server. ">ArnMonitor</a> no dependendency to ArnItemNet, that can be in other thread.</li>
 <li><a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a> none native data-types: uint, int64 &amp; uint64.</li>
+<li>Put <a class="el" href="class_arn_server.html" title="Class for making an Arn Server. ">ArnServer</a> client sessions in "/Local/..." to be viewed and controlled (e.g kill). Added <a class="el" href="class_arn_server_remote.html" title="Class for remote controlling an Arn Server. ">ArnServerRemote</a> class. Also chat between server (pipe in <a class="el" href="namespace_arn.html">Arn</a>) and client is supported.</li>
+<li>Browsing and controlling connected clients.</li>
+<li><a class="el" href="namespace_arn.html">Arn</a> Registry metrics available in "/local/..."</li>
+<li>Added auto "humanize" logic to MQFlags text. This will convert e.g. enum value WriteDelay200Ms to "Write delay 200 ms".</li>
+<li>XStringMap improved, e.g. addNumber().</li>
 </ul>
 <h2>Done in 2.3 </h2>
 <ul>
@@ -168,7 +173,7 @@ $(document).ready(function(){initNavTree('md_doc__todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed May 11 2016 12:00:00 for ArnLib by
+    <li class="footer">Generated on Wed May 11 2016 21:37:24 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>
