@@ -1,11 +1,11 @@
-Copyright (C) 2010-2014 Michael Wiklund.
+Copyright (C) 2010-2016 Michael Wiklund.
 All rights reserved.
 Contact: arnlib@wiklunden.se
 
 This is the major License of ArnLib - Active Registry Network.
 Parts of ArnLib depend on Qt and/or other libraries that have their own
-licenses. ArnLib is independent of these licenses; however, use of these other
-libraries is subject to their respective license agreements.
+licenses. Usage of these other libraries is subject to their respective
+license agreements.
 
 GNU Lesser General Public License Usage
 ArnLib may be used under the terms of the GNU Lesser General Public

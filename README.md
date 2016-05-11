@@ -1,4 +1,4 @@
-    Copyright (C) 2010-2014 Michael Wiklund.
+    Copyright (C) 2010-2016 Michael Wiklund.
     All rights reserved.
     Contact: arnlib@wiklunden.se
 
@@ -13,7 +13,7 @@ objects are real time presented in a tree view.
 * **Data mart:** Statistical data gathered from different systems. This makes it possible
 to run cross system analysis.
 
-* **Windows Registry & AD:** Centralized configuration data. All in one place easily shared.
+* **Windows Active Directory (R):** Centralized configuration data. All in one place easily shared.
 
 * **ArnLib:** Hot changing data from different systems. Enables easy cross system data
 exchange, debugging, etc.
@@ -66,6 +66,8 @@ This is similar to UPNP discovery of units.
 
 * Native support for data validation and double direction pipes (streams).
 
+* Metrics of Arn available in Arn tree.
+
 #### Sharing
 
 * Data objects can be shared in a single program, among threads or between programs, at
@@ -80,11 +82,16 @@ are available.
 
 * Monitoring of newly created data objects and any mode change.
 
+* Login system, to give access protection and different privileges.
+
+* Remote access to Arn sessions, to view and control currently connected clients.
+
 #### Persistent storage
 
 * Optional persistent storage of object in SQLight or in a file.
 
 * Support for version control (VCS) of objects stored in files.
+This can be git.
 
 #### Java Script
 
@@ -92,8 +99,6 @@ are available.
 Monitoring of changed objects.
 
 * Java Script jobstack with preemptive and cooperative scripts running at different priorities.
-
-* Hot swap of changed Java Script in jobstack.
 
 #### Data streams and _Remote Procedure Call_
 
@@ -113,8 +118,6 @@ address and port number.
 
 * High level, fully automatic support specialised for _arn_ service, can e.g. remotely
   change the advertised _service name_.
-
-* Simple integration together with a custom GUI for browsing, etc.
 
 * Optional internal DNS_SD/mDNS routines for no dependency to any extra library.
 

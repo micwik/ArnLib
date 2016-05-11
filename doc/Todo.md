@@ -13,13 +13,11 @@ Major
 * API to Sync ArnObjects with other protocols (e.g. JSON-based).
 * API to Sync ArnObjects over other media (e.g. CAN).
 * Javascript based ArnLib for Web-applications over WebSocket.
-* Put ArnServer client sessions in "/Local/..." to be viewed and controlled (e.g kill).
 
 Minor
 -----
 * Optimize data transfer with minimal copying.
 * Converter classes for ArnPipes to other streams (e.g UART, TCP etc).
-* Browsing and controlling connected clients.
 * Addition to login a system to "pair" ArnServer and ArnClient.
 
 Done in 3.0
@@ -34,6 +32,7 @@ Done in 3.0
 * Added setDelay in ArnItemQml, rework changed() and using timer events.
 * Access system for Server/Client login with session level privilege.
 * Allow read access to "freePaths" without login. Used to view for example licenses.
+* Option for free nets, e.g. "localnet", that don't need login for full access.
 * A flush mechanism for ArnPersist to force saving.
 * Pimpl: Converted to d-pointer for making binary compatible library in the future.
 * Started unit tests
@@ -42,10 +41,19 @@ Done in 3.0
   New methods and data for parent() etc.
 * Changed to ArnLink::toInt(bool* isOk = 0).
   To make ignoreSameValue work as expected for "" -> int=0 and similar. Same for all toXXX().
+* Changed to ArnItem::toInt(bool* isOk = 0).
+  To give application the possibility to detect data type conversion errors.
 * ArnBasicItem with no QObject, only inherited to give ArnEvent (QEvent). Small footprint!
 * ArnItemNet (Arn syncing item) inherited from ArnBasicItem for small footprint.
 * ArnMonitor no dependendency to ArnItemNet, that can be in other thread.
 * ArnItem none native data-types: uint, int64 & uint64.
+* Put ArnServer client sessions in "/Local/..." to be viewed and controlled (e.g kill).
+  Added ArnServerRemote class. Also chat between server (pipe in Arn) and client is supported.
+* Browsing and controlling connected clients.
+* Arn Registry metrics available in "/local/..."
+* Added auto "humanize" logic to MQFlags text.
+  This will convert e.g. enum value WriteDelay200Ms to "Write delay 200 ms".
+* XStringMap improved, e.g. addNumber().
 
 Done in 2.3
 -----------
