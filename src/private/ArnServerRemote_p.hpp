@@ -49,7 +49,11 @@ private:
     ArnServer*  _arnServer;
     QTimer  _timerPoll;
     uint  _startTime;
+    uint  _sessionCount;
+    uint  _sessionNum;
     ArnBasicItem  _arnUpTime;
+    ArnBasicItem  _arnSessionCount;
+    ArnBasicItem  _arnSessionNum;
 };
 
 #endif // ARNSERVERREMOTE_P_HPP

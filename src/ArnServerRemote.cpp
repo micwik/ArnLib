@@ -290,8 +290,10 @@ void  ArnServerRemoteSession::shutdown()
 
 ArnServerRemotePrivate::ArnServerRemotePrivate()
 {
-    _arnServer = 0;
-    _startTime = 0;
+    _arnServer    = 0;
+    _startTime    = 0;
+    _sessionCount = 0;
+    _sessionNum   = 0;
 }
 
 
@@ -341,7 +343,9 @@ void  ArnServerRemote::startUseServer( ArnServer* arnServer)
     connect( &d->_timerPoll, SIGNAL(timeout()), this, SLOT(doPoll()));
 
     d->_startTime = QDateTime::currentDateTime().toTime_t();
-    d->_arnUpTime.open( Arn::pathServer + "ServerUpTime/value");
+    d->_arnUpTime.open(       Arn::pathServer + "ServerUpTime/value");
+    d->_arnSessionCount.open( Arn::pathServer + "SessionCount/value");
+    d->_arnSessionNum.open(   Arn::pathServer + "SessionNum/value");
     ArnM::setValue( Arn::pathServer + "ServerUpTime/property", "prec=2 unit=h");
 }
 
@@ -350,9 +354,27 @@ void  ArnServerRemote::onNewSession()
 {
     Q_D(ArnServerRemote);
 
+    ++d->_sessionCount;
+    d->_arnSessionCount = d->_sessionCount;
+    ++d->_sessionNum;
+    d->_arnSessionNum = d->_sessionNum;
+
     Q_ASSERT(d->_arnServer);
     ArnServerSession*  serverSession = d->_arnServer->getSession();
     new ArnServerRemoteSession( serverSession, this);
+
+    connect( serverSession, SIGNAL(destroyed(QObject*)), SLOT(onDelSession(QObject*)));
+}
+
+
+void  ArnServerRemote::onDelSession( QObject* sessionObj)
+{
+    Q_UNUSED(sessionObj)
+
+    Q_D(ArnServerRemote);
+
+    --d->_sessionNum;
+    d->_arnSessionNum = d->_sessionNum;
 }
 
 

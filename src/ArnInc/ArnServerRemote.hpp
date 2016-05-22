@@ -142,6 +142,7 @@ protected:
 
 private slots:
     void  onNewSession();
+    void  onDelSession( QObject* sessionObj);
     void  doPoll();
 
 private:
