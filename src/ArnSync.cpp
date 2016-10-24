@@ -103,7 +103,6 @@ void  ArnSync::start()
     if (_isClientSide) {
         _isConnected = false;
         _remoteAllow = Arn::Allow::All;  // No restrictions until known server permisions
-        connect( _socket, SIGNAL(connected()), this, SLOT(connected()));
     }
     else {
         _isConnected = true;
@@ -1176,6 +1175,8 @@ QStringList  ArnSync::freePaths()  const
 
 void  ArnSync::connected()
 {
+    if (!_isClientSide)  return;  // Only client side
+
     _wasClosed   = _isClosed;
     _isClosed    = false;
     _isConnected = true;

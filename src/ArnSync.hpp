@@ -112,6 +112,7 @@ public:
     ArnItemNet*  newNetItem( const QString& path,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
                              bool* isNewPtr = 0);
+    void  connected();
     void  close();
     void  sendXSMap( const Arn::XStringMap& xsMap);
     void  send( const QByteArray& xString);
@@ -152,7 +153,6 @@ protected:
     virtual void  customEvent( QEvent* ev);
 
 private slots:
-    void  connected();
     void  disConnected();
     void  socketInput();
     void  doLoginSeq0End();

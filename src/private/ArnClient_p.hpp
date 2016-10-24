@@ -80,6 +80,7 @@ private:
     bool  _isReConnect;
     bool  _wasContact;
     bool  _wasConnect;
+    bool  _isClosed;
 };
 
 #endif // ARNCLIENT_P_HPP

@@ -525,6 +525,7 @@ private:
     };
 
     void  init();
+    void  startConnectArn();
     void  reConnectArn();
     void  doConnectArnLogic();
     static QString  toRemotePathCB( void* context, const QString& path);
@@ -534,7 +535,6 @@ private:
     //// Not mutex locked base functions
     bool  addMountPointNL( const QString& localPath, const QString& remotePath);
     bool  removeMountPointNL( const QString& localPath);
-
 };
 
 #endif // ARNCLIENT_HPP

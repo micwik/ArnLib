@@ -125,6 +125,7 @@ ArnClientPrivate::ArnClientPrivate()
     _arnMountPoint   = 0;
     _isAutoConnect   = false;
     _isValidCredent  = false;
+    _isClosed        = true;
     _receiveTimeout  = 10;
     _recTimeoutCount = 0;
     _retryTime       = 2;
@@ -300,7 +301,7 @@ void  ArnClient::connectToArnList()
     d->_isValidCredent = false;
     d->_nextHost       = 0;
     d->resetConnectionFlags();
-    doConnectArnLogic();
+    startConnectArn();
 }
 
 
@@ -313,7 +314,7 @@ void  ArnClient::connectToArn( const QString& arnHost, quint16 port)
     d->_arnHost        = arnHost;
     d->_port           = port ? port : Arn::defaultTcpPort;
     d->resetConnectionFlags();
-    doConnectArnLogic();
+    startConnectArn();
 }
 
 
@@ -324,6 +325,7 @@ void  ArnClient::disconnectFromArn()
     d->_arnNetSync->sendExit();
     setAutoConnect( false);
     d->_socket->disconnectFromHost();
+    d->_isClosed = true;
 }
 
 
@@ -349,6 +351,7 @@ void ArnClient::close()
 
     setAutoConnect( false);
     d->_arnNetSync->close();
+    d->_isClosed = true;
 }
 
 
@@ -840,6 +843,15 @@ void ArnClient::doTcpDisconnected()
 }
 
 
+void ArnClient::startConnectArn()
+{
+    Q_D(ArnClient);
+
+    d->_isClosed = false;
+    doConnectArnLogic();
+}
+
+
 void  ArnClient::reConnectArn()
 {
     Q_D(ArnClient);
@@ -870,11 +882,18 @@ void  ArnClient::doTcpConnected()
 {
     Q_D(ArnClient);
 
+    if (d->_isClosed) {  // Unexpected tcp connection, not wanted
+        d->_socket->abort();
+        return;
+    }
+
     d->_isReContact = d->_wasContact;
     d->_wasContact  = true;
 
     if (d->_receiveTimeout > 0)
         d->_recTimer->start( d->_receiveTimeout * 1000 / 2);
+
+    d->_arnNetSync->connected();
 
     emit tcpConnected( d->_curConnectAP.addr, d->_curConnectAP.port);
     d->_connectStat = ConnectStat::Negotiating;
