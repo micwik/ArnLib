@@ -1043,6 +1043,7 @@ void  ArnBasicItem::arnEvent( QEvent* ev, bool isAlienThread)
 {
     // Selected ArnEvent handler is called. Default is internal handler.
     // Selected handler must finish with ArnBasicItemEventHandler::defaultEvent( ev).
+    // Warning!!! This ArnBasicItem might get deleted (ev->target == 0).
 
     Q_D(ArnBasicItem);
 

@@ -271,6 +271,10 @@ bool ArnItemNet::isBlock( quint32 sendId)
 void  ArnItemNet::arnEvent( QEvent* ev, bool isAlienThread)
 {
     ArnBasicItem::arnEvent( ev, isAlienThread);
+    if (ArnEvent::isArnEvent( ev->type())) {
+        ArnEvent* e = static_cast<ArnEvent*>( ev);
+        if (!e->target())  return;  // This ArnItemNet has been deleted
+    }
 
     //// Must support threaded
     //// Only for a Monitor
