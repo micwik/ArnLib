@@ -875,11 +875,12 @@ void  ArnM::destroyLinkMain( ArnLink* link, ArnLink* startLink, bool isGlobal)
     link->ref();  // At least one ref to protect this link
 
     /// Make all childs retired by recursion
-    ArnLinkList  children = link->children();
-    int  childNum = children.size();
-    for (int i = 0; i < childNum; ++i) {
-        ArnLink*  dLink = children.at( i);
-        destroyLinkMain( dLink, startLink, isGlobal);
+    for (int i = 0; i < link->children().size();) {
+        ArnLink*  dLink = link->children().at( i);
+        if (dLink->isRetired())
+            ++i;
+        else
+            destroyLinkMain( dLink, startLink, isGlobal);
     }
 
     /// Make this link retired
