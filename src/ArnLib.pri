@@ -226,8 +226,6 @@ contains(ARN, zeroconf) {
             $$PWD/mDNS/mDNSCore/mDNSDebug.h \
             $$PWD/mDNS/mDNSShared/PlatformCommon.h \
             $$PWD/mDNS/ArnMDns.hpp
-
-        INCLUDEPATH += $$PWD/mDNS/mDNSCore $$PWD/mDNS/mDNSShared
     }
 }
 

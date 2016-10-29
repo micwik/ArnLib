@@ -29,8 +29,14 @@
 // This file is part of the ArnLib - Active Registry Network.
 //
 
-#include "dns_sd.h"				// Defines the interface to the client layer above
-#include "mDNSEmbeddedAPI.h"	// The interface we're building on top of
+// Defines the interface to the client layer above
+#ifdef MDNS_INTERN
+#  include "dns_sd.h"
+#else
+#  include <dns_sd.h>
+#endif
+
+#include "../mDNSCore/mDNSEmbeddedAPI.h"	// The interface we're building on top of
 #include "mDNS/mDNSQt/mDNSQt.h"
 
 extern mDNS mDNSStorage;		// We need to pass the address of this storage to the lower-layer functions

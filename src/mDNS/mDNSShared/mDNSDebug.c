@@ -38,8 +38,8 @@
 //     http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#include "mDNSDebug.h"
-#include "mDNSEmbeddedAPI.h"
+#include "../mDNSCore/mDNSDebug.h"
+#include "../mDNSCore/mDNSEmbeddedAPI.h"
 
 mDNSexport int mDNS_LoggingEnabled = 1;
 mDNSexport int mDNS_PacketLoggingEnabled = 0;

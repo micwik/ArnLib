@@ -50,10 +50,9 @@
 
 extern "C" {
 
-#include "mDNSEmbeddedAPI.h"           // Defines the interface provided to the client layer above
-#include "DNSCommon.h"
+#include "../mDNSCore/mDNSEmbeddedAPI.h"           // Defines the interface provided to the client layer above
+#include "../mDNSCore/DNSCommon.h"
 #include "mDNSQt.h"				 // Defines the specific types needed to run mDNS on this platform
-#include "dns_sd.h"
 
 #include <unistd.h>
 //android? #include <sys/socket.h>

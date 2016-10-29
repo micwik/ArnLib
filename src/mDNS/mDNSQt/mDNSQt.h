@@ -49,7 +49,11 @@
     extern "C" {
 #endif
 
-#include "dns_sd.h"
+#ifdef MDNS_INTERN
+#  include "../mDNSShared/dns_sd.h"
+#else
+#  include <dns_sd.h>
+#endif
 
     
 struct sockaddr {

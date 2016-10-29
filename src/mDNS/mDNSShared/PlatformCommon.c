@@ -38,8 +38,8 @@
 //     http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#include "mDNSEmbeddedAPI.h"	// Defines the interface provided to the client layer above
-#include "DNSCommon.h"
+#include "../mDNSCore/mDNSEmbeddedAPI.h"	// Defines the interface provided to the client layer above
+#include "../mDNSCore/DNSCommon.h"
 #include "PlatformCommon.h"
 
 
