@@ -218,7 +218,7 @@ void  ArnServerRemoteSession::doPoll()
 
     if (_pollCount % 5 == 0) {
         //// Uptime
-        double upTime = double( QDateTime::currentDateTime().toTime_t() - _startTime) / 3600.;
+        ARNREAL upTime = ARNREAL( QDateTime::currentDateTime().toTime_t() - _startTime) / 3600.;
         _arnUpTime.setValue( upTime);
 
         //// Traffic
@@ -382,6 +382,6 @@ void  ArnServerRemote::doPoll()
 {
     Q_D(ArnServerRemote);
 
-    double upTime = double( QDateTime::currentDateTime().toTime_t() - d->_startTime) / 3600.;
+    ARNREAL upTime = ARNREAL( QDateTime::currentDateTime().toTime_t() - d->_startTime) / 3600.;
     d->_arnUpTime.setValue( upTime);
 }
