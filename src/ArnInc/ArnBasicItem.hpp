@@ -513,6 +513,25 @@ public:
      */
     QObject*  eventHandler()  const;
 
+    //! Set a Bidirectional item as Unidirectional
+    /*! The two way object is not twisted at writes, i.e. exactly the same object is read
+     *  and written. This has no effect on an _Arn Data Object_ that not is in
+     *  Bidirectional mode.
+     *  \see isUniDir()
+     *  \see \ref gen_arnobjModes
+     *  \see \ref gen_bidirArnobj
+     */
+    void  setUniDir( bool isUnidir = true);
+
+    //! Get the Unidirectional state of an object
+    /*! \retval true if Unidirectional is set or _Arn Data Object_ is not in Bidirectional mode.
+     *  \see setUniDir()
+     *  \see setBiDirMode()
+     *  \see \ref gen_arnobjModes
+     *  \see \ref gen_bidirArnobj
+     */
+    bool  isUniDir()  const;
+
     //! \cond ADV
     bool  sendArnEventLink( ArnEvent* ev);
     void  sendArnEventItem( ArnEvent* ev, bool isAlienThread, bool isLocked = false);
@@ -522,7 +541,11 @@ protected:
 
     //// Methods not to be public
     bool  openWithFlags( const QString& path, Arn::LinkFlags linkFlags);
+    /*! \obsolete
+     */
     void  setForceKeep( bool fk = true);
+    /*! \obsolete
+     */
     bool  isForceKeep()  const;
     Arn::ObjectMode  getMode( ArnLink* link)  const;
     void  addSyncMode( Arn::ObjectSyncMode syncMode, bool linkShare);

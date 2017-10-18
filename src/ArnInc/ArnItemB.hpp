@@ -234,6 +234,8 @@ protected:
     using ArnBasicItem::isMaster;
     using ArnBasicItem::setAutoDestroy;
     using ArnBasicItem::isAutoDestroy;
+    using ArnBasicItem::setUniDir;
+    using ArnBasicItem::isUniDir;
     using ArnBasicItem::arnExport;
     using ArnBasicItem::toInt;
     using ArnBasicItem::toDouble;

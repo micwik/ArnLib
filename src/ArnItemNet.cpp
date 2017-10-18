@@ -49,7 +49,7 @@ void  ArnItemNet::init()
     _isMonitor = false;
     _blockEcho = false;
 
-    setForceKeep();
+    setUniDir();
     setIgnoreSameValue( false);
 }
 

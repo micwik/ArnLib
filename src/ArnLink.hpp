@@ -69,13 +69,13 @@ public:
 
     ~ArnLink();
 
-    void  setValue( int value, int sendId = 0, bool forceKeep = 0);
-    void  setValue( ARNREAL value, int sendId = 0, bool forceKeep = 0);
-    void  setValue( const QString& value, int sendId = 0, bool forceKeep = 0,
+    void  setValue( int value, int sendId = 0, bool useUniDir = 0);
+    void  setValue( ARNREAL value, int sendId = 0, bool useUniDir = 0);
+    void  setValue( const QString& value, int sendId = 0, bool useUniDir = 0,
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
-    void  setValue( const QByteArray& value, int sendId = 0, bool forceKeep = 0,
+    void  setValue( const QByteArray& value, int sendId = 0, bool useUniDir = 0,
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
-    void  setValue( const QVariant& value, int sendId = 0, bool forceKeep = 0);
+    void  setValue( const QVariant& value, int sendId = 0, bool useUniDir = 0);
 
     int  toInt( bool* isOk = 0);
     ARNREAL  toReal( bool* isOk = 0);
@@ -106,7 +106,7 @@ public:
     ArnLink*  twinLink();
     ArnLink*  valueLink();
     ArnLink*  providerLink();
-    ArnLink*  holderLink( bool forceKeep);
+    ArnLink*  holderLink( bool useUniDir);
     QString  twinName();
     bool  subscribe( ArnBasicItem* subscriber);
     bool  unsubscribe( ArnBasicItem* subscriber);

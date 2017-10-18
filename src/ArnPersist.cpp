@@ -56,7 +56,7 @@ const int  arnDbSaveVer = 200;
 ArnItemPersist::ArnItemPersist( ArnPersist* arnPersist) :
     ArnItem( arnPersist)
 {
-    setForceKeep();  // Only normal value will be used for Load/Save
+    setUniDir();  // Only normal value will be used for Load/Save
     setBlockEcho( true);  // Don't save own updates
     setIgnoreSameValue( true);
     _arnPersist  = arnPersist;
