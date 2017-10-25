@@ -304,11 +304,11 @@ ArnBasicItem&  ArnBasicItem::setPipeMode()
     Q_D(ArnBasicItem);
 
     d->_mode |=  Arn::ObjectMode::Pipe | Arn::ObjectMode::BiDir;
+    d->_ignoreSameValue = false;
     if (!_link)  return *this;
 
     if (_link->isPipeMode())  return *this;  // Already is pipe mode
 
-    d->_ignoreSameValue = false;
     //// Pipe-mode demands the pair of value & provider
     ArnLink*  twinLink = ArnM::addTwin( _link->linkPath(), _link, syncMode());
     _link->setPipeMode( true);
