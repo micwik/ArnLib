@@ -29,106 +29,82 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
-#ifndef ARNBASICITEM_HPP
-#define ARNBASICITEM_HPP
+#ifndef ARNADAPTITEM_HPP
+#define ARNADAPTITEM_HPP
 
 #include "ArnLib_global.hpp"
-#include "ArnCoreItem.hpp"
-#include "ArnLinkHandle.hpp"
-#include "ArnError.hpp"
 #include "Arn.hpp"
+#include "ArnBasicItem.hpp"
+#include "ArnEvent.hpp"
 #include "MQFlags.hpp"
 #include <QString>
 #include <QByteArray>
 #include <QVariant>
-#include <QAtomicInt>
-#include <QObject>
 
-class ArnBasicItemPrivate;
-class ArnLink;
-class ArnEvent;
+class ArnAdaptItemPrivate;
+
+typedef void  (*ArnEventCallback)( QEvent* ev, int arnEvIdx);
 
 
-//! \cond ADV
-class ArnBasicItemEventHandler : public QObject
-{
-    Q_OBJECT
-
-public:
-    explicit ArnBasicItemEventHandler( QObject* parent = 0);
-    virtual ~ArnBasicItemEventHandler();
-
-    static void  defaultEvent( QEvent* ev);
-
-protected:
-    virtual void  customEvent( QEvent* ev);
-};
-//! \endcond
-
-
-//! Base class handle for an _Arn Data Object_.
+///! Non Qt and threadsafe handle for an _Arn Data Object_.
 /*!
 [About ArnItem access](\ref gen_arnItem)
 
 See ArnItem.
 
-ArnBasicItem is the basic way to get a handle (pointer) for accessing an Arn Data Object.
-It is fast, small and is not based on QObject. As such it can not use signals and slots,
-but it can provide ArnEvents (based on QEvents) to be sent to any QObject based receiver.
+ArnAdaptItem is based on ArnBasicItem and is used to get a handle (pointer) for
+accessing an Arn Data Object. It is very similar to QBasicItem but it is slower and
+its typical usage is in a non Qt thread. It don't use or need a Qt eventloop.
 
-There can be any amount of ArnBasicItem:s opened (pointing) to the same
-_Arn Data object_. Deleting the ArnBasicItem won't effect the _Arn Data object_.
+There can be any amount of ArnAdaptItem:s opened (pointing) to the same
+_Arn Data object_. Deleting the ArnAdaptItem won't effect the _Arn Data object_.
 
-This class is not thread-safe, but the _Arn Data object_ is, so each thread should
-have it's own handles i.e ArnBasicItem instances.
+This class is thread-safe, so any thread could use its instances. This includes booth
+Qt (based on QThread) and non Qt started thread.
 
 <b>Example usage</b> \n \code
     // In class declare
-    ArnBasicItem  _arnTime;
-    MyReceiver  _myRec;  // QObject derived
+    ArnAdaptItem  _arnTime;
+    static void arnEvCallback( QEvent* ev, int arnEvIdx);
 
     // In class code
     _arnTime.open("//Chat/Time/value");
-    _arnTime.setEventHandler( &_myRec);
+    _arnTime.setArnEventCallback( &MyClass::arnEvCallback);
     _arnTime = "Undefined ...";
 
-void  MyReceiver::customEvent( QEvent* ev)
+void  MyClass::arnEvCallback( QEvent* ev, int arnEvIdx)
 {
-    // Is setup as ArnEvent handler for my ArnBasicItem.
-    // Handler must finish with ArnBasicItemEventHandler::defaultEvent( ev).
+    // Is setup as ArnEvent callback for my ArnAdaptItem.
+    // Code must be threadsafe.
 
-    int  evIdx = ev->type() - ArnEvent::baseType();
-    switch (evIdx) {
+    switch (arnEvIdx) {
     case ArnEvent::Idx::ValueChange:
     {
         ArnEvValueChange*  e = static_cast<ArnEvValueChange*>( ev);
-        ArnBasicItem*  item = static_cast<ArnBasicItem*>( e->target());
+        ArnAdaptItem*   item = static_cast<ArnAdaptItem*>( e->target());
         if (!item)  break;  // No target, deleted/closed ...
 
         QByteArray  val = e->valueData() ? *e->valueData() : item->toByteArray();
-        qDebug() << "MyReceiver ArnEvValueChange: inItemPath=" << item->path()
+        qDebug() << "MyClass ArnEvValueChange: inItemPath=" << item->path()
                  << " value=" << val;
     }
     default:
         break;
     }
-
-    ArnBasicItemEventHandler::defaultEvent( ev);
 }
 \endcode
 */
-class ARNLIBSHARED_EXPORT ArnBasicItem : public ArnCoreItem
+class ARNLIBSHARED_EXPORT ArnAdaptItem : protected ArnBasicItem
 {
-    Q_DECLARE_PRIVATE(ArnBasicItem)
-    friend class ArnBasicItemEventHandler;
+    Q_DECLARE_PRIVATE(ArnAdaptItem)
 
 public:
     //! Standard constructor of a closed handle
     /*!
      */
-    ArnBasicItem();
+    ArnAdaptItem();
 
-    virtual  ~ArnBasicItem();
+    virtual  ~ArnAdaptItem();
 
     //! Open a handle to an _Arn Data Object_
     /*! \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
@@ -263,7 +239,7 @@ public:
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_bidirArnobj
      */
-    ArnBasicItem&  setBiDirMode();
+    ArnAdaptItem&  setBiDirMode();
 
     /*! \retval true if Bidirectional
      *  \see setBiDirMode()
@@ -277,7 +253,7 @@ public:
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_pipeArnobj
      */
-    ArnBasicItem&  setPipeMode();
+    ArnAdaptItem&  setPipeMode();
 
     /*! \retval true if _Pipe mode_
      *  \see setPipeMode()
@@ -292,7 +268,7 @@ public:
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_persistArnobj
      */
-    ArnBasicItem&  setSaveMode();
+    ArnAdaptItem&  setSaveMode();
 
     /*! \retval true if _Save mode_
      *  \see setSaveMode()
@@ -306,7 +282,7 @@ public:
      *  \pre This must be set before open().
      *  \see \ref gen_arnobjModes
      */
-    ArnBasicItem&  setMaster();
+    ArnAdaptItem&  setMaster();
 
     /*! \retval true if _Master mode_
      *  \see setMaster()
@@ -318,7 +294,7 @@ public:
     /*! This ArnItem at client side is setup for auto destruction.
      *  \pre This must be set before open().
      */
-    ArnBasicItem&  setAutoDestroy();
+    ArnAdaptItem&  setAutoDestroy();
 
     /*! \retval true if _AutoDestroy mode_
      *  \see setAutoDestroy()
@@ -404,18 +380,18 @@ public:
      */
     quint64  toUInt64( bool* isOk = 0)  const;
 
-    ArnBasicItem&  operator=( const ArnBasicItem& other);
-    ArnBasicItem&  operator=( int val);
-    ArnBasicItem&  operator=( ARNREAL val);
-    ArnBasicItem&  operator=( const QString& val);
-    ArnBasicItem&  operator=( const QByteArray& val);
-    ArnBasicItem&  operator=( const QVariant& val);
-    ArnBasicItem&  operator=( const char* val);
-    ArnBasicItem&  operator=( uint val);
-    ArnBasicItem&  operator=( qint64 val);
-    ArnBasicItem&  operator=( quint64 val);
+    ArnAdaptItem&  operator=( const ArnAdaptItem& other);
+    ArnAdaptItem&  operator=( int val);
+    ArnAdaptItem&  operator=( ARNREAL val);
+    ArnAdaptItem&  operator=( const QString& val);
+    ArnAdaptItem&  operator=( const QByteArray& val);
+    ArnAdaptItem&  operator=( const QVariant& val);
+    ArnAdaptItem&  operator=( const char* val);
+    ArnAdaptItem&  operator=( uint val);
+    ArnAdaptItem&  operator=( qint64 val);
+    ArnAdaptItem&  operator=( quint64 val);
 
-    void  setValue( const ArnBasicItem& other, int ignoreSame = Arn::SameValue::DefaultAction);
+    void  setValue( const ArnAdaptItem& other, int ignoreSame = Arn::SameValue::DefaultAction);
 
     //! Assign an _integer_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
@@ -490,29 +466,27 @@ public:
      */
     void  setValue( quint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
 
-    //! Get the thread affinity of this ArnBasicItem
-    /*! The affinity (see QObject) is set when the ArnBasicItem is created and bound to an
-     *  internal QObject based event handler. When a custom event handler is set, its
-     *  affinity is used.
-     *  \return the thread affinity
-     *  \see setEventHandler()
+    //! Get the thread affinity of this ArnAdaptItem
+    /*! The affinity is allways the same as the caller thread.
+     *  \return the thread affinity (caller thread)
+     *  \see setArnEventCallback()
      */
     QThread*  thread()  const;
 
-    //! Set event handler for this ArnBasicItem
-    /*! The event handler must be QObject based
-     *  \param[in] eventHandler to be assigned
-     *  \see eventHandler()
+    //! Set event callback for this ArnAdaptItem
+    /*! The event callback function must be threadsafe as it can be called from any thread.
+     *  \param[in] eventCallback to be assigned
+     *  \see arnEventCallback()
      *  \see thread()
      */
-    void  setEventHandler( QObject* eventHandler);
+    void  setArnEventCallback( ArnEventCallback evCallback);
 
-    //! Get the event handler of this ArnBasicItem
-    /*! \return the event handler
-     *  \see setEventHandler()
+    //! Get the event callback of this ArnAdaptItem
+    /*! \return the event callback
+     *  \see setArnEventCallback()
      *  \see thread()
      */
-    QObject*  eventHandler()  const;
+    ArnEventCallback  arnEventCallback()  const;
 
     //! Set a Bidirectional item as Unidirectional
     /*! The two way object is not twisted at writes, i.e. exactly the same object is read
@@ -541,33 +515,27 @@ protected:
     virtual void  arnEvent( QEvent* ev, bool isAlienThread);
 
     //// Methods not to be public
-    bool  openWithFlags( const QString& path, Arn::LinkFlags linkFlags);
-    /*! \obsolete
-     */
-    void  setForceKeep( bool fk = true);
-    /*! \obsolete
-     */
-    bool  isForceKeep()  const;
-    Arn::ObjectMode  getMode( ArnLink* link)  const;
-    void  addSyncMode( Arn::ObjectSyncMode syncMode, bool linkShare);
-    void  resetOnlyEcho();
-    void  addIsOnlyEcho( quint32 sendId);
-    bool  isOnlyEcho()  const;
-    uint  retireType();
-    void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
-    void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
-    QStringList  childItemsMain()  const;
     void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0)  const;
 
-    ArnBasicItem( ArnBasicItemPrivate& dd);
+    ArnAdaptItem( ArnAdaptItemPrivate& dd);
     //! \endcond
 
 private:
     void  init();
-    void  setupOpenItem( bool isFolder);
-    ArnBasicItemEventHandler*  getThreadEventHandler();
 
-    ArnLink*  _link;
+    //// Hide (not avaliable from ArnBasicItem)
+    void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
+    void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
+    using ArnBasicItem::setEventHandler;
+    using ArnBasicItem::eventHandler;
+    using ArnBasicItem::openWithFlags;
+    using ArnBasicItem::getMode;
+    using ArnBasicItem::addSyncMode;
+    using ArnBasicItem::resetOnlyEcho;
+    using ArnBasicItem::addIsOnlyEcho;
+    using ArnBasicItem::isOnlyEcho;
+    using ArnBasicItem::retireType;
+    using ArnBasicItem::childItemsMain;
 };
 
-#endif // ARNBASICITEM_HPP
+#endif // ARNADAPTITEM_HPP

@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2016 Michael Wiklund.
+// Copyright (C) 2010-2018 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -35,7 +35,7 @@
 #include "ArnInc/ArnLib_global.hpp"
 #include "ArnInc/ArnLinkHandle.hpp"
 #include "ArnInc/Arn.hpp"
-#include "ArnInc/ArnBasicItem.hpp"
+#include "ArnInc/ArnCoreItem.hpp"
 #include "ArnInc/MQFlags.hpp"
 #include <QObject>
 #include <QString>
@@ -48,7 +48,7 @@ class ArnEvent;
 class ArnLink;
 
 typedef QList<ArnLink*>  ArnLinkList;
-typedef QList<ArnBasicItem*>  ArnBasicItemList;
+typedef QList<ArnCoreItem*>  ArnCoreItemList;
 
 
 //! \cond ADV
@@ -108,8 +108,8 @@ public:
     ArnLink*  providerLink();
     ArnLink*  holderLink( bool useUniDir);
     QString  twinName();
-    bool  subscribe( ArnBasicItem* subscriber);
-    bool  unsubscribe( ArnBasicItem* subscriber);
+    bool  subscribe( ArnCoreItem* subscriber);
+    bool  unsubscribe( ArnCoreItem* subscriber);
     void  deref();
     int  refCount();
 
@@ -143,7 +143,7 @@ private:
     void  resetHave();
     void  doValueChanged( int sendId, const QByteArray* valueData = 0,
                           const ArnLinkHandle& handleData = ArnLinkHandle::null());
-    void  sendEventsInThread( ArnEvent* ev, const ArnBasicItemList& recipients);
+    void  sendEventsInThread( ArnEvent* ev, const ArnCoreItemList& recipients);
     void  sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink);
     void  sendEventArnM( ArnEvent* ev);
 
@@ -152,7 +152,7 @@ private:
 
     QMutex*  _mutex;
     ArnLinkValue*  _val;
-    ArnBasicItemList*  _subscribeTab;
+    ArnCoreItemList*  _subscribeTab;
     ArnLink*  _parent;
     QString  _objectName;
     ArnLinkList*  _children;

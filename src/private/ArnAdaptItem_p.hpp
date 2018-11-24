@@ -29,54 +29,25 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
-#ifndef ARNBASICITEM_P_HPP
-#define ARNBASICITEM_P_HPP
+#ifndef ARNADAPTITEM_P_HPP
+#define ARNADAPTITEM_P_HPP
 
-#include "ArnInc/Arn.hpp"
-#include "ArnInc/ArnCoreItem.hpp"
-
-// #define ARNITEMB_INCPATH
-
-class ArnBasicItemPrivate;
-class QObject;
-class ArnEvent;
+#include "ArnBasicItem_p.hpp"
+#include "ArnInc/ArnAdaptItem.hpp"
+#include <QMutex>
 
 
-class ArnBasicItemPrivate
+class ArnAdaptItemPrivate : public ArnBasicItemPrivate
 {
-    friend class ArnBasicItem;
+    friend class ArnAdaptItem;
 public:
-    ArnBasicItemPrivate();
-    virtual ~ArnBasicItemPrivate();
-
-    ArnBasicItemPrivate& addHeritage( ArnCoreItem::Heritage heritage);
-
-    Arn::ObjectMode mode()  const
-    { return Arn::ObjectMode::fromInt( _mode);}
-
-    ArnCoreItem::Heritage heritage()  const
-    { return ArnCoreItem::Heritage::fromInt( _heritage);}
+    ArnAdaptItemPrivate();
+    virtual ~ArnAdaptItemPrivate();
 
 private:
-    /// Source for unique id to all ArnItem ..
-    static QAtomicInt  _idCount;
-
-    void*  _reference;
-    QObject*  _eventHandler;
-    ArnEvent*  _pendingEvChain;
-#ifdef ARNITEMB_INCPATH
-    QString _path;
-#endif
-    quint32  _id;
-    quint8  _syncMode;
-    quint8  _mode;
-    quint8  _heritage;
-    bool  _syncModeLinkShare : 1;
-    bool  _useUniDir : 1;
-    bool  _ignoreSameValue : 1;
-    bool  _isOnlyEcho : 1;
-    bool  _isStdEvHandler : 1;
+    mutable QMutex _mutex;
+    ArnEventCallback _arnEventCallBack;
 };
 
-#endif // ARNBASICITEM_P_HPP
+#endif // ARNADAPTITEM_P_HPP
 

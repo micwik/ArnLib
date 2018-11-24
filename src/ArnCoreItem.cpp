@@ -29,54 +29,69 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
-#ifndef ARNBASICITEM_P_HPP
-#define ARNBASICITEM_P_HPP
+#include "ArnInc/ArnBasicItem.hpp"
+#include "ArnInc/ArnAdaptItem.hpp"
+#include "private/ArnBasicItem_p.hpp"
+#include "ArnInc/ArnM.hpp"
+#include "ArnInc/ArnEvent.hpp"
+#include "ArnInc/ArnLib.hpp"
+#include "ArnLink.hpp"
+#include <QDataStream>
+#include <QThreadStorage>
+#include <QCoreApplication>
+#include <QThread>
+#include <QDebug>
 
-#include "ArnInc/Arn.hpp"
-#include "ArnInc/ArnCoreItem.hpp"
 
-// #define ARNITEMB_INCPATH
-
-class ArnBasicItemPrivate;
-class QObject;
-class ArnEvent;
-
-
-class ArnBasicItemPrivate
+void  ArnCoreItem::init()
 {
-    friend class ArnBasicItem;
-public:
-    ArnBasicItemPrivate();
-    virtual ~ArnBasicItemPrivate();
+}
 
-    ArnBasicItemPrivate& addHeritage( ArnCoreItem::Heritage heritage);
 
-    Arn::ObjectMode mode()  const
-    { return Arn::ObjectMode::fromInt( _mode);}
+ArnCoreItem::ArnCoreItem()
+    : d_ptr( new ArnBasicItemPrivate)
+{
+}
 
-    ArnCoreItem::Heritage heritage()  const
-    { return ArnCoreItem::Heritage::fromInt( _heritage);}
 
-private:
-    /// Source for unique id to all ArnItem ..
-    static QAtomicInt  _idCount;
+ArnCoreItem::ArnCoreItem( ArnBasicItemPrivate& dd)
+    : d_ptr( &dd)
+{
+}
 
-    void*  _reference;
-    QObject*  _eventHandler;
-    ArnEvent*  _pendingEvChain;
-#ifdef ARNITEMB_INCPATH
-    QString _path;
-#endif
-    quint32  _id;
-    quint8  _syncMode;
-    quint8  _mode;
-    quint8  _heritage;
-    bool  _syncModeLinkShare : 1;
-    bool  _useUniDir : 1;
-    bool  _ignoreSameValue : 1;
-    bool  _isOnlyEcho : 1;
-    bool  _isStdEvHandler : 1;
-};
 
-#endif // ARNBASICITEM_P_HPP
+ArnCoreItem::~ArnCoreItem()
+{
+    delete d_ptr;
+}
 
+
+QThread*  ArnCoreItem::thread()  const
+{
+    Heritage heritage = d_ptr->heritage();
+    if (heritage.is( Heritage::AdaptItem)) {
+        return reinterpret_cast<const ArnAdaptItem*>(this)->thread();
+    }
+    else if (heritage.is( Heritage::BasicItem)) {
+        return static_cast<const ArnBasicItem*>(this)->thread();
+    }
+    return 0;  // TODO:
+}
+
+
+void  ArnCoreItem::sendArnEventItem( ArnEvent* ev, bool isAlienThread, bool isLocked)
+{
+    Heritage heritage = d_ptr->heritage();
+    if (heritage.is( Heritage::AdaptItem)) {
+        return reinterpret_cast<ArnAdaptItem*>(this)->sendArnEventItem( ev, isAlienThread, isLocked);
+    }
+    else if (heritage.is( Heritage::BasicItem)) {
+        return static_cast<ArnBasicItem*>(this)->sendArnEventItem( ev, isAlienThread, isLocked);
+    }
+}
+
+
+void  ArnCoreItem::addHeritage( ArnCoreItem::Heritage heritage)
+{
+    d_ptr->addHeritage( heritage);
+}

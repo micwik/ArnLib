@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2016 Michael Wiklund.
+// Copyright (C) 2010-2018 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -59,12 +59,20 @@ ArnBasicItemPrivate::ArnBasicItemPrivate()
 
     _syncMode          = Arn::ObjectSyncMode();
     _mode              = Arn::ObjectMode();
+    _heritage          = ArnCoreItem::Heritage::None;
     _syncModeLinkShare = true;
 }
 
 
 ArnBasicItemPrivate::~ArnBasicItemPrivate()
 {
+}
+
+
+ArnBasicItemPrivate& ArnBasicItemPrivate::addHeritage( ArnCoreItem::Heritage heritage)
+{
+    _heritage |= heritage;
+    return *this;
 }
 
 
@@ -76,18 +84,19 @@ void  ArnBasicItem::init()
 
     _link = 0;
     d->_eventHandler = getThreadEventHandler();  // The common event handler for this thread
+    addHeritage( ArnCoreItem::Heritage::BasicItem);
 }
 
 
 ArnBasicItem::ArnBasicItem()
-    : d_ptr( new ArnBasicItemPrivate)
+    : ArnCoreItem( *new ArnBasicItemPrivate)
 {
     init();
 }
 
 
 ArnBasicItem::ArnBasicItem( ArnBasicItemPrivate& dd)
-    : d_ptr( &dd)
+    : ArnCoreItem( dd)
 {
     init();
 }
@@ -96,7 +105,6 @@ ArnBasicItem::ArnBasicItem( ArnBasicItemPrivate& dd)
 ArnBasicItem::~ArnBasicItem()
 {
     close();
-    delete d_ptr;
 }
 
 

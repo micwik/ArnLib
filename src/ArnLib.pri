@@ -140,25 +140,30 @@ contains(ARN, core) {
     SOURCES += \
         $$PWD/ArnM.cpp \
         $$PWD/ArnBasicItem.cpp \
+        $$PWD/ArnAdaptItem.cpp \
         $$PWD/ArnItem.cpp \
         $$PWD/ArnItemValve.cpp \
         $$PWD/ArnLinkHandle.cpp \
         $$PWD/ArnLink.cpp \
         $$PWD/ArnEvent.cpp \
         $$PWD/ArnPipe.cpp \
+        $$PWD/ArnCoreItem.cpp \
         $$PWD/ArnItemB.cpp
 
     HEADERS += \
         $$PWD/ArnInc/ArnM.hpp \
         $$PWD/ArnInc/ArnBasicItem.hpp \
+        $$PWD/ArnInc/ArnAdaptItem.hpp \
         $$PWD/ArnInc/ArnItem.hpp \
         $$PWD/ArnInc/ArnItemValve.hpp \
         $$PWD/ArnInc/ArnPipe.hpp \
+        $$PWD/ArnInc/ArnCoreItem.hpp \
         $$PWD/ArnInc/ArnItemB.hpp \
         $$PWD/ArnInc/ArnLinkHandle.hpp \
         $$PWD/ArnInc/ArnEvent.hpp \
         $$PWD/ArnLink.hpp \
         $$PWD/private/ArnBasicItem_p.hpp \
+        $$PWD/private/ArnAdaptItem_p.hpp \
         $$PWD/private/ArnItemB_p.hpp \
         $$PWD/private/ArnItem_p.hpp \
         $$PWD/private/ArnItemValve_p.hpp \

@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2016 Michael Wiklund.
+// Copyright (C) 2010-2018 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -153,13 +153,13 @@ void  ArnLink::doValueChanged( int sendId, const QByteArray* valueData,
 }
 
 
-void  ArnLink::sendEventsInThread( ArnEvent* ev, const ArnBasicItemList& recipients)
+void  ArnLink::sendEventsInThread( ArnEvent* ev, const ArnCoreItemList& recipients)
 {
     int  len = recipients.size();
     for (int i = 0; i < len; ++i) {
-        ArnBasicItem*  basicItem = recipients.at(i);
+        ArnCoreItem*  coreItem = recipients.at(i);
         ev->setAccepted( true);  // Default
-        basicItem->sendArnEventItem( ev, false);
+        coreItem->sendArnEventItem( ev, false);
     }
 }
 
@@ -170,24 +170,24 @@ void  ArnLink::sendArnEvent( ArnEvent* ev)
     if (!_mutex) {  // Fast non threaded version
         // Copy of subsribeTab due to destroyEvent can change it
         if (_subscribeTab)
-            sendEventsInThread( ev, ArnBasicItemList( *_subscribeTab));
+            sendEventsInThread( ev, ArnCoreItemList( *_subscribeTab));
         return;
     }
 
     _mutex->lock();
 
-    ArnBasicItemList  subscrInThread;
+    ArnCoreItemList  subscrInThread;
     QThread*  curThread = QThread::currentThread();
 
     if (_subscribeTab && !_subscribeTab->isEmpty()) {
-        foreach (ArnBasicItem* basicItem, *_subscribeTab) {
-            if (basicItem->thread() == curThread) {
-                subscrInThread += basicItem;
+        foreach (ArnCoreItem* coreItem, *_subscribeTab) {
+            if (coreItem->thread() == curThread) {
+                subscrInThread += coreItem;
             }
             else {
                 // Recipient in different thread
                 ArnEvent*  evClone = ev->makeHeapClone();
-                basicItem->sendArnEventItem( evClone, true, true);
+                coreItem->sendArnEventItem( evClone, true, true);
             }
         }
     }
@@ -963,13 +963,13 @@ void  ArnLink::ref()
 }
 
 
-bool  ArnLink::subscribe( ArnBasicItem* subscriber)
+bool  ArnLink::subscribe( ArnCoreItem* subscriber)
 {
     if (!subscriber)  return false;  // Not valid subscriber
 
     if (_mutex)  _mutex->lock();
     if (!_subscribeTab)
-        _subscribeTab = new ArnBasicItemList;
+        _subscribeTab = new ArnCoreItemList;
 
     *_subscribeTab += subscriber;    
     if (_mutex)  _mutex->unlock();
@@ -978,7 +978,7 @@ bool  ArnLink::subscribe( ArnBasicItem* subscriber)
 }
 
 
-bool  ArnLink::unsubscribe( ArnBasicItem* subscriber)
+bool  ArnLink::unsubscribe( ArnCoreItem* subscriber)
 {
     if (!subscriber)  return false;  // Not valid subscriber
     if (!_subscribeTab)  return false;  // Not valid subscribe table

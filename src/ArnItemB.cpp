@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2016 Michael Wiklund.
+// Copyright (C) 2010-2018 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -31,6 +31,7 @@
 
 #include "ArnInc/ArnItemB.hpp"
 #include "private/ArnItemB_p.hpp"
+#include "private/ArnBasicItem_p.hpp"
 #include "ArnInc/ArnEvent.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include <QCoreApplication>
@@ -53,6 +54,7 @@ ArnItemBPrivate::~ArnItemBPrivate()
 
 void  ArnItemB::init()
 {
+    addHeritage( ArnCoreItem::Heritage::ItemB);
 }
 
 
