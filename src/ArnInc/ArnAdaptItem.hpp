@@ -53,7 +53,7 @@ typedef void  (*ArnEventCallback)( QEvent* ev, int arnEvIdx);
 See ArnItem.
 
 ArnAdaptItem is based on ArnBasicItem and is used to get a handle (pointer) for
-accessing an Arn Data Object. It is very similar to QBasicItem but it is slower and
+accessing an Arn Data Object. It is very similar to ArnBasicItem but it is slower and
 its typical usage is in a non Qt thread. It don't use or need a Qt eventloop.
 
 There can be any amount of ArnAdaptItem:s opened (pointing) to the same
