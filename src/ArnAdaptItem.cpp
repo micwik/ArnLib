@@ -49,6 +49,8 @@
 
 ArnAdaptItemPrivate::ArnAdaptItemPrivate()
     : _mutex( QMutex::Recursive)
+    , _changedCB( 0 )
+    , _linkDestroyedCB( 0 )
     , _arnEventCB( 0 )
 {
 }
@@ -613,9 +615,49 @@ void  ArnAdaptItem::setValue( quint64 value, int ignoreSame)
 }
 
 
+QMutex&  ArnAdaptItem::mutex()  const
+{
+    Q_D(const ArnAdaptItem);
+
+    return d->_mutex;
+}
+
+
 QThread*  ArnAdaptItem::thread()  const
 {
     return QThread::currentThread();  // Same thread as now running (no real affinity)
+}
+
+
+void  ArnAdaptItem::setChangedCallback( ArnAdaptItem::ChangedCB changedCB)
+{
+    Q_D(ArnAdaptItem);
+
+    d->_changedCB = changedCB;
+}
+
+
+ArnAdaptItem::ChangedCB  ArnAdaptItem::ChangedCallback()  const
+{
+    Q_D(const ArnAdaptItem);
+
+    return d->_changedCB;
+}
+
+
+void  ArnAdaptItem::setLinkDestroyedCallback( ArnAdaptItem::LinkDestroyedCB linkDestroyedCB)
+{
+    Q_D(ArnAdaptItem);
+
+    d->_linkDestroyedCB = linkDestroyedCB;
+}
+
+
+ArnAdaptItem::LinkDestroyedCB  ArnAdaptItem::linkDestroyedCallback()  const
+{
+    Q_D(const ArnAdaptItem);
+
+    return d->_linkDestroyedCB;
 }
 
 
@@ -690,17 +732,29 @@ void  ArnAdaptItem::arnEvent( QEvent* ev, bool isAlienThread)
     }
 
     switch (evIdx) {
+    case ArnEvent::Idx::ValueChange:
+    {
+        if (!d->_changedCB)  return;
+        ArnEvValueChange*   e = static_cast<ArnEvValueChange*>( ev);
+        ArnAdaptItem*  target = static_cast<ArnAdaptItem*>( e->target());
+        if (!target)  return;  // No target, deleted/closed ...
+
+        QByteArray  val = e->valueData() ? *e->valueData() : target->toByteArray();
+        (*(d->_changedCB))( *target, val);
+        // qDebug() << "ArnAdaptEvValueChange: path=" << target->path()
+        //          << " value=" << val;
+        return;
+    }
     case ArnEvent::Idx::ModeChange:
     {
         ArnEvModeChange*    e = static_cast<ArnEvModeChange*>( ev);
         ArnAdaptItem*  target = static_cast<ArnAdaptItem*>( e->target());
         if (!target)  return;  // No target, deleted/closed ...
 
-        ArnAdaptItemPrivate* const targetD = target->d_func();
-        QMutexLocker mutexLocker( &targetD->_mutex);  // Force atomic operation on target
+        QMutexLocker mutexLocker( &target->mutex());  // Force atomic operation on target
 
-        qDebug() << "ArnAdaptEvModeChange: path=" << e->path() << " mode=" << e->mode()
-                 << " inItemPath=" << target->path();
+        // qDebug() << "ArnAdaptEvModeChange: path=" << e->path() << " mode=" << e->mode()
+        //          << " inItemPath=" << target->path();
         if (!target->isFolder()) {
             if (e->mode().is( Arn::ObjectMode::Pipe)) {  // Pipe-mode never IgnoreSameValue
                 target->setIgnoreSameValue(false);
@@ -714,11 +768,13 @@ void  ArnAdaptItem::arnEvent( QEvent* ev, bool isAlienThread)
         ArnAdaptItem*  target = static_cast<ArnAdaptItem*>( e->target());
         if (!target)  return;  // No target, deleted/closed ...
 
-        ArnAdaptItemPrivate* const targetD = target->d_func();
-        QMutexLocker mutexLocker( &targetD->_mutex);  // Force atomic operation on target
+        QMutexLocker mutexLocker( &target->mutex());  // Force atomic operation on target
 
         if (!e->isBelow()) {
             if (Arn::debugLinkDestroy)  qDebug() << "AdaptItem arnLinkDestroyed: path=" << target->path();
+            if (d->_linkDestroyedCB) {
+                (*(d->_linkDestroyedCB))( *target);
+            }
             target->close();
             e->setTarget(0);  // target is not available any more
         }

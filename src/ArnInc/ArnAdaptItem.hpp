@@ -41,6 +41,7 @@
 #include <QByteArray>
 #include <QVariant>
 
+class ArnAdaptItem;
 class ArnAdaptItemPrivate;
 
 
@@ -60,6 +61,11 @@ _Arn Data object_. Deleting the ArnAdaptItem won't effect the _Arn Data object_.
 This class is thread-safe, so any thread could use its instances. This includes booth
 Qt (based on QThread) and non Qt started thread.
 
+For callbacks it's easiest to use setChangedCallback() and setLinkDestroyedCallback()
+when this is sufficient. For advanced usage it's also possible to use setArnEventCallback()
+which gives all possible events but is more complicated and includes decoding of an event
+structure.
+
 <b>Example usage</b> \n \code
     // In class declare
     ArnAdaptItem  _arnTime;
@@ -67,8 +73,27 @@ Qt (based on QThread) and non Qt started thread.
 
     // In class code
     _arnTime.open("//Chat/Time/value");
+    _arnTime.setChangedCallback( &MyClass::changedCallback);
+    _arnTime.setLinkDestroyedCallback( &MyClass::linkDestroyedCallback);
     _arnTime.setArnEventCallback( &MyClass::arnEvCallback);
     _arnTime = "Undefined ...";
+
+void  MyClass::changedCallback( ArnAdaptItem& item, const QByteArray& value)
+{
+    // Is setup as Changed callback for my ArnAdaptItem.
+    // Code must be threadsafe.
+
+    qDebug() << "MyClass ValueChange: inItemPath=" << item.path()
+             << " value=" << value;
+}
+
+void  MyClass::linkDestroyedCallback( ArnAdaptItem& item)
+{
+    // Is setup as link-destroyed callback for my ArnAdaptItem.
+    // Code must be threadsafe.
+
+    qDebug() << "MyClass LinkDestroyed: inItemPath=" << item.path()
+}
 
 void  MyClass::arnEvCallback( QEvent* ev, int arnEvIdx)
 {
@@ -83,8 +108,21 @@ void  MyClass::arnEvCallback( QEvent* ev, int arnEvIdx)
         if (!item)  break;  // No target, deleted/closed ...
 
         QByteArray  val = e->valueData() ? *e->valueData() : item->toByteArray();
-        qDebug() << "MyClass ArnEvValueChange: inItemPath=" << item->path()
+        qDebug() << "MyClass EvValueChange: inItemPath=" << item->path()
                  << " value=" << val;
+        break;
+    }
+    case ArnEvent::Idx::ModeChange:
+    {
+        ArnEvModeChange*  e = static_cast<ArnEvModeChange*>( ev);
+        ArnAdaptItem*  item = static_cast<ArnAdaptItem*>( e->target());
+        if (!item)  return;  // No target, deleted/closed ...
+
+        QMutexLocker mutexLocker( &item->mutex());  // Force atomic operation on target
+
+        qDebug() << "EvModeChange: path=" << e->path() << " mode=" << e->mode()
+                 << " inItemPath=" << item->path();
+        break;
     }
     default:
         break;
@@ -97,6 +135,8 @@ class ARNLIBSHARED_EXPORT ArnAdaptItem : protected ArnBasicItem
     Q_DECLARE_PRIVATE(ArnAdaptItem)
 
 public:
+    typedef void  (*ChangedCB)( ArnAdaptItem& target, const QByteArray& value);
+    typedef void  (*LinkDestroyedCB)( ArnAdaptItem& target);
     typedef void  (*ArnEventCB)( QEvent* ev, int arnEvIdx);
 
     //! Standard constructor of a closed handle
@@ -466,6 +506,14 @@ public:
      */
     void  setValue( quint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
 
+    //! Get the mutex of this ArnAdaptItem
+    /*! This can be used for atomic operations etc on the item.
+     *  The item it self is thread safe without the application code is using this mutex.
+     *  Also this mutex is using QMutex::Recursive.
+     *  \return the items mutex
+     */
+    QMutex&  mutex()  const;
+
     //! Get the thread affinity of this ArnAdaptItem
     /*! The affinity is allways the same as the caller thread.
      *  \return the thread affinity (caller thread)
@@ -473,8 +521,43 @@ public:
      */
     QThread*  thread()  const;
 
+    //! Set changed-callback for this ArnAdaptItem
+    /*! The callback is called when data in _Arn Data Object_ is changed.
+     *  Use e.g prototype: void myChangeCB( ArnAdaptItem& target, const QByteArray& value);
+     *  The changed-callback function must be threadsafe as it can be called from any thread.
+     *  \param[in] changedCB callback to be assigned
+     *  \see changedCallback()
+     *  \see thread()
+     */
+    void  setChangedCallback( ChangedCB changedCB);
+
+    //! Get the changed-callback of this ArnAdaptItem
+    /*! \return the changed-callback
+     *  \see setChangedCallback()
+     *  \see thread()
+     */
+    ChangedCB  ChangedCallback()  const;
+
+    //! Set link-destroyed-callback for this ArnAdaptItem
+    /*! The callback is called when the _Arn Data Object_ is destroyed.
+     *  Use e.g prototype: void myLinkDestroyedCB( ArnAdaptItem& target);
+     *  The link-destroyed-callback function must be threadsafe as it can be called from any thread.
+     *  \param[in] linkDestroyedCB callback to be assigned
+     *  \see linkDestroyedCallback()
+     *  \see thread()
+     */
+    void  setLinkDestroyedCallback( LinkDestroyedCB linkDestroyedCB);
+
+    //! Get the link-destroyed-callback of this ArnAdaptItem
+    /*! \return the link-destroyed-callback
+     *  \see setLinkDestroyedCallback()
+     *  \see thread()
+     */
+    LinkDestroyedCB  linkDestroyedCallback()  const;
+
     //! Set event callback for this ArnAdaptItem
-    /*! The event callback function must be threadsafe as it can be called from any thread.
+    /*! Use e.g prototype:  void  myArnEventCB( QEvent* ev, int arnEvIdx);
+     *  The event callback function must be threadsafe as it can be called from any thread.
      *  \param[in] evCB callback to be assigned
      *  \see arnEventCallback()
      *  \see thread()

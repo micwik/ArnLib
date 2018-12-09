@@ -45,8 +45,10 @@ public:
     virtual ~ArnAdaptItemPrivate();
 
 private:
-    mutable QMutex _mutex;
-    ArnAdaptItem::ArnEventCB _arnEventCB;
+    mutable QMutex  _mutex;
+    ArnAdaptItem::ChangedCB  _changedCB;
+    ArnAdaptItem::LinkDestroyedCB  _linkDestroyedCB;
+    ArnAdaptItem::ArnEventCB  _arnEventCB;
 };
 
 #endif // ARNADAPTITEM_P_HPP
