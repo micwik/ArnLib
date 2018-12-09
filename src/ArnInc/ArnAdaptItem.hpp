@@ -43,8 +43,6 @@
 
 class ArnAdaptItemPrivate;
 
-typedef void  (*ArnEventCallback)( QEvent* ev, int arnEvIdx);
-
 
 ///! Non Qt and threadsafe handle for an _Arn Data Object_.
 /*!
@@ -99,6 +97,8 @@ class ARNLIBSHARED_EXPORT ArnAdaptItem : protected ArnBasicItem
     Q_DECLARE_PRIVATE(ArnAdaptItem)
 
 public:
+    typedef void  (*ArnEventCB)( QEvent* ev, int arnEvIdx);
+
     //! Standard constructor of a closed handle
     /*!
      */
@@ -475,18 +475,18 @@ public:
 
     //! Set event callback for this ArnAdaptItem
     /*! The event callback function must be threadsafe as it can be called from any thread.
-     *  \param[in] eventCallback to be assigned
+     *  \param[in] evCB callback to be assigned
      *  \see arnEventCallback()
      *  \see thread()
      */
-    void  setArnEventCallback( ArnEventCallback evCallback);
+    void  setArnEventCallback( ArnEventCB evCB);
 
     //! Get the event callback of this ArnAdaptItem
     /*! \return the event callback
      *  \see setArnEventCallback()
      *  \see thread()
      */
-    ArnEventCallback  arnEventCallback()  const;
+    ArnEventCB  arnEventCallback()  const;
 
     //! Set a Bidirectional item as Unidirectional
     /*! The two way object is not twisted at writes, i.e. exactly the same object is read

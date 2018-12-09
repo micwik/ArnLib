@@ -49,7 +49,7 @@
 
 ArnAdaptItemPrivate::ArnAdaptItemPrivate()
     : _mutex( QMutex::Recursive)
-    , _arnEventCallBack( 0 )
+    , _arnEventCB( 0 )
 {
 }
 
@@ -619,19 +619,19 @@ QThread*  ArnAdaptItem::thread()  const
 }
 
 
-void ArnAdaptItem::setArnEventCallback( ArnEventCallback evCallback)
+void ArnAdaptItem::setArnEventCallback( ArnEventCB evCB)
 {
     Q_D(ArnAdaptItem);
 
-    d->_arnEventCallBack = evCallback;
+    d->_arnEventCB = evCB;
 }
 
 
-ArnEventCallback  ArnAdaptItem::arnEventCallback()  const
+ArnAdaptItem::ArnEventCB  ArnAdaptItem::arnEventCallback()  const
 {
     Q_D(const ArnAdaptItem);
 
-    return d->_arnEventCallBack;
+    return d->_arnEventCB;
 }
 
 
@@ -685,8 +685,8 @@ void  ArnAdaptItem::arnEvent( QEvent* ev, bool isAlienThread)
     //int  evIdx = ev->type() - ArnEvent::baseType();
     int  evIdx = ArnEvent::toIdx( ev->type());
 
-    if (d->_arnEventCallBack) {
-        (*(d->_arnEventCallBack))( ev, evIdx);
+    if (d->_arnEventCB) {
+        (*(d->_arnEventCB))( ev, evIdx);
     }
 
     switch (evIdx) {

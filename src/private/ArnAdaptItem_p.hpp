@@ -46,7 +46,7 @@ public:
 
 private:
     mutable QMutex _mutex;
-    ArnEventCallback _arnEventCallBack;
+    ArnAdaptItem::ArnEventCB _arnEventCB;
 };
 
 #endif // ARNADAPTITEM_P_HPP
