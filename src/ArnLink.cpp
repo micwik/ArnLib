@@ -782,10 +782,17 @@ bool  ArnLink::isThreaded()  const
 }
 
 
+//// Only used by main thread
 void  ArnLink::setThreaded()
 {
-    if (!_mutex)
-        _mutex = new QMutex;
+    if (_mutex)  return;  // Is already threaded
+
+    ArnLink*  link = this;
+    // All links (folders) in direction to root must be threaded due to ArnEvents.
+    do {
+        link->_mutex = new QMutex;
+        link = _parent;
+    } while( link && !link->_mutex);
 }
 
 

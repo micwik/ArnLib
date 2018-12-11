@@ -132,7 +132,7 @@ protected:
     bool  isLastZeroRef();
     void  setRetired( RetireType retireType);
     void  doRetired( ArnLink* startLink, bool isGlobal);
-    void  setThreaded();
+    void  setThreaded();  // Only used in main thread
     void  lock();
     void  unlock();
     static QObject*  arnM( QObject* inArnM = 0);

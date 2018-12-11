@@ -775,7 +775,7 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
             return 0;
         }
         // Create folders or items when needed
-        child = new ArnLink(parent, name, flags);
+        child = new ArnLink( parent, name, flags);
         if (flags.is( flags.Folder))
             ++_countFolder;
         else
