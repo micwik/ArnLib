@@ -153,9 +153,9 @@ void  ArnSync::startNormalSync()
             itemValueUpdater( ArnLinkHandle::null(), 0, itemNet);  // Make client send the current value to server
         }
     }
-    sendNext();
-
     setState( State::Normal);
+
+    sendNext();
 }
 
 
@@ -1476,6 +1476,11 @@ void  ArnSync::sendNext()
     _isSending = false;
 
     if (!_isConnected || !_socket->isValid())  return;
+    if (_state != State::Normal) {
+        if (_isClosed)
+            closeFinal();
+        return;
+    }
 
     ArnItemNet*  itemNet;
 
