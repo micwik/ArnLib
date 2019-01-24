@@ -1030,11 +1030,15 @@ uint  ArnSync::doCommandGet()
     _replyMap.add(ARNRECNAME, "Rget").add("path", path);
 
     bool  isCreateAllow = _allow.is( _allow.Create);
-    Arn::LinkFlags  createFlag = Arn::LinkFlags::flagIf( isCreateAllow, Arn::LinkFlags::CreateAllowed);
     ArnItem  item;
     if (!item.open( path)) {
-        return createFlag ? ArnError::CreateError : ArnError::OpNotAllowed;
+        return isCreateAllow ? ArnError::CreateError : ArnError::OpNotAllowed;
     }
+
+    QByteArray  type;
+    if (item.type() == Arn::DataType::Null)  type += "N";
+    if (!type.isEmpty())
+        _replyMap.add("type", type);
 
     _replyMap.add("data", item.arnExport());
     return ArnError::Ok;
