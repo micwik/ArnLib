@@ -43,7 +43,7 @@
 #include <QDebug>
 #include <limits.h>
 
-#define ARNSYNCVER  "2.0"
+#define ARNSYNCVER  "3.0"
 
 using Arn::XStringMap;
 
@@ -51,30 +51,31 @@ using Arn::XStringMap;
 ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     : QObject( parent)
 {
-    _socket          = socket;  // Note: ArnSync does not own socket ...
-    _sessionHandler  = 0;
-    _toRemotePathCB  = &nullConvertPath;
-    _arnLogin        = 0;
-    _isClientSide    = isClientSide;
-    _state           = State::Init;
-    _isSending       = false;
-    _isClosed        = isClientSide;  // Server start as not closed
-    _wasClosed       = _isClosed;
-    _queueNumCount   = 0;
-    _queueNumDone    = 0;
-    _isConnected     = false;
-    _isDemandLogin   = false;
-    _remoteVer[0]    = 1;  // Default version 1.0
-    _remoteVer[1]    = 0;
-    _loginReqCode    = 0;
-    _loginNextSeq    = 0;
-    _loginSalt1      = 0;
-    _loginSalt2      = 0;
-    _trafficIn       = 0;
-    _trafficOut      = 0;
-    _allow           = _isClientSide ? Arn::Allow::All : Arn::Allow::None;
-    _remoteAllow     = Arn::Allow::None;
-    _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Legal/");
+    _socket           = socket;  // Note: ArnSync does not own socket ...
+    _sessionHandler   = 0;
+    _toRemotePathCB   = &nullConvertPath;
+    _arnLogin         = 0;
+    _isClientSide     = isClientSide;
+    _state            = State::Init;
+    _isSending        = false;
+    _isClosed         = isClientSide;  // Server start as not closed
+    _queueNumCount    = 0;
+    _queueNumDone     = 0;
+    _isConnectStarted = !isClientSide;  // Server start as connection started
+    _isConnected      = false;
+    _isDemandLogin    = false;
+    _remoteVer[0]     = 1;  // Default version 1.0
+    _remoteVer[1]     = 0;
+    _loginReqCode     = 0;
+    _loginNextSeq     = 0;
+    _loginSalt1       = 0;
+    _loginSalt2       = 0;
+    _trafficIn        = 0;
+    _trafficOut       = 0;
+    _clientSyncMode   = Arn::ClientSyncMode::Invalid;
+    _allow            = _isClientSide ? Arn::Allow::All : Arn::Allow::None;
+    _remoteAllow      = Arn::Allow::None;
+    _freePathTab     += Arn::fullPath( Arn::pathLocalSys + "Legal/");
     _dataRemain.clear();
 }
 
@@ -124,9 +125,7 @@ void  ArnSync::startNormalSync()
     if (_state == State::Normal)  return;  // Already in normal state (has done sync)
 
     // qDebug() << "StartNormalSync:";
-    _syncQueue.clear();
-    if (_wasClosed)
-        clearQueues();
+    clearNonPipeQueues();
 
     /// All the existing netItems must be synced
     ArnItemNet*  itemNet;
@@ -136,10 +135,8 @@ void  ArnSync::startNormalSync()
         i.next();
         itemNet = i.value();
 
-        if (_wasClosed) {
-            itemNet->resetDirtyValue();
-            itemNet->resetDirtyMode();
-        }
+        itemNet->resetDirtyValue();
+        itemNet->resetDirtyMode();
 
         _syncQueue.enqueue( itemNet);
         mode = itemNet->getModeString();
@@ -147,9 +144,37 @@ void  ArnSync::startNormalSync()
         if (!mode.isEmpty()  &&  !itemNet->isDirtyMode()) {
             _modeQueue.enqueue( itemNet);
         }
-        if ((itemNet->type() != Arn::DataType::Null)                  // Only send non Null Value ...
-        && (!itemNet->isPipeMode())                                   // from non pipe ..
-        && (itemNet->syncMode().is( Arn::ObjectSyncMode::Master))) {  // which is master
+
+        bool isMaster      = itemNet->isMaster();  // Default
+        bool isNull        = itemNet->type() == Arn::DataType::Null;
+
+        switch (_clientSyncMode) {
+        case Arn::ClientSyncMode::StdAutoMaster:
+        {
+            bool isNowMaster = itemNet->localUpdateSinceStop() > 0;
+            bool isNowSlave  = isMaster && isNull;
+            itemNet->setNowMaster( isNowMaster);
+            itemNet->setNowSlave( isNowSlave);
+            isMaster = !isNowSlave && (isNowMaster || isMaster);
+            break;
+        }
+        case Arn::ClientSyncMode::ImplicitMaster:
+            if (!isMaster) {  // Already is Master
+                if (itemNet->localUpdateCount() > 0) {
+                    itemNet->setMaster();
+                    isMaster = true;
+                }
+            }
+            break;
+        case Arn::ClientSyncMode::ExplicitMaster:
+            break;
+        default:
+            break;
+        }
+
+        bool isValueBlocked = itemNet->isPipeMode() ||  // Dont Sync itemNet value to Pipe
+                              itemNet->isFolder();
+        if (isMaster && !isValueBlocked) {
             itemValueUpdater( ArnLinkHandle::null(), 0, itemNet);  // Make client send the current value to server
         }
     }
@@ -354,6 +379,12 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
 }
 
 
+void  ArnSync::setClientSyncMode( Arn::ClientSyncMode clientSyncMode)
+{
+    _clientSyncMode = clientSyncMode;
+}
+
+
 void  ArnSync::setSessionHandler( void* sessionHandler)
 {
     _sessionHandler = sessionHandler;
@@ -398,19 +429,21 @@ Arn::Allow  ArnSync::getAllow()  const
 }
 
 
-void ArnSync::close()
+void  ArnSync::close()
 {
+    _isConnectStarted = false;
+
     if (_isClosed)  return;
 
     _isClosed = true;
     if (!_isSending)
         sendNext();
     if (!_isConnected)
-        clearQueues();
+        clearAllQueues();
 }
 
 
-void ArnSync::closeFinal()
+void  ArnSync::closeFinal()
 {
     sendExit();
     _socket->disconnectFromHost();
@@ -418,20 +451,28 @@ void ArnSync::closeFinal()
 }
 
 
-void ArnSync::clearQueues()
+void  ArnSync::clearNonPipeQueues()
 {
     _syncQueue.clear();
     _modeQueue.clear();
     _fluxItemQueue.clear();
+}
+
+
+void  ArnSync::clearAllQueues()
+{
+    clearNonPipeQueues();
+    //// Clear pipe queue
     _fluxRecPool += _fluxPipeQueue;
     _fluxPipeQueue.clear();
 }
 
 
-void ArnSync::setRemoteVer(const QByteArray& remVer)
+void  ArnSync::setRemoteVer( const QByteArray& remVer)
 {
     if (remVer.isEmpty())  return;
 
+    _remoteVer[1] = 0;  // Default
     QList<QByteArray>  remVerParts = remVer.split('.');
     int  partsNum = qMin( remVerParts.size(), 2);
     for (int i = 0; i < partsNum; ++i) {
@@ -588,7 +629,7 @@ void  ArnSync::startLogin()
 }
 
 
-void ArnSync::loginToArn( const QString& userName, const QString& passwordHash, Arn::Allow allow)
+void  ArnSync::loginToArn( const QString& userName, const QString& passwordHash, Arn::Allow allow)
 {
     //// Client side
     _loginUserName = userName;
@@ -613,7 +654,7 @@ void  ArnSync::loginToArn()
 }
 
 
-void ArnSync::doLoginSeq0End()
+void  ArnSync::doLoginSeq0End()
 {
     //// Server side
     _loginDelayTimer.stop();
@@ -799,8 +840,12 @@ uint  ArnSync::doCommandSync()
     if (!itemNet->getModeString().isEmpty()) {   // If non default mode
         itemModeUpdater( itemNet);    // Make server send the current mode to client
     }
-    if ((itemNet->type() != Arn::DataType::Null)
-    && !(itemNet->syncMode().is( syncMode.Master))) {  // Only send non Null Value to non master
+
+    bool  isBlockedValue = ((itemNet->type() == Arn::DataType::Null) && (_remoteVer[0] < 3)) ||
+                           itemNet->isPipeMode() ||
+                           itemNet->isFolder();
+    if (!isBlockedValue && !(itemNet->syncMode().is( syncMode.Master))) {
+        // Only send non blocked Value to non master
         itemValueUpdater( ArnLinkHandle::null(), 0, itemNet); // Make server send the current value to client
     }
 
@@ -847,7 +892,7 @@ uint  ArnSync::doCommandMode()
 }
 
 
-uint ArnSync::doCommandNoSync()
+uint  ArnSync::doCommandNoSync()
 {
     //// Single NoSync with id
     uint  netId = _commandMap.value("id").toUInt();
@@ -892,8 +937,10 @@ uint  ArnSync::doCommandFlux()
     QByteArray  data = _commandMap.value("data");
 
     bool  isOnlyEcho = type.contains("E");
+    bool  isNull     = type.contains("N");
 
     ArnLinkHandle  handleData;
+    handleData.flags().set( ArnLinkHandle::Flags::FromRemote);
     if (!nqrx.isEmpty())
         handleData.add( ArnLinkHandle::QueueFindRegexp,
                         QVariant( QRegExp( QString::fromUtf8( nqrx.constData(), nqrx.size()))));
@@ -907,9 +954,17 @@ uint  ArnSync::doCommandFlux()
         return ArnError::NotFound;
     }
 
-    bool  isIgnoreSame = isOnlyEcho;
-    if (!isOnlyEcho || !itemNet->getMode().is( Arn::ObjectMode::Pipe))  // Echo to Pipe is ignored
+    bool isNullBlocked  = isNull && (_clientSyncMode == Arn::ClientSyncMode::StdAutoMaster);
+    bool isValueBlocked = isNullBlocked ||
+                          (isOnlyEcho && itemNet->isPipeMode());  // Echo to Pipe is ignored
+    if (!isValueBlocked) {
+        bool  isIgnoreSame = isOnlyEcho;
         itemNet->arnImport( data, isIgnoreSame, handleData);
+    }
+    else if (_isClientSide && isNullBlocked && (itemNet->type() != Arn::DataType::Null)) {
+        // Server only had Null, use Client non Null
+        itemValueUpdater( ArnLinkHandle::null(), 0, itemNet);  // Make client send the current value to server
+    }
     return ArnError::Ok;
 }
 
@@ -955,8 +1010,11 @@ uint  ArnSync::doCommandSet()
         return createFlag ? ArnError::CreateError : ArnError::OpNotAllowed;
     }
 
-    if (!item.isFolder())
-        item.arnImport( data);
+    if (!item.isFolder()) {
+        ArnLinkHandle  handleData;
+        handleData.flags().set( ArnLinkHandle::Flags::FromRemote);
+        item.arnImport( data, Arn::SameValue::Accept, handleData );
+    }
 
     return ArnError::Ok;
 }
@@ -1083,7 +1141,7 @@ uint  ArnSync::doCommandInfo()
 }
 
 
-uint ArnSync::doCommandRInfo()
+uint  ArnSync::doCommandRInfo()
 {
     if (!_isClientSide)  return ArnError::RecNotExpected;
 
@@ -1101,7 +1159,7 @@ uint ArnSync::doCommandRInfo()
 }
 
 
-uint ArnSync::doCommandVer()
+uint  ArnSync::doCommandVer()
 {
     if (_isClientSide)  return ArnError::RecNotExpected;
 
@@ -1122,7 +1180,7 @@ uint ArnSync::doCommandVer()
 }
 
 
-uint ArnSync::doCommandRVer()
+uint  ArnSync::doCommandRVer()
 {
     if (!_isClientSide)  return ArnError::RecNotExpected;
 
@@ -1173,11 +1231,19 @@ QStringList  ArnSync::freePaths()  const
 }
 
 
+void  ArnSync::connectStarted()
+{
+    if (!_isConnectStarted) {  // First since last closed state
+        _isConnectStarted = true;
+        clearAllQueues();
+    }
+}
+
+
 void  ArnSync::connected()
 {
     if (!_isClientSide)  return;  // Only client side
 
-    _wasClosed   = _isClosed;
     _isClosed    = false;
     _isConnected = true;
     _remoteAllow = Arn::Allow::None;
@@ -1192,11 +1258,14 @@ void  ArnSync::connected()
 void  ArnSync::disConnected()
 {
     _isConnected = false;
-    _isSending = false;
+    _isSending   = false;
 
     if (_isClientSide) {  // Client
         if (_isClosed) {
-            clearQueues();
+            clearAllQueues();
+        }
+        foreach (ArnItemNet* itemNet, _itemNetMap) {
+            itemNet->onConnectStop();
         }
     }
     else {  // Server
@@ -1322,18 +1391,20 @@ void  ArnSync::doInfoInternal( int infoType, const QByteArray& data)
 void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData, const QByteArray* valueData,
                              ArnItemNet* itemNet)
 {
-    if (_isClosed)  return;
     if (!itemNet)  return;
 
     if (itemNet->isPipeMode()) {
+        if (!_isConnectStarted)  return;
+
         if (itemNet->isOnlyEcho()
+        || (itemNet->type() == Arn::DataType::Null)
         ||   (!_remoteAllow.is( _allow.Write)
           && (_isClientSide || !isFreePath( itemNet->path()))))
         {
             // qDebug() << "Flux skip pipe echo: path=" << itemNet->path() << " data=" << itemNet->arnExport()
             //          << "itemId=" << itemNet->itemId();
             itemNet->resetDirtyValue();  // Arm for more updates
-            return;  // Don't send any echo to a Pipe or not allowed op on remote side
+            return;  // Don't send any Echo or Null to a Pipe or not allowed op on remote side
         }
 
         FluxRec*  fluxRec = getFreeFluxRec();
@@ -1370,7 +1441,10 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData, const QByteArray* 
         }
     }
     else {  // Normal Item
-        if ( (itemNet->syncMode().is( Arn::ObjectSyncMode::Master)
+        if (_isClosed)  return;
+
+        if ((!_isClientSide
+          &&  itemNet->syncMode().is( Arn::ObjectSyncMode::Master)
           &&  itemNet->isOnlyEcho())
         ||   (!_remoteAllow.is( _allow.Write)
           && (_isClientSide || !isFreePath( itemNet->path()))))
@@ -1392,7 +1466,7 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData, const QByteArray* 
 void  ArnSync::eventToFluxQue( uint netId, int type, const QByteArray& data)
 {
     if (!netId)  return;  // Not valid id, item was disabled
-    if (_isClosed)  return;
+    if (!_isConnectStarted)  return;
 
     const char*  typeStr = ArnMonEventType::txt().getTxt( type, ArnMonEventType::NsCom);
     FluxRec*  fluxRec = getFreeFluxRec();
@@ -1413,7 +1487,7 @@ void  ArnSync::eventToFluxQue( uint netId, int type, const QByteArray& data)
 void  ArnSync::destroyToFluxQue( ArnItemNet* itemNet)
 {
     if (itemNet->isDisable())  return;
-    if (_isClosed)  return;
+    if (!_isConnectStarted)  return;
     if (!_remoteAllow.is( _allow.Delete))  return;
 
     ArnLink::RetireType  rt = ArnLink::RetireType::fromInt( itemNet->retireType());
@@ -1530,7 +1604,8 @@ QByteArray  ArnSync::makeFluxString( const ArnItemNet* itemNet, const ArnLinkHan
                                      const QByteArray* valueData)
 {
     QByteArray  type;
-    if (itemNet->isOnlyEcho())  type += "E";
+    if (itemNet->isOnlyEcho())                   type += "E";
+    if (itemNet->type() == Arn::DataType::Null)  type += "N";
 
     _syncMap.clear();
     _syncMap.add(ARNRECNAME, "flux").add("id", QByteArray::number( itemNet->netId()));

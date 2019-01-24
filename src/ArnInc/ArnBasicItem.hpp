@@ -536,6 +536,7 @@ public:
     //! \cond ADV
     bool  sendArnEventLink( ArnEvent* ev);
     void  sendArnEventItem( ArnEvent* ev, bool isAlienThread, bool isLocked = false);
+    quint32  localUpdateCount()  const;
 
 protected:
     virtual void  arnEvent( QEvent* ev, bool isAlienThread);
@@ -555,6 +556,7 @@ protected:
     bool  isOnlyEcho()  const;
     uint  retireType();
     void  setValue( const QByteArray& value, int ignoreSame, ArnLinkHandle& handleData);
+    void  setValue( const QVariant& value, int ignoreSame, ArnLinkHandle& handleData);
     void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
     QStringList  childItemsMain()  const;
     void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0)  const;

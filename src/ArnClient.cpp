@@ -132,10 +132,12 @@ ArnClientPrivate::ArnClientPrivate()
     _port            = 0;
     _nextHost        = -1;
     _curPrio         = -1;
+    _syncMode        = ArnClient::SyncMode::StdAutoMaster;
     resetConnectionFlags();
 
     _socket       = new QTcpSocket;
     _arnNetSync   = new ArnSync( _socket, true, 0);
+    _arnNetSync->setClientSyncMode( _syncMode);
     _arnNetSync->start();
     _connectTimer = new QTimer;
     _recTimer     = new QTimer;
@@ -526,6 +528,25 @@ void  ArnClient::setDemandLogin( bool isDemandLogin)
     Q_D(ArnClient);
 
     d->_arnNetSync->setDemandLogin( isDemandLogin);
+}
+
+
+ArnClient::SyncMode  ArnClient::syncMode()  const
+{
+    Q_D(const ArnClient);
+
+    return d->_syncMode;
+}
+
+
+void  ArnClient::setSyncMode( ArnClient::SyncMode syncMode)
+{
+    Q_D(ArnClient);
+
+    if (syncMode != SyncMode::Invalid) {
+        d->_syncMode = syncMode;
+        d->_arnNetSync->setClientSyncMode( syncMode);
+    }
 }
 
 
@@ -1040,6 +1061,7 @@ void  ArnClient::doConnectArnLogic()
     d->_curPrio           = curPrio;
     d->_connectStat       = ConnectStat::Connecting;
 
+    d->_arnNetSync->connectStarted();
     emit connectionStatusChanged( d->_connectStat, d->_curPrio);
 }
 

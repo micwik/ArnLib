@@ -433,7 +433,7 @@ void  ArnM::setValue( const QString& path, const QString& value)
     ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
 
     if (link) {
-        link->setValue(value);
+        link->setValue( value);
         link->deref();
     }
 }
@@ -498,7 +498,7 @@ void  ArnM::setValue( const QString& path, const QVariant& value, const char* ty
 }
 
 
-void ArnM::setValue(const QString& path, const char* value)
+void  ArnM::setValue( const QString& path, const char* value)
 {
     setValue( path, QString::fromUtf8( value));
 }

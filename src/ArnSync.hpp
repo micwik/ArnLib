@@ -112,6 +112,7 @@ public:
     ArnItemNet*  newNetItem( const QString& path,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
                              bool* isNewPtr = 0);
+    void  connectStarted();
     void  connected();
     void  close();
     void  sendXSMap( const Arn::XStringMap& xsMap);
@@ -130,6 +131,7 @@ public:
     static void  setupMonitorItem( ArnItemNet* itemNet);
     static void  doChildsToEvent( ArnItemNet* itemNet);
 
+    void  setClientSyncMode( Arn::ClientSyncMode clientSyncMode);
     void  setSessionHandler( void* sessionHandler);
     void  setToRemotePathCB( ConVertPathCB toRemotePathCB);
     static QString  nullConvertPath( void* context, const QString& path);
@@ -186,7 +188,8 @@ private:
     void  destroyToFluxQue( ArnItemNet* itemNet);
     void  removeItemNetRefs( ArnItemNet* itemNet);
     void  closeFinal();
-    void  clearQueues();
+    void  clearNonPipeQueues();
+    void  clearAllQueues();
     void  setRemoteVer( const QByteArray& remVer);
     void  setState( State state);
     bool  isFreePath( const QString& path)  const;
@@ -236,10 +239,10 @@ private:
     InfoType  _curInfoType;
     int  _queueNumCount;
     int  _queueNumDone;
+    bool  _isConnectStarted;
     bool  _isConnected;
     bool  _isSending;
     bool  _isClosed;
-    bool  _wasClosed;
     bool  _isClientSide;      // True if this is the client side of the connection
     bool  _isDemandLogin;
     uint  _remoteVer[2];
@@ -254,6 +257,7 @@ private:
     QTimer  _loginDelayTimer;
     Arn::Allow  _allow;
     Arn::Allow  _remoteAllow;
+    Arn::ClientSyncMode  _clientSyncMode;
 };
 //! \endcond
 

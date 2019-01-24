@@ -75,7 +75,9 @@ public:
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  setValue( const QByteArray& value, int sendId = 0, bool useUniDir = 0,
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
-    void  setValue( const QVariant& value, int sendId = 0, bool useUniDir = 0);
+    void  setValue( const QVariant& value, int sendId = 0, bool useUniDir = 0,
+                    const ArnLinkHandle& handleData = ArnLinkHandle::null());
+    void  setIgnoredValue( const ArnLinkHandle& handleData = ArnLinkHandle::null());
 
     int  toInt( bool* isOk = 0);
     ARNREAL  toReal( bool* isOk = 0);
@@ -112,6 +114,7 @@ public:
     bool  unsubscribe( ArnCoreItem* subscriber);
     void  deref();
     int  refCount();
+    quint32 localUpdateCount();
 
     QString  objectName()  const;
     ArnLink*  parent()  const;

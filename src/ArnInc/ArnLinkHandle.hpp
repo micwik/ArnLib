@@ -61,7 +61,9 @@ public:
     struct Flags {
         enum E {
             //! Transitional temporary flag to indicate utf8-coded bytearray.
-            Text = 0x01
+            Text        = 0x01,
+            //! Data originates from a remote.
+            FromRemote = 0x02
         };
         MQ_DECLARE_FLAGS( Flags)
     };

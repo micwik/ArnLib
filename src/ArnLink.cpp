@@ -46,10 +46,12 @@ struct ArnLinkValue {
     QVariant  valueVariant;
     volatile ARNREAL  valueReal;
     volatile int  valueInt;
+    quint32  localUpdateCount;  // Also ignored updates (ignoreSameValue) are included
 
     ArnLinkValue() {
         valueReal = 0.0;
         valueInt  = 0;
+        localUpdateCount = 0;
     }
 };
 
@@ -241,6 +243,7 @@ void  ArnLink::setValue( int value, int sendId, bool useUniDir)
     _val->valueInt = value;
     _type          = Arn::DataType::Int;
     _haveInt       = true;
+    ++_val->localUpdateCount;
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && _isPipeMode) {
@@ -267,6 +270,7 @@ void  ArnLink::setValue( ARNREAL value, int sendId, bool useUniDir)
     _val->valueReal = value;
     _type           = Arn::DataType::Real;
     _haveReal       = true;
+    ++_val->localUpdateCount;
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && _isPipeMode) {
@@ -300,6 +304,8 @@ void  ArnLink::setValue( const QString& value, int sendId, bool useUniDir,
     _val->valueString += value;
     _type              = Arn::DataType::String;
     _haveString        = true;
+    if (!handleData.flags().is( ArnLinkHandle::Flags::FromRemote))
+        ++_val->localUpdateCount;
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && (_isPipeMode || !handleData.isNull())) {
@@ -328,6 +334,8 @@ void  ArnLink::setValue( const QByteArray& value, int sendId, bool useUniDir,
     _val->valueByteArray += value;
     _type                 = Arn::DataType::ByteArray;
     _haveByteArray        = true;
+    if (!handleData.flags().is( ArnLinkHandle::Flags::FromRemote))
+        ++_val->localUpdateCount;
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && (_isPipeMode || !handleData.isNull())) {
@@ -340,11 +348,12 @@ void  ArnLink::setValue( const QByteArray& value, int sendId, bool useUniDir,
 }
 
 
-void  ArnLink::setValue( const QVariant& value, int sendId, bool useUniDir)
+void  ArnLink::setValue( const QVariant& value, int sendId, bool useUniDir,
+                         const ArnLinkHandle& handleData)
 {
     if (!_val)  return;
     if (_twin  &&  !useUniDir) {    // support for bidirectional function
-        _twin->setValue( value, sendId, true);
+        _twin->setValue( value, sendId, true, handleData);
         return;
     }
 
@@ -353,16 +362,30 @@ void  ArnLink::setValue( const QVariant& value, int sendId, bool useUniDir)
     _val->valueVariant = value;
     _type              = Arn::DataType::Variant;
     _haveVariant       = true;
+    if (!handleData.flags().is( ArnLinkHandle::Flags::FromRemote))
+        ++_val->localUpdateCount;
     if (_mutex)  _mutex->unlock();
 
     if (_mutex && _isPipeMode) {
+        // In a pipe only QVariant:s that can convert to QString is supported
         QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
                                 value.toString().toUtf8();
-        doValueChanged( sendId, &valueData);
+        doValueChanged( sendId, &valueData, handleData);
     }
     else {
-        doValueChanged( sendId);
+        doValueChanged( sendId, 0, handleData);
     }
+}
+
+
+void  ArnLink::setIgnoredValue( const ArnLinkHandle& handleData)
+{
+    if (!_val)  return;
+
+    if (_mutex)  _mutex->lock();
+    if (!handleData.flags().is( ArnLinkHandle::Flags::FromRemote))
+        ++_val->localUpdateCount;
+    if (_mutex)  _mutex->unlock();
 }
 
 
@@ -1030,6 +1053,19 @@ int  ArnLink::refCount()
     if (vLink->_mutex)  vLink->_mutex->lock();
     retVal = vLink->_refCount;
     if (vLink->_mutex)  vLink->_mutex->unlock();
+
+    return retVal;
+}
+
+
+quint32 ArnLink::localUpdateCount()
+{
+    quint32  retVal = 0;
+
+    if (_mutex)  _mutex->lock();
+    if (_val)
+        retVal = _val->localUpdateCount;
+    if (_mutex)  _mutex->unlock();
 
     return retVal;
 }

@@ -67,10 +67,15 @@ public:
 
     void  resetDirtyValue();
     void  resetDirtyMode();
+    bool  isDirtyValue()  const;
     bool  isDirtyMode()  const;
     bool  isLeadValueUpdate();
     bool  isLeadModeUpdate();
     bool  isBlock( quint32 sendId);
+    void  setNowMaster( bool nowMaster);
+    void  setNowSlave( bool nowSlave);
+    quint32  localUpdateSinceStop()  const;
+    void  onConnectStop();
 
     virtual void  arnEvent( QEvent* ev, bool isAlienThread);
 
@@ -96,13 +101,16 @@ private:
 
     void*  _sessionHandler;  // E.g ArnClient
 
-    uint  _netId;          // id used during sync over net
-    int  _queueNum;        // number used in itemQueue
-    bool  _dirty : 1;      // item has been updated but not yet sent
-    bool  _dirtyMode : 1;  // item Mode has been updated but not yet sent
-    bool  _disable : 1;    // item is defunct and should not send (destroy command)
-    bool  _isMonitor : 1;  // item is used as a Monitor
+    uint  _netId;               // id used during sync over net
+    int  _queueNum;             // number used in itemQueue
+    quint32  _updateCountStop;  // Local update count at connection lost
+    bool  _dirty : 1;           // item has been updated but not yet sent
+    bool  _dirtyMode : 1;       // item Mode has been updated but not yet sent
+    bool  _disable : 1;         // item is defunct and should not send (destroy command)
+    bool  _isMonitor : 1;       // item is used as a Monitor
     bool  _blockEcho : 1;
+    bool  _nowMaster : 1;       // Temporary master logic for next sync
+    bool  _nowSlave  : 1;       // Temporary slave logic for next sync
 };
 
 

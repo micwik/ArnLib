@@ -107,6 +107,7 @@ class ARNLIBSHARED_EXPORT ArnClient : public QObject
 
 public:
     typedef ArnClientConnectStat  ConnectStat;
+    typedef Arn::ClientSyncMode  SyncMode;
 
     struct HostAddrPort {
         QString  addr;
@@ -328,6 +329,10 @@ public:
      *  \see isDemandLogin()
      */
     void  setDemandLogin( bool isDemandLogin);
+
+    SyncMode  syncMode()  const;
+
+    void  setSyncMode( SyncMode syncMode);
 
     //! Generate a hashed password from clear text password
     /*! \param[in] password is the clear text password.

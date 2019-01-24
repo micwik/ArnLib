@@ -263,6 +263,14 @@ bool  ArnBasicItem::isOnlyEcho() const
 }
 
 
+quint32  ArnBasicItem::localUpdateCount()  const
+{
+    if (!_link)  return 0;
+
+    return _link->localUpdateCount();
+}
+
+
 uint  ArnBasicItem::retireType()
 {
     return _link ? _link->retireType() : uint( ArnLink::RetireType::None);
@@ -501,7 +509,7 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
                 stream.setVersion( DATASTREAM_VER);
                 quint8  dummy;  // Will get Export-code
                 stream >> dummy >> value;
-                setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
+                setValue( value, ignoreSame, handleData);  // ArnLinkHandle not fully supported for QVariant
                 return;
             }
             case Arn::ExportCode::VariantTxt: {
@@ -523,7 +531,7 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
                     return;
                 }
 
-                setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
+                setValue( value, ignoreSame, handleData);  // ArnLinkHandle not fully supported for QVariant
                 return;
             }
             case Arn::ExportCode::VariantBin: {
@@ -561,7 +569,7 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
                 QVariant  value( type, valData);
                 QMetaType::destroy( type, valData);
 
-                setValue( value, ignoreSame);  // ArnLinkHandle not supported for QVariant
+                setValue( value, ignoreSame, handleData);  // ArnLinkHandle not fully supported for QVariant
                 return;
             }
             case Arn::ExportCode::ByteArray:
@@ -840,6 +848,7 @@ void  ArnBasicItem::setValue( int value, int ignoreSame)
             ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
             bool  isOk;
             if ((value == holderLink->toInt( &isOk)) && isOk) {
+                holderLink->setIgnoredValue();
                 return;
             }
         }
@@ -862,6 +871,7 @@ void  ArnBasicItem::setValue( ARNREAL value, int ignoreSame)
             ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
             bool  isOk;
             if ((value == holderLink->toReal( &isOk)) && isOk) {
+                holderLink->setIgnoredValue();
                 return;
             }
         }
@@ -884,6 +894,7 @@ void  ArnBasicItem::setValue( bool value, int ignoreSame)
             ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
             bool  isOk;
             if ((value == (holderLink->toInt( &isOk) != 0)) && isOk) {
+                holderLink->setIgnoredValue();
                 return;
             }
         }
@@ -906,6 +917,7 @@ void  ArnBasicItem::setValue( const QString& value, int ignoreSame)
             ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
             bool  isOk;
             if ((value == holderLink->toString( &isOk)) && isOk) {
+                holderLink->setIgnoredValue();
                 return;
             }
         }
@@ -928,6 +940,7 @@ void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame)
             ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
             bool  isOk;
             if ((value == holderLink->toByteArray( &isOk)) && isOk) {
+                holderLink->setIgnoredValue();
                 return;
             }
         }
@@ -950,6 +963,7 @@ void  ArnBasicItem::setValue( const QVariant& value, int ignoreSame)
             ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
             bool  isOk;
             if ((value == holderLink->toVariant( &isOk)) && isOk) {
+                holderLink->setIgnoredValue();
                 return;
             }
         }
@@ -1134,12 +1148,16 @@ void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame, ArnLinkHa
             ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
             bool  isOk;
             if (handleFlags.is( handleFlags.Text)) {
-                if ((valueTxt == holderLink->toString( &isOk)) && isOk)
+                if ((valueTxt == holderLink->toString( &isOk)) && isOk) {
+                    holderLink->setIgnoredValue( handleData);
                     return;
+                }
             }
             else {
-                if ((value == holderLink->toByteArray( &isOk)) && isOk)
+                if ((value == holderLink->toByteArray( &isOk)) && isOk) {
+                    holderLink->setIgnoredValue( handleData);
                     return;
+                }
             }
         }
         if (handleFlags.is( handleFlags.Text)) {
@@ -1151,6 +1169,29 @@ void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame, ArnLinkHa
     }
     else {
         errorLog( QString("Assigning bytearray (ArnLinkHandle):") + QString::fromUtf8( value.constData(), value.size()),
+                  ArnError::ItemNotOpen);
+    }
+}
+
+
+void  ArnBasicItem::setValue( const QVariant& value, int ignoreSame, ArnLinkHandle& handleData)
+{
+    Q_D(ArnBasicItem);
+
+    bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
+    if (_link) {
+        if (isIgnoreSame) {
+            ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
+            bool  isOk;
+            if ((value == holderLink->toVariant( &isOk)) && isOk) {
+                holderLink->setIgnoredValue( handleData);
+                return;
+            }
+        }
+        _link->setValue( value, d->_id, d->_useUniDir, handleData);
+    }
+    else {
+        errorLog( QString("Assigning variant (ArnLinkHandle):"),
                   ArnError::ItemNotOpen);
     }
 }

@@ -139,7 +139,7 @@ class ObjectSyncMode {  // This mode is sent with sync-command
     Q_ENUMS(E)
 public:
     enum E {
-        //! default
+        //! Default
         Normal      = 0x00,
         //! Monitor of server object for client
         Monitor     = 0x01,
@@ -149,6 +149,21 @@ public:
         AutoDestroy = 0x04
     };
     MQ_DECLARE_FLAGSTXT( ObjectSyncMode)
+};
+
+//! The Client session Sync mode at connect & reconnect
+struct ClientSyncMode {
+    enum E {
+        //! Value for Server, can not be set in Client
+        Invalid,
+        //! Default dynamic auto master mode, general purpose, prohibit Null value sync
+        StdAutoMaster,
+        //! First local write gives permanent Master mode, typically a client value reporter
+        ImplicitMaster,
+        //! Explicit permanent Master mode, typically an observer or manually setup Master mode
+        ExplicitMaster
+    };
+    MQ_DECLARE_ENUM( ClientSyncMode)
 };
 
 //! Link flags when accessing an _Arn Data Object_

@@ -75,6 +75,7 @@ private:
     QString  _id;
     ArnClient::HostAddrPort  _curConnectAP;
     ArnClient::ConnectStat  _connectStat;
+    ArnClient::SyncMode  _syncMode;
     bool  _isValidCredent;
     bool  _isReContact;
     bool  _isReConnect;

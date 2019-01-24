@@ -48,6 +48,9 @@ void  ArnItemNet::init()
     _disable   = false;
     _isMonitor = false;
     _blockEcho = false;
+    _nowMaster = false;
+    _nowSlave  = false;
+    _updateCountStop = 0;
 
     setUniDir();
     setIgnoreSameValue( false);
@@ -122,9 +125,11 @@ QByteArray  ArnItemNet::getSyncModeString()  const
     QByteArray  smode;
     Arn::ObjectSyncMode  syncMode = ArnBasicItem::syncMode();
 
-    if (syncMode.is( syncMode.Master))       smode += "master ";
-    if (syncMode.is( syncMode.AutoDestroy))  smode += "autodestroy ";
-    if (syncMode.is( syncMode.Monitor))      smode += "mon ";
+    if (!_nowSlave
+    &&   (_nowMaster
+      || syncMode.is( syncMode.Master)))      smode += "master ";
+    if  (syncMode.is( syncMode.AutoDestroy))  smode += "autodestroy ";
+    if  (syncMode.is( syncMode.Monitor))      smode += "mon ";
 
     return smode.trimmed();
 }
@@ -227,7 +232,9 @@ int  ArnItemNet::queueNum()  const
 
 void  ArnItemNet::resetDirtyValue()
 {
-    _dirty = false;
+    _dirty     = false;
+    _nowMaster = false;
+    _nowSlave  = false;
     resetOnlyEcho();
 }
 
@@ -235,6 +242,12 @@ void  ArnItemNet::resetDirtyValue()
 void  ArnItemNet::resetDirtyMode()
 {
     _dirtyMode = false;
+}
+
+
+bool  ArnItemNet::isDirtyValue()  const
+{
+    return _dirty;
 }
 
 
@@ -262,9 +275,35 @@ bool  ArnItemNet::isLeadModeUpdate()
 }
 
 
-bool ArnItemNet::isBlock( quint32 sendId)
+bool  ArnItemNet::isBlock( quint32 sendId)
 {
     return (_blockEcho && (sendId == itemId()));  // Update was initiated from this Item, it can be blocked ...
+}
+
+
+void  ArnItemNet::setNowMaster( bool nowMaster)
+{
+    _nowMaster =  nowMaster;
+    _nowSlave &= !nowMaster;
+}
+
+
+void  ArnItemNet::setNowSlave( bool nowSlave)
+{
+    _nowSlave   =  nowSlave;
+    _nowMaster &= !nowSlave;
+}
+
+
+quint32  ArnItemNet::localUpdateSinceStop()  const
+{
+    return localUpdateCount() - _updateCountStop;
+}
+
+
+void  ArnItemNet::onConnectStop()
+{
+    _updateCountStop = localUpdateCount();
 }
 
 
