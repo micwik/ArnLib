@@ -82,6 +82,7 @@ public:
 //! Class for connecting to an _Arn Server_.
 /*!
 [About Sharing Arn Data Objects](\ref gen_shareArnobj)
+[About Sync Rules](\ref gen_syncRules)
 
 Connection can be made to a specific Host by connectToArn(). It's also possible to define
 an _Arn Connection List_. Each host address is added to the list with a priority. The
@@ -330,8 +331,20 @@ public:
      */
     void  setDemandLogin( bool isDemandLogin);
 
+    //! Get ClientSyncMode
+    /*! Default for ArnClient is StdAutoMaster.
+     *  \retval ClientSyncMode.
+     *  \see \ref gen_syncRulesMode
+     *  \see setSyncMode()
+     */
     SyncMode  syncMode()  const;
 
+    //! Set ClientSyncMode
+    /*! Default for ArnClient is StdAutoMaster.
+     *  \param[in] syncMode the ClientSyncMode to be set.
+     *  \see \ref gen_syncRulesMode
+     *  \see syncMode()
+     */
     void  setSyncMode( SyncMode syncMode);
 
     //! Generate a hashed password from clear text password

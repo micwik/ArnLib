@@ -82,9 +82,7 @@ Following _sync_modes_ are available:
 
 * **Master** The _ARN Data Object_ (at client side) is set as _default generator_ of data.
   Normally the server is the _default generator_ of data.
-  This makes difference when client connects or reconnects to the server.
-  The data from the _default generator_ is then used and synced. Also echo of data to
-  the client side _ARN data object_ is prohibited.
+  See [Sync Rules](#gen_syncRules).
 * **AutoDestroy** The _ARN Data Object_ (at client side) is set up for auto destruction.
   When the client closes tcp/ip, the server side will destroy the _ARN Data Object_ and
   this will also be done at any connected clients.
@@ -300,6 +298,70 @@ taken from a range specified by IANA.
 This can typically be used to skip configuring static port numbers and be able to have
 multiple instanses of the ArnServer on the same machine. As an ArnClient must find its
 ArnServer, this can be used together with ArnDiscoverRemote / ArnDiscover.
+<Br><Br>
+
+
+Sync rules    {#gen_syncRules}
+----------
+Syncing between client and server is normally handled automatically, but for special needs
+and reference this chapter gives an idea of the rules. Also this descibes the rules when
+connection is established. After that, normal syncing is done almost symetrically between client
+and server. One exeption is when client is Master for an _ARN Data Object_, then data echo
+from server is prohibited.
+
+### Sync rules for Pipe ###    {#gen_syncRulesPipe}
+* Pipes should be considered to carry a flow, not a value.
+* The pipe flow (to server) is enabled after ArnClient::connectToArn(), and is disabled
+  after ArnClient::close().
+* In client, an enabled flow can queue up the stream of data when there is no connection
+  to server.
+* In client, the flow keeps being enabled even if the ArnClient::connectToArn() fails
+  or there is a TCP disconnect.
+* When the flow is disabled (ArnClient::close), all queued stream data will be sent if
+  possible.
+* Server can never queue anything when disconnected, as the server session is only living
+  when connected.
+<Br><Br>
+
+### ClientSyncMode ###    {#gen_syncRulesMode}
+ClientSyncMode can be set with ArnClient::setSyncMode().
+Basically this controls if a client _ARN Data Object_ is
+considered as a Master object (se also [Modes](#gen_arnobjModes) ).
+The Master object is set as _default generator_ of data.
+Normally the server is the _default generator_ of data.
+This makes difference when client connects or reconnects to the server.
+The data from the _default generator_ is then used and synced.
+
+When a Null value is synced, the receiver store this as an empty value,
+i.e. it't not stored as Null which is impossible.
+
+ClientSyncMode doesn't affect a pipe. Default mode is StdAutoMaster.
+
+* **StdAutoMaster**
+    Dynamic auto master mode, general purpose, prohibit Null value sync.
+    Can be used for one time initial setup, thereafter server can be Master for an object.
+    + Master can be set explicitly with ArnItem::setMaster().
+      This is overided if the _ARN Data Object_ has a Null value (not assigned), then
+      the object becomes temporary Slave for next connection.
+    + If client has an unsynced local update (during not connected state), this
+      _ARN Data Object_ becomes temporary Master for just next connection.
+    + If the client is not Master for an _ARN Data Object_ but the server only has a Null
+      value, the clients value (non Null) is still used.
+* **ImplicitMaster**
+    First local assign gives permanent Master mode, typically a client value reporter.
+    Client can receive persistent value from a server in an _ARN Data Object_ and then become
+    a continual Master for the object by assigning value(s).
+    + Master can be set explicitly with ArnItem::setMaster().
+    + Client local assign to an _ARN Data Object_ gives permanent Master mode for this object.
+      This implicit Master mode setting is done once when next connection is established.
+    + Null values can be synced both from client and server.
+* **ExplicitMaster**
+    Explicit permanent Master mode, typically an observer or manually setup Master mode.
+    Can be used for UI (User Interface) with no Master set to any _ARN Data Object_, i.e.
+    the server is always holding the "true" value.
+    + Master can be set explicitly with ArnItem::setMaster().
+      Client has no other way to become Master for an _ARN Data Object_.
+    + Null values can be synced both from client and server.
 <Br><Br>
 
 
