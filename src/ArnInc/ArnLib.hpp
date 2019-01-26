@@ -51,6 +51,7 @@ extern bool  debugDiscover;
 extern bool  debugZeroConf;
 extern bool  debugMDNS;
 extern bool  warningMDNS;
+extern bool  offHeartbeat;
 
 extern const QString  resourceArnLib;
 extern const QString  resourceArnRoot;

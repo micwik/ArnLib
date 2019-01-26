@@ -911,8 +911,9 @@ void  ArnClient::doTcpConnected()
     d->_isReContact = d->_wasContact;
     d->_wasContact  = true;
 
-    if (d->_receiveTimeout > 0)
+    if ((d->_receiveTimeout > 0) && !Arn::offHeartbeat)
         d->_recTimer->start( d->_receiveTimeout * 1000 / 2);
+    d->_recTimeoutCount = 0;
 
     d->_arnNetSync->connected();
 

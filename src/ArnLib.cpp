@@ -49,6 +49,7 @@ bool debugDiscover    = false;
 bool debugZeroConf    = false;
 bool debugMDNS        = false;
 bool warningMDNS      = false;
+bool offHeartbeat     = false;
 
 const QString  resourceArnLib  = ":/ArnLib/";
 const QString  resourceArnRoot = ":/ArnLib/ArnRoot/";
