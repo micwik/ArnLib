@@ -72,8 +72,9 @@ public:
     bool  isLeadValueUpdate();
     bool  isLeadModeUpdate();
     bool  isBlock( quint32 sendId);
-    void  setNowMaster( bool nowMaster);
-    void  setNowSlave( bool nowSlave);
+    void  setIniMaster( bool iniMaster);
+    void  setIniSlave( bool iniSlave);
+    bool  isMasterAtStart()  const;
     quint32  localUpdateSinceStop()  const;
     void  onConnectStop();
 
@@ -109,8 +110,8 @@ private:
     bool  _disable : 1;         // item is defunct and should not send (destroy command)
     bool  _isMonitor : 1;       // item is used as a Monitor
     bool  _blockEcho : 1;
-    bool  _nowMaster : 1;       // Temporary master logic for next sync
-    bool  _nowSlave  : 1;       // Temporary slave logic for next sync
+    bool  _iniMaster : 1;       // Temporary master logic for next sync
+    bool  _iniSlave  : 1;       // Temporary slave logic for next sync
 };
 
 

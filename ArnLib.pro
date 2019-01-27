@@ -17,7 +17,7 @@ ARN += qml
 QT -= gui
 
 # Usage of internal mDNS code (no external dependency).
-CONFIG += mDnsIntern
+# CONFIG += mDnsIntern
 
 # Usage of float as real type, default is double. Must be same in application pro-file.
 # DEFINES += ARNREAL_FLOAT

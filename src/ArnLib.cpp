@@ -38,7 +38,7 @@ bool debugSizes       = false;
 bool debugThreading   = false;
 bool debugLinkRef     = false;
 bool debugLinkDestroy = false;
-bool debugRecInOut    = false;
+bool debugRecInOut    = true;
 bool debugShareObj    = false;
 bool debugMonitor     = false;
 bool debugMonitorTest = false;
@@ -49,7 +49,7 @@ bool debugDiscover    = false;
 bool debugZeroConf    = false;
 bool debugMDNS        = false;
 bool warningMDNS      = false;
-bool offHeartbeat     = false;
+bool offHeartbeat     = true;
 
 const QString  resourceArnLib  = ":/ArnLib/";
 const QString  resourceArnRoot = ":/ArnLib/ArnRoot/";

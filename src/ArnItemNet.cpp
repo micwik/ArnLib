@@ -48,8 +48,8 @@ void  ArnItemNet::init()
     _disable   = false;
     _isMonitor = false;
     _blockEcho = false;
-    _nowMaster = false;
-    _nowSlave  = false;
+    _iniMaster = false;
+    _iniSlave  = false;
     _updateCountStop = 0;
 
     setUniDir();
@@ -112,7 +112,11 @@ void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
 {
     Arn::ObjectSyncMode  syncMode;
 
-    syncMode.set( syncMode.Master,      smode.contains("master"));
+    setIniMaster(                       smode.contains("inimast"));
+    setIniSlave(                        smode.contains("inislave"));
+    bool isMaster                     = smode.contains("master");
+    isMaster |= _iniSlave;
+    syncMode.set( syncMode.Master,      isMaster);
     syncMode.set( syncMode.AutoDestroy, smode.contains("autodestroy"));
     syncMode.set( syncMode.Monitor,     smode.contains("mon"));
 
@@ -125,9 +129,10 @@ QByteArray  ArnItemNet::getSyncModeString()  const
     QByteArray  smode;
     Arn::ObjectSyncMode  syncMode = ArnBasicItem::syncMode();
 
-    if (!_nowSlave
-    &&   (_nowMaster
-      || syncMode.is( syncMode.Master)))      smode += "master ";
+    if (_iniSlave)                            smode += "inislave ";
+    else if (syncMode.is( syncMode.Master))   smode += "master ";
+    else if (_iniMaster)                      smode += "inimast ";
+
     if  (syncMode.is( syncMode.AutoDestroy))  smode += "autodestroy ";
     if  (syncMode.is( syncMode.Monitor))      smode += "mon ";
 
@@ -233,8 +238,8 @@ int  ArnItemNet::queueNum()  const
 void  ArnItemNet::resetDirtyValue()
 {
     _dirty     = false;
-    _nowMaster = false;
-    _nowSlave  = false;
+    _iniMaster = false;
+    _iniSlave  = false;
     resetOnlyEcho();
 }
 
@@ -281,17 +286,23 @@ bool  ArnItemNet::isBlock( quint32 sendId)
 }
 
 
-void  ArnItemNet::setNowMaster( bool nowMaster)
+void  ArnItemNet::setIniMaster( bool iniMaster)
 {
-    _nowMaster =  nowMaster;
-    _nowSlave &= !nowMaster;
+    _iniMaster =  iniMaster;
+    _iniSlave &= !iniMaster;
 }
 
 
-void  ArnItemNet::setNowSlave( bool nowSlave)
+void  ArnItemNet::setIniSlave( bool iniSlave)
 {
-    _nowSlave   =  nowSlave;
-    _nowMaster &= !nowSlave;
+    _iniSlave   =  iniSlave;
+    _iniMaster &= !iniSlave;
+}
+
+
+bool  ArnItemNet::isMasterAtStart()  const
+{
+    return !_iniSlave && (_iniMaster || isMaster());
 }
 
 

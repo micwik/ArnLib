@@ -145,24 +145,24 @@ void  ArnSync::startNormalSync()
             _modeQueue.enqueue( itemNet);
         }
 
-        bool isMaster      = itemNet->isMaster();  // Default
-        bool isNull        = itemNet->type() == Arn::DataType::Null;
+        bool isMaster = itemNet->isMaster();
+        bool isNull   = itemNet->type() == Arn::DataType::Null;
 
         switch (_clientSyncMode) {
         case Arn::ClientSyncMode::StdAutoMaster:
         {
-            bool isNowMaster = itemNet->localUpdateSinceStop() > 0;
-            bool isNowSlave  = isMaster && isNull;
-            itemNet->setNowMaster( isNowMaster);
-            itemNet->setNowSlave( isNowSlave);
-            isMaster = !isNowSlave && (isNowMaster || isMaster);
+            if (_remoteVer[0] < 3)
+                break;
+            bool isIniMaster = itemNet->localUpdateSinceStop() > 0;
+            bool isIniSlave  = isMaster && isNull;
+            itemNet->setIniMaster( isIniMaster);
+            itemNet->setIniSlave( isIniSlave);
             break;
         }
         case Arn::ClientSyncMode::ImplicitMaster:
             if (!isMaster) {  // Already is Master
                 if (itemNet->localUpdateCount() > 0) {
                     itemNet->setMaster();
-                    isMaster = true;
                 }
             }
             break;
@@ -172,9 +172,10 @@ void  ArnSync::startNormalSync()
             break;
         }
 
+        bool isMasterStart  = itemNet->isMasterAtStart();
         bool isValueBlocked = itemNet->isPipeMode() ||  // Dont Sync itemNet value to Pipe
                               itemNet->isFolder();
-        if (isMaster && !isValueBlocked) {
+        if (isMasterStart && !isValueBlocked) {
             itemValueUpdater( ArnLinkHandle::null(), 0, itemNet);  // Make client send the current value to server
         }
     }
@@ -844,8 +845,8 @@ uint  ArnSync::doCommandSync()
     bool  isBlockedValue = ((itemNet->type() == Arn::DataType::Null) && (_remoteVer[0] < 3)) ||
                            itemNet->isPipeMode() ||
                            itemNet->isFolder();
-    if (!isBlockedValue && !(itemNet->syncMode().is( syncMode.Master))) {
-        // Only send non blocked Value to non master
+    if (!isBlockedValue && !(itemNet->isMasterAtStart())) {
+        // Only send non blocked Value to non startMaster
         itemValueUpdater( ArnLinkHandle::null(), 0, itemNet); // Make server send the current value to client
     }
 
@@ -936,7 +937,7 @@ uint  ArnSync::doCommandFlux()
     QByteArray  seq  = _commandMap.value("seq");
     QByteArray  data = _commandMap.value("data");
 
-    bool  isOnlyEcho = type.contains("E");
+    bool  isOnlyEcho = type.contains("E");  // After sync from server/client, later from server
     bool  isNull     = type.contains("N");
 
     ArnLinkHandle  handleData;
@@ -956,7 +957,8 @@ uint  ArnSync::doCommandFlux()
 
     bool isNullBlocked  = isNull && (_clientSyncMode == Arn::ClientSyncMode::StdAutoMaster);
     bool isValueBlocked = isNullBlocked ||
-                          (isOnlyEcho && itemNet->isPipeMode());  // Echo to Pipe is ignored
+                          (isOnlyEcho && (itemNet->isPipeMode() ||  // Echo to Pipe is ignored
+                                         (!_isClientSide && itemNet->isMaster())));  // Echo to Master is ignored
     if (!isValueBlocked) {
         bool  isIgnoreSame = isOnlyEcho;
         itemNet->arnImport( data, isIgnoreSame, handleData);
@@ -1276,7 +1278,7 @@ void  ArnSync::disConnected()
         //// Make a list of netId to AutoDestroy
         QList<uint>  destroyList;
         foreach (ArnItemNet* itemNet, _itemNetMap) {
-            if (itemNet->syncMode().is( Arn::ObjectSyncMode::AutoDestroy)) {
+            if (itemNet->isAutoDestroy()) {
                 destroyList += itemNet->netId();
                 // qDebug() << "Server-disconnect: destroyList path=" << itemNet->path();
             }
@@ -1448,13 +1450,13 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData, const QByteArray* 
         if (_isClosed)  return;
 
         if ((!_isClientSide
-          &&  itemNet->syncMode().is( Arn::ObjectSyncMode::Master)
+          &&  itemNet->isMaster()
           &&  itemNet->isOnlyEcho())
         ||   (!_remoteAllow.is( _allow.Write)
           && (_isClientSide || !isFreePath( itemNet->path()))))
         {
             itemNet->resetDirtyValue();  // Arm for more updates
-            return;  // Don't send any echo to a Master
+            return;  // Don't send any echo to a Client Master
         }
 
         itemNet->setQueueNum( ++_queueNumCount);
