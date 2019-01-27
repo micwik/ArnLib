@@ -955,10 +955,10 @@ uint  ArnSync::doCommandFlux()
         return ArnError::NotFound;
     }
 
-    bool isNullBlocked  = isNull && (_clientSyncMode == Arn::ClientSyncMode::StdAutoMaster);
-    bool isValueBlocked = isNullBlocked ||
-                          (isOnlyEcho && (itemNet->isPipeMode() ||  // Echo to Pipe is ignored
-                                         (!_isClientSide && itemNet->isMaster())));  // Echo to Master is ignored
+    bool isNullBlocked       = isNull && (_clientSyncMode == Arn::ClientSyncMode::StdAutoMaster);  // Only client
+    bool isEchoPipeBlocked   = isOnlyEcho && itemNet->isPipeMode();
+    bool isEchoMasterBlocked = isOnlyEcho && _isClientSide && itemNet->isMaster();
+    bool isValueBlocked      = isNullBlocked || isEchoPipeBlocked || isEchoMasterBlocked;
     if (!isValueBlocked) {
         bool  isIgnoreSame = isOnlyEcho;
         itemNet->arnImport( data, isIgnoreSame, handleData);
@@ -1449,12 +1449,10 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData, const QByteArray* 
     else {  // Normal Item
         if (_isClosed)  return;
 
-        if ((!_isClientSide
-          &&  itemNet->isMaster()
-          &&  itemNet->isOnlyEcho())
-        ||   (!_remoteAllow.is( _allow.Write)
-          && (_isClientSide || !isFreePath( itemNet->path()))))
-        {
+        bool isEchoMasterBlocked = !_isClientSide && itemNet->isMaster() && itemNet->isOnlyEcho();
+        bool isRemAllowBlocked   = !_remoteAllow.is( _allow.Write)
+                                   && (_isClientSide || !isFreePath( itemNet->path()));
+        if (isEchoMasterBlocked || isRemAllowBlocked) {
             itemNet->resetDirtyValue();  // Arm for more updates
             return;  // Don't send any echo to a Client Master
         }
