@@ -42,14 +42,15 @@
 
 void  ArnItemNet::init()
 {
-    _netId     = 0;
-    _dirty     = false;
-    _dirtyMode = false;
-    _disable   = false;
-    _isMonitor = false;
-    _blockEcho = false;
-    _iniMaster = false;
-    _iniSlave  = false;
+    _netId      = 0;
+    _dirty      = false;
+    _dirtyMode  = false;
+    _disable    = false;
+    _isMonitor  = false;
+    _blockEcho  = false;
+    _iniMaster  = false;
+    _iniSlave   = false;
+    _curEchoSeq = -1;
     _updateCountStop = 0;
 
     setUniDir();
@@ -232,6 +233,37 @@ void  ArnItemNet::setQueueNum( int num)
 int  ArnItemNet::queueNum()  const
 {
     return _queueNum;
+}
+
+
+void  ArnItemNet::nextEchoSeq()
+{
+    _curEchoSeq = (_curEchoSeq + 1) % 100;
+}
+
+
+void ArnItemNet::resetEchoSeq()
+{
+    _curEchoSeq = -1;
+}
+
+
+void  ArnItemNet::setEchoSeq( qint8 echoSeq)
+{
+    _curEchoSeq = echoSeq;
+}
+
+
+qint8  ArnItemNet::echoSeq()  const
+{
+    return isPipeMode() ? -1 : _curEchoSeq;
+}
+
+
+bool  ArnItemNet::isEchoSeqOld( qint8 receivedEchoSeq)
+{
+    if ((_curEchoSeq < 0) || (receivedEchoSeq < 0))  return false;
+    return receivedEchoSeq != _curEchoSeq;
 }
 
 

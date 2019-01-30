@@ -176,6 +176,7 @@ void  ArnSync::startNormalSync()
         bool isValueBlocked = itemNet->isPipeMode() ||  // Dont Sync itemNet value to Pipe
                               itemNet->isFolder();
         if (isMasterStart && !isValueBlocked) {
+            itemNet->resetEchoSeq();
             itemValueUpdater( ArnLinkHandle::null(), 0, itemNet);  // Make client send the current value to server
         }
     }
@@ -936,6 +937,7 @@ uint  ArnSync::doCommandFlux()
     QByteArray  nqrx = _commandMap.value("nqrx");
     QByteArray  seq  = _commandMap.value("seq");
     QByteArray  data = _commandMap.value("data");
+    qint8  echoSeq   = _commandMap.value("es", "-1").toInt();
 
     bool  isOnlyEcho = type.contains("E");  // After sync from server/client, later from server
     bool  isNull     = type.contains("N");
@@ -958,8 +960,11 @@ uint  ArnSync::doCommandFlux()
     bool isNullBlocked       = isNull && (_clientSyncMode == Arn::ClientSyncMode::StdAutoMaster);  // Only client
     bool isEchoPipeBlocked   = isOnlyEcho && itemNet->isPipeMode();
     bool isEchoMasterBlocked = isOnlyEcho && _isClientSide && itemNet->isMaster();
-    bool isValueBlocked      = isNullBlocked || isEchoPipeBlocked || isEchoMasterBlocked;
+    bool isEchoSeqBlocked    = isOnlyEcho && _isClientSide && itemNet->isEchoSeqOld( echoSeq);
+    bool isValueBlocked      = isNullBlocked || isEchoPipeBlocked || isEchoMasterBlocked || isEchoSeqBlocked;
     if (!isValueBlocked) {
+        if (!_isClientSide)
+            itemNet->setEchoSeq( echoSeq);
         bool  isIgnoreSame = isOnlyEcho;
         itemNet->arnImport( data, isIgnoreSame, handleData);
     }
@@ -1616,6 +1621,9 @@ QByteArray  ArnSync::makeFluxString( const ArnItemNet* itemNet, const ArnLinkHan
 
     if (!type.isEmpty())
         _syncMap.add("type", type);
+    qint8  echoSeq = itemNet->echoSeq();
+    if (echoSeq >= 0)
+        _syncMap.addNum("es", int(echoSeq));
 
     if (handleData.has( ArnLinkHandle::QueueFindRegexp))
         _syncMap.add("nqrx", handleData.valueRef( ArnLinkHandle::QueueFindRegexp).toRegExp().pattern());
@@ -1693,10 +1701,16 @@ void  ArnSync::customEvent( QEvent* ev)
         bool  isBlocked = itemNet->isBlock( sendId);
         // qDebug() << "ArnSync ArnEvValueChange: inItemPath=" << itemNet->path()
         //          << " blockedUpdate=" << isBlocked;
-        if (isBlocked)  // Update was initiated from this Item, it can be blocked ...
+        if (isBlocked)  // Update was initiated from this Item, it can be blocked (e.g. client)
             break;
 
         itemNet->addIsOnlyEcho( sendId);
+        if (_isClientSide) {  // Client non echo
+            itemNet->nextEchoSeq();
+        }
+        else if (!itemNet->isOnlyEcho()) {  // Server non echo
+            itemNet->resetEchoSeq();
+        }
         itemValueUpdater( e->handleData(), e->valueData(), itemNet);
         break;
     }

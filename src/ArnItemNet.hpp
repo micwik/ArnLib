@@ -64,6 +64,11 @@ public:
     void  setMonitor( bool isMonitor);
     void  setQueueNum( int num);
     int  queueNum()  const;
+    void  nextEchoSeq();
+    void  resetEchoSeq();
+    void  setEchoSeq( qint8 echoSeq);
+    qint8  echoSeq()  const;
+    bool  isEchoSeqOld( qint8 receivedEchoSeq);
 
     void  resetDirtyValue();
     void  resetDirtyMode();
@@ -105,6 +110,7 @@ private:
     uint  _netId;               // id used during sync over net
     int  _queueNum;             // number used in itemQueue
     quint32  _updateCountStop;  // Local update count at connection lost
+    qint8  _curEchoSeq;         // Used to avoid obsolete echo
     bool  _dirty : 1;           // item has been updated but not yet sent
     bool  _dirtyMode : 1;       // item Mode has been updated but not yet sent
     bool  _disable : 1;         // item is defunct and should not send (destroy command)
