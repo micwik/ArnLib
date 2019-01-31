@@ -50,6 +50,7 @@ void  ArnItemNet::init()
     _blockEcho  = false;
     _iniMaster  = false;
     _iniSlave   = false;
+    _syncFlux   = false;
     _curEchoSeq = -1;
     _updateCountStop = 0;
 
@@ -272,6 +273,7 @@ void  ArnItemNet::resetDirtyValue()
     _dirty     = false;
     _iniMaster = false;
     _iniSlave  = false;
+    _syncFlux  = false;
     resetOnlyEcho();
 }
 
@@ -335,6 +337,18 @@ void  ArnItemNet::setIniSlave( bool iniSlave)
 bool  ArnItemNet::isMasterAtStart()  const
 {
     return !_iniSlave && (_iniMaster || isMaster());
+}
+
+
+void  ArnItemNet::setSyncFlux( bool isSyncFlux)
+{
+    _syncFlux = isSyncFlux;
+}
+
+
+bool  ArnItemNet::isSyncFlux()  const
+{
+    return _syncFlux;
 }
 
 

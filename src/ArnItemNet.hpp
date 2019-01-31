@@ -80,6 +80,8 @@ public:
     void  setIniMaster( bool iniMaster);
     void  setIniSlave( bool iniSlave);
     bool  isMasterAtStart()  const;
+    void  setSyncFlux( bool isSyncFlux);
+    bool  isSyncFlux()  const;
     quint32  localUpdateSinceStop()  const;
     void  onConnectStop();
 
@@ -118,6 +120,7 @@ private:
     bool  _blockEcho : 1;
     bool  _iniMaster : 1;       // Temporary master logic for next sync
     bool  _iniSlave  : 1;       // Temporary slave logic for next sync
+    bool  _syncFlux  : 1;       // Value to be fluxed is due to sync
 };
 
 

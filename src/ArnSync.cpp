@@ -145,18 +145,18 @@ void  ArnSync::startNormalSync()
             _modeQueue.enqueue( itemNet);
         }
 
-        bool isMaster = itemNet->isMaster();
-        bool isNull   = itemNet->type() == Arn::DataType::Null;
+        bool isMaster    = itemNet->isMaster();
+        bool isNull      = itemNet->type() == Arn::DataType::Null;
+        bool isIniMaster = false;
+        bool isIniSlave  = false;
 
         switch (_clientSyncMode) {
         case Arn::ClientSyncMode::StdAutoMaster:
         {
             if (_remoteVer[0] < 3)
                 break;
-            bool isIniMaster = itemNet->localUpdateSinceStop() > 0;
-            bool isIniSlave  = isMaster && isNull;
-            itemNet->setIniMaster( isIniMaster);
-            itemNet->setIniSlave( isIniSlave);
+            isIniMaster = itemNet->localUpdateSinceStop() > 0;
+            isIniSlave  = isMaster && isNull;
             break;
         }
         case Arn::ClientSyncMode::ImplicitMaster:
@@ -165,18 +165,27 @@ void  ArnSync::startNormalSync()
                     itemNet->setMaster();
                 }
             }
+            if (_remoteVer[0] < 3)
+                break;
+            isIniSlave = isMaster && isNull && itemNet->isSaveMode();
             break;
         case Arn::ClientSyncMode::ExplicitMaster:
+            if (_remoteVer[0] < 3)
+                break;
+            isIniSlave = isMaster && isNull && itemNet->isSaveMode();
             break;
         default:
             break;
         }
 
+        itemNet->setIniMaster( isIniMaster);
+        itemNet->setIniSlave( isIniSlave);
         bool isMasterStart  = itemNet->isMasterAtStart();
         bool isValueBlocked = itemNet->isPipeMode() ||  // Dont Sync itemNet value to Pipe
                               itemNet->isFolder();
         if (isMasterStart && !isValueBlocked) {
             itemNet->resetEchoSeq();
+            itemNet->setSyncFlux( true);
             itemValueUpdater( ArnLinkHandle::null(), 0, itemNet);  // Make client send the current value to server
         }
     }
@@ -848,6 +857,7 @@ uint  ArnSync::doCommandSync()
                            itemNet->isFolder();
     if (!isBlockedValue && !(itemNet->isMasterAtStart())) {
         // Only send non blocked Value to non startMaster
+        itemNet->setSyncFlux( true);
         itemValueUpdater( ArnLinkHandle::null(), 0, itemNet); // Make server send the current value to client
     }
 
@@ -939,6 +949,7 @@ uint  ArnSync::doCommandFlux()
     QByteArray  data = _commandMap.value("data");
     qint8  echoSeq   = _commandMap.value("es", "-1").toInt();
 
+    bool  isSyncFlux = type.contains("S");  // After sync from server/client
     bool  isOnlyEcho = type.contains("E");  // After sync from server/client, later from server
     bool  isNull     = type.contains("N");
 
@@ -959,7 +970,8 @@ uint  ArnSync::doCommandFlux()
 
     bool isNullBlocked       = isNull && (_clientSyncMode == Arn::ClientSyncMode::StdAutoMaster);  // Only client
     bool isEchoPipeBlocked   = isOnlyEcho && itemNet->isPipeMode();
-    bool isEchoMasterBlocked = isOnlyEcho && _isClientSide && itemNet->isMaster();
+    bool isEchoMasterBlocked = isOnlyEcho && _isClientSide && itemNet->isMaster() &&
+                               (!isSyncFlux || (itemNet->type() != Arn::DataType::Null));
     bool isEchoSeqBlocked    = isOnlyEcho && _isClientSide && itemNet->isEchoSeqOld( echoSeq);
     bool isValueBlocked      = isNullBlocked || isEchoPipeBlocked || isEchoMasterBlocked || isEchoSeqBlocked;
     if (!isValueBlocked) {
@@ -1454,7 +1466,8 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData, const QByteArray* 
     else {  // Normal Item
         if (_isClosed)  return;
 
-        bool isEchoMasterBlocked = !_isClientSide && itemNet->isMaster() && itemNet->isOnlyEcho();
+        bool isEchoMasterBlocked = !_isClientSide && itemNet->isMaster() && itemNet->isOnlyEcho() &&
+                                   !itemNet->isSyncFlux();
         bool isRemAllowBlocked   = !_remoteAllow.is( _allow.Write)
                                    && (_isClientSide || !isFreePath( itemNet->path()));
         if (isEchoMasterBlocked || isRemAllowBlocked) {
@@ -1613,6 +1626,7 @@ QByteArray  ArnSync::makeFluxString( const ArnItemNet* itemNet, const ArnLinkHan
                                      const QByteArray* valueData)
 {
     QByteArray  type;
+    if (itemNet->isSyncFlux())                   type += "S";
     if (itemNet->isOnlyEcho())                   type += "E";
     if (itemNet->type() == Arn::DataType::Null)  type += "N";
 
@@ -1707,9 +1721,11 @@ void  ArnSync::customEvent( QEvent* ev)
         itemNet->addIsOnlyEcho( sendId);
         if (_isClientSide) {  // Client non echo
             itemNet->nextEchoSeq();
+            itemNet->setSyncFlux( false);
         }
         else if (!itemNet->isOnlyEcho()) {  // Server non echo
             itemNet->resetEchoSeq();
+            itemNet->setSyncFlux( false);
         }
         itemValueUpdater( e->handleData(), e->valueData(), itemNet);
         break;
