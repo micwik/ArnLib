@@ -257,7 +257,7 @@ void  ArnItemNet::setEchoSeq( qint8 echoSeq)
 
 qint8  ArnItemNet::echoSeq()  const
 {
-    return isPipeMode() ? -1 : _curEchoSeq;
+    return isBiDirMode() ? -1 : _curEchoSeq;
 }
 
 

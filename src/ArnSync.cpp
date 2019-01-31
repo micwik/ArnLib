@@ -970,18 +970,22 @@ uint  ArnSync::doCommandFlux()
 
     bool isNullBlocked       = isNull && (_clientSyncMode == Arn::ClientSyncMode::StdAutoMaster);  // Only client
     bool isEchoPipeBlocked   = isOnlyEcho && itemNet->isPipeMode();
+    bool isEchoBidirBlocked  = isOnlyEcho && !isSyncFlux && itemNet->isBiDirMode();
     bool isEchoMasterBlocked = isOnlyEcho && _isClientSide && itemNet->isMaster() &&
                                (!isSyncFlux || (itemNet->type() != Arn::DataType::Null));
     bool isEchoSeqBlocked    = isOnlyEcho && _isClientSide && itemNet->isEchoSeqOld( echoSeq);
-    bool isValueBlocked      = isNullBlocked || isEchoPipeBlocked || isEchoMasterBlocked || isEchoSeqBlocked;
+    bool isValueBlocked      = isNullBlocked || isEchoPipeBlocked || isEchoBidirBlocked ||
+                               isEchoMasterBlocked || isEchoSeqBlocked;
     if (!isValueBlocked) {
         if (!_isClientSide)
             itemNet->setEchoSeq( echoSeq);
         bool  isIgnoreSame = isOnlyEcho;
         itemNet->arnImport( data, isIgnoreSame, handleData);
     }
-    else if (_isClientSide && isNullBlocked && (itemNet->type() != Arn::DataType::Null)) {
+    else if (_isClientSide && isNullBlocked && isSyncFlux
+         && (itemNet->type() != Arn::DataType::Null)) {
         // Server only had Null, use Client non Null
+        itemNet->setSyncFlux( true);  // Part of the initial sync process
         itemValueUpdater( ArnLinkHandle::null(), 0, itemNet);  // Make client send the current value to server
     }
     return ArnError::Ok;
@@ -1466,13 +1470,15 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData, const QByteArray* 
     else {  // Normal Item
         if (_isClosed)  return;
 
+        bool isEchoBidirBlocked  = itemNet->isOnlyEcho() && itemNet->isBiDirMode() &&
+                                   !itemNet->isSyncFlux();
         bool isEchoMasterBlocked = !_isClientSide && itemNet->isMaster() && itemNet->isOnlyEcho() &&
                                    !itemNet->isSyncFlux();
         bool isRemAllowBlocked   = !_remoteAllow.is( _allow.Write)
                                    && (_isClientSide || !isFreePath( itemNet->path()));
-        if (isEchoMasterBlocked || isRemAllowBlocked) {
+        if (isEchoBidirBlocked || isEchoMasterBlocked || isRemAllowBlocked) {
             itemNet->resetDirtyValue();  // Arm for more updates
-            return;  // Don't send any echo to a Client Master
+            return;  // Don't send
         }
 
         itemNet->setQueueNum( ++_queueNumCount);
