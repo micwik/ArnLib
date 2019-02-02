@@ -304,10 +304,21 @@ ArnServer, this can be used together with ArnDiscoverRemote / ArnDiscover.
 Sync rules    {#gen_syncRules}
 ----------
 Syncing between client and server is normally handled automatically, but for special needs
-and reference this chapter gives an idea of the rules. Also this descibes the rules when
+and reference this chapter gives an idea of the rules. Also this describes the rules when
 connection is established. After that, normal syncing is done almost symetrically between client
-and server. One exeption is when client is Master for an _ARN Data Object_, then data echo
-from server is prohibited.
+and server.
+
+An _ARN Data Object_ with Master [Mode](#gen_arnobjModes) is used as _default generator_ of data.
+Normally the server is the _default generator_ of data. This makes difference when client
+connects or reconnects to the server. The data from the _default generator_ is then used
+and synced.
+
+Also to have minimal data exchange when using non [BiDirectional](#gen_bidirArnobj)
+_ARN Data Object_, one should take Master mode into consideration. This is more important
+for big objects.
+
+When a Null value is synced, the receiver store this as an empty value, i.e. it't not stored
+as Null which is impossible.
 
 ### Sync rules for Pipe ###    {#gen_syncRulesPipe}
 * Pipes should be considered to carry a flow, not a value.
@@ -327,13 +338,6 @@ from server is prohibited.
 ClientSyncMode can be set with ArnClient::setSyncMode().
 Basically this controls if a client _ARN Data Object_ is
 considered as a Master object (se also [Modes](#gen_arnobjModes) ).
-The Master object is set as _default generator_ of data.
-Normally the server is the _default generator_ of data.
-This makes difference when client connects or reconnects to the server.
-The data from the _default generator_ is then used and synced.
-
-When a Null value is synced, the receiver store this as an empty value,
-i.e. it't not stored as Null which is impossible.
 
 ClientSyncMode doesn't affect a pipe. Default mode is StdAutoMaster.
 
@@ -349,12 +353,13 @@ ClientSyncMode doesn't affect a pipe. Default mode is StdAutoMaster.
       value, the clients value (non Null) is still used.
 * **ImplicitMaster**
     First local assign gives permanent Master mode, typically a client value reporter.
-    Client can receive persistent value from a server in an _ARN Data Object_ and then become
-    a continual Master for the object by assigning value(s).
     + Master can be set explicitly with ArnItem::setMaster().
     + Client local assign to an _ARN Data Object_ gives permanent Master mode for this object.
       This implicit Master mode setting is done once when next connection is established.
     + Null values can be synced both from client and server.
+    + If a client _ARN Data Object_ is set booth as [Persistent](#gen_persistArnobj) and Master
+      with a Null value before connection, the Master mode is initially overridden and the
+      servers value is synced to the client.
 * **ExplicitMaster**
     Explicit permanent Master mode, typically an observer or manually setup Master mode.
     Can be used for UI (User Interface) with no Master set to any _ARN Data Object_, i.e.
@@ -362,6 +367,9 @@ ClientSyncMode doesn't affect a pipe. Default mode is StdAutoMaster.
     + Master can be set explicitly with ArnItem::setMaster().
       Client has no other way to become Master for an _ARN Data Object_.
     + Null values can be synced both from client and server.
+    + If a client _ARN Data Object_ is set booth as [Persistent](#gen_persistArnobj) and Master
+      with a Null value before connection, the Master mode is initially overridden and the
+      servers value is synced to the client.
 <Br><Br>
 
 
