@@ -970,7 +970,7 @@ uint  ArnSync::doCommandFlux()
 
     bool isNullBlocked       = isNull && (_clientSyncMode == Arn::ClientSyncMode::StdAutoMaster);  // Only client
     bool isEchoPipeBlocked   = isOnlyEcho && itemNet->isPipeMode();
-    bool isEchoBidirBlocked  = isOnlyEcho && !isSyncFlux && itemNet->isBiDirMode();
+    bool isEchoBidirBlocked  = isOnlyEcho && !isSyncFlux && itemNet->isBiDirMode() && (_remoteVer[0] >= 3);
     bool isEchoMasterBlocked = isOnlyEcho && _isClientSide && itemNet->isMaster() &&
                                (!isSyncFlux || (itemNet->type() != Arn::DataType::Null));
     bool isEchoSeqBlocked    = isOnlyEcho && _isClientSide && itemNet->isEchoSeqOld( echoSeq);
