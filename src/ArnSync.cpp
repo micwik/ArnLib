@@ -949,9 +949,11 @@ uint  ArnSync::doCommandFlux()
     QByteArray  data = _commandMap.value("data");
     qint8  echoSeq   = _commandMap.value("es", "-1").toInt();
 
-    bool  isSyncFlux = type.contains("S");  // After sync from server/client
+    bool  isSyncFlux = type.contains("I");  // After sync from server/client
+    bool  isSaveFlux = type.contains("S");  // Loaded persistent value
     bool  isOnlyEcho = type.contains("E");  // After sync from server/client, later from server
     bool  isNull     = type.contains("N");
+    Q_UNUSED(isSaveFlux)
 
     ArnLinkHandle  handleData;
     handleData.flags().set( ArnLinkHandle::Flags::FromRemote);
@@ -971,8 +973,7 @@ uint  ArnSync::doCommandFlux()
     bool isNullBlocked       = isNull && (_clientSyncMode == Arn::ClientSyncMode::StdAutoMaster);  // Only client
     bool isEchoPipeBlocked   = isOnlyEcho && itemNet->isPipeMode();
     bool isEchoBidirBlocked  = isOnlyEcho && !isSyncFlux && itemNet->isBiDirMode() && (_remoteVer[0] >= 3);
-    bool isEchoMasterBlocked = isOnlyEcho && _isClientSide && itemNet->isMaster() &&
-                               (!isSyncFlux || (itemNet->type() != Arn::DataType::Null));
+    bool isEchoMasterBlocked = isOnlyEcho && _isClientSide && itemNet->isMaster();
     bool isEchoSeqBlocked    = isOnlyEcho && _isClientSide && itemNet->isEchoSeqOld( echoSeq);
     bool isValueBlocked      = isNullBlocked || isEchoPipeBlocked || isEchoBidirBlocked ||
                                isEchoMasterBlocked || isEchoSeqBlocked;
@@ -1632,8 +1633,9 @@ QByteArray  ArnSync::makeFluxString( const ArnItemNet* itemNet, const ArnLinkHan
                                      const QByteArray* valueData)
 {
     QByteArray  type;
-    if (itemNet->isSyncFlux())                   type += "S";
+    if (itemNet->isSyncFlux())                   type += "I";
     if (itemNet->isOnlyEcho())                   type += "E";
+    if (itemNet->isSaveFlux())                   type += "S";
     if (itemNet->type() == Arn::DataType::Null)  type += "N";
 
     _syncMap.clear();
@@ -1732,6 +1734,7 @@ void  ArnSync::customEvent( QEvent* ev)
         else if (!itemNet->isOnlyEcho()) {  // Server non echo
             itemNet->resetEchoSeq();
             itemNet->setSyncFlux( false);
+            itemNet->setSaveFlux( e->handleData().flags().is( ArnLinkHandle::Flags::FromPersist));
         }
         itemValueUpdater( e->handleData(), e->valueData(), itemNet);
         break;

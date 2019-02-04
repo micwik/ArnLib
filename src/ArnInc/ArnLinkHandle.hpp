@@ -63,7 +63,9 @@ public:
             //! Transitional temporary flag to indicate utf8-coded bytearray.
             Text        = 0x01,
             //! Data originates from a remote.
-            FromRemote = 0x02
+            FromRemote  = 0x02,
+            //! Data originates from persistent loading.
+            FromPersist = 0x04
         };
         MQ_DECLARE_FLAGS( Flags)
     };

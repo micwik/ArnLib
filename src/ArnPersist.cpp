@@ -66,6 +66,27 @@ ArnItemPersist::ArnItemPersist( ArnPersist* arnPersist) :
 }
 
 
+ArnItemPersist::~ArnItemPersist()
+{
+}
+
+
+void  ArnItemPersist::arnImport( const QByteArray& data, int ignoreSame)
+{
+    ArnLinkHandle  handleData;
+    handleData.flags().set( ArnLinkHandle::Flags::FromPersist);
+    ArnBasicItem::arnImport( data, ignoreSame, handleData);
+}
+
+
+void  ArnItemPersist::setValue( const QByteArray& value, int ignoreSame)
+{
+    ArnLinkHandle  handleData;
+    handleData.flags().set( ArnLinkHandle::Flags::FromPersist);
+    ArnBasicItem::setValue( value, ignoreSame, handleData);
+}
+
+
 ArnVcs::ArnVcs( QObject* parent) :
     QObject( parent)
 {
@@ -265,8 +286,8 @@ ArnItemPersist*  ArnPersist::getPersistItem( const QString& path)
     item->setIgnoreSameValue( false);
     item->setDelay( 5000);
 
-    connect( item, SIGNAL(changed()), this, SLOT(doArnUpdate()));
-    connect( item, SIGNAL(arnLinkDestroyed()), this, SLOT(doArnDestroy()));
+    connect( item->toArnItem(), SIGNAL(changed()), this, SLOT(doArnUpdate()));
+    connect( item->toArnItem(), SIGNAL(arnLinkDestroyed()), this, SLOT(doArnDestroy()));
     d->_itemPersistMap.insert( linkId, item);
 
     return item;
@@ -328,7 +349,7 @@ void  ArnPersist::doArnDestroy()
 {
     Q_D(ArnPersist);
 
-    ArnItemPersist*  item = qobject_cast<ArnItemPersist*>( sender());
+    ArnItemPersist*  item = ArnItemPersist::fromArnItem( qobject_cast<ArnItem*>( sender()));
     if (!item)  return;  // No valid sender
 
     // qDebug() << "Persist destroyArn: path=" << item->path();
@@ -375,7 +396,7 @@ void  ArnPersist::doArnUpdate()
     Q_D(ArnPersist);
 
     ArnItemPersist*  item;
-    item = qobject_cast<ArnItemPersist*>( sender());
+    item = ArnItemPersist::fromArnItem( qobject_cast<ArnItem*>( sender()));
     if (!item) {
         ArnM::errorLog( QString(tr("Can't get ArnItemPersist sender for doArnUpdate")),
                             ArnError::Undef);

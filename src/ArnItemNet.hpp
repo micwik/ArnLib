@@ -82,6 +82,8 @@ public:
     bool  isMasterAtStart()  const;
     void  setSyncFlux( bool isSyncFlux);
     bool  isSyncFlux()  const;
+    void  setSaveFlux( bool saveFlux);
+    bool  isSaveFlux()  const;
     quint32  localUpdateSinceStop()  const;
     void  onConnectStop();
 
@@ -121,6 +123,7 @@ private:
     bool  _iniMaster : 1;       // Temporary master logic for next sync
     bool  _iniSlave  : 1;       // Temporary slave logic for next sync
     bool  _syncFlux  : 1;       // Value to be fluxed is due to sync
+    bool  _saveFlux  : 1;       // Value to be fluxed is from persist load
 };
 
 

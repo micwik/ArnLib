@@ -53,7 +53,7 @@ class XStringMap;
 
 
 //! \cond ADV
-class ArnItemPersist : public ArnItem
+class ArnItemPersist : protected ArnItem
 {
     Q_OBJECT
 
@@ -66,12 +66,31 @@ public:
         MQ_DECLARE_ENUM( StoreType)
     };
     explicit ArnItemPersist( ArnPersist* arnPersist);
+    virtual  ~ArnItemPersist();
     void  setStoreId( int id)  {_storeId = id;}
     int  storeId()  const {return _storeId;}
     void  setStoreType( StoreType type)  {_storeType = type;}
     StoreType  storeType()  const {return _storeType;}
     void  setMandatory( bool v)  {_isMandatory = v;}
     bool  isMandatory()  const {return _isMandatory;}
+
+    ArnItem*  toArnItem() {return this;}
+    static ArnItemPersist*  fromArnItem( ArnItem* item) {return static_cast<ArnItemPersist*>( item);}
+
+    void  arnImport( const QByteArray& data, int ignoreSame = Arn::SameValue::DefaultAction);
+    void  setValue( const QByteArray& value, int ignoreSame = Arn::SameValue::DefaultAction);
+
+    using ArnItem::open;
+    using ArnItem::linkId;
+    using ArnItem::setIgnoreSameValue;
+    using ArnItem::setDelay;
+    using ArnItem::addMode;
+    using ArnItem::getMode;
+    using ArnItem::path;
+    using ArnItem::deleteLater;
+    using ArnItem::arnExport;
+    using ArnItem::toByteArray;
+    using ArnItem::bypassDelayPending;
 
 private:
     StoreType  _storeType;
