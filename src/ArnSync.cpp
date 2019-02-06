@@ -858,6 +858,7 @@ uint  ArnSync::doCommandSync()
     if (!isBlockedValue && !(itemNet->isMasterAtStart())) {
         // Only send non blocked Value to non startMaster
         itemNet->setSyncFlux( true);
+        itemNet->setSaveFlux( itemNet->isSaveMode());
         itemValueUpdater( ArnLinkHandle::null(), 0, itemNet); // Make server send the current value to client
     }
 
@@ -953,7 +954,6 @@ uint  ArnSync::doCommandFlux()
     bool  isSaveFlux = type.contains("S");  // Loaded persistent value
     bool  isOnlyEcho = type.contains("E");  // After sync from server/client, later from server
     bool  isNull     = type.contains("N");
-    Q_UNUSED(isSaveFlux)
 
     ArnLinkHandle  handleData;
     handleData.flags().set( ArnLinkHandle::Flags::FromRemote);
@@ -973,7 +973,8 @@ uint  ArnSync::doCommandFlux()
     bool isNullBlocked       = isNull && (_clientSyncMode == Arn::ClientSyncMode::StdAutoMaster);  // Only client
     bool isEchoPipeBlocked   = isOnlyEcho && itemNet->isPipeMode();
     bool isEchoBidirBlocked  = isOnlyEcho && !isSyncFlux && itemNet->isBiDirMode() && (_remoteVer[0] >= 3);
-    bool isEchoMasterBlocked = isOnlyEcho && _isClientSide && itemNet->isMaster();
+    bool isEchoMasterBlocked = isOnlyEcho && _isClientSide && itemNet->isMaster() &&
+                               (!isSaveFlux || (itemNet->type() != Arn::DataType::Null));
     bool isEchoSeqBlocked    = isOnlyEcho && _isClientSide && itemNet->isEchoSeqOld( echoSeq);
     bool isValueBlocked      = isNullBlocked || isEchoPipeBlocked || isEchoBidirBlocked ||
                                isEchoMasterBlocked || isEchoSeqBlocked;

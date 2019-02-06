@@ -118,7 +118,7 @@ void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
     setIniMaster(                       smode.contains("inimast"));
     setIniSlave(                        smode.contains("inislave"));
     bool isMaster                     = smode.contains("master");
-    isMaster |= _iniSlave;
+    isMaster |= _iniSlave;  // Implicitly is Master when iniSlave
     syncMode.set( syncMode.Master,      isMaster);
     syncMode.set( syncMode.AutoDestroy, smode.contains("autodestroy"));
     syncMode.set( syncMode.Monitor,     smode.contains("mon"));
