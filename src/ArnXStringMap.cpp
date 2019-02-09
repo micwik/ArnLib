@@ -539,7 +539,7 @@ XStringMap&  XStringMap::remove( int index)
 {
     if ((index < 0) || (index >= _size))  return *this;
 
-    for (int i = index; i < _size; ++i) {
+    for (int i = index; i < _size - 1; ++i) {
         _keyList[i].resize(0);     // Avoid Heap reallocation
         _valList[i].resize(0);
         _keyList[i] += _keyList.at(i + 1);
