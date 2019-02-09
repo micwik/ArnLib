@@ -30,6 +30,7 @@ Makefile.*
 *-build-*
 */build/
 android/
+.qmake.stash
 
 # Debug and Release (created under Windows, not Linux)
 object_script.*
