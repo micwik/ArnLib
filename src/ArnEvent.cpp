@@ -75,6 +75,7 @@ int  ArnEvent::baseType( int setVal)
     for (int i = 0; i < Idx::N; ++i) {
         int wantType = bt + i;
         int gotType  = QEvent::registerEventType( wantType);
+        Q_UNUSED(gotType)  // Silence warning (in some compilers)
         Q_ASSERT_X(gotType == wantType, "ArnEvent::baseType()",
                    "Assigning event number for ArnEvent is already taken,"
                    " use ArnEvent::baseType() to set other base event number for ArnEvents.");
