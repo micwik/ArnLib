@@ -115,9 +115,9 @@ void  ArnItemNet::addSyncModeString( const QByteArray& smode, bool linkShare)
 {
     Arn::ObjectSyncMode  syncMode;
 
-    setIniMaster(                       smode.contains("inimast"));
-    setIniSlave(                        smode.contains("inislave"));
-    bool isMaster                     = smode.contains("master");
+    setIniMaster(                       smode.contains("ima"));
+    setIniSlave(                        smode.contains("isl"));
+    bool isMaster                     = smode.contains("mas");
     isMaster |= _iniSlave;  // Implicitly is Master when iniSlave
     syncMode.set( syncMode.Master,      isMaster);
     syncMode.set( syncMode.AutoDestroy, smode.contains("autodestroy"));
@@ -132,9 +132,9 @@ QByteArray  ArnItemNet::getSyncModeString()  const
     QByteArray  smode;
     Arn::ObjectSyncMode  syncMode = ArnBasicItem::syncMode();
 
-    if (_iniSlave)                            smode += "inislave ";
-    else if (syncMode.is( syncMode.Master))   smode += "master ";
-    else if (_iniMaster)                      smode += "inimast ";
+    if (_iniSlave)                            smode += "isl ";
+    else if (syncMode.is( syncMode.Master))   smode += "master ";  // Can be "mas" for remoteVer >= 3.0
+    else if (_iniMaster)                      smode += "ima ";
 
     if  (syncMode.is( syncMode.AutoDestroy))  smode += "autodestroy ";
     if  (syncMode.is( syncMode.Monitor))      smode += "mon ";
