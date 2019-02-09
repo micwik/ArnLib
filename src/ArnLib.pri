@@ -1,5 +1,5 @@
 # include guard against multiple inclusion
-isEmpty(ARNL_PRI_INCLUDED) {
+isEmpty(ARNLIB_PRI_INCLUDED) {
 ARNLIB_PRI_INCLUDED = 1
 
 # Don't forget to change in Doxygen config
