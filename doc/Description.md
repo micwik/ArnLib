@@ -38,7 +38,7 @@ For continous access to an _ARN Data Object_ its better to use an ArnItem. This 
 to the object that give fast access. It will also provide signals for changed object. ArnItem
 is QObject based and has its charateristics.
 
-Yet another way to access an _ARN Data Object_, is an ArnBasicItem.  This will give a a basic
+Yet another way to access an _ARN Data Object_, is an ArnBasicItem.  This will give a basic
 handle to the object. It is fast, small and is not based on QObject. As such it can not use
 signals and slots, but it can provide ArnEvents.
 
@@ -147,12 +147,21 @@ One part is the normal "official" and the other part is _provider_.
 The provider has an added "!" to the normal path, e.g. normal = "//Measure/Depth/value",
 provider = "//Measure/Depth/value!".
 
-Data written to one part ends up in the other. When a provider slot is connected to the
-provider part (ArnItem), the slot will receive "request" data from the normal part.
-The provider slot processes the request data and writes the result to the same provider part.
-This way the result will end up in the normal "official" part.
+Data written to one part ends up in the other. This can be compared to crossing electrical
+lines from one unit to another unit regarding transmit and receive signals in each unit.
+When a provider slot is connected to the provider part (ArnItem), the slot will receive
+"request" data from the normal part. The provider slot processes the request data and writes
+the result to the same provider part. This way the result will end up in the normal
+"official" part.
 
 This functionality can typically be used for data validation and limiting.
+
+The crossing property of BiDir can be supressed by using ArnItem::setUncrossed().
+Again this can be compared to uncrossed electrical lines from a unit to a "communicator"
+(modem, switch, hub ...) regarding transmit and receive signals.
+Not supprisingly this is usually a easier mode when making some kind of Bridge for ARN.
+
+
 <Br><Br>
 
 

@@ -52,7 +52,7 @@ ArnBasicItemPrivate::ArnBasicItemPrivate()
     _pendingEvChain  = 0;
     _id              = _idCount.fetchAndAddRelaxed(1);
 
-    _useUniDir       = false;
+    _useUncrossed    = false;
     _isStdEvHandler  = true;
     _ignoreSameValue = ArnM::defaultIgnoreSameValue();
     _isOnlyEcho      = true;  // Nothing else yet ...
@@ -845,14 +845,14 @@ void  ArnBasicItem::setValue( int value, int ignoreSame)
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
+            ArnLink*  holderLink = _link->holderLink( d->_useUncrossed);
             bool  isOk;
             if ((value == holderLink->toInt( &isOk)) && isOk) {
                 holderLink->setIgnoredValue();
                 return;
             }
         }
-        _link->setValue( value, d->_id, d->_useUniDir);
+        _link->setValue( value, d->_id, d->_useUncrossed);
     }
     else {
         errorLog( QString("Assigning int:") + QString::number( value),
@@ -868,14 +868,14 @@ void  ArnBasicItem::setValue( ARNREAL value, int ignoreSame)
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
+            ArnLink*  holderLink = _link->holderLink( d->_useUncrossed);
             bool  isOk;
             if ((value == holderLink->toReal( &isOk)) && isOk) {
                 holderLink->setIgnoredValue();
                 return;
             }
         }
-        _link->setValue( value, d->_id, d->_useUniDir);
+        _link->setValue( value, d->_id, d->_useUncrossed);
     }
     else {
         errorLog( QString("Assigning ARNREAL:") + QString::number( value),
@@ -891,14 +891,14 @@ void  ArnBasicItem::setValue( bool value, int ignoreSame)
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
+            ArnLink*  holderLink = _link->holderLink( d->_useUncrossed);
             bool  isOk;
             if ((value == (holderLink->toInt( &isOk) != 0)) && isOk) {
                 holderLink->setIgnoredValue();
                 return;
             }
         }
-        _link->setValue( value ? 1 : 0, d->_id, d->_useUniDir);
+        _link->setValue( value ? 1 : 0, d->_id, d->_useUncrossed);
     }
     else {
         errorLog( QString("Assigning bool:") + QString::number( value),
@@ -914,14 +914,14 @@ void  ArnBasicItem::setValue( const QString& value, int ignoreSame)
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
+            ArnLink*  holderLink = _link->holderLink( d->_useUncrossed);
             bool  isOk;
             if ((value == holderLink->toString( &isOk)) && isOk) {
                 holderLink->setIgnoredValue();
                 return;
             }
         }
-        _link->setValue( value, d->_id, d->_useUniDir);
+        _link->setValue( value, d->_id, d->_useUncrossed);
     }
     else {
         errorLog( QString("Assigning string:") + value,
@@ -937,14 +937,14 @@ void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame)
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
+            ArnLink*  holderLink = _link->holderLink( d->_useUncrossed);
             bool  isOk;
             if ((value == holderLink->toByteArray( &isOk)) && isOk) {
                 holderLink->setIgnoredValue();
                 return;
             }
         }
-        _link->setValue( value, d->_id, d->_useUniDir);
+        _link->setValue( value, d->_id, d->_useUncrossed);
     }
     else {
         errorLog( QString("Assigning bytearray:") + QString::fromUtf8( value.constData(), value.size()),
@@ -960,14 +960,14 @@ void  ArnBasicItem::setValue( const QVariant& value, int ignoreSame)
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
+            ArnLink*  holderLink = _link->holderLink( d->_useUncrossed);
             bool  isOk;
             if ((value == holderLink->toVariant( &isOk)) && isOk) {
                 holderLink->setIgnoredValue();
                 return;
             }
         }
-        _link->setValue( value, d->_id, d->_useUniDir);
+        _link->setValue( value, d->_id, d->_useUncrossed);
     }
     else {
         errorLog( QString("Assigning variant"),
@@ -1104,31 +1104,31 @@ QObject*  ArnBasicItem::eventHandler()  const
 }
 
 
-void ArnBasicItem::setUniDir( bool isUnidir)
+void ArnBasicItem::setUncrossed( bool isUncrossed)
 {
     Q_D(ArnBasicItem);
 
-    d->_useUniDir = isUnidir;
+    d->_useUncrossed = isUncrossed;
 }
 
 
-bool ArnBasicItem::isUniDir()  const
+bool ArnBasicItem::isUncrossed()  const
 {
     Q_D(const ArnBasicItem);
 
-    return d->_useUniDir || !isBiDirMode();
+    return d->_useUncrossed || !isBiDirMode();
 }
 
 
 void  ArnBasicItem::setForceKeep( bool fk)
 {
-    setUniDir( fk);
+    setUncrossed( fk);
 }
 
 
 bool  ArnBasicItem::isForceKeep()  const
 {
-    return isUniDir();
+    return isUncrossed();
 }
 
 
@@ -1145,7 +1145,7 @@ void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame, ArnLinkHa
 
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
+            ArnLink*  holderLink = _link->holderLink( d->_useUncrossed);
             bool  isOk;
             if (handleFlags.is( handleFlags.Text)) {
                 if ((valueTxt == holderLink->toString( &isOk)) && isOk) {
@@ -1162,10 +1162,10 @@ void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame, ArnLinkHa
         }
         if (handleFlags.is( handleFlags.Text)) {
             handleFlags.set( handleFlags.Text, false);  // Text flag not needed anymore
-            _link->setValue( valueTxt, d->_id, d->_useUniDir, handleData);
+            _link->setValue( valueTxt, d->_id, d->_useUncrossed, handleData);
         }
         else
-            _link->setValue( value, d->_id, d->_useUniDir, handleData);
+            _link->setValue( value, d->_id, d->_useUncrossed, handleData);
     }
     else {
         errorLog( QString("Assigning bytearray (ArnLinkHandle):") + QString::fromUtf8( value.constData(), value.size()),
@@ -1181,14 +1181,14 @@ void  ArnBasicItem::setValue( const QVariant& value, int ignoreSame, ArnLinkHand
     bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);
     if (_link) {
         if (isIgnoreSame) {
-            ArnLink*  holderLink = _link->holderLink( d->_useUniDir);
+            ArnLink*  holderLink = _link->holderLink( d->_useUncrossed);
             bool  isOk;
             if ((value == holderLink->toVariant( &isOk)) && isOk) {
                 holderLink->setIgnoredValue( handleData);
                 return;
             }
         }
-        _link->setValue( value, d->_id, d->_useUniDir, handleData);
+        _link->setValue( value, d->_id, d->_useUncrossed, handleData);
     }
     else {
         errorLog( QString("Assigning variant (ArnLinkHandle):"),

@@ -677,19 +677,19 @@ ArnAdaptItem::ArnEventCB  ArnAdaptItem::arnEventCallback()  const
 }
 
 
-void  ArnAdaptItem::setUniDir( bool isUnidir)
+void  ArnAdaptItem::setUncrossed( bool isUncrossed)
 {
     Q_D(ArnAdaptItem);
 
-    MUTEX_CALL( ArnBasicItem::setUniDir( isUnidir))
+    MUTEX_CALL( ArnBasicItem::setUncrossed( isUncrossed))
 }
 
 
-bool  ArnAdaptItem::isUniDir()  const
+bool  ArnAdaptItem::isUncrossed()  const
 {
     Q_D(const ArnAdaptItem);
 
-    MUTEX_CALL( bool r = ArnBasicItem::isUniDir())
+    MUTEX_CALL( bool r = ArnBasicItem::isUncrossed())
     return r;
 }
 

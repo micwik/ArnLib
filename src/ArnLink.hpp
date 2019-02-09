@@ -69,13 +69,13 @@ public:
 
     ~ArnLink();
 
-    void  setValue( int value, int sendId = 0, bool useUniDir = 0);
-    void  setValue( ARNREAL value, int sendId = 0, bool useUniDir = 0);
-    void  setValue( const QString& value, int sendId = 0, bool useUniDir = 0,
+    void  setValue( int value, int sendId = 0, bool useUncrossed = 0);
+    void  setValue( ARNREAL value, int sendId = 0, bool useUncrossed = 0);
+    void  setValue( const QString& value, int sendId = 0, bool useUncrossed = 0,
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
-    void  setValue( const QByteArray& value, int sendId = 0, bool useUniDir = 0,
+    void  setValue( const QByteArray& value, int sendId = 0, bool useUncrossed = 0,
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
-    void  setValue( const QVariant& value, int sendId = 0, bool useUniDir = 0,
+    void  setValue( const QVariant& value, int sendId = 0, bool useUncrossed = 0,
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  setIgnoredValue( const ArnLinkHandle& handleData = ArnLinkHandle::null());
 
@@ -108,7 +108,7 @@ public:
     ArnLink*  twinLink();
     ArnLink*  valueLink();
     ArnLink*  providerLink();
-    ArnLink*  holderLink( bool useUniDir);
+    ArnLink*  holderLink( bool useUncrossed);
     QString  twinName();
     bool  subscribe( ArnCoreItem* subscriber);
     bool  unsubscribe( ArnCoreItem* subscriber);

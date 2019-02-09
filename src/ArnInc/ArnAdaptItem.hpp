@@ -571,24 +571,24 @@ public:
      */
     ArnEventCB  arnEventCallback()  const;
 
-    //! Set a Bidirectional item as Unidirectional
+    //! Set a Bidirectional item as Uncrossed
     /*! The two way object is not twisted at writes, i.e. exactly the same object is read
      *  and written. This has no effect on an _Arn Data Object_ that not is in
      *  Bidirectional mode.
-     *  \see isUniDir()
+     *  \see isUncrossed()
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_bidirArnobj
      */
-    void  setUniDir( bool isUnidir = true);
+    void  setUncrossed( bool isUncrossed = true);
 
-    //! Get the Unidirectional state of an object
-    /*! \retval true if Unidirectional is set or _Arn Data Object_ is not in Bidirectional mode.
-     *  \see setUniDir()
+    //! Get the Uncrossed state of an object
+    /*! \retval true if Uncrossed is set or _Arn Data Object_ is not in Bidirectional mode.
+     *  \see setUncrossed()
      *  \see setBiDirMode()
      *  \see \ref gen_arnobjModes
      *  \see \ref gen_bidirArnobj
      */
-    bool  isUniDir()  const;
+    bool  isUncrossed()  const;
 
     //! \cond ADV
     bool  sendArnEventLink( ArnEvent* ev);

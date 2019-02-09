@@ -55,7 +55,7 @@ void  ArnItemNet::init()
     _curEchoSeq = -1;
     _updateCountStop = 0;
 
-    setUniDir();
+    setUncrossed();
     setIgnoreSameValue( false);
 }
 

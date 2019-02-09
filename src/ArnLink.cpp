@@ -230,10 +230,10 @@ void  ArnLink::sendEventArnM( ArnEvent* ev)
 }
 
 
-void  ArnLink::setValue( int value, int sendId, bool useUniDir)
+void  ArnLink::setValue( int value, int sendId, bool useUncrossed)
 {
     if (!_val)  return;
-    if (_twin  &&  !useUniDir) {    // support for bidirectional function
+    if (_twin  &&  !useUncrossed) {    // support for bidirectional function
         _twin->setValue( value, sendId, true);
         return;
     }
@@ -257,10 +257,10 @@ void  ArnLink::setValue( int value, int sendId, bool useUniDir)
 }
 
 
-void  ArnLink::setValue( ARNREAL value, int sendId, bool useUniDir)
+void  ArnLink::setValue( ARNREAL value, int sendId, bool useUncrossed)
 {
     if (!_val)  return;
-    if (_twin  &&  !useUniDir) {    // support for bidirectional function
+    if (_twin  &&  !useUncrossed) {    // support for bidirectional function
         _twin->setValue( value, sendId, true);
         return;
     }
@@ -289,11 +289,11 @@ void  ArnLink::setValue( ARNREAL value, int sendId, bool useUniDir)
 }
 
 
-void  ArnLink::setValue( const QString& value, int sendId, bool useUniDir,
+void  ArnLink::setValue( const QString& value, int sendId, bool useUncrossed,
                          const ArnLinkHandle& handleData)
 {
     if (!_val)  return;
-    if (_twin  &&  !useUniDir) {    // support for bidirectional function
+    if (_twin  &&  !useUncrossed) {    // support for bidirectional function
         _twin->setValue( value, sendId, true, handleData);
         return;
     }
@@ -319,11 +319,11 @@ void  ArnLink::setValue( const QString& value, int sendId, bool useUniDir,
 }
 
 
-void  ArnLink::setValue( const QByteArray& value, int sendId, bool useUniDir,
+void  ArnLink::setValue( const QByteArray& value, int sendId, bool useUncrossed,
                          const ArnLinkHandle& handleData)
 {
     if (!_val)  return;
-    if (_twin  &&  !useUniDir) {    // support for bidirectional function
+    if (_twin  &&  !useUncrossed) {    // support for bidirectional function
         _twin->setValue( value, sendId, true, handleData);
         return;
     }
@@ -348,11 +348,11 @@ void  ArnLink::setValue( const QByteArray& value, int sendId, bool useUniDir,
 }
 
 
-void  ArnLink::setValue( const QVariant& value, int sendId, bool useUniDir,
+void  ArnLink::setValue( const QVariant& value, int sendId, bool useUncrossed,
                          const ArnLinkHandle& handleData)
 {
     if (!_val)  return;
-    if (_twin  &&  !useUniDir) {    // support for bidirectional function
+    if (_twin  &&  !useUncrossed) {    // support for bidirectional function
         _twin->setValue( value, sendId, true, handleData);
         return;
     }
@@ -916,10 +916,10 @@ ArnLink*  ArnLink::providerLink()
 }
 
 
-ArnLink*  ArnLink::holderLink (bool useUniDir)
+ArnLink*  ArnLink::holderLink( bool useUncrossed)
 {
     if (_mutex)  _mutex->lock();
-    ArnLink*  retVal = (_twin && !useUniDir) ? _twin : this;
+    ArnLink*  retVal = (_twin && !useUncrossed) ? _twin : this;
     if (_mutex)  _mutex->unlock();
     return retVal;
 }

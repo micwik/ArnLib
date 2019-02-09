@@ -72,7 +72,7 @@ private:
     quint8  _mode;
     quint8  _heritage;
     bool  _syncModeLinkShare : 1;
-    bool  _useUniDir : 1;
+    bool  _useUncrossed : 1;
     bool  _ignoreSameValue : 1;
     bool  _isOnlyEcho : 1;
     bool  _isStdEvHandler : 1;
