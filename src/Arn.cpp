@@ -245,5 +245,11 @@ QString  hostFromHostWithInfo( const QString& hostWithInfo)
     return retVal;
 }
 
+
+bool  isNullPtr( const void* ptr)
+{
+    return ptr == 0;
+}
+
 }  // Arn::
 

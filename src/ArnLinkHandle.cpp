@@ -29,8 +29,12 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+
 #include "ArnInc/ArnLinkHandle.hpp"
 #include <QDebug>
+
+using namespace Arn;
 
 
 //// WARNING !!!  This class can have a this-pointer that is zero (0), for optimization.
@@ -50,7 +54,7 @@ ArnLinkHandle::ArnLinkHandle()
 
 ArnLinkHandle::ArnLinkHandle( const ArnLinkHandle& other)
 {
-    if (&other == 0) {  // other is NULL
+    if ( isNullPtr( &other)) {  // other is NULL
         init();
         return;
     }
@@ -73,7 +77,7 @@ ArnLinkHandle::ArnLinkHandle( const ArnLinkHandle::Flags& flags)
 
 ArnLinkHandle::~ArnLinkHandle()
 {
-    if (this == 0)  return;  // Shouldn't be called ...
+    if (isNullPtr( this))  return;  // Shouldn't be called ...
 
     if (_data)
         delete _data;
@@ -89,7 +93,7 @@ const ArnLinkHandle&  ArnLinkHandle::null()
 const ArnLinkHandle::Flags&  ArnLinkHandle::flags()  const
 {
     static Flags  nullFlags;
-    if (this == 0)  return nullFlags;  // ArnHandle is NULL
+    if (isNullPtr( this))  return nullFlags;  // ArnHandle is NULL
 
     return _flags;
 }
@@ -98,7 +102,7 @@ const ArnLinkHandle::Flags&  ArnLinkHandle::flags()  const
 ArnLinkHandle::Flags&  ArnLinkHandle::flags()
 {
     static Flags  nullFlags;
-    if (this == 0)  return nullFlags;  // ArnHandle is NULL, should not be used ...
+    if (isNullPtr( this))  return nullFlags;  // ArnHandle is NULL, should not be used ...
 
     return _flags;
 }
@@ -106,7 +110,7 @@ ArnLinkHandle::Flags&  ArnLinkHandle::flags()
 
 ArnLinkHandle&  ArnLinkHandle::add( Code code, const QVariant& value)
 {
-    if (this == 0)  return *this;  // ArnHandle is NULL
+    if (isNullPtr( this))  return *this;  // ArnHandle is NULL
     if (code == Normal)  return *this;  // Adding nothing
 
     if (!_data)
@@ -119,7 +123,7 @@ ArnLinkHandle&  ArnLinkHandle::add( Code code, const QVariant& value)
 
 bool  ArnLinkHandle::has( Code code)  const
 {
-    if (this == 0)  return false;  // ArnHandle is NULL
+    if (isNullPtr( this))  return false;  // ArnHandle is NULL
 
     return _codes.testFlag( code);
 }
@@ -127,7 +131,7 @@ bool  ArnLinkHandle::has( Code code)  const
 
 bool  ArnLinkHandle::isNull()  const
 {
-    if (this == 0)  return true;  // ArnHandle is NULL
+    if (isNullPtr( this))  return true;  // ArnHandle is NULL
 
     return (_codes == Normal) && (_flags == Flags());
 }
@@ -137,7 +141,7 @@ const QVariant&  ArnLinkHandle::valueRef( Code code)  const
 {
     static QVariant  nullValue;
 
-    if (this == 0)  return nullValue;  // ArnHandle is NULL
+    if (isNullPtr( this))  return nullValue;  // ArnHandle is NULL
 
     if (!_data || !has( code))  // Should not be used ...
         return nullValue;

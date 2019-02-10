@@ -399,6 +399,8 @@ QString  makeHostWithInfo( const QString& host, const QString& info);
  */
 QString  hostFromHostWithInfo( const QString& hostWithInfo);
 
+bool  isNullPtr( const void* ptr);
+
 #ifndef DOXYGEN_SKIP
 QString  convertBaseName( const QString& name, Arn::NameF nameF);
 #endif
