@@ -38,6 +38,9 @@
 //     http://www.apache.org/licenses/LICENSE-2.0
 //
 
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+
 #include "mDNS/ArnMDns.hpp"
 #include "../../ArnInc/ArnLib.hpp"
 #include <QUdpSocket>
@@ -96,10 +99,10 @@ mDNSexport mStatus mDNSPlatformSendUDP(const mDNS *const m, const void *const ms
     Q_ASSERT(m);
     Q_ASSERT(msg);
     Q_ASSERT(end);
-    Q_ASSERT((((char *) end) - ((char *) msg)) > 0);
+    Q_ASSERT((((const char*) end) - ((const char*) msg)) > 0);
 
     if (dstPort.NotAnInteger == 0) {
-        if (Arn::warningMDNS)  
+        if (Arn::warningMDNS)
             qWarning() << "mDNSPlatformSendUDP: Invalid argument -dstPort is set to 0";
         return mStatus_UnknownErr;
     }
@@ -119,9 +122,9 @@ mDNSexport mStatus mDNSPlatformSendUDP(const mDNS *const m, const void *const ms
         mdi = ArnMDns::socketInfo( sendingsocket);
         if (mdi) {
             QHostAddress  ipDstAdr = ArnMDns::fromMDNSAddr( *dst);
-            int  ipDstPort = ArnMDns::fromMDNSPort( dstPort);
-            quint64  msgLen = (char*)end - (char*)msg;
-            err = mdi->_udpSocket->writeDatagram( (const char*) msg, msgLen, ipDstAdr, ipDstPort);
+            quint16  ipDstPort = ArnMDns::fromMDNSPort( dstPort);
+            qint64  msgLen = qint64((const char*)end - (const char*)msg);
+            err = int(mdi->_udpSocket->writeDatagram( (const char*) msg, msgLen, ipDstAdr, ipDstPort));
         }
     }
 
@@ -153,108 +156,108 @@ mDNSexport mStatus mDNSPlatformSendUDP(const mDNS *const m, const void *const ms
 
 mDNSexport TCPSocket *mDNSPlatformTCPSocket(mDNS * const m, TCPSocketFlags flags, mDNSIPPort * port)
 {
-	(void)m;			// Unused
-	(void)flags;		// Unused
-	(void)port;			// Unused
-	return NULL;
+    (void)m;			// Unused
+    (void)flags;		// Unused
+    (void)port;			// Unused
+    return NULL;
 }
 
 
 mDNSexport TCPSocket *mDNSPlatformTCPAccept(TCPSocketFlags flags, int sd)
 {
-	(void)flags;		// Unused
-	(void)sd;			// Unused
-	return NULL;
+    (void)flags;		// Unused
+    (void)sd;			// Unused
+    return NULL;
 }
 
 
 mDNSexport int mDNSPlatformTCPGetFD(TCPSocket *sock)
 {
-	(void)sock;			// Unused
-	return -1;
+    (void)sock;			// Unused
+    return -1;
 }
 
 
 mDNSexport mStatus mDNSPlatformTCPConnect(TCPSocket *sock, const mDNSAddr *dst, mDNSOpaque16 dstport, domainname *hostname, mDNSInterfaceID InterfaceID,
-										  TCPConnectionCallback callback, void *context)
+                                          TCPConnectionCallback callback, void *context)
 {
-	(void)sock;			// Unused
-	(void)dst;			// Unused
-	(void)dstport;		// Unused
-	(void)hostname;     // Unused
-	(void)InterfaceID;	// Unused
-	(void)callback;		// Unused
-	(void)context;		// Unused
-	return(mStatus_UnsupportedErr);
+    (void)sock;			// Unused
+    (void)dst;			// Unused
+    (void)dstport;		// Unused
+    (void)hostname;     // Unused
+    (void)InterfaceID;	// Unused
+    (void)callback;		// Unused
+    (void)context;		// Unused
+    return(mStatus_UnsupportedErr);
 }
 
 
 mDNSexport void mDNSPlatformTCPCloseConnection(TCPSocket *sock)
 {
-	(void)sock;			// Unused
+    (void)sock;			// Unused
 }
 
 
 mDNSexport long mDNSPlatformReadTCP(TCPSocket *sock, void *buf, unsigned long buflen, mDNSBool * closed)
 {
-	(void)sock;			// Unused
-	(void)buf;			// Unused
-	(void)buflen;		// Unused
-	(void)closed;		// Unused
-	return 0;			
+    (void)sock;			// Unused
+    (void)buf;			// Unused
+    (void)buflen;		// Unused
+    (void)closed;		// Unused
+    return 0;
 }
 
 
 mDNSexport long mDNSPlatformWriteTCP(TCPSocket *sock, const char *msg, unsigned long len)
 {
-	(void)sock;			// Unused
-	(void)msg;			// Unused
-	(void)len;			// Unused
-	return 0;
+    (void)sock;			// Unused
+    (void)msg;			// Unused
+    (void)len;			// Unused
+    return 0;
 }
 
 
 mDNSexport UDPSocket *mDNSPlatformUDPSocket(mDNS * const m, mDNSIPPort port)
 {
-	(void)m;			// Unused
-	(void)port;			// Unused
-	return NULL;
+    (void)m;			// Unused
+    (void)port;			// Unused
+    return NULL;
 }
 
 
 mDNSexport void           mDNSPlatformUDPClose(UDPSocket *sock)
 {
-	(void)sock;			// Unused
+    (void)sock;			// Unused
 }
 
 
 mDNSexport void mDNSPlatformUpdateProxyList(mDNS *const m, const mDNSInterfaceID InterfaceID)
 {
-	(void)m;			// Unused
-	(void)InterfaceID;			// Unused
+    (void)m;			// Unused
+    (void)InterfaceID;			// Unused
 }
 
 
 mDNSexport void mDNSPlatformSendRawPacket(const void *const msg, const mDNSu8 *const end, mDNSInterfaceID InterfaceID)
 {
-	(void)msg;			// Unused
-	(void)end;			// Unused
-	(void)InterfaceID;			// Unused
+    (void)msg;			// Unused
+    (void)end;			// Unused
+    (void)InterfaceID;			// Unused
 }
 
 
 mDNSexport void mDNSPlatformSetLocalAddressCacheEntry(mDNS *const m, const mDNSAddr *const tpa, const mDNSEthAddr *const tha, mDNSInterfaceID InterfaceID)
 {
-	(void)m;			// Unused
-	(void)tpa;			// Unused
-	(void)tha;			// Unused
-	(void)InterfaceID;			// Unused
+    (void)m;			// Unused
+    (void)tpa;			// Unused
+    (void)tha;			// Unused
+    (void)InterfaceID;			// Unused
 }
 
 
 mDNSexport mStatus mDNSPlatformTLSSetupCerts(void)
 {
-	return(mStatus_UnsupportedErr);
+    return(mStatus_UnsupportedErr);
 }
 
 
@@ -265,53 +268,53 @@ mDNSexport void mDNSPlatformTLSTearDownCerts(void)
 
 mDNSexport void mDNSPlatformSetAllowSleep(mDNS *const m, mDNSBool allowSleep, const char *reason)
 {
-	(void) m;
-	(void) allowSleep;
-	(void) reason;
+    (void) m;
+    (void) allowSleep;
+    (void) reason;
 }
 
 
 mDNSexport void FreeEtcHosts(mDNS *const m, AuthRecord *const rr, mStatus result)
 {
     (void)m;  // unused
-	(void)rr;
-	(void)result;
+    (void)rr;
+    (void)result;
 }
 
 
 mDNSexport void mDNSPlatformSetDNSConfig(mDNS *const m, mDNSBool setservers, mDNSBool setsearch, domainname *const fqdn, DNameListElem **RegDomains, DNameListElem **BrowseDomains)
 {
-	(void) m;
-	(void) setservers;
-	(void) fqdn;
-	(void) setsearch;
-	(void) RegDomains;
-	(void) BrowseDomains;
+    (void) m;
+    (void) setservers;
+    (void) fqdn;
+    (void) setsearch;
+    (void) RegDomains;
+    (void) BrowseDomains;
 }
 
 
 mDNSexport mStatus mDNSPlatformGetPrimaryInterface(mDNS * const m, mDNSAddr * v4, mDNSAddr * v6, mDNSAddr * router)
 {
-	(void) m;
-	(void) v4;
-	(void) v6;
-	(void) router;
+    (void) m;
+    (void) v4;
+    (void) v6;
+    (void) router;
 
-	return mStatus_UnsupportedErr;
+    return mStatus_UnsupportedErr;
 }
 
 
 mDNSexport void mDNSPlatformDynDNSHostNameStatusChanged(const domainname *const dname, const mStatus status)
 {
-	(void) dname;
-	(void) status;
+    (void) dname;
+    (void) status;
 }
 
 
 // This gets the current hostname, truncating it at the first dot if necessary
 mDNSlocal void GetUserSpecifiedRFC1034ComputerName(domainlabel *const namelabel)
 {
-	int len = 0;
+    int len = 0;
 #ifndef ANDROID
     qstrncpy((char *) &namelabel->c[1],
              QHostInfo::localHostName().toUtf8().constData(),
@@ -320,8 +323,8 @@ mDNSlocal void GetUserSpecifiedRFC1034ComputerName(domainlabel *const namelabel)
     // use an appropriate default label rather than the linux default of 'localhost'
     strncpy((char *) &namelabel->c[1], "Android", MAX_DOMAIN_LABEL);
 #endif
-	while (len < MAX_DOMAIN_LABEL && namelabel->c[len+1] && namelabel->c[len+1] != '.') len++;
-	namelabel->c[0] = len;
+    while (len < MAX_DOMAIN_LABEL && namelabel->c[len+1] && namelabel->c[len+1] != '.') len++;
+    namelabel->c[0] = mDNSu8(len);
 }
 
 
@@ -330,8 +333,8 @@ mDNSlocal void GetUserSpecifiedRFC1034ComputerName(domainlabel *const namelabel)
 // or they can alternatively just require all registering services to provide an explicit name
 mDNSlocal void GetUserSpecifiedFriendlyComputerName(domainlabel *const namelabel)
 {
-	// On Unix we have no better name than the host name, so we just use that.
-	GetUserSpecifiedRFC1034ComputerName(namelabel);
+    // On Unix we have no better name than the host name, so we just use that.
+    GetUserSpecifiedRFC1034ComputerName(namelabel);
 }
 
 mDNSexport int ParseDNSServers(mDNS *m, const char *filePath)
@@ -340,27 +343,27 @@ mDNSexport int ParseDNSServers(mDNS *m, const char *filePath)
     Q_UNUSED(filePath);
 /*
     char line[256];
-	char nameserver[16];
-	char keyword[10];
-	int  numOfServers = 0;
-	FILE *fp = fopen(filePath, "r");
-	if (fp == NULL) return -1;
-	while (fgets(line,sizeof(line),fp))
-		{
-		struct in_addr ina;
-		line[255]='\0';		// just to be safe
-		if (sscanf(line,"%10s %15s", keyword, nameserver) != 2) continue;	// it will skip whitespaces
-		if (strncasecmp(keyword,"nameserver",10)) continue;
-		if (inet_aton(nameserver, (struct in_addr *)&ina) != 0)
-			{
-			mDNSAddr DNSAddr;
-			DNSAddr.type = mDNSAddrType_IPv4;
-			DNSAddr.ip.v4.NotAnInteger = ina.s_addr;
-			mDNS_AddDNSServer(m, NULL, mDNSInterface_Any, &DNSAddr, UnicastDNSPort, mDNSfalse, 0);
-			numOfServers++;
-			}
-		}  
-	return (numOfServers > 0) ? 0 : -1;
+    char nameserver[16];
+    char keyword[10];
+    int  numOfServers = 0;
+    FILE *fp = fopen(filePath, "r");
+    if (fp == NULL) return -1;
+    while (fgets(line,sizeof(line),fp))
+        {
+        struct in_addr ina;
+        line[255]='\0';		// just to be safe
+        if (sscanf(line,"%10s %15s", keyword, nameserver) != 2) continue;	// it will skip whitespaces
+        if (strncasecmp(keyword,"nameserver",10)) continue;
+        if (inet_aton(nameserver, (struct in_addr *)&ina) != 0)
+            {
+            mDNSAddr DNSAddr;
+            DNSAddr.type = mDNSAddrType_IPv4;
+            DNSAddr.ip.v4.NotAnInteger = ina.s_addr;
+            mDNS_AddDNSServer(m, NULL, mDNSInterface_Any, &DNSAddr, UnicastDNSPort, mDNSfalse, 0);
+            numOfServers++;
+            }
+        }
+    return (numOfServers > 0) ? 0 : -1;
 */
     return 0;  // Not implemented
 }
@@ -390,9 +393,9 @@ mDNSlocal void ClearInterfaceList( mDNS* const m)
             qDebug("Deregistered interface %s\n", intf->intfName);
         FreePosixNetworkInterface( intf);
     }
-	num_registered_interfaces = 0;
-	num_pkts_accepted = 0;
-	num_pkts_rejected = 0;
+    num_registered_interfaces = 0;
+    num_pkts_accepted = 0;
+    num_pkts_rejected = 0;
 }
 
 
@@ -468,14 +471,14 @@ int SetupSocket(int addrFam, mDNSIPPort port, int interfaceIndex, int *sktPtr)
     udpSock->setSocketOption( QAbstractSocket::MulticastTtlOption, int(255));
 
     if (stat) {
-        int  fd = udpSock->socketDescriptor();
+        int  fd = int(udpSock->socketDescriptor());
         *sktPtr = fd;
         ArnMDns::addSocketInfo( mdi);
         return 0;  // Success
     }
     else {
-        if (Arn::warningMDNS)  
-            qWarning() << "SetupSocket error: code=" << udpSock->error() 
+        if (Arn::warningMDNS)
+            qWarning() << "SetupSocket error: code=" << udpSock->error()
                        << " txt=" << udpSock->errorString();
         if (mdi)
             delete mdi;
@@ -512,7 +515,7 @@ int  arnSetupOneInterface( mDNS* const m, const QNetworkInterface& interface,
 
         strncpy(intf->coreIntf.ifname, intf->intfName, sizeof(intf->coreIntf.ifname));
         intf->coreIntf.ifname[sizeof(intf->coreIntf.ifname)-1] = 0;
-        intf->coreIntf.Advertise = m->AdvertiseLocalAddresses;
+        intf->coreIntf.Advertise = mDNSu8(m->AdvertiseLocalAddresses);
         intf->coreIntf.McastTxRx = mDNStrue;
 
         // Set up the extra fields in PosixNetworkInterface.
@@ -546,7 +549,7 @@ int  arnSetupOneInterface( mDNS* const m, const QNetworkInterface& interface,
     // Clean up.
     if (err == 0) {
         // num_registered_interfaces++;
-        debugf("SetupOneInterface: nif=%s ip=%#a Registered", 
+        debugf("SetupOneInterface: nif=%s ip=%#a Registered",
                interface.humanReadableName().toUtf8().constData(), &intf->coreIntf.ip);
         if (Arn::debugMDNS)
             qDebug("Registered interface %s\n", intf->intfName);
@@ -589,7 +592,7 @@ int  arnSetupInterfaceList( mDNS *const m)
                 continue;
             if (entry.prefixLength() == 0)  continue;
 
-            if (Arn::debugMDNS)  qDebug() << "SetupIntfList found: nif=" 
+            if (Arn::debugMDNS)  qDebug() << "SetupIntfList found: nif="
                                           << interface.humanReadableName() + " ip=" + entry.ip().toString();
             if (entry.prefixLength() < 0) {
                 // MW: This is a bug in Qt for android, windows ...  (Not linux)
@@ -630,19 +633,19 @@ mDNSlocal mStatus  WatchForInterfaceChange( mDNS* const m)
 {
     Q_UNUSED(m);
 /*
-	mStatus		err;
-	IfChangeRec	*pChgRec;
+    mStatus		err;
+    IfChangeRec	*pChgRec;
 
-	pChgRec = (IfChangeRec*) mDNSPlatformMemAllocate(sizeof *pChgRec);
-	if (pChgRec == NULL)
-		return mStatus_NoMemoryErr;
+    pChgRec = (IfChangeRec*) mDNSPlatformMemAllocate(sizeof *pChgRec);
+    if (pChgRec == NULL)
+        return mStatus_NoMemoryErr;
 
-	pChgRec->mDNS = m;
-	err = OpenIfNotifySocket(&pChgRec->NotifySD);
-	if (err == 0)
-		err = mDNSPosixAddFDToEventLoop(pChgRec->NotifySD, InterfaceChangeCallback, pChgRec);
+    pChgRec->mDNS = m;
+    err = OpenIfNotifySocket(&pChgRec->NotifySD);
+    if (err == 0)
+        err = mDNSPosixAddFDToEventLoop(pChgRec->NotifySD, InterfaceChangeCallback, pChgRec);
 
-	return err;
+    return err;
 */
     return mStatus_NoError;  // Interface change not implemented
 }
@@ -654,17 +657,17 @@ mDNSlocal mStatus  WatchForInterfaceChange( mDNS* const m)
 mDNSlocal mDNSBool mDNSPlatformInit_CanReceiveUnicast(void)
 {
 /*
-	int err;
-	int s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-	struct sockaddr_in s5353;
-	s5353.sin_family      = AF_INET;
-	s5353.sin_port        = MulticastDNSPort.NotAnInteger;
-	s5353.sin_addr.s_addr = 0;
-	err = bind(s, (struct sockaddr *)&s5353, sizeof(s5353));
-	close(s);
-	if (err) debugf("No unicast UDP responses");
-	else     debugf("Unicast UDP responses okay");
-	return(err == 0);
+    int err;
+    int s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    struct sockaddr_in s5353;
+    s5353.sin_family      = AF_INET;
+    s5353.sin_port        = MulticastDNSPort.NotAnInteger;
+    s5353.sin_addr.s_addr = 0;
+    err = bind(s, (struct sockaddr *)&s5353, sizeof(s5353));
+    close(s);
+    if (err) debugf("No unicast UDP responses");
+    else     debugf("Unicast UDP responses okay");
+    return(err == 0);
 */
     return mDNSfalse;  // Not implemented
 }
@@ -673,61 +676,61 @@ mDNSlocal mDNSBool mDNSPlatformInit_CanReceiveUnicast(void)
 // mDNS core calls this routine to initialise the platform-specific data.
 mDNSexport mStatus  mDNSPlatformInit( mDNS *const m)
 {
-	int err = 0;
+    int err = 0;
     Q_ASSERT(m);
-    
+
     qsrand( uint(QDateTime::currentMSecsSinceEpoch()));
 
     if (mDNSPlatformInit_CanReceiveUnicast())
         m->CanReceiveUnicastOn5353 = mDNStrue;
 
-	// Tell mDNS core the names of this machine.
+    // Tell mDNS core the names of this machine.
 
-	// Set up the nice label
-	m->nicelabel.c[0] = 0;
+    // Set up the nice label
+    m->nicelabel.c[0] = 0;
     GetUserSpecifiedFriendlyComputerName( &m->nicelabel);
     if (m->nicelabel.c[0] == 0)
         MakeDomainLabelFromLiteralString( &m->nicelabel, "Computer");
 
-	// Set up the RFC 1034-compliant label
-	m->hostlabel.c[0] = 0;
+    // Set up the RFC 1034-compliant label
+    m->hostlabel.c[0] = 0;
     GetUserSpecifiedRFC1034ComputerName( &m->hostlabel);
     if (m->hostlabel.c[0] == 0)
         MakeDomainLabelFromLiteralString( &m->hostlabel, "Computer");
 
-	mDNS_SetFQDN(m);
+    mDNS_SetFQDN(m);
 
-	m->p->unicastSocket4 = -1;
+    m->p->unicastSocket4 = -1;
     if (err == mStatus_NoError)  err = SetupSocket(mDNSAddrType_IPv4, zeroIPPort, 0, &m->p->unicastSocket4);
 #if HAVE_IPV6
-	m->p->unicastSocket6 = -1;
+    m->p->unicastSocket6 = -1;
     if (err == mStatus_NoError)  err = SetupSocket(mDNSAddrType_IPv6, zeroIPPort, 0, &m->p->unicastSocket6);
 #endif
 
-	// Tell mDNS core about the network interfaces on this machine.
+    // Tell mDNS core about the network interfaces on this machine.
     // if (err == mStatus_NoError)  err = SetupInterfaceList(m);
     if (err == mStatus_NoError)  err = arnSetupInterfaceList( m);
     if (err == mStatus_NoError)  ArnMDns::bindMDnsInfo( m);
 
     // Tell mDNS core about DNS Servers
-	mDNS_Lock(m);
+    mDNS_Lock(m);
     if (err == mStatus_NoError)  ParseDNSServers( m, uDNS_SERVERS_FILE);
-	mDNS_Unlock(m);
+    mDNS_Unlock(m);
 
     if (err == mStatus_NoError) {
         err = WatchForInterfaceChange( m);
-		// Failure to observe interface changes is non-fatal.
+        // Failure to observe interface changes is non-fatal.
         if (err != mStatus_NoError) {
-            if (Arn::debugMDNS)            
+            if (Arn::debugMDNS)
                 qDebug("mDNS(%d) WARNING: Unable to detect interface changes (%d).\n", getpid(), err);
-			err = mStatus_NoError;
+            err = mStatus_NoError;
         }
     }
 
-	// We don't do asynchronous initialization on the Posix platform, so by the time
-	// we get here the setup will already have succeeded or failed.  If it succeeded,
-	// we should just call mDNSCoreInitComplete() immediately.
-	if (err == mStatus_NoError)
+    // We don't do asynchronous initialization on the Posix platform, so by the time
+    // we get here the setup will already have succeeded or failed.  If it succeeded,
+    // we should just call mDNSCoreInitComplete() immediately.
+    if (err == mStatus_NoError)
         mDNSCoreInitComplete( m, mStatus_NoError);
 
     return PosixErrorToStatus( err);
@@ -751,7 +754,7 @@ mDNSexport void  mDNSPlatformClose( mDNS* const m)
 // the platform from reentering mDNS core code.
 mDNSexport void  mDNSPlatformLock( const mDNS* const m)
 {
-	(void) m;	// Unused
+    (void) m;	// Unused
 }
 
 
@@ -759,21 +762,21 @@ mDNSexport void  mDNSPlatformLock( const mDNS* const m)
 // mDNSPlatformLock and allow the platform to reenter mDNS core code.
 mDNSexport void  mDNSPlatformUnlock( const mDNS* const m)
 {
-	(void) m;	// Unused
+    (void) m;	// Unused
 }
 
 
 // mDNS core calls this routine to copy C strings.
 mDNSexport void  mDNSPlatformStrCopy( void* dst, const void* src)
 {
-    qstrcpy((char*) dst, (char*) src);
+    qstrcpy((char*) dst, (const char*) src);
 }
 
 
 // mDNS core calls this routine to get the length of a C string.
 mDNSexport mDNSu32  mDNSPlatformStrLen( const void* src)
 {
-    return qstrlen((char*) src);
+    return qstrlen((const char*) src);
 }
 
 
@@ -824,26 +827,26 @@ mDNSexport mDNSs32  mDNSPlatformOneSecond = 1024;
 
 mDNSexport mStatus  mDNSPlatformTimeInit(void)
 {
-	// No special setup is required on Posix -- we just use gettimeofday();
-	// This is not really safe, because gettimeofday can go backwards if the user manually changes the date or time
-	// We should find a better way to do this
-	return(mStatus_NoError);
+    // No special setup is required on Posix -- we just use gettimeofday();
+    // This is not really safe, because gettimeofday can go backwards if the user manually changes the date or time
+    // We should find a better way to do this
+    return(mStatus_NoError);
 }
 
 
 mDNSexport mDNSs32  mDNSPlatformRawTime()
 {
     qint64  ms = QDateTime::currentMSecsSinceEpoch();
-    return (uint(ms / 1000) << 10) | (uint(ms % 1000) * 16000 / 15610);
+    return mDNSs32((uint(ms / 1000) << 10) | (uint(ms % 1000) * 16000 / 15610));
 
     //struct timeval tv;
     //gettimeofday(&tv, NULL);
-	// tv.tv_sec is seconds since 1st January 1970 (GMT, with no adjustment for daylight savings time)
-	// tv.tv_usec is microseconds since the start of this second (i.e. values 0 to 999999)
-	// We use the lower 22 bits of tv.tv_sec for the top 22 bits of our result
-	// and we multiply tv.tv_usec by 16 / 15625 to get a value in the range 0-1023 to go in the bottom 10 bits.
-	// This gives us a proper modular (cyclic) counter that has a resolution of roughly 1ms (actually 1/1024 second)
-	// and correctly cycles every 2^22 seconds (4194304 seconds = approx 48 days).
+    // tv.tv_sec is seconds since 1st January 1970 (GMT, with no adjustment for daylight savings time)
+    // tv.tv_usec is microseconds since the start of this second (i.e. values 0 to 999999)
+    // We use the lower 22 bits of tv.tv_sec for the top 22 bits of our result
+    // and we multiply tv.tv_usec by 16 / 15625 to get a value in the range 0-1023 to go in the bottom 10 bits.
+    // This gives us a proper modular (cyclic) counter that has a resolution of roughly 1ms (actually 1/1024 second)
+    // and correctly cycles every 2^22 seconds (4194304 seconds = approx 48 days).
     //return((tv.tv_sec << 10) | (tv.tv_usec * 16 / 15625));
 }
 
@@ -856,20 +859,20 @@ mDNSexport mDNSs32  mDNSPlatformUTC(void)
 
 mDNSexport void  mDNSPlatformSendWakeupPacket( mDNS *const m, mDNSInterfaceID InterfaceID, char *EthAddr, char *IPAddr, int iteration)
 {
-	(void) m;
-	(void) InterfaceID;
-	(void) EthAddr;
-	(void) IPAddr;
-	(void) iteration;
+    (void) m;
+    (void) InterfaceID;
+    (void) EthAddr;
+    (void) IPAddr;
+    (void) iteration;
 }
 
 
 mDNSexport mDNSBool  mDNSPlatformValidRecordForInterface( AuthRecord *rr, const NetworkInterfaceInfo *intf)
 {
-	(void) rr;
-	(void) intf;
+    (void) rr;
+    (void) intf;
 
-	return 1;
+    return 1;
 }
 
 
@@ -895,7 +898,7 @@ mDNSexport void mDNSPlatformWriteLogMsg(const char *ident, const char *buffer, m
         return;
     }
 #endif
-    
+
 #ifdef ANDROID
     //__android_log_print(ANDROID_LOG_DEBUG, "mDNS", "%s", buffer);
     if (Arn::debugMDNS)  qDebug("Android: %s\n", buffer);
@@ -914,7 +917,7 @@ mDNSexport void mDNSPlatformWriteLogMsg(const char *ident, const char *buffer, m
     }
     __android_log_print(syslog_level, "mDNS", "%s", buffer);
 #else
-    switch (loglevel) {
+    switch (int(loglevel)) {
     case MDNS_LOG_MSG:
         // qCritical("[Error] %s\n", buffer);
         // break;
