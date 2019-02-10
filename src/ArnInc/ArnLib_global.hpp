@@ -13,12 +13,18 @@
 
 #if __cplusplus >= 201103L || (__cplusplus < 200000 && __cplusplus > 199711L)
 // Use C++11 nullptr
+#  define ArnNullPtr  nullptr
 #else
+#  if 1
     struct nullptr_t
     {
         template <class T>
-            operator T* ()  {return (T*)0;}
-    } nullptr;
+            inline operator T* ()  {return (T*)0;}
+    };
+    static struct nullptr_t __attribute__((used)) ArnNullPtr;
+#  else
+#    define ArnNullPtr  0
+#  endif
 #endif
 
 #endif // ARNLIB_GLOBAL_HPP

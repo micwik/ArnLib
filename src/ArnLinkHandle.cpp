@@ -29,7 +29,9 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
-#pragma GCC diagnostic ignored "-Wnull-dereference"
+#if defined __GNUC__ && __GNUC__ >= 6
+#  pragma GCC diagnostic ignored "-Wnull-dereference"
+#endif
 
 #include "ArnInc/ArnLinkHandle.hpp"
 #include <QDebug>
