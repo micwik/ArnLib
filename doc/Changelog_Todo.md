@@ -1,5 +1,5 @@
-ArnLib Todo
-===========
+ArnLib Changelog / Todo
+=======================
 
 Major
 -----
@@ -19,6 +19,16 @@ Minor
 * Optimize data transfer with minimal copying.
 * Converter classes for ArnPipes to other streams (e.g UART, TCP etc).
 * Addition to login a system to "pair" ArnServer and ArnClient.
+
+Done in 3.1
+-----------
+* Added ArnAdaptItem. Can be used in threads without eventloop or even non Qt threads.
+* Added ArnClient syncMode for different client sync methods.
+* Now all Bidir Objects has no echo, this was true only for pipes before.
+  The official value comes always from one provider. The requested value can be from many.
+* Single objects has echo with better logic to avoid bad echoes that restores old values.
+* Persistent values to client has more robust logic, especially for Master objects.
+* Added ArnItem::setUncrossed(), will make it easier to build Arn Bridges etc.
 
 Done in 3.0
 -----------

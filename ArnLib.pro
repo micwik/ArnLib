@@ -56,7 +56,7 @@ OTHER_FILES += \
     examples/Examples.txt \
     ArnLib.pri \
     doc/Install.md \
-    doc/Todo.md
+    doc/Changelog_Todo.md
 
 
 ### Install
