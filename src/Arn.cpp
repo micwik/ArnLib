@@ -230,7 +230,7 @@ QString  uuidPath( const QString& path)
 
 QString  makeHostWithInfo( const QString& host, const QString& info)
 {
-    return host + ((info.isEmpty() || info == host) ? QString() 
+    return host + ((info.isEmpty() || info == host) ? QString()
                                                     : ("  [" + info + "]"));
 }
 
@@ -241,14 +241,14 @@ QString  hostFromHostWithInfo( const QString& hostWithInfo)
     int  pos = retVal.indexOf( QRegExp("\\s*\\[.+\\]"));
     if (pos >= 0)
         retVal.resize( pos);
-    
+
     return retVal;
 }
 
 
 bool  isNullPtr( const void* ptr)
 {
-    return ptr == 0;
+    return ptr == nullptr;
 }
 
 }  // Arn::

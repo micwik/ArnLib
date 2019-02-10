@@ -47,9 +47,9 @@ QAtomicInt ArnBasicItemPrivate::_idCount(1);
 
 ArnBasicItemPrivate::ArnBasicItemPrivate()
 {
-    _reference       = 0;
-    _eventHandler    = 0;
-    _pendingEvChain  = 0;
+    _reference       = nullptr;
+    _eventHandler    = nullptr;
+    _pendingEvChain  = nullptr;
     _id              = _idCount.fetchAndAddRelaxed(1);
 
     _useUncrossed    = false;
