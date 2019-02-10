@@ -61,7 +61,7 @@ class ArnThreadComStorage : public QThreadStorage<ArnThreadCom*> {};
 ArnThreadComStorage*  ArnThreadCom::getThreadComStorage()
 {
     static ArnThreadComStorage  threadComStorage;
-  
+
     return &threadComStorage;
 }
 
@@ -957,7 +957,7 @@ void  ArnM::setupErrorlog( QObject* errLog)
         QMetaObject::invokeMethod( errLog,
                                    "setErrorCode",
                                    Qt::QueuedConnection,  // Thread safe
-                                   Q_ARG( uint, code),
+                                   Q_ARG( uint, uint( code)),
                                    Q_ARG( QString, instance()._errTextTab.at( code)));
     }
 

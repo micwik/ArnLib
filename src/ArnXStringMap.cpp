@@ -169,7 +169,7 @@ int  XStringMap::indexOfValue( const QString& value, int from)  const
 int  XStringMap::maxEnumOf( const char* keyPrefix)  const
 {
     int  maxEnum = -1;
-    int  keyPrefixLen = strlen( keyPrefix);
+    int  keyPrefixLen = int( strlen( keyPrefix));
     bool isOk;
     for (int i = 0; i < _size; ++i) {
         if (_keyList.at(i).startsWith( keyPrefix)) {
@@ -696,7 +696,7 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)
 
     uchar c;
     for (int i = 0; i < srcSize; ++i) {
-        c = *srcP++;
+        c = uchar( *srcP++);
         switch (c) {
         case ' ':
             *dstP++ = '_';      // The coded string must not contain any ' '
@@ -728,14 +728,14 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)
         default:
             if (c < 32) {      // 0 .. 31  Special control-char
                 *dstP++ = '^';
-                *dstP++ = 'A' + c - 1;
+                *dstP++ = char('A' + c - 1);
             }
             else {             // Normal char (also UTF8 which is above 127)
-                *dstP++ = c;
+                *dstP++ = char(c);
             }
         }
     }
-    dst.resize( dstP - dstStart);   // Set the real used size for coded string
+    dst.resize( int( dstP - dstStart));   // Set the real used size for coded string
 }
 
 
@@ -752,7 +752,7 @@ void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)
     bool  ctrlFlag   = false;
     uchar c;
     for (int i = 0; i < srcSize; ++i) {
-        c = *srcP++;
+        c = uchar( *srcP++);
         if (escapeFlag) {
             escapeFlag = false;
             switch (c) {
@@ -766,12 +766,12 @@ void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)
                 *dstP++ = '\0';
                 break;
             default:
-                *dstP++ = c;
+                *dstP++ = char(c);
             }
         }
         else if (ctrlFlag) {
             ctrlFlag = false;
-            *dstP++ = c - 'A' + 1;      // 0 .. 31  Special control-char
+            *dstP++ = char( c - 'A' + 1);      // 0 .. 31  Special control-char
         }
         else {
             switch (c) {
@@ -785,11 +785,11 @@ void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)
                 ctrlFlag = true;
                 break;
             default:        // Normal char (also UTF8 which is above 127)
-                *dstP++ = c;
+                *dstP++ = char(c);
             }
         }
     }
-    dst.resize( dstP - dstStart);   // Set the real used size for decoded string
+    dst.resize( int( dstP - dstStart));   // Set the real used size for decoded string
 }
 
 

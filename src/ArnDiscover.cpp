@@ -669,7 +669,7 @@ void  ArnDiscoverBrowserB::onLookuped( int id)
         info.d_ptr->_state = ArnDiscoverInfo::State::HostIp;
         info.d_ptr->_hostIp = ds->hostAddr();
         info.d_ptr->_resolvCode = ArnZeroConf::Error::Ok;  // MW: Ok?
-    
+
         emit infoUpdated( index, info.state());
     }
 
@@ -811,7 +811,7 @@ void  ArnDiscoverAdvertise::advertiseService( ArnDiscover::Type discoverType, co
     d->_arnZCReg->setSubTypes( d->_groups);
     d->_arnZCReg->addSubType( d->_discoverType == ArnDiscover::Type::Server ? "server" : "client");
     for (int i = 0; i < d->_groups.size(); ++i) {
-        xsm.add("group", i, d->_groups.at(i));
+        xsm.add("group", uint(i), d->_groups.at(i));
     }
     xsm += d->_customProperties;
 

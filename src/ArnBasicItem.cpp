@@ -50,15 +50,15 @@ ArnBasicItemPrivate::ArnBasicItemPrivate()
     _reference       = nullptr;
     _eventHandler    = nullptr;
     _pendingEvChain  = nullptr;
-    _id              = _idCount.fetchAndAddRelaxed(1);
+    _id              = quint32(_idCount.fetchAndAddRelaxed(1));
 
     _useUncrossed    = false;
     _isStdEvHandler  = true;
     _ignoreSameValue = ArnM::defaultIgnoreSameValue();
     _isOnlyEcho      = true;  // Nothing else yet ...
 
-    _syncMode          = Arn::ObjectSyncMode();
-    _mode              = Arn::ObjectMode();
+    _syncMode          = quint8( Arn::ObjectSyncMode());
+    _mode              = quint8( Arn::ObjectMode());
     _heritage          = ArnCoreItem::Heritage::None;
     _syncModeLinkShare = true;
 }

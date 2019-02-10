@@ -212,7 +212,7 @@ void  ArnSync::send( const QByteArray& xString)
     if (Arn::debugRecInOut)  qDebug() << "Rec-Out: " << sendString;
     sendString += "\r\n";
     _socket->write( sendString);
-    _trafficOut += sendString.size();
+    _trafficOut += quint32( sendString.size());
 }
 
 
@@ -512,14 +512,14 @@ bool  ArnSync::isFreePath( const QString& path)  const
 
 void  ArnSync::socketInput()
 {
-    _dataReadBuf.resize( _socket->bytesAvailable());
-    int nbytes = _socket->read( _dataReadBuf.data(), _dataReadBuf.size());
+    _dataReadBuf.resize( int(_socket->bytesAvailable()));
+    int nbytes = int(_socket->read( _dataReadBuf.data(), qint64(_dataReadBuf.size())));
     if (nbytes <= 0)  return; // No bytes / error
     if (_isClosed)  return;
 
     _dataReadBuf.resize( nbytes);
     _dataRemain += _dataReadBuf;
-    _trafficIn  += nbytes;
+    _trafficIn  += uint( nbytes);
 
     QByteArray  xString;
     int pos;
@@ -616,7 +616,7 @@ void  ArnSync::doCommands()
     if ((_replyMap.size() == 0) && (stat != ArnError::Ok)) {
         _replyMap.add(ARNRECNAME, "err");
         _replyMap.add("data", QByteArray("record:") + command +
-                      " errTxt:" + ArnError::txt().getTxt( stat));
+                      " errTxt:" + ArnError::txt().getTxt( int( stat)));
     }
 
     if (_replyMap.size()) {
@@ -948,7 +948,7 @@ uint  ArnSync::doCommandFlux()
     QByteArray  nqrx = _commandMap.value("nqrx");
     QByteArray  seq  = _commandMap.value("seq");
     QByteArray  data = _commandMap.value("data");
-    qint8  echoSeq   = _commandMap.value("es", "-1").toInt();
+    qint8  echoSeq   = qint8(_commandMap.value("es", "-1").toInt());
 
     bool  isSyncFlux = type.contains("I");  // After sync from server/client
     bool  isSaveFlux = type.contains("S");  // Loaded persistent value
@@ -1123,7 +1123,7 @@ uint  ArnSync::doCommandDelete()
 
 uint  ArnSync::doCommandMessage()
 {
-    int         type = _commandMap.value("type").toUInt();
+    int         type = _commandMap.value("type").toInt();
     QByteArray  data = _commandMap.value("data");
 
     emit messageReceived( type, data);
@@ -1138,7 +1138,7 @@ uint  ArnSync::doCommandInfo()
 
     //// Server
     //// Note: Check if _allow is ok with specific info
-    int         type = _commandMap.value("type").toUInt();
+    int         type = _commandMap.value("type").toInt();
     QByteArray  data = _commandMap.value("data");
 
     XStringMap xmIn( data);

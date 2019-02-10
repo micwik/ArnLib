@@ -76,7 +76,7 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
     _isSaveMode      = false;
     _hasBeenSetup    = false;
     _syncMode        = 0;
-    _id              = _idCount.fetchAndAddRelaxed(1);
+    _id              = quint32( _idCount.fetchAndAddRelaxed(1));
     _refCount        = -1;  // Mark no reference, Ok to delete
     _zeroRefCount    = 0;
     _isRetired       = false;
@@ -461,7 +461,7 @@ ARNREAL  ArnLink::toReal( bool* isOk)
             break;
         case Arn::DataType::Variant:
             _val->valueReal = _val->valueVariant.toDouble( &isOk2);
-            break; 
+            break;
 #endif
         default:
             _val->valueReal = 0.0;
@@ -673,7 +673,7 @@ void  ArnLink::setupEnd( const QString& path, Arn::ObjectSyncMode syncMode, Arn:
 
 
 void  ArnLink::doModeChanged()
-{    
+{
     ArnEvModeChange  arnEvModeChange( linkPath(), _id, getMode());
     sendEventsDirRoot( &arnEvModeChange, this);
 }
@@ -871,7 +871,7 @@ void  ArnLink::setRetired( RetireType retireType)
     if (_mutex)  _mutex->lock();
     if (Arn::debugLinkDestroy)  qDebug() << "setRetired: path=" << this->linkPath();
 
-    _retireType = retireType;
+    _retireType = uint( retireType);
     _isRetired  = true;
 
     if (_mutex)  _mutex->unlock();
@@ -1001,7 +1001,7 @@ bool  ArnLink::subscribe( ArnCoreItem* subscriber)
     if (!_subscribeTab)
         _subscribeTab = new ArnCoreItemList;
 
-    *_subscribeTab += subscriber;    
+    *_subscribeTab += subscriber;
     if (_mutex)  _mutex->unlock();
 
     return true;  // Subsciber added Ok

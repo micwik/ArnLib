@@ -115,8 +115,8 @@ QString  EnumTxt::getTxtString( int enumVal, quint16 nameSpace)  const
 
 int  EnumTxt::getEnumVal( const char* txt, int defaultVal, quint16 nameSpace)
 {
-    EnumTxtKey  keyStart( _isFlag ? 0        : INT_MIN, nameSpace, _isFlag);
-    EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : INT_MAX, nameSpace, _isFlag);
+    EnumTxtKey  keyStart( _isFlag ? 0        : uint(INT_MIN), nameSpace, _isFlag);
+    EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : uint(INT_MAX), nameSpace, _isFlag);
 
     QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
     while (i != _enumTxtTab.end()) {
@@ -198,7 +198,7 @@ QStringList  EnumTxt::flagsToStringList( int val, quint16 nameSpace)
         const EnumTxtKey&  keyStored = i.key();
         if (keyStop < keyStored)  break;
 
-        if (val & keyStored._enumVal) {
+        if (uint( val) & keyStored._enumVal) {
             retVal += QString::fromUtf8( i.value());
         }
         ++i;
@@ -240,8 +240,8 @@ int  EnumTxt::flagsFromStringList( const QStringList& flagStrings, quint16 nameS
 
 void  EnumTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace, bool neverHumanize)
 {
-    EnumTxtKey  keyStart( _isFlag ? 0        : INT_MIN, nameSpace, _isFlag);
-    EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : INT_MAX, nameSpace, _isFlag);
+    EnumTxtKey  keyStart( _isFlag ? 0        : uint(INT_MIN), nameSpace, _isFlag);
+    EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : uint(INT_MAX), nameSpace, _isFlag);
 
     QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
     while (i != _enumTxtTab.end()) {
@@ -373,7 +373,7 @@ void  EnumTxt::setupFromMetaObject()
     int  nKeys = metaEnum.keyCount();
     for (int i = 0; i < nKeys; ++i) {
         int  enumVal = metaEnum.value(i);
-        if (_isFlag && !isPower2( enumVal))
+        if (_isFlag && !isPower2( uint( enumVal)))
             continue;  // Not a single bit for flags
         setTxtRefAny( metaEnum.key(i), enumVal, 0);
     }

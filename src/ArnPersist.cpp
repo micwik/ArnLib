@@ -645,7 +645,7 @@ void ArnPersist::dbSetupWriteValue( QString& meta, QString& valueTxt, QByteArray
     meta = "";
     if (value.isEmpty())  return;
 
-    uchar  c = value.at(0);
+    uchar  c = uchar( value.at(0));
     if (c == Arn::ExportCode::VariantTxt) {
         int  sepPos = value.indexOf(':', 1);
         Q_ASSERT(sepPos > 0);

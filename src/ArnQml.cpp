@@ -483,7 +483,7 @@ qint64  ArnNetworkReply::readData( char* data, qint64 maxlen)
 {
     int  len = qMin( _data.size() - _readPos, int(maxlen));
     if (len > 0) {
-        memcpy( data, _data.constData() + _readPos, len);
+        memcpy( data, _data.constData() + _readPos, size_t( len));
         _readPos += len;
     }
 
@@ -519,7 +519,7 @@ void  ArnNetworkReply::setup( const QString& path)
         //// Normal values from Arn
         if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. reply setup later path="
                                             << path;
-        QMetaObject::invokeMethod( this, "postSetup", Qt::QueuedConnection);        
+        QMetaObject::invokeMethod( this, "postSetup", Qt::QueuedConnection);
         return;
     }
 
@@ -541,7 +541,7 @@ void  ArnNetworkReply::postSetup()
     if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. reply postSetup 3";
 
     if (!wasLocalExist && (_arnItem.type() == Arn::DataType::Null)) {
-        // Note: Open can have resulted in a persistent loading of the item. 
+        // Note: Open can have resulted in a persistent loading of the item.
         if (Arn::debugQmlNetwork)  qDebug() << "ArnQmlNetw. wait for data: path=" << _arnPath;
         connect( &_arnItem, SIGNAL(changed()), this, SLOT(dataArived()));
         return;
