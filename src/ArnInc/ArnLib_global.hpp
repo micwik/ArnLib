@@ -13,17 +13,17 @@
 
 #if __cplusplus >= 201103L || (__cplusplus < 200000 && __cplusplus > 199711L)
 // Use C++11 nullptr
-#  define ArnNullPtr  nullptr
+#  define arnNullptr  nullptr
 #else
 #  if 1
-    struct nullptr_t
+    struct ArnNullptr
     {
         template <class T>
             inline operator T* ()  {return (T*)0;}
     };
-    static struct nullptr_t __attribute__((used)) ArnNullPtr;
+    static struct ArnNullptr __attribute__((used)) arnNullptr;
 #  else
-#    define ArnNullPtr  0
+#    define arnNullptr  0
 #  endif
 #endif
 
