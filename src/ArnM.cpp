@@ -365,7 +365,9 @@ QStringList  ArnM::itemsMain( const QString& path)
 {
     ArnLink*  link = ArnM::link( path, Arn::LinkFlags::Folder);
     QStringList  retVal = itemsMain( link);
-    link->deref();
+    if (link) {
+        link->deref();
+    }
 
     return retVal;
 }
