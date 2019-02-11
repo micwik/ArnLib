@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -120,6 +120,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_1_1_allow.html">Allow</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_arn_1_1_client_sync_mode.html">ClientSyncMode</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Client session Sync mode at connect &amp; reconnect.  <a href="struct_arn_1_1_client_sync_mode.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_arn_1_1_coding.html">Coding</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_arn_1_1_data_type.html">DataType</a></td></tr>
@@ -204,6 +207,8 @@ Functions</h2></td></tr>
 <tr class="memitem:aa5388e7414b06aa7c8e1c0af4fe549a7"><td class="memItemLeft" align="right" valign="top">QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#aa5388e7414b06aa7c8e1c0af4fe549a7">hostFromHostWithInfo</a> (const QString &amp;hostWithInfo)</td></tr>
 <tr class="memdesc:aa5388e7414b06aa7c8e1c0af4fe549a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the host from the <em>HostWithInfo</em> string.  <a href="#aa5388e7414b06aa7c8e1c0af4fe549a7">More...</a><br /></td></tr>
 <tr class="separator:aa5388e7414b06aa7c8e1c0af4fe549a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4de1ab0245470bfd56650e086e3b351"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#ae4de1ab0245470bfd56650e086e3b351">isNullPtr</a> (const void *ptr)</td></tr>
+<tr class="separator:ae4de1ab0245470bfd56650e086e3b351"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa38cc45e73d01409ff35ad4f3ca5a08d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#aa38cc45e73d01409ff35ad4f3ca5a08d">isPower2</a> (uint x)</td></tr>
 <tr class="separator:aa38cc45e73d01409ff35ad4f3ca5a08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -253,6 +258,8 @@ Variables</h2></td></tr>
 <tr class="separator:a93deb2830ba06a3fe371c25d07789c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb271efbd6458b8ec659098deced870"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a6fb271efbd6458b8ec659098deced870">warningMDNS</a> = false</td></tr>
 <tr class="separator:a6fb271efbd6458b8ec659098deced870"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81684bfa914686118c20b97fe13acd11"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a81684bfa914686118c20b97fe13acd11">offHeartbeat</a> = false</td></tr>
+<tr class="separator:a81684bfa914686118c20b97fe13acd11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02e5234ef8eb24868c55843b282c6a44"><td class="memItemLeft" align="right" valign="top">const QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">resourceArnLib</a> = &quot;:/ArnLib/&quot;</td></tr>
 <tr class="separator:a02e5234ef8eb24868c55843b282c6a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad43f257b6be2350b7b9a797212fa275a"><td class="memItemLeft" align="right" valign="top">const QString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">resourceArnRoot</a> = &quot;:/ArnLib/ArnRoot/&quot;</td></tr>
@@ -557,6 +564,24 @@ Variables</h2></td></tr>
 </dl>
 
 <p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00206">206</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae4de1ab0245470bfd56650e086e3b351"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Arn::isNullPtr </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_arn_8cpp_source.html#l00249">249</a> of file <a class="el" href="_arn_8cpp_source.html">Arn.cpp</a>.</p>
 
 </div>
 </div>
@@ -1057,6 +1082,20 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a81684bfa914686118c20b97fe13acd11"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Arn::offHeartbeat = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_arn_lib_8cpp_source.html#l00052">52</a> of file <a class="el" href="_arn_lib_8cpp_source.html">ArnLib.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aac20bdfa60a3d566d6000e333724aa44"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1165,7 +1204,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_lib_8cpp_source.html#l00053">53</a> of file <a class="el" href="_arn_lib_8cpp_source.html">ArnLib.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_lib_8cpp_source.html#l00054">54</a> of file <a class="el" href="_arn_lib_8cpp_source.html">ArnLib.cpp</a>.</p>
 
 </div>
 </div>
@@ -1179,7 +1218,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="_arn_lib_8cpp_source.html#l00054">54</a> of file <a class="el" href="_arn_lib_8cpp_source.html">ArnLib.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_arn_lib_8cpp_source.html#l00055">55</a> of file <a class="el" href="_arn_lib_8cpp_source.html">ArnLib.cpp</a>.</p>
 
 </div>
 </div>
@@ -1203,7 +1242,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_arn.html">Arn</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:32 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

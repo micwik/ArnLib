@@ -1,0 +1,4 @@
+<map id="ArnAdaptItem" name="ArnAdaptItem">
+<area shape="rect" id="node2" href="$class_arn_basic_item.html" title="Base class handle for an Arn Data Object. " alt="" coords="6,80,107,107"/>
+<area shape="rect" id="node3" href="$class_arn_core_item.html" title="Core base class for the inherited ArnItem classes. " alt="" coords="8,5,105,32"/>
+</map>

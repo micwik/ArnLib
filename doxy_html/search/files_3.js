@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['helpindex_2etxt',['HelpIndex.txt',['../_help_index_8txt.html',1,'']]]
+  ['examples_2etxt',['Examples.txt',['../_examples_8txt.html',1,'']]]
 ];

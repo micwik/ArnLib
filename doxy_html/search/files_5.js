@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['mqflags_2ecpp',['MQFlags.cpp',['../_m_q_flags_8cpp.html',1,'']]],
-  ['mqflags_2ehpp',['MQFlags.hpp',['../_m_q_flags_8hpp.html',1,'']]]
+  ['install_2emd',['Install.md',['../_install_8md.html',1,'']]],
+  ['internals_2emd',['Internals.md',['../_internals_8md.html',1,'']]]
 ];

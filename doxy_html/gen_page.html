@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -119,6 +119,10 @@ $(document).ready(function(){initNavTree('gen_page.html','');});
 <li class="level2"><a href="#gen_shareArnobj">Sharing Arn Data Objects    </a><ul><li class="level3"><a href="#gen_dynamicPort">Dynamic port</a></li>
 </ul>
 </li>
+<li class="level2"><a href="#gen_syncRules">Sync rules    </a><ul><li class="level3"><a href="#gen_syncRulesPipe">Sync rules for Pipe</a></li>
+<li class="level3"><a href="#gen_syncRulesMode">ClientSyncMode</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="level1"><a href="#gen_rpc">RPC and SAPI    </a><ul><li class="level2"><a href="#gen_rpcoverload">RPC and SAPI method name overload    </a></li>
@@ -153,7 +157,7 @@ Arn Data Objects    </h1>
 ArnItem access   </h2>
 <p>To access an <em>ARN Data Object</em> one can use <a class="el" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36" title="Assign an integer to an Arn Data Object at path ">ArnM::setValue()</a> and <a class="el" href="class_arn_m.html#aed7669788b70681dddf639866f46f02c" title="Get the value of Arn Data Object at path ">ArnM::valueInt()</a> etc. This is a polled access, and gives no signals / events for changed objects. Also this method is rather slow as it has to locate the object via a path lookup. However its good for application assign object "once".</p>
 <p>For continous access to an <em>ARN Data Object</em> its better to use an <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a>. This will be a handle to the object that give fast access. It will also provide signals for changed object. <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a> is QObject based and has its charateristics.</p>
-<p>Yet another way to access an <em>ARN Data Object</em>, is an <a class="el" href="class_arn_basic_item.html" title="Base class handle for an Arn Data Object. ">ArnBasicItem</a>. This will give a a basic handle to the object. It is fast, small and is not based on QObject. As such it can not use signals and slots, but it can provide ArnEvents.</p>
+<p>Yet another way to access an <em>ARN Data Object</em>, is an <a class="el" href="class_arn_basic_item.html" title="Base class handle for an Arn Data Object. ">ArnBasicItem</a>. This will give a basic handle to the object. It is fast, small and is not based on QObject. As such it can not use signals and slots, but it can provide ArnEvents.</p>
 <p>Normally <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a> should be used, as it has a higher level interface with QObject signals and slots. Typically <a class="el" href="class_arn_basic_item.html" title="Base class handle for an Arn Data Object. ">ArnBasicItem</a> is used when no signal is needed, i.e only using direct access with setValue and toXXX methods. If you need a lot of ArnBasicItems and memory foot print (or speed) is important, You can consider to use <a class="el" href="class_arn_basic_item.html" title="Base class handle for an Arn Data Object. ">ArnBasicItem</a> with ArnEvents even if it will be harder to code.</p>
 <p>You can expect <a class="el" href="class_arn_basic_item.html" title="Base class handle for an Arn Data Object. ">ArnBasicItem</a> to be lees than a third of the size of an <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a>. Tests has shown <a class="el" href="class_arn_basic_item.html" title="Base class handle for an Arn Data Object. ">ArnBasicItem</a> to take half the time assigning an integer, compared to <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a>. <br />
 <br />
@@ -172,7 +176,7 @@ Modes    </h2>
 <p>Additionally there are some <em>sync modes</em>. These modes are used by the local client session and are not shared with others. The <em>sync modes</em> must be set before the <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a> is opened to an <em>ARN Data Object</em>.</p>
 <p>Following <em>sync_modes</em> are available:</p>
 <ul>
-<li><b>Master</b> The <em>ARN Data Object</em> (at client side) is set as <em>default generator</em> of data. Normally the server is the <em>default generator</em> of data. This makes difference when client connects or reconnects to the server. The data from the <em>default generator</em> is then used and synced. Also echo of data to the client side <em>ARN data object</em> is prohibited.</li>
+<li><b>Master</b> The <em>ARN Data Object</em> (at client side) is set as <em>default generator</em> of data. Normally the server is the <em>default generator</em> of data. See <a href="#gen_syncRules">Sync Rules</a>.</li>
 <li><b>AutoDestroy</b> The <em>ARN Data Object</em> (at client side) is set up for auto destruction. When the client closes tcp/ip, the server side will destroy the <em>ARN Data Object</em> and this will also be done at any connected clients.</li>
 </ul>
 <p>Note: It's convenient to always set all the needed modes before an <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a> is opened or an <a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a> is used as a template. See <a class="el" href="class_arn_item.html#ad0abf36e61104c113f46503bfcf4f39a" title="Mark this ArnItem as a template. ">ArnItem::setTemplate()</a>. <br />
@@ -211,8 +215,10 @@ Naming conventions    </h2>
 Bidirectional Arn Data Objects    </h2>
 <p>A bidirectional <em>ARN Data Object</em> is actually a double object, a twin. Each part has its own path but their life span is depending on each other.</p>
 <p>One part is the normal "official" and the other part is <em>provider</em>. The provider has an added "!" to the normal path, e.g. normal = "//Measure/Depth/value", provider = "//Measure/Depth/value!".</p>
-<p>Data written to one part ends up in the other. When a provider slot is connected to the provider part (<a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a>), the slot will receive "request" data from the normal part. The provider slot processes the request data and writes the result to the same provider part. This way the result will end up in the normal "official" part.</p>
-<p>This functionality can typically be used for data validation and limiting. <br />
+<p>Data written to one part ends up in the other. This can be compared to crossing electrical lines from one unit to another unit regarding transmit and receive signals in each unit. When a provider slot is connected to the provider part (<a class="el" href="class_arn_item.html" title="Handle for an Arn Data Object. ">ArnItem</a>), the slot will receive "request" data from the normal part. The provider slot processes the request data and writes the result to the same provider part. This way the result will end up in the normal "official" part.</p>
+<p>This functionality can typically be used for data validation and limiting.</p>
+<p>The crossing property of BiDir can be supressed by using <a class="el" href="class_arn_item.html#a3c15bad50954e05992fe35b5441540b7" title="Set a Bidirectional item as Uncrossed. ">ArnItem::setUncrossed()</a>. Again this can be compared to uncrossed electrical lines from a unit to a "communicator" (modem, switch, hub ...) regarding transmit and receive signals. Not supprisingly this is usually a easier mode when making some kind of Bridge for ARN.</p>
+<p><br />
 <br />
 </p>
 <h2><a class="anchor" id="gen_pipeArnobj"></a>
@@ -284,6 +290,51 @@ Dynamic port</h3>
 <p>This can typically be used to skip configuring static port numbers and be able to have multiple instanses of the <a class="el" href="class_arn_server.html" title="Class for making an Arn Server. ">ArnServer</a> on the same machine. As an <a class="el" href="class_arn_client.html" title="Class for connecting to an Arn Server. ">ArnClient</a> must find its <a class="el" href="class_arn_server.html" title="Class for making an Arn Server. ">ArnServer</a>, this can be used together with <a class="el" href="class_arn_discover_remote.html" title="Discover with remote setting. ">ArnDiscoverRemote</a> / <a class="el" href="namespace_arn_discover.html">ArnDiscover</a>. <br />
 <br />
 </p>
+<h2><a class="anchor" id="gen_syncRules"></a>
+Sync rules    </h2>
+<p>Syncing between client and server is normally handled automatically, but for special needs and reference this chapter gives an idea of the rules. Also this describes the rules when connection is established. After that, normal syncing is done almost symetrically between client and server.</p>
+<p>An <em>ARN Data Object</em> with Master <a href="#gen_arnobjModes">Mode</a> is used as <em>default generator</em> of data. Normally the server is the <em>default generator</em> of data. This makes difference when client connects or reconnects to the server. The data from the <em>default generator</em> is then used and synced.</p>
+<p>Also to have minimal data exchange when using non <a href="#gen_bidirArnobj">BiDirectional</a> <em>ARN Data Object</em>, one should take Master mode into consideration. This is more important for big objects.</p>
+<p>When a Null value is synced, the receiver store this as an empty value, i.e. it't not stored as Null which is impossible.</p>
+<h3><a class="anchor" id="gen_syncRulesPipe"></a>
+Sync rules for Pipe</h3>
+<ul>
+<li>Pipes should be considered to carry a flow, not a value.</li>
+<li>The pipe flow (to server) is enabled after <a class="el" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057" title="Connect to an Arn Server ">ArnClient::connectToArn()</a>, and is disabled after <a class="el" href="class_arn_client.html#a980db214281284dee96e1504d3b0d17a" title="Close sharing with an Arn Server ">ArnClient::close()</a>.</li>
+<li>In client, an enabled flow can queue up the stream of data when there is no connection to server.</li>
+<li>In client, the flow keeps being enabled even if the <a class="el" href="class_arn_client.html#a0fd4daab4ef28a0ab98db7d7e5f3f057" title="Connect to an Arn Server ">ArnClient::connectToArn()</a> fails or there is a TCP disconnect.</li>
+<li>When the flow is disabled (<a class="el" href="class_arn_client.html#a980db214281284dee96e1504d3b0d17a" title="Close sharing with an Arn Server ">ArnClient::close</a>), all queued stream data will be sent if possible.</li>
+<li>Server can never queue anything when disconnected, as the server session is only living when connected. <br />
+<br />
+</li>
+</ul>
+<h3><a class="anchor" id="gen_syncRulesMode"></a>
+ClientSyncMode</h3>
+<p>ClientSyncMode can be set with <a class="el" href="class_arn_client.html#a33ac43100792c358069c34a9ef0a918d" title="Set ClientSyncMode. ">ArnClient::setSyncMode()</a>. Basically this controls if a client <em>ARN Data Object</em> is considered as a Master object (se also <a href="#gen_arnobjModes">Modes</a> ).</p>
+<p>ClientSyncMode doesn't affect a pipe. Default mode is StdAutoMaster.</p>
+<ul>
+<li><b>StdAutoMaster</b> Dynamic auto master mode, general purpose, prohibit Null value sync. Can be used for one time initial setup, thereafter server can be Master for an object.<ul>
+<li>Master can be set explicitly with <a class="el" href="class_arn_item.html#a22de5dfc89c02245370d5c0a89cee3f6" title="Set client session sync mode as Master for this ArnItem. ">ArnItem::setMaster()</a>. This is overided if the <em>ARN Data Object</em> has a Null value (not assigned), then the object becomes temporary Slave for next connection.</li>
+<li>If client has an unsynced local update (during not connected state), this <em>ARN Data Object</em> becomes temporary Master for just next connection.</li>
+<li>If the client is not Master for an <em>ARN Data Object</em> but the server only has a Null value, the clients value (non Null) is still used.</li>
+</ul>
+</li>
+<li><b>ImplicitMaster</b> First local assign gives permanent Master mode, typically a client value reporter.<ul>
+<li>Master can be set explicitly with <a class="el" href="class_arn_item.html#a22de5dfc89c02245370d5c0a89cee3f6" title="Set client session sync mode as Master for this ArnItem. ">ArnItem::setMaster()</a>.</li>
+<li>Client local assign to an <em>ARN Data Object</em> gives permanent Master mode for this object. This implicit Master mode setting is done once when next connection is established.</li>
+<li>Null values can be synced both from client and server.</li>
+<li>If a client <em>ARN Data Object</em> is set booth as <a href="#gen_persistArnobj">Persistent</a> and Master with a Null value before connection, the Master mode is initially overridden and the servers value is synced to the client.</li>
+</ul>
+</li>
+<li><b>ExplicitMaster</b> Explicit permanent Master mode, typically an observer or manually setup Master mode. Can be used for UI (User Interface) with no Master set to any <em>ARN Data Object</em>, i.e. the server is always holding the "true" value.<ul>
+<li>Master can be set explicitly with <a class="el" href="class_arn_item.html#a22de5dfc89c02245370d5c0a89cee3f6" title="Set client session sync mode as Master for this ArnItem. ">ArnItem::setMaster()</a>. Client has no other way to become Master for an <em>ARN Data Object</em>.</li>
+<li>Null values can be synced both from client and server.</li>
+<li>If a client <em>ARN Data Object</em> is set booth as <a href="#gen_persistArnobj">Persistent</a> and Master with a Null value before connection, the Master mode is initially overridden and the servers value is synced to the client. <br />
+<br />
+</li>
+</ul>
+</li>
+</ul>
 <h1><a class="anchor" id="gen_rpc"></a>
 RPC and SAPI    </h1>
 <p><a class="el" href="class_arn_rpc.html" title="Remote Procedure Call. ">ArnRpc</a> is the basic functionality of RPC (Remote Procedure Call). <a class="el" href="class_arn_sapi.html" title="Service API. ">ArnSapi</a> implements SAPI (Service Application Programming Interface) and is using <a class="el" href="class_arn_rpc.html" title="Remote Procedure Call. ">ArnRpc</a> as its base. It's recommended to use <a class="el" href="class_arn_sapi.html" title="Service API. ">ArnSapi</a> which has a higher level model.</p>
@@ -490,7 +541,7 @@ Application notations    </h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:32 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

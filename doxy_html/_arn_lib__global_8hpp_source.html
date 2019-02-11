@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/ArnInc/ArnLib_global.hpp (3.0.0) Source File</title>
+<title>ArnLib: src/ArnInc/ArnLib_global.hpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -122,14 +122,31 @@ $(document).ready(function(){initNavTree('_arn_lib__global_8hpp_source.html','')
 <div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="_arn_lib__global_8hpp.html#a532d70375b2662bf8bcf50072d70b8a5">   11</a></span>&#160;<span class="preprocessor">#  define ARNLIBSHARED_EXPORT Q_DECL_IMPORT</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#endif // ARNLIB_GLOBAL_HPP</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#if __cplusplus &gt;= 201103L || (__cplusplus &lt; 200000 &amp;&amp; __cplusplus &gt; 199711L)</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// Use C++11 nullptr</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#  define arnNullptr  nullptr</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#  if 1</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="struct_arn_nullptr.html">   19</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_arn_nullptr.html">ArnNullptr</a></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="struct_arn_nullptr.html#af8474e7109adb90e726c702f95527ed0">   22</a></span>&#160;            <span class="keyword">inline</span> <span class="keyword">operator</span> T* ()  {<span class="keywordflow">return</span> (T*)0;}</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    };</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">static</span> <span class="keyword">struct </span><a class="code" href="struct_arn_nullptr.html">ArnNullptr</a> __attribute__((used)) arnNullptr;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#  else</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#    define arnNullptr  0</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#  endif</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif // ARNLIB_GLOBAL_HPP</span></div>
+<div class="ttc" id="struct_arn_nullptr_html"><div class="ttname"><a href="struct_arn_nullptr.html">ArnNullptr</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib__global_8hpp_source.html#l00019">ArnLib_global.hpp:19</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4d586402499cc8c8cfffbed14854e74f.html">ArnInc</a></li><li class="navelem"><a class="el" href="_arn_lib__global_8hpp.html">ArnLib_global.hpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

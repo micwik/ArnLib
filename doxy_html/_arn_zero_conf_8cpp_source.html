@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/ArnZeroConf.cpp (3.0.0) Source File</title>
+<title>ArnLib: src/ArnZeroConf.cpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="title">ArnZeroConf.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_zero_conf_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2016 Michael Wiklund.</span></div>
+<a href="_arn_zero_conf_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2019 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
@@ -167,20 +167,20 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">class </span>ArnZeroConfIntern</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> DNSSD_API  registerServiceCallback( </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> DNSSD_API  registerServiceCallback(</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                               <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, DNSServiceErrorType errCode,</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                               <span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* regtype, <span class="keyword">const</span> <span class="keywordtype">char</span>* domain, <span class="keywordtype">void</span>* context);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> DNSSD_API  resolveServiceCallback( </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> DNSSD_API  resolveServiceCallback(</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                               <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, quint32 iface,</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                               DNSServiceErrorType errCode, <span class="keyword">const</span> <span class="keywordtype">char</span>* fullname, <span class="keyword">const</span> <span class="keywordtype">char</span>* host,</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                               quint16 port, quint16 txtLen, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* txt, <span class="keywordtype">void</span>* context);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> DNSSD_API  browseServiceCallback( </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                               <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, quint32 iface, </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> DNSSD_API  browseServiceCallback(</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                               <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, quint32 iface,</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                               DNSServiceErrorType errCode, <span class="keyword">const</span> <span class="keywordtype">char</span>* serviceName, <span class="keyword">const</span> <span class="keywordtype">char</span>* regtype,</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                               <span class="keyword">const</span> <span class="keywordtype">char</span>* replyDomain, <span class="keywordtype">void</span>* context);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> DNSSD_API  lookupHostCallback(</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                               <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, uint32_t interfaceIndex,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                               DNSServiceErrorType errCode, <span class="keyword">const</span> <span class="keywordtype">char</span> *hostname, </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                               DNSServiceErrorType errCode, <span class="keyword">const</span> <span class="keywordtype">char</span> *hostname,</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                               <span class="keyword">const</span> <span class="keyword">struct</span> sockaddr *address, uint32_t ttl, <span class="keywordtype">void</span> *context);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;};</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
@@ -242,7 +242,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordtype">int</span>  len = name.size();</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; len; ++i) {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        uchar  c = *namep++;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        uchar  c = uchar( *namep++);</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keywordflow">if</span> (c &lt;= <span class="charliteral">&#39; &#39;</span>) {</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            retVal += <span class="charliteral">&#39;\\&#39;</span>;</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            retVal += QByteArray::number(c).rightJustified(3, <span class="charliteral">&#39;0&#39;</span>);</div>
@@ -336,7 +336,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    _txtRec.<a class="code" href="class_arn_1_1_x_string_map.html#a4ea0ceaea8ce32f3771a5121991be220">clear</a>();</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; xsm.<a class="code" href="class_arn_1_1_x_string_map.html#ab9bbf7ce563875fd6e28c70d0cbefe69">size</a>(); ++i) {</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        QByteArray  txtPar = xsm.<a class="code" href="class_arn_1_1_x_string_map.html#a6e0e99cf7d332ae3771aefa1b42ef50b">key</a>(i) + <span class="stringliteral">&quot;=&quot;</span> + xsm.<a class="code" href="class_arn_1_1_x_string_map.html#aaa0b23b534233aa51344694e172f9d7a">value</a>(i);</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        txtPar.insert(0, quint8( txtPar.length()));</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        txtPar.insert(0, <span class="keywordtype">char</span>( quint8( txtPar.length())));</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        _txtRec += txtPar;</div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    }</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;}</div>
@@ -547,13 +547,13 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    DNSServiceErrorType err;</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    err = DNSServiceRegister(&amp;_sdRef,</div>
 <div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;                             noAutoRename ? kDNSServiceFlagsNoAutoRename : 0,</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;                             _iface,</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;                             uint32_t(_iface),</div>
 <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;                             <a class="code" href="class_arn_zero_conf_register.html#adaf41598112b4414ef3ea4ca95e541a2">serviceName</a>().toUtf8().constData(),</div>
 <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;                             serviceTypes.constData(),</div>
 <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;                             <a class="code" href="class_arn_zero_conf_b.html#ab72a1c497064db3cbc3baa58520f4b0e">domain</a>().toUtf8().constData(),</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;                             <a class="code" href="class_arn_zero_conf_register.html#adf9e2bd5cb9c8a3c6c0cd787822313eb">host</a>().toUtf8().constData(),</div>
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;                             qToBigEndian( <a class="code" href="class_arn_zero_conf_register.html#ac577f3038928a55244b1544cd06613fa">port</a>()),</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;                             txtRec.length(),</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;                             uint16_t( txtRec.length()),</div>
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;                             txtRec.constData(),</div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;                             ArnZeroConfIntern::registerServiceCallback,</div>
 <div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;                             <span class="keyword">this</span>);</div>
@@ -588,14 +588,14 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;}</div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;</div>
 <div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="keywordtype">void</span> DNSSD_API  ArnZeroConfIntern::registerServiceCallback( </div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="keywordtype">void</span> DNSSD_API  ArnZeroConfIntern::registerServiceCallback(</div>
 <div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;                    <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, DNSServiceErrorType errCode,</div>
 <div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;                    <span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* regtype, <span class="keyword">const</span> <span class="keywordtype">char</span>* domain, <span class="keywordtype">void</span>* context)</div>
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;{</div>
 <div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;    Q_UNUSED(sdRef);</div>
 <div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;    Q_UNUSED(flags);</div>
 <div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;    Q_UNUSED(regtype);</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">Arn::debugZeroConf</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;Register callback: name=&quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; regtype=&quot;</span> &lt;&lt; regtype </div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">Arn::debugZeroConf</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;Register callback: name=&quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; regtype=&quot;</span> &lt;&lt; regtype</div>
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;                                      &lt;&lt; <span class="stringliteral">&quot; domain=&quot;</span> &lt;&lt; domain;</div>
 <div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    <a class="code" href="class_arn_zero_conf_register.html">ArnZeroConfRegister</a>*  <span class="keyword">self</span> = <span class="keyword">reinterpret_cast&lt;</span><a class="code" href="class_arn_zero_conf_register.html">ArnZeroConfRegister</a>*<span class="keyword">&gt;</span>(context);</div>
 <div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    <span class="keywordflow">if</span> (errCode == kDNSServiceErr_NoError) {</div>
@@ -690,7 +690,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;    DNSServiceErrorType  err;</div>
 <div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    err = DNSServiceResolve(&amp;_sdRef,</div>
 <div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;                            (forceMulticast ? kDNSServiceFlagsForceMulticast : 0),</div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;                            _iface,</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;                            uint32_t(_iface),</div>
 <div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;                            <a class="code" href="class_arn_zero_conf_resolve.html#a13f34be51debff813e365dcfa7a3ef88">serviceName</a>().toUtf8().constData(),</div>
 <div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;                            <a class="code" href="class_arn_zero_conf_b.html#a8dc239d6c0973e28ed45e3f0035bda7c">fullServiceType</a>().toUtf8().constData(),</div>
 <div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;                            <a class="code" href="class_arn_zero_conf_b.html#ab72a1c497064db3cbc3baa58520f4b0e">domain</a>().toUtf8().constData(),</div>
@@ -724,7 +724,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;        _notifier = 0;</div>
 <div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        DNSServiceRefDeallocate( _sdRef);</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        _sdRef = 0;        </div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        _sdRef = 0;</div>
 <div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    }</div>
 <div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;    _state.set( <a class="code" href="struct_arn_zero_conf_1_1_state.html#a1612afd0a0484418d4f889fd0f924ad2a9995eb7778c2d1615d34b90a60f7b44b">ArnZeroConf::State::Resolve</a>, <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;}</div>
@@ -738,7 +738,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;</div>
 <div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;</div>
 <div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;<span class="keywordtype">void</span> DNSSD_API  ArnZeroConfIntern::resolveServiceCallback(</div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;                    <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, quint32 iface, </div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;                    <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, quint32 iface,</div>
 <div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;                    DNSServiceErrorType errCode, <span class="keyword">const</span> <span class="keywordtype">char</span>* fullname, <span class="keyword">const</span> <span class="keywordtype">char</span>* host, quint16 port,</div>
 <div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;                    quint16 txtLen, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* txt, <span class="keywordtype">void</span>* context)</div>
 <div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;{</div>
@@ -750,7 +750,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;    <span class="keyword">self</span>-&gt;_operationTimer-&gt;stop();</div>
 <div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;</div>
 <div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    <span class="keywordflow">if</span> (self-&gt;_id &lt; 0)  <span class="comment">// No valid id set, get one</span></div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;        <span class="keyword">self</span>-&gt;_id = ArnZeroConfB::getNextId();</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;        <span class="keyword">self</span>-&gt;_id = <a class="code" href="class_arn_zero_conf_browser.html#a69091a1b190a72c8ea84d5213e5eaa60">ArnZeroConfBrowser::getNextId</a>();</div>
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;</div>
 <div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">Arn::debugZeroConf</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;Resolve callback errCode=&quot;</span> &lt;&lt; errCode;</div>
 <div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    <span class="keywordflow">if</span> (errCode == kDNSServiceErr_NoError) {</div>
@@ -761,7 +761,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        <span class="keyword">self</span>-&gt;setHost( resHost);</div>
 <div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        <span class="keyword">self</span>-&gt;setPort( qFromBigEndian( port));</div>
 <div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;        <span class="keyword">self</span>-&gt;setTxtRecord( txtLen &gt; 0 ? QByteArray((<span class="keyword">const</span> <span class="keywordtype">char</span>*) txt, txtLen) : QByteArray());</div>
-<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        <span class="keyword">self</span>-&gt;_iface = iface;</div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        <span class="keyword">self</span>-&gt;_iface = int( iface);</div>
 <div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        <span class="keyword">self</span>-&gt;_state.set( <a class="code" href="struct_arn_zero_conf_1_1_state.html#a1612afd0a0484418d4f889fd0f924ad2a06a7f98a76b1d7ffa51d1e10ff6570c0">ArnZeroConf::State::Resolving</a>, <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;        <span class="keyword">self</span>-&gt;_state.set( <a class="code" href="struct_arn_zero_conf_1_1_state.html#a1612afd0a0484418d4f889fd0f924ad2a5b63e31d354dc90b2eb2e7f4bd043619">ArnZeroConf::State::Resolved</a>);</div>
 <div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;        emit <span class="keyword">self</span>-&gt;resolved( self-&gt;_id, fullname);</div>
@@ -836,7 +836,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;        <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;    }</div>
 <div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    <a class="code" href="class_arn_zero_conf_lookup.html#a03f7df9356cfc644ed49e8d6907eeb00">releaseLookup</a>();</div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    </div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;</div>
 <div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;    <span class="keywordtype">bool</span>  useQtLookup = <span class="keyword">false</span>;  <span class="comment">// Default</span></div>
 <div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;    useQtLookup |= !forceMulticast &amp;&amp; !_host.endsWith(<span class="stringliteral">&quot;.local&quot;</span>);</div>
 <div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;    useQtLookup |= _isForceQtDnsLookup;</div>
@@ -857,8 +857,8 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">Arn::debugZeroConf</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ZeroConfLookup mDNS: host=&quot;</span> &lt;&lt; _host &lt;&lt; <span class="stringliteral">&quot; id=&quot;</span> &lt;&lt; _id;</div>
 <div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    DNSServiceErrorType err;</div>
 <div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;    err = DNSServiceGetAddrInfo(&amp;_sdRef,</div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;                                (forceMulticast ? kDNSServiceFlagsForceMulticast : 0),                                </div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;                                _iface,</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;                                (forceMulticast ? kDNSServiceFlagsForceMulticast : 0),</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;                                uint32_t(_iface),</div>
 <div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;                                kDNSServiceProtocol_IPv4,</div>
 <div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;                                _host.toUtf8().constData(),</div>
 <div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;                                ArnZeroConfIntern::lookupHostCallback,</div>
@@ -928,8 +928,8 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;}</div>
 <div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;</div>
 <div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;</div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="keywordtype">void</span> DNSSD_API  ArnZeroConfIntern::lookupHostCallback( </div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;                    <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, uint32_t interfaceIndex, </div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="keywordtype">void</span> DNSSD_API  ArnZeroConfIntern::lookupHostCallback(</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;                    <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, uint32_t interfaceIndex,</div>
 <div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;                    DNSServiceErrorType errCode, <span class="keyword">const</span> <span class="keywordtype">char</span> *hostname, <span class="keyword">const</span> sockaddr *address,</div>
 <div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;                    uint32_t ttl, <span class="keywordtype">void</span> *context)</div>
 <div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;{</div>
@@ -945,7 +945,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    <span class="keyword">self</span>-&gt;_operationTimer-&gt;stop();</div>
 <div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;</div>
 <div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    <span class="keywordflow">if</span> (self-&gt;_id &lt; 0)  <span class="comment">// No valid id set, get one</span></div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;        <span class="keyword">self</span>-&gt;_id = ArnZeroConfB::getNextId();</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;        <span class="keyword">self</span>-&gt;_id = <a class="code" href="class_arn_zero_conf_browser.html#a69091a1b190a72c8ea84d5213e5eaa60">ArnZeroConfBrowser::getNextId</a>();</div>
 <div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;</div>
 <div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">Arn::debugZeroConf</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;Resolve Lookup callback hostName=&quot;</span> &lt;&lt; hostname</div>
 <div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;                                      &lt;&lt; <span class="stringliteral">&quot; errCode=&quot;</span> &lt;&lt; errCode;</div>
@@ -1064,7 +1064,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;    DNSServiceErrorType err;</div>
 <div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;    err = DNSServiceBrowse(&amp;_sdRef,</div>
 <div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;                           0,</div>
-<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;                           _iface,</div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;                           uint32_t(_iface),</div>
 <div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;                           serviceTypes.constData(),</div>
 <div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;                           <a class="code" href="class_arn_zero_conf_b.html#ab72a1c497064db3cbc3baa58520f4b0e">domain</a>().toUtf8().constData(),</div>
 <div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;                           ArnZeroConfIntern::browseServiceCallback,</div>
@@ -1097,7 +1097,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;</div>
 <div class="line"><a name="l00994"></a><span class="lineno">  994</span>&#160;</div>
 <div class="line"><a name="l00995"></a><span class="lineno">  995</span>&#160;<span class="keywordtype">void</span> DNSSD_API  ArnZeroConfIntern::browseServiceCallback(</div>
-<div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;                    <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, quint32 iface, </div>
+<div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;                    <a class="code" href="_arn_zero_conf_8hpp.html#ae237b272db7bdd27b83c147e9908f8c0">DNSServiceRef</a> sdRef, DNSServiceFlags flags, quint32 iface,</div>
 <div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160;                    DNSServiceErrorType errCode, <span class="keyword">const</span> <span class="keywordtype">char</span>* serviceName, <span class="keyword">const</span> <span class="keywordtype">char</span>* regtype,</div>
 <div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;                    <span class="keyword">const</span> <span class="keywordtype">char</span>* replyDomain, <span class="keywordtype">void</span>* context)</div>
 <div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;{</div>
@@ -1113,7 +1113,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="line"><a name="l01009"></a><span class="lineno"> 1009</span>&#160;        <span class="keywordflow">if</span> (isAdded != self-&gt;_activeServiceNames.contains( servName)) {  <span class="comment">// Not multiple add or remove, ok</span></div>
 <div class="line"><a name="l01010"></a><span class="lineno"> 1010</span>&#160;            <span class="keywordtype">int</span>  <span class="keywordtype">id</span> = 0;</div>
 <div class="line"><a name="l01011"></a><span class="lineno"> 1011</span>&#160;            <span class="keywordflow">if</span> (isAdded) {</div>
-<div class="line"><a name="l01012"></a><span class="lineno"> 1012</span>&#160;                <span class="keywordtype">id</span> = ArnZeroConfB::getNextId();</div>
+<div class="line"><a name="l01012"></a><span class="lineno"> 1012</span>&#160;                <span class="keywordtype">id</span> = <a class="code" href="class_arn_zero_conf_browser.html#a69091a1b190a72c8ea84d5213e5eaa60">ArnZeroConfBrowser::getNextId</a>();</div>
 <div class="line"><a name="l01013"></a><span class="lineno"> 1013</span>&#160;                <span class="keyword">self</span>-&gt;_activeServiceNames.insert( servName, <span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l01014"></a><span class="lineno"> 1014</span>&#160;                emit <span class="keyword">self</span>-&gt;serviceAdded( <span class="keywordtype">id</span>, servName, repDomain);</div>
 <div class="line"><a name="l01015"></a><span class="lineno"> 1015</span>&#160;            }</div>
@@ -1141,6 +1141,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div class="ttc" id="class_arn_zero_conf_register_html_a2eb3d4f2f26bbcc60636bf49a42e0483"><div class="ttname"><a href="class_arn_zero_conf_register.html#a2eb3d4f2f26bbcc60636bf49a42e0483">ArnZeroConfRegister::setServiceName</a></div><div class="ttdeci">void setServiceName(const QString &amp;name)</div><div class="ttdoc">Set the service name for this Zero Config. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_zero_conf_8cpp_source.html#l00415">ArnZeroConf.cpp:415</a></div></div>
 <div class="ttc" id="class_arn_zero_conf_b_html_a66b9fe081c61ca726791af009d518bf2"><div class="ttname"><a href="class_arn_zero_conf_b.html#a66b9fe081c61ca726791af009d518bf2">ArnZeroConfB::state</a></div><div class="ttdeci">ArnZeroConf::State state() const </div><div class="ttdoc">Returns the current state of the service. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_zero_conf_8cpp_source.html#l00191">ArnZeroConf.cpp:191</a></div></div>
 <div class="ttc" id="class_arn_zero_conf_lookup_html_a79df22ed11225874093afdafa1d578da"><div class="ttname"><a href="class_arn_zero_conf_lookup.html#a79df22ed11225874093afdafa1d578da">ArnZeroConfLookup::setHost</a></div><div class="ttdeci">void setHost(const QString &amp;host)</div><div class="ttdoc">Set the host name for this Lookup. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_zero_conf_8hpp_source.html#l00832">ArnZeroConf.hpp:832</a></div></div>
+<div class="ttc" id="class_arn_zero_conf_browser_html_a69091a1b190a72c8ea84d5213e5eaa60"><div class="ttname"><a href="class_arn_zero_conf_browser.html#a69091a1b190a72c8ea84d5213e5eaa60">ArnZeroConfBrowser::getNextId</a></div><div class="ttdeci">static int getNextId()</div><div class="ttdoc">Return the next id number for zero config objects. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_zero_conf_8hpp_source.html#l01002">ArnZeroConf.hpp:1002</a></div></div>
 <div class="ttc" id="class_arn_zero_conf_register_html_a0e05bf2946a53227ce8aca14c1536eb8"><div class="ttname"><a href="class_arn_zero_conf_register.html#a0e05bf2946a53227ce8aca14c1536eb8">ArnZeroConfRegister::setPort</a></div><div class="ttdeci">void setPort(quint16 port)</div><div class="ttdoc">Sets the port number for connecting to the service. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_zero_conf_8hpp_source.html#l00443">ArnZeroConf.hpp:443</a></div></div>
 <div class="ttc" id="class_arn_zero_conf_register_html_a0dc1609f667d716b1a1312c06e7634b5"><div class="ttname"><a href="class_arn_zero_conf_register.html#a0dc1609f667d716b1a1312c06e7634b5">ArnZeroConfRegister::registerService</a></div><div class="ttdeci">void registerService(bool noAutoRename=false)</div><div class="ttdoc">Register the service. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_zero_conf_8cpp_source.html#l00422">ArnZeroConf.cpp:422</a></div></div>
 <div class="ttc" id="class_arn_zero_conf_b_html_a860987be3d72efa673851e72ad46d7e5"><div class="ttname"><a href="class_arn_zero_conf_b.html#a860987be3d72efa673851e72ad46d7e5">ArnZeroConfB::~ArnZeroConfB</a></div><div class="ttdeci">virtual ~ArnZeroConfB()</div><div class="ttdef"><b>Definition:</b> <a href="_arn_zero_conf_8cpp_source.html#l00102">ArnZeroConf.cpp:102</a></div></div>
@@ -1220,7 +1221,7 @@ $(document).ready(function(){initNavTree('_arn_zero_conf_8cpp_source.html','');}
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_zero_conf_8cpp.html">ArnZeroConf.cpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

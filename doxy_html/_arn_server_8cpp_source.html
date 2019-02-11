@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/ArnServer.cpp (3.0.0) Source File</title>
+<title>ArnLib: src/ArnServer.cpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp_source.html','');});
 <div class="title">ArnServer.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_server_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2016 Michael Wiklund.</span></div>
+<a href="_arn_server_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2019 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
@@ -334,7 +334,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp_source.html','');});
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            port = <a class="code" href="namespace_arn.html#a7dc869a2e500fff4982652f576c9207a">Arn::defaultTcpPort</a>;</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;            <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Unknown Arn server Type:&quot;</span>)) + QString::number( d-&gt;_serverType),</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Unknown Arn server Type: &quot;</span>)) + QString::number( d-&gt;_serverType),</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                                <a class="code" href="class_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afaef7eeb5d30b5dd20d6d37cf6b9954484">ArnError::Undef</a>);</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        }</div>
@@ -346,7 +346,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp_source.html','');});
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        connect( d-&gt;_tcpServer, SIGNAL(newConnection()), <span class="keyword">this</span>, SLOT(tcpConnection()));</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    }</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Failed start Arn Server Port:&quot;</span>)) + QString::number( port),</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <a class="code" href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a>( QString(tr(<span class="stringliteral">&quot;Failed start Arn Server Port: &quot;</span>)) + QString::number( port),</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;                        <a class="code" href="class_arn_error.html#ac30793dd75ebb6f9b28fb44788b8f7afa3337614b1b5f5e3d4dedb286d0ca3073">ArnError::ConnectionError</a>);</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    }</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;}</div>
@@ -524,7 +524,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp_source.html','');});
 <div class="ttc" id="class_arn_server_html_a73867639e493dc0de3ec43a1685a270e"><div class="ttname"><a href="class_arn_server.html#a73867639e493dc0de3ec43a1685a270e">ArnServer::noLoginNets</a></div><div class="ttdeci">QStringList noLoginNets() const </div><div class="ttdoc">Get the nets not demanding login. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00293">ArnServer.cpp:293</a></div></div>
 <div class="ttc" id="_arn_server_8hpp_html"><div class="ttname"><a href="_arn_server_8hpp.html">ArnServer.hpp</a></div></div>
 <div class="ttc" id="_arn_error_8hpp_html"><div class="ttname"><a href="_arn_error_8hpp.html">ArnError.hpp</a></div></div>
-<div class="ttc" id="class_arn_1_1_allow_html"><div class="ttname"><a href="class_arn_1_1_allow.html">Arn::Allow</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00191">Arn.hpp:191</a></div></div>
+<div class="ttc" id="class_arn_1_1_allow_html"><div class="ttname"><a href="class_arn_1_1_allow.html">Arn::Allow</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00206">Arn.hpp:206</a></div></div>
 <div class="ttc" id="_arn_sync_login_8hpp_html"><div class="ttname"><a href="_arn_sync_login_8hpp.html">ArnSyncLogin.hpp</a></div></div>
 <div class="ttc" id="class_arn_server_html_a876c70386dfcafab6ce21ae3cd99a91e"><div class="ttname"><a href="class_arn_server.html#a876c70386dfcafab6ce21ae3cd99a91e">ArnServer::start</a></div><div class="ttdeci">void start(int port=-1, QHostAddress listenAddr=QHostAddress::Any)</div><div class="ttdoc">Start the Arn server </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00216">ArnServer.cpp:216</a></div></div>
 <div class="ttc" id="class_arn_server_html_aeb14d4e8930f35d227da82bf1b6f7487"><div class="ttname"><a href="class_arn_server.html#aeb14d4e8930f35d227da82bf1b6f7487">ArnServer::setWhoIAm</a></div><div class="ttdeci">void setWhoIAm(const Arn::XStringMap &amp;whoIAmXsm)</div><div class="ttdoc">Set servers human readable identification information. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00386">ArnServer.cpp:386</a></div></div>
@@ -543,7 +543,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp_source.html','');});
 <div class="ttc" id="class_arn_server_session_html_ad1f72c6429528ffbf7d00b49afd22c52"><div class="ttname"><a href="class_arn_server_session.html#ad1f72c6429528ffbf7d00b49afd22c52">ArnServerSession::loginUserName</a></div><div class="ttdeci">QString loginUserName() const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00143">ArnServer.cpp:143</a></div></div>
 <div class="ttc" id="class_arn_server_session_html_a3ff7c99a17c0631d3c5c300bc21f6a1c"><div class="ttname"><a href="class_arn_server_session.html#a3ff7c99a17c0631d3c5c300bc21f6a1c">ArnServerSession::socket</a></div><div class="ttdeci">QTcpSocket * socket() const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00129">ArnServer.cpp:129</a></div></div>
 <div class="ttc" id="class_arn_server_session_html_a4cf52c3057416ededb78fc36b4c1ac0b"><div class="ttname"><a href="class_arn_server_session.html#a4cf52c3057416ededb78fc36b4c1ac0b">ArnServerSession::ArnServerSession</a></div><div class="ttdeci">ArnServerSession(QTcpSocket *socket, ArnServer *arnServer)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00049">ArnServer.cpp:49</a></div></div>
-<div class="ttc" id="class_arn_m_html_a02c5334f3e67aaf914dd25433853bdf6"><div class="ttname"><a href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a></div><div class="ttdeci">static void errorLog(QString errText, ArnError err=ArnError::Undef, void *reference=0)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00993">ArnM.cpp:993</a></div></div>
+<div class="ttc" id="class_arn_m_html_a02c5334f3e67aaf914dd25433853bdf6"><div class="ttname"><a href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a></div><div class="ttdeci">static void errorLog(QString errText, ArnError err=ArnError::Undef, void *reference=0)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00996">ArnM.cpp:996</a></div></div>
 <div class="ttc" id="class_arn_server_html_a65934b81177dba103b8ac648c4c441e0"><div class="ttname"><a href="class_arn_server.html#a65934b81177dba103b8ac648c4c441e0">ArnServer::addFreePath</a></div><div class="ttdeci">void addFreePath(const QString &amp;path)</div><div class="ttdoc">Add a new "freePath". </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00345">ArnServer.cpp:345</a></div></div>
 <div class="ttc" id="class_arn_server_session_html_a348f9a169498e3a96a46f4fb81ba6809"><div class="ttname"><a href="class_arn_server_session.html#a348f9a169498e3a96a46f4fb81ba6809">ArnServerSession::messageReceived</a></div><div class="ttdeci">void messageReceived(int type, const QByteArray &amp;data)</div></div>
 <div class="ttc" id="class_arn_server_session_html_ab1b88aec60a38fae4f0c67ef44a73fc0"><div class="ttname"><a href="class_arn_server_session.html#ab1b88aec60a38fae4f0c67ef44a73fc0">ArnServerSession::getAllow</a></div><div class="ttdeci">Arn::Allow getAllow() const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00151">ArnServer.cpp:151</a></div></div>
@@ -556,7 +556,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp_source.html','');});
 <div class="ttc" id="class_arn_1_1_x_string_map_html_aef1fdb06685ee217d41e69167fb8ad28"><div class="ttname"><a href="class_arn_1_1_x_string_map.html#aef1fdb06685ee217d41e69167fb8ad28">Arn::XStringMap::toXString</a></div><div class="ttdeci">QByteArray toXString() const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_x_string_map_8cpp_source.html#l00623">ArnXStringMap.cpp:623</a></div></div>
 <div class="ttc" id="class_arn_server_session_html_a54d0a15e7158815d0e09b05a827153b0"><div class="ttname"><a href="class_arn_server_session.html#a54d0a15e7158815d0e09b05a827153b0">ArnServerSession::infoReceived</a></div><div class="ttdeci">void infoReceived(int type)</div></div>
 <div class="ttc" id="class_arn_server_html_ae1d7bf7b95a1994859f1f6a09b8ed033"><div class="ttname"><a href="class_arn_server.html#ae1d7bf7b95a1994859f1f6a09b8ed033">ArnServer::port</a></div><div class="ttdeci">int port()</div><div class="ttdoc">Port number of the Arn server </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00244">ArnServer.cpp:244</a></div></div>
-<div class="ttc" id="class_arn_m_html_aeca916ef1159b6f1ec5fd42ee241c2ec"><div class="ttname"><a href="class_arn_m.html#aeca916ef1159b6f1ec5fd42ee241c2ec">ArnM::destroyLink</a></div><div class="ttdeci">static void destroyLink(const QString &amp;path, bool isGlobal=true)</div><div class="ttdoc">Destroy the Arn Data Object at path </div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00822">ArnM.cpp:822</a></div></div>
+<div class="ttc" id="class_arn_m_html_aeca916ef1159b6f1ec5fd42ee241c2ec"><div class="ttname"><a href="class_arn_m.html#aeca916ef1159b6f1ec5fd42ee241c2ec">ArnM::destroyLink</a></div><div class="ttdeci">static void destroyLink(const QString &amp;path, bool isGlobal=true)</div><div class="ttdoc">Destroy the Arn Data Object at path </div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00824">ArnM.cpp:824</a></div></div>
 <div class="ttc" id="class_arn_server_session_html_ae750d9aa05f090be85bde4e007e90462"><div class="ttname"><a href="class_arn_server_session.html#ae750d9aa05f090be85bde4e007e90462">ArnServerSession::loginCompleted</a></div><div class="ttdeci">void loginCompleted()</div></div>
 <div class="ttc" id="class_arn_server_session_html_afd53f6c396b64833b2227d1c8698fac3"><div class="ttname"><a href="class_arn_server_session.html#afd53f6c396b64833b2227d1c8698fac3">ArnServerSession::sendMessage</a></div><div class="ttdeci">void sendMessage(int type, const QByteArray &amp;data=QByteArray())</div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00159">ArnServer.cpp:159</a></div></div>
 <div class="ttc" id="class_arn_server_session_html"><div class="ttname"><a href="class_arn_server_session.html">ArnServerSession</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8hpp_source.html#l00053">ArnServer.hpp:53</a></div></div>
@@ -570,7 +570,7 @@ $(document).ready(function(){initNavTree('_arn_server_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_server_8cpp.html">ArnServer.cpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

@@ -2,6 +2,7 @@ var searchData=
 [
   ['badreqseq',['BadReqSeq',['../struct_arn_zero_conf_1_1_error.html#a70b6028ee016c78a7f5f5361d52154e8a6a53419c464c1d2b0a2719a5eb52b6d5',1,'ArnZeroConf::Error']]],
   ['basetype',['baseType',['../class_arn_event.html#aca923091d8bec00a39e4fd5fc8dee432',1,'ArnEvent']]],
+  ['basicitem',['BasicItem',['../struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad29ef4de722c26dd672b65e05026e22c',1,'ArnCoreItem::Heritage']]],
   ['batchconnect',['batchConnect',['../class_arn_rpc.html#ab6f9ac5d65a3c538ee628372f32c14de',1,'ArnRpc::batchConnect(const QObject *sender, const QRegExp &amp;rgx, const QObject *receiver, const QString &amp;replace, Mode mode=Mode())'],['../class_arn_rpc.html#a7f999b9eedac4890fbc5bed8a6e618ab',1,'ArnRpc::batchConnect(const QRegExp &amp;rgx, const QObject *receiver, const QString &amp;replace, Mode mode=Mode())'],['../class_arn_rpc.html#a75bd3439dec20345813e2bc40a67c166',1,'ArnRpc::batchConnect(const QObject *sender, const QRegExp &amp;rgx, const QString &amp;replace, Mode mode=Mode())']]],
   ['batchconnectfrom',['batchConnectFrom',['../class_arn_sapi.html#a3913bd932c51c56aa3d940d41ee4b72b',1,'ArnSapi']]],
   ['batchconnectto',['batchConnectTo',['../class_arn_sapi.html#a48fc7203b188b0af970a8fb3625d4cf7',1,'ArnSapi']]],

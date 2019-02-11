@@ -3,6 +3,7 @@ var class_arn_client =
     [ "HostAddrPort", "struct_arn_client_1_1_host_addr_port.html", "struct_arn_client_1_1_host_addr_port" ],
     [ "ConnectStat", "class_arn_client.html#add59d8c61b3e9c562ce09afe4630c502", null ],
     [ "HostList", "class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53", null ],
+    [ "SyncMode", "class_arn_client.html#a0dd803b425bcb72c8c429909ceabb52e", null ],
     [ "ArnClient", "class_arn_client.html#a5b34e108640a9308afff44bd95c63862", null ],
     [ "~ArnClient", "class_arn_client.html#a6790b90c92aa497667e85e6dac0a95c7", null ],
     [ "abortKillRequest", "class_arn_client.html#aca885b78d129da250a0ac3296ec17b53", null ],
@@ -36,7 +37,9 @@ var class_arn_client =
     [ "setDemandLogin", "class_arn_client.html#a50398bf6a7db7d152702d572c6b65c1b", null ],
     [ "setMountPoint", "class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548", null ],
     [ "setReceiveTimeout", "class_arn_client.html#a7c4e581d378d14f431b4ce3a78f876e7", null ],
+    [ "setSyncMode", "class_arn_client.html#a33ac43100792c358069c34a9ef0a918d", null ],
     [ "setWhoIAm", "class_arn_client.html#aff3a9b5614f52aee688c758bd0d9d4b5", null ],
+    [ "syncMode", "class_arn_client.html#a03e3d38894f892ac274c9bc7362afcfb", null ],
     [ "tcpConnected", "class_arn_client.html#adb43cf9a180ec12a72fdb8f5c2024118", null ],
     [ "tcpDisConnected", "class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd", null ],
     [ "tcpError", "class_arn_client.html#ac6b4d05adbb2827fe7f9e6c3b1f3921c", null ]

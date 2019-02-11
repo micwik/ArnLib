@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/MQFlags.cpp (3.0.0) Source File</title>
+<title>ArnLib: src/MQFlags.cpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_m_q_flags_8cpp_source.html','');});
 <div class="title">MQFlags.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_m_q_flags_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2016 Michael Wiklund.</span></div>
+<a href="_m_q_flags_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2019 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
@@ -226,8 +226,8 @@ $(document).ready(function(){initNavTree('_m_q_flags_8cpp_source.html','');});
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
 <div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="class_arn_1_1_enum_txt.html#a1693ebd0bb9aeb4ceff654812ff061f1">  116</a></span>&#160;<span class="keywordtype">int</span>  <a class="code" href="class_arn_1_1_enum_txt.html#a1693ebd0bb9aeb4ceff654812ff061f1">EnumTxt::getEnumVal</a>( <span class="keyword">const</span> <span class="keywordtype">char</span>* txt, <span class="keywordtype">int</span> defaultVal, quint16 nameSpace)</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;{</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    EnumTxtKey  keyStart( _isFlag ? 0        : INT_MIN, nameSpace, _isFlag);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : INT_MAX, nameSpace, _isFlag);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    EnumTxtKey  keyStart( _isFlag ? 0        : uint(INT_MIN), nameSpace, _isFlag);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : uint(INT_MAX), nameSpace, _isFlag);</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    QMap&lt;EnumTxtKey,const char*&gt;::iterator  i = _enumTxtTab.lowerBound( keyStart);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordflow">while</span> (i != _enumTxtTab.end()) {</div>
@@ -309,7 +309,7 @@ $(document).ready(function(){initNavTree('_m_q_flags_8cpp_source.html','');});
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keyword">const</span> EnumTxtKey&amp;  keyStored = i.key();</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="keywordflow">if</span> (keyStop &lt; keyStored)  <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordflow">if</span> (val &amp; keyStored._enumVal) {</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordflow">if</span> (uint( val) &amp; keyStored._enumVal) {</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            retVal += QString::fromUtf8( i.value());</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        ++i;</div>
@@ -351,8 +351,8 @@ $(document).ready(function(){initNavTree('_m_q_flags_8cpp_source.html','');});
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
 <div class="line"><a name="l00241"></a><span class="lineno"><a class="line" href="class_arn_1_1_enum_txt.html#ac1ed90c863d7d4e07862b24745d627c4">  241</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_1_1_enum_txt.html#ac1ed90c863d7d4e07862b24745d627c4">EnumTxt::addEnumSet</a>( <a class="code" href="class_arn_1_1_x_string_map.html">XStringMap</a>&amp; xsm, quint16 nameSpace, <span class="keywordtype">bool</span> neverHumanize)</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;{</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    EnumTxtKey  keyStart( _isFlag ? 0        : INT_MIN, nameSpace, _isFlag);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : INT_MAX, nameSpace, _isFlag);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    EnumTxtKey  keyStart( _isFlag ? 0        : uint(INT_MIN), nameSpace, _isFlag);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : uint(INT_MAX), nameSpace, _isFlag);</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    QMap&lt;EnumTxtKey,const char*&gt;::iterator  i = _enumTxtTab.lowerBound( keyStart);</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keywordflow">while</span> (i != _enumTxtTab.end()) {</div>
@@ -484,7 +484,7 @@ $(document).ready(function(){initNavTree('_m_q_flags_8cpp_source.html','');});
 <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keywordtype">int</span>  nKeys = metaEnum.keyCount();</div>
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nKeys; ++i) {</div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keywordtype">int</span>  enumVal = metaEnum.value(i);</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        <span class="keywordflow">if</span> (_isFlag &amp;&amp; !<a class="code" href="namespace_arn.html#aa38cc45e73d01409ff35ad4f3ca5a08d">isPower2</a>( enumVal))</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        <span class="keywordflow">if</span> (_isFlag &amp;&amp; !<a class="code" href="namespace_arn.html#aa38cc45e73d01409ff35ad4f3ca5a08d">isPower2</a>( uint( enumVal)))</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            <span class="keywordflow">continue</span>;  <span class="comment">// Not a single bit for flags</span></div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        setTxtRefAny( metaEnum.key(i), enumVal, 0);</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    }</div>
@@ -541,7 +541,7 @@ $(document).ready(function(){initNavTree('_m_q_flags_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_m_q_flags_8cpp.html">MQFlags.cpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

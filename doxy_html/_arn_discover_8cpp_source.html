@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/ArnDiscover.cpp (3.0.0) Source File</title>
+<title>ArnLib: src/ArnDiscover.cpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_arn_discover_8cpp_source.html','');})
 <div class="title">ArnDiscover.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_discover_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2016 Michael Wiklund.</span></div>
+<a href="_arn_discover_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2019 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
@@ -776,7 +776,7 @@ $(document).ready(function(){initNavTree('_arn_discover_8cpp_source.html','');})
 <div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        info.d_ptr-&gt;_state = <a class="code" href="struct_arn_discover_info_1_1_state.html#ae4b4f08060d599cd65303584641704dca61e1855c13e9d9cb288631795f4207b6">ArnDiscoverInfo::State::HostIp</a>;</div>
 <div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;        info.d_ptr-&gt;_hostIp = ds-&gt;<a class="code" href="class_arn_zero_conf_lookup.html#a2233f55f44865776c57006373a097ab6">hostAddr</a>();</div>
 <div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;        info.d_ptr-&gt;_resolvCode = <a class="code" href="struct_arn_zero_conf_1_1_error.html#a70b6028ee016c78a7f5f5361d52154e8ab25c2c70cf011828a1650b998734416e">ArnZeroConf::Error::Ok</a>;  <span class="comment">// MW: Ok?</span></div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;    </div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;</div>
 <div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;        emit <a class="code" href="class_arn_discover_browser_b.html#a5aff792e0421ab4ecc1b38123f9b5b47">infoUpdated</a>( index, info.<a class="code" href="class_arn_discover_info.html#a786b963ebb06f870f0b497749a96463d">state</a>());</div>
 <div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;    }</div>
 <div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;</div>
@@ -917,7 +917,7 @@ $(document).ready(function(){initNavTree('_arn_discover_8cpp_source.html','');})
 <div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    d-&gt;_arnZCReg-&gt;setSubTypes( d-&gt;_groups);</div>
 <div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    d-&gt;_arnZCReg-&gt;addSubType( d-&gt;_discoverType == <a class="code" href="struct_arn_discover_1_1_type.html#a2f0639da40be8bc9291f3f249233fa81afcf4b5ff38594e443abfdad7a0320abb">ArnDiscover::Type::Server</a> ? <span class="stringliteral">&quot;server&quot;</span> : <span class="stringliteral">&quot;client&quot;</span>);</div>
 <div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; d-&gt;_groups.size(); ++i) {</div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;        xsm.<a class="code" href="class_arn_1_1_x_string_map.html#a400058b2c6231a7723b8b850764b10a9">add</a>(<span class="stringliteral">&quot;group&quot;</span>, i, d-&gt;_groups.at(i));</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;        xsm.<a class="code" href="class_arn_1_1_x_string_map.html#a400058b2c6231a7723b8b850764b10a9">add</a>(<span class="stringliteral">&quot;group&quot;</span>, uint(i), d-&gt;_groups.at(i));</div>
 <div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    }</div>
 <div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    xsm += d-&gt;_customProperties;</div>
 <div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;</div>
@@ -1059,7 +1059,7 @@ $(document).ready(function(){initNavTree('_arn_discover_8cpp_source.html','');})
 <div class="ttc" id="class_arn_discover_browser_b_html_a54fc5330cee42ff1895ded27ae647e46"><div class="ttname"><a href="class_arn_discover_browser_b.html#a54fc5330cee42ff1895ded27ae647e46">ArnDiscoverBrowserB::goTowardState</a></div><div class="ttdeci">bool goTowardState(int index, ArnDiscoverInfo::State state)</div><div class="ttdoc">Command a service to go towards a stop state. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_discover_8cpp_source.html#l00453">ArnDiscover.cpp:453</a></div></div>
 <div class="ttc" id="class_arn_discover_advertise_html_af28dc807a6a2174e1771d005a6db2a9c"><div class="ttname"><a href="class_arn_discover_advertise.html#af28dc807a6a2174e1771d005a6db2a9c">ArnDiscoverAdvertise::ArnDiscoverAdvertise</a></div><div class="ttdeci">ArnDiscoverAdvertise(QObject *parent=0)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_discover_8cpp_source.html#l00774">ArnDiscover.cpp:774</a></div></div>
 <div class="ttc" id="class_arn_zero_conf_register_html"><div class="ttname"><a href="class_arn_zero_conf_register.html">ArnZeroConfRegister</a></div><div class="ttdoc">Registering a ZeroConfig service. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_zero_conf_8hpp_source.html#l00366">ArnZeroConf.hpp:366</a></div></div>
-<div class="ttc" id="class_arn_m_html_ae0232d87666bd82f0a58be77b24e9b36"><div class="ttname"><a href="class_arn_m.html#ae0232d87666bd82f0a58be77b24e9b36">ArnM::info</a></div><div class="ttdeci">static QByteArray info()</div><div class="ttdoc">Give information about this library. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00935">ArnM.cpp:935</a></div></div>
+<div class="ttc" id="class_arn_m_html_ae0232d87666bd82f0a58be77b24e9b36"><div class="ttname"><a href="class_arn_m.html#ae0232d87666bd82f0a58be77b24e9b36">ArnM::info</a></div><div class="ttdeci">static QByteArray info()</div><div class="ttdoc">Give information about this library. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00938">ArnM.cpp:938</a></div></div>
 <div class="ttc" id="class_arn_zero_conf_lookup_html_a967799f332e148e3e7a3edf2e94dc0d5"><div class="ttname"><a href="class_arn_zero_conf_lookup.html#a967799f332e148e3e7a3edf2e94dc0d5">ArnZeroConfLookup::setId</a></div><div class="ttdeci">void setId(int id)</div><div class="ttdoc">Sets the id number for this this lookup. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_zero_conf_8cpp_source.html#l00717">ArnZeroConf.cpp:717</a></div></div>
 <div class="ttc" id="class_arn_discover_browser_html_aacb3acaf9c2e48beba0233f7c68528c1"><div class="ttname"><a href="class_arn_discover_browser.html#aacb3acaf9c2e48beba0233f7c68528c1">ArnDiscoverBrowser::ArnDiscoverBrowser</a></div><div class="ttdeci">ArnDiscoverBrowser(QObject *parent=0)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_discover_8cpp_source.html#l00236">ArnDiscover.cpp:236</a></div></div>
 <div class="ttc" id="class_arn_discover_info_html_a0f3dd8d9403d59fb6e456e1b026371dd"><div class="ttname"><a href="class_arn_discover_info.html#a0f3dd8d9403d59fb6e456e1b026371dd">ArnDiscoverInfo::hostName</a></div><div class="ttdeci">QString hostName() const </div><div class="ttdoc">Return the host name for this service. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_discover_8cpp_source.html#l00156">ArnDiscover.cpp:156</a></div></div>
@@ -1159,7 +1159,7 @@ $(document).ready(function(){initNavTree('_arn_discover_8cpp_source.html','');})
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_discover_8cpp.html">ArnDiscover.cpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

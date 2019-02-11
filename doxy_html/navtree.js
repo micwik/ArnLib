@@ -2,6 +2,7 @@ var NAVTREE =
 [
   [ "ArnLib", "index.html", [
     [ "README", "md__r_e_a_d_m_e.html", null ],
+    [ "ArnLib Changelog / Todo", "md_doc__changelog__todo.html", null ],
     [ "General Description", "gen_page.html", [
       [ "Arn Data Objects    ", "gen_page.html#gen_arnobj", [
         [ "ArnItem access   ", "gen_page.html#gen_arnItem", null ],
@@ -18,6 +19,10 @@ var NAVTREE =
         ] ],
         [ "Sharing Arn Data Objects    ", "gen_page.html#gen_shareArnobj", [
           [ "Dynamic port", "gen_page.html#gen_dynamicPort", null ]
+        ] ],
+        [ "Sync rules    ", "gen_page.html#gen_syncRules", [
+          [ "Sync rules for Pipe", "gen_page.html#gen_syncRulesPipe", null ],
+          [ "ClientSyncMode", "gen_page.html#gen_syncRulesMode", null ]
         ] ]
       ] ],
       [ "RPC and SAPI    ", "gen_page.html#gen_rpc", [
@@ -52,7 +57,6 @@ var NAVTREE =
       [ "ArnMonitor    ", "int_page.html#int_arnmonitor", null ],
       [ "Destroy    ", "int_page.html#int_destroy", null ]
     ] ],
-    [ "ArnLib Todo", "md_doc__todo.html", null ],
     [ "Example Collection", "exampleindex.html", "exampleindex" ],
     [ "Help descriptions", "help_disc_index.html", "help_disc_index" ],
     [ "Deprecated List", "deprecated.html", null ],
@@ -96,11 +100,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_arn_8cpp.html",
-"chatdemo.html#c_MainWindow_hpp",
-"class_arn_client.html#a59103a7a1a93e738dba68c71247dfa9b",
-"class_arn_event_idx.html#aa3439ccc2489b839f69e1aad5555a20ba8c903a1ef8213f8e4bd9bfd7176168d6",
-"class_arn_rpc.html#a1d250a29557cdcba950437cd41eacfd0",
-"class_m_q_generic_argument.html#a74dacc77abd33a7e74b19a2f86b352ed"
+"_m_q_flags_8hpp.html#aa2cee9d1cb3c0c9f88905783dcb498cb",
+"class_arn_adapt_item.html#ace8431e39221dfae975b24e5cd0e62f5",
+"class_arn_discover_remote.html#a0c79190e45f240469478465599910397",
+"class_arn_item_qml.html#aa29aa2ec5f444a1b428aae2b1a92609e",
+"class_arn_server_session.html",
+"struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163aa38b66c8fd42a93a992919ebdd2cd6d1"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

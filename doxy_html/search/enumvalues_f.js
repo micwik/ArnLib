@@ -10,6 +10,7 @@ var searchData=
   ['servicename',['ServiceName',['../struct_arn_discover_info_1_1_state.html#ae4b4f08060d599cd65303584641704dcaad3be93fb6ac8f052c99ecb60c6cc2ca',1,'ArnDiscoverInfo::State']]],
   ['silenterror',['SilentError',['../struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610a709766e24eae1cf229d8898d1d2836ee',1,'Arn::LinkFlags']]],
   ['startupadvertise',['StartupAdvertise',['../struct_arn_discover_advertise_1_1_state.html#a25c515160c33a493eac8d02c63f1bdd5a94beb7cc39629b5ca41e59de50e1f4c1',1,'ArnDiscoverAdvertise::State']]],
+  ['stdautomaster',['StdAutoMaster',['../struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abcaedecaac120b18c046a20b6cb65b62a13',1,'Arn::ClientSyncMode']]],
   ['stopped',['Stopped',['../class_arn_client_connect_stat.html#aeca5facd750819aa2a155f363e021266a44d37b15c66f96d15477318d4f5d05c2',1,'ArnClientConnectStat']]],
   ['string',['String',['../class_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6aac266c6f6c73702d49d8ee4f82a8b0bd',1,'Arn::DataType::String()'],['../class_arn_1_1_export_code.html#a27124d2950208e2e86866bb0cc6b997eacf4490da0cd3b5708a0dfb27945e541c',1,'Arn::ExportCode::String()']]]
 ];

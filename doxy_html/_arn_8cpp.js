@@ -8,6 +8,7 @@ var _arn_8cpp =
     [ "fullPath", "_arn_8cpp.html#a1217c8d6b0195b60ef72fc6757480893", null ],
     [ "hostFromHostWithInfo", "_arn_8cpp.html#aa5388e7414b06aa7c8e1c0af4fe549a7", null ],
     [ "isFolderPath", "_arn_8cpp.html#a3a3f57fa61cdb0b8408df49466e1ca87", null ],
+    [ "isNullPtr", "_arn_8cpp.html#ae4de1ab0245470bfd56650e086e3b351", null ],
     [ "isProviderPath", "_arn_8cpp.html#a9a27c8dda4cc88176c941cc53f6c2426", null ],
     [ "itemName", "_arn_8cpp.html#a0edc95f31e49e60899a7be23888c556c", null ],
     [ "makeHostWithInfo", "_arn_8cpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a", null ],

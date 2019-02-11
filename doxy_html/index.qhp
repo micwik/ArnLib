@@ -5,8 +5,9 @@
   <filterSection>
     <filterAttribute>doxygen</filterAttribute>
     <toc>
-      <section title="ArnLib 3.0.x" ref="index.html">
+      <section title="ArnLib 3.1.x" ref="index.html">
         <section title="README" ref="md__r_e_a_d_m_e.html" />
+        <section title="ArnLib Changelog / Todo" ref="md_doc__changelog__todo.html" />
         <section title="General Description" ref="gen_page.html">
           <section title="Arn Data Objects    " ref="gen_page.html#gen_arnobj">
             <section title="ArnItem access   " ref="gen_page.html#gen_arnItem" />
@@ -23,6 +24,10 @@
             </section>
             <section title="Sharing Arn Data Objects    " ref="gen_page.html#gen_shareArnobj">
               <section title="Dynamic port" ref="gen_page.html#gen_dynamicPort" />
+            </section>
+            <section title="Sync rules    " ref="gen_page.html#gen_syncRules">
+              <section title="Sync rules for Pipe" ref="gen_page.html#gen_syncRulesPipe" />
+              <section title="ClientSyncMode" ref="gen_page.html#gen_syncRulesMode" />
             </section>
           </section>
           <section title="RPC and SAPI    " ref="gen_page.html#gen_rpc">
@@ -57,7 +62,6 @@
           <section title="ArnMonitor    " ref="int_page.html#int_arnmonitor" />
           <section title="Destroy    " ref="int_page.html#int_destroy" />
         </section>
-        <section title="ArnLib Todo" ref="md_doc__todo.html" />
         <section title="Example Collection" ref="exampleindex.html">
           <section title="Chat Demo" ref="chatdemo.html">
             <section title="Chat Server" ref="chatdemo.html#chatserver">
@@ -110,6 +114,14 @@
                   <section title="ModeChange" ref="class_arn_1_1_allow.html#a1ed296a4f70da6fe2f47578a800a345aaa088874b29668a4d22deb5648bb6f49d" />
                   <section title="ReadWrite" ref="class_arn_1_1_allow.html#a1ed296a4f70da6fe2f47578a800a345aa3005619137f77abd3cfbcf0854bc2485" />
                   <section title="All" ref="class_arn_1_1_allow.html#a1ed296a4f70da6fe2f47578a800a345aa8fa09731aeb502554d1c220a874a2449" />
+                </section>
+              </section>
+              <section title="ClientSyncMode" ref="struct_arn_1_1_client_sync_mode.html">
+                <section title="E" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abc">
+                  <section title="Invalid" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abca5f47bc9547755313ff78a4ddfa835317" />
+                  <section title="StdAutoMaster" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abcaedecaac120b18c046a20b6cb65b62a13" />
+                  <section title="ImplicitMaster" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abca50266254cad7089070569097919fa06a" />
+                  <section title="ExplicitMaster" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abca12fab33c25023390cfae77ef6582d9d0" />
                 </section>
               </section>
               <section title="Coding" ref="struct_arn_1_1_coding.html">
@@ -350,6 +362,86 @@
                 </section>
               </section>
             </section>
+            <section title="ArnAdaptItem" ref="class_arn_adapt_item.html">
+              <section title="ArnEventCB" ref="class_arn_adapt_item.html#a3f4c41c11cb26562e4a1a66e18ce1e00" />
+              <section title="ChangedCB" ref="class_arn_adapt_item.html#aba8a2aec72c66321db5489a1b973835e" />
+              <section title="LinkDestroyedCB" ref="class_arn_adapt_item.html#ab457032df5fba90692c801582869a73e" />
+              <section title="ArnAdaptItem" ref="class_arn_adapt_item.html#a0f400b9c46f0fcde766bdf6562ae31f0" />
+              <section title="~ArnAdaptItem" ref="class_arn_adapt_item.html#a5f76f7f2e0cbcd24aa6386dbcae9c2a0" />
+              <section title="addMode" ref="class_arn_adapt_item.html#a6ad00fcd399975820c814b2dc3215b61" />
+              <section title="arnEventCallback" ref="class_arn_adapt_item.html#a3285f29b923a1f5f9bb55157ab6b3a7a" />
+              <section title="arnExport" ref="class_arn_adapt_item.html#a8253f98782704670c2bb27f64b78a012" />
+              <section title="arnImport" ref="class_arn_adapt_item.html#a778ce17e9e7c3aa985372d500c633657" />
+              <section title="ChangedCallback" ref="class_arn_adapt_item.html#a182ae04a03b9237a372463b2a0e42f71" />
+              <section title="close" ref="class_arn_adapt_item.html#aa5761e1224a22613b8674d3599b16447" />
+              <section title="destroyLink" ref="class_arn_adapt_item.html#aed186fd43afb9814bb5418964a556ae2" />
+              <section title="destroyLinkLocal" ref="class_arn_adapt_item.html#a54e773a51a7a4fd140df9449d6872128" />
+              <section title="getMode" ref="class_arn_adapt_item.html#af019ce607d8ccbe77cb8b7b4001189be" />
+              <section title="isAutoDestroy" ref="class_arn_adapt_item.html#a91a1ae08b08add825e23b4fa4384391a" />
+              <section title="isBiDirMode" ref="class_arn_adapt_item.html#ad604d89e1f7424b5419585695ac4d197" />
+              <section title="isFolder" ref="class_arn_adapt_item.html#a40ed146b0b73c5eaf179deaf3a3a12a5" />
+              <section title="isIgnoreSameValue" ref="class_arn_adapt_item.html#a4ed8532ca2461650b69b9e2c4bbb1551" />
+              <section title="isMaster" ref="class_arn_adapt_item.html#a53cf4b2c26f7244d4350e90a0f90a2ce" />
+              <section title="isOpen" ref="class_arn_adapt_item.html#a919c20394efbac8f99b56f02e536f1e7" />
+              <section title="isPipeMode" ref="class_arn_adapt_item.html#a70fde92b1c45c85ca6cab2699a278ec7" />
+              <section title="isProvider" ref="class_arn_adapt_item.html#ae320e35a64f4cc8f5c5da9ca0e6f8c3a" />
+              <section title="isSaveMode" ref="class_arn_adapt_item.html#a0d7ffff317dd16f873bf54e20194505c" />
+              <section title="isUncrossed" ref="class_arn_adapt_item.html#a7a84b6186a88b8c192337c9e1a7d7055" />
+              <section title="itemId" ref="class_arn_adapt_item.html#a64e7961621675271287c58967fabaa10" />
+              <section title="linkDestroyedCallback" ref="class_arn_adapt_item.html#ad0e8c2653787b38f3d6bfef42adbb50a" />
+              <section title="linkId" ref="class_arn_adapt_item.html#aeded3e4fb48ddacf5f789cdb1d538cbc" />
+              <section title="mutex" ref="class_arn_adapt_item.html#a7aa54e8bbacebb4e57bafeb8f8df2a8a" />
+              <section title="name" ref="class_arn_adapt_item.html#a3eb5698acadffa3c6ef2409da603b49b" />
+              <section title="open" ref="class_arn_adapt_item.html#ad7997a74cd74104f7ea81de915683f6c" />
+              <section title="operator=" ref="class_arn_adapt_item.html#a618ea59a2ee3ea19b9b1d360bb942a0d" />
+              <section title="operator=" ref="class_arn_adapt_item.html#a0f079a25554d5637171737d499ea08ba" />
+              <section title="operator=" ref="class_arn_adapt_item.html#a6a25bc66002ae9d5b8cb64357702b12f" />
+              <section title="operator=" ref="class_arn_adapt_item.html#a620d18a39f7e793059096b09d724056b" />
+              <section title="operator=" ref="class_arn_adapt_item.html#aa6338dfd5e53e754f5385397ba064830" />
+              <section title="operator=" ref="class_arn_adapt_item.html#a790f1f2aec146472447e1a73a56f728f" />
+              <section title="operator=" ref="class_arn_adapt_item.html#a22a651a8a230966be4c72f4f263c4441" />
+              <section title="operator=" ref="class_arn_adapt_item.html#a5d2993b3d9896b6cc89e21de4eed87e7" />
+              <section title="operator=" ref="class_arn_adapt_item.html#aca1c897633f8a42fedfe2c716d64ed78" />
+              <section title="operator=" ref="class_arn_adapt_item.html#a94d54d3754c362fb3175b4aaad25d731" />
+              <section title="path" ref="class_arn_adapt_item.html#a46ba965518a27c9cfd2c9c9299c913c2" />
+              <section title="refCount" ref="class_arn_adapt_item.html#a03c100fd0d6beca5c1fd3b647864b85d" />
+              <section title="reference" ref="class_arn_adapt_item.html#ad4063e631f332224521a6520571968c8" />
+              <section title="setArnEventCallback" ref="class_arn_adapt_item.html#aa789f5e18e54472ce5b0e8b0d2cfffc2" />
+              <section title="setAutoDestroy" ref="class_arn_adapt_item.html#a78440243b78efeffe8ab7e0b89a54517" />
+              <section title="setBiDirMode" ref="class_arn_adapt_item.html#a372dad31b9cfd2e2a84bb97adfcf04fb" />
+              <section title="setChangedCallback" ref="class_arn_adapt_item.html#a4df3769e5e76e62bc7654355cd32654b" />
+              <section title="setIgnoreSameValue" ref="class_arn_adapt_item.html#a9d4ade85bddc0ddaa3b058f24b98cd42" />
+              <section title="setLinkDestroyedCallback" ref="class_arn_adapt_item.html#a5d1db4bd1ff95a4939a364f3132778a1" />
+              <section title="setMaster" ref="class_arn_adapt_item.html#ad204d657bdfbfbb37d3c275bfea221c7" />
+              <section title="setPipeMode" ref="class_arn_adapt_item.html#a8252de91ae5bb860514e349c1e26bccf" />
+              <section title="setReference" ref="class_arn_adapt_item.html#ac5e704225e32ac67d4bb72f4d7b21719" />
+              <section title="setSaveMode" ref="class_arn_adapt_item.html#a0e89e94d17ea9c9197193ec2324abfb8" />
+              <section title="setUncrossed" ref="class_arn_adapt_item.html#a19561bda8a1b17b3cefe4a46e7cb87f4" />
+              <section title="setValue" ref="class_arn_adapt_item.html#acd6e050e58aeec478b9e964341150ff0" />
+              <section title="setValue" ref="class_arn_adapt_item.html#a64a2acddedbab7d9a7c77330d94d4a97" />
+              <section title="setValue" ref="class_arn_adapt_item.html#acd0f04643ca4a1559518eca6725d8902" />
+              <section title="setValue" ref="class_arn_adapt_item.html#a31fee1f6947badffc12dad68d62c54aa" />
+              <section title="setValue" ref="class_arn_adapt_item.html#ac6f91e4422deebcfbbbd5a8183ad16f5" />
+              <section title="setValue" ref="class_arn_adapt_item.html#a236392a6877d678bfe2034224c9728d2" />
+              <section title="setValue" ref="class_arn_adapt_item.html#a2926ea04bd9da557465b53e839530f92" />
+              <section title="setValue" ref="class_arn_adapt_item.html#ac81e3da38a233a9d2d2bd2e18dce19d5" />
+              <section title="setValue" ref="class_arn_adapt_item.html#ac2bdfd3ec95f1b0752d4ea6a01904eb5" />
+              <section title="setValue" ref="class_arn_adapt_item.html#ae42363913db356eaba29421efba5fb32" />
+              <section title="setValue" ref="class_arn_adapt_item.html#a3d773357a477e71cf1c2009acc84c788" />
+              <section title="syncMode" ref="class_arn_adapt_item.html#a841da26494dd2e9b89097fe75c2cefca" />
+              <section title="thread" ref="class_arn_adapt_item.html#a1db6a80d99070f0572db48b3fa97a9ee" />
+              <section title="toBool" ref="class_arn_adapt_item.html#ac4e0dcc7f20eedda37c2cd6f8bbb236d" />
+              <section title="toByteArray" ref="class_arn_adapt_item.html#ace8431e39221dfae975b24e5cd0e62f5" />
+              <section title="toDouble" ref="class_arn_adapt_item.html#a91a2d1fa2f2421e9d92358e0124d9f0e" />
+              <section title="toInt" ref="class_arn_adapt_item.html#a465b0a58a5809e532e24085f787e99ed" />
+              <section title="toInt64" ref="class_arn_adapt_item.html#a413df77ce90dcc99432242914cc64184" />
+              <section title="toReal" ref="class_arn_adapt_item.html#af66412456202206a1363c0660b43c520" />
+              <section title="toString" ref="class_arn_adapt_item.html#a7f072b74117d3c41704a13198090cd1a" />
+              <section title="toUInt" ref="class_arn_adapt_item.html#a0ecb7aaf40db01b828c16660a40c34d8" />
+              <section title="toUInt64" ref="class_arn_adapt_item.html#a8b6c06bb1af0896407af1c9085b7efbc" />
+              <section title="toVariant" ref="class_arn_adapt_item.html#aaa21e263986794de235f2870730e54ec" />
+              <section title="type" ref="class_arn_adapt_item.html#aefa2fa2520826f2251f274a880076833" />
+            </section>
             <section title="ArnBasicItem" ref="class_arn_basic_item.html">
               <section title="ArnBasicItem" ref="class_arn_basic_item.html#ae95db9c8b5d1e7bcd9bfd8a69a3b9e8f" />
               <section title="~ArnBasicItem" ref="class_arn_basic_item.html#ac50a4ec9f3eaf4da3105de3c3ef258b1" />
@@ -370,6 +462,7 @@
               <section title="isPipeMode" ref="class_arn_basic_item.html#a1c6187b5fe81535bef4f4d883dd8b5c5" />
               <section title="isProvider" ref="class_arn_basic_item.html#a72b25cbab07c63f7bab2d4187503cf8d" />
               <section title="isSaveMode" ref="class_arn_basic_item.html#adddd676d5d410800c60d2900f18b112d" />
+              <section title="isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
               <section title="itemId" ref="class_arn_basic_item.html#a36fe255cef6d1f2cdd2b4fbe1360049d" />
               <section title="linkId" ref="class_arn_basic_item.html#a95a2428ca001838052931748a29b8260" />
               <section title="name" ref="class_arn_basic_item.html#ad6bec7101b731140704732fdb713a605" />
@@ -395,6 +488,7 @@
               <section title="setPipeMode" ref="class_arn_basic_item.html#a52fa09d22fa367de9bd03f4e34d60264" />
               <section title="setReference" ref="class_arn_basic_item.html#ac179135f4c4751e76d36d96422d76482" />
               <section title="setSaveMode" ref="class_arn_basic_item.html#aabe8f2062bd72aa70662e5aadcea94f9" />
+              <section title="setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
               <section title="setValue" ref="class_arn_basic_item.html#a73019f4550ce6043659344a37686487f" />
               <section title="setValue" ref="class_arn_basic_item.html#a7c888121a860c72598e55c195c54eda2" />
               <section title="setValue" ref="class_arn_basic_item.html#a5651a7793964020efcda960e1c077fb3" />
@@ -429,6 +523,7 @@
               </section>
               <section title="ConnectStat" ref="class_arn_client.html#add59d8c61b3e9c562ce09afe4630c502" />
               <section title="HostList" ref="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53" />
+              <section title="SyncMode" ref="class_arn_client.html#a0dd803b425bcb72c8c429909ceabb52e" />
               <section title="ArnClient" ref="class_arn_client.html#a5b34e108640a9308afff44bd95c63862" />
               <section title="~ArnClient" ref="class_arn_client.html#a6790b90c92aa497667e85e6dac0a95c7" />
               <section title="abortKillRequest" ref="class_arn_client.html#aca885b78d129da250a0ac3296ec17b53" />
@@ -462,7 +557,9 @@
               <section title="setDemandLogin" ref="class_arn_client.html#a50398bf6a7db7d152702d572c6b65c1b" />
               <section title="setMountPoint" ref="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548" />
               <section title="setReceiveTimeout" ref="class_arn_client.html#a7c4e581d378d14f431b4ce3a78f876e7" />
+              <section title="setSyncMode" ref="class_arn_client.html#a33ac43100792c358069c34a9ef0a918d" />
               <section title="setWhoIAm" ref="class_arn_client.html#aff3a9b5614f52aee688c758bd0d9d4b5" />
+              <section title="syncMode" ref="class_arn_client.html#a03e3d38894f892ac274c9bc7362afcfb" />
               <section title="tcpConnected" ref="class_arn_client.html#adb43cf9a180ec12a72fdb8f5c2024118" />
               <section title="tcpDisConnected" ref="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd" />
               <section title="tcpError" ref="class_arn_client.html#ac6b4d05adbb2827fe7f9e6c3b1f3921c" />
@@ -488,6 +585,20 @@
               <section title="remove" ref="class_arn_client_reg.html#a14bc1923ff3edc10d1a1968991fcf512" />
               <section title="remove" ref="class_arn_client_reg.html#a054512c251a91fd1b71a7d28c41fdf3a" />
               <section title="store" ref="class_arn_client_reg.html#a27fe532f4a2a7dd790dc257afc2b43a2" />
+            </section>
+            <section title="ArnCoreItem" ref="class_arn_core_item.html">
+              <section title="Heritage" ref="struct_arn_core_item_1_1_heritage.html">
+                <section title="E" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174">
+                  <section title="BasicItem" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad29ef4de722c26dd672b65e05026e22c" />
+                  <section title="ItemB" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174a99edc52ea2c029c7afa119d6c60fcc37" />
+                  <section title="AdaptItem" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad240fc17c7b4eeb74a3d0d4c41716426" />
+                  <section title="None" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad544a053a8bd784aa78171b67c8207b8" />
+                </section>
+              </section>
+              <section title="ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+              <section title="~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+              <section title="thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
+              <section title="ArnBasicItemEventHandler" ref="class_arn_core_item.html#a158d21a1c14402d094e61a3b906a7f92" />
             </section>
             <section title="ArnDepend" ref="class_arn_depend.html">
               <section title="DepSlot" ref="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5" />
@@ -826,6 +937,7 @@
               <section title="isProvider" ref="class_arn_item.html#abb3d09b618b26baa010ebdc0da0ff992" />
               <section title="isSaveMode" ref="class_arn_item.html#a35e66240b06bbc62c1e9531e6fca1c27" />
               <section title="isTemplate" ref="class_arn_item.html#a20cae680300033eae41ffed733f0b181" />
+              <section title="isUncrossed" ref="class_arn_item.html#ae14cf51623428d2699e79412d7c43913" />
               <section title="modeChanged" ref="class_arn_item.html#ae67a140f231ad957f80b7dae24146e7a" />
               <section title="openFolder" ref="class_arn_item.html#ab9460dee048f3a07102ac1c47c82a62f" />
               <section title="openUuid" ref="class_arn_item.html#af3f0d6368024fdeff289696ad5b1d442" />
@@ -849,6 +961,7 @@
               <section title="setPipeMode" ref="class_arn_item.html#ad58e3879bda6cd859a561658d3fc34ad" />
               <section title="setSaveMode" ref="class_arn_item.html#a3af7904009c42509ab35aedc222edee5" />
               <section title="setTemplate" ref="class_arn_item.html#ad0abf36e61104c113f46503bfcf4f39a" />
+              <section title="setUncrossed" ref="class_arn_item.html#a3c15bad50954e05992fe35b5441540b7" />
               <section title="setValue" ref="class_arn_item.html#adac29fabc8112521b4e1ea0bfc436d21" />
               <section title="setValue" ref="class_arn_item.html#a2af96f625e345cfc26b05de87551f0cc" />
               <section title="setValue" ref="class_arn_item.html#a24097015f80e5f602e052830faded0b6" />
@@ -924,6 +1037,7 @@
             </section>
             <section title="ArnLinkValue" ref="struct_arn_link_value.html">
               <section title="ArnLinkValue" ref="struct_arn_link_value.html#a011b9b0a42eb29fd2850f1443abd7419" />
+              <section title="localUpdateCount" ref="struct_arn_link_value.html#af08da1e64f534803312d08bf636627d8" />
               <section title="valueByteArray" ref="struct_arn_link_value.html#a84ec150eac34778f28135b955f08f120" />
               <section title="valueInt" ref="struct_arn_link_value.html#a2de0dfc728cd68ca29720509417716da" />
               <section title="valueReal" ref="struct_arn_link_value.html#a4324d62be49621cf2ca40684f9285b3e" />
@@ -981,6 +1095,9 @@
               <section title="reStart" ref="class_arn_monitor_qml.html#aaaab2dd9e4c47f905d056cf034f92b46" />
               <section title="clientId" ref="class_arn_monitor_qml.html#a83dd818b47e6aaacebe6c2e404173388" />
               <section title="monitorPath" ref="class_arn_monitor_qml.html#a62973646edb997fd60b060865e7ae608" />
+            </section>
+            <section title="ArnNullptr" ref="struct_arn_nullptr.html">
+              <section title="operator T *" ref="struct_arn_nullptr.html#af8474e7109adb90e726c702f95527ed0" />
             </section>
             <section title="ArnPersist" ref="class_arn_persist.html">
               <section title="ArnPersist" ref="class_arn_persist.html#af7df7bed23a44aa13d4d6906d9955257" />
@@ -1328,36 +1445,42 @@
           <section title="Class Hierarchy" ref="hierarchy.html">
             <section title="Arn::_InitEnumTxt" ref="struct_arn_1_1___init_enum_txt.html" />
             <section title="Arn::Allow" ref="class_arn_1_1_allow.html" />
-            <section title="ArnBasicItem" ref="class_arn_basic_item.html">
-              <section title="ArnItemB" ref="class_arn_item_b.html">
-                <section title="ArnItem" ref="class_arn_item.html">
-                  <section title="ArnItemQml" ref="class_arn_item_qml.html" />
-                </section>
-                <section title="ArnItemValve" ref="class_arn_item_valve.html" />
-                <section title="ArnMonitor" ref="class_arn_monitor.html">
-                  <section title="ArnMonitorQml" ref="class_arn_monitor_qml.html" />
-                </section>
-                <section title="ArnPipe" ref="class_arn_pipe.html" />
-              </section>
-            </section>
             <section title="ArnClientConnectStat" ref="class_arn_client_connect_stat.html" />
             <section title="ArnClientReg" ref="class_arn_client_reg.html" />
+            <section title="ArnCoreItem" ref="class_arn_core_item.html">
+              <section title="ArnBasicItem" ref="class_arn_basic_item.html">
+                <section title="ArnAdaptItem" ref="class_arn_adapt_item.html" />
+                <section title="ArnItemB" ref="class_arn_item_b.html">
+                  <section title="ArnItem" ref="class_arn_item.html">
+                    <section title="ArnItemQml" ref="class_arn_item_qml.html" />
+                  </section>
+                  <section title="ArnItemValve" ref="class_arn_item_valve.html" />
+                  <section title="ArnMonitor" ref="class_arn_monitor.html">
+                    <section title="ArnMonitorQml" ref="class_arn_monitor_qml.html" />
+                  </section>
+                  <section title="ArnPipe" ref="class_arn_pipe.html" />
+                </section>
+              </section>
+            </section>
             <section title="ArnDiscoverInfo" ref="class_arn_discover_info.html" />
             <section title="ArnError" ref="class_arn_error.html" />
             <section title="ArnEventIdx" ref="class_arn_event_idx.html" />
             <section title="ArnLinkValue" ref="struct_arn_link_value.html" />
             <section title="ArnMonEventType" ref="class_arn_mon_event_type.html" />
+            <section title="ArnNullptr" ref="struct_arn_nullptr.html" />
             <section title="ArnRpcMode" ref="class_arn_rpc_mode.html" />
             <section title="ArnScriptJobB">
               <section title="ArnScriptJob" ref="class_arn_script_job.html" />
             </section>
             <section title="ArnScriptJobFactory" ref="class_arn_script_job_factory.html" />
             <section title="ArnServerRemoteSessionKillMode" ref="class_arn_server_remote_session_kill_mode.html" />
+            <section title="Arn::ClientSyncMode" ref="struct_arn_1_1_client_sync_mode.html" />
             <section title="Arn::Coding" ref="struct_arn_1_1_coding.html" />
             <section title="Arn::DataType" ref="class_arn_1_1_data_type.html" />
             <section title="Arn::EnumTxt" ref="class_arn_1_1_enum_txt.html" />
             <section title="ArnZeroConf::Error" ref="struct_arn_zero_conf_1_1_error.html" />
             <section title="Arn::ExportCode" ref="class_arn_1_1_export_code.html" />
+            <section title="ArnCoreItem::Heritage" ref="struct_arn_core_item_1_1_heritage.html" />
             <section title="ArnClient::HostAddrPort" ref="struct_arn_client_1_1_host_addr_port.html" />
             <section title="Arn::InfoType" ref="struct_arn_1_1_info_type.html" />
             <section title="ArnRpc::Invoke" ref="struct_arn_rpc_1_1_invoke.html" />
@@ -1429,9 +1552,9 @@
               </section>
             </section>
             <section title="Arn::SameValue" ref="struct_arn_1_1_same_value.html" />
+            <section title="ArnDiscoverAdvertise::State" ref="struct_arn_discover_advertise_1_1_state.html" />
             <section title="ArnDiscoverInfo::State" ref="struct_arn_discover_info_1_1_state.html" />
             <section title="ArnZeroConf::State" ref="struct_arn_zero_conf_1_1_state.html" />
-            <section title="ArnDiscoverAdvertise::State" ref="struct_arn_discover_advertise_1_1_state.html" />
             <section title="ArnError::StdCode" ref="struct_arn_error_1_1_std_code.html" />
             <section title="ArnItemValve::SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html" />
             <section title="ArnScriptJobs::Type" ref="struct_arn_script_jobs_1_1_type.html" />
@@ -1558,6 +1681,14 @@
                       <section title="AutoDestroy" ref="class_arn_1_1_object_sync_mode.html#a56d63c4b2d273b043d66c89e9a8a027ba5c3f0bd3a6780f5b2a45b0b1f147dc7a" />
                     </section>
                   </section>
+                  <section title="ClientSyncMode" ref="struct_arn_1_1_client_sync_mode.html">
+                    <section title="E" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abc">
+                      <section title="Invalid" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abca5f47bc9547755313ff78a4ddfa835317" />
+                      <section title="StdAutoMaster" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abcaedecaac120b18c046a20b6cb65b62a13" />
+                      <section title="ImplicitMaster" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abca50266254cad7089070569097919fa06a" />
+                      <section title="ExplicitMaster" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abca12fab33c25023390cfae77ef6582d9d0" />
+                    </section>
+                  </section>
                   <section title="LinkFlags" ref="struct_arn_1_1_link_flags.html">
                     <section title="E" ref="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610">
                       <section title="Folder" ref="struct_arn_1_1_link_flags.html#a56bed30ae5bc569a8576d276bf2f9610aefc92334f64f27af70748bfc38580884" />
@@ -1603,6 +1734,7 @@
                   <section title="fullPath" ref="_arn_8hpp.html#a1217c8d6b0195b60ef72fc6757480893" />
                   <section title="hostFromHostWithInfo" ref="_arn_8hpp.html#aa5388e7414b06aa7c8e1c0af4fe549a7" />
                   <section title="isFolderPath" ref="_arn_8hpp.html#a3a3f57fa61cdb0b8408df49466e1ca87" />
+                  <section title="isNullPtr" ref="_arn_8hpp.html#ae4de1ab0245470bfd56650e086e3b351" />
                   <section title="isProviderPath" ref="_arn_8hpp.html#a9a27c8dda4cc88176c941cc53f6c2426" />
                   <section title="itemName" ref="_arn_8hpp.html#a0edc95f31e49e60899a7be23888c556c" />
                   <section title="makeHostWithInfo" ref="_arn_8hpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" />
@@ -1612,6 +1744,88 @@
                   <section title="twinPath" ref="_arn_8hpp.html#a4de17e4c5a7e225b5d0cbd974c3fd794" />
                   <section title="uuidPath" ref="_arn_8hpp.html#af28f68f3e50e85712f31210b2a53fa7a" />
                   <section title="defaultTcpPort" ref="_arn_8hpp.html#a7dc869a2e500fff4982652f576c9207a" />
+                </section>
+                <section title="ArnAdaptItem.hpp" ref="_arn_adapt_item_8hpp.html">
+                  <section title="ArnAdaptItem" ref="class_arn_adapt_item.html">
+                    <section title="ArnEventCB" ref="class_arn_adapt_item.html#a3f4c41c11cb26562e4a1a66e18ce1e00" />
+                    <section title="ChangedCB" ref="class_arn_adapt_item.html#aba8a2aec72c66321db5489a1b973835e" />
+                    <section title="LinkDestroyedCB" ref="class_arn_adapt_item.html#ab457032df5fba90692c801582869a73e" />
+                    <section title="ArnAdaptItem" ref="class_arn_adapt_item.html#a0f400b9c46f0fcde766bdf6562ae31f0" />
+                    <section title="~ArnAdaptItem" ref="class_arn_adapt_item.html#a5f76f7f2e0cbcd24aa6386dbcae9c2a0" />
+                    <section title="addMode" ref="class_arn_adapt_item.html#a6ad00fcd399975820c814b2dc3215b61" />
+                    <section title="arnEventCallback" ref="class_arn_adapt_item.html#a3285f29b923a1f5f9bb55157ab6b3a7a" />
+                    <section title="arnExport" ref="class_arn_adapt_item.html#a8253f98782704670c2bb27f64b78a012" />
+                    <section title="arnImport" ref="class_arn_adapt_item.html#a778ce17e9e7c3aa985372d500c633657" />
+                    <section title="ChangedCallback" ref="class_arn_adapt_item.html#a182ae04a03b9237a372463b2a0e42f71" />
+                    <section title="close" ref="class_arn_adapt_item.html#aa5761e1224a22613b8674d3599b16447" />
+                    <section title="destroyLink" ref="class_arn_adapt_item.html#aed186fd43afb9814bb5418964a556ae2" />
+                    <section title="destroyLinkLocal" ref="class_arn_adapt_item.html#a54e773a51a7a4fd140df9449d6872128" />
+                    <section title="getMode" ref="class_arn_adapt_item.html#af019ce607d8ccbe77cb8b7b4001189be" />
+                    <section title="isAutoDestroy" ref="class_arn_adapt_item.html#a91a1ae08b08add825e23b4fa4384391a" />
+                    <section title="isBiDirMode" ref="class_arn_adapt_item.html#ad604d89e1f7424b5419585695ac4d197" />
+                    <section title="isFolder" ref="class_arn_adapt_item.html#a40ed146b0b73c5eaf179deaf3a3a12a5" />
+                    <section title="isIgnoreSameValue" ref="class_arn_adapt_item.html#a4ed8532ca2461650b69b9e2c4bbb1551" />
+                    <section title="isMaster" ref="class_arn_adapt_item.html#a53cf4b2c26f7244d4350e90a0f90a2ce" />
+                    <section title="isOpen" ref="class_arn_adapt_item.html#a919c20394efbac8f99b56f02e536f1e7" />
+                    <section title="isPipeMode" ref="class_arn_adapt_item.html#a70fde92b1c45c85ca6cab2699a278ec7" />
+                    <section title="isProvider" ref="class_arn_adapt_item.html#ae320e35a64f4cc8f5c5da9ca0e6f8c3a" />
+                    <section title="isSaveMode" ref="class_arn_adapt_item.html#a0d7ffff317dd16f873bf54e20194505c" />
+                    <section title="isUncrossed" ref="class_arn_adapt_item.html#a7a84b6186a88b8c192337c9e1a7d7055" />
+                    <section title="itemId" ref="class_arn_adapt_item.html#a64e7961621675271287c58967fabaa10" />
+                    <section title="linkDestroyedCallback" ref="class_arn_adapt_item.html#ad0e8c2653787b38f3d6bfef42adbb50a" />
+                    <section title="linkId" ref="class_arn_adapt_item.html#aeded3e4fb48ddacf5f789cdb1d538cbc" />
+                    <section title="mutex" ref="class_arn_adapt_item.html#a7aa54e8bbacebb4e57bafeb8f8df2a8a" />
+                    <section title="name" ref="class_arn_adapt_item.html#a3eb5698acadffa3c6ef2409da603b49b" />
+                    <section title="open" ref="class_arn_adapt_item.html#ad7997a74cd74104f7ea81de915683f6c" />
+                    <section title="operator=" ref="class_arn_adapt_item.html#a618ea59a2ee3ea19b9b1d360bb942a0d" />
+                    <section title="operator=" ref="class_arn_adapt_item.html#a0f079a25554d5637171737d499ea08ba" />
+                    <section title="operator=" ref="class_arn_adapt_item.html#a6a25bc66002ae9d5b8cb64357702b12f" />
+                    <section title="operator=" ref="class_arn_adapt_item.html#a620d18a39f7e793059096b09d724056b" />
+                    <section title="operator=" ref="class_arn_adapt_item.html#aa6338dfd5e53e754f5385397ba064830" />
+                    <section title="operator=" ref="class_arn_adapt_item.html#a790f1f2aec146472447e1a73a56f728f" />
+                    <section title="operator=" ref="class_arn_adapt_item.html#a22a651a8a230966be4c72f4f263c4441" />
+                    <section title="operator=" ref="class_arn_adapt_item.html#a5d2993b3d9896b6cc89e21de4eed87e7" />
+                    <section title="operator=" ref="class_arn_adapt_item.html#aca1c897633f8a42fedfe2c716d64ed78" />
+                    <section title="operator=" ref="class_arn_adapt_item.html#a94d54d3754c362fb3175b4aaad25d731" />
+                    <section title="path" ref="class_arn_adapt_item.html#a46ba965518a27c9cfd2c9c9299c913c2" />
+                    <section title="refCount" ref="class_arn_adapt_item.html#a03c100fd0d6beca5c1fd3b647864b85d" />
+                    <section title="reference" ref="class_arn_adapt_item.html#ad4063e631f332224521a6520571968c8" />
+                    <section title="setArnEventCallback" ref="class_arn_adapt_item.html#aa789f5e18e54472ce5b0e8b0d2cfffc2" />
+                    <section title="setAutoDestroy" ref="class_arn_adapt_item.html#a78440243b78efeffe8ab7e0b89a54517" />
+                    <section title="setBiDirMode" ref="class_arn_adapt_item.html#a372dad31b9cfd2e2a84bb97adfcf04fb" />
+                    <section title="setChangedCallback" ref="class_arn_adapt_item.html#a4df3769e5e76e62bc7654355cd32654b" />
+                    <section title="setIgnoreSameValue" ref="class_arn_adapt_item.html#a9d4ade85bddc0ddaa3b058f24b98cd42" />
+                    <section title="setLinkDestroyedCallback" ref="class_arn_adapt_item.html#a5d1db4bd1ff95a4939a364f3132778a1" />
+                    <section title="setMaster" ref="class_arn_adapt_item.html#ad204d657bdfbfbb37d3c275bfea221c7" />
+                    <section title="setPipeMode" ref="class_arn_adapt_item.html#a8252de91ae5bb860514e349c1e26bccf" />
+                    <section title="setReference" ref="class_arn_adapt_item.html#ac5e704225e32ac67d4bb72f4d7b21719" />
+                    <section title="setSaveMode" ref="class_arn_adapt_item.html#a0e89e94d17ea9c9197193ec2324abfb8" />
+                    <section title="setUncrossed" ref="class_arn_adapt_item.html#a19561bda8a1b17b3cefe4a46e7cb87f4" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#acd6e050e58aeec478b9e964341150ff0" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#a64a2acddedbab7d9a7c77330d94d4a97" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#acd0f04643ca4a1559518eca6725d8902" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#a31fee1f6947badffc12dad68d62c54aa" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#ac6f91e4422deebcfbbbd5a8183ad16f5" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#a236392a6877d678bfe2034224c9728d2" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#a2926ea04bd9da557465b53e839530f92" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#ac81e3da38a233a9d2d2bd2e18dce19d5" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#ac2bdfd3ec95f1b0752d4ea6a01904eb5" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#ae42363913db356eaba29421efba5fb32" />
+                    <section title="setValue" ref="class_arn_adapt_item.html#a3d773357a477e71cf1c2009acc84c788" />
+                    <section title="syncMode" ref="class_arn_adapt_item.html#a841da26494dd2e9b89097fe75c2cefca" />
+                    <section title="thread" ref="class_arn_adapt_item.html#a1db6a80d99070f0572db48b3fa97a9ee" />
+                    <section title="toBool" ref="class_arn_adapt_item.html#ac4e0dcc7f20eedda37c2cd6f8bbb236d" />
+                    <section title="toByteArray" ref="class_arn_adapt_item.html#ace8431e39221dfae975b24e5cd0e62f5" />
+                    <section title="toDouble" ref="class_arn_adapt_item.html#a91a2d1fa2f2421e9d92358e0124d9f0e" />
+                    <section title="toInt" ref="class_arn_adapt_item.html#a465b0a58a5809e532e24085f787e99ed" />
+                    <section title="toInt64" ref="class_arn_adapt_item.html#a413df77ce90dcc99432242914cc64184" />
+                    <section title="toReal" ref="class_arn_adapt_item.html#af66412456202206a1363c0660b43c520" />
+                    <section title="toString" ref="class_arn_adapt_item.html#a7f072b74117d3c41704a13198090cd1a" />
+                    <section title="toUInt" ref="class_arn_adapt_item.html#a0ecb7aaf40db01b828c16660a40c34d8" />
+                    <section title="toUInt64" ref="class_arn_adapt_item.html#a8b6c06bb1af0896407af1c9085b7efbc" />
+                    <section title="toVariant" ref="class_arn_adapt_item.html#aaa21e263986794de235f2870730e54ec" />
+                    <section title="type" ref="class_arn_adapt_item.html#aefa2fa2520826f2251f274a880076833" />
+                  </section>
                 </section>
                 <section title="ArnBasicItem.hpp" ref="_arn_basic_item_8hpp.html">
                   <section title="ArnBasicItem" ref="class_arn_basic_item.html">
@@ -1634,6 +1848,7 @@
                     <section title="isPipeMode" ref="class_arn_basic_item.html#a1c6187b5fe81535bef4f4d883dd8b5c5" />
                     <section title="isProvider" ref="class_arn_basic_item.html#a72b25cbab07c63f7bab2d4187503cf8d" />
                     <section title="isSaveMode" ref="class_arn_basic_item.html#adddd676d5d410800c60d2900f18b112d" />
+                    <section title="isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
                     <section title="itemId" ref="class_arn_basic_item.html#a36fe255cef6d1f2cdd2b4fbe1360049d" />
                     <section title="linkId" ref="class_arn_basic_item.html#a95a2428ca001838052931748a29b8260" />
                     <section title="name" ref="class_arn_basic_item.html#ad6bec7101b731140704732fdb713a605" />
@@ -1659,6 +1874,7 @@
                     <section title="setPipeMode" ref="class_arn_basic_item.html#a52fa09d22fa367de9bd03f4e34d60264" />
                     <section title="setReference" ref="class_arn_basic_item.html#ac179135f4c4751e76d36d96422d76482" />
                     <section title="setSaveMode" ref="class_arn_basic_item.html#aabe8f2062bd72aa70662e5aadcea94f9" />
+                    <section title="setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
                     <section title="setValue" ref="class_arn_basic_item.html#a73019f4550ce6043659344a37686487f" />
                     <section title="setValue" ref="class_arn_basic_item.html#a7c888121a860c72598e55c195c54eda2" />
                     <section title="setValue" ref="class_arn_basic_item.html#a5651a7793964020efcda960e1c077fb3" />
@@ -1711,6 +1927,7 @@
                     </section>
                     <section title="ConnectStat" ref="class_arn_client.html#add59d8c61b3e9c562ce09afe4630c502" />
                     <section title="HostList" ref="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53" />
+                    <section title="SyncMode" ref="class_arn_client.html#a0dd803b425bcb72c8c429909ceabb52e" />
                     <section title="ArnClient" ref="class_arn_client.html#a5b34e108640a9308afff44bd95c63862" />
                     <section title="~ArnClient" ref="class_arn_client.html#a6790b90c92aa497667e85e6dac0a95c7" />
                     <section title="abortKillRequest" ref="class_arn_client.html#aca885b78d129da250a0ac3296ec17b53" />
@@ -1744,7 +1961,9 @@
                     <section title="setDemandLogin" ref="class_arn_client.html#a50398bf6a7db7d152702d572c6b65c1b" />
                     <section title="setMountPoint" ref="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548" />
                     <section title="setReceiveTimeout" ref="class_arn_client.html#a7c4e581d378d14f431b4ce3a78f876e7" />
+                    <section title="setSyncMode" ref="class_arn_client.html#a33ac43100792c358069c34a9ef0a918d" />
                     <section title="setWhoIAm" ref="class_arn_client.html#aff3a9b5614f52aee688c758bd0d9d4b5" />
+                    <section title="syncMode" ref="class_arn_client.html#a03e3d38894f892ac274c9bc7362afcfb" />
                     <section title="tcpConnected" ref="class_arn_client.html#adb43cf9a180ec12a72fdb8f5c2024118" />
                     <section title="tcpDisConnected" ref="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd" />
                     <section title="tcpError" ref="class_arn_client.html#ac6b4d05adbb2827fe7f9e6c3b1f3921c" />
@@ -1753,6 +1972,30 @@
                     <section title="HostAddrPort" ref="struct_arn_client_1_1_host_addr_port.html#a331ebf5933182a3efe4c05e409cc5d2f" />
                     <section title="addr" ref="struct_arn_client_1_1_host_addr_port.html#a03a47477bf6a263f5393262d7352c094" />
                     <section title="port" ref="struct_arn_client_1_1_host_addr_port.html#a5ea2c2abb0227148aae22aac0daab7e6" />
+                  </section>
+                </section>
+                <section title="ArnCoreItem.hpp" ref="_arn_core_item_8hpp.html">
+                  <section title="ArnCoreItem" ref="class_arn_core_item.html">
+                    <section title="Heritage" ref="struct_arn_core_item_1_1_heritage.html">
+                      <section title="E" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174">
+                        <section title="BasicItem" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad29ef4de722c26dd672b65e05026e22c" />
+                        <section title="ItemB" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174a99edc52ea2c029c7afa119d6c60fcc37" />
+                        <section title="AdaptItem" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad240fc17c7b4eeb74a3d0d4c41716426" />
+                        <section title="None" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad544a053a8bd784aa78171b67c8207b8" />
+                      </section>
+                    </section>
+                    <section title="ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+                    <section title="~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+                    <section title="thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
+                    <section title="ArnBasicItemEventHandler" ref="class_arn_core_item.html#a158d21a1c14402d094e61a3b906a7f92" />
+                  </section>
+                  <section title="Heritage" ref="struct_arn_core_item_1_1_heritage.html">
+                    <section title="E" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174">
+                      <section title="BasicItem" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad29ef4de722c26dd672b65e05026e22c" />
+                      <section title="ItemB" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174a99edc52ea2c029c7afa119d6c60fcc37" />
+                      <section title="AdaptItem" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad240fc17c7b4eeb74a3d0d4c41716426" />
+                      <section title="None" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad544a053a8bd784aa78171b67c8207b8" />
+                    </section>
                   </section>
                 </section>
                 <section title="ArnDepend.hpp" ref="_arn_depend_8hpp.html">
@@ -2141,6 +2384,7 @@
                     <section title="isProvider" ref="class_arn_item.html#abb3d09b618b26baa010ebdc0da0ff992" />
                     <section title="isSaveMode" ref="class_arn_item.html#a35e66240b06bbc62c1e9531e6fca1c27" />
                     <section title="isTemplate" ref="class_arn_item.html#a20cae680300033eae41ffed733f0b181" />
+                    <section title="isUncrossed" ref="class_arn_item.html#ae14cf51623428d2699e79412d7c43913" />
                     <section title="modeChanged" ref="class_arn_item.html#ae67a140f231ad957f80b7dae24146e7a" />
                     <section title="openFolder" ref="class_arn_item.html#ab9460dee048f3a07102ac1c47c82a62f" />
                     <section title="openUuid" ref="class_arn_item.html#af3f0d6368024fdeff289696ad5b1d442" />
@@ -2164,6 +2408,7 @@
                     <section title="setPipeMode" ref="class_arn_item.html#ad58e3879bda6cd859a561658d3fc34ad" />
                     <section title="setSaveMode" ref="class_arn_item.html#a3af7904009c42509ab35aedc222edee5" />
                     <section title="setTemplate" ref="class_arn_item.html#ad0abf36e61104c113f46503bfcf4f39a" />
+                    <section title="setUncrossed" ref="class_arn_item.html#a3c15bad50954e05992fe35b5441540b7" />
                     <section title="setValue" ref="class_arn_item.html#adac29fabc8112521b4e1ea0bfc436d21" />
                     <section title="setValue" ref="class_arn_item.html#a2af96f625e345cfc26b05de87551f0cc" />
                     <section title="setValue" ref="class_arn_item.html#a24097015f80e5f602e052830faded0b6" />
@@ -2232,6 +2477,9 @@
                 </section>
                 <section title="ArnLib.hpp" ref="_arn_lib_8hpp.html" />
                 <section title="ArnLib_global.hpp" ref="_arn_lib__global_8hpp.html">
+                  <section title="ArnNullptr" ref="struct_arn_nullptr.html">
+                    <section title="operator T *" ref="struct_arn_nullptr.html#af8474e7109adb90e726c702f95527ed0" />
+                  </section>
                   <section title="ARNLIBSHARED_EXPORT" ref="_arn_lib__global_8hpp.html#a532d70375b2662bf8bcf50072d70b8a5" />
                 </section>
                 <section title="ArnLinkHandle.hpp" ref="_arn_link_handle_8hpp.html" />
@@ -2898,6 +3146,7 @@
                 <section title="fullPath" ref="_arn_8cpp.html#a1217c8d6b0195b60ef72fc6757480893" />
                 <section title="hostFromHostWithInfo" ref="_arn_8cpp.html#aa5388e7414b06aa7c8e1c0af4fe549a7" />
                 <section title="isFolderPath" ref="_arn_8cpp.html#a3a3f57fa61cdb0b8408df49466e1ca87" />
+                <section title="isNullPtr" ref="_arn_8cpp.html#ae4de1ab0245470bfd56650e086e3b351" />
                 <section title="isProviderPath" ref="_arn_8cpp.html#a9a27c8dda4cc88176c941cc53f6c2426" />
                 <section title="itemName" ref="_arn_8cpp.html#a0edc95f31e49e60899a7be23888c556c" />
                 <section title="makeHostWithInfo" ref="_arn_8cpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" />
@@ -2914,6 +3163,10 @@
                 <section title="pathServer" ref="_arn_8cpp.html#a5946f880ec2640e3b24e8148b4658265" />
                 <section title="pathServerSessions" ref="_arn_8cpp.html#a2aa8ea4215a582c3bfc69d942595de04" />
               </section>
+              <section title="ArnAdaptItem.cpp" ref="_arn_adapt_item_8cpp.html">
+                <section title="MUTEX_CALL" ref="_arn_adapt_item_8cpp.html#a788b2f6cc7ebede093238dc676d79a55" />
+                <section title="MUTEX_CALL_RET" ref="_arn_adapt_item_8cpp.html#a3e66177c483732f03827a954493f9fb8" />
+              </section>
               <section title="ArnBasicItem.cpp" ref="_arn_basic_item_8cpp.html" />
               <section title="ArnClient.cpp" ref="_arn_client_8cpp.html">
                 <section title="ArnClientReg" ref="class_arn_client_reg.html">
@@ -2923,6 +3176,7 @@
                   <section title="store" ref="class_arn_client_reg.html#a27fe532f4a2a7dd790dc257afc2b43a2" />
                 </section>
               </section>
+              <section title="ArnCoreItem.cpp" ref="_arn_core_item_8cpp.html" />
               <section title="ArnDepend.cpp" ref="_arn_depend_8cpp.html">
                 <section title="ArnDependPath" ref="_arn_depend_8cpp.html#a4fa2e82c7cbbac000bfcd48ef3915a8a" />
               </section>
@@ -2961,6 +3215,7 @@
                 <section title="debugSizes" ref="_arn_lib_8cpp.html#a7c5a5db25ed6b5aa95de16b3775d67c5" />
                 <section title="debugThreading" ref="_arn_lib_8cpp.html#a179aa23895e009295ea72b1bd7939e65" />
                 <section title="debugZeroConf" ref="_arn_lib_8cpp.html#ac5501392c42d64da7a65509a14db526f" />
+                <section title="offHeartbeat" ref="_arn_lib_8cpp.html#a81684bfa914686118c20b97fe13acd11" />
                 <section title="resourceArnLib" ref="_arn_lib_8cpp.html#a02e5234ef8eb24868c55843b282c6a44" />
                 <section title="resourceArnRoot" ref="_arn_lib_8cpp.html#ad43f257b6be2350b7b9a797212fa275a" />
                 <section title="warningMDNS" ref="_arn_lib_8cpp.html#a6fb271efbd6458b8ec659098deced870" />
@@ -2968,6 +3223,7 @@
               <section title="ArnLink.cpp" ref="_arn_link_8cpp.html">
                 <section title="ArnLinkValue" ref="struct_arn_link_value.html">
                   <section title="ArnLinkValue" ref="struct_arn_link_value.html#a011b9b0a42eb29fd2850f1443abd7419" />
+                  <section title="localUpdateCount" ref="struct_arn_link_value.html#af08da1e64f534803312d08bf636627d8" />
                   <section title="valueByteArray" ref="struct_arn_link_value.html#a84ec150eac34778f28135b955f08f120" />
                   <section title="valueInt" ref="struct_arn_link_value.html#a2de0dfc728cd68ca29720509417716da" />
                   <section title="valueReal" ref="struct_arn_link_value.html#a4324d62be49621cf2ca40684f9285b3e" />
@@ -2976,7 +3232,7 @@
                 </section>
               </section>
               <section title="ArnLink.hpp" ref="_arn_link_8hpp.html">
-                <section title="ArnBasicItemList" ref="_arn_link_8hpp.html#a1f43518eb154f3373c4096658998b8b1" />
+                <section title="ArnCoreItemList" ref="_arn_link_8hpp.html#a2b0fc7c6fd4f0778c5d948ba04d1894e" />
                 <section title="ArnLinkList" ref="_arn_link_8hpp.html#ae489858bf6872e5a67961e860893f0aa" />
               </section>
               <section title="ArnLinkHandle.cpp" ref="_arn_link_handle_8cpp.html" />
@@ -3051,6 +3307,7 @@
       <keyword name="uuidPath" id="Arn.cpp::uuidPath" ref="_arn_8cpp.html#af28f68f3e50e85712f31210b2a53fa7a" />
       <keyword name="makeHostWithInfo" id="Arn.cpp::makeHostWithInfo" ref="_arn_8cpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" />
       <keyword name="hostFromHostWithInfo" id="Arn.cpp::hostFromHostWithInfo" ref="_arn_8cpp.html#aa5388e7414b06aa7c8e1c0af4fe549a7" />
+      <keyword name="isNullPtr" id="Arn.cpp::isNullPtr" ref="_arn_8cpp.html#ae4de1ab0245470bfd56650e086e3b351" />
       <keyword name="pathLocal" id="Arn.cpp::pathLocal" ref="_arn_8cpp.html#a690f9202c122418e5dfd8784529da8d9" />
       <keyword name="pathLocalSys" id="Arn.cpp::pathLocalSys" ref="_arn_8cpp.html#a668d00708a3b3c4d9943465b7cb21590" />
       <keyword name="pathDiscover" id="Arn.cpp::pathDiscover" ref="_arn_8cpp.html#aac20bdfa60a3d566d6000e333724aa44" />
@@ -3058,6 +3315,8 @@
       <keyword name="pathDiscoverConnect" id="Arn.cpp::pathDiscoverConnect" ref="_arn_8cpp.html#a556d0c5ce01a0b3146a929137c7b786d" />
       <keyword name="pathServer" id="Arn.cpp::pathServer" ref="_arn_8cpp.html#a5946f880ec2640e3b24e8148b4658265" />
       <keyword name="pathServerSessions" id="Arn.cpp::pathServerSessions" ref="_arn_8cpp.html#a2aa8ea4215a582c3bfc69d942595de04" />
+      <keyword name="MUTEX_CALL" id="ArnAdaptItem.cpp::MUTEX_CALL" ref="_arn_adapt_item_8cpp.html#a788b2f6cc7ebede093238dc676d79a55" />
+      <keyword name="MUTEX_CALL_RET" id="ArnAdaptItem.cpp::MUTEX_CALL_RET" ref="_arn_adapt_item_8cpp.html#a3e66177c483732f03827a954493f9fb8" />
       <keyword name="ArnDependPath" id="ArnDepend.cpp::ArnDependPath" ref="_arn_depend_8cpp.html#a4fa2e82c7cbbac000bfcd48ef3915a8a" />
       <keyword name="TO_IDX_RETVAL" id="ArnEvent.cpp::TO_IDX_RETVAL" ref="_arn_event_8cpp.html#a2b4fbfa9c3042d0d231056b08446f76a" />
       <keyword name="DATASTREAM_VER" id="Arn.hpp::DATASTREAM_VER" ref="_arn_8hpp.html#af5ae3f693fc5aea910733fbbceb24ad8" />
@@ -3078,6 +3337,7 @@
       <keyword name="uuidPath" id="Arn.hpp::uuidPath" ref="_arn_8hpp.html#af28f68f3e50e85712f31210b2a53fa7a" />
       <keyword name="makeHostWithInfo" id="Arn.hpp::makeHostWithInfo" ref="_arn_8hpp.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" />
       <keyword name="hostFromHostWithInfo" id="Arn.hpp::hostFromHostWithInfo" ref="_arn_8hpp.html#aa5388e7414b06aa7c8e1c0af4fe549a7" />
+      <keyword name="isNullPtr" id="Arn.hpp::isNullPtr" ref="_arn_8hpp.html#ae4de1ab0245470bfd56650e086e3b351" />
       <keyword name="defaultTcpPort" id="Arn.hpp::defaultTcpPort" ref="_arn_8hpp.html#a7dc869a2e500fff4982652f576c9207a" />
       <keyword name="operator&lt;&lt;" id="ArnItem.hpp::operator&lt;&lt;" ref="_arn_item_8hpp.html#a1189a1071766d28af6ea4441c7a65539" />
       <keyword name="ARNLIBSHARED_EXPORT" id="ArnLib_global.hpp::ARNLIBSHARED_EXPORT" ref="_arn_lib__global_8hpp.html#a532d70375b2662bf8bcf50072d70b8a5" />
@@ -3118,10 +3378,11 @@
       <keyword name="debugZeroConf" id="ArnLib.cpp::debugZeroConf" ref="_arn_lib_8cpp.html#ac5501392c42d64da7a65509a14db526f" />
       <keyword name="debugMDNS" id="ArnLib.cpp::debugMDNS" ref="_arn_lib_8cpp.html#a93deb2830ba06a3fe371c25d07789c99" />
       <keyword name="warningMDNS" id="ArnLib.cpp::warningMDNS" ref="_arn_lib_8cpp.html#a6fb271efbd6458b8ec659098deced870" />
+      <keyword name="offHeartbeat" id="ArnLib.cpp::offHeartbeat" ref="_arn_lib_8cpp.html#a81684bfa914686118c20b97fe13acd11" />
       <keyword name="resourceArnLib" id="ArnLib.cpp::resourceArnLib" ref="_arn_lib_8cpp.html#a02e5234ef8eb24868c55843b282c6a44" />
       <keyword name="resourceArnRoot" id="ArnLib.cpp::resourceArnRoot" ref="_arn_lib_8cpp.html#ad43f257b6be2350b7b9a797212fa275a" />
       <keyword name="ArnLinkList" id="ArnLink.hpp::ArnLinkList" ref="_arn_link_8hpp.html#ae489858bf6872e5a67961e860893f0aa" />
-      <keyword name="ArnBasicItemList" id="ArnLink.hpp::ArnBasicItemList" ref="_arn_link_8hpp.html#a1f43518eb154f3373c4096658998b8b1" />
+      <keyword name="ArnCoreItemList" id="ArnLink.hpp::ArnCoreItemList" ref="_arn_link_8hpp.html#a2b0fc7c6fd4f0778c5d948ba04d1894e" />
       <keyword name="arnDbSaveVer" id="ArnPersist.cpp::arnDbSaveVer" ref="_arn_persist_8cpp.html#a4927022c4471e1d183483e4813555bd2" />
       <keyword name="RPC_STORAGE_NAME" id="ArnRpc.cpp::RPC_STORAGE_NAME" ref="_arn_rpc_8cpp.html#a8e86781142732a90f282c80f17bde1bb" />
       <keyword name="EventQuit" id="ArnScriptJob.cpp::EventQuit" ref="_arn_script_job_8cpp.html#a520e0467798e430fc73ea2907e1bbb57" />
@@ -3129,15 +3390,167 @@
       <keyword name="ARNRECNAME" id="ArnSync.hpp::ARNRECNAME" ref="_arn_sync_8hpp.html#ae184ce98fc4d50b4c889d3bce0980df9" />
       <keyword name="isPower2" id="MQFlags.cpp::isPower2" ref="_m_q_flags_8cpp.html#aa38cc45e73d01409ff35ad4f3ca5a08d" />
       <keyword name="README" id="README" ref="md__r_e_a_d_m_e.html" />
+      <keyword name="ArnLib Changelog / Todo" id="ArnLib Changelog / Todo" ref="md_doc__changelog__todo.html" />
       <keyword name="General Description" id="General Description" ref="gen_page.html" />
       <keyword name="Installation and usage" id="Installation and usage" ref="ins_page.html" />
       <keyword name="ArnLib Internals" id="ArnLib Internals" ref="int_page.html" />
-      <keyword name="ArnLib Todo" id="ArnLib Todo" ref="md_doc__todo.html" />
       <keyword name="Example Collection" id="Example Collection" ref="exampleindex.html" />
       <keyword name="Chat Demo" id="Chat Demo" ref="chatdemo.html" />
       <keyword name="Help descriptions" id="Help descriptions" ref="help_disc_index.html" />
       <keyword name="Discover" id="Discover" ref="help_disc_discover.html" />
       <keyword name="Deprecated List" id="Deprecated List" ref="deprecated.html" />
+      <keyword name="ArnAdaptItem" id="ArnAdaptItem" ref="class_arn_adapt_item.html" />
+      <keyword name="ChangedCB" id="ArnAdaptItem::ChangedCB" ref="class_arn_adapt_item.html#aba8a2aec72c66321db5489a1b973835e" />
+      <keyword name="LinkDestroyedCB" id="ArnAdaptItem::LinkDestroyedCB" ref="class_arn_adapt_item.html#ab457032df5fba90692c801582869a73e" />
+      <keyword name="ArnEventCB" id="ArnAdaptItem::ArnEventCB" ref="class_arn_adapt_item.html#a3f4c41c11cb26562e4a1a66e18ce1e00" />
+      <keyword name="ArnAdaptItem" id="ArnAdaptItem::ArnAdaptItem" ref="class_arn_adapt_item.html#a0f400b9c46f0fcde766bdf6562ae31f0" />
+      <keyword name="~ArnAdaptItem" id="ArnAdaptItem::~ArnAdaptItem" ref="class_arn_adapt_item.html#a5f76f7f2e0cbcd24aa6386dbcae9c2a0" />
+      <keyword name="open" id="ArnAdaptItem::open" ref="class_arn_adapt_item.html#ad7997a74cd74104f7ea81de915683f6c" />
+      <keyword name="close" id="ArnAdaptItem::close" ref="class_arn_adapt_item.html#aa5761e1224a22613b8674d3599b16447" />
+      <keyword name="destroyLink" id="ArnAdaptItem::destroyLink" ref="class_arn_adapt_item.html#aed186fd43afb9814bb5418964a556ae2" />
+      <keyword name="destroyLinkLocal" id="ArnAdaptItem::destroyLinkLocal" ref="class_arn_adapt_item.html#a54e773a51a7a4fd140df9449d6872128" />
+      <keyword name="isOpen" id="ArnAdaptItem::isOpen" ref="class_arn_adapt_item.html#a919c20394efbac8f99b56f02e536f1e7" />
+      <keyword name="path" id="ArnAdaptItem::path" ref="class_arn_adapt_item.html#a46ba965518a27c9cfd2c9c9299c913c2" />
+      <keyword name="name" id="ArnAdaptItem::name" ref="class_arn_adapt_item.html#a3eb5698acadffa3c6ef2409da603b49b" />
+      <keyword name="setReference" id="ArnAdaptItem::setReference" ref="class_arn_adapt_item.html#ac5e704225e32ac67d4bb72f4d7b21719" />
+      <keyword name="reference" id="ArnAdaptItem::reference" ref="class_arn_adapt_item.html#ad4063e631f332224521a6520571968c8" />
+      <keyword name="itemId" id="ArnAdaptItem::itemId" ref="class_arn_adapt_item.html#a64e7961621675271287c58967fabaa10" />
+      <keyword name="linkId" id="ArnAdaptItem::linkId" ref="class_arn_adapt_item.html#aeded3e4fb48ddacf5f789cdb1d538cbc" />
+      <keyword name="refCount" id="ArnAdaptItem::refCount" ref="class_arn_adapt_item.html#a03c100fd0d6beca5c1fd3b647864b85d" />
+      <keyword name="isFolder" id="ArnAdaptItem::isFolder" ref="class_arn_adapt_item.html#a40ed146b0b73c5eaf179deaf3a3a12a5" />
+      <keyword name="isProvider" id="ArnAdaptItem::isProvider" ref="class_arn_adapt_item.html#ae320e35a64f4cc8f5c5da9ca0e6f8c3a" />
+      <keyword name="type" id="ArnAdaptItem::type" ref="class_arn_adapt_item.html#aefa2fa2520826f2251f274a880076833" />
+      <keyword name="setIgnoreSameValue" id="ArnAdaptItem::setIgnoreSameValue" ref="class_arn_adapt_item.html#a9d4ade85bddc0ddaa3b058f24b98cd42" />
+      <keyword name="isIgnoreSameValue" id="ArnAdaptItem::isIgnoreSameValue" ref="class_arn_adapt_item.html#a4ed8532ca2461650b69b9e2c4bbb1551" />
+      <keyword name="addMode" id="ArnAdaptItem::addMode" ref="class_arn_adapt_item.html#a6ad00fcd399975820c814b2dc3215b61" />
+      <keyword name="getMode" id="ArnAdaptItem::getMode" ref="class_arn_adapt_item.html#af019ce607d8ccbe77cb8b7b4001189be" />
+      <keyword name="syncMode" id="ArnAdaptItem::syncMode" ref="class_arn_adapt_item.html#a841da26494dd2e9b89097fe75c2cefca" />
+      <keyword name="setBiDirMode" id="ArnAdaptItem::setBiDirMode" ref="class_arn_adapt_item.html#a372dad31b9cfd2e2a84bb97adfcf04fb" />
+      <keyword name="isBiDirMode" id="ArnAdaptItem::isBiDirMode" ref="class_arn_adapt_item.html#ad604d89e1f7424b5419585695ac4d197" />
+      <keyword name="setPipeMode" id="ArnAdaptItem::setPipeMode" ref="class_arn_adapt_item.html#a8252de91ae5bb860514e349c1e26bccf" />
+      <keyword name="isPipeMode" id="ArnAdaptItem::isPipeMode" ref="class_arn_adapt_item.html#a70fde92b1c45c85ca6cab2699a278ec7" />
+      <keyword name="setSaveMode" id="ArnAdaptItem::setSaveMode" ref="class_arn_adapt_item.html#a0e89e94d17ea9c9197193ec2324abfb8" />
+      <keyword name="isSaveMode" id="ArnAdaptItem::isSaveMode" ref="class_arn_adapt_item.html#a0d7ffff317dd16f873bf54e20194505c" />
+      <keyword name="setMaster" id="ArnAdaptItem::setMaster" ref="class_arn_adapt_item.html#ad204d657bdfbfbb37d3c275bfea221c7" />
+      <keyword name="isMaster" id="ArnAdaptItem::isMaster" ref="class_arn_adapt_item.html#a53cf4b2c26f7244d4350e90a0f90a2ce" />
+      <keyword name="setAutoDestroy" id="ArnAdaptItem::setAutoDestroy" ref="class_arn_adapt_item.html#a78440243b78efeffe8ab7e0b89a54517" />
+      <keyword name="isAutoDestroy" id="ArnAdaptItem::isAutoDestroy" ref="class_arn_adapt_item.html#a91a1ae08b08add825e23b4fa4384391a" />
+      <keyword name="arnImport" id="ArnAdaptItem::arnImport" ref="class_arn_adapt_item.html#a778ce17e9e7c3aa985372d500c633657" />
+      <keyword name="arnExport" id="ArnAdaptItem::arnExport" ref="class_arn_adapt_item.html#a8253f98782704670c2bb27f64b78a012" />
+      <keyword name="toInt" id="ArnAdaptItem::toInt" ref="class_arn_adapt_item.html#a465b0a58a5809e532e24085f787e99ed" />
+      <keyword name="toDouble" id="ArnAdaptItem::toDouble" ref="class_arn_adapt_item.html#a91a2d1fa2f2421e9d92358e0124d9f0e" />
+      <keyword name="toReal" id="ArnAdaptItem::toReal" ref="class_arn_adapt_item.html#af66412456202206a1363c0660b43c520" />
+      <keyword name="toString" id="ArnAdaptItem::toString" ref="class_arn_adapt_item.html#a7f072b74117d3c41704a13198090cd1a" />
+      <keyword name="toByteArray" id="ArnAdaptItem::toByteArray" ref="class_arn_adapt_item.html#ace8431e39221dfae975b24e5cd0e62f5" />
+      <keyword name="toVariant" id="ArnAdaptItem::toVariant" ref="class_arn_adapt_item.html#aaa21e263986794de235f2870730e54ec" />
+      <keyword name="toBool" id="ArnAdaptItem::toBool" ref="class_arn_adapt_item.html#ac4e0dcc7f20eedda37c2cd6f8bbb236d" />
+      <keyword name="toUInt" id="ArnAdaptItem::toUInt" ref="class_arn_adapt_item.html#a0ecb7aaf40db01b828c16660a40c34d8" />
+      <keyword name="toInt64" id="ArnAdaptItem::toInt64" ref="class_arn_adapt_item.html#a413df77ce90dcc99432242914cc64184" />
+      <keyword name="toUInt64" id="ArnAdaptItem::toUInt64" ref="class_arn_adapt_item.html#a8b6c06bb1af0896407af1c9085b7efbc" />
+      <keyword name="operator=" id="ArnAdaptItem::operator=" ref="class_arn_adapt_item.html#a618ea59a2ee3ea19b9b1d360bb942a0d" />
+      <keyword name="operator=" id="ArnAdaptItem::operator=" ref="class_arn_adapt_item.html#a0f079a25554d5637171737d499ea08ba" />
+      <keyword name="operator=" id="ArnAdaptItem::operator=" ref="class_arn_adapt_item.html#a6a25bc66002ae9d5b8cb64357702b12f" />
+      <keyword name="operator=" id="ArnAdaptItem::operator=" ref="class_arn_adapt_item.html#a620d18a39f7e793059096b09d724056b" />
+      <keyword name="operator=" id="ArnAdaptItem::operator=" ref="class_arn_adapt_item.html#aa6338dfd5e53e754f5385397ba064830" />
+      <keyword name="operator=" id="ArnAdaptItem::operator=" ref="class_arn_adapt_item.html#a790f1f2aec146472447e1a73a56f728f" />
+      <keyword name="operator=" id="ArnAdaptItem::operator=" ref="class_arn_adapt_item.html#a22a651a8a230966be4c72f4f263c4441" />
+      <keyword name="operator=" id="ArnAdaptItem::operator=" ref="class_arn_adapt_item.html#a5d2993b3d9896b6cc89e21de4eed87e7" />
+      <keyword name="operator=" id="ArnAdaptItem::operator=" ref="class_arn_adapt_item.html#aca1c897633f8a42fedfe2c716d64ed78" />
+      <keyword name="operator=" id="ArnAdaptItem::operator=" ref="class_arn_adapt_item.html#a94d54d3754c362fb3175b4aaad25d731" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#acd6e050e58aeec478b9e964341150ff0" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#a64a2acddedbab7d9a7c77330d94d4a97" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#acd0f04643ca4a1559518eca6725d8902" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#a31fee1f6947badffc12dad68d62c54aa" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#ac6f91e4422deebcfbbbd5a8183ad16f5" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#a236392a6877d678bfe2034224c9728d2" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#a2926ea04bd9da557465b53e839530f92" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#ac81e3da38a233a9d2d2bd2e18dce19d5" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#ac2bdfd3ec95f1b0752d4ea6a01904eb5" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#ae42363913db356eaba29421efba5fb32" />
+      <keyword name="setValue" id="ArnAdaptItem::setValue" ref="class_arn_adapt_item.html#a3d773357a477e71cf1c2009acc84c788" />
+      <keyword name="mutex" id="ArnAdaptItem::mutex" ref="class_arn_adapt_item.html#a7aa54e8bbacebb4e57bafeb8f8df2a8a" />
+      <keyword name="thread" id="ArnAdaptItem::thread" ref="class_arn_adapt_item.html#a1db6a80d99070f0572db48b3fa97a9ee" />
+      <keyword name="setChangedCallback" id="ArnAdaptItem::setChangedCallback" ref="class_arn_adapt_item.html#a4df3769e5e76e62bc7654355cd32654b" />
+      <keyword name="ChangedCallback" id="ArnAdaptItem::ChangedCallback" ref="class_arn_adapt_item.html#a182ae04a03b9237a372463b2a0e42f71" />
+      <keyword name="setLinkDestroyedCallback" id="ArnAdaptItem::setLinkDestroyedCallback" ref="class_arn_adapt_item.html#a5d1db4bd1ff95a4939a364f3132778a1" />
+      <keyword name="linkDestroyedCallback" id="ArnAdaptItem::linkDestroyedCallback" ref="class_arn_adapt_item.html#ad0e8c2653787b38f3d6bfef42adbb50a" />
+      <keyword name="setArnEventCallback" id="ArnAdaptItem::setArnEventCallback" ref="class_arn_adapt_item.html#aa789f5e18e54472ce5b0e8b0d2cfffc2" />
+      <keyword name="arnEventCallback" id="ArnAdaptItem::arnEventCallback" ref="class_arn_adapt_item.html#a3285f29b923a1f5f9bb55157ab6b3a7a" />
+      <keyword name="setUncrossed" id="ArnAdaptItem::setUncrossed" ref="class_arn_adapt_item.html#a19561bda8a1b17b3cefe4a46e7cb87f4" />
+      <keyword name="isUncrossed" id="ArnAdaptItem::isUncrossed" ref="class_arn_adapt_item.html#a7a84b6186a88b8c192337c9e1a7d7055" />
+      <keyword name="ArnBasicItem" id="ArnBasicItem::ArnBasicItem" ref="class_arn_basic_item.html#ae95db9c8b5d1e7bcd9bfd8a69a3b9e8f" />
+      <keyword name="~ArnBasicItem" id="ArnBasicItem::~ArnBasicItem" ref="class_arn_basic_item.html#ac50a4ec9f3eaf4da3105de3c3ef258b1" />
+      <keyword name="open" id="ArnBasicItem::open" ref="class_arn_basic_item.html#ae1696b4ce0e65e2b3a4f389e305e16e7" />
+      <keyword name="close" id="ArnBasicItem::close" ref="class_arn_basic_item.html#aa2c98d1ffe18fe2c73de57251f761a2b" />
+      <keyword name="destroyLink" id="ArnBasicItem::destroyLink" ref="class_arn_basic_item.html#a1d239f86717f0f2d5df1ad6fd86fb7df" />
+      <keyword name="destroyLinkLocal" id="ArnBasicItem::destroyLinkLocal" ref="class_arn_basic_item.html#a879bd250da70cb5e182f759857e4967b" />
+      <keyword name="isOpen" id="ArnBasicItem::isOpen" ref="class_arn_basic_item.html#ad22c632508b5cb8a5aefa47ac5fc4527" />
+      <keyword name="path" id="ArnBasicItem::path" ref="class_arn_basic_item.html#aa791ce51e0d7abfdeb16eb3a06340018" />
+      <keyword name="name" id="ArnBasicItem::name" ref="class_arn_basic_item.html#ad6bec7101b731140704732fdb713a605" />
+      <keyword name="setReference" id="ArnBasicItem::setReference" ref="class_arn_basic_item.html#ac179135f4c4751e76d36d96422d76482" />
+      <keyword name="reference" id="ArnBasicItem::reference" ref="class_arn_basic_item.html#adc551be79de656d43313cba26ca9d6e3" />
+      <keyword name="itemId" id="ArnBasicItem::itemId" ref="class_arn_basic_item.html#a36fe255cef6d1f2cdd2b4fbe1360049d" />
+      <keyword name="linkId" id="ArnBasicItem::linkId" ref="class_arn_basic_item.html#a95a2428ca001838052931748a29b8260" />
+      <keyword name="refCount" id="ArnBasicItem::refCount" ref="class_arn_basic_item.html#a616741bdae84499cb07aa7e36994697e" />
+      <keyword name="isFolder" id="ArnBasicItem::isFolder" ref="class_arn_basic_item.html#a94240668e077da6108789308d3eb73d7" />
+      <keyword name="isProvider" id="ArnBasicItem::isProvider" ref="class_arn_basic_item.html#a72b25cbab07c63f7bab2d4187503cf8d" />
+      <keyword name="type" id="ArnBasicItem::type" ref="class_arn_basic_item.html#af66ab488524818392e0f74491ef65dc6" />
+      <keyword name="setIgnoreSameValue" id="ArnBasicItem::setIgnoreSameValue" ref="class_arn_basic_item.html#a06076305992429a4a9e4e01e1cbec87d" />
+      <keyword name="isIgnoreSameValue" id="ArnBasicItem::isIgnoreSameValue" ref="class_arn_basic_item.html#a6efa3cdac83fb75322fed23619ab388a" />
+      <keyword name="addMode" id="ArnBasicItem::addMode" ref="class_arn_basic_item.html#a926e719dce4bd0728530432bb9c8f2e9" />
+      <keyword name="getMode" id="ArnBasicItem::getMode" ref="class_arn_basic_item.html#ad9f55a6658c5622d8be51775349af053" />
+      <keyword name="syncMode" id="ArnBasicItem::syncMode" ref="class_arn_basic_item.html#a6fac502566f5817243a49e1e828276ff" />
+      <keyword name="setBiDirMode" id="ArnBasicItem::setBiDirMode" ref="class_arn_basic_item.html#a21869f499cfe5741b48c4b8eaa54671f" />
+      <keyword name="isBiDirMode" id="ArnBasicItem::isBiDirMode" ref="class_arn_basic_item.html#abee037a3e63d2dbe6be26cda6991a13f" />
+      <keyword name="setPipeMode" id="ArnBasicItem::setPipeMode" ref="class_arn_basic_item.html#a52fa09d22fa367de9bd03f4e34d60264" />
+      <keyword name="isPipeMode" id="ArnBasicItem::isPipeMode" ref="class_arn_basic_item.html#a1c6187b5fe81535bef4f4d883dd8b5c5" />
+      <keyword name="setSaveMode" id="ArnBasicItem::setSaveMode" ref="class_arn_basic_item.html#aabe8f2062bd72aa70662e5aadcea94f9" />
+      <keyword name="isSaveMode" id="ArnBasicItem::isSaveMode" ref="class_arn_basic_item.html#adddd676d5d410800c60d2900f18b112d" />
+      <keyword name="setMaster" id="ArnBasicItem::setMaster" ref="class_arn_basic_item.html#a6f2441525372a0116b7f8bf61725cd09" />
+      <keyword name="isMaster" id="ArnBasicItem::isMaster" ref="class_arn_basic_item.html#a0da8e75c6acf136aa2bc4248f7cf0021" />
+      <keyword name="setAutoDestroy" id="ArnBasicItem::setAutoDestroy" ref="class_arn_basic_item.html#afdfd2838d4323d57ec112013ddc1bc6e" />
+      <keyword name="isAutoDestroy" id="ArnBasicItem::isAutoDestroy" ref="class_arn_basic_item.html#a8eea5d7c344dca36ee7f2143209af779" />
+      <keyword name="arnImport" id="ArnBasicItem::arnImport" ref="class_arn_basic_item.html#a93c94c2d1b348fdb3b19117734c4c6e6" />
+      <keyword name="arnExport" id="ArnBasicItem::arnExport" ref="class_arn_basic_item.html#a0887bfb253c13f0ac320bc212a9bb637" />
+      <keyword name="toInt" id="ArnBasicItem::toInt" ref="class_arn_basic_item.html#af720d03f91613a2a2071856772b66b45" />
+      <keyword name="toDouble" id="ArnBasicItem::toDouble" ref="class_arn_basic_item.html#aafde104572c903ae52d0be0e176b01aa" />
+      <keyword name="toReal" id="ArnBasicItem::toReal" ref="class_arn_basic_item.html#af6c94219e0babb1c3191dcf1b844b31e" />
+      <keyword name="toString" id="ArnBasicItem::toString" ref="class_arn_basic_item.html#adb373e68ee148f2156663ff7a17f2a81" />
+      <keyword name="toByteArray" id="ArnBasicItem::toByteArray" ref="class_arn_basic_item.html#aa5261d27e9b5963c0fdb085417f7ba4b" />
+      <keyword name="toVariant" id="ArnBasicItem::toVariant" ref="class_arn_basic_item.html#a60deb0a7afe93de12acfb875315ee1c1" />
+      <keyword name="toBool" id="ArnBasicItem::toBool" ref="class_arn_basic_item.html#a6f053cf9f1a7e734350e18d32963c878" />
+      <keyword name="toUInt" id="ArnBasicItem::toUInt" ref="class_arn_basic_item.html#ac8bac4f1c593295eeb6da746a6aad541" />
+      <keyword name="toInt64" id="ArnBasicItem::toInt64" ref="class_arn_basic_item.html#a8be42271b72bb8db56f0d8a5909b03c2" />
+      <keyword name="toUInt64" id="ArnBasicItem::toUInt64" ref="class_arn_basic_item.html#af49f3306130c0e73c65764781fc8d25a" />
+      <keyword name="operator=" id="ArnBasicItem::operator=" ref="class_arn_basic_item.html#af7cd094dc22864b90f9729dff8fad97b" />
+      <keyword name="operator=" id="ArnBasicItem::operator=" ref="class_arn_basic_item.html#ab5d59ed9d73d55763a28bef36685f719" />
+      <keyword name="operator=" id="ArnBasicItem::operator=" ref="class_arn_basic_item.html#ab24e1deb5c1f6e92b887f05e763dfd93" />
+      <keyword name="operator=" id="ArnBasicItem::operator=" ref="class_arn_basic_item.html#a1d2ac03bd7dca42b5e11c9e0a9b3c562" />
+      <keyword name="operator=" id="ArnBasicItem::operator=" ref="class_arn_basic_item.html#a8c110a504edd2f6b492fb9276011f30f" />
+      <keyword name="operator=" id="ArnBasicItem::operator=" ref="class_arn_basic_item.html#a6c7318f2bb14a96e8c79ec73646bc6dc" />
+      <keyword name="operator=" id="ArnBasicItem::operator=" ref="class_arn_basic_item.html#add3aba5fb43b60e3b5501753b5faaf47" />
+      <keyword name="operator=" id="ArnBasicItem::operator=" ref="class_arn_basic_item.html#a9f8a86a2b6a9d6903cc79566245db254" />
+      <keyword name="operator=" id="ArnBasicItem::operator=" ref="class_arn_basic_item.html#a4d91b400bd804382e3262439b52969cf" />
+      <keyword name="operator=" id="ArnBasicItem::operator=" ref="class_arn_basic_item.html#ab23454b8d0c784693f19dad5bb8ea23d" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#a73019f4550ce6043659344a37686487f" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#a7c888121a860c72598e55c195c54eda2" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#a5651a7793964020efcda960e1c077fb3" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#aa9aa3d929e76101d4602da4ce58e17e6" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#a641e1b774918aebb50ca1c8ac78f53a9" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#a038227025667bd89df038ae1e8e3dfdb" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#aafba2432c8a0ad6b896078ce0604ae05" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#af45ecb2d94741680ca97a1777766356b" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#ad6edf4fbf9b2d9d5d2acf4a9dde25993" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#aff0d1c00d742838d978bdfac45171d9f" />
+      <keyword name="setValue" id="ArnBasicItem::setValue" ref="class_arn_basic_item.html#a24ca7722ab9e0fc44fbc5a9918073755" />
+      <keyword name="thread" id="ArnBasicItem::thread" ref="class_arn_basic_item.html#aa2c7737c22c460c53083036bf918c778" />
+      <keyword name="setEventHandler" id="ArnBasicItem::setEventHandler" ref="class_arn_basic_item.html#abc367506d733d8a52d17520d1ba6fb30" />
+      <keyword name="eventHandler" id="ArnBasicItem::eventHandler" ref="class_arn_basic_item.html#aa9311606bd8db130e6f3d8ba29db2f45" />
+      <keyword name="setUncrossed" id="ArnBasicItem::setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
+      <keyword name="isUncrossed" id="ArnBasicItem::isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem::ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+      <keyword name="~ArnCoreItem" id="ArnCoreItem::~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+      <keyword name="thread" id="ArnCoreItem::thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
       <keyword name="ArnBasicItem" id="ArnBasicItem" ref="class_arn_basic_item.html" />
       <keyword name="ArnBasicItem" id="ArnBasicItem::ArnBasicItem" ref="class_arn_basic_item.html#ae95db9c8b5d1e7bcd9bfd8a69a3b9e8f" />
       <keyword name="~ArnBasicItem" id="ArnBasicItem::~ArnBasicItem" ref="class_arn_basic_item.html#ac50a4ec9f3eaf4da3105de3c3ef258b1" />
@@ -3207,9 +3620,15 @@
       <keyword name="thread" id="ArnBasicItem::thread" ref="class_arn_basic_item.html#aa2c7737c22c460c53083036bf918c778" />
       <keyword name="setEventHandler" id="ArnBasicItem::setEventHandler" ref="class_arn_basic_item.html#abc367506d733d8a52d17520d1ba6fb30" />
       <keyword name="eventHandler" id="ArnBasicItem::eventHandler" ref="class_arn_basic_item.html#aa9311606bd8db130e6f3d8ba29db2f45" />
+      <keyword name="setUncrossed" id="ArnBasicItem::setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
+      <keyword name="isUncrossed" id="ArnBasicItem::isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem::ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+      <keyword name="~ArnCoreItem" id="ArnCoreItem::~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+      <keyword name="thread" id="ArnCoreItem::thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
       <keyword name="ArnBasicItemEventHandler" id="ArnBasicItem::ArnBasicItemEventHandler" ref="class_arn_basic_item.html#a158d21a1c14402d094e61a3b906a7f92" />
       <keyword name="ArnClient" id="ArnClient" ref="class_arn_client.html" />
       <keyword name="ConnectStat" id="ArnClient::ConnectStat" ref="class_arn_client.html#add59d8c61b3e9c562ce09afe4630c502" />
+      <keyword name="SyncMode" id="ArnClient::SyncMode" ref="class_arn_client.html#a0dd803b425bcb72c8c429909ceabb52e" />
       <keyword name="HostList" id="ArnClient::HostList" ref="class_arn_client.html#a0ef58526ed8f87a1b676eb2db93a5e53" />
       <keyword name="tcpError" id="ArnClient::tcpError" ref="class_arn_client.html#ac6b4d05adbb2827fe7f9e6c3b1f3921c" />
       <keyword name="tcpConnected" id="ArnClient::tcpConnected" ref="class_arn_client.html#adb43cf9a180ec12a72fdb8f5c2024118" />
@@ -3240,6 +3659,8 @@
       <keyword name="setReceiveTimeout" id="ArnClient::setReceiveTimeout" ref="class_arn_client.html#a7c4e581d378d14f431b4ce3a78f876e7" />
       <keyword name="isDemandLogin" id="ArnClient::isDemandLogin" ref="class_arn_client.html#a385e13b9c04670dae638c7684fb00f2e" />
       <keyword name="setDemandLogin" id="ArnClient::setDemandLogin" ref="class_arn_client.html#a50398bf6a7db7d152702d572c6b65c1b" />
+      <keyword name="syncMode" id="ArnClient::syncMode" ref="class_arn_client.html#a03e3d38894f892ac274c9bc7362afcfb" />
+      <keyword name="setSyncMode" id="ArnClient::setSyncMode" ref="class_arn_client.html#a33ac43100792c358069c34a9ef0a918d" />
       <keyword name="freePaths" id="ArnClient::freePaths" ref="class_arn_client.html#a9fdd0c70e0769edb928b3b9c14c5fcb3" />
       <keyword name="setWhoIAm" id="ArnClient::setWhoIAm" ref="class_arn_client.html#aff3a9b5614f52aee688c758bd0d9d4b5" />
       <keyword name="remoteWhoIAm" id="ArnClient::remoteWhoIAm" ref="class_arn_client.html#aefea6a4c454de0c1ab138fac8d2b65f5" />
@@ -3271,6 +3692,16 @@
       <keyword name="remove" id="ArnClientReg::remove" ref="class_arn_client_reg.html#a14bc1923ff3edc10d1a1968991fcf512" />
       <keyword name="remove" id="ArnClientReg::remove" ref="class_arn_client_reg.html#a054512c251a91fd1b71a7d28c41fdf3a" />
       <keyword name="instance" id="ArnClientReg::instance" ref="class_arn_client_reg.html#ae87136bfbaf60bfe014ca2fa8c3a8ad8" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem" ref="class_arn_core_item.html" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem::ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+      <keyword name="~ArnCoreItem" id="ArnCoreItem::~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+      <keyword name="thread" id="ArnCoreItem::thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
+      <keyword name="ArnBasicItemEventHandler" id="ArnCoreItem::ArnBasicItemEventHandler" ref="class_arn_core_item.html#a158d21a1c14402d094e61a3b906a7f92" />
+      <keyword name="ArnCoreItem::Heritage" id="ArnCoreItem::Heritage" ref="struct_arn_core_item_1_1_heritage.html" />
+      <keyword name="BasicItem" id="ArnCoreItem::Heritage::BasicItem" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad29ef4de722c26dd672b65e05026e22c" />
+      <keyword name="ItemB" id="ArnCoreItem::Heritage::ItemB" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174a99edc52ea2c029c7afa119d6c60fcc37" />
+      <keyword name="AdaptItem" id="ArnCoreItem::Heritage::AdaptItem" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad240fc17c7b4eeb74a3d0d4c41716426" />
+      <keyword name="None" id="ArnCoreItem::Heritage::None" ref="struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad544a053a8bd784aa78171b67c8207b8" />
       <keyword name="ArnDepend" id="ArnDepend" ref="class_arn_depend.html" />
       <keyword name="DepSlot" id="ArnDepend::DepSlot" ref="class_arn_depend.html#a142b1eeb07e181cf4aebc187aadaa9e5" />
       <keyword name="completed" id="ArnDepend::completed" ref="class_arn_depend.html#a49dbcb4053f36d9205263729612a0440" />
@@ -3744,6 +4175,8 @@
       <keyword name="isMaster" id="ArnItem::isMaster" ref="class_arn_item.html#aa6c16f48ad0789d0dd903e4ba4f02ff5" />
       <keyword name="setAutoDestroy" id="ArnItem::setAutoDestroy" ref="class_arn_item.html#a984f218824f9f782dd5aa9e03519e64a" />
       <keyword name="isAutoDestroy" id="ArnItem::isAutoDestroy" ref="class_arn_item.html#a701db94b1d9b53a31d54edabc5ea738d" />
+      <keyword name="setUncrossed" id="ArnItem::setUncrossed" ref="class_arn_item.html#a3c15bad50954e05992fe35b5441540b7" />
+      <keyword name="isUncrossed" id="ArnItem::isUncrossed" ref="class_arn_item.html#ae14cf51623428d2699e79412d7c43913" />
       <keyword name="setBlockEcho" id="ArnItem::setBlockEcho" ref="class_arn_item.html#ae61e3b506ba6ea2d6b05e5f379f24610" />
       <keyword name="setDelay" id="ArnItem::setDelay" ref="class_arn_item.html#a2487337c3924ea323ec6462b8b0aee08" />
       <keyword name="delay" id="ArnItem::delay" ref="class_arn_item.html#afee83bed67f0ea061fb6ea8c479630cb" />
@@ -3846,6 +4279,11 @@
       <keyword name="thread" id="ArnBasicItem::thread" ref="class_arn_basic_item.html#aa2c7737c22c460c53083036bf918c778" />
       <keyword name="setEventHandler" id="ArnBasicItem::setEventHandler" ref="class_arn_basic_item.html#abc367506d733d8a52d17520d1ba6fb30" />
       <keyword name="eventHandler" id="ArnBasicItem::eventHandler" ref="class_arn_basic_item.html#aa9311606bd8db130e6f3d8ba29db2f45" />
+      <keyword name="setUncrossed" id="ArnBasicItem::setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
+      <keyword name="isUncrossed" id="ArnBasicItem::isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem::ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+      <keyword name="~ArnCoreItem" id="ArnCoreItem::~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+      <keyword name="thread" id="ArnCoreItem::thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
       <keyword name="ArnItemB" id="ArnItemB" ref="class_arn_item_b.html" />
       <keyword name="arnLinkDestroyed" id="ArnItemB::arnLinkDestroyed" ref="class_arn_item_b.html#a491881fa90d438c9db6218981faaa714" />
       <keyword name="ArnItemB" id="ArnItemB::ArnItemB" ref="class_arn_item_b.html#a9fc560cd83fc75bad2eb8f629981fbba" />
@@ -3919,6 +4357,11 @@
       <keyword name="thread" id="ArnBasicItem::thread" ref="class_arn_basic_item.html#aa2c7737c22c460c53083036bf918c778" />
       <keyword name="setEventHandler" id="ArnBasicItem::setEventHandler" ref="class_arn_basic_item.html#abc367506d733d8a52d17520d1ba6fb30" />
       <keyword name="eventHandler" id="ArnBasicItem::eventHandler" ref="class_arn_basic_item.html#aa9311606bd8db130e6f3d8ba29db2f45" />
+      <keyword name="setUncrossed" id="ArnBasicItem::setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
+      <keyword name="isUncrossed" id="ArnBasicItem::isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem::ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+      <keyword name="~ArnCoreItem" id="ArnCoreItem::~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+      <keyword name="thread" id="ArnCoreItem::thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
       <keyword name="ArnItemQml" id="ArnItemQml" ref="class_arn_item_qml.html" />
       <keyword name="addMode" id="ArnItemQml::addMode" ref="class_arn_item_qml.html#ade56f1850b53a7f492111c04d3daaedd" />
       <keyword name="getMode" id="ArnItemQml::getMode" ref="class_arn_item_qml.html#a37418d7d0303d90918ccb05ce9e3eb03" />
@@ -3968,6 +4411,8 @@
       <keyword name="isMaster" id="ArnItem::isMaster" ref="class_arn_item.html#aa6c16f48ad0789d0dd903e4ba4f02ff5" />
       <keyword name="setAutoDestroy" id="ArnItem::setAutoDestroy" ref="class_arn_item.html#a984f218824f9f782dd5aa9e03519e64a" />
       <keyword name="isAutoDestroy" id="ArnItem::isAutoDestroy" ref="class_arn_item.html#a701db94b1d9b53a31d54edabc5ea738d" />
+      <keyword name="setUncrossed" id="ArnItem::setUncrossed" ref="class_arn_item.html#a3c15bad50954e05992fe35b5441540b7" />
+      <keyword name="isUncrossed" id="ArnItem::isUncrossed" ref="class_arn_item.html#ae14cf51623428d2699e79412d7c43913" />
       <keyword name="setBlockEcho" id="ArnItem::setBlockEcho" ref="class_arn_item.html#ae61e3b506ba6ea2d6b05e5f379f24610" />
       <keyword name="setDelay" id="ArnItem::setDelay" ref="class_arn_item.html#a2487337c3924ea323ec6462b8b0aee08" />
       <keyword name="delay" id="ArnItem::delay" ref="class_arn_item.html#afee83bed67f0ea061fb6ea8c479630cb" />
@@ -4070,6 +4515,11 @@
       <keyword name="thread" id="ArnBasicItem::thread" ref="class_arn_basic_item.html#aa2c7737c22c460c53083036bf918c778" />
       <keyword name="setEventHandler" id="ArnBasicItem::setEventHandler" ref="class_arn_basic_item.html#abc367506d733d8a52d17520d1ba6fb30" />
       <keyword name="eventHandler" id="ArnBasicItem::eventHandler" ref="class_arn_basic_item.html#aa9311606bd8db130e6f3d8ba29db2f45" />
+      <keyword name="setUncrossed" id="ArnBasicItem::setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
+      <keyword name="isUncrossed" id="ArnBasicItem::isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem::ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+      <keyword name="~ArnCoreItem" id="ArnCoreItem::~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+      <keyword name="thread" id="ArnCoreItem::thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
       <keyword name="ArnItemValve" id="ArnItemValve" ref="class_arn_item_valve.html" />
       <keyword name="setValue" id="ArnItemValve::setValue" ref="class_arn_item_valve.html#a6ee2964d55ca5cb68fdbd2955a20d7e4" />
       <keyword name="changed" id="ArnItemValve::changed" ref="class_arn_item_valve.html#ad9d957aa7ca2fce2c608eafe76bbf5de" />
@@ -4156,6 +4606,11 @@
       <keyword name="thread" id="ArnBasicItem::thread" ref="class_arn_basic_item.html#aa2c7737c22c460c53083036bf918c778" />
       <keyword name="setEventHandler" id="ArnBasicItem::setEventHandler" ref="class_arn_basic_item.html#abc367506d733d8a52d17520d1ba6fb30" />
       <keyword name="eventHandler" id="ArnBasicItem::eventHandler" ref="class_arn_basic_item.html#aa9311606bd8db130e6f3d8ba29db2f45" />
+      <keyword name="setUncrossed" id="ArnBasicItem::setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
+      <keyword name="isUncrossed" id="ArnBasicItem::isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem::ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+      <keyword name="~ArnCoreItem" id="ArnCoreItem::~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+      <keyword name="thread" id="ArnCoreItem::thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
       <keyword name="ArnItemValve::SwitchMode" id="ArnItemValve::SwitchMode" ref="struct_arn_item_valve_1_1_switch_mode.html" />
       <keyword name="InStream" id="ArnItemValve::SwitchMode::InStream" ref="struct_arn_item_valve_1_1_switch_mode.html#a38351a02f3e9902196ee64a68c6d28c4a54d8a9891c6afb0ae01605ee6ee742be" />
       <keyword name="OutStream" id="ArnItemValve::SwitchMode::OutStream" ref="struct_arn_item_valve_1_1_switch_mode.html#a38351a02f3e9902196ee64a68c6d28c4a1d55ee51c014115212f90c0d9b29361c" />
@@ -4167,6 +4622,7 @@
       <keyword name="valueVariant" id="ArnLinkValue::valueVariant" ref="struct_arn_link_value.html#a0c38c4dedffd4d0c7d4d8f0bb4635f04" />
       <keyword name="valueReal" id="ArnLinkValue::valueReal" ref="struct_arn_link_value.html#a4324d62be49621cf2ca40684f9285b3e" />
       <keyword name="valueInt" id="ArnLinkValue::valueInt" ref="struct_arn_link_value.html#a2de0dfc728cd68ca29720509417716da" />
+      <keyword name="localUpdateCount" id="ArnLinkValue::localUpdateCount" ref="struct_arn_link_value.html#af08da1e64f534803312d08bf636627d8" />
       <keyword name="ArnM" id="ArnM" ref="class_arn_m.html" />
       <keyword name="destroyLink" id="ArnM::destroyLink" ref="class_arn_m.html#aeca916ef1159b6f1ec5fd42ee241c2ec" />
       <keyword name="setupErrorlog" id="ArnM::setupErrorlog" ref="class_arn_m.html#a3621b1884506f3f22c4c90dd192f7512" />
@@ -4310,6 +4766,11 @@
       <keyword name="thread" id="ArnBasicItem::thread" ref="class_arn_basic_item.html#aa2c7737c22c460c53083036bf918c778" />
       <keyword name="setEventHandler" id="ArnBasicItem::setEventHandler" ref="class_arn_basic_item.html#abc367506d733d8a52d17520d1ba6fb30" />
       <keyword name="eventHandler" id="ArnBasicItem::eventHandler" ref="class_arn_basic_item.html#aa9311606bd8db130e6f3d8ba29db2f45" />
+      <keyword name="setUncrossed" id="ArnBasicItem::setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
+      <keyword name="isUncrossed" id="ArnBasicItem::isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem::ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+      <keyword name="~ArnCoreItem" id="ArnCoreItem::~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+      <keyword name="thread" id="ArnCoreItem::thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
       <keyword name="ArnMonitorQml" id="ArnMonitorQml" ref="class_arn_monitor_qml.html" />
       <keyword name="reStart" id="ArnMonitorQml::reStart" ref="class_arn_monitor_qml.html#aaaab2dd9e4c47f905d056cf034f92b46" />
       <keyword name="foundChildDeleted" id="ArnMonitor::foundChildDeleted" ref="class_arn_monitor.html#aa8046b2eb39958525f18b255c3417714" />
@@ -4408,6 +4869,13 @@
       <keyword name="thread" id="ArnBasicItem::thread" ref="class_arn_basic_item.html#aa2c7737c22c460c53083036bf918c778" />
       <keyword name="setEventHandler" id="ArnBasicItem::setEventHandler" ref="class_arn_basic_item.html#abc367506d733d8a52d17520d1ba6fb30" />
       <keyword name="eventHandler" id="ArnBasicItem::eventHandler" ref="class_arn_basic_item.html#aa9311606bd8db130e6f3d8ba29db2f45" />
+      <keyword name="setUncrossed" id="ArnBasicItem::setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
+      <keyword name="isUncrossed" id="ArnBasicItem::isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem::ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+      <keyword name="~ArnCoreItem" id="ArnCoreItem::~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+      <keyword name="thread" id="ArnCoreItem::thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
+      <keyword name="ArnNullptr" id="ArnNullptr" ref="struct_arn_nullptr.html" />
+      <keyword name="operator T *" id="ArnNullptr::operator T *" ref="struct_arn_nullptr.html#af8474e7109adb90e726c702f95527ed0" />
       <keyword name="ArnPersist" id="ArnPersist" ref="class_arn_persist.html" />
       <keyword name="doArchive" id="ArnPersist::doArchive" ref="class_arn_persist.html#a565726147f31efd82b1cc2455a354b13" />
       <keyword name="ArnPersist" id="ArnPersist::ArnPersist" ref="class_arn_persist.html#af7df7bed23a44aa13d4d6906d9955257" />
@@ -4508,6 +4976,11 @@
       <keyword name="thread" id="ArnBasicItem::thread" ref="class_arn_basic_item.html#aa2c7737c22c460c53083036bf918c778" />
       <keyword name="setEventHandler" id="ArnBasicItem::setEventHandler" ref="class_arn_basic_item.html#abc367506d733d8a52d17520d1ba6fb30" />
       <keyword name="eventHandler" id="ArnBasicItem::eventHandler" ref="class_arn_basic_item.html#aa9311606bd8db130e6f3d8ba29db2f45" />
+      <keyword name="setUncrossed" id="ArnBasicItem::setUncrossed" ref="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673" />
+      <keyword name="isUncrossed" id="ArnBasicItem::isUncrossed" ref="class_arn_basic_item.html#a50b9672f14a7fd4278555f5fcb1e2bfc" />
+      <keyword name="ArnCoreItem" id="ArnCoreItem::ArnCoreItem" ref="class_arn_core_item.html#ae84191b78a7137859356950cdc45aa56" />
+      <keyword name="~ArnCoreItem" id="ArnCoreItem::~ArnCoreItem" ref="class_arn_core_item.html#a0f71d42cec167c8a1cff0ea456736f9c" />
+      <keyword name="thread" id="ArnCoreItem::thread" ref="class_arn_core_item.html#a060fb3b88eb151eb9c35a8b042f8434b" />
       <keyword name="ArnQml" id="ArnQml" ref="class_arn_qml.html" />
       <keyword name="setup" id="ArnQml::setup" ref="class_arn_qml.html#ac287c892d2aab59bf62f34c9d9b83b52" />
       <keyword name="instance" id="ArnQml::instance" ref="class_arn_qml.html#a0f5168745452389949f9292a4e79cad8" />
@@ -4913,6 +5386,7 @@
       <keyword name="uuidPath" id="Arn::uuidPath" ref="namespace_arn.html#af28f68f3e50e85712f31210b2a53fa7a" />
       <keyword name="makeHostWithInfo" id="Arn::makeHostWithInfo" ref="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a" />
       <keyword name="hostFromHostWithInfo" id="Arn::hostFromHostWithInfo" ref="namespace_arn.html#aa5388e7414b06aa7c8e1c0af4fe549a7" />
+      <keyword name="isNullPtr" id="Arn::isNullPtr" ref="namespace_arn.html#ae4de1ab0245470bfd56650e086e3b351" />
       <keyword name="isPower2" id="Arn::isPower2" ref="namespace_arn.html#aa38cc45e73d01409ff35ad4f3ca5a08d" />
       <keyword name="pathLocal" id="Arn::pathLocal" ref="namespace_arn.html#a690f9202c122418e5dfd8784529da8d9" />
       <keyword name="pathLocalSys" id="Arn::pathLocalSys" ref="namespace_arn.html#a668d00708a3b3c4d9943465b7cb21590" />
@@ -4936,6 +5410,7 @@
       <keyword name="debugZeroConf" id="Arn::debugZeroConf" ref="namespace_arn.html#ac5501392c42d64da7a65509a14db526f" />
       <keyword name="debugMDNS" id="Arn::debugMDNS" ref="namespace_arn.html#a93deb2830ba06a3fe371c25d07789c99" />
       <keyword name="warningMDNS" id="Arn::warningMDNS" ref="namespace_arn.html#a6fb271efbd6458b8ec659098deced870" />
+      <keyword name="offHeartbeat" id="Arn::offHeartbeat" ref="namespace_arn.html#a81684bfa914686118c20b97fe13acd11" />
       <keyword name="resourceArnLib" id="Arn::resourceArnLib" ref="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44" />
       <keyword name="resourceArnRoot" id="Arn::resourceArnRoot" ref="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a" />
       <keyword name="defaultTcpPort" id="Arn::defaultTcpPort" ref="namespace_arn.html#a7dc869a2e500fff4982652f576c9207a" />
@@ -4952,6 +5427,11 @@
       <keyword name="ModeChange" id="Arn::Allow::ModeChange" ref="class_arn_1_1_allow.html#a1ed296a4f70da6fe2f47578a800a345aaa088874b29668a4d22deb5648bb6f49d" />
       <keyword name="ReadWrite" id="Arn::Allow::ReadWrite" ref="class_arn_1_1_allow.html#a1ed296a4f70da6fe2f47578a800a345aa3005619137f77abd3cfbcf0854bc2485" />
       <keyword name="All" id="Arn::Allow::All" ref="class_arn_1_1_allow.html#a1ed296a4f70da6fe2f47578a800a345aa8fa09731aeb502554d1c220a874a2449" />
+      <keyword name="Arn::ClientSyncMode" id="Arn::ClientSyncMode" ref="struct_arn_1_1_client_sync_mode.html" />
+      <keyword name="Invalid" id="Arn::ClientSyncMode::Invalid" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abca5f47bc9547755313ff78a4ddfa835317" />
+      <keyword name="StdAutoMaster" id="Arn::ClientSyncMode::StdAutoMaster" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abcaedecaac120b18c046a20b6cb65b62a13" />
+      <keyword name="ImplicitMaster" id="Arn::ClientSyncMode::ImplicitMaster" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abca50266254cad7089070569097919fa06a" />
+      <keyword name="ExplicitMaster" id="Arn::ClientSyncMode::ExplicitMaster" ref="struct_arn_1_1_client_sync_mode.html#a4944587971acc7fe96191417913e0abca12fab33c25023390cfae77ef6582d9d0" />
       <keyword name="Arn::Coding" id="Arn::Coding" ref="struct_arn_1_1_coding.html" />
       <keyword name="Binary" id="Arn::Coding::Binary" ref="struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163aa38b66c8fd42a93a992919ebdd2cd6d1" />
       <keyword name="Text" id="Arn::Coding::Text" ref="struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163a905ec2383ef46c82dc382b75eabba242" />
@@ -5196,22 +5676,26 @@
       <file>_arn_demo_chat_server_2main_8cpp-example.html</file>
       <file>_arn_demo_chat_server_2_main_window_8cpp-example.html</file>
       <file>_arn_demo_chat_server_2_main_window_8hpp-example.html</file>
+      <file>_changelog___todo_8md_source.html</file>
       <file>_description_8md_source.html</file>
       <file>_install_8md_source.html</file>
       <file>_internals_8md_source.html</file>
-      <file>_todo_8md_source.html</file>
       <file>_r_e_a_d_m_e_8md_source.html</file>
       <file>_arn_8cpp_source.html</file>
+      <file>_arn_adapt_item_8cpp_source.html</file>
       <file>_arn_basic_item_8cpp_source.html</file>
       <file>_arn_client_8cpp_source.html</file>
+      <file>_arn_core_item_8cpp_source.html</file>
       <file>_arn_depend_8cpp_source.html</file>
       <file>_arn_discover_8cpp_source.html</file>
       <file>_arn_discover_connect_8cpp_source.html</file>
       <file>_arn_discover_remote_8cpp_source.html</file>
       <file>_arn_event_8cpp_source.html</file>
       <file>_arn_8hpp_source.html</file>
+      <file>_arn_adapt_item_8hpp_source.html</file>
       <file>_arn_basic_item_8hpp_source.html</file>
       <file>_arn_client_8hpp_source.html</file>
+      <file>_arn_core_item_8hpp_source.html</file>
       <file>_arn_depend_8hpp_source.html</file>
       <file>_arn_discover_8hpp_source.html</file>
       <file>_arn_discover_connect_8hpp_source.html</file>
@@ -5274,22 +5758,28 @@
       <file>_arn_x_string_map_8cpp_source.html</file>
       <file>_arn_zero_conf_8cpp_source.html</file>
       <file>_m_q_flags_8cpp_source.html</file>
+      <file>_changelog___todo_8md.html</file>
       <file>_description_8md.html</file>
       <file>_help_index_8txt.html</file>
       <file>_install_8md.html</file>
       <file>_internals_8md.html</file>
-      <file>_todo_8md.html</file>
       <file>_examples_8txt.html</file>
       <file>_r_e_a_d_m_e_8md.html</file>
       <file>_arn_8cpp.html</file>
       <file>_arn_8cpp__incl.png</file>
       <file>_arn_8cpp__incl.png</file>
+      <file>_arn_adapt_item_8cpp.html</file>
+      <file>_arn_adapt_item_8cpp__incl.png</file>
+      <file>_arn_adapt_item_8cpp__incl.png</file>
       <file>_arn_basic_item_8cpp.html</file>
       <file>_arn_basic_item_8cpp__incl.png</file>
       <file>_arn_basic_item_8cpp__incl.png</file>
       <file>_arn_client_8cpp.html</file>
       <file>_arn_client_8cpp__incl.png</file>
       <file>_arn_client_8cpp__incl.png</file>
+      <file>_arn_core_item_8cpp.html</file>
+      <file>_arn_core_item_8cpp__incl.png</file>
+      <file>_arn_core_item_8cpp__incl.png</file>
       <file>_arn_depend_8cpp.html</file>
       <file>_arn_depend_8cpp__incl.png</file>
       <file>_arn_depend_8cpp__incl.png</file>
@@ -5310,6 +5800,11 @@
       <file>_arn_8hpp__incl.png</file>
       <file>_arn_8hpp__dep__incl.png</file>
       <file>_arn_8hpp__dep__incl.png</file>
+      <file>_arn_adapt_item_8hpp.html</file>
+      <file>_arn_adapt_item_8hpp__incl.png</file>
+      <file>_arn_adapt_item_8hpp__incl.png</file>
+      <file>_arn_adapt_item_8hpp__dep__incl.png</file>
+      <file>_arn_adapt_item_8hpp__dep__incl.png</file>
       <file>_arn_basic_item_8hpp.html</file>
       <file>_arn_basic_item_8hpp__incl.png</file>
       <file>_arn_basic_item_8hpp__incl.png</file>
@@ -5320,6 +5815,11 @@
       <file>_arn_client_8hpp__incl.png</file>
       <file>_arn_client_8hpp__dep__incl.png</file>
       <file>_arn_client_8hpp__dep__incl.png</file>
+      <file>_arn_core_item_8hpp.html</file>
+      <file>_arn_core_item_8hpp__incl.png</file>
+      <file>_arn_core_item_8hpp__incl.png</file>
+      <file>_arn_core_item_8hpp__dep__incl.png</file>
+      <file>_arn_core_item_8hpp__dep__incl.png</file>
       <file>_arn_depend_8hpp.html</file>
       <file>_arn_depend_8hpp__incl.png</file>
       <file>_arn_depend_8hpp__incl.png</file>
@@ -5579,10 +6079,10 @@
       <file>_m_q_flags_8cpp__incl.png</file>
       <file>_m_q_flags_8cpp__incl.png</file>
       <file>md__r_e_a_d_m_e.html</file>
+      <file>md_doc__changelog__todo.html</file>
       <file>gen_page.html</file>
       <file>ins_page.html</file>
       <file>int_page.html</file>
-      <file>md_doc__todo.html</file>
       <file>exampleindex.html</file>
       <file>Arn_chat_demo_1.png</file>
       <file>chatdemo.html</file>
@@ -5590,9 +6090,17 @@
       <file>help_disc_index.html</file>
       <file>help_disc_discover.html</file>
       <file>deprecated.html</file>
+      <file>class_arn_adapt_item.html</file>
+      <file>class_arn_adapt_item__inherit__graph.png</file>
+      <file>class_arn_adapt_item__inherit__graph.png</file>
+      <file>class_arn_adapt_item__coll__graph.png</file>
+      <file>class_arn_adapt_item__coll__graph.png</file>
+      <file>class_arn_adapt_item-members.html</file>
       <file>class_arn_basic_item.html</file>
       <file>class_arn_basic_item__inherit__graph.png</file>
       <file>class_arn_basic_item__inherit__graph.png</file>
+      <file>class_arn_basic_item__coll__graph.png</file>
+      <file>class_arn_basic_item__coll__graph.png</file>
       <file>class_arn_basic_item-members.html</file>
       <file>class_arn_client.html</file>
       <file>class_arn_client__inherit__graph.png</file>
@@ -5606,6 +6114,12 @@
       <file>class_arn_client_connect_stat-members.html</file>
       <file>class_arn_client_reg.html</file>
       <file>class_arn_client_reg-members.html</file>
+      <file>class_arn_core_item.html</file>
+      <file>class_arn_core_item__inherit__graph.png</file>
+      <file>class_arn_core_item__inherit__graph.png</file>
+      <file>class_arn_core_item-members.html</file>
+      <file>struct_arn_core_item_1_1_heritage.html</file>
+      <file>struct_arn_core_item_1_1_heritage-members.html</file>
       <file>class_arn_depend.html</file>
       <file>class_arn_depend__inherit__graph.png</file>
       <file>class_arn_depend__inherit__graph.png</file>
@@ -5768,6 +6282,8 @@
       <file>class_arn_monitor_qml__coll__graph.png</file>
       <file>class_arn_monitor_qml__coll__graph.png</file>
       <file>class_arn_monitor_qml-members.html</file>
+      <file>struct_arn_nullptr.html</file>
+      <file>struct_arn_nullptr-members.html</file>
       <file>class_arn_persist.html</file>
       <file>class_arn_persist__inherit__graph.png</file>
       <file>class_arn_persist__inherit__graph.png</file>
@@ -5921,6 +6437,8 @@
       <file>struct_arn_1_1___init_enum_txt-members.html</file>
       <file>class_arn_1_1_allow.html</file>
       <file>class_arn_1_1_allow-members.html</file>
+      <file>struct_arn_1_1_client_sync_mode.html</file>
+      <file>struct_arn_1_1_client_sync_mode-members.html</file>
       <file>struct_arn_1_1_coding.html</file>
       <file>struct_arn_1_1_coding-members.html</file>
       <file>class_arn_1_1_data_type.html</file>
@@ -5987,6 +6505,7 @@
       <file>namespacemembers.html</file>
       <file>namespacemembers.html</file>
       <file>namespacemembers.html</file>
+      <file>namespacemembers.html</file>
       <file>namespacemembers_func.html</file>
       <file>namespacemembers_func.html</file>
       <file>namespacemembers_func.html</file>
@@ -5996,6 +6515,7 @@
       <file>namespacemembers_func.html</file>
       <file>namespacemembers_func.html</file>
       <file>namespacemembers_func.html</file>
+      <file>namespacemembers_vars.html</file>
       <file>namespacemembers_vars.html</file>
       <file>namespacemembers_vars.html</file>
       <file>namespacemembers_vars.html</file>
@@ -6045,6 +6565,9 @@
       <file>inherit_graph_38.png</file>
       <file>inherit_graph_39.png</file>
       <file>inherit_graph_40.png</file>
+      <file>inherit_graph_41.png</file>
+      <file>inherit_graph_42.png</file>
+      <file>inherit_graph_43.png</file>
       <file>functions.html</file>
       <file>functions_a.html</file>
       <file>functions_b.html</file>
@@ -6103,6 +6626,10 @@
       <file>functions_vars.html</file>
       <file>functions_vars.html</file>
       <file>functions_vars.html</file>
+      <file>functions_vars.html</file>
+      <file>functions_type.html</file>
+      <file>functions_type.html</file>
+      <file>functions_type.html</file>
       <file>functions_type.html</file>
       <file>functions_type.html</file>
       <file>functions_type.html</file>

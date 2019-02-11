@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/ArnServerRemote.cpp (3.0.0) Source File</title>
+<title>ArnLib: src/ArnServerRemote.cpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_arn_server_remote_8cpp_source.html','
 <div class="title">ArnServerRemote.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_server_remote_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2016 Michael Wiklund.</span></div>
+<a href="_arn_server_remote_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2019 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
@@ -327,7 +327,7 @@ $(document).ready(function(){initNavTree('_arn_server_remote_8cpp_source.html','
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    }</div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordflow">if</span> (_pollCount % 5 == 0) {</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="keywordtype">double</span> upTime = double( QDateTime::currentDateTime().toTime_t() - _startTime) / 3600.;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <a class="code" href="_arn_8hpp.html#abb40611001876432a01cdf283c8b7a0c">ARNREAL</a> upTime = <a class="code" href="_arn_8hpp.html#abb40611001876432a01cdf283c8b7a0c">ARNREAL</a>( QDateTime::currentDateTime().toTime_t() - _startTime) / 3600.;</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        _arnUpTime.<a class="code" href="class_arn_basic_item.html#a73019f4550ce6043659344a37686487f">setValue</a>( upTime);</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        quint64  trafficIn;</div>
@@ -397,93 +397,115 @@ $(document).ready(function(){initNavTree('_arn_server_remote_8cpp_source.html','
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;ArnServerRemotePrivate::ArnServerRemotePrivate()</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;{</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    _arnServer = 0;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    _startTime = 0;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;}</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;ArnServerRemotePrivate::~ArnServerRemotePrivate()</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;{</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;}</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    _arnServer    = 0;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    _startTime    = 0;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    _sessionCount = 0;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    _sessionNum   = 0;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;}</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;ArnServerRemotePrivate::~ArnServerRemotePrivate()</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;{</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;}</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="keywordtype">void</span>  ArnServerRemote::init()</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;{</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;}</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
-<div class="line"><a name="l00309"></a><span class="lineno"><a class="line" href="class_arn_server_remote.html#a346100efeb6fd2f823801d9a89c9f67c">  309</a></span>&#160;<a class="code" href="class_arn_server_remote.html#a346100efeb6fd2f823801d9a89c9f67c">ArnServerRemote::ArnServerRemote</a>( QObject* parent)</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    : QObject( parent)</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    , d_ptr( new ArnServerRemotePrivate)</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;{</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    init();</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;}</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<a class="code" href="class_arn_server_remote.html#a346100efeb6fd2f823801d9a89c9f67c">ArnServerRemote::ArnServerRemote</a>( ArnServerRemotePrivate&amp; dd, QObject* parent)</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    : QObject( parent)</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    , d_ptr( &amp;dd)</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;{</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    init();</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;}</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;</div>
-<div class="line"><a name="l00325"></a><span class="lineno"><a class="line" href="class_arn_server_remote.html#ace5cbc8a8235a8febe2a1ad0ba1b66da">  325</a></span>&#160;<a class="code" href="class_arn_server_remote.html#ace5cbc8a8235a8febe2a1ad0ba1b66da">ArnServerRemote::~ArnServerRemote</a>()</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;{</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keyword">delete</span> d_ptr;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;}</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
-<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="class_arn_server_remote.html#a72aee6c68aabd4a86d1f7fd6a7f75581">  331</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_server_remote.html#a72aee6c68aabd4a86d1f7fd6a7f75581">ArnServerRemote::startUseServer</a>( <a class="code" href="class_arn_server.html">ArnServer</a>* arnServer)</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;{</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    Q_D(<a class="code" href="class_arn_server_remote.html">ArnServerRemote</a>);</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    <span class="keywordflow">if</span> (!arnServer)  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="keywordtype">void</span>  ArnServerRemote::init()</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;{</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;}</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
+<div class="line"><a name="l00311"></a><span class="lineno"><a class="line" href="class_arn_server_remote.html#a346100efeb6fd2f823801d9a89c9f67c">  311</a></span>&#160;<a class="code" href="class_arn_server_remote.html#a346100efeb6fd2f823801d9a89c9f67c">ArnServerRemote::ArnServerRemote</a>( QObject* parent)</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    : QObject( parent)</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    , d_ptr( new ArnServerRemotePrivate)</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;{</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    init();</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;}</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<a class="code" href="class_arn_server_remote.html#a346100efeb6fd2f823801d9a89c9f67c">ArnServerRemote::ArnServerRemote</a>( ArnServerRemotePrivate&amp; dd, QObject* parent)</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    : QObject( parent)</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    , d_ptr( &amp;dd)</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;{</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    init();</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;}</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;</div>
+<div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="class_arn_server_remote.html#ace5cbc8a8235a8febe2a1ad0ba1b66da">  327</a></span>&#160;<a class="code" href="class_arn_server_remote.html#ace5cbc8a8235a8febe2a1ad0ba1b66da">ArnServerRemote::~ArnServerRemote</a>()</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;{</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    <span class="keyword">delete</span> d_ptr;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;}</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;</div>
+<div class="line"><a name="l00333"></a><span class="lineno"><a class="line" href="class_arn_server_remote.html#a72aee6c68aabd4a86d1f7fd6a7f75581">  333</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="class_arn_server_remote.html#a72aee6c68aabd4a86d1f7fd6a7f75581">ArnServerRemote::startUseServer</a>( <a class="code" href="class_arn_server.html">ArnServer</a>* arnServer)</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;{</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    Q_D(<a class="code" href="class_arn_server_remote.html">ArnServerRemote</a>);</div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    d-&gt;_arnServer = arnServer;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    connect( arnServer, SIGNAL(newSession()), <span class="keyword">this</span>, SLOT(onNewSession()));</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    d-&gt;_timerPoll.start(5000);</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    connect( &amp;d-&gt;_timerPoll, SIGNAL(timeout()), <span class="keyword">this</span>, SLOT(doPoll()));</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    d-&gt;_startTime = QDateTime::currentDateTime().toTime_t();</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    d-&gt;_arnUpTime.open( <a class="code" href="namespace_arn.html#a5946f880ec2640e3b24e8148b4658265">Arn::pathServer</a> + <span class="stringliteral">&quot;ServerUpTime/value&quot;</span>);</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36">ArnM::setValue</a>( <a class="code" href="namespace_arn.html#a5946f880ec2640e3b24e8148b4658265">Arn::pathServer</a> + <span class="stringliteral">&quot;ServerUpTime/property&quot;</span>, <span class="stringliteral">&quot;prec=2 unit=h&quot;</span>);</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;}</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="keywordtype">void</span>  ArnServerRemote::onNewSession()</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;{</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    Q_D(<a class="code" href="class_arn_server_remote.html">ArnServerRemote</a>);</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keywordflow">if</span> (!arnServer)  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    d-&gt;_arnServer = arnServer;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    connect( arnServer, SIGNAL(newSession()), <span class="keyword">this</span>, SLOT(onNewSession()));</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    d-&gt;_timerPoll.start(5000);</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    connect( &amp;d-&gt;_timerPoll, SIGNAL(timeout()), <span class="keyword">this</span>, SLOT(doPoll()));</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    d-&gt;_startTime = QDateTime::currentDateTime().toTime_t();</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    d-&gt;_arnUpTime.open(       <a class="code" href="namespace_arn.html#a5946f880ec2640e3b24e8148b4658265">Arn::pathServer</a> + <span class="stringliteral">&quot;ServerUpTime/value&quot;</span>);</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    d-&gt;_arnSessionCount.open( <a class="code" href="namespace_arn.html#a5946f880ec2640e3b24e8148b4658265">Arn::pathServer</a> + <span class="stringliteral">&quot;SessionCount/value&quot;</span>);</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    d-&gt;_arnSessionNum.open(   <a class="code" href="namespace_arn.html#a5946f880ec2640e3b24e8148b4658265">Arn::pathServer</a> + <span class="stringliteral">&quot;SessionNum/value&quot;</span>);</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <a class="code" href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36">ArnM::setValue</a>( <a class="code" href="namespace_arn.html#a5946f880ec2640e3b24e8148b4658265">Arn::pathServer</a> + <span class="stringliteral">&quot;ServerUpTime/property&quot;</span>, <span class="stringliteral">&quot;prec=2 unit=h&quot;</span>);</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;}</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;</div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    Q_ASSERT(d-&gt;_arnServer);</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <a class="code" href="class_arn_server_session.html">ArnServerSession</a>*  serverSession = d-&gt;_arnServer-&gt;getSession();</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <span class="keyword">new</span> <a class="code" href="class_arn_server_remote_session.html">ArnServerRemoteSession</a>( serverSession, <span class="keyword">this</span>);</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;}</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="keywordtype">void</span>  ArnServerRemote::doPoll()</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;{</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    Q_D(<a class="code" href="class_arn_server_remote.html">ArnServerRemote</a>);</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keywordtype">double</span> upTime = double( QDateTime::currentDateTime().toTime_t() - d-&gt;_startTime) / 3600.;</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    d-&gt;_arnUpTime.setValue( upTime);</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;}</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="keywordtype">void</span>  ArnServerRemote::onNewSession()</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;{</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    Q_D(<a class="code" href="class_arn_server_remote.html">ArnServerRemote</a>);</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    ++d-&gt;_sessionCount;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    d-&gt;_arnSessionCount = d-&gt;_sessionCount;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    ++d-&gt;_sessionNum;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    d-&gt;_arnSessionNum = d-&gt;_sessionNum;</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    Q_ASSERT(d-&gt;_arnServer);</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <a class="code" href="class_arn_server_session.html">ArnServerSession</a>*  serverSession = d-&gt;_arnServer-&gt;getSession();</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keyword">new</span> <a class="code" href="class_arn_server_remote_session.html">ArnServerRemoteSession</a>( serverSession, <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    connect( serverSession, SIGNAL(destroyed(QObject*)), SLOT(onDelSession(QObject*)));</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;}</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="keywordtype">void</span>  ArnServerRemote::onDelSession( QObject* sessionObj)</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;{</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    Q_UNUSED(sessionObj)</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    Q_D(<a class="code" href="class_arn_server_remote.html">ArnServerRemote</a>);</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    --d-&gt;_sessionNum;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    d-&gt;_arnSessionNum = d-&gt;_sessionNum;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;}</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="keywordtype">void</span>  ArnServerRemote::doPoll()</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;{</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    Q_D(ArnServerRemote);</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    <a class="code" href="_arn_8hpp.html#abb40611001876432a01cdf283c8b7a0c">ARNREAL</a> upTime = <a class="code" href="_arn_8hpp.html#abb40611001876432a01cdf283c8b7a0c">ARNREAL</a>( QDateTime::currentDateTime().toTime_t() - d-&gt;_startTime) / 3600.;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    d-&gt;_arnUpTime.setValue( upTime);</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;}</div>
 <div class="ttc" id="_arn_sync_8hpp_html"><div class="ttname"><a href="_arn_sync_8hpp.html">ArnSync.hpp</a></div></div>
-<div class="ttc" id="class_arn_basic_item_html_a73019f4550ce6043659344a37686487f"><div class="ttname"><a href="class_arn_basic_item.html#a73019f4550ce6043659344a37686487f">ArnBasicItem::setValue</a></div><div class="ttdeci">void setValue(const ArnBasicItem &amp;other, int ignoreSame=Arn::SameValue::DefaultAction)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_basic_item_8cpp_source.html#l00783">ArnBasicItem.cpp:783</a></div></div>
-<div class="ttc" id="class_arn_m_html_ad762cbc4fe1386747e35dd892880af36"><div class="ttname"><a href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36">ArnM::setValue</a></div><div class="ttdeci">static void setValue(const QString &amp;path, int value)</div><div class="ttdoc">Assign an integer to an Arn Data Object at path </div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00442">ArnM.cpp:442</a></div></div>
+<div class="ttc" id="class_arn_basic_item_html_a73019f4550ce6043659344a37686487f"><div class="ttname"><a href="class_arn_basic_item.html#a73019f4550ce6043659344a37686487f">ArnBasicItem::setValue</a></div><div class="ttdeci">void setValue(const ArnBasicItem &amp;other, int ignoreSame=Arn::SameValue::DefaultAction)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_basic_item_8cpp_source.html#l00799">ArnBasicItem.cpp:799</a></div></div>
+<div class="ttc" id="class_arn_m_html_ad762cbc4fe1386747e35dd892880af36"><div class="ttname"><a href="class_arn_m.html#ad762cbc4fe1386747e35dd892880af36">ArnM::setValue</a></div><div class="ttdeci">static void setValue(const QString &amp;path, int value)</div><div class="ttdoc">Assign an integer to an Arn Data Object at path </div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00444">ArnM.cpp:444</a></div></div>
 <div class="ttc" id="_arn_server_8hpp_html"><div class="ttname"><a href="_arn_server_8hpp.html">ArnServer.hpp</a></div></div>
 <div class="ttc" id="class_arn_server_remote_session_html"><div class="ttname"><a href="class_arn_server_remote_session.html">ArnServerRemoteSession</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8hpp_source.html#l00060">ArnServerRemote.hpp:60</a></div></div>
-<div class="ttc" id="class_arn_1_1_allow_html"><div class="ttname"><a href="class_arn_1_1_allow.html">Arn::Allow</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00191">Arn.hpp:191</a></div></div>
-<div class="ttc" id="class_arn_basic_item_html_ae1696b4ce0e65e2b3a4f389e305e16e7"><div class="ttname"><a href="class_arn_basic_item.html#ae1696b4ce0e65e2b3a4f389e305e16e7">ArnBasicItem::open</a></div><div class="ttdeci">bool open(const QString &amp;path)</div><div class="ttdoc">Open a handle to an Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_basic_item_8cpp_source.html#l00138">ArnBasicItem.cpp:138</a></div></div>
+<div class="ttc" id="class_arn_1_1_allow_html"><div class="ttname"><a href="class_arn_1_1_allow.html">Arn::Allow</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00206">Arn.hpp:206</a></div></div>
+<div class="ttc" id="class_arn_basic_item_html_ae1696b4ce0e65e2b3a4f389e305e16e7"><div class="ttname"><a href="class_arn_basic_item.html#ae1696b4ce0e65e2b3a4f389e305e16e7">ArnBasicItem::open</a></div><div class="ttdeci">bool open(const QString &amp;path)</div><div class="ttdoc">Open a handle to an Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_basic_item_8cpp_source.html#l00146">ArnBasicItem.cpp:146</a></div></div>
 <div class="ttc" id="class_arn_server_html"><div class="ttname"><a href="class_arn_server.html">ArnServer</a></div><div class="ttdoc">Class for making an Arn Server. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8hpp_source.html#l00098">ArnServer.hpp:98</a></div></div>
 <div class="ttc" id="class_arn_1_1_x_string_map_html_a6e0e99cf7d332ae3771aefa1b42ef50b"><div class="ttname"><a href="class_arn_1_1_x_string_map.html#a6e0e99cf7d332ae3771aefa1b42ef50b">Arn::XStringMap::key</a></div><div class="ttdeci">QByteArray key(int i, const char *def=0) const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_x_string_map_8cpp_source.html#l00400">ArnXStringMap.cpp:400</a></div></div>
 <div class="ttc" id="class_arn_item_html_ad58e3879bda6cd859a561658d3fc34ad"><div class="ttname"><a href="class_arn_item.html#ad58e3879bda6cd859a561658d3fc34ad">ArnItem::setPipeMode</a></div><div class="ttdeci">ArnItem &amp; setPipeMode()</div><div class="ttdoc">Set general mode as Pipe for this Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_8hpp_source.html#l00211">ArnItem.hpp:211</a></div></div>
 <div class="ttc" id="class_arn_1_1_x_string_map_html"><div class="ttname"><a href="class_arn_1_1_x_string_map.html">Arn::XStringMap</a></div><div class="ttdoc">Container class with string representation for serialized data. </div><div class="ttdef"><b>Definition:</b> <a href="_x_string_map_8hpp_source.html#l00083">XStringMap.hpp:83</a></div></div>
-<div class="ttc" id="class_arn_item_html_acb56869d213095752d74868ef0cd450c"><div class="ttname"><a href="class_arn_item.html#acb56869d213095752d74868ef0cd450c">ArnItem::toInt</a></div><div class="ttdeci">int toInt(bool *isOk=0) const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_8hpp_source.html#l00331">ArnItem.hpp:331</a></div></div>
+<div class="ttc" id="class_arn_item_html_acb56869d213095752d74868ef0cd450c"><div class="ttname"><a href="class_arn_item.html#acb56869d213095752d74868ef0cd450c">ArnItem::toInt</a></div><div class="ttdeci">int toInt(bool *isOk=0) const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_8hpp_source.html#l00352">ArnItem.hpp:352</a></div></div>
 <div class="ttc" id="class_arn_server_remote_session_kill_mode_html_a34884dd23756df77566638374da370d1a9a3730769d9a2dfe23a27a712fb088e7"><div class="ttname"><a href="class_arn_server_remote_session_kill_mode.html#a34884dd23756df77566638374da370d1a9a3730769d9a2dfe23a27a712fb088e7">ArnServerRemoteSessionKillMode::Off</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8hpp_source.html#l00052">ArnServerRemote.hpp:52</a></div></div>
-<div class="ttc" id="class_arn_server_remote_html_ace5cbc8a8235a8febe2a1ad0ba1b66da"><div class="ttname"><a href="class_arn_server_remote.html#ace5cbc8a8235a8febe2a1ad0ba1b66da">ArnServerRemote::~ArnServerRemote</a></div><div class="ttdeci">~ArnServerRemote()</div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8cpp_source.html#l00325">ArnServerRemote.cpp:325</a></div></div>
+<div class="ttc" id="class_arn_server_remote_html_ace5cbc8a8235a8febe2a1ad0ba1b66da"><div class="ttname"><a href="class_arn_server_remote.html#ace5cbc8a8235a8febe2a1ad0ba1b66da">ArnServerRemote::~ArnServerRemote</a></div><div class="ttdeci">~ArnServerRemote()</div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8cpp_source.html#l00327">ArnServerRemote.cpp:327</a></div></div>
 <div class="ttc" id="namespace_arn_html_a5946f880ec2640e3b24e8148b4658265"><div class="ttname"><a href="namespace_arn.html#a5946f880ec2640e3b24e8148b4658265">Arn::pathServer</a></div><div class="ttdeci">const QString pathServer</div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00046">Arn.cpp:46</a></div></div>
 <div class="ttc" id="_arn_8hpp_html"><div class="ttname"><a href="_arn_8hpp.html">Arn.hpp</a></div></div>
 <div class="ttc" id="class_arn_server_remote_session_html_aa91bb8c07dead58f20da7e136390ebe6"><div class="ttname"><a href="class_arn_server_remote_session.html#aa91bb8c07dead58f20da7e136390ebe6">ArnServerRemoteSession::ArnServerRemoteSession</a></div><div class="ttdeci">ArnServerRemoteSession(ArnServerSession *arnServerSession, ArnServerRemote *arnServerRemote)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8cpp_source.html#l00044">ArnServerRemote.cpp:44</a></div></div>
@@ -491,8 +513,9 @@ $(document).ready(function(){initNavTree('_arn_server_remote_8cpp_source.html','
 <div class="ttc" id="class_arn_server_session_html_ad1f72c6429528ffbf7d00b49afd22c52"><div class="ttname"><a href="class_arn_server_session.html#ad1f72c6429528ffbf7d00b49afd22c52">ArnServerSession::loginUserName</a></div><div class="ttdeci">QString loginUserName() const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00143">ArnServer.cpp:143</a></div></div>
 <div class="ttc" id="class_arn_server_session_html_a3ff7c99a17c0631d3c5c300bc21f6a1c"><div class="ttname"><a href="class_arn_server_session.html#a3ff7c99a17c0631d3c5c300bc21f6a1c">ArnServerSession::socket</a></div><div class="ttdeci">QTcpSocket * socket() const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00129">ArnServer.cpp:129</a></div></div>
 <div class="ttc" id="class_arn_server_session_html_ab1b88aec60a38fae4f0c67ef44a73fc0"><div class="ttname"><a href="class_arn_server_session.html#ab1b88aec60a38fae4f0c67ef44a73fc0">ArnServerSession::getAllow</a></div><div class="ttdeci">Arn::Allow getAllow() const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00151">ArnServer.cpp:151</a></div></div>
-<div class="ttc" id="class_arn_item_b_html_a0cecde39f435ba1c62f2587b00b930c1"><div class="ttname"><a href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1">ArnItemB::open</a></div><div class="ttdeci">bool open(const QString &amp;path)</div><div class="ttdoc">Open a handle to an Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_b_8cpp_source.html#l00089">ArnItemB.cpp:89</a></div></div>
-<div class="ttc" id="class_arn_server_remote_html_a72aee6c68aabd4a86d1f7fd6a7f75581"><div class="ttname"><a href="class_arn_server_remote.html#a72aee6c68aabd4a86d1f7fd6a7f75581">ArnServerRemote::startUseServer</a></div><div class="ttdeci">void startUseServer(ArnServer *arnServer)</div><div class="ttdoc">Start making remote control objects for the ArnServer. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8cpp_source.html#l00331">ArnServerRemote.cpp:331</a></div></div>
+<div class="ttc" id="class_arn_item_b_html_a0cecde39f435ba1c62f2587b00b930c1"><div class="ttname"><a href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1">ArnItemB::open</a></div><div class="ttdeci">bool open(const QString &amp;path)</div><div class="ttdoc">Open a handle to an Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_b_8cpp_source.html#l00091">ArnItemB.cpp:91</a></div></div>
+<div class="ttc" id="class_arn_server_remote_html_a72aee6c68aabd4a86d1f7fd6a7f75581"><div class="ttname"><a href="class_arn_server_remote.html#a72aee6c68aabd4a86d1f7fd6a7f75581">ArnServerRemote::startUseServer</a></div><div class="ttdeci">void startUseServer(ArnServer *arnServer)</div><div class="ttdoc">Start making remote control objects for the ArnServer. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8cpp_source.html#l00333">ArnServerRemote.cpp:333</a></div></div>
+<div class="ttc" id="_arn_8hpp_html_abb40611001876432a01cdf283c8b7a0c"><div class="ttname"><a href="_arn_8hpp.html#abb40611001876432a01cdf283c8b7a0c">ARNREAL</a></div><div class="ttdeci">#define ARNREAL</div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00044">Arn.hpp:44</a></div></div>
 <div class="ttc" id="class_arn_server_session_html_a56dde65db888dd15ddb2c0eb2b0d4b67"><div class="ttname"><a href="class_arn_server_session.html#a56dde65db888dd15ddb2c0eb2b0d4b67">ArnServerSession::remoteWhoIAm</a></div><div class="ttdeci">Arn::XStringMap remoteWhoIAm() const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00135">ArnServer.cpp:135</a></div></div>
 <div class="ttc" id="class_arn_server_session_html_aa889559b97e4a7719dbd18ad092c2c54"><div class="ttname"><a href="class_arn_server_session.html#aa889559b97e4a7719dbd18ad092c2c54">ArnServerSession::getTraffic</a></div><div class="ttdeci">bool getTraffic(quint64 &amp;in, quint64 &amp;out) const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00167">ArnServer.cpp:167</a></div></div>
 <div class="ttc" id="class_arn_server_remote_session_html_a5ec3e1bf7a2eabd6c35a9db1f0640772"><div class="ttname"><a href="class_arn_server_remote_session.html#a5ec3e1bf7a2eabd6c35a9db1f0640772">ArnServerRemoteSession::KillMode</a></div><div class="ttdeci">ArnServerRemoteSessionKillMode KillMode</div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8hpp_source.html#l00064">ArnServerRemote.hpp:64</a></div></div>
@@ -501,12 +524,12 @@ $(document).ready(function(){initNavTree('_arn_server_remote_8cpp_source.html','
 <div class="ttc" id="namespace_arn_html_a2aa8ea4215a582c3bfc69d942595de04"><div class="ttname"><a href="namespace_arn.html#a2aa8ea4215a582c3bfc69d942595de04">Arn::pathServerSessions</a></div><div class="ttdeci">const QString pathServerSessions</div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00047">Arn.cpp:47</a></div></div>
 <div class="ttc" id="class_arn_1_1_x_string_map_html_ab9bbf7ce563875fd6e28c70d0cbefe69"><div class="ttname"><a href="class_arn_1_1_x_string_map.html#ab9bbf7ce563875fd6e28c70d0cbefe69">Arn::XStringMap::size</a></div><div class="ttdeci">int size() const </div><div class="ttdef"><b>Definition:</b> <a href="_x_string_map_8hpp_source.html#l00095">XStringMap.hpp:95</a></div></div>
 <div class="ttc" id="_arn_server_remote_8hpp_html"><div class="ttname"><a href="_arn_server_remote_8hpp.html">ArnServerRemote.hpp</a></div></div>
-<div class="ttc" id="class_arn_1_1_allow_html_a1ed296a4f70da6fe2f47578a800a345aa3005619137f77abd3cfbcf0854bc2485"><div class="ttname"><a href="class_arn_1_1_allow.html#a1ed296a4f70da6fe2f47578a800a345aa3005619137f77abd3cfbcf0854bc2485">Arn::Allow::ReadWrite</a></div><div class="ttdoc">Convenience, allow read & write. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00209">Arn.hpp:209</a></div></div>
-<div class="ttc" id="class_arn_m_html_aeca916ef1159b6f1ec5fd42ee241c2ec"><div class="ttname"><a href="class_arn_m.html#aeca916ef1159b6f1ec5fd42ee241c2ec">ArnM::destroyLink</a></div><div class="ttdeci">static void destroyLink(const QString &amp;path, bool isGlobal=true)</div><div class="ttdoc">Destroy the Arn Data Object at path </div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00822">ArnM.cpp:822</a></div></div>
+<div class="ttc" id="class_arn_1_1_allow_html_a1ed296a4f70da6fe2f47578a800a345aa3005619137f77abd3cfbcf0854bc2485"><div class="ttname"><a href="class_arn_1_1_allow.html#a1ed296a4f70da6fe2f47578a800a345aa3005619137f77abd3cfbcf0854bc2485">Arn::Allow::ReadWrite</a></div><div class="ttdoc">Convenience, allow read & write. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00224">Arn.hpp:224</a></div></div>
+<div class="ttc" id="class_arn_m_html_aeca916ef1159b6f1ec5fd42ee241c2ec"><div class="ttname"><a href="class_arn_m.html#aeca916ef1159b6f1ec5fd42ee241c2ec">ArnM::destroyLink</a></div><div class="ttdeci">static void destroyLink(const QString &amp;path, bool isGlobal=true)</div><div class="ttdoc">Destroy the Arn Data Object at path </div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00824">ArnM.cpp:824</a></div></div>
 <div class="ttc" id="class_arn_server_session_html_afd53f6c396b64833b2227d1c8698fac3"><div class="ttname"><a href="class_arn_server_session.html#afd53f6c396b64833b2227d1c8698fac3">ArnServerSession::sendMessage</a></div><div class="ttdeci">void sendMessage(int type, const QByteArray &amp;data=QByteArray())</div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8cpp_source.html#l00159">ArnServer.cpp:159</a></div></div>
 <div class="ttc" id="class_arn_1_1_x_string_map_html_aaa0b23b534233aa51344694e172f9d7a"><div class="ttname"><a href="class_arn_1_1_x_string_map.html#aaa0b23b534233aa51344694e172f9d7a">Arn::XStringMap::value</a></div><div class="ttdeci">QByteArray value(int i, const char *def=0) const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_x_string_map_8cpp_source.html#l00447">ArnXStringMap.cpp:447</a></div></div>
 <div class="ttc" id="class_arn_server_session_html"><div class="ttname"><a href="class_arn_server_session.html">ArnServerSession</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_8hpp_source.html#l00053">ArnServer.hpp:53</a></div></div>
-<div class="ttc" id="class_arn_server_remote_html_a346100efeb6fd2f823801d9a89c9f67c"><div class="ttname"><a href="class_arn_server_remote.html#a346100efeb6fd2f823801d9a89c9f67c">ArnServerRemote::ArnServerRemote</a></div><div class="ttdeci">ArnServerRemote(QObject *parent=0)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8cpp_source.html#l00309">ArnServerRemote.cpp:309</a></div></div>
+<div class="ttc" id="class_arn_server_remote_html_a346100efeb6fd2f823801d9a89c9f67c"><div class="ttname"><a href="class_arn_server_remote.html#a346100efeb6fd2f823801d9a89c9f67c">ArnServerRemote::ArnServerRemote</a></div><div class="ttdeci">ArnServerRemote(QObject *parent=0)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8cpp_source.html#l00311">ArnServerRemote.cpp:311</a></div></div>
 <div class="ttc" id="class_arn_1_1_x_string_map_html_abb3e8529078d1cef25984e04c4db36d2"><div class="ttname"><a href="class_arn_1_1_x_string_map.html#abb3e8529078d1cef25984e04c4db36d2">Arn::XStringMap::valueString</a></div><div class="ttdeci">QString valueString(int i, const QString &amp;def=QString()) const </div><div class="ttdef"><b>Definition:</b> <a href="_arn_x_string_map_8cpp_source.html#l00496">ArnXStringMap.cpp:496</a></div></div>
 <div class="ttc" id="class_arn_server_remote_session_kill_mode_html_a34884dd23756df77566638374da370d1a2f5f6f0eae80373ec55c7617bd98c571"><div class="ttname"><a href="class_arn_server_remote_session_kill_mode.html#a34884dd23756df77566638374da370d1a2f5f6f0eae80373ec55c7617bd98c571">ArnServerRemoteSessionKillMode::Delay10Sec</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_server_remote_8hpp_source.html#l00053">ArnServerRemote.hpp:53</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -515,7 +538,7 @@ $(document).ready(function(){initNavTree('_arn_server_remote_8cpp_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_server_remote_8cpp.html">ArnServerRemote.cpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

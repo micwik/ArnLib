@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/ArnRpc.cpp (3.0.0) Source File</title>
+<title>ArnLib: src/ArnRpc.cpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_arn_rpc_8cpp_source.html','');});
 <div class="title">ArnRpc.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_rpc_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2016 Michael Wiklund.</span></div>
+<a href="_arn_rpc_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2019 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
@@ -1717,10 +1717,10 @@ $(document).ready(function(){initNavTree('_arn_rpc_8cpp_source.html','');});
 <div class="ttc" id="class_arn_rpc_mode_html_a8edeb6254deec1875e83f6bfb6c4875ea0ae09d35cb03c37ca6e85e184c38e323"><div class="ttname"><a href="class_arn_rpc_mode.html#a8edeb6254deec1875e83f6bfb6c4875ea0ae09d35cb03c37ca6e85e184c38e323">ArnRpcMode::UseDefaultCall</a></div><div class="ttdoc">When receiver method missing, send defaultCall() signal instead of error. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8hpp_source.html#l00108">ArnRpc.hpp:108</a></div></div>
 <div class="ttc" id="class_arn_rpc_html_a6f380544a22b4171d08a652b676161e9"><div class="ttname"><a href="class_arn_rpc.html#a6f380544a22b4171d08a652b676161e9">ArnRpc::defaultCall</a></div><div class="ttdeci">void defaultCall(const QByteArray &amp;data)</div><div class="ttdoc">Signal emitted when receiver method missing. </div></div>
 <div class="ttc" id="class_arn_rpc_html"><div class="ttname"><a href="class_arn_rpc.html">ArnRpc</a></div><div class="ttdoc">Remote Procedure Call. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8hpp_source.html#l00155">ArnRpc.hpp:155</a></div></div>
-<div class="ttc" id="class_arn_m_html_a02c5334f3e67aaf914dd25433853bdf6"><div class="ttname"><a href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a></div><div class="ttdeci">static void errorLog(QString errText, ArnError err=ArnError::Undef, void *reference=0)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00993">ArnM.cpp:993</a></div></div>
+<div class="ttc" id="class_arn_m_html_a02c5334f3e67aaf914dd25433853bdf6"><div class="ttname"><a href="class_arn_m.html#a02c5334f3e67aaf914dd25433853bdf6">ArnM::errorLog</a></div><div class="ttdeci">static void errorLog(QString errText, ArnError err=ArnError::Undef, void *reference=0)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00996">ArnM.cpp:996</a></div></div>
 <div class="ttc" id="class_arn_rpc_mode_html_a8edeb6254deec1875e83f6bfb6c4875ea1b1dd927481335115eb05f08621e5778"><div class="ttname"><a href="class_arn_rpc_mode.html#a8edeb6254deec1875e83f6bfb6c4875ea1b1dd927481335115eb05f08621e5778">ArnRpcMode::CheckSequence</a></div><div class="ttdoc">Check sequence order information from pipe. Can generate signal outOfSequence(). </div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8hpp_source.html#l00100">ArnRpc.hpp:100</a></div></div>
 <div class="ttc" id="_arn_rpc_8hpp_html_aa477dc265a51dcb0136ec6f87fd271ff"><div class="ttname"><a href="_arn_rpc_8hpp.html#aa477dc265a51dcb0136ec6f87fd271ff">MQ_ARG</a></div><div class="ttdeci">#define MQ_ARG(type, label, data)</div><div class="ttdoc">Similar to Q_ARG but with added argument label (parameter name) </div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8hpp_source.html#l00048">ArnRpc.hpp:48</a></div></div>
-<div class="ttc" id="class_arn_item_b_html_a0cecde39f435ba1c62f2587b00b930c1"><div class="ttname"><a href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1">ArnItemB::open</a></div><div class="ttdeci">bool open(const QString &amp;path)</div><div class="ttdoc">Open a handle to an Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_b_8cpp_source.html#l00089">ArnItemB.cpp:89</a></div></div>
+<div class="ttc" id="class_arn_item_b_html_a0cecde39f435ba1c62f2587b00b930c1"><div class="ttname"><a href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1">ArnItemB::open</a></div><div class="ttdeci">bool open(const QString &amp;path)</div><div class="ttdoc">Open a handle to an Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_b_8cpp_source.html#l00091">ArnItemB.cpp:91</a></div></div>
 <div class="ttc" id="class_arn_rpc_html_a1eabbf8f25a3c7e07235c04d983e857c"><div class="ttname"><a href="class_arn_rpc.html#a1eabbf8f25a3c7e07235c04d983e857c">ArnRpc::getHeartBeatSend</a></div><div class="ttdeci">int getHeartBeatSend() const </div><div class="ttdoc">Get period time for sending heart beat message. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8cpp_source.html#l00405">ArnRpc.cpp:405</a></div></div>
 <div class="ttc" id="class_arn_rpc_html_a9534d3737bf93fb9511c1f33a2f09967"><div class="ttname"><a href="class_arn_rpc.html#a9534d3737bf93fb9511c1f33a2f09967">ArnRpc::heartBeatReceived</a></div><div class="ttdeci">void heartBeatReceived()</div><div class="ttdoc">Signal emitted when Heart beat message is received. </div></div>
 <div class="ttc" id="class_arn_rpc_html_a5e5309bf47720f9bbe3442b804314e5f"><div class="ttname"><a href="class_arn_rpc.html#a5e5309bf47720f9bbe3442b804314e5f">ArnRpc::setHeartBeatCheck</a></div><div class="ttdeci">void setHeartBeatCheck(int time)</div><div class="ttdoc">Set max time period for receiving heart beat message. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8cpp_source.html#l00413">ArnRpc.cpp:413</a></div></div>
@@ -1773,7 +1773,7 @@ $(document).ready(function(){initNavTree('_arn_rpc_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_rpc_8cpp.html">ArnRpc.cpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

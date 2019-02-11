@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -150,17 +150,20 @@ $(document).ready(function(){initNavTree('class_arn_client.html','');});
   <tr><td class="entry"><a class="el" href="class_arn_client.html#a50398bf6a7db7d152702d572c6b65c1b">setDemandLogin</a>(bool isDemandLogin)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a7eb3feacb7aa1d4fe6b128962c7fc548">setMountPoint</a>(const QString &amp;path)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="class_arn_client.html#a7c4e581d378d14f431b4ce3a78f876e7">setReceiveTimeout</a>(int receiveTimeout)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#aff3a9b5614f52aee688c758bd0d9d4b5">setWhoIAm</a>(const Arn::XStringMap &amp;whoIAmXsm)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#adb43cf9a180ec12a72fdb8f5c2024118">tcpConnected</a>(const QString &amp;arnHost, quint16 port)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd">tcpDisConnected</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_arn_client.html#ac6b4d05adbb2827fe7f9e6c3b1f3921c">tcpError</a>(const QString &amp;errorText, QAbstractSocket::SocketError socketError)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a6790b90c92aa497667e85e6dac0a95c7">~ArnClient</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a33ac43100792c358069c34a9ef0a918d">setSyncMode</a>(SyncMode syncMode)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#aff3a9b5614f52aee688c758bd0d9d4b5">setWhoIAm</a>(const Arn::XStringMap &amp;whoIAmXsm)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#a0dd803b425bcb72c8c429909ceabb52e">SyncMode</a> typedef</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#a03e3d38894f892ac274c9bc7362afcfb">syncMode</a>() const </td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#adb43cf9a180ec12a72fdb8f5c2024118">tcpConnected</a>(const QString &amp;arnHost, quint16 port)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#aaa78839f18f6538e838c12704ae05bbd">tcpDisConnected</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_arn_client.html#ac6b4d05adbb2827fe7f9e6c3b1f3921c">tcpError</a>(const QString &amp;errorText, QAbstractSocket::SocketError socketError)</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_arn_client.html#a6790b90c92aa497667e85e6dac0a95c7">~ArnClient</a>()</td><td class="entry"><a class="el" href="class_arn_client.html">ArnClient</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:32 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

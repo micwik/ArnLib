@@ -1,8 +1,7 @@
 <map id="src/ArnLink.hpp" name="src/ArnLink.hpp">
-<area shape="rect" id="node2" href="$_arn_lib__global_8hpp.html" title="ArnInc/ArnLib_global.hpp" alt="" coords="5,304,173,331"/>
-<area shape="rect" id="node4" href="$_arn_link_handle_8hpp.html" title="ArnInc/ArnLinkHandle.hpp" alt="" coords="311,155,486,181"/>
-<area shape="rect" id="node5" href="$_arn_8hpp.html" title="Arn.hpp" alt="" coords="177,229,244,256"/>
-<area shape="rect" id="node6" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="705,304,807,331"/>
-<area shape="rect" id="node14" href="$_arn_basic_item_8hpp.html" title="ArnInc/ArnBasicItem.hpp" alt="" coords="562,80,729,107"/>
-<area shape="rect" id="node15" href="$_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="709,229,803,256"/>
+<area shape="rect" id="node2" href="$_arn_lib__global_8hpp.html" title="ArnInc/ArnLib_global.hpp" alt="" coords="5,229,173,256"/>
+<area shape="rect" id="node4" href="$_arn_link_handle_8hpp.html" title="ArnInc/ArnLinkHandle.hpp" alt="" coords="365,80,539,107"/>
+<area shape="rect" id="node5" href="$_arn_8hpp.html" title="Arn.hpp" alt="" coords="195,155,261,181"/>
+<area shape="rect" id="node6" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="255,229,356,256"/>
+<area shape="rect" id="node14" href="$_arn_core_item_8hpp.html" title="ArnInc/ArnCoreItem.hpp" alt="" coords="76,80,239,107"/>
 </map>

@@ -1,6 +1,9 @@
 var dir_4d586402499cc8c8cfffbed14854e74f =
 [
     [ "Arn.hpp", "_arn_8hpp.html", "_arn_8hpp" ],
+    [ "ArnAdaptItem.hpp", "_arn_adapt_item_8hpp.html", [
+      [ "ArnAdaptItem", "class_arn_adapt_item.html", "class_arn_adapt_item" ]
+    ] ],
     [ "ArnBasicItem.hpp", "_arn_basic_item_8hpp.html", [
       [ "ArnBasicItem", "class_arn_basic_item.html", "class_arn_basic_item" ]
     ] ],
@@ -8,6 +11,10 @@ var dir_4d586402499cc8c8cfffbed14854e74f =
       [ "ArnClientConnectStat", "class_arn_client_connect_stat.html", "class_arn_client_connect_stat" ],
       [ "ArnClient", "class_arn_client.html", "class_arn_client" ],
       [ "HostAddrPort", "struct_arn_client_1_1_host_addr_port.html", "struct_arn_client_1_1_host_addr_port" ]
+    ] ],
+    [ "ArnCoreItem.hpp", "_arn_core_item_8hpp.html", [
+      [ "ArnCoreItem", "class_arn_core_item.html", "class_arn_core_item" ],
+      [ "Heritage", "struct_arn_core_item_1_1_heritage.html", "struct_arn_core_item_1_1_heritage" ]
     ] ],
     [ "ArnDepend.hpp", "_arn_depend_8hpp.html", [
       [ "ArnDependOffer", "class_arn_depend_offer.html", "class_arn_depend_offer" ],

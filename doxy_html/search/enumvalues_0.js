@@ -1,6 +1,7 @@
 var searchData=
 [
   ['accept',['Accept',['../struct_arn_1_1_same_value.html#a9d6ffee16928f190d49dcbbc6d556f4ba662063fd42e59e861deed0ff5d9df8b8',1,'Arn::SameValue']]],
+  ['adaptitem',['AdaptItem',['../struct_arn_core_item_1_1_heritage.html#a3847262c9ffaf6c798bffe2b59386174ad240fc17c7b4eeb74a3d0d4c41716426',1,'ArnCoreItem::Heritage']]],
   ['advertise',['Advertise',['../struct_arn_discover_advertise_1_1_state.html#a25c515160c33a493eac8d02c63f1bdd5a113a94f614a0b608ce6e7fa97bce07c5',1,'ArnDiscoverAdvertise::State']]],
   ['advertising',['Advertising',['../struct_arn_discover_advertise_1_1_state.html#a25c515160c33a493eac8d02c63f1bdd5a82dace84cbb6757cb6edd0df2a5212c3',1,'ArnDiscoverAdvertise::State']]],
   ['all',['All',['../class_arn_1_1_allow.html#a1ed296a4f70da6fe2f47578a800a345aa8fa09731aeb502554d1c220a874a2449',1,'Arn::Allow::All()'],['../struct_arn_qml_1_1_use_flags.html#a8cbceb4a9531e1526eef35e2b9941effa6df2adb40d77e62ee47ed34d03da8e11',1,'ArnQml::UseFlags::All()']]],

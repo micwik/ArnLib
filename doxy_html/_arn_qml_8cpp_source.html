@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/ArnQml.cpp (3.0.0) Source File</title>
+<title>ArnLib: src/ArnQml.cpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_arn_qml_8cpp_source.html','');});
 <div class="title">ArnQml.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_qml_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2016 Michael Wiklund.</span></div>
+<a href="_arn_qml_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2019 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
@@ -589,7 +589,7 @@ $(document).ready(function(){initNavTree('_arn_qml_8cpp_source.html','');});
 <div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;{</div>
 <div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;    <span class="keywordtype">int</span>  len = qMin( _data.size() - _readPos, int(maxlen));</div>
 <div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    <span class="keywordflow">if</span> (len &gt; 0) {</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        memcpy( data, _data.constData() + _readPos, len);</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        memcpy( data, _data.constData() + _readPos, size_t( len));</div>
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;        _readPos += len;</div>
 <div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;    }</div>
 <div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;</div>
@@ -624,7 +624,7 @@ $(document).ready(function(){initNavTree('_arn_qml_8cpp_source.html','');});
 <div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a6bad554b0caef51dece7d7881fa41c7c">Arn::debugQmlNetwork</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnQmlNetw. reply setup later path=&quot;</span></div>
 <div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;                                            &lt;&lt; path;</div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        QMetaObject::invokeMethod( <span class="keyword">this</span>, <span class="stringliteral">&quot;postSetup&quot;</span>, Qt::QueuedConnection);        </div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        QMetaObject::invokeMethod( <span class="keyword">this</span>, <span class="stringliteral">&quot;postSetup&quot;</span>, Qt::QueuedConnection);</div>
 <div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;    }</div>
 <div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;</div>
@@ -645,7 +645,7 @@ $(document).ready(function(){initNavTree('_arn_qml_8cpp_source.html','');});
 <div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a6bad554b0caef51dece7d7881fa41c7c">Arn::debugQmlNetwork</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnQmlNetw. reply postSetup 3&quot;</span>;</div>
 <div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;</div>
 <div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;    <span class="keywordflow">if</span> (!wasLocalExist &amp;&amp; (_arnItem.type() == <a class="code" href="class_arn_1_1_data_type.html#acb3e43667776c03d93bbb75d47078bb6a6e266a6b14caf2a6ee6a4c73c91767d2">Arn::DataType::Null</a>)) {</div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        <span class="comment">// Note: Open can have resulted in a persistent loading of the item. </span></div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        <span class="comment">// Note: Open can have resulted in a persistent loading of the item.</span></div>
 <div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespace_arn.html#a6bad554b0caef51dece7d7881fa41c7c">Arn::debugQmlNetwork</a>)  qDebug() &lt;&lt; <span class="stringliteral">&quot;ArnQmlNetw. wait for data: path=&quot;</span> &lt;&lt; _arnPath;</div>
 <div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;        connect( &amp;_arnItem, SIGNAL(changed()), <span class="keyword">this</span>, SLOT(dataArived()));</div>
 <div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;        <span class="keywordflow">return</span>;</div>
@@ -742,20 +742,20 @@ $(document).ready(function(){initNavTree('_arn_qml_8cpp_source.html','');});
 <div class="ttc" id="_arn_qml_8hpp_html"><div class="ttname"><a href="_arn_qml_8hpp.html">ArnQml.hpp</a></div></div>
 <div class="ttc" id="class_arn_rpc_html_ad2e88f991fc117994e2573d2beb6f5f3"><div class="ttname"><a href="class_arn_rpc.html#ad2e88f991fc117994e2573d2beb6f5f3">ArnRpc::setMethodPrefix</a></div><div class="ttdeci">void setMethodPrefix(const QString &amp;prefix)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8cpp_source.html#l00337">ArnRpc.cpp:337</a></div></div>
 <div class="ttc" id="_arn_qml_m_qt_8hpp_html"><div class="ttname"><a href="_arn_qml_m_qt_8hpp.html">ArnQmlMQt.hpp</a></div></div>
-<div class="ttc" id="class_arn_basic_item_html_aa791ce51e0d7abfdeb16eb3a06340018"><div class="ttname"><a href="class_arn_basic_item.html#aa791ce51e0d7abfdeb16eb3a06340018">ArnBasicItem::path</a></div><div class="ttdeci">QString path(Arn::NameF nameF=Arn::NameF::EmptyOk) const </div><div class="ttdoc">Path of the Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_basic_item_8cpp_source.html#l00438">ArnBasicItem.cpp:438</a></div></div>
+<div class="ttc" id="class_arn_basic_item_html_aa791ce51e0d7abfdeb16eb3a06340018"><div class="ttname"><a href="class_arn_basic_item.html#aa791ce51e0d7abfdeb16eb3a06340018">ArnBasicItem::path</a></div><div class="ttdeci">QString path(Arn::NameF nameF=Arn::NameF::EmptyOk) const </div><div class="ttdoc">Path of the Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_basic_item_8cpp_source.html#l00454">ArnBasicItem.cpp:454</a></div></div>
 <div class="ttc" id="class_arn_monitor_html_a740f070fa55cbfcbc57f43d877956d9a"><div class="ttname"><a href="class_arn_monitor.html#a740f070fa55cbfcbc57f43d877956d9a">ArnMonitor::reStart</a></div><div class="ttdeci">void reStart()</div><div class="ttdoc">The monitor is restarted. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_monitor_8cpp_source.html#l00222">ArnMonitor.cpp:222</a></div></div>
 <div class="ttc" id="class_arn_rpc_html_ace8322eda7c1ab852e557042206db011"><div class="ttname"><a href="class_arn_rpc.html#ace8322eda7c1ab852e557042206db011">ArnRpc::setReceiver</a></div><div class="ttdeci">bool setReceiver(QObject *receiver, bool useTrackRpcSender=true)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8cpp_source.html#l00300">ArnRpc.cpp:300</a></div></div>
-<div class="ttc" id="class_arn_item_html_adac29fabc8112521b4e1ea0bfc436d21"><div class="ttname"><a href="class_arn_item.html#adac29fabc8112521b4e1ea0bfc436d21">ArnItem::setValue</a></div><div class="ttdeci">void setValue(const ArnItem &amp;other, int ignoreSame=Arn::SameValue::DefaultAction)</div><div class="ttdoc">Assign the value of an other ArnItem to an Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_8hpp_source.html#l00416">ArnItem.hpp:416</a></div></div>
+<div class="ttc" id="class_arn_item_html_adac29fabc8112521b4e1ea0bfc436d21"><div class="ttname"><a href="class_arn_item.html#adac29fabc8112521b4e1ea0bfc436d21">ArnItem::setValue</a></div><div class="ttdeci">void setValue(const ArnItem &amp;other, int ignoreSame=Arn::SameValue::DefaultAction)</div><div class="ttdoc">Assign the value of an other ArnItem to an Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_8hpp_source.html#l00437">ArnItem.hpp:437</a></div></div>
 <div class="ttc" id="class_arn_qml_html_a0f5168745452389949f9292a4e79cad8"><div class="ttname"><a href="class_arn_qml.html#a0f5168745452389949f9292a4e79cad8">ArnQml::instance</a></div><div class="ttdeci">static ArnQml &amp; instance()</div><div class="ttdef"><b>Definition:</b> <a href="_arn_qml_8cpp_source.html#l00116">ArnQml.cpp:116</a></div></div>
 <div class="ttc" id="class_arn_item_html_a984f218824f9f782dd5aa9e03519e64a"><div class="ttname"><a href="class_arn_item.html#a984f218824f9f782dd5aa9e03519e64a">ArnItem::setAutoDestroy</a></div><div class="ttdeci">ArnItem &amp; setAutoDestroy()</div><div class="ttdoc">Set client session sync mode as AutoDestroy for this ArnItem. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_8hpp_source.html#l00258">ArnItem.hpp:258</a></div></div>
 <div class="ttc" id="_arn_qml_m_system_8hpp_html"><div class="ttname"><a href="_arn_qml_m_system_8hpp.html">ArnQmlMSystem.hpp</a></div></div>
 <div class="ttc" id="class_arn_rpc_html_a23a00d2841a76abb12a581436dabdb97"><div class="ttname"><a href="class_arn_rpc.html#a23a00d2841a76abb12a581436dabdb97">ArnRpc::addSenderSignals</a></div><div class="ttdeci">void addSenderSignals(QObject *sender, const QString &amp;prefix)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8cpp_source.html#l00440">ArnRpc.cpp:440</a></div></div>
 <div class="ttc" id="class_arn_item_html_aa26ee32abe7931c875ce76ff85443e01"><div class="ttname"><a href="class_arn_item.html#aa26ee32abe7931c875ce76ff85443e01">ArnItem::type</a></div><div class="ttdeci">Arn::DataType type() const </div><div class="ttdoc">The type stored in the Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_8hpp_source.html#l00135">ArnItem.hpp:135</a></div></div>
 <div class="ttc" id="class_arn_qml_html_ac287c892d2aab59bf62f34c9d9b83b52"><div class="ttname"><a href="class_arn_qml.html#ac287c892d2aab59bf62f34c9d9b83b52">ArnQml::setup</a></div><div class="ttdeci">static void setup(QML_ENGINE *qmlEngine, UseFlags flags=UseFlags::ArnLib)</div><div class="ttdoc">Add ArnLib support to a Qml instance. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_qml_8cpp_source.html#l00080">ArnQml.cpp:80</a></div></div>
-<div class="ttc" id="struct_arn_1_1_name_f_html_a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776"><div class="ttname"><a href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776">Arn::NameF::EmptyOk</a></div><div class="ttdoc">Path: "/@/test" ==> "//test", Item: "@" ==> "". </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00174">Arn.hpp:174</a></div></div>
+<div class="ttc" id="struct_arn_1_1_name_f_html_a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776"><div class="ttname"><a href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776">Arn::NameF::EmptyOk</a></div><div class="ttdoc">Path: "/@/test" ==> "//test", Item: "@" ==> "". </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00189">Arn.hpp:189</a></div></div>
 <div class="ttc" id="class_arn_item_html_ad58e3879bda6cd859a561658d3fc34ad"><div class="ttname"><a href="class_arn_item.html#ad58e3879bda6cd859a561658d3fc34ad">ArnItem::setPipeMode</a></div><div class="ttdeci">ArnItem &amp; setPipeMode()</div><div class="ttdoc">Set general mode as Pipe for this Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_8hpp_source.html#l00211">ArnItem.hpp:211</a></div></div>
 <div class="ttc" id="class_arn_monitor_html_a204697cdbefdc68c6cdadf563df83810"><div class="ttname"><a href="class_arn_monitor.html#a204697cdbefdc68c6cdadf563df83810">ArnMonitor::monitorPath</a></div><div class="ttdeci">QString monitorPath() const </div><div class="ttdoc">Get the monitored path </div><div class="ttdef"><b>Definition:</b> <a href="_arn_monitor_8cpp_source.html#l00214">ArnMonitor.cpp:214</a></div></div>
-<div class="ttc" id="class_arn_m_html_ae6659f8ef4f5a6e8463f3debfdf066e6"><div class="ttname"><a href="class_arn_m.html#ae6659f8ef4f5a6e8463f3debfdf066e6">ArnM::exist</a></div><div class="ttdeci">static bool exist(const QString &amp;path)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00397">ArnM.cpp:397</a></div></div>
+<div class="ttc" id="class_arn_m_html_ae6659f8ef4f5a6e8463f3debfdf066e6"><div class="ttname"><a href="class_arn_m.html#ae6659f8ef4f5a6e8463f3debfdf066e6">ArnM::exist</a></div><div class="ttdeci">static bool exist(const QString &amp;path)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_m_8cpp_source.html#l00399">ArnM.cpp:399</a></div></div>
 <div class="ttc" id="class_arn_monitor_html_a3580c66ba157546427c80df2616ae7df"><div class="ttname"><a href="class_arn_monitor.html#a3580c66ba157546427c80df2616ae7df">ArnMonitor::setClient</a></div><div class="ttdeci">void setClient(ArnClient *client)</div><div class="ttdoc">Set the client to be used. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_monitor_8cpp_source.html#l00101">ArnMonitor.cpp:101</a></div></div>
 <div class="ttc" id="namespace_arn_html_a6bad554b0caef51dece7d7881fa41c7c"><div class="ttname"><a href="namespace_arn.html#a6bad554b0caef51dece7d7881fa41c7c">Arn::debugQmlNetwork</a></div><div class="ttdeci">bool debugQmlNetwork</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00047">ArnLib.cpp:47</a></div></div>
 <div class="ttc" id="_arn_m_8hpp_html"><div class="ttname"><a href="_arn_m_8hpp.html">ArnM.hpp</a></div></div>
@@ -768,7 +768,7 @@ $(document).ready(function(){initNavTree('_arn_qml_8cpp_source.html','');});
 <div class="ttc" id="class_arn_qml_html_ab3b77a3dcc40fd68023322293cbddb18"><div class="ttname"><a href="class_arn_qml.html#ab3b77a3dcc40fd68023322293cbddb18">ArnQml::arnRootPath</a></div><div class="ttdeci">static QString arnRootPath()</div><div class="ttdoc">Gives current ARN root path for all qml instances. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_qml_8cpp_source.html#l00058">ArnQml.cpp:58</a></div></div>
 <div class="ttc" id="class_arn_monitor_html_a28f43c9d2933a92660d93cc5bd3ef6e4"><div class="ttname"><a href="class_arn_monitor.html#a28f43c9d2933a92660d93cc5bd3ef6e4">ArnMonitor::start</a></div><div class="ttdeci">bool start(const QString &amp;path, ArnClient *client)</div><div class="ttdoc">Starts the monitoring. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_monitor_8cpp_source.html#l00142">ArnMonitor.cpp:142</a></div></div>
 <div class="ttc" id="namespace_arn_html_a197a8ae8b61ad386b09af26a6f457671"><div class="ttname"><a href="namespace_arn.html#a197a8ae8b61ad386b09af26a6f457671">Arn::changeBasePath</a></div><div class="ttdeci">QString changeBasePath(const QString &amp;oldBasePath, const QString &amp;newBasePath, const QString &amp;path)</div><div class="ttdoc">Change the base (start) of a path. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00110">Arn.cpp:110</a></div></div>
-<div class="ttc" id="class_arn_item_b_html_a0cecde39f435ba1c62f2587b00b930c1"><div class="ttname"><a href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1">ArnItemB::open</a></div><div class="ttdeci">bool open(const QString &amp;path)</div><div class="ttdoc">Open a handle to an Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_b_8cpp_source.html#l00089">ArnItemB.cpp:89</a></div></div>
+<div class="ttc" id="class_arn_item_b_html_a0cecde39f435ba1c62f2587b00b930c1"><div class="ttname"><a href="class_arn_item_b.html#a0cecde39f435ba1c62f2587b00b930c1">ArnItemB::open</a></div><div class="ttdeci">bool open(const QString &amp;path)</div><div class="ttdoc">Open a handle to an Arn Data Object </div><div class="ttdef"><b>Definition:</b> <a href="_arn_item_b_8cpp_source.html#l00091">ArnItemB.cpp:91</a></div></div>
 <div class="ttc" id="class_arn_rpc_mode_html_a8edeb6254deec1875e83f6bfb6c4875eaa00834b45f2d51e33f7719ef5706fadb"><div class="ttname"><a href="class_arn_rpc_mode.html#a8edeb6254deec1875e83f6bfb6c4875eaa00834b45f2d51e33f7719ef5706fadb">ArnRpcMode::Provider</a></div><div class="ttdoc">Provider side (opposed to requester) </div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8hpp_source.html#l00090">ArnRpc.hpp:90</a></div></div>
 <div class="ttc" id="class_arn_rpc_html_a61df3306cfe2f97286967118bda69eb0"><div class="ttname"><a href="class_arn_rpc.html#a61df3306cfe2f97286967118bda69eb0">ArnRpc::mode</a></div><div class="ttdeci">Mode mode() const </div><div class="ttdoc">Get the mode. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_rpc_8cpp_source.html#l00386">ArnRpc.cpp:386</a></div></div>
 <div class="ttc" id="struct_arn_qml_1_1_use_flags_html"><div class="ttname"><a href="struct_arn_qml_1_1_use_flags.html">ArnQml::UseFlags</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_qml_8hpp_source.html#l00184">ArnQml.hpp:184</a></div></div>
@@ -798,7 +798,7 @@ $(document).ready(function(){initNavTree('_arn_qml_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_qml_8cpp.html">ArnQml.cpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

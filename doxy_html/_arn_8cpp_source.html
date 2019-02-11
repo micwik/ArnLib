@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/Arn.cpp (3.0.0) Source File</title>
+<title>ArnLib: src/Arn.cpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_arn_8cpp_source.html','');});
 <div class="title">Arn.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2016 Michael Wiklund.</span></div>
+<a href="_arn_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2019 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
@@ -341,7 +341,7 @@ $(document).ready(function(){initNavTree('_arn_8cpp_source.html','');});
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
 <div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a">  231</a></span>&#160;QString  <a class="code" href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a">makeHostWithInfo</a>( <span class="keyword">const</span> QString&amp; host, <span class="keyword">const</span> QString&amp; info)</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;{</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordflow">return</span> host + ((info.isEmpty() || info == host) ? QString() </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordflow">return</span> host + ((info.isEmpty() || info == host) ? QString()</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                                                    : (<span class="stringliteral">&quot;  [&quot;</span> + info + <span class="stringliteral">&quot;]&quot;</span>));</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;}</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
@@ -352,24 +352,31 @@ $(document).ready(function(){initNavTree('_arn_8cpp_source.html','');});
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordtype">int</span>  pos = retVal.indexOf( QRegExp(<span class="stringliteral">&quot;\\s*\\[.+\\]&quot;</span>));</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keywordflow">if</span> (pos &gt;= 0)</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        retVal.resize( pos);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordflow">return</span> retVal;</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;}</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;}  <span class="comment">// Arn::</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
+<div class="line"><a name="l00249"></a><span class="lineno"><a class="line" href="namespace_arn.html#ae4de1ab0245470bfd56650e086e3b351">  249</a></span>&#160;<span class="keywordtype">bool</span>  <a class="code" href="namespace_arn.html#ae4de1ab0245470bfd56650e086e3b351">isNullPtr</a>( <span class="keyword">const</span> <span class="keywordtype">void</span>* ptr)</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;{</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordflow">return</span> ptr == arnNullptr;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;}</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;}  <span class="comment">// Arn::</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
 <div class="ttc" id="namespace_arn_html_af01d6dbc5fac8a0b66830c0fff375bdf"><div class="ttname"><a href="namespace_arn.html#af01d6dbc5fac8a0b66830c0fff375bdf">Arn::childPath</a></div><div class="ttdeci">QString childPath(const QString &amp;parentPath, const QString &amp;posterityPath)</div><div class="ttdoc">Get substring for child from a path (posterityPath) </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00096">Arn.cpp:96</a></div></div>
 <div class="ttc" id="namespace_arn_html_a75a3c4519469a93271186abe52bb810e"><div class="ttname"><a href="namespace_arn.html#a75a3c4519469a93271186abe52bb810e">Arn::convertName</a></div><div class="ttdeci">QString convertName(const QString &amp;name, NameF nameF)</div><div class="ttdoc">Convert a name to a specific format. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00050">Arn.cpp:50</a></div></div>
 <div class="ttc" id="namespace_arn_html_aa5388e7414b06aa7c8e1c0af4fe549a7"><div class="ttname"><a href="namespace_arn.html#aa5388e7414b06aa7c8e1c0af4fe549a7">Arn::hostFromHostWithInfo</a></div><div class="ttdeci">QString hostFromHostWithInfo(const QString &amp;hostWithInfo)</div><div class="ttdoc">Get the host from the HostWithInfo string. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00238">Arn.cpp:238</a></div></div>
-<div class="ttc" id="struct_arn_1_1_name_f_html"><div class="ttname"><a href="struct_arn_1_1_name_f.html">Arn::NameF</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00166">Arn.hpp:166</a></div></div>
+<div class="ttc" id="struct_arn_1_1_name_f_html"><div class="ttname"><a href="struct_arn_1_1_name_f.html">Arn::NameF</a></div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00181">Arn.hpp:181</a></div></div>
 <div class="ttc" id="namespace_arn_html_aac20bdfa60a3d566d6000e333724aa44"><div class="ttname"><a href="namespace_arn.html#aac20bdfa60a3d566d6000e333724aa44">Arn::pathDiscover</a></div><div class="ttdeci">const QString pathDiscover</div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00043">Arn.cpp:43</a></div></div>
-<div class="ttc" id="struct_arn_1_1_name_f_html_a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776"><div class="ttname"><a href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776">Arn::NameF::EmptyOk</a></div><div class="ttdoc">Path: "/@/test" ==> "//test", Item: "@" ==> "". </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00174">Arn.hpp:174</a></div></div>
+<div class="ttc" id="struct_arn_1_1_name_f_html_a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776"><div class="ttname"><a href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a629e41fdff28015864b201e00ee25776">Arn::NameF::EmptyOk</a></div><div class="ttdoc">Path: "/@/test" ==> "//test", Item: "@" ==> "". </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00189">Arn.hpp:189</a></div></div>
 <div class="ttc" id="namespace_arn_html_a690f9202c122418e5dfd8784529da8d9"><div class="ttname"><a href="namespace_arn.html#a690f9202c122418e5dfd8784529da8d9">Arn::pathLocal</a></div><div class="ttdeci">const QString pathLocal</div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00041">Arn.cpp:41</a></div></div>
 <div class="ttc" id="namespace_arn_html_a1217c8d6b0195b60ef72fc6757480893"><div class="ttname"><a href="namespace_arn.html#a1217c8d6b0195b60ef72fc6757480893">Arn::fullPath</a></div><div class="ttdeci">QString fullPath(const QString &amp;path)</div><div class="ttdoc">Convert a path to a full absolute path. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00078">Arn.cpp:78</a></div></div>
 <div class="ttc" id="namespace_arn_html_a5946f880ec2640e3b24e8148b4658265"><div class="ttname"><a href="namespace_arn.html#a5946f880ec2640e3b24e8148b4658265">Arn::pathServer</a></div><div class="ttdeci">const QString pathServer</div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00046">Arn.cpp:46</a></div></div>
+<div class="ttc" id="namespace_arn_html_ae4de1ab0245470bfd56650e086e3b351"><div class="ttname"><a href="namespace_arn.html#ae4de1ab0245470bfd56650e086e3b351">Arn::isNullPtr</a></div><div class="ttdeci">bool isNullPtr(const void *ptr)</div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00249">Arn.cpp:249</a></div></div>
 <div class="ttc" id="_arn_8hpp_html"><div class="ttname"><a href="_arn_8hpp.html">Arn.hpp</a></div></div>
 <div class="ttc" id="namespace_arn_html_a668d00708a3b3c4d9943465b7cb21590"><div class="ttname"><a href="namespace_arn.html#a668d00708a3b3c4d9943465b7cb21590">Arn::pathLocalSys</a></div><div class="ttdeci">const QString pathLocalSys</div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00042">Arn.cpp:42</a></div></div>
-<div class="ttc" id="struct_arn_1_1_name_f_html_a40105098065a4f646ba1a82ef4397e40add0d4f2215d5e30f295fbfd0d27d39a1"><div class="ttname"><a href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40add0d4f2215d5e30f295fbfd0d27d39a1">Arn::NameF::Relative</a></div><div class="ttdoc">Only on path, no effect on discrete names. "/test/value" ==> "test/value". </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00176">Arn.hpp:176</a></div></div>
+<div class="ttc" id="struct_arn_1_1_name_f_html_a40105098065a4f646ba1a82ef4397e40add0d4f2215d5e30f295fbfd0d27d39a1"><div class="ttname"><a href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40add0d4f2215d5e30f295fbfd0d27d39a1">Arn::NameF::Relative</a></div><div class="ttdoc">Only on path, no effect on discrete names. "/test/value" ==> "test/value". </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00191">Arn.hpp:191</a></div></div>
 <div class="ttc" id="namespace_arn_html_abf5062a3262fb12eef2feedf03c8b4ae"><div class="ttname"><a href="namespace_arn.html#abf5062a3262fb12eef2feedf03c8b4ae">Arn::addPath</a></div><div class="ttdeci">QString addPath(const QString &amp;parentPath, const QString &amp;childRelPath, Arn::NameF nameF)</div><div class="ttdoc">Make a path from a parent and an additional relative path. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00133">Arn.cpp:133</a></div></div>
 <div class="ttc" id="namespace_arn_html_a556d0c5ce01a0b3146a929137c7b786d"><div class="ttname"><a href="namespace_arn.html#a556d0c5ce01a0b3146a929137c7b786d">Arn::pathDiscoverConnect</a></div><div class="ttdeci">const QString pathDiscoverConnect</div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00045">Arn.cpp:45</a></div></div>
 <div class="ttc" id="namespace_arn_html_af7033a4ea5ac45c0bbc136000fd2ccca"><div class="ttname"><a href="namespace_arn.html#af7033a4ea5ac45c0bbc136000fd2ccca">Arn::makePath</a></div><div class="ttdeci">QString makePath(const QString &amp;parentPath, const QString &amp;itemName)</div><div class="ttdoc">Make a path from a parent and an item name. </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00124">Arn.cpp:124</a></div></div>
@@ -386,7 +393,7 @@ $(document).ready(function(){initNavTree('_arn_8cpp_source.html','');});
 <div class="ttc" id="namespace_arn_html_a0edc95f31e49e60899a7be23888c556c"><div class="ttname"><a href="namespace_arn.html#a0edc95f31e49e60899a7be23888c556c">Arn::itemName</a></div><div class="ttdeci">QString itemName(const QString &amp;path)</div><div class="ttdoc">The last part of a path </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00086">Arn.cpp:86</a></div></div>
 <div class="ttc" id="namespace_arn_html_a98e3dfc1fa4eea1a945d25b2ebd5616a"><div class="ttname"><a href="namespace_arn.html#a98e3dfc1fa4eea1a945d25b2ebd5616a">Arn::makeHostWithInfo</a></div><div class="ttdeci">QString makeHostWithInfo(const QString &amp;host, const QString &amp;info)</div><div class="ttdoc">Make a combined host and info string, i.e. HostWithInfo </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00231">Arn.cpp:231</a></div></div>
 <div class="ttc" id="namespace_arn_html_a3a3f57fa61cdb0b8408df49466e1ca87"><div class="ttname"><a href="namespace_arn.html#a3a3f57fa61cdb0b8408df49466e1ca87">Arn::isFolderPath</a></div><div class="ttdeci">bool isFolderPath(const QString &amp;path)</div><div class="ttdoc">Test if path is a folder path </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00206">Arn.cpp:206</a></div></div>
-<div class="ttc" id="struct_arn_1_1_name_f_html_a40105098065a4f646ba1a82ef4397e40a449768cd68241ca0054fb02877de2973"><div class="ttname"><a href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a449768cd68241ca0054fb02877de2973">Arn::NameF::NoFolderMark</a></div><div class="ttdoc">Only on discrete names, no effect on path. "test/" ==> "test". </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00172">Arn.hpp:172</a></div></div>
+<div class="ttc" id="struct_arn_1_1_name_f_html_a40105098065a4f646ba1a82ef4397e40a449768cd68241ca0054fb02877de2973"><div class="ttname"><a href="struct_arn_1_1_name_f.html#a40105098065a4f646ba1a82ef4397e40a449768cd68241ca0054fb02877de2973">Arn::NameF::NoFolderMark</a></div><div class="ttdoc">Only on discrete names, no effect on path. "test/" ==> "test". </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8hpp_source.html#l00187">Arn.hpp:187</a></div></div>
 <div class="ttc" id="namespace_arn_html_a9a27c8dda4cc88176c941cc53f6c2426"><div class="ttname"><a href="namespace_arn.html#a9a27c8dda4cc88176c941cc53f6c2426">Arn::isProviderPath</a></div><div class="ttdeci">bool isProviderPath(const QString &amp;path)</div><div class="ttdoc">Test if path is a provider path </div><div class="ttdef"><b>Definition:</b> <a href="_arn_8cpp_source.html#l00212">Arn.cpp:212</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -394,7 +401,7 @@ $(document).ready(function(){initNavTree('_arn_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_8cpp.html">Arn.cpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

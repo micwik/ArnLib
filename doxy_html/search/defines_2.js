@@ -10,5 +10,7 @@ var searchData=
   ['mq_5fdeclare_5foperators_5ffor_5fflags',['MQ_DECLARE_OPERATORS_FOR_FLAGS',['../_m_q_flags_8hpp.html#af4d3fe6f006e16396db71a8272a6c5fd',1,'MQFlags.hpp']]],
   ['mq_5fnstxt_5ffill_5fmissing',['MQ_NSTXT_FILL_MISSING',['../_m_q_flags_8hpp.html#a69cb8989b418c91b2a376c9013bfe64b',1,'MQFlags.hpp']]],
   ['mq_5fnstxt_5ffill_5fmissing_5ffrom',['MQ_NSTXT_FILL_MISSING_FROM',['../_m_q_flags_8hpp.html#abf65bdc64b7ebfaa7aa27d2bb0be22f5',1,'MQFlags.hpp']]],
-  ['mq_5fpublic_5faccess',['MQ_PUBLIC_ACCESS',['../_arn_sapi_8hpp.html#a03570a0d36179506ffe4ce9fb442218a',1,'ArnSapi.hpp']]]
+  ['mq_5fpublic_5faccess',['MQ_PUBLIC_ACCESS',['../_arn_sapi_8hpp.html#a03570a0d36179506ffe4ce9fb442218a',1,'ArnSapi.hpp']]],
+  ['mutex_5fcall',['MUTEX_CALL',['../_arn_adapt_item_8cpp.html#a788b2f6cc7ebede093238dc676d79a55',1,'ArnAdaptItem.cpp']]],
+  ['mutex_5fcall_5fret',['MUTEX_CALL_RET',['../_arn_adapt_item_8cpp.html#a3e66177c483732f03827a954493f9fb8',1,'ArnAdaptItem.cpp']]]
 ];

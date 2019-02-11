@@ -1,7 +1,8 @@
 var searchData=
 [
   ['label',['label',['../class_m_q_generic_argument.html#ab154951c5fae01b24da026d9be3a1869',1,'MQGenericArgument']]],
-  ['linkid',['linkId',['../class_arn_basic_item.html#a95a2428ca001838052931748a29b8260',1,'ArnBasicItem::linkId()'],['../class_arn_ev_mode_change.html#a590a1a06c95b4e40ee5ae91c802dfb08',1,'ArnEvModeChange::linkId()']]],
+  ['linkdestroyedcallback',['linkDestroyedCallback',['../class_arn_adapt_item.html#ad0e8c2653787b38f3d6bfef42adbb50a',1,'ArnAdaptItem']]],
+  ['linkid',['linkId',['../class_arn_adapt_item.html#aeded3e4fb48ddacf5f789cdb1d538cbc',1,'ArnAdaptItem::linkId()'],['../class_arn_basic_item.html#a95a2428ca001838052931748a29b8260',1,'ArnBasicItem::linkId()'],['../class_arn_ev_mode_change.html#a590a1a06c95b4e40ee5ae91c802dfb08',1,'ArnEvModeChange::linkId()']]],
   ['listenaddress',['listenAddress',['../class_arn_server.html#a081c6ab91f52544f3fb67ef05b2077d3',1,'ArnServer']]],
   ['loadfromdirroot',['loadFromDirRoot',['../class_arn_m.html#a041c411febaaf56a1ebbb2af12262894',1,'ArnM']]],
   ['loadfromfile',['loadFromFile',['../class_arn_m.html#a9c091174f670765d2f64bfb388282eee',1,'ArnM']]],

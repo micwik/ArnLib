@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -211,6 +211,9 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 <li>setArchiveDir()
 : <a class="el" href="class_arn_persist.html#adb8096f25f52df71d910bfd8206caf8d">ArnPersist</a>
 </li>
+<li>setArnEventCallback()
+: <a class="el" href="class_arn_adapt_item.html#aa789f5e18e54472ce5b0e8b0d2cfffc2">ArnAdaptItem</a>
+</li>
 <li>setArnRootPath()
 : <a class="el" href="class_arn_qml.html#a54d563bf463fbc006c7ff805109dea91">ArnQml</a>
 </li>
@@ -218,13 +221,15 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="class_arn_client.html#aba0318e38f60035bc4c78e89b25a4c60">ArnClient</a>
 </li>
 <li>setAutoDestroy()
-: <a class="el" href="class_arn_basic_item.html#afdfd2838d4323d57ec112013ddc1bc6e">ArnBasicItem</a>
+: <a class="el" href="class_arn_adapt_item.html#a78440243b78efeffe8ab7e0b89a54517">ArnAdaptItem</a>
+, <a class="el" href="class_arn_basic_item.html#afdfd2838d4323d57ec112013ddc1bc6e">ArnBasicItem</a>
 , <a class="el" href="class_arn_item.html#a984f218824f9f782dd5aa9e03519e64a">ArnItem</a>
 , <a class="el" href="class_arn_item_valve.html#aca161491a438b003a4bcdc632b819478">ArnItemValve</a>
 , <a class="el" href="class_arn_pipe.html#a9b5b3129c4069f3b8ed15b89b4c348c6">ArnPipe</a>
 </li>
 <li>setBiDirMode()
-: <a class="el" href="class_arn_basic_item.html#a21869f499cfe5741b48c4b8eaa54671f">ArnBasicItem</a>
+: <a class="el" href="class_arn_adapt_item.html#a372dad31b9cfd2e2a84bb97adfcf04fb">ArnAdaptItem</a>
+, <a class="el" href="class_arn_basic_item.html#a21869f499cfe5741b48c4b8eaa54671f">ArnBasicItem</a>
 , <a class="el" href="class_arn_item.html#a105bc4a01bf08fa4cabca4685baafb7e">ArnItem</a>
 </li>
 <li>setBlockEcho()
@@ -232,6 +237,9 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 </li>
 <li>setBytes()
 : <a class="el" href="class_arn_interface.html#ae97da7fe97177db4073c68c780da5425">ArnInterface</a>
+</li>
+<li>setChangedCallback()
+: <a class="el" href="class_arn_adapt_item.html#a4df3769e5e76e62bc7654355cd32654b">ArnAdaptItem</a>
 </li>
 <li>setCheckSeq()
 : <a class="el" href="class_arn_pipe.html#a77316d8b09159df3af9a3c9ff3a2d3f6">ArnPipe</a>
@@ -290,7 +298,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="class_arn_script_jobs.html#a45424c4523c5930d216f66919a634f00">ArnScriptJobs</a>
 </li>
 <li>setFilter()
-: <a class="el" href="class_arn_discover_browser.html#a53509035d7b3d65fc894f75c955efbbd">ArnDiscoverBrowser</a>
+: <a class="el" href="class_arn_discover_browser.html#a477c2f011cd5bc6dc95faf2ace0ff257">ArnDiscoverBrowser</a>
 </li>
 <li>setForceQtDnsLookup()
 : <a class="el" href="class_arn_zero_conf_lookup.html#ae1ef89825cab48eeca9b639effdffdf8">ArnZeroConfLookup</a>
@@ -313,7 +321,8 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 , <a class="el" href="class_arn_zero_conf_resolve.html#ae758c0a3cd9e33628ea040cb0a179e75">ArnZeroConfResolve</a>
 </li>
 <li>setIgnoreSameValue()
-: <a class="el" href="class_arn_basic_item.html#a06076305992429a4a9e4e01e1cbec87d">ArnBasicItem</a>
+: <a class="el" href="class_arn_adapt_item.html#a9d4ade85bddc0ddaa3b058f24b98cd42">ArnAdaptItem</a>
+, <a class="el" href="class_arn_basic_item.html#a06076305992429a4a9e4e01e1cbec87d">ArnBasicItem</a>
 , <a class="el" href="class_arn_item.html#ae52fa4597f43fe38ccc36d7f3bbd32d3">ArnItem</a>
 </li>
 <li>setIncludeSender()
@@ -328,8 +337,12 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 <li>setIntNum()
 : <a class="el" href="class_arn_interface.html#a886ab5b764475b6cef1947b2ac0a9b89">ArnInterface</a>
 </li>
+<li>setLinkDestroyedCallback()
+: <a class="el" href="class_arn_adapt_item.html#a5d1db4bd1ff95a4939a364f3132778a1">ArnAdaptItem</a>
+</li>
 <li>setMaster()
-: <a class="el" href="class_arn_basic_item.html#a6f2441525372a0116b7f8bf61725cd09">ArnBasicItem</a>
+: <a class="el" href="class_arn_adapt_item.html#ad204d657bdfbfbb37d3c275bfea221c7">ArnAdaptItem</a>
+, <a class="el" href="class_arn_basic_item.html#a6f2441525372a0116b7f8bf61725cd09">ArnBasicItem</a>
 , <a class="el" href="class_arn_item.html#a22de5dfc89c02245370d5c0a89cee3f6">ArnItem</a>
 , <a class="el" href="class_arn_item_valve.html#a60631ad9b3f6fc63898fc7055c89b79f">ArnItemValve</a>
 , <a class="el" href="class_arn_pipe.html#a0237b478a1c0d451d57ab51428611f8e">ArnPipe</a>
@@ -375,7 +388,8 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="class_arn_rpc.html#ae3f5ce01e8f0bc61bb04a4aa9d840b40">ArnRpc</a>
 </li>
 <li>setPipeMode()
-: <a class="el" href="class_arn_basic_item.html#a52fa09d22fa367de9bd03f4e34d60264">ArnBasicItem</a>
+: <a class="el" href="class_arn_adapt_item.html#a8252de91ae5bb860514e349c1e26bccf">ArnAdaptItem</a>
+, <a class="el" href="class_arn_basic_item.html#a52fa09d22fa367de9bd03f4e34d60264">ArnBasicItem</a>
 , <a class="el" href="class_arn_item.html#ad58e3879bda6cd859a561658d3fc34ad">ArnItem</a>
 </li>
 <li>setPort()
@@ -388,7 +402,8 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="class_arn_client.html#a7c4e581d378d14f431b4ce3a78f876e7">ArnClient</a>
 </li>
 <li>setReference()
-: <a class="el" href="class_arn_basic_item.html#ac179135f4c4751e76d36d96422d76482">ArnBasicItem</a>
+: <a class="el" href="class_arn_adapt_item.html#ac5e704225e32ac67d4bb72f4d7b21719">ArnAdaptItem</a>
+, <a class="el" href="class_arn_basic_item.html#ac179135f4c4751e76d36d96422d76482">ArnBasicItem</a>
 , <a class="el" href="class_arn_monitor.html#a96ff8e729c7436ba906d8e19a136cf69">ArnMonitor</a>
 </li>
 <li>setResolver()
@@ -398,7 +413,8 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="class_arn_discover_connector.html#a1bafcd54487202a76cb10737d0133a52">ArnDiscoverConnector</a>
 </li>
 <li>setSaveMode()
-: <a class="el" href="class_arn_basic_item.html#aabe8f2062bd72aa70662e5aadcea94f9">ArnBasicItem</a>
+: <a class="el" href="class_arn_adapt_item.html#a0e89e94d17ea9c9197193ec2324abfb8">ArnAdaptItem</a>
+, <a class="el" href="class_arn_basic_item.html#aabe8f2062bd72aa70662e5aadcea94f9">ArnBasicItem</a>
 , <a class="el" href="class_arn_item.html#a3af7904009c42509ab35aedc222edee5">ArnItem</a>
 , <a class="el" href="class_arn_item_valve.html#a976787570afda3ce0e569dc4c89d4ec2">ArnItemValve</a>
 </li>
@@ -441,6 +457,9 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 <li>setSubTypes()
 : <a class="el" href="class_arn_zero_conf_register.html#a5296e9949e01277a89f66137c156d688">ArnZeroConfRegister</a>
 </li>
+<li>setSyncMode()
+: <a class="el" href="class_arn_client.html#a33ac43100792c358069c34a9ef0a918d">ArnClient</a>
+</li>
 <li>setTarget()
 : <a class="el" href="class_arn_event.html#a72f3715783802143ec316221578a4d5c">ArnEvent</a>
 , <a class="el" href="class_arn_item_valve.html#a663ab4185b688bbebd8ae232d8717e4d">ArnItemValve</a>
@@ -472,6 +491,11 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 <li>setTxtString()
 : <a class="el" href="class_arn_1_1_enum_txt.html#a8f0d4f39799d219e6de1481d00cb2ea9">Arn::EnumTxt</a>
 </li>
+<li>setUncrossed()
+: <a class="el" href="class_arn_adapt_item.html#a19561bda8a1b17b3cefe4a46e7cb87f4">ArnAdaptItem</a>
+, <a class="el" href="class_arn_basic_item.html#ac142904dbe9299771cd40fbe71a25673">ArnBasicItem</a>
+, <a class="el" href="class_arn_item.html#a3c15bad50954e05992fe35b5441540b7">ArnItem</a>
+</li>
 <li>setup()
 : <a class="el" href="class_arn_qml.html#ac287c892d2aab59bf62f34c9d9b83b52">ArnQml</a>
 </li>
@@ -488,11 +512,12 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="class_arn_script_job_factory.html#a9f486ed73998182fd8decfe8a917f9a2">ArnScriptJobFactory</a>
 </li>
 <li>setValue()
-: <a class="el" href="class_arn_basic_item.html#a24ca7722ab9e0fc44fbc5a9918073755">ArnBasicItem</a>
+: <a class="el" href="class_arn_adapt_item.html#acd6e050e58aeec478b9e964341150ff0">ArnAdaptItem</a>
+, <a class="el" href="class_arn_basic_item.html#aafba2432c8a0ad6b896078ce0604ae05">ArnBasicItem</a>
 , <a class="el" href="class_arn_interface.html#ab695665ed5fa1c51a5cb2e74432e462f">ArnInterface</a>
-, <a class="el" href="class_arn_item.html#adac29fabc8112521b4e1ea0bfc436d21">ArnItem</a>
+, <a class="el" href="class_arn_item.html#a2ae6183b047d6b93b6f7ac73162b9142">ArnItem</a>
 , <a class="el" href="class_arn_item_valve.html#a6ee2964d55ca5cb68fdbd2955a20d7e4">ArnItemValve</a>
-, <a class="el" href="class_arn_m.html#a863ec6e8e1ab9d5f4b132f362f69f653">ArnM</a>
+, <a class="el" href="class_arn_m.html#a4e4f6180c313feb75857c3c61b5f3387">ArnM</a>
 , <a class="el" href="class_arn_pipe.html#a7cbb18e76bd0d3b73fa78136c7e918ce">ArnPipe</a>
 </li>
 <li>setValueOverwrite()
@@ -589,7 +614,9 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="class_arn_item_valve.html#a8421fb6421cd6d42a6635afec244bc9a">ArnItemValve</a>
 </li>
 <li>syncMode()
-: <a class="el" href="class_arn_basic_item.html#a6fac502566f5817243a49e1e828276ff">ArnBasicItem</a>
+: <a class="el" href="class_arn_adapt_item.html#a841da26494dd2e9b89097fe75c2cefca">ArnAdaptItem</a>
+, <a class="el" href="class_arn_basic_item.html#a6fac502566f5817243a49e1e828276ff">ArnBasicItem</a>
+, <a class="el" href="class_arn_client.html#a03e3d38894f892ac274c9bc7362afcfb">ArnClient</a>
 , <a class="el" href="class_arn_item.html#a7b58a4bf40ef63b6b02c08bf14d79fd0">ArnItem</a>
 </li>
 </ul>
@@ -598,7 +625,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:32 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

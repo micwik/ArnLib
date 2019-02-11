@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/ArnXStringMap.cpp (3.0.0) Source File</title>
+<title>ArnLib: src/ArnXStringMap.cpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_arn_x_string_map_8cpp_source.html',''
 <div class="title">ArnXStringMap.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_x_string_map_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2016 Michael Wiklund.</span></div>
+<a href="_arn_x_string_map_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2019 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
@@ -280,7 +280,7 @@ $(document).ready(function(){initNavTree('_arn_x_string_map_8cpp_source.html',''
 <div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="class_arn_1_1_x_string_map.html#ac0962af8c2356aa5f8b95ddb514545b9">  169</a></span>&#160;<span class="keywordtype">int</span>  <a class="code" href="class_arn_1_1_x_string_map.html#ac0962af8c2356aa5f8b95ddb514545b9">XStringMap::maxEnumOf</a>( <span class="keyword">const</span> <span class="keywordtype">char</span>* keyPrefix)<span class="keyword">  const</span></div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordtype">int</span>  maxEnum = -1;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordtype">int</span>  keyPrefixLen = strlen( keyPrefix);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordtype">int</span>  keyPrefixLen = int( strlen( keyPrefix));</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordtype">bool</span> isOk;</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; _size; ++i) {</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        <span class="keywordflow">if</span> (_keyList.at(i).startsWith( keyPrefix)) {</div>
@@ -650,7 +650,7 @@ $(document).ready(function(){initNavTree('_arn_x_string_map_8cpp_source.html',''
 <div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;{</div>
 <div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    <span class="keywordflow">if</span> ((index &lt; 0) || (index &gt;= _size))  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;</div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = index; i &lt; _size; ++i) {</div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = index; i &lt; _size - 1; ++i) {</div>
 <div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;        _keyList[i].resize(0);     <span class="comment">// Avoid Heap reallocation</span></div>
 <div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        _valList[i].resize(0);</div>
 <div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;        _keyList[i] += _keyList.at(i + 1);</div>
@@ -807,7 +807,7 @@ $(document).ready(function(){initNavTree('_arn_x_string_map_8cpp_source.html',''
 <div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;</div>
 <div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;    uchar c;</div>
 <div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; srcSize; ++i) {</div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;        c = *srcP++;</div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;        c = uchar( *srcP++);</div>
 <div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;        <span class="keywordflow">switch</span> (c) {</div>
 <div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;        <span class="keywordflow">case</span> <span class="charliteral">&#39; &#39;</span>:</div>
 <div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;            *dstP++ = <span class="charliteral">&#39;_&#39;</span>;      <span class="comment">// The coded string must not contain any &#39; &#39;</span></div>
@@ -839,14 +839,14 @@ $(document).ready(function(){initNavTree('_arn_x_string_map_8cpp_source.html',''
 <div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;        <span class="keywordflow">default</span>:</div>
 <div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;            <span class="keywordflow">if</span> (c &lt; 32) {      <span class="comment">// 0 .. 31  Special control-char</span></div>
 <div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;                *dstP++ = <span class="charliteral">&#39;^&#39;</span>;</div>
-<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;                *dstP++ = <span class="charliteral">&#39;A&#39;</span> + c - 1;</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;                *dstP++ = char(<span class="charliteral">&#39;A&#39;</span> + c - 1);</div>
 <div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;            }</div>
 <div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;            <span class="keywordflow">else</span> {             <span class="comment">// Normal char (also UTF8 which is above 127)</span></div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;                *dstP++ = c;</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;                *dstP++ = char(c);</div>
 <div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;            }</div>
 <div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;        }</div>
 <div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;    }</div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    dst.resize( dstP - dstStart);   <span class="comment">// Set the real used size for coded string</span></div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    dst.resize( <span class="keywordtype">int</span>( dstP - dstStart));   <span class="comment">// Set the real used size for coded string</span></div>
 <div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;}</div>
 <div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;</div>
 <div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;</div>
@@ -863,7 +863,7 @@ $(document).ready(function(){initNavTree('_arn_x_string_map_8cpp_source.html',''
 <div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <span class="keywordtype">bool</span>  ctrlFlag   = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    uchar c;</div>
 <div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; srcSize; ++i) {</div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;        c = *srcP++;</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;        c = uchar( *srcP++);</div>
 <div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;        <span class="keywordflow">if</span> (escapeFlag) {</div>
 <div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;            escapeFlag = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;            <span class="keywordflow">switch</span> (c) {</div>
@@ -877,12 +877,12 @@ $(document).ready(function(){initNavTree('_arn_x_string_map_8cpp_source.html',''
 <div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;                *dstP++ = <span class="charliteral">&#39;\0&#39;</span>;</div>
 <div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;                <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;            <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;                *dstP++ = c;</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;                *dstP++ = char(c);</div>
 <div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;            }</div>
 <div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;        }</div>
 <div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ctrlFlag) {</div>
 <div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;            ctrlFlag = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;            *dstP++ = c - <span class="charliteral">&#39;A&#39;</span> + 1;      <span class="comment">// 0 .. 31  Special control-char</span></div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;            *dstP++ = char( c - <span class="charliteral">&#39;A&#39;</span> + 1);      <span class="comment">// 0 .. 31  Special control-char</span></div>
 <div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;        }</div>
 <div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;        <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;            <span class="keywordflow">switch</span> (c) {</div>
@@ -896,11 +896,11 @@ $(document).ready(function(){initNavTree('_arn_x_string_map_8cpp_source.html',''
 <div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;                ctrlFlag = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;                <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;            <span class="keywordflow">default</span>:        <span class="comment">// Normal char (also UTF8 which is above 127)</span></div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;                *dstP++ = c;</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;                *dstP++ = char(c);</div>
 <div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;            }</div>
 <div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;        }</div>
 <div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    }</div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    dst.resize( dstP - dstStart);   <span class="comment">// Set the real used size for decoded string</span></div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    dst.resize( <span class="keywordtype">int</span>( dstP - dstStart));   <span class="comment">// Set the real used size for decoded string</span></div>
 <div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;}</div>
 <div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;</div>
 <div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;</div>
@@ -974,7 +974,7 @@ $(document).ready(function(){initNavTree('_arn_x_string_map_8cpp_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_x_string_map_8cpp.html">ArnXStringMap.cpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

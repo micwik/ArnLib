@@ -2,36 +2,42 @@ var hierarchy =
 [
     [ "Arn::_InitEnumTxt", "struct_arn_1_1___init_enum_txt.html", null ],
     [ "Arn::Allow", "class_arn_1_1_allow.html", null ],
-    [ "ArnBasicItem", "class_arn_basic_item.html", [
-      [ "ArnItemB", "class_arn_item_b.html", [
-        [ "ArnItem", "class_arn_item.html", [
-          [ "ArnItemQml", "class_arn_item_qml.html", null ]
-        ] ],
-        [ "ArnItemValve", "class_arn_item_valve.html", null ],
-        [ "ArnMonitor", "class_arn_monitor.html", [
-          [ "ArnMonitorQml", "class_arn_monitor_qml.html", null ]
-        ] ],
-        [ "ArnPipe", "class_arn_pipe.html", null ]
-      ] ]
-    ] ],
     [ "ArnClientConnectStat", "class_arn_client_connect_stat.html", null ],
     [ "ArnClientReg", "class_arn_client_reg.html", null ],
+    [ "ArnCoreItem", "class_arn_core_item.html", [
+      [ "ArnBasicItem", "class_arn_basic_item.html", [
+        [ "ArnAdaptItem", "class_arn_adapt_item.html", null ],
+        [ "ArnItemB", "class_arn_item_b.html", [
+          [ "ArnItem", "class_arn_item.html", [
+            [ "ArnItemQml", "class_arn_item_qml.html", null ]
+          ] ],
+          [ "ArnItemValve", "class_arn_item_valve.html", null ],
+          [ "ArnMonitor", "class_arn_monitor.html", [
+            [ "ArnMonitorQml", "class_arn_monitor_qml.html", null ]
+          ] ],
+          [ "ArnPipe", "class_arn_pipe.html", null ]
+        ] ]
+      ] ]
+    ] ],
     [ "ArnDiscoverInfo", "class_arn_discover_info.html", null ],
     [ "ArnError", "class_arn_error.html", null ],
     [ "ArnEventIdx", "class_arn_event_idx.html", null ],
     [ "ArnLinkValue", "struct_arn_link_value.html", null ],
     [ "ArnMonEventType", "class_arn_mon_event_type.html", null ],
+    [ "ArnNullptr", "struct_arn_nullptr.html", null ],
     [ "ArnRpcMode", "class_arn_rpc_mode.html", null ],
     [ "ArnScriptJobB", null, [
       [ "ArnScriptJob", "class_arn_script_job.html", null ]
     ] ],
     [ "ArnScriptJobFactory", "class_arn_script_job_factory.html", null ],
     [ "ArnServerRemoteSessionKillMode", "class_arn_server_remote_session_kill_mode.html", null ],
+    [ "Arn::ClientSyncMode", "struct_arn_1_1_client_sync_mode.html", null ],
     [ "Arn::Coding", "struct_arn_1_1_coding.html", null ],
     [ "Arn::DataType", "class_arn_1_1_data_type.html", null ],
     [ "Arn::EnumTxt", "class_arn_1_1_enum_txt.html", null ],
     [ "ArnZeroConf::Error", "struct_arn_zero_conf_1_1_error.html", null ],
     [ "Arn::ExportCode", "class_arn_1_1_export_code.html", null ],
+    [ "ArnCoreItem::Heritage", "struct_arn_core_item_1_1_heritage.html", null ],
     [ "ArnClient::HostAddrPort", "struct_arn_client_1_1_host_addr_port.html", null ],
     [ "Arn::InfoType", "struct_arn_1_1_info_type.html", null ],
     [ "ArnRpc::Invoke", "struct_arn_rpc_1_1_invoke.html", null ],
@@ -103,9 +109,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "Arn::SameValue", "struct_arn_1_1_same_value.html", null ],
+    [ "ArnDiscoverAdvertise::State", "struct_arn_discover_advertise_1_1_state.html", null ],
     [ "ArnDiscoverInfo::State", "struct_arn_discover_info_1_1_state.html", null ],
     [ "ArnZeroConf::State", "struct_arn_zero_conf_1_1_state.html", null ],
-    [ "ArnDiscoverAdvertise::State", "struct_arn_discover_advertise_1_1_state.html", null ],
     [ "ArnError::StdCode", "struct_arn_error_1_1_std_code.html", null ],
     [ "ArnItemValve::SwitchMode", "struct_arn_item_valve_1_1_switch_mode.html", null ],
     [ "ArnScriptJobs::Type", "struct_arn_script_jobs_1_1_type.html", null ],

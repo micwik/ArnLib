@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>ArnLib: src/ArnLib.cpp (3.0.0) Source File</title>
+<title>ArnLib: src/ArnLib.cpp (3.1.0) Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">ArnLib
-   &#160;<span id="projectnumber">3.0.x</span>
+   &#160;<span id="projectnumber">3.1.x</span>
    </div>
    <div id="projectbrief">Active Registry Network</div>
   </td>
@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('_arn_lib_8cpp_source.html','');});
 <div class="title">ArnLib.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_arn_lib_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2016 Michael Wiklund.</span></div>
+<a href="_arn_lib_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright (C) 2010-2019 Michael Wiklund.</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// All rights reserved.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Contact: arnlib@wiklunden.se</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//</span></div>
@@ -160,18 +160,20 @@ $(document).ready(function(){initNavTree('_arn_lib_8cpp_source.html','');});
 <div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">   49</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">debugZeroConf</a>    = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespace_arn.html#a93deb2830ba06a3fe371c25d07789c99">   50</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a93deb2830ba06a3fe371c25d07789c99">debugMDNS</a>        = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="namespace_arn.html#a6fb271efbd6458b8ec659098deced870">   51</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a6fb271efbd6458b8ec659098deced870">warningMDNS</a>      = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">   53</a></span>&#160;<span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">resourceArnLib</a>  = <span class="stringliteral">&quot;:/ArnLib/&quot;</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">   54</a></span>&#160;<span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">resourceArnRoot</a> = <span class="stringliteral">&quot;:/ArnLib/ArnRoot/&quot;</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}  <span class="comment">// Arn::</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespace_arn.html#a81684bfa914686118c20b97fe13acd11">   52</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespace_arn.html#a81684bfa914686118c20b97fe13acd11">offHeartbeat</a>     = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">   54</a></span>&#160;<span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">resourceArnLib</a>  = <span class="stringliteral">&quot;:/ArnLib/&quot;</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">   55</a></span>&#160;<span class="keyword">const</span> QString  <a class="code" href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">resourceArnRoot</a> = <span class="stringliteral">&quot;:/ArnLib/ArnRoot/&quot;</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}  <span class="comment">// Arn::</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
 <div class="ttc" id="namespace_arn_html_a179aa23895e009295ea72b1bd7939e65"><div class="ttname"><a href="namespace_arn.html#a179aa23895e009295ea72b1bd7939e65">Arn::debugThreading</a></div><div class="ttdeci">bool debugThreading</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00038">ArnLib.cpp:38</a></div></div>
 <div class="ttc" id="namespace_arn_html_a6fb271efbd6458b8ec659098deced870"><div class="ttname"><a href="namespace_arn.html#a6fb271efbd6458b8ec659098deced870">Arn::warningMDNS</a></div><div class="ttdeci">bool warningMDNS</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00051">ArnLib.cpp:51</a></div></div>
 <div class="ttc" id="namespace_arn_html_a49a3bb4087a4000e9cd479b4e671e600"><div class="ttname"><a href="namespace_arn.html#a49a3bb4087a4000e9cd479b4e671e600">Arn::debugRecInOut</a></div><div class="ttdeci">bool debugRecInOut</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00041">ArnLib.cpp:41</a></div></div>
 <div class="ttc" id="namespace_arn_html_ace9f4662446429dba2c8a72b4af70aa2"><div class="ttname"><a href="namespace_arn.html#ace9f4662446429dba2c8a72b4af70aa2">Arn::debugDepend</a></div><div class="ttdeci">bool debugDepend</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00046">ArnLib.cpp:46</a></div></div>
+<div class="ttc" id="namespace_arn_html_a81684bfa914686118c20b97fe13acd11"><div class="ttname"><a href="namespace_arn.html#a81684bfa914686118c20b97fe13acd11">Arn::offHeartbeat</a></div><div class="ttdeci">bool offHeartbeat</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00052">ArnLib.cpp:52</a></div></div>
 <div class="ttc" id="namespace_arn_html_a4b986939b2f12b23db9cddac286c2f0c"><div class="ttname"><a href="namespace_arn.html#a4b986939b2f12b23db9cddac286c2f0c">Arn::debugDiscover</a></div><div class="ttdeci">bool debugDiscover</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00048">ArnLib.cpp:48</a></div></div>
-<div class="ttc" id="namespace_arn_html_ad43f257b6be2350b7b9a797212fa275a"><div class="ttname"><a href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">Arn::resourceArnRoot</a></div><div class="ttdeci">const QString resourceArnRoot</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00054">ArnLib.cpp:54</a></div></div>
+<div class="ttc" id="namespace_arn_html_ad43f257b6be2350b7b9a797212fa275a"><div class="ttname"><a href="namespace_arn.html#ad43f257b6be2350b7b9a797212fa275a">Arn::resourceArnRoot</a></div><div class="ttdeci">const QString resourceArnRoot</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00055">ArnLib.cpp:55</a></div></div>
 <div class="ttc" id="namespace_arn_html_ac5501392c42d64da7a65509a14db526f"><div class="ttname"><a href="namespace_arn.html#ac5501392c42d64da7a65509a14db526f">Arn::debugZeroConf</a></div><div class="ttdeci">bool debugZeroConf</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00049">ArnLib.cpp:49</a></div></div>
 <div class="ttc" id="namespace_arn_html_aeffb8179d5c1bad4d72a1af04fa08ad2"><div class="ttname"><a href="namespace_arn.html#aeffb8179d5c1bad4d72a1af04fa08ad2">Arn::debugLinkDestroy</a></div><div class="ttdeci">bool debugLinkDestroy</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00040">ArnLib.cpp:40</a></div></div>
 <div class="ttc" id="namespace_arn_html_a6bad554b0caef51dece7d7881fa41c7c"><div class="ttname"><a href="namespace_arn.html#a6bad554b0caef51dece7d7881fa41c7c">Arn::debugQmlNetwork</a></div><div class="ttdeci">bool debugQmlNetwork</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00047">ArnLib.cpp:47</a></div></div>
@@ -183,7 +185,7 @@ $(document).ready(function(){initNavTree('_arn_lib_8cpp_source.html','');});
 <div class="ttc" id="_arn_lib_8hpp_html"><div class="ttname"><a href="_arn_lib_8hpp.html">ArnLib.hpp</a></div></div>
 <div class="ttc" id="namespace_arn_html_a2833fd48b34eafa5c2e082941d5af1d1"><div class="ttname"><a href="namespace_arn.html#a2833fd48b34eafa5c2e082941d5af1d1">Arn::debugMonitor</a></div><div class="ttdeci">bool debugMonitor</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00043">ArnLib.cpp:43</a></div></div>
 <div class="ttc" id="namespace_arn_html_a71d17f04b08b1260cf1ce08f71bf3ebc"><div class="ttname"><a href="namespace_arn.html#a71d17f04b08b1260cf1ce08f71bf3ebc">Arn::debugMonitorTest</a></div><div class="ttdeci">bool debugMonitorTest</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00044">ArnLib.cpp:44</a></div></div>
-<div class="ttc" id="namespace_arn_html_a02e5234ef8eb24868c55843b282c6a44"><div class="ttname"><a href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">Arn::resourceArnLib</a></div><div class="ttdeci">const QString resourceArnLib</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00053">ArnLib.cpp:53</a></div></div>
+<div class="ttc" id="namespace_arn_html_a02e5234ef8eb24868c55843b282c6a44"><div class="ttname"><a href="namespace_arn.html#a02e5234ef8eb24868c55843b282c6a44">Arn::resourceArnLib</a></div><div class="ttdeci">const QString resourceArnLib</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00054">ArnLib.cpp:54</a></div></div>
 <div class="ttc" id="namespace_arn_html_a385273bd359f50b44ab5fec0e9a69225"><div class="ttname"><a href="namespace_arn.html#a385273bd359f50b44ab5fec0e9a69225">Arn::debugLinkRef</a></div><div class="ttdeci">bool debugLinkRef</div><div class="ttdef"><b>Definition:</b> <a href="_arn_lib_8cpp_source.html#l00039">ArnLib.cpp:39</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -191,7 +193,7 @@ $(document).ready(function(){initNavTree('_arn_lib_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="_arn_lib_8cpp.html">ArnLib.cpp</a></li>
-    <li class="footer">Generated on Wed May 11 2016 22:22:54 for ArnLib by
+    <li class="footer">Generated on Mon Feb 11 2019 22:33:31 for ArnLib by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.8 </li>
   </ul>

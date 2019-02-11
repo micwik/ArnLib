@@ -2,6 +2,7 @@ var namespace_arn =
 [
     [ "_InitEnumTxt", "struct_arn_1_1___init_enum_txt.html", "struct_arn_1_1___init_enum_txt" ],
     [ "Allow", "class_arn_1_1_allow.html", "class_arn_1_1_allow" ],
+    [ "ClientSyncMode", "struct_arn_1_1_client_sync_mode.html", "struct_arn_1_1_client_sync_mode" ],
     [ "Coding", "struct_arn_1_1_coding.html", "struct_arn_1_1_coding" ],
     [ "DataType", "class_arn_1_1_data_type.html", "class_arn_1_1_data_type" ],
     [ "EnumTxt", "class_arn_1_1_enum_txt.html", "class_arn_1_1_enum_txt" ],
