@@ -284,7 +284,7 @@ void  ArnDiscoverConnector::postSetupClient()
     ArnItem*  arnConnectStatus = new ArnItem( path + "value", this);
     *arnConnectStatus = d->_client->connectStatus();
     connect( d->_client, SIGNAL(connectionStatusChanged(int,int)), arnConnectStatus, SLOT(setValue(int)));
-    ArnM::setValue( path + "set", ArnClient::ConnectStat::txt().getBitSet( ArnClient::ConnectStat::NsHuman));
+    ArnM::setValue( path + "set", ArnClient::ConnectStat::txt().getEnumSet( ArnClient::ConnectStat::NsHuman));
 
     path = connectIdPath + "Request/";
     ArnItem*  arnConnectReqPV = new ArnItem( path + "value!", this);
