@@ -3,7 +3,7 @@ isEmpty(ARNLIB_PRI_INCLUDED) {
 ARNLIB_PRI_INCLUDED = 1
 
 # Don't forget to change in Doxygen config
-ARNLIBVER = 3.1.0
+ARNLIBVER = 3.1.1
 
 DEFINES += ARNLIBVER=\\\"$${ARNLIBVER}\\\"
 
