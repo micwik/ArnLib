@@ -36,6 +36,7 @@
 #include "ArnInc/ArnClient.hpp"
 #include "ArnInc/ArnMonEvent.hpp"
 #include "ArnInc/ArnEvent.hpp"
+#include "ArnInc/Arn.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include <QTcpSocket>
 #include <QString>
@@ -632,7 +633,7 @@ void  ArnSync::doCommands()
 void  ArnSync::startLogin()
 {
     //// Client side
-    _loginSalt1 = uint( qrand());
+    _loginSalt1 = Arn::rand();
     XStringMap  xsm;
     xsm.addNum("demand", _isDemandLogin).addNum("salt1", _loginSalt1);
     sendLogin( 0, xsm);
@@ -670,7 +671,7 @@ void  ArnSync::doLoginSeq0End()
     //// Server side
     _loginDelayTimer.stop();
 
-    _loginSalt2 = uint( qrand());
+    _loginSalt2 = Arn::rand();
     XStringMap  xsm;
     xsm.add("demand", QByteArray::number( _isDemandLogin));
     xsm.add("salt2", QByteArray::number( _loginSalt2));

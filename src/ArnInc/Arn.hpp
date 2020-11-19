@@ -401,6 +401,8 @@ QString  hostFromHostWithInfo( const QString& hostWithInfo);
 
 bool  isNullPtr( const void* ptr);
 
+uint  rand();
+
 #ifndef DOXYGEN_SKIP
 QString  convertBaseName( const QString& name, Arn::NameF nameF);
 #endif

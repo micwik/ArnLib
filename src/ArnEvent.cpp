@@ -41,6 +41,7 @@ ArnEvent::ArnEvent( QEvent::Type type)
     , _targetNextPending(0)
     , _targetPendingChain(0)
 {
+    Q_UNUSED(_spare)
 }
 
 

@@ -87,6 +87,7 @@ public:
 private:
     ArnLinkHandle&  operator=( const ArnLinkHandle&);  // Protect from usage
     void  init();
+    static const ArnLinkHandle*  nullPtr();
 
     Flags  _flags;
     Codes  _codes;

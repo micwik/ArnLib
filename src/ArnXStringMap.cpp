@@ -606,15 +606,15 @@ QStringList  XStringMap::values( const char* keyPrefix)  const
 }
 
 
-QVariantMap XStringMap::toVariantMap() const
+MQVariantMap XStringMap::toVariantMap() const
 {
-    QVariantMap  retMap;
+    MQVariantMap  retMap;
 
     for (int i = 0; i < _size; ++i) {
         const QByteArray&  key = _keyList.at(i);
         const QByteArray&  value = _valList.at(i);
-        retMap.insertMulti( QString::fromUtf8( key.constData(), key.size()),
-                            QVariant( value));
+        retMap.insert( QString::fromUtf8( key.constData(), key.size()),
+                       QVariant( value));
     }
     return retMap;
 }

@@ -36,7 +36,7 @@
 
 class ArnClient;
 class QTimer;
-class QTime;
+class QElapsedTimer;
 
 
 class ArnDiscoverConnectorPrivate
@@ -55,7 +55,7 @@ private:
     int  _discoverHostPrio;
     int  _resolveRefreshTimeout;
     QObject*  _directHosts;
-    QTime*  _resolveRefreshTime;
+    QElapsedTimer*  _resolveRefreshTime;
     bool  _resolveRefreshBlocked;
     bool  _isResolved;
     bool  _externalClientConnect;

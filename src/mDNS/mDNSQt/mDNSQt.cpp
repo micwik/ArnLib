@@ -42,6 +42,7 @@
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
 
 #include "mDNS/ArnMDns.hpp"
+#include "../../ArnInc/Arn.hpp"
 #include "../../ArnInc/ArnLib.hpp"
 #include <QUdpSocket>
 #include <QNetworkInterface>
@@ -679,7 +680,10 @@ mDNSexport mStatus  mDNSPlatformInit( mDNS *const m)
     int err = 0;
     Q_ASSERT(m);
 
+#if QT_VERSION >= 0x050a00
+#else
     qsrand( uint(QDateTime::currentMSecsSinceEpoch()));
+#endif
 
     if (mDNSPlatformInit_CanReceiveUnicast())
         m->CanReceiveUnicastOn5353 = mDNStrue;
@@ -938,7 +942,7 @@ mDNSexport void mDNSPlatformWriteLogMsg(const char *ident, const char *buffer, m
 
 mDNSexport mDNSu32  mDNSPlatformRandomNumber(void)
 {
-    return mDNSu32(qrand());
+    return mDNSu32( Arn::rand());
 }
 
 }  // extern "C"

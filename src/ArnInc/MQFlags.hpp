@@ -51,7 +51,7 @@ namespace Arn {
 class XStringMap;
 }
 
-class QMetaObject;
+struct QMetaObject;
 
 
 namespace Arn {
@@ -356,7 +356,7 @@ private:
 #define MQ_DECLARE_FLAGS( FEStruct) \
     Q_DECLARE_FLAGS(F, E) \
     F  f; \
-    inline FEStruct(F v_ = F(0)) : f( v_)  {setup(0);} \
+    inline FEStruct(F v_ = F(QFlag(0))) : f( v_)  {setup(0);} \
     inline FEStruct(E e_) : f( e_)  {setup(0);} \
     inline static E  flagIf( bool test, E e)  {return test ? e : E(0);} \
     inline bool  is(E e)  const {return f.testFlag(e);} \

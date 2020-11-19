@@ -34,7 +34,7 @@
 #include "ArnInc/ArnZeroConf.hpp"
 #include "ArnInc/ArnClient.hpp"
 #include "ArnInc/ArnLib.hpp"
-#include <QTimer>
+#include <QElapsedTimer>
 #include <QTime>
 #include <QMetaObject>
 
@@ -123,7 +123,7 @@ void  ArnDiscoverConnector::setResolver( ArnDiscoverResolver* resolver)
     if (!resolver)  return;  // No use of resolver
 
     if (!d->_resolveRefreshTime)  // first time
-        d->_resolveRefreshTime = new QTime;
+        d->_resolveRefreshTime = new QElapsedTimer;
 
     d->_resolver = resolver;
     d->_resolver->setParent( this);

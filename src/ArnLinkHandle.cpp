@@ -88,7 +88,13 @@ ArnLinkHandle::~ArnLinkHandle()
 
 const ArnLinkHandle&  ArnLinkHandle::null()
 {
-    return *static_cast<ArnLinkHandle*>(0);
+    return *nullPtr();
+}
+
+
+const ArnLinkHandle* ArnLinkHandle::nullPtr()
+{
+    return static_cast<ArnLinkHandle*>(0);
 }
 
 

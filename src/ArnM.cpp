@@ -146,7 +146,10 @@ ArnM::ArnM()
     _mainThread             = QThread::currentThread();
     _root                   = new ArnLink( 0, "", Arn::LinkFlags::Folder);
 
-    qsrand( QDateTime::currentDateTimeUtc().toTime_t());
+#if QT_VERSION >= 0x050a00
+#else
+    qsrand( uint(QDateTime::currentMSecsSinceEpoch()));
+#endif
 
     qRegisterMetaType<ArnThreadCom*>();
     qRegisterMetaType<ArnLinkHandle>("ArnLinkHandle");
@@ -606,7 +609,7 @@ ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, Arn::Object
     }
 
     ArnLink*  currentLink = root();
-    QStringList  pathlist = pathNorm.split("/", QString::KeepEmptyParts);
+    QStringList  pathlist = pathNorm.split("/");
     QString  growPath = "/";
     int  pathListSize = pathlist.size();
 

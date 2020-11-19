@@ -50,8 +50,6 @@
 
 using Arn::XStringMap;
 
-const int  arnDbSaveVer = 200;
-
 
 ArnItemPersist::ArnItemPersist( ArnPersist* arnPersist) :
     ArnItem( arnPersist)

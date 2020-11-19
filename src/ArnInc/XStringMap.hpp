@@ -50,6 +50,8 @@
 
 #define ARNXSTRINGMAP_VER   "3.0"
 
+typedef QMultiMap<QString,QVariant> MQVariantMap;
+
 namespace Arn {
 
 //! Container class with string representation for serialized data.
@@ -164,7 +166,7 @@ public:
     void  setEmptyKeysToValue();
     QStringList  keys()  const;
     QStringList  values( const char* keyPrefix = 0)  const;
-    QVariantMap  toVariantMap()  const;
+    MQVariantMap  toVariantMap()  const;
 
     static void  stringCode( QByteArray& dst, const QByteArray& src);
     static void  stringDecode( QByteArray& dst, const QByteArray& src);

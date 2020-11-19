@@ -34,6 +34,10 @@
 #include <QRegExp>
 #include <QUuid>
 #include <QStringList>
+#if QT_VERSION >= 0x050a00
+  #include <QRandomGenerator>
+#endif
+
 
 
 namespace Arn {
@@ -156,7 +160,7 @@ QString  convertPath( const QString& path, Arn::NameF nameF)
     if (isFolder && !pathNorm.isEmpty())
         pathNorm.resize( pathNorm.size() - 1);  // Remove '/' at end  (Also root become "")
 
-    QStringList  linkNames = pathNorm.split("/", QString::KeepEmptyParts);
+    QStringList  linkNames = pathNorm.split("/");
     bool needSeparator = false;
 
     for (int i = 0; i < linkNames.size(); i++) {
@@ -249,6 +253,20 @@ QString  hostFromHostWithInfo( const QString& hostWithInfo)
 bool  isNullPtr( const void* ptr)
 {
     return ptr == arnNullptr;
+}
+
+
+uint rand()
+{
+#if QT_VERSION >= 0x050a00
+    if (sizeof(uint) >= sizeof(quint64))
+        return  QRandomGenerator::global()->generate64();
+    else
+        return  QRandomGenerator::global()->generate();
+#else
+    return qrand();
+#endif
+
 }
 
 }  // Arn::
