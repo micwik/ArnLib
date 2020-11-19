@@ -230,7 +230,7 @@ Arn::ObjectMode  ArnAdaptItem::getMode()  const
 {
     Q_D(const ArnAdaptItem);
 
-    MUTEX_CALL( Arn::ObjectMode r = getMode())
+    MUTEX_CALL( Arn::ObjectMode r = ArnBasicItem::getMode())
     return r;
 }
 
@@ -455,7 +455,7 @@ ArnAdaptItem&  ArnAdaptItem::operator=( int val)
 }
 
 
-ArnAdaptItem&  ArnAdaptItem::operator=( double val)
+ArnAdaptItem&  ArnAdaptItem::operator=( ARNREAL val)
 {
     Q_D(ArnAdaptItem);
 
@@ -543,7 +543,7 @@ void  ArnAdaptItem::setValue( int value, int ignoreSame)
 }
 
 
-void  ArnAdaptItem::setValue( double value, int ignoreSame)
+void  ArnAdaptItem::setValue( ARNREAL value, int ignoreSame)
 {
     Q_D(ArnAdaptItem);
 
