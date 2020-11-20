@@ -32,7 +32,7 @@ include(src/ArnLib.pri)
 
 win32 {
 } else {
-DEFINES += DUMMY=\\\"$$system(rm tmp/ArnM.o)\\\"
+DEFINES += DUMMY=\\\"$$system(rm build/ArnM.o)\\\"
 }
 
 greaterThan(QT_MAJOR_VERSION, 4) {
@@ -46,8 +46,9 @@ TEMPLATE = lib
 
 # CONFIG += staticlib
 DEFINES += ARNLIB_LIBRARY
-OBJECTS_DIR = tmp
-MOC_DIR = tmp
+OBJECTS_DIR = build
+MOC_DIR = build
+RCC_DIR = build
 
 OTHER_FILES += \
     doc/Internals.md \
