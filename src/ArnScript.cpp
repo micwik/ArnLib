@@ -32,11 +32,363 @@
 #include "ArnInc/ArnScript.hpp"
 #include "ArnInc/ArnDepend.hpp"
 #include "ArnInc/ArnMonitor.hpp"
+#include "ArnInc/Arn.hpp"
+#include <QFile>
+#include <QDebug>
+
+#ifdef ARNUSE_SCRIPTJS
+#include <QJSValue>
+#include <QJSEngine>
+#include <QObject>
+
+
+ArnJsGlobal::ArnJsGlobal( ArnScript& arnScript, QObject* parent)
+    : QObject( parent)
+    , _arnScript( arnScript)
+{
+}
+
+
+void ArnJsGlobal::print( const QString &txt)
+{
+    _arnScript.errorLog( txt, ArnError::Info);
+}
+
+
+ArnScript::ArnScript( QObject* parent) :
+    QObject( parent)
+{
+    setup( arnNullptr);
+}
+
+
+ArnScript::ArnScript( ARN_JSENGINE* engine, QObject* parent) :
+    QObject( parent)
+{
+    setup( engine);
+}
+
+
+ARN_JSENGINE&  ArnScript::engine()  const
+{
+    return *_engine;
+}
+
+
+void ArnScript::addObject( const QString& id, QObject* obj)
+{
+    if ((id.isEmpty()) || (obj == 0))  return;
+
+    if ((obj != this) && (!obj->parent()))
+        obj->setParent( this);  // Reparent to this script handler
+
+    ARN_JSVALUE jsObj = _engine->newQObject( obj);
+    _engine->globalObject().setProperty( id, jsObj);
+}
+
+
+bool  ArnScript::evaluate( const QByteArray& script, const QString& idName)
+{
+    _idName = idName;
+    ARN_JSVALUE  result = _engine->evaluate( QString::fromUtf8( script.constData()));
+    bool isOk = doJsResult( result);
+    return isOk;
+}
+
+
+bool  ArnScript::evaluateFile( const QString& fileName)
+{
+    QFile  file( fileName);
+    file.open( QIODevice::ReadOnly);
+
+    return evaluate( file.readAll(), fileName);
+}
+
+
+QJSValue ArnScript::globalProperty( const QString& id)
+{
+    return _engine->globalObject().property( id);;
+}
+
+
+QJSValue ArnScript::callFunc( QJSValue& func, const QJSValue& thisObj, const QJSValueList& args)
+{
+    QJSValue result = func.callWithInstance( thisObj, args);
+    doJsResult( result);
+
+    return result;
+}
+
+
+QString  ArnScript::idName()  const
+{
+    return _idName;
+}
+
+
+
+bool  ArnScript::doJsResult( const ARN_JSVALUE& jsResult)
+{
+    if (!jsResult.isError()) return true;
+
+    // Exception properties: name, message, fileName, lineNumber, stack
+    int lineNo = jsResult.property("lineNumber").toInt();
+    errorLog( jsResult.toString() + " @line:" + QString::number( lineNo),
+              ArnError::ScriptError);
+
+    return false;
+}
+
+
+void ArnScript::setup( ARN_JSENGINE* engine)
+{
+    if (engine)
+        _engine = engine;
+    else
+        _engine = new ARN_JSENGINE( this);
+
+    //// Define global functions: print()
+    // TODO: vararg print
+    // QJSValue print = fEngine->evaluate("function() { printCallback(Array.prototype.slice.apply(arguments));}");
+    // fEngine->globalObject().setProperty("print", print);
+    ArnJsGlobal* arnJsGlobal = new ArnJsGlobal( *this, this);
+    QJSValue jsGlobalAdd = _engine->newQObject( arnJsGlobal);
+    QJSValue jsPrintFunc =  jsGlobalAdd.property("print");
+    _engine->globalObject().setProperty( "print", jsPrintFunc);
+
+    //// Define prototypes
+    QJSValue jsMetaObject;
+    jsMetaObject = _engine->newQMetaObject( &ArnItemJs::staticMetaObject);
+    _engine->globalObject().setProperty( "ArnItem", jsMetaObject);
+
+    jsMetaObject = _engine->newQMetaObject( &ArnMonitorJs::staticMetaObject);
+    _engine->globalObject().setProperty( "ArnMonitor", jsMetaObject);
+
+    jsMetaObject = _engine->newQMetaObject( &ArnDepOfferJs::staticMetaObject);
+    _engine->globalObject().setProperty( "ArnDependOffer", jsMetaObject);
+
+    jsMetaObject = _engine->newQMetaObject( &ArnDepJs::staticMetaObject);
+    _engine->globalObject().setProperty( "ArnDepend", jsMetaObject);
+    //// End define prototypes
+
+    _engine->globalObject().setProperty( "arn", _engine->newQObject( new ArnInterface( this)));
+}
+
+
+void  ArnScript::errorLog( const QString& errText, ArnError err, void* reference)
+{
+    QString  scriptText = " Script:" + _idName;
+
+    ArnM::errorLog( errText + scriptText, err, reference);
+    emit errorText( errText);
+}
+
+
+///////// ArnItem
+
+void ArnItemJs::init()
+{
+    QObject::connect( this, static_cast<void(ArnItem::*)(void)>(&ArnItem::changed),
+                      this, static_cast<void(ArnItemJs::*)(void)>(&ArnItemJs::changedVoid));
+    QObject::connect( this, static_cast<void(ArnItem::*)(ARNREAL)>(&ArnItem::changed),
+                      this, static_cast<void(ArnItemJs::*)(ARNREAL)>(&ArnItemJs::changedNum));
+    QObject::connect( this, static_cast<void(ArnItem::*)(const QString&)>(&ArnItem::changed),
+                      this, static_cast<void(ArnItemJs::*)(const QString&)>(&ArnItemJs::changedString));
+}
+
+
+ArnItemJs::ArnItemJs( QObject* parent)
+    : ArnItem( parent)
+{
+    init();
+}
+
+
+ArnItemJs::ArnItemJs( const QString& path, QObject* parent)
+    : ArnItem( path, parent)
+{
+    init();
+}
+
+
+ArnItemJs::ArnItemJs( const QJSValue& itemTemplate, const QString& path, QObject* parent)
+    : ArnItem( *qobject_cast<const ArnItem*>(itemTemplate.toQObject()), path, parent)
+{
+    init();
+}
+
+
+QString  ArnItemJs::variantType()  const
+{
+    if (!_variantType)  return QString();
+
+    const char*  typeName = QMetaType::typeName(_variantType);
+    if (!typeName)  return QString();
+
+    return typeName;
+}
+
+
+void  ArnItemJs::setVariantType( const QString& typeName)
+{
+    if (typeName.isEmpty()) {
+        _variantType = 0;
+    }
+    else {
+        int  type = QMetaType::type( typeName.toLatin1().constData());
+        if (!type) {
+            qWarning() << "ItemJS setVariantType, Unknown: type=" + typeName + " path=" + path();
+            return;
+        }
+
+        _variantType = type;
+    }
+}
+
+
+QString  ArnItemJs::path()  const
+{
+    return _path;
+}
+
+
+void  ArnItemJs::setPath( const QString& path)
+{
+    _path = path;
+    if (_useUuid)
+        openUuid( path);
+    else
+        open( path);
+}
+
+
+void  ArnItemJs::setVariant( const QVariant& value)
+{
+    if (!_variantType)  // No variantType, no conversion
+        ArnItem::setValue( value);
+    else {  // Use variantType
+        QVariant  val = value;
+        if (val.convert( QVariant::Type( _variantType))) {
+            ArnItem::setValue( val);
+        }
+        else {
+            qWarning() << "ItemJS setVariant, Can't convert: type="
+                       << _variantType  << " path=" + path();
+        }
+    }
+}
+
+
+void  ArnItemJs::setBiDirMode( bool isBiDirMode)
+{
+    if (isBiDirMode)
+        ArnItem::setBiDirMode();
+}
+
+
+void  ArnItemJs::setPipeMode( bool isPipeMode)
+{
+    if (isPipeMode)
+        ArnItem::setPipeMode();
+}
+
+
+void  ArnItemJs::setMaster( bool isMaster)
+{
+    if (isMaster)
+        ArnItem::setMaster();
+}
+
+
+void  ArnItemJs::setAutoDestroy( bool isAutoDestroy)
+{
+    if (isAutoDestroy)
+        ArnItem::setAutoDestroy();
+}
+
+
+void  ArnItemJs::setSaveMode( bool isSaveMode)
+{
+    if (isSaveMode)
+        ArnItem::setSaveMode();
+}
+
+
+bool  ArnItemJs::useUuid()  const
+{
+    return _useUuid;
+}
+
+
+void  ArnItemJs::setUseUuid( bool useUuid)
+{
+    _useUuid = useUuid;
+}
+
+
+///////// ArnMonitor
+
+ArnMonitorJs::ArnMonitorJs( QObject* parent)
+    : ArnMonitor( parent)
+{
+}
+
+
+void ArnMonitorJs::reStart()
+{
+    ArnMonitor::reStart();
+}
+
+
+///////// DependOffer
+
+ArnDepOfferJs::ArnDepOfferJs( QObject *parent)
+    : ArnDependOffer( parent)
+{
+}
+
+
+void ArnDepOfferJs::advertise( const QString &serviceName)
+{
+    ArnDependOffer::advertise( serviceName);
+}
+
+
+///////// Depend
+
+ArnDepJs::ArnDepJs( QObject *parent)
+    : ArnDepend( parent)
+{
+}
+
+
+void ArnDepJs::add( const QString &serviceName, int stateId)
+{
+    ArnDepend::add( serviceName, stateId);
+}
+
+
+void ArnDepJs::add( const QString &serviceName, const QString &stateName)
+{
+    ArnDepend::add( serviceName, stateName);
+}
+
+
+void ArnDepJs::setMonitorName( const QString &name)
+{
+    ArnDepend::setMonitorName( name);
+}
+
+
+void ArnDepJs::startMonitor()
+{
+    ArnDepend::startMonitor();
+}
+
+#else
 #include <QtScript>
 #include <QScriptValue>
 #include <QScriptEngine>
-#include <QFile>
-#include <QDebug>
 
 Q_DECLARE_METATYPE(ArnItemScr*)
 Q_DECLARE_METATYPE(ArnMonitor*)
@@ -47,6 +399,22 @@ Q_DECLARE_METATYPE(ArnDepend*)
 void  ArnItemScr::init()
 {
     _defaultType = 0;
+#if QT_VERSION >= 0x050200
+    QObject::connect( this, static_cast<void(ArnItem::*)(void)>(&ArnItem::changed),
+                      this, static_cast<void(ArnItemScr::*)(void)>(&ArnItemScr::changedVoid));
+    QObject::connect( this, static_cast<void(ArnItem::*)(ARNREAL)>(&ArnItem::changed),
+                      this, static_cast<void(ArnItemScr::*)(ARNREAL)>(&ArnItemScr::changedNum));
+    QObject::connect( this, static_cast<void(ArnItem::*)(const QString&)>(&ArnItem::changed),
+                      this, static_cast<void(ArnItemScr::*)(const QString&)>(&ArnItemScr::changedString));
+#else
+    connect( this, SIGNAL(changed()), this, SIGNAL(changedVoid()));
+  #ifdef ARNREAL_FLOAT
+    connect( this, SIGNAL(changed(float)), this, SIGNAL(changedNum(float)));
+  #else
+    connect( this, SIGNAL(changed(double)), this, SIGNAL(changedNum(double)));
+  #endif
+    connect( this, SIGNAL(changed(QString)), this, SIGNAL(changedString(QString)));
+#endif
 }
 
 
@@ -96,6 +464,19 @@ QScriptEngine&  ArnScript::engine()  const
 }
 
 
+void  ArnScript::addObject( const QString& id, QObject* obj)
+{
+    if ((id.isEmpty()) || (obj == 0))  return;
+
+    if ((obj != this) && (!obj->parent()))
+        obj->setParent( this);  // Reparent to this script handler
+
+    ARN_JSVALUE objScr = _engine->newQObject( obj, QScriptEngine::QtOwnership,
+                                                   QScriptEngine::ExcludeSuperClassContents);
+    _engine->globalObject().setProperty( id, objScr);
+}
+
+
 bool  ArnScript::evaluate( const QByteArray& script, const QString& idName)
 {
     _idName = idName;
@@ -113,6 +494,21 @@ bool  ArnScript::evaluateFile( const QString& fileName)
     file.open( QIODevice::ReadOnly);
 
     return evaluate( file.readAll(), fileName);
+}
+
+
+QScriptValue ArnScript::globalProperty( const QString& id)
+{
+    return _engine->globalObject().property( id);;
+}
+
+
+QScriptValue  ArnScript::callFunc( QScriptValue& func, const QScriptValue& thisObj, const QScriptValueList& args)
+{
+    QScriptValue  result = func.call( thisObj, args);
+    logUncaughtError( result);
+
+    return result;
 }
 
 
@@ -633,4 +1029,4 @@ QScriptValue  ArnDepProto::constructor( QScriptContext* context, QScriptEngine* 
     // let the engine manage the new object's lifetime.
     return engine->newQObject( dep, QScriptEngine::ScriptOwnership);
 }
-
+#endif

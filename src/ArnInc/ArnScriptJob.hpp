@@ -34,7 +34,6 @@
 
 #include "ArnLib_global.hpp"
 #include "ArnScript.hpp"
-#include <QScriptValue>
 #include <QObject>
 #include <QAtomicInt>
 #include <QMutex>
@@ -103,9 +102,9 @@ protected:
     QObject*  _configObj;
     QTimer*  _abortTimer;
 
-    QScriptValue  _jobInit;
-    QScriptValue  _jobEnter;
-    QScriptValue  _jobLeave;
+    ARN_JSVALUE  _jobInit;
+    ARN_JSVALUE  _jobEnter;
+    ARN_JSVALUE  _jobLeave;
 
 private:
     int  _id;
@@ -147,12 +146,12 @@ class ARNLIBSHARED_EXPORT ArnScriptJobFactory
 public:
     explicit  ArnScriptJobFactory();
     virtual  ~ArnScriptJobFactory();
-    virtual bool  installExtension( const QString& id, QScriptEngine& engine,
+    virtual bool  installExtension( const QString& id, ARN_JSENGINE& engine,
                                     const ArnScriptJobControl* jobControl = 0) = 0;
 
 protected:
-    static void  setupJsObj( const QString& id, const QScriptValue& jsObj, QScriptEngine& engine);
-    static bool  setupInterface( const QString& id, QObject* interface, QScriptEngine& engine);
+    static void  setupJsObj( const QString& id, const ARN_JSVALUE& jsObj, ARN_JSENGINE& engine);
+    static bool  setupInterface( const QString& id, QObject* interface, ARN_JSENGINE& engine);
 };
 
 

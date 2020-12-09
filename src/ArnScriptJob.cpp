@@ -30,14 +30,19 @@
 //
 
 #include "ArnInc/ArnScriptJob.hpp"
-#include <QScriptable>
-#include <QtScript>
-#include <QScriptEngine>
 #include <QFileInfo>
 #include <QTimer>
 #include <QEvent>
+#include <QCoreApplication>
 #include <QDebug>
 
+#ifdef ARNUSE_SCRIPTJS
+  #include <QJSEngine>
+#else
+  #include <QScriptable>
+  #include <QtScript>
+  #include <QScriptEngine>
+#endif
 
 const QEvent::Type  EventQuit = QEvent::Type( QEvent::User + 0);
 
@@ -84,6 +89,9 @@ void  ArnScriptJobB::setWatchDog( int time, bool persist)
     if (persist)
         _watchDogTime = wt;
 
+#if ARNUSE_SCRIPTJS
+    // TODO: Watchdog
+#else
     if (wt > 0) {
         _abortTimer->start( wt);
         _arnScr->engine().setProcessEventsInterval( wt);
@@ -92,13 +100,19 @@ void  ArnScriptJobB::setWatchDog( int time, bool persist)
         _abortTimer->stop();
         _arnScr->engine().setProcessEventsInterval( _watchDogTime > 0 ? _watchDogTime : _pollTime);
     }
+#endif
 }
 
 
 void  ArnScriptJobB::setPollTime( int time)
 {
     _pollTime = time;
+
+#if ARNUSE_SCRIPTJS
+    // TODO: polltime
+#else
     _arnScr->engine().setProcessEventsInterval( _pollTime);
+#endif
 }
 
 
@@ -112,12 +126,10 @@ void  ArnScriptJobB::installInterface( const QString& id, QObject* obj)
 {
     if ((id.isEmpty()) || (obj == 0))  return;
 
-    QScriptValue objScr = _arnScr->engine().newQObject( obj, QScriptEngine::QtOwnership,
-                                                        QScriptEngine::ExcludeSuperClassContents);
-    _arnScr->engine().globalObject().setProperty( id, objScr);
-
     if (obj != this)  obj->setParent( this);  // Reparent interface to this Job
     //MW: fix parrenting and delete failed install object
+
+    _arnScr->addObject( id, obj);
 }
 
 
@@ -192,15 +204,14 @@ ArnScriptJobFactory*  ArnScriptJobB::jobFactory()  const
 
 bool  ArnScriptJobB::setupScript()
 {
-    _jobInit  = _arnScr->engine().globalObject().property("jobInit");
-    _jobEnter = _arnScr->engine().globalObject().property("jobEnter");
-    _jobLeave = _arnScr->engine().globalObject().property("jobLeave");
+    _jobInit  = _arnScr->globalProperty("jobInit");
+    _jobEnter = _arnScr->globalProperty("jobEnter");
+    _jobLeave = _arnScr->globalProperty("jobLeave");
 
     setWatchDog();
-    QScriptValue  result = _jobInit.call(QScriptValue(), QScriptValueList());
-    if (_arnScr->logUncaughtError( result)) {
+    ARN_JSVALUE  result = _arnScr->callFunc( _jobInit, ARN_JSVALUE(), ARN_JSVALUE_LIST());
+    if (result.isError()) {
         _isStopped = true;
-        //qDebug() << "Setup Script timeout: isEval=" << _arnScr->engine().isEvaluating();
     }
     setWatchDog(0, false);
 
@@ -213,9 +224,9 @@ void  ArnScriptJobB::enterScript()
     if (isStopped())  return;  // Don't execute Enter if Job is stopped (error ...)
 
     setWatchDog();
-    QScriptValue  result = _jobEnter.call(QScriptValue(), QScriptValueList());
-    if (_arnScr->logUncaughtError( result)) {
-        setWatchDog(0, false);
+    ARN_JSVALUE  result = _arnScr->callFunc( _jobEnter, ARN_JSVALUE(), ARN_JSVALUE_LIST());
+    if (result.isError()) {
+        setWatchDog( 0, false);
         _isStopped = true;
         //qDebug() << "Enter Script timeout: isEval=" << _arnScr->engine().isEvaluating();
         emit scheduleRequest( _id);
@@ -227,9 +238,8 @@ void  ArnScriptJobB::leaveScript()
 {
     if (isStopped())  return;  // Don't execute Leave if Job is stopped (error ...)
 
-    QScriptValue  result = _jobLeave.call(QScriptValue(), QScriptValueList());
-    _arnScr->logUncaughtError( result);
-    setWatchDog(0, false);
+    ARN_JSVALUE  result = _arnScr->callFunc( _jobLeave, ARN_JSVALUE(), ARN_JSVALUE_LIST());
+    setWatchDog( 0, false);
 }
 
 
@@ -244,8 +254,12 @@ void  ArnScriptJobB::quit()
     if (_quitInProgress)  return;  // Quit is already in progress
     _quitInProgress = true;
 
-    QScriptEngine& engine = _arnScr->engine();
+    ARN_JSENGINE& engine = _arnScr->engine();
+#if ARNUSE_SCRIPTJS
+    // TODO: Quit
+#else
     engine.abortEvaluation( engine.currentContext()->throwError("Job quit"));
+#endif
 
     QEvent*  ev = new QEvent( EventQuit);
     QCoreApplication::postEvent( this, ev, Qt::HighEventPriority);
@@ -269,9 +283,13 @@ void  ArnScriptJobB::doTimeoutAbort()
     _abortTimer->stop();
     _isStopped = true;
 
+#if ARNUSE_SCRIPTJS
+    // TODO: timeoutAbort
+#else
     //qDebug() << "Script timeout: isEval=" << _arnScr->engine().isEvaluating();
-    QScriptEngine& engine = _arnScr->engine();
+    ARN_JSENGINE& engine = _arnScr->engine();
     engine.abortEvaluation( engine.currentContext()->throwError("Job run timeout"));
+#endif
 
     emit timeoutAbort( _id);
     emit scheduleRequest( _id);
@@ -321,18 +339,22 @@ ArnScriptJobFactory::~ArnScriptJobFactory()
 }
 
 
-void  ArnScriptJobFactory::setupJsObj( const QString& id, const QScriptValue& jsObj, QScriptEngine& engine)
+void  ArnScriptJobFactory::setupJsObj( const QString& id, const ARN_JSVALUE& jsObj, ARN_JSENGINE& engine)
 {
     engine.globalObject().setProperty( id, jsObj);
 }
 
 
-bool  ArnScriptJobFactory::setupInterface(const QString& id, QObject* interface, QScriptEngine& engine)
+bool  ArnScriptJobFactory::setupInterface( const QString& id, QObject* interface, ARN_JSENGINE& engine)
 {
     if (id.isEmpty() || (interface == 0))  return false;
 
+#if ARNUSE_SCRIPTJS
+    ARN_JSVALUE  objScr = engine.newQObject( interface);  // TODO:
+#else
     QScriptValue  objScr = engine.newQObject( interface, QScriptEngine::QtOwnership,
                                               QScriptEngine::ExcludeSuperClassContents);
+#endif
     if (objScr.isNull())  return false;
 
     setupJsObj( id, objScr, engine);

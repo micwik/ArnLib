@@ -95,9 +95,25 @@ contains(ARN, client) {
 
 
 contains(ARN, script) {
+    ARN += scriptcommon
+    QT += script
+}
+
+
+contains(ARN, scriptjs) {
+  lessThan(QT_MAJOR_VERSION, 5) {
+    error("scriptjs not available before QT5, use script")
+  }
+
+    ARN += scriptcommon
+    QT += qml
+    DEFINES += ARNUSE_SCRIPTJS
+}
+
+
+contains(ARN, scriptcommon) {
     ARN += core
     ARN += script_qml
-    QT += script
     SOURCES += \
         $$PWD/ArnScript.cpp \
         $$PWD/ArnScriptJobs.cpp \
