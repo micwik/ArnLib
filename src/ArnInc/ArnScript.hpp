@@ -148,6 +148,7 @@ signals:
 
 private:
     void init();
+    const ArnItem& arnItemFromJsValue( const QJSValue& jsValue, QObject& defParent);
 
     QString  _path;
     int  _variantType;

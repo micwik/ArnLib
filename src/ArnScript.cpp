@@ -212,7 +212,7 @@ ArnItemJs::ArnItemJs( const QString& path, QObject* parent)
 
 
 ArnItemJs::ArnItemJs( const QJSValue& itemTemplate, const QString& path, QObject* parent)
-    : ArnItem( *qobject_cast<const ArnItem*>(itemTemplate.toQObject()), path, parent)
+    : ArnItem( arnItemFromJsValue( itemTemplate, *this), path, parent)
 {
     init();
 }
@@ -383,6 +383,14 @@ void ArnDepJs::setMonitorName( const QString &name)
 void ArnDepJs::startMonitor()
 {
     ArnDepend::startMonitor();
+}
+
+
+const ArnItem& ArnItemJs::arnItemFromJsValue( const QJSValue& jsValue, QObject& defParent)
+{
+    // When jsValue not contains an ArnItem, return a fresh ArnItem owned by defParent
+    const ArnItem* arnItem = qobject_cast<const ArnItem*>( jsValue.toQObject());
+    return arnItem ? *arnItem : *new ArnItem( &defParent);
 }
 
 #else
