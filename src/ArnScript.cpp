@@ -87,11 +87,11 @@ void ArnScript::addObject( const QString& id, QObject* obj)
 }
 
 
-bool  ArnScript::evaluate( const QByteArray& script, const QString& idName)
+bool  ArnScript::evaluate( const QByteArray& script, const QString& idName, const QString& typeName)
 {
     _idName = idName;
     ARN_JSVALUE  result = _engine->evaluate( QString::fromUtf8( script.constData()));
-    bool isOk = doJsResult( result);
+    bool isOk = doJsResult( result, typeName);
     return isOk;
 }
 
@@ -127,13 +127,14 @@ QString  ArnScript::idName()  const
 
 
 
-bool  ArnScript::doJsResult( const ARN_JSVALUE& jsResult)
+bool  ArnScript::doJsResult( const ARN_JSVALUE& jsResult, const QString& typeName)
 {
     if (!jsResult.isError()) return true;
 
     // Exception properties: name, message, fileName, lineNumber, stack
     int lineNo = jsResult.property("lineNumber").toInt();
-    errorLog( jsResult.toString() + " @line:" + QString::number( lineNo),
+    QString preTxt = typeName.isEmpty() ? QString() : ("From type " + typeName + ": ");
+    errorLog( preTxt + jsResult.toString() + " @line:" + QString::number( lineNo),
               ArnError::ScriptError);
 
     return false;
@@ -485,11 +486,11 @@ void  ArnScript::addObject( const QString& id, QObject* obj)
 }
 
 
-bool  ArnScript::evaluate( const QByteArray& script, const QString& idName)
+bool  ArnScript::evaluate( const QByteArray& script, const QString& idName, const QString& typeName)
 {
     _idName = idName;
     QScriptValue  result = _engine->evaluate( QString::fromUtf8( script.constData()));
-    if (logUncaughtError( result)) {
+    if (logUncaughtError( result, typeName)) {
         return false;
     }
     return true;
@@ -520,14 +521,15 @@ QScriptValue  ArnScript::callFunc( QScriptValue& func, const QScriptValue& thisO
 }
 
 
-bool  ArnScript::logUncaughtError( QScriptValue& scriptValue)
+bool  ArnScript::logUncaughtError( QScriptValue& scriptValue, const QString& typeName)
 {
     //qDebug() << "logUncaughtError: has=" << _engine->hasUncaughtException();
     if (_engine->hasUncaughtException()) {
         QString  errDesc = scriptValue.toString();
         if (!errDesc.isEmpty()) {
+            QString preTxt = typeName.isEmpty() ? QString() : ("From type " + typeName + ": ");
             int lineNo = _engine->uncaughtExceptionLineNumber();
-            errorLog( errDesc + " @line:" + QString::number( lineNo),
+            errorLog( preTxt + errDesc + " @line:" + QString::number( lineNo),
                       ArnError::ScriptError);
         }
         return true;

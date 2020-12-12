@@ -211,7 +211,7 @@ public:
     ARN_JSENGINE&  engine()  const;
     void  addObject( const QString& id, QObject* obj);
 
-    bool  evaluate( const QByteArray& script, const QString& idName);
+    bool  evaluate( const QByteArray& script, const QString& idName, const QString& typeName = QString());
     bool  evaluateFile( const QString& fileName);
     ARN_JSVALUE  globalProperty( const QString& id);
     ARN_JSVALUE  callFunc( ARN_JSVALUE& func, const ARN_JSVALUE& thisObj, const ARN_JSVALUE_LIST& args);
@@ -232,7 +232,7 @@ protected:
 
 private:
     void  setup( ARN_JSENGINE* engine);
-    bool  doJsResult( const ARN_JSVALUE& jsResult);
+    bool  doJsResult( const ARN_JSVALUE& jsResult, const QString& typeName = QString());
 
     QString  _idName;
 };
@@ -270,7 +270,6 @@ signals:
 #else
     void  changedNum( double value);
 #endif
-    void  changedNum( double value);
     void  changedString( const QString& value);
 
 private:
@@ -383,12 +382,12 @@ public:
     QScriptEngine&  engine()  const;
     void  addObject( const QString& id, QObject* obj);
 
-    bool  evaluate( const QByteArray& script, const QString& idName);
+    bool  evaluate( const QByteArray& script, const QString& idName, const QString& typeName = QString());
     bool  evaluateFile( const QString& fileName);
     ARN_JSVALUE  globalProperty( const QString& id);
     ARN_JSVALUE  callFunc( ARN_JSVALUE& func, const ARN_JSVALUE& thisObj, const ARN_JSVALUE_LIST& args);
 
-    bool  logUncaughtError( QScriptValue& scriptValue);
+    bool  logUncaughtError( QScriptValue& scriptValue, const QString& typeName = QString());
     QString  idName()  const;
 
 signals:
