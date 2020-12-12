@@ -277,5 +277,9 @@ void  ArnScriptJobs::setScriptChanged( int id)
     if (i < 0)  return;  // Not a valid id
 
     _jobSlots[i].scriptChanged = true;
+
+    if (_runningId == 0) {  // No active jobs
+        doScheduleRequest( 0);
+    }
 }
 
