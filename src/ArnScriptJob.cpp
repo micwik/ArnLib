@@ -144,8 +144,24 @@ bool  ArnScriptJobB::installExtension( const QString& id, ArnScriptJobControl *j
 bool  ArnScriptJobB::evaluateScript( const QByteArray& script, const QString& idName)
 {
     setWatchDog();
-    bool stat = _arnScr->evaluate( script, idName);
-    setWatchDog(0, false);
+    bool stat = true;
+#ifdef ARN_JSENGINE
+    //// QJSEngine lacks support for QObject dynamic property, this is a workaround
+    QByteArray conf = "config = {";
+    QByteArray sep;
+    QList<QByteArray>  nameList = _configObj->dynamicPropertyNames();
+    foreach (QByteArray name, nameList) {
+        conf += sep;
+        conf += name + ": \"" + _configObj->property( name.constData()).toString().toUtf8() + "\"" ;
+        sep = ", ";
+    }
+    conf += "};";
+    stat = _arnScr->evaluate( conf, idName, "Config");
+#endif
+    if (stat) {
+        stat = _arnScr->evaluate( script, idName);
+    }
+    setWatchDog( 0, false);
     return stat;
 }
 
@@ -154,7 +170,7 @@ bool  ArnScriptJobB::evaluateScriptFile( const QString& fileName)
 {
     setWatchDog();
     bool stat = _arnScr->evaluateFile( fileName);
-    setWatchDog(0, false);
+    setWatchDog( 0, false);
     return stat;
 }
 
@@ -213,7 +229,7 @@ bool  ArnScriptJobB::setupScript()
     if (result.isError()) {
         _isStopped = true;
     }
-    setWatchDog(0, false);
+    setWatchDog( 0, false);
 
     return true;
 }
@@ -256,6 +272,7 @@ void  ArnScriptJobB::quit()
 
     ARN_JSENGINE& engine = _arnScr->engine();
 #if ARNUSE_SCRIPTJS
+    Q_UNUSED(engine)
     // TODO: Quit
 #else
     engine.abortEvaluation( engine.currentContext()->throwError("Job quit"));
@@ -370,8 +387,10 @@ bool  ArnScriptJobFactory::setupInterface( const QString& id, QObject* interface
 ArnScriptJob::ArnScriptJob( int id, QObject* parent) :
         ArnScriptJobB( id, parent)
 {
-    installInterface("job", this);
-    installInterface("config", _configObj);
+    installInterface( "job", this);
+#ifndef ARN_JSENGINE
+    installInterface( "config", _configObj);
+#endif
 }
 
 

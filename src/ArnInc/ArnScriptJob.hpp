@@ -55,7 +55,7 @@ class ArnScriptJobB : public QObject
     friend class ArnScriptJobControl;
 
 public:
-    explicit  ArnScriptJobB( int id, QObject* parent = 0);
+    explicit  ArnScriptJobB( int id, QObject* parent = arnNullptr);
     bool  evaluateScript( const QByteArray& script, const QString& idName);
     bool  evaluateScriptFile( const QString& fileName);
     int  id()  const;
@@ -127,7 +127,7 @@ class ARNLIBSHARED_EXPORT ArnScriptJob : public ArnScriptJobB
     Q_PROPERTY( int poll WRITE setPollTime READ pollTime )
     Q_PROPERTY( QString name  READ name )
 public:
-    explicit  ArnScriptJob( int id, QObject* parent = 0);
+    explicit  ArnScriptJob( int id, QObject* parent = arnNullptr);
 
 signals:
     void  sigQuit();
@@ -147,7 +147,7 @@ public:
     explicit  ArnScriptJobFactory();
     virtual  ~ArnScriptJobFactory();
     virtual bool  installExtension( const QString& id, ARN_JSENGINE& engine,
-                                    const ArnScriptJobControl* jobControl = 0) = 0;
+                                    const ArnScriptJobControl* jobControl = arnNullptr) = 0;
 
 protected:
     static void  setupJsObj( const QString& id, const ARN_JSVALUE& jsObj, ARN_JSENGINE& engine);
@@ -160,7 +160,7 @@ class ARNLIBSHARED_EXPORT ArnScriptJobControl : public QObject
 {
     Q_OBJECT
 public:
-    explicit  ArnScriptJobControl( QObject* parent = 0);
+    explicit  ArnScriptJobControl( QObject* parent = arnNullptr);
     int  id();
     QString  name()  const;
     void  setName( const QString& name);
