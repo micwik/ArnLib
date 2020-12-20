@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2019 Michael Wiklund.
+// Copyright (C) 2010-2020 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -30,39 +30,48 @@
 //
 
 #include "ArnInc/ArnScriptJobs.hpp"
+#include <QTimer>
+#include <QMutexLocker>
 #include <QDebug>
 
 
-ArnScriptJobThread::ArnScriptJobThread( ArnScriptJobControl* jobConfig,
-                                                  ArnScriptJobFactory* jobFactory)
+ArnScriptJobThread::ArnScriptJobThread( ArnScriptJobControl* jobConfig, ArnScriptJobFactory* jobFactory,
+                                        ArnScriptWatchdogThread* watchdogThread)
 {
-    _jobConfig  = jobConfig;
-    _jobFactory = jobFactory;
+    _jobConfig      = jobConfig;
+    _jobFactory     = jobFactory;
+    _watchdogThread = watchdogThread;
 }
 
 
 ArnScriptJobThread::~ArnScriptJobThread()
 {
+    // qDebug() << "ArnScriptThread wait for destroy";
     wait();
+    // qDebug() << "ArnScriptThread destroyed";
 }
 
 
 void  ArnScriptJobThread::run()
 {
     // qDebug() << "ArnScriptThread start";
-    ArnScriptJobSingle  jobPreem( _jobConfig, _jobFactory);
+    ArnScriptJobSingle  jobPreem( _jobConfig, _jobFactory, _watchdogThread);
 
     exec();
+    // qDebug() << "ArnScriptThread stop";
 }
 
 
-ArnScriptJobSingle::ArnScriptJobSingle( ArnScriptJobControl* jobConfig,
-                                                ArnScriptJobFactory* jobFactory)
+/////////////
+
+ArnScriptJobSingle::ArnScriptJobSingle( ArnScriptJobControl* jobConfig, ArnScriptJobFactory* jobFactory,
+                                        ArnScriptWatchdogThread* watchdogThread)
 {
-    _jobConfig     = jobConfig;
-    _jobFactory    = jobFactory;
-    _scriptChanged = false;
-    _job           = 0;
+    _jobConfig      = jobConfig;
+    _jobFactory     = jobFactory;
+    _watchdogThread = watchdogThread;
+    _scriptChanged  = false;
+    _job            = 0;
 
     newScriptJob();
     doScheduleRequest(0);
@@ -80,16 +89,21 @@ void  ArnScriptJobSingle::newScriptJob()
 {
     _runningId = 0;  // Mark no running job
 
-    if (_job)  delete _job;
+    if (_job) {
+        _watchdogThread->removeWatchdog( _job->watchdog());
+        delete _job;
+    }
     _job = new ArnScriptJob( _jobConfig->id(), this);
+    _job->setWatchDogTime(0);  // Default no abort for single (preemtive) job
     connect( _job, SIGNAL(errorText(QString)), _jobConfig, SIGNAL(errorText(QString)));
 
     _jobConfig->doSetupJob( _job, _jobFactory);
-    _job->setWatchDogTime(0);  // Default no abort for single (preemtive) job
     connect( _job, SIGNAL(scheduleRequest(int)),
              this, SLOT(doScheduleRequest(int)), Qt::QueuedConnection);
     connect( _job, SIGNAL(quitRequest(int)),
              this, SLOT(doQuitRequest(int)));  // High priority posted event
+
+    _watchdogThread->addWatchdog( _job->watchdog());
 }
 
 
@@ -137,12 +151,167 @@ void  ArnScriptJobSingle::doScriptChanged( int id)
 }
 
 
+/////////////
+
+#ifdef ARNUSE_SCRIPTJS
+ArnScriptWatchdogRun::ArnScriptWatchdogRun( ArnScriptWatchdogThread& watchdogThread)
+{
+    _watchdogThread = &watchdogThread;
+}
+
+
+ArnScriptWatchdogRun::~ArnScriptWatchdogRun()
+{
+}
+
+
+void  ArnScriptWatchdogRun::addWatchdog( ArnScriptWatchdog* watchdog)
+{
+    watchdog->setParent( this);
+    watchdog->setup();
+}
+
+
+void  ArnScriptWatchdogRun::removeWatchdog( ArnScriptWatchdog* watchdog)
+{
+    delete watchdog;
+}
+
+
+ArnScriptWatchdogThread::ArnScriptWatchdogThread( QObject* parent)
+    : QThread( parent)
+{
+}
+
+
+ArnScriptWatchdogThread::~ArnScriptWatchdogThread()
+{
+    wait();
+}
+
+
+// Threadsafe
+void  ArnScriptWatchdogThread::addWatchdog( ArnScriptWatchdog* watchdog)
+{
+    if (!watchdog)  return;
+
+    QMutexLocker mutexLocker( &_mutex);
+
+    if (_wdTab.contains( watchdog))  return;
+    _wdTab += watchdog;
+
+    if (!_isReady)  return;
+
+    mutexLocker.unlock();
+
+    addWatchdogNow( watchdog);
+}
+
+
+// Threadsafe
+void  ArnScriptWatchdogThread::addWatchdogNow( ArnScriptWatchdog* watchdog)
+{
+    watchdog->setParent( arnNullptr);
+    watchdog->moveToThread( _watchdogRun->thread());
+
+    QMetaObject::invokeMethod( _watchdogRun, [watchdog, this]() {
+        _watchdogRun->addWatchdog( watchdog);
+    }, Qt::QueuedConnection);
+}
+
+
+// Threadsafe
+void  ArnScriptWatchdogThread::removeWatchdog( ArnScriptWatchdog* watchdog)
+{
+    if (!watchdog)  return;
+
+    QMutexLocker mutexLocker( &_mutex);
+
+    if (!_wdTab.contains( watchdog))  return;
+    _wdTab.removeAll( watchdog);
+
+    if (!_isReady)  return;
+
+    mutexLocker.unlock();
+
+    watchdog->setJsEngine( arnNullptr);
+    QMetaObject::invokeMethod( _watchdogRun, [watchdog, this]() {
+        _watchdogRun->removeWatchdog( watchdog);
+    }, Qt::QueuedConnection);
+}
+
+
+void  ArnScriptWatchdogThread::run()
+{
+    // qDebug() << "ArnScriptWatchdogThread start";
+    _watchdogRun = new ArnScriptWatchdogRun( *this);
+
+    QTimer::singleShot( 0, _watchdogRun, [this]() {
+        QMetaObject::invokeMethod( this, [this]() {
+            postInit();
+        }, Qt::QueuedConnection);
+    } );
+
+    exec();
+    delete _watchdogRun;
+    _watchdogRun = arnNullptr;
+}
+
+
+void  ArnScriptWatchdogThread::postInit()
+{
+    _mutex.lock();
+
+    foreach( ArnScriptWatchdog* watchdog, _wdTab) {
+        addWatchdogNow( watchdog);
+    }
+    _isReady = true;
+
+    _mutex.unlock();
+
+    emit ready();
+}
+
+
+#else
+ArnScriptWatchdogThread::ArnScriptWatchdogThread( QObject* parent)
+    : QObject( parent)
+{
+    QTimer::singleShot( 0, this, SIGNAL(ready()));
+}
+
+
+void  ArnScriptWatchdogThread::start()
+{
+}
+
+
+void  ArnScriptWatchdogThread::addWatchdog( ArnScriptWatchdog* watchdog)
+{
+    if (!watchdog)  return;
+
+    watchdog->setup();
+}
+
+
+void  ArnScriptWatchdogThread::removeWatchdog( ArnScriptWatchdog* watchdog)
+{
+    Q_UNUSED( watchdog)
+}
+#endif
+
+
+////////////////
+
+
 ArnScriptJobs::ArnScriptJobs( QObject* parent) :
     QObject( parent)
 {
-    _runningId = 0;
-    _runningIndex = 0;
-    _type = _type.Null;
+    _runningId      = 0;
+    _runningIndex   = 0;
+    _type           = _type.Null;
+    _jobFactory     = arnNullptr;
+    _watchdogThread = arnNullptr;
 }
 
 
@@ -166,6 +335,9 @@ void  ArnScriptJobs::setFactory( ArnScriptJobFactory *jobFactory)
 
 void  ArnScriptJobs::start( Type type)
 {
+    _watchdogThread = new ArnScriptWatchdogThread( this);
+    _watchdogThread->start();
+
     switch (type.e) {
     case Type::Cooperative:
         doCooperativeStart();
@@ -193,9 +365,16 @@ void  ArnScriptJobs::doCooperativeStart()
 
 void  ArnScriptJobs::doPreemtiveStart()
 {
+    connect( _watchdogThread, SIGNAL(ready()), this, SLOT(doPreemtiveStartNow()));
+    // doPreemtiveStartNow();
+}
+
+
+void  ArnScriptJobs::doPreemtiveStartNow()
+{
     for (int i = 0; i < _jobSlots.size(); ++i) {
         JobSlot&  jobSlot = _jobSlots[i];
-        jobSlot.thread = new ArnScriptJobThread( jobSlot.jobConfig, _jobFactory);
+        jobSlot.thread = new ArnScriptJobThread( jobSlot.jobConfig, _jobFactory, _watchdogThread);
         jobSlot.thread->start();  // MW: No priority set ...
     }
 }
@@ -259,14 +438,19 @@ void  ArnScriptJobs::doScheduleRequest( int callerId)
 
 /// Only for cooperative jobs
 void  ArnScriptJobs::newScriptJob( JobSlot& jobSlot)
-{
-    if (jobSlot.job)  delete jobSlot.job;
+{       
+    if (jobSlot.job) {
+        _watchdogThread->removeWatchdog( jobSlot.job->watchdog());
+        delete jobSlot.job;
+    }
     jobSlot.job = new ArnScriptJob( jobSlot.jobConfig->id(), this);
     connect( jobSlot.job, SIGNAL(errorText(QString)), jobSlot.jobConfig, SIGNAL(errorText(QString)));
 
     jobSlot.jobConfig->doSetupJob( jobSlot.job, _jobFactory);
     connect( jobSlot.job, SIGNAL(scheduleRequest(int)),
              this, SLOT(doScheduleRequest(int)), Qt::QueuedConnection);
+
+    _watchdogThread->addWatchdog( jobSlot.job->watchdog());
 }
 
 
@@ -282,4 +466,3 @@ void  ArnScriptJobs::setScriptChanged( int id)
         doScheduleRequest( 0);
     }
 }
-

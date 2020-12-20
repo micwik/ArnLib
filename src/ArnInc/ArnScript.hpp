@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2019 Michael Wiklund.
+// Copyright (C) 2010-2020 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -217,6 +217,7 @@ public:
     ARN_JSVALUE  callFunc( ARN_JSVALUE& func, const ARN_JSVALUE& thisObj, const ARN_JSVALUE_LIST& args);
 
     QString  idName()  const;
+    void  setInterruptedText( const QString& interruptedText);
 
 signals:
     void  errorText( QString txt);
@@ -231,10 +232,11 @@ protected:
     ARN_JSENGINE*  _engine;
 
 private:
-    void  setup( ARN_JSENGINE* engine);
+    void  init( ARN_JSENGINE* engine);
     bool  doJsResult( const ARN_JSVALUE& jsResult, const QString& typeName = QString());
 
     QString  _idName;
+    QString  _interruptedText;
 };
 
 
@@ -390,6 +392,8 @@ public:
     bool  logUncaughtError( QScriptValue& scriptValue, const QString& typeName = QString());
     QString  idName()  const;
 
+    void  setInterruptedText( const QString& interruptedText);
+
 signals:
     void  errorText( QString txt);
 
@@ -409,7 +413,7 @@ protected:
     ArnDepProto*  _depProto;
 
 private:
-    void  setup( QScriptEngine* engine);
+    void  init( QScriptEngine* engine);
 
     QString  _idName;
 };

@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2019 Michael Wiklund.
+// Copyright (C) 2010-2020 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -37,11 +37,13 @@
 #include <QObject>
 #include <QAtomicInt>
 #include <QMutex>
+#include <QThread>
 
 class ArnScript;
 class ArnScriptJobB;
 class ArnScriptJobControl;
 class ArnScriptJobFactory;
+class ArnScriptWatchdog;
 class QTimer;
 class QEvent;
 
@@ -64,6 +66,7 @@ public:
     void  enterScript();
     void  leaveScript();
     ArnScriptJobFactory*  jobFactory()  const;
+    ArnScriptWatchdog*  watchdog() const;
 
     void  setSleepState( bool isSleepState = true);
     void  setWatchDogTime( int time);
@@ -74,6 +77,7 @@ public:
     bool  isSleepState()  const;
     bool  isRunable()  const;
     bool  isStopped()  const;
+    bool  isRunning()  const;
     void  errorLog( const QString& txt);
 
 signals:
@@ -100,7 +104,6 @@ protected:
 
     ArnScript*  _arnScr;
     QObject*  _configObj;
-    QTimer*  _abortTimer;
 
     ARN_JSVALUE  _jobInit;
     ARN_JSVALUE  _jobEnter;
@@ -112,8 +115,36 @@ private:
     int  _pollTime;  // Longest time to run continous script code until events are processed. Don't exceed ...
     bool  _isSleepState;
     bool  _isStopped;
+    bool  _isRunning;
     bool  _quitInProgress;
     ArnScriptJobFactory*  _jobFactory;
+    ArnScriptWatchdog*  _watchdog = arnNullptr;
+};
+
+
+class ArnScriptWatchdog : public QObject
+{
+Q_OBJECT
+public:
+    ArnScriptWatchdog( ARN_JSENGINE* jsEngine, QObject* parent = arnNullptr);
+    ~ArnScriptWatchdog();
+
+    void  setup();
+    void  setJsEngine( ARN_JSENGINE* jsEngine );
+
+    void  setTime( int timeMs);
+
+signals:
+    void  timeout();
+
+private:
+    void  setTimeNow( int timeMs);
+
+    ARN_JSENGINE*  _jsEngine;
+    QMutex  _mutex;
+    QTimer*  _timer;
+    int  _lastTimeMs;
+    bool  _isSetup;
 };
 //! \endcond
 
@@ -123,6 +154,7 @@ class ARNLIBSHARED_EXPORT ArnScriptJob : public ArnScriptJobB
 {
     Q_OBJECT
     Q_PROPERTY( bool sleepState WRITE setSleepState READ isSleepState )
+    Q_PROPERTY( bool running READ isRunning )
     Q_PROPERTY( int watchDog WRITE setWatchDog READ watchDogTime )
     Q_PROPERTY( int poll WRITE setPollTime READ pollTime )
     Q_PROPERTY( QString name  READ name )

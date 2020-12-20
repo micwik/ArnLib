@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2019 Michael Wiklund.
+// Copyright (C) 2010-2020 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -36,7 +36,11 @@
 #include "ArnScriptJob.hpp"
 #include "MQFlags.hpp"
 #include <QThread>
+#include <QMutex>
 #include <QObject>
+
+class ArnScriptWatchdogThread;
+class ArnScriptWatchdogRun;
 
 
 //! \cond ADV
@@ -44,7 +48,8 @@ class ArnScriptJobThread : public QThread
 {
 Q_OBJECT
 public:
-    ArnScriptJobThread( ArnScriptJobControl* jobConfig, ArnScriptJobFactory* jobFactory);
+    ArnScriptJobThread( ArnScriptJobControl* jobConfig, ArnScriptJobFactory* jobFactory,
+                        ArnScriptWatchdogThread* watchdogThread);
     ~ArnScriptJobThread();
 
 protected:
@@ -53,6 +58,7 @@ protected:
 private:
     ArnScriptJobControl*  _jobConfig;
     ArnScriptJobFactory*  _jobFactory;
+    ArnScriptWatchdogThread*  _watchdogThread;
 };
 
 
@@ -60,7 +66,8 @@ class ARNLIBSHARED_EXPORT ArnScriptJobSingle : public QObject
 {
 Q_OBJECT
 public:
-    ArnScriptJobSingle( ArnScriptJobControl* jobConfig, ArnScriptJobFactory* jobFactory);
+    ArnScriptJobSingle( ArnScriptJobControl* jobConfig, ArnScriptJobFactory* jobFactory,
+                        ArnScriptWatchdogThread* watchdogThread);
     ~ArnScriptJobSingle();
 
 signals:
@@ -75,11 +82,76 @@ private:
 
     ArnScriptJobControl*  _jobConfig;
     ArnScriptJobFactory*  _jobFactory;
+    ArnScriptWatchdogThread*  _watchdogThread;
 
     ArnScriptJob*  _job;
     int  _runningId;
     bool  _scriptChanged;
 };
+
+
+#ifdef ARNUSE_SCRIPTJS
+class ArnScriptWatchdogRun : public QObject
+{
+Q_OBJECT
+public:
+    ArnScriptWatchdogRun( ArnScriptWatchdogThread& watchdogThread);
+    ~ArnScriptWatchdogRun();
+
+public slots:
+    void  addWatchdog( ArnScriptWatchdog* watchdog);
+    void  removeWatchdog( ArnScriptWatchdog* watchdog);
+
+private slots:
+
+private:
+    ArnScriptWatchdogThread*  _watchdogThread = arnNullptr;
+};
+
+
+class ArnScriptWatchdogThread : public QThread
+{
+Q_OBJECT
+public:
+    ArnScriptWatchdogThread( QObject* parent = arnNullptr);
+    ~ArnScriptWatchdogThread();
+
+    void  addWatchdog( ArnScriptWatchdog* watchdog);
+    void  removeWatchdog( ArnScriptWatchdog* watchdog);
+
+signals:
+    void  ready();
+
+protected:
+    void  run();
+
+private:
+    void  postInit();
+    void  addWatchdogNow( ArnScriptWatchdog* watchdog);
+
+    ArnScriptWatchdogRun*  _watchdogRun = arnNullptr;
+    QList<ArnScriptWatchdog*>  _wdTab;
+    bool  _isReady  = false;
+    QMutex  _mutex;
+};
+
+
+#else
+/// This is a none threaded direkt handler for watchdog
+class ArnScriptWatchdogThread : public QObject
+{
+Q_OBJECT
+public:
+    ArnScriptWatchdogThread( QObject* parent = arnNullptr);
+
+    static void  start();
+    static void  addWatchdog( ArnScriptWatchdog* watchdog);
+    static void  removeWatchdog( ArnScriptWatchdog* watchdog);
+
+signals:
+    void  ready();
+};
+#endif
 //! \endcond
 
 
@@ -107,6 +179,7 @@ signals:
 private slots:
     void  doScheduleRequest( int callerId);
     void  setScriptChanged( int id);
+    void  doPreemtiveStartNow();
 
 private:
     struct JobSlot {
@@ -138,6 +211,7 @@ private:
     int  _runningId;
     int  _runningIndex;
     ArnScriptJobFactory*  _jobFactory;
+    ArnScriptWatchdogThread*  _watchdogThread;
 };
 
 #endif // ARNSCRIPTJOBS_HPP

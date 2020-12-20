@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2019 Michael Wiklund.
+// Copyright (C) 2010-2020 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -55,17 +55,19 @@ void ArnJsGlobal::print( const QString &txt)
 }
 
 
+///////////////////
+
 ArnScript::ArnScript( QObject* parent) :
     QObject( parent)
 {
-    setup( arnNullptr);
+    init( arnNullptr);
 }
 
 
 ArnScript::ArnScript( ARN_JSENGINE* engine, QObject* parent) :
     QObject( parent)
 {
-    setup( engine);
+    init( engine);
 }
 
 
@@ -126,23 +128,38 @@ QString  ArnScript::idName()  const
 }
 
 
+void  ArnScript::setInterruptedText( const QString& interruptedText)
+{
+    _interruptedText = interruptedText;
+}
+
 
 bool  ArnScript::doJsResult( const ARN_JSVALUE& jsResult, const QString& typeName)
 {
-    if (!jsResult.isError()) return true;
+    bool isAborted = _engine->isInterrupted();
+    if (isAborted) {
+        _engine->setInterrupted( false);
+    }
+    bool isError = jsResult.isError();
+    if (!isError && !isAborted) return true;
 
     // Exception properties: name, message, fileName, lineNumber, stack
     int lineNo = jsResult.property("lineNumber").toInt();
-    QString preTxt = typeName.isEmpty() ? QString() : ("From type " + typeName + ": ");
-    errorLog( preTxt + jsResult.toString() + " @line:" + QString::number( lineNo),
-              ArnError::ScriptError);
+    QString lineTxt = lineNo > 0 ? " @line:" + QString::number( lineNo) : QString();
+    QString errTxt;
+    if (!typeName.isEmpty())  errTxt += "From type " + typeName + ": ";
+    errTxt += isAborted ? _interruptedText : jsResult.toString();
+    errTxt += lineTxt;
+    errorLog( errTxt, ArnError::ScriptError);
 
     return false;
 }
 
 
-void ArnScript::setup( ARN_JSENGINE* engine)
+void ArnScript::init( ARN_JSENGINE* engine)
 {
+    _interruptedText = "JS-Engine interrupted";
+
     if (engine)
         _engine = engine;
     else
@@ -456,14 +473,14 @@ ArnItemScr::~ArnItemScr()
 ArnScript::ArnScript( QObject* parent) :
     QObject( parent)
 {
-    setup(0);
+    init( arnNullptr);
 }
 
 
 ArnScript::ArnScript( QScriptEngine* engine, QObject* parent) :
     QObject( parent)
 {
-    setup( engine);
+    init( engine);
 }
 
 
@@ -523,9 +540,10 @@ QScriptValue  ArnScript::callFunc( QScriptValue& func, const QScriptValue& thisO
 
 bool  ArnScript::logUncaughtError( QScriptValue& scriptValue, const QString& typeName)
 {
-    //qDebug() << "logUncaughtError: has=" << _engine->hasUncaughtException();
+    // qDebug() << "logUncaughtError: has=" << _engine->hasUncaughtException();
     if (_engine->hasUncaughtException()) {
         QString  errDesc = scriptValue.toString();
+        // qDebug() << "logUncaughtError: errDesc=" << errDesc;
         if (!errDesc.isEmpty()) {
             QString preTxt = typeName.isEmpty() ? QString() : ("From type " + typeName + ": ");
             int lineNo = _engine->uncaughtExceptionLineNumber();
@@ -570,7 +588,7 @@ QScriptValue  ArnScript::printFunction( QScriptContext* context, QScriptEngine* 
 }
 
 
-void ArnScript::setup( QScriptEngine* engine)
+void ArnScript::init( QScriptEngine* engine)
 {
     if (engine)
         _engine = engine;

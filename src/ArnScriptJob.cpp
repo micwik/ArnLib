@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2019 Michael Wiklund.
+// Copyright (C) 2010-2020 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -38,6 +38,7 @@
 
 #ifdef ARNUSE_SCRIPTJS
   #include <QJSEngine>
+  #include <QMetaObject>
 #else
   #include <QScriptable>
   #include <QtScript>
@@ -53,18 +54,24 @@ ArnScriptJobB::ArnScriptJobB( int id, QObject* parent) :
     _id = id;
     _isSleepState   = false;
     _isStopped      = false;
+    _isRunning      = false;
     _quitInProgress = false;
     _watchDogTime   = 2000;  // ms
     _pollTime       = 2000;  // ms
 
     _jobFactory = 0;
     _configObj  = new QObject( this);
-    _abortTimer = new QTimer( this);
     _arnScr     = new ArnScript( this);
     setPollTime( _pollTime);
 
-    connect( _abortTimer, SIGNAL(timeout()), this, SLOT(doTimeoutAbort()));
+    _watchdog = new ArnScriptWatchdog( &_arnScr->engine(), this);
+
+    connect( _watchdog, SIGNAL(timeout()), this, SLOT(doTimeoutAbort()));
     connect( _arnScr, SIGNAL(errorText(QString)), this, SIGNAL(errorText(QString)));
+
+#ifdef ARNUSE_SCRIPTJS
+    _arnScr->setInterruptedText( "Error: Job run timeout");
+#endif
 }
 
 
@@ -90,14 +97,13 @@ void  ArnScriptJobB::setWatchDog( int time, bool persist)
         _watchDogTime = wt;
 
 #if ARNUSE_SCRIPTJS
-    // TODO: Watchdog
+    _watchdog->setTime( wt);
 #else
+    _watchdog->setTime( wt);
     if (wt > 0) {
-        _abortTimer->start( wt);
         _arnScr->engine().setProcessEventsInterval( wt);
     }
     else {
-        _abortTimer->stop();
         _arnScr->engine().setProcessEventsInterval( _watchDogTime > 0 ? _watchDogTime : _pollTime);
     }
 #endif
@@ -109,7 +115,7 @@ void  ArnScriptJobB::setPollTime( int time)
     _pollTime = time;
 
 #if ARNUSE_SCRIPTJS
-    // TODO: polltime
+    // No support for this in QJSEngine
 #else
     _arnScr->engine().setProcessEventsInterval( _pollTime);
 #endif
@@ -218,6 +224,12 @@ ArnScriptJobFactory*  ArnScriptJobB::jobFactory()  const
 }
 
 
+ArnScriptWatchdog*  ArnScriptJobB::watchdog()  const
+{
+    return _watchdog;
+}
+
+
 bool  ArnScriptJobB::setupScript()
 {
     _jobInit  = _arnScr->globalProperty("jobInit");
@@ -228,6 +240,7 @@ bool  ArnScriptJobB::setupScript()
     ARN_JSVALUE  result = _arnScr->callFunc( _jobInit, ARN_JSVALUE(), ARN_JSVALUE_LIST());
     if (result.isError()) {
         _isStopped = true;
+        _isRunning = false;
     }
     setWatchDog( 0, false);
 
@@ -239,11 +252,13 @@ void  ArnScriptJobB::enterScript()
 {
     if (isStopped())  return;  // Don't execute Enter if Job is stopped (error ...)
 
+    _isRunning = true;
     setWatchDog();
     ARN_JSVALUE  result = _arnScr->callFunc( _jobEnter, ARN_JSVALUE(), ARN_JSVALUE_LIST());
     if (result.isError()) {
         setWatchDog( 0, false);
         _isStopped = true;
+        _isRunning = false;
         //qDebug() << "Enter Script timeout: isEval=" << _arnScr->engine().isEvaluating();
         emit scheduleRequest( _id);
     }
@@ -255,6 +270,11 @@ void  ArnScriptJobB::leaveScript()
     if (isStopped())  return;  // Don't execute Leave if Job is stopped (error ...)
 
     ARN_JSVALUE  result = _arnScr->callFunc( _jobLeave, ARN_JSVALUE(), ARN_JSVALUE_LIST());
+    if (result.isError()) {
+        _isStopped = true;
+        //qDebug() << "Leave Script timeout: isEval=" << _arnScr->engine().isEvaluating();
+    }
+    _isRunning = false;
     setWatchDog( 0, false);
 }
 
@@ -273,7 +293,7 @@ void  ArnScriptJobB::quit()
     ARN_JSENGINE& engine = _arnScr->engine();
 #if ARNUSE_SCRIPTJS
     Q_UNUSED(engine)
-    // TODO: Quit
+    engine.setInterrupted( true);
 #else
     engine.abortEvaluation( engine.currentContext()->throwError("Job quit"));
 #endif
@@ -297,19 +317,29 @@ void  ArnScriptJobB::customEvent(QEvent *ev)
 
 void  ArnScriptJobB::doTimeoutAbort()
 {
-    _abortTimer->stop();
-    _isStopped = true;
-
 #if ARNUSE_SCRIPTJS
-    // TODO: timeoutAbort
+    // qDebug() << "Script timeout:";
+    if (!_isStopped) {
+        ARN_JSENGINE& engine = _arnScr->engine();
+        engine.setInterrupted( false);
+        _isStopped = true;
+        _isRunning = false;
+        errorLog( "Error: Job run timeout sig");
+
+        emit scheduleRequest( _id);
+    }
 #else
-    //qDebug() << "Script timeout: isEval=" << _arnScr->engine().isEvaluating();
+    // qDebug() << "Script timeout: isEval=" << _arnScr->engine().isEvaluating();
+    _isStopped = true;
+    _isRunning = false;
+    errorLog( "Error: Watchdog timeout");  // Extra error as throwError() not allways works ...
     ARN_JSENGINE& engine = _arnScr->engine();
     engine.abortEvaluation( engine.currentContext()->throwError("Job run timeout"));
+
+    emit scheduleRequest( _id);
 #endif
 
     emit timeoutAbort( _id);
-    emit scheduleRequest( _id);
 }
 
 
@@ -337,6 +367,13 @@ bool  ArnScriptJobB::isStopped()  const
 {
     return _isStopped;
 }
+
+
+bool  ArnScriptJobB::isRunning()  const
+{
+    return _isRunning;
+}
+
 
 
 void  ArnScriptJobB::errorLog( const QString& txt)
@@ -367,7 +404,7 @@ bool  ArnScriptJobFactory::setupInterface( const QString& id, QObject* interface
     if (id.isEmpty() || (interface == 0))  return false;
 
 #if ARNUSE_SCRIPTJS
-    ARN_JSVALUE  objScr = engine.newQObject( interface);  // TODO:
+    ARN_JSVALUE  objScr = engine.newQObject( interface);
 #else
     QScriptValue  objScr = engine.newQObject( interface, QScriptEngine::QtOwnership,
                                               QScriptEngine::ExcludeSuperClassContents);
@@ -383,6 +420,77 @@ bool  ArnScriptJobFactory::setupInterface( const QString& id, QObject* interface
     //MW: fix parrenting and delete failed install object
 }
 
+
+/////////////
+
+ArnScriptWatchdog::ArnScriptWatchdog( ARN_JSENGINE* jsEngine, QObject* parent)
+    : QObject( parent)
+{
+    _jsEngine   = jsEngine;
+    _lastTimeMs = 0;
+    _isSetup    = false;
+    _timer      = new QTimer( this);
+    _timer->setSingleShot( true);
+}
+
+
+ArnScriptWatchdog::~ArnScriptWatchdog()
+{
+}
+
+
+void ArnScriptWatchdog::setup()
+{
+#ifdef ARNUSE_SCRIPTJS
+    connect( _timer, &QTimer::timeout,
+             [this]() {
+        _mutex.lock();
+        if (_jsEngine)
+            _jsEngine->setInterrupted( true);
+        _mutex.unlock();
+        emit timeout();
+    });
+#else
+    connect( _timer, SIGNAL(timeout()), this, SIGNAL(timeout()));
+#endif
+    setTimeNow( _lastTimeMs );
+    _isSetup = true;
+}
+
+
+// Threadsafe
+void ArnScriptWatchdog::setJsEngine( ARN_JSENGINE* jsEngine)
+{
+    _mutex.lock();
+    _jsEngine = jsEngine;
+    _mutex.unlock();
+}
+
+
+// Threadsafe when using ARNUSE_SCRIPTJS
+void ArnScriptWatchdog::setTime( int timeMs)
+{
+    _lastTimeMs = timeMs;
+    if (_isSetup) {
+#ifdef ARNUSE_SCRIPTJS
+        QMetaObject::invokeMethod( this, [timeMs, this]() { this->setTimeNow( timeMs); }, Qt::QueuedConnection);
+#else
+        setTimeNow( timeMs);
+#endif
+    }
+}
+
+
+void ArnScriptWatchdog::setTimeNow( int timeMs)
+{
+    if (timeMs > 0)
+        _timer->start( timeMs);
+    else
+        _timer->stop();
+}
+
+
+////////////////
 
 ArnScriptJob::ArnScriptJob( int id, QObject* parent) :
         ArnScriptJobB( id, parent)
