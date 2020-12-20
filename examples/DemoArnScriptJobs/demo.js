@@ -1,4 +1,4 @@
-// Demo  V1.0  Show integration of javascript to Arn application
+// Demo  V1.0  Show ArnScriptJobs
 
 
 // Templates for ArnItem modes
@@ -19,10 +19,11 @@ function jobInit()
 {
     print("Init DemoScript");
 
+    job.watchDog = 7000;  // For testing watchdog
+
     basePath        = config.basePath;
     commonPath      = config.commonPath;
     settingsPath    = "//Settings/Demo/";
-    demoRun         = false;
     print( "basePath=" + basePath);
 
     arnClkIn        = new ArnItem( commonPath + "ClkPulse/value");
@@ -75,7 +76,7 @@ function postInit()
 
 function onClkChanged()
 {
-    if (!demoRun)  return;
+    if (!job.running)  return;
 
     arnPeriodTimer.num = arnPeriodTimer.num - 1;
     if (arnPeriodTimer.num <= 0) {
@@ -84,6 +85,7 @@ function onClkChanged()
         arnPeriodTimer.num = arnPeriodTimo.num;
         var d = new Date();
         print("Periodic timeout ... " + mq.dateToString( d, "yyyy-MM-dd_hh:mm:ss"));
+        // while(true) {}  // Test watchdog in a signal from system
         job.yield();
     }
 
@@ -94,7 +96,7 @@ function onClkChanged()
 function jobEnter()
 {
     print("Enter DemoScript");
-    demoRun = true;
+    // while(true) {}  // Test watchdog in a call from system
     job.watchDog = 0;  // Turn off watchdog for this run slot (until jobLeave)
 }
 
@@ -102,5 +104,4 @@ function jobEnter()
 function jobLeave()
 {
     print("Leave DemoScript");
-    demoRun = false;
 }

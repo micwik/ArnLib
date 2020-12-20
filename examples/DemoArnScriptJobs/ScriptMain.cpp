@@ -29,6 +29,7 @@ ScriptMain::ScriptMain( QObject* parent)
     }
 
     _jobs.start( ArnScriptJobs::Type::Cooperative);
+    // _jobs.start( ArnScriptJobs::Type::Preemptive);
 }
 
 
