@@ -9,6 +9,7 @@ PROJECT = ArnLib
 # ARN += server     # Level 3: Server TCP functionality with persistence etc
 # ARN += scriptjs   # Java script support QT >= 5 (new QJSEngine)
 # ARN += script     # Java script support QT <= 5 (legacy QtScriptEngine)
+# ARN += scriptauto # Java script support depend on Qt version: scriptjs (prefered) or script
 # ARN += qml        # QML support
 # ARN += zeroconf   # Using part of Bonjour (R), Apple's (R) implementation of zero-configuration networking.
 # ARN += discover   # High level service discovery using <zeroconf> and optionally <server> for remote config

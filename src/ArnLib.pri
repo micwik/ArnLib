@@ -45,7 +45,7 @@ RESOURCES += \
 
 contains(ARN, server) {
     ARN += client
-    ARN += script
+    ARN += scriptauto
     QT += sql
     SOURCES += \
         $$PWD/ArnServer.cpp \
@@ -94,16 +94,33 @@ contains(ARN, client) {
 }
 
 
+contains(ARN, scriptauto) {
+    lessThan(QT_MAJOR_VERSION, 5) {
+        ARN += script
+    } else {
+        ARN += scriptjs
+    }
+
+    ARN += scriptcommon
+    QT += qml
+    DEFINES += ARNUSE_SCRIPTJS
+}
+
+
 contains(ARN, script) {
+    greaterThan(QT_MAJOR_VERSION, 5) {
+        error("script not available after QT5, use scriptjs")
+    }
+
     ARN += scriptcommon
     QT += script
 }
 
 
 contains(ARN, scriptjs) {
-  lessThan(QT_MAJOR_VERSION, 5) {
-    error("scriptjs not available before QT5, use script")
-  }
+    lessThan(QT_MAJOR_VERSION, 5) {
+        error("scriptjs not available before QT5, use script")
+    }
 
     ARN += scriptcommon
     QT += qml
