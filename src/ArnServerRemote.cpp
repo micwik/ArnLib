@@ -97,7 +97,7 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
     connect( _arnServerSession, SIGNAL(messageReceived(int,QByteArray)),
              this, SLOT(onMessageReceived(int,QByteArray)));
 
-    _startTime = QDateTime::currentDateTime().toTime_t();
+    _startTime = QDateTime::currentDateTimeUtc();
     _arnUpTime.open( _sessionPath + "UpTime/value");
     ArnM::setValue( _sessionPath + "UpTime/property", "prec=2 unit=h");
 }
@@ -218,7 +218,7 @@ void  ArnServerRemoteSession::doPoll()
 
     if (_pollCount % 5 == 0) {
         //// Uptime
-        ARNREAL upTime = ARNREAL( QDateTime::currentDateTime().toTime_t() - _startTime) / 3600.;
+        ARNREAL upTime = ARNREAL( _startTime.secsTo( QDateTime::currentDateTimeUtc())) / 3600.;
         _arnUpTime.setValue( upTime);
 
         //// Traffic
@@ -291,7 +291,6 @@ void  ArnServerRemoteSession::shutdown()
 ArnServerRemotePrivate::ArnServerRemotePrivate()
 {
     _arnServer    = 0;
-    _startTime    = 0;
     _sessionCount = 0;
     _sessionNum   = 0;
 }
@@ -342,7 +341,7 @@ void  ArnServerRemote::startUseServer( ArnServer* arnServer)
     d->_timerPoll.start(5000);
     connect( &d->_timerPoll, SIGNAL(timeout()), this, SLOT(doPoll()));
 
-    d->_startTime = QDateTime::currentDateTime().toTime_t();
+    d->_startTime = QDateTime::currentDateTimeUtc();
     d->_arnUpTime.open(       Arn::pathServer + "ServerUpTime/value");
     d->_arnSessionCount.open( Arn::pathServer + "SessionCount/value");
     d->_arnSessionNum.open(   Arn::pathServer + "SessionNum/value");
@@ -382,6 +381,6 @@ void  ArnServerRemote::doPoll()
 {
     Q_D(ArnServerRemote);
 
-    ARNREAL upTime = ARNREAL( QDateTime::currentDateTime().toTime_t() - d->_startTime) / 3600.;
+    ARNREAL upTime = ARNREAL( d->_startTime.secsTo( QDateTime::currentDateTimeUtc())) / 3600.;
     d->_arnUpTime.setValue( upTime);
 }

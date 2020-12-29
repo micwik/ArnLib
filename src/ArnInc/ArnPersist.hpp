@@ -36,6 +36,7 @@
 #include "ArnM.hpp"
 #include <QMap>
 #include <QList>
+#include <QStringList>
 #include <QObject>
 
 class ArnPersist;
@@ -45,7 +46,6 @@ class ArnDependOffer;
 class QSqlDatabase;
 class QSqlQuery;
 class QDir;
-class QStringList;
 
 namespace Arn {
 class XStringMap;

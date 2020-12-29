@@ -38,6 +38,7 @@
 #include "Arn.hpp"
 #include "ArnError.hpp"
 #include "MQFlags.hpp"
+#include "ArnCompat.hpp"
 #include <QGenericArgument>
 #include <QString>
 #include <QByteArray>
@@ -52,7 +53,6 @@ class ArnRpcReceiverStorage;
 class ArnDynamicSignals;
 class ArnPipe;
 class QMetaMethod;
-class QRegExp;
 class QTimer;
 
 //! Similar to QGenericArgument but with added argument label (parameter name)
@@ -316,7 +316,7 @@ public:
      *  It's assumed that naming for slots are unique regardless of its case i.e.
      *  using both test() and tesT() are not allowed.
      *
-     *  Example: `batchConnect( _commonSapi, QRegExp("^rq_(.+)"), this, "chat\\1");`
+     *  Example: `batchConnect( _commonSapi, ARN_RegExp("^rq_(.+)"), this, "chat\\1");`
      *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
      *
      *  \param[in] sender is the sending QObject.
@@ -325,7 +325,7 @@ public:
      *  \param[in] replace is the conversion for naming the receiver slots/signals.
      *  \param[in] mode Used modes: _Debug_, _NoDefaultArgs_
      */
-    static void  batchConnect( const QObject* sender, const QRegExp& rgx,
+    static void  batchConnect( const QObject* sender, const ARN_RegExp& rgx,
                                const QObject* receiver, const QString& replace,
                                Mode mode = Mode());
 
@@ -334,17 +334,17 @@ public:
      *  It's assumed that naming for slots are unique regardless of its case i.e.
      *  using both test() and tesT() are not allowed.
      *
-     *  Example: `_commonSapi.batchConnect( QRegExp("^rq_(.+)"), this, "chat\\1");`
+     *  Example: `_commonSapi.batchConnect( ARN_RegExp("^rq_(.+)"), this, "chat\\1");`
      *  connects signal: `rq_info(QString,QString)` to slot: `chatInfo(QString,QString)`
      *
      *  \param[in] rgx is the regular expression for selecting sender signals.
      *  \param[in] receiver is the receiving QObject.
      *  \param[in] replace is the conversion for naming the receiver slots/signals.
      *  \param[in] mode
-     *  \see batchConnect(const QObject*, const QRegExp&, const QObject*,
+     *  \see batchConnect(const QObject*, const ARN_RegExp&, const QObject*,
      *       const QString&, Mode)
      */
-    void  batchConnect( const QRegExp& rgx,
+    void  batchConnect( const ARN_RegExp& rgx,
                         const QObject* receiver, const QString& replace,
                         Mode mode = Mode()) {
         batchConnect( this, rgx, receiver, replace, mode);
@@ -355,17 +355,17 @@ public:
      *  It's assumed that naming for slots are unique regardless of its case i.e.
      *  using both test() and tesT() are not allowed.
      *
-     *  Example: `_commonSapi.batchConnect( _commonSapi, QRegExp("^chat(.+)"), "rq_\\1");`
+     *  Example: `_commonSapi.batchConnect( _commonSapi, ARN_RegExp("^chat(.+)"), "rq_\\1");`
      *  connects signal: `chatinfo(QString,QString)` to slot: `rq_Info(QString,QString)`
      *
      *  \param[in] sender is the sending QObject.
      *  \param[in] rgx is the regular expression for selecting sender signals.
      *  \param[in] replace is the conversion for naming the receiver slots/signals.
      *  \param[in] mode
-     *  \see batchConnect(const QObject*, const QRegExp&, const QObject*,
+     *  \see batchConnect(const QObject*, const ARN_RegExp&, const QObject*,
      *       const QString&, Mode)
      */
-    void  batchConnect( const QObject* sender, const QRegExp& rgx,
+    void  batchConnect( const QObject* sender, const ARN_RegExp& rgx,
                         const QString& replace,
                         Mode mode = Mode()) {
         batchConnect( sender, rgx, this, replace, mode);

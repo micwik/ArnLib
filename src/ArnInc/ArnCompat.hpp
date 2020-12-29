@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2019 Michael Wiklund.
+// Copyright (C) 2010-2020 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -29,27 +29,40 @@
 // PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
 //
 
-#ifndef ARNADAPTITEM_P_HPP
-#define ARNADAPTITEM_P_HPP
+#ifndef ARNCOMPAT_HPP
+#define ARNCOMPAT_HPP
 
-#include "ArnBasicItem_p.hpp"
-#include "ArnInc/ArnAdaptItem.hpp"
-#include <QMutex>
+#include "ArnInc/ArnLib_global.hpp"
 
+#if QT_VERSION >= 0x060000
+  #include <QRegularExpression>
+  #include <QRegularExpressionValidator>
+  #define ARN_RegExp   ArnRegExp
+  #define ARN_RegExpValidator   QRegularExpressionValidator
+  #define ARN_ToRegExp  toRegularExpression
+  #define ARN_SIZETYPE  qsizetype
 
-class ArnAdaptItemPrivate : public ArnBasicItemPrivate
+class ARNLIBSHARED_EXPORT ArnRegExp : public QRegularExpression
 {
-    friend class ArnAdaptItem;
 public:
-    ArnAdaptItemPrivate();
-    virtual ~ArnAdaptItemPrivate();
+    ArnRegExp();
+    ArnRegExp( const QString& pattern);
+    ArnRegExp( const QRegularExpression& re);
+
+    int  indexIn( const QString& str)  const;
+    QString  cap( int nth)  const;
 
 private:
-    mutable QRecursiveMutex  _mutex;
-    ArnAdaptItem::ChangedCB  _changedCB;
-    ArnAdaptItem::LinkDestroyedCB  _linkDestroyedCB;
-    ArnAdaptItem::ArnEventCB  _arnEventCB;
+    mutable QRegularExpressionMatch  _regMatch;
 };
 
-#endif // ARNADAPTITEM_P_HPP
+#else
+  #include <QRegExp>
+  #include <QRegExpValidator>
+  #define ARN_RegExp   QRegExp
+  #define ARN_RegExpValidator   QRegExpValidator
+  #define ARN_ToRegExp  toRegExp
+  #define ARN_SIZETYPE  int
+#endif
 
+#endif // ARNCOMPAT_HPP

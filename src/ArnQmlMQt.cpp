@@ -70,7 +70,7 @@ void  QmlMQtObject::setParentItem( QmlMQtObject* parent)
 
 QML_LIST_PROPERTY<QObject>  QmlMQtObject::data()
 {
-    return QML_LIST_PROPERTY<QObject>( this, 0, data_append, data_count, data_at, data_clear);
+    return QML_LIST_PROPERTY<QObject>( this, arnNullptr, data_append, data_count, data_at, data_clear);
 }
 
 
@@ -83,14 +83,14 @@ void  QmlMQtObject::data_append( QML_LIST_PROPERTY<QObject>* prop, QObject* obj)
 }
 
 
-int  QmlMQtObject::data_count( QML_LIST_PROPERTY<QObject>* prop)
+ARN_SIZETYPE  QmlMQtObject::data_count( QML_LIST_PROPERTY<QObject>* prop)
 {
     QmlMQtObject*  that = static_cast<QmlMQtObject*>( prop->object);
     return that->children().count();
 }
 
 
-QObject*  QmlMQtObject::data_at( QML_LIST_PROPERTY<QObject>* prop, int index)
+QObject*  QmlMQtObject::data_at( QML_LIST_PROPERTY<QObject>* prop, ARN_SIZETYPE index)
 {
     QmlMQtObject*  that = static_cast<QmlMQtObject*>( prop->object);
     if ((index >= 0) && (index < that->children().count()))

@@ -43,7 +43,7 @@
 
 class ArnAdaptItem;
 class ArnAdaptItemPrivate;
-
+class QRecursiveMutex;
 
 ///! Non Qt and threadsafe handle for an _Arn Data Object_.
 /*!
@@ -512,7 +512,7 @@ public:
      *  Also this mutex is using QMutex::Recursive.
      *  \return the items mutex
      */
-    QMutex&  mutex()  const;
+    QRecursiveMutex&  mutex()  const;
 
     //! Get the thread affinity of this ArnAdaptItem
     /*! The affinity is allways the same as the caller thread.

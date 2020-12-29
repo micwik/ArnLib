@@ -33,6 +33,7 @@
 #define ARNSERVERREMOTE_P_HPP
 
 #include "ArnInc/ArnBasicItem.hpp"
+#include <QDateTime>
 #include <QTimer>
 
 class ArnServer;
@@ -48,7 +49,7 @@ public:
 private:
     ArnServer*  _arnServer;
     QTimer  _timerPoll;
-    uint  _startTime;
+    QDateTime  _startTime;
     uint  _sessionCount;
     uint  _sessionNum;
     ArnBasicItem  _arnUpTime;

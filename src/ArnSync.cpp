@@ -38,6 +38,7 @@
 #include "ArnInc/ArnEvent.hpp"
 #include "ArnInc/Arn.hpp"
 #include "ArnInc/ArnLib.hpp"
+#include "ArnInc/ArnCompat.hpp"
 #include <QTcpSocket>
 #include <QString>
 #include <QStringList>
@@ -960,8 +961,7 @@ uint  ArnSync::doCommandFlux()
     handleData.flags().set( ArnLinkHandle::Flags::FromRemote);
     if (!nqrx.isEmpty())
         handleData.add( ArnLinkHandle::QueueFindRegexp,
-                        QVariant( QRegExp( QString::fromUtf8( nqrx.constData(), nqrx.size()))));
-
+                        QVariant( ARN_RegExp( QString::fromUtf8( nqrx.constData(), nqrx.size()))));
     if (!seq.isEmpty())
         handleData.add( ArnLinkHandle::SeqNo,
                         QVariant( seq.toInt()));
@@ -1442,7 +1442,7 @@ void  ArnSync::addToFluxQue( const ArnLinkHandle& handleData, const QByteArray* 
         itemNet->resetDirtyValue();
 
         if (handleData.has( ArnLinkHandle::QueueFindRegexp)) {
-            QRegExp  rx = handleData.valueRef( ArnLinkHandle::QueueFindRegexp).toRegExp();
+            ARN_RegExp  rx( handleData.valueRef( ArnLinkHandle::QueueFindRegexp).ARN_ToRegExp());
             // qDebug() << "AddFluxQueue Pipe QOW: rx=" << rx.pattern();
             int i;
             for (i = 0; i < _fluxPipeQueue.size(); ++i) {
@@ -1650,7 +1650,7 @@ QByteArray  ArnSync::makeFluxString( const ArnItemNet* itemNet, const ArnLinkHan
         _syncMap.addNum("es", int(echoSeq));
 
     if (handleData.has( ArnLinkHandle::QueueFindRegexp))
-        _syncMap.add("nqrx", handleData.valueRef( ArnLinkHandle::QueueFindRegexp).toRegExp().pattern());
+        _syncMap.add("nqrx", handleData.valueRef( ArnLinkHandle::QueueFindRegexp).ARN_ToRegExp().pattern());
     else if (handleData.has( ArnLinkHandle::SeqNo))
         _syncMap.add("seq", QByteArray::number( handleData.valueRef( ArnLinkHandle::SeqNo).toInt()));
 

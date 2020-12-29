@@ -7,6 +7,11 @@ ARNLIBVER = 3.1.1
 
 DEFINES += ARNLIBVER=\\\"$${ARNLIBVER}\\\"
 
+greaterThan(QT_MAJOR_VERSION, 5) {
+    QT += core5compat
+} else {
+}
+
 win32 {
     DEFINES += ARNBUILDDATE=\\\"$$system('echo %date%')\\\"
     DEFINES += ARNBUILDTIME=\\\"00:00\\\"
@@ -27,7 +32,8 @@ SOURCES += \
     $$PWD/ArnXStringMap.cpp \
     $$PWD/Arn.cpp \
     $$PWD/ArnLib.cpp \
-    $$PWD/MQFlags.cpp
+    $$PWD/MQFlags.cpp \
+    $$PWD/ArnCompat.cpp
 
 HEADERS += \
     $$PWD/ArnInc/ArnLib_global.hpp \
@@ -35,7 +41,8 @@ HEADERS += \
     $$PWD/ArnInc/ArnError.hpp \
     $$PWD/ArnInc/Arn.hpp \
     $$PWD/ArnInc/ArnLib.hpp \
-    $$PWD/ArnInc/MQFlags.hpp
+    $$PWD/ArnInc/MQFlags.hpp \
+    $$PWD/ArnInc/ArnCompat.hpp
 
 RESOURCES += \
     $$PWD/../resource/ArnLib.qrc \

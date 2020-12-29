@@ -24,6 +24,8 @@ QT -= gui
 # Usage of float as real type, default is double. Must be same in application pro-file.
 # DEFINES += ARNREAL_FLOAT
 
+QMAKE_CXXFLAGS_WARN_ON = -Wall -Wno-deprecated-declarations
+
 include(src/ArnLib.pri)
 
 !mDnsIntern {
@@ -37,10 +39,14 @@ win32 {
 DEFINES += DUMMY=\\\"$$system(rm build/ArnM.o)\\\"
 }
 
-greaterThan(QT_MAJOR_VERSION, 4) {
-    TARGET = Arn5
+greaterThan(QT_MAJOR_VERSION, 5) {
+    TARGET = Arn6
 } else {
-    TARGET = Arn4
+    greaterThan(QT_MAJOR_VERSION, 4) {
+        TARGET = Arn5
+    } else {
+        TARGET = Arn4
+    }
 }
 TEMPLATE = lib
 

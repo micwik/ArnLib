@@ -32,6 +32,7 @@
 #include "ArnInc/ArnZeroConf.hpp"
 #include "ArnInc/Arn.hpp"
 #include "ArnInc/ArnLib.hpp"
+#include "ArnInc/ArnCompat.hpp"
 #ifdef MDNS_INTERN
 #  include "mDNS/ArnMDns.hpp"
 #  include "mDNS/mDNSShared/dns_sd.h"
@@ -106,7 +107,7 @@ ArnZeroConfB::~ArnZeroConfB()
 
 void  ArnZeroConfB::parseFullDomain( const QByteArray& domainName)
 {
-    QRegExp rx("^((?:\\\\{2,2}|\\\\\\.|\\\\\\d{3,3}|[^\\\\\\.])+)\\.(.+\\._(?:tcp|udp))\\.(.+)");
+    ARN_RegExp rx("^((?:\\\\{2,2}|\\\\\\.|\\\\\\d{3,3}|[^\\\\\\.])+)\\.(.+\\._(?:tcp|udp))\\.(.+)");
     if (rx.indexIn( QString::fromUtf8( domainName.constData())) != -1) {
         setServiceType(rx.cap(2));
         setDomain(rx.cap(3));
@@ -804,9 +805,11 @@ void  ArnZeroConfLookup::operationTimeout()
 void  ArnZeroConfLookup::onIpLookup( const QHostInfo &host)
 {
     if (host.error() == QHostInfo::NoError) {
-        if (Arn::debugZeroConf)
-            foreach (const QHostAddress &address, host.addresses())
+        if (Arn::debugZeroConf) {
+            foreach (const QHostAddress &address, host.addresses()) {
                 qDebug() << "Qt Lookup DNS callback, Found address:" << address.toString();
+            }
+        }
 
         _hostAddr = host.addresses().first();
         if (Arn::debugZeroConf)  qDebug() << "Qt Lookup DNS callback: hostName=" << _host

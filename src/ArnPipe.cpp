@@ -102,7 +102,7 @@ ArnPipe&  ArnPipe::operator=( const QByteArray& value)
 }
 
 
-void  ArnPipe::setValueOverwrite( const QByteArray& value, const QRegExp& rx)
+void  ArnPipe::setValueOverwrite( const QByteArray& value, const ARN_RegExp& rx)
 {
     if (isOpen()) {
         ArnLinkHandle  handleData;

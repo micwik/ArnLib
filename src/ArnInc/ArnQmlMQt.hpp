@@ -43,6 +43,7 @@
 #define ARNQMLMQT_HPP
 
 #include "ArnQml.hpp"
+#include "ArnCompat.hpp"
 #include <QObject>
 
 
@@ -72,8 +73,8 @@ public:
 
     QML_LIST_PROPERTY<QObject>  data();
     static void  data_append( QML_LIST_PROPERTY<QObject>* prop, QObject* obj);
-    static int  data_count( QML_LIST_PROPERTY<QObject>* prop);
-    static QObject*  data_at( QML_LIST_PROPERTY<QObject>* prop, int index);
+    static ARN_SIZETYPE  data_count( QML_LIST_PROPERTY<QObject>* prop);
+    static QObject*  data_at( QML_LIST_PROPERTY<QObject>* prop, ARN_SIZETYPE index);
     static void  data_clear( QML_LIST_PROPERTY<QObject>* prop);
 
     virtual void  classBegin();

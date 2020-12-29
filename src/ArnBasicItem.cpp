@@ -559,14 +559,24 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
                 QDataStream  stream( data);
                 stream.setVersion( DATASTREAM_VER);
                 stream.skipRawData( sepPos + 1);
-                if (!QMetaType::load( stream, type, valData)) {
+#if QT_VERSION >= 0x060000
+                QMetaType mt( type);
+                bool isOk = mt.load( stream, valData);
+#else
+                bool isOk = QMetaType::load( stream, type, valData);
+#endif
+                if (!isOk) {
                     errorLog( QString("Can't' import binary type:") + typeName.constData(),
                               ArnError::Undef);
                     QMetaType::destroy( type, valData);
                     return;
                 }
 
+#if QT_VERSION >= 0x060000
+                QVariant  value( mt, valData);
+#else
                 QVariant  value( type, valData);
+#endif
                 QMetaType::destroy( type, valData);
 
                 setValue( value, ignoreSame, handleData);  // ArnLinkHandle not fully supported for QVariant

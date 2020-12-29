@@ -31,7 +31,7 @@
 
 #include "ArnInc/Arn.hpp"
 #include "ArnInc/ArnLib.hpp"
-#include <QRegExp>
+#include "ArnInc/ArnCompat.hpp"
 #include <QUuid>
 #include <QStringList>
 #if QT_VERSION >= 0x050a00
@@ -242,7 +242,7 @@ QString  makeHostWithInfo( const QString& host, const QString& info)
 QString  hostFromHostWithInfo( const QString& hostWithInfo)
 {
     QString  retVal = hostWithInfo;
-    int  pos = retVal.indexOf( QRegExp("\\s*\\[.+\\]"));
+    int  pos = retVal.indexOf(" ");
     if (pos >= 0)
         retVal.resize( pos);
 

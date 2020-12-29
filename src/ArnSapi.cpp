@@ -90,13 +90,13 @@ void  ArnSapi::batchConnectTo( const QObject* receiver, const QString& prefix, A
     Q_D(ArnSapi);
 
     batchConnect( this,
-                  QRegExp("^" + d->_receivePrefix + "(.+)"),
+                  ARN_RegExp("^" + d->_receivePrefix + "(.+)"),
                   receiver,
                   prefix + "\\1",
                   mode);
     if (ArnRpc::mode().is( ArnRpc::Mode::UseDefaultCall)) {
         batchConnect( this,
-                      QRegExp("^defaultCall"),
+                      ARN_RegExp("^defaultCall"),
                       receiver,
                       prefix + "Default",
                       mode);
@@ -108,7 +108,7 @@ void  ArnSapi::batchConnectFrom( const QObject* sender, const QString& prefix, A
     Q_D(ArnSapi);
 
     batchConnect( sender,
-                  QRegExp("^" + prefix + "(.+)"),
+                  ARN_RegExp("^" + prefix + "(.+)"),
                   this,
                   d->_sendPrefix + "\\1",
                   mode);

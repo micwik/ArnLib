@@ -35,6 +35,7 @@
 #include "ArnLib_global.hpp"
 #include "ArnItem.hpp"
 #include "MQFlags.hpp"
+#include <QDateTime>
 #include <QObject>
 
 class ArnServer;
@@ -95,7 +96,7 @@ private:
     QString  _clientHostName;
     QString  _clientAgent;
     QString  _clientUserName;
-    uint  _startTime;
+    QDateTime  _startTime;
     ArnBasicItem  _arnUpTime;
 };
 

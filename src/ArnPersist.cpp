@@ -34,6 +34,7 @@
 #include "ArnInc/ArnPersistSapi.hpp"
 #include "ArnInc/ArnDepend.hpp"
 #include "ArnInc/XStringMap.hpp"
+#include "ArnInc/ArnCompat.hpp"
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
@@ -41,7 +42,6 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDateTime>
-#include <QRegExp>
 #include <QStringList>
 #include <QDebug>
 
@@ -260,8 +260,8 @@ void  ArnPersist::setVcs( ArnVcs* vcs)
 
     connect( d->_vcs, SIGNAL(checkoutR()), this, SLOT(vcsCheckoutR()));
     ArnRpc::Mode  mode;
-    d->_sapiCommon->batchConnect( d->_vcs, QRegExp("(.+)"), "rq_vcs\\1");
-    d->_sapiCommon->batchConnect( QRegExp("^pv_vcs(.+)"), d->_vcs, "\\1");
+    d->_sapiCommon->batchConnect( d->_vcs, ARN_RegExp("(.+)"), "rq_vcs\\1");
+    d->_sapiCommon->batchConnect( ARN_RegExp("^pv_vcs(.+)"), d->_vcs, "\\1");
 }
 
 
@@ -952,7 +952,7 @@ void  ArnPersist::setupSapi( ArnPersistSapi* sapi)
 {
     typedef ArnRpc::Mode  Mode;
     sapi->open( QString(), Mode::Provider);
-    sapi->batchConnect( QRegExp("^pv_(.+)"), this, "sapi\\1", Mode());
+    sapi->batchConnect( ARN_RegExp("^pv_(.+)"), this, "sapi\\1", Mode());
 }
 
 
@@ -1017,8 +1017,14 @@ void  ArnPersist::sapiLs( const QString& path)
 
     if (path.isEmpty())
         emit d->_sapiCommon->rq_lsR( flist);
-    else  // Filter only files beginning with path
-        emit d->_sapiCommon->rq_lsR( flist.filter( QRegExp("^" + QRegExp::escape( path))));
+    else { // Filter only files beginning with path
+        QStringList retList;
+        foreach( QString fstr, flist) {
+            if (fstr.startsWith( path))
+                retList += fstr;
+        }
+        emit d->_sapiCommon->rq_lsR( retList);
+    }
 }
 
 

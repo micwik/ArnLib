@@ -155,7 +155,7 @@ public:
      *  \param[in] receiver is the receiving QObject.
      *  \param[in] prefix is the prefix for receiving slot/signal names.
      *  \param[in] mode
-     *  \see ArnRpc::batchConnect( const QObject*, const QRegExp&, const QObject*,
+     *  \see ArnRpc::batchConnect( const QObject*, const ARN_RegExp&, const QObject*,
      *       const QString&, Mode)
      */
     void  batchConnectTo( const QObject* receiver, const QString& prefix = QString(),
@@ -172,7 +172,7 @@ public:
      *  \param[in] sender is the sending QObject.
      *  \param[in] prefix is the prefix for sending signal names.
      *  \param[in] mode
-     *  \see ArnRpc::batchConnect(const QObject*, const QRegExp&, const QObject*,
+     *  \see ArnRpc::batchConnect(const QObject*, const ARN_RegExp&, const QObject*,
      *       const QString&, Mode)
      */
     void  batchConnectFrom( const QObject* sender, const QString& prefix = QString(),

@@ -48,8 +48,8 @@
 
 
 ArnAdaptItemPrivate::ArnAdaptItemPrivate()
-    : _mutex( QMutex::Recursive)
-    , _changedCB( 0 )
+    : /* TODO: _mutex( QMutex::Recursive )
+    , */ _changedCB( 0 )
     , _linkDestroyedCB( 0 )
     , _arnEventCB( 0 )
 {
@@ -615,7 +615,7 @@ void  ArnAdaptItem::setValue( quint64 value, int ignoreSame)
 }
 
 
-QMutex&  ArnAdaptItem::mutex()  const
+QRecursiveMutex&  ArnAdaptItem::mutex()  const
 {
     Q_D(const ArnAdaptItem);
 

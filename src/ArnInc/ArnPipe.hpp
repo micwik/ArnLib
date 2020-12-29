@@ -34,6 +34,7 @@
 
 #include "ArnLib_global.hpp"
 #include "ArnItemB.hpp"
+#include "ArnCompat.hpp"
 
 class ArnPipePrivate;
 
@@ -56,7 +57,7 @@ have it's own handles i.e ArnPipe instances.
     connect( &_arnPipe., SIGNAL(outOfSequence()), this, SLOT(doOutOfSequence()));
     connect( &_arnPipe, SIGNAL(changed(QByteArray)), this, SLOT(doPipeInput(QByteArray)));
 
-    QRegExp rx("^ping\\b");
+    ARN_RegExp rx("^ping\\b");
     _arnPipe.setValueOverwrite( "ping new", rx);
 \endcode
 */
@@ -127,13 +128,13 @@ public:
      *  Example:
      *  > // Messages starts with a function name  <Br>
      *  > // We want message with equal function name to overwrite   <Br>
-     *  > QRegExp rx("^" + funcName + "\\b");      <Br>
+     *  > ARN_RegExp rx("^" + funcName + "\\b");      <Br>
      *  > _pipe->setValueOverwrite( message, rx);  <Br>
      *  \param[in] value to be assigned
      *  \param[in] rx is regexp to be matched with items in send queue.
      *  \see \ref gen_pipeAntiCongest
      */
-    void  setValueOverwrite( const QByteArray& value, const QRegExp& rx);
+    void  setValueOverwrite( const QByteArray& value, const ARN_RegExp& rx);
 
     //! Returns true if sending sequence numbers
     /*! \retval true if sending sequence numbers

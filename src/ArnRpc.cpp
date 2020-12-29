@@ -34,10 +34,10 @@
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/XStringMap.hpp"
 #include "ArnInc/ArnLib.hpp"
+#include "ArnInc/ArnCompat.hpp"
 #include <QMetaType>
 #include <QMetaMethod>
 #include <QTimer>
-#include <QRegExp>
 #include <QDataStream>
 #include <QVariant>
 #include <QDebug>
@@ -565,7 +565,7 @@ bool  ArnRpc::invoke( const QString& funcName,
 
     if (stat) {
         if (invokeFlags.is( Invoke::NoQueue)) {
-            QRegExp rx("^" + funcName + "\\b");
+            ARN_RegExp rx("^" + funcName + "\\b");
             d->_pipe->setValueOverwrite( xsmCall.toXString(), rx);
         }
         else
@@ -584,7 +584,14 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
 
     //// Get arg type info
     QByteArray  typeName = arg.name();
+
+#if QT_VERSION >= 0x060000
+    QMetaType mType = QMetaType::fromName( typeName);
+    int  type = mType.id();
+#else
     int  type = QMetaType::type( typeName.constData());
+#endif
+
     if (!type) {
         errorLog( QString(tr("Unknown type:") + typeName.constData()),
                   ArnError::RpcInvokeError);
@@ -599,7 +606,11 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
     QByteArray  argDataDump;
     QStringList  argDataList;
     bool  isBinaryType = false;
+#if QT_VERSION >= 0x060000
+    QVariant  varArg( mType, arg.data());
+#else
     QVariant  varArg( type, arg.data());
+#endif
     if (type == QMetaType::QStringList) {
         argDataList = varArg.toStringList();
     }
@@ -1473,8 +1484,8 @@ void  ArnRpc::errorLog( const QString& errText, ArnError err, void* reference)
 }
 
 
-void  ArnRpc::batchConnect( const QObject *sender, const QRegExp &rgx,
-                                 const QObject *receiver, const QString& replace,
+void  ArnRpc::batchConnect( const QObject *sender, const ARN_RegExp& rgx,
+                                 const QObject* receiver, const QString& replace,
                                  Mode mode)
 {
     QList<QByteArray>  signalSignTab;
