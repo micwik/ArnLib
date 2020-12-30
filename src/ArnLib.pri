@@ -7,10 +7,7 @@ ARNLIBVER = 3.2.99
 
 DEFINES += ARNLIBVER=\\\"$${ARNLIBVER}\\\"
 
-greaterThan(QT_MAJOR_VERSION, 5) {
-    QT += core5compat
-} else {
-}
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 win32 {
     DEFINES += ARNBUILDDATE=\\\"$$system('echo %date%')\\\"
