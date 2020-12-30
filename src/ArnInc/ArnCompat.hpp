@@ -37,9 +37,12 @@
 #if QT_VERSION >= 0x060000
   #include <QRegularExpression>
   #include <QRegularExpressionValidator>
+  #include <QRecursiveMutex>
   #define ARN_RegExp   ArnRegExp
   #define ARN_RegExpValidator   QRegularExpressionValidator
   #define ARN_ToRegExp  toRegularExpression
+  #define ARN_RecursiveMutex    QRecursiveMutex
+  #define ARN_ModeRecursiveMutex
   #define ARN_SIZETYPE  qsizetype
 
 class ARNLIBSHARED_EXPORT ArnRegExp : public QRegularExpression
@@ -58,10 +61,15 @@ private:
 
 #else
   #include <QRegExp>
-  #include <QRegExpValidator>
+  #include <QMutex>
+  #if QT_VERSION >= 0x050000
+    #include <QRegExpValidator>
+  #endif
   #define ARN_RegExp   QRegExp
   #define ARN_RegExpValidator   QRegExpValidator
   #define ARN_ToRegExp  toRegExp
+  #define ARN_RecursiveMutex    QMutex
+  #define ARN_ModeRecursiveMutex    QMutex::Recursive
   #define ARN_SIZETYPE  int
 #endif
 

@@ -34,7 +34,6 @@
 
 #include "ArnBasicItem_p.hpp"
 #include "ArnInc/ArnAdaptItem.hpp"
-#include <QMutex>
 
 
 class ArnAdaptItemPrivate : public ArnBasicItemPrivate
@@ -45,7 +44,7 @@ public:
     virtual ~ArnAdaptItemPrivate();
 
 private:
-    mutable QRecursiveMutex  _mutex;
+    mutable ARN_RecursiveMutex  _mutex;
     ArnAdaptItem::ChangedCB  _changedCB;
     ArnAdaptItem::LinkDestroyedCB  _linkDestroyedCB;
     ArnAdaptItem::ArnEventCB  _arnEventCB;

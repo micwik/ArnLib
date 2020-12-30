@@ -36,6 +36,7 @@
 #include "Arn.hpp"
 #include "ArnBasicItem.hpp"
 #include "ArnEvent.hpp"
+#include "ArnCompat.hpp"
 #include "MQFlags.hpp"
 #include <QString>
 #include <QByteArray>
@@ -43,7 +44,6 @@
 
 class ArnAdaptItem;
 class ArnAdaptItemPrivate;
-class QRecursiveMutex;
 
 ///! Non Qt and threadsafe handle for an _Arn Data Object_.
 /*!
@@ -512,7 +512,7 @@ public:
      *  Also this mutex is using QMutex::Recursive.
      *  \return the items mutex
      */
-    QRecursiveMutex&  mutex()  const;
+    ARN_RecursiveMutex&  mutex()  const;
 
     //! Get the thread affinity of this ArnAdaptItem
     /*! The affinity is allways the same as the caller thread.
