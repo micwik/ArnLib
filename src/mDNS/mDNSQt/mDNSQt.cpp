@@ -596,7 +596,7 @@ int  arnSetupInterfaceList( mDNS *const m)
             if (Arn::debugMDNS)  qDebug() << "SetupIntfList found: nif="
                                           << interface.humanReadableName() + " ip=" + entry.ip().toString();
             if (entry.prefixLength() < 0) {
-                // MW: This is a bug in Qt for android, windows ...  (Not linux)
+                // This is a bug in some Qt for android, windows ...  (Not linux)
                 entry.setPrefixLength( flags.testFlag( QNetworkInterface::IsLoopBack) ? 8 : 24);
                 if (Arn::warningMDNS)  qWarning() << "Bad netmask: nif=" << interface.humanReadableName()
                                                   << ", asume prefixLen=" << entry.prefixLength();

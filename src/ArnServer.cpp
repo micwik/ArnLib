@@ -33,6 +33,7 @@
 #include "private/ArnServer_p.hpp"
 #include "ArnInc/ArnError.hpp"
 #include "ArnInc/ArnM.hpp"
+#include "ArnInc/ArnLib.hpp"
 #include "ArnSync.hpp"
 #include "ArnSyncLogin.hpp"
 #include "ArnItemNet.hpp"
@@ -41,6 +42,7 @@
 #include <QHostInfo>
 #include <QNetworkInterface>
 #include <QHostAddress>
+#include <QPair>
 #include <QDebug>
 
 using Arn::XStringMap;
@@ -302,11 +304,12 @@ bool  ArnServer::isDemandLoginNet( const QHostAddress& remoteAddr)  const
 {
     Q_D(const ArnServer);
 
+    QHostAddress remoteAddrV6 = QHostAddress( remoteAddr.toIPv6Address());
+
     foreach (const QString& noLoginNet, d->_noLoginNets) {
         bool  chkLocalHost = noLoginNet == "localhost";
         if (chkLocalHost || (noLoginNet == "localnet")) {
-            if ((remoteAddr == QHostAddress( QHostAddress::LocalHost))
-            ||  (remoteAddr == QHostAddress( QHostAddress::LocalHostIPv6)))
+            if (remoteAddrV6 == QHostAddress( QHostAddress::LocalHostIPv6))
                 return false;  // Localhost, ok for both localhost & localnet
 
             foreach (QNetworkInterface  interface, QNetworkInterface::allInterfaces()) {
@@ -316,15 +319,26 @@ bool  ArnServer::isDemandLoginNet( const QHostAddress& remoteAddr)  const
                     continue;
 
                 foreach (QNetworkAddressEntry  entry, interface.addressEntries()) {
-                    QAbstractSocket::NetworkLayerProtocol  prot = entry.ip().protocol();
+                    QHostAddress entryIp = entry.ip();
+                    QAbstractSocket::NetworkLayerProtocol  prot = entryIp.protocol();
                     if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
                         continue;
 
-                    if (entry.ip() == remoteAddr)  // Address to this host ip, ok for both localhost & localnet
+                    QHostAddress entryIpV6 = QHostAddress( entryIp.toIPv6Address());
+                    int prefixOffs = (prot == QAbstractSocket::IPv4Protocol) ? 96 : 0;
+                    int prefixV6   = entry.prefixLength() + prefixOffs;
+
+                    if (entry.prefixLength() < 0) {
+                        // This is a bug in some Qt for android, windows ...  (Not linux)
+                        prefixV6 = 24 + prefixOffs;
+                        qWarning() << "Bad netmask: nif=" << interface.humanReadableName()
+                                                          << ", asume prefixV6Len(=" << prefixV6;
+                    }
+
+                    if (entryIpV6 == remoteAddrV6)  // Address to this host ip, ok for both localhost & localnet
                         return false;
 
-                    QString  subNetString = entry.ip().toString() + "/" + entry.netmask().toString();
-                    if (!chkLocalHost && remoteAddr.isInSubnet( QHostAddress::parseSubnet( subNetString)))
+                    if (!chkLocalHost && remoteAddrV6.isInSubnet( entryIpV6, prefixV6))
                         return false;
                 }
             }
@@ -333,7 +347,11 @@ bool  ArnServer::isDemandLoginNet( const QHostAddress& remoteAddr)  const
             return false;
         }
         else {
-            if (remoteAddr.isInSubnet( QHostAddress::parseSubnet( noLoginNet)))
+            QPair<QHostAddress, int> subnet = QHostAddress::parseSubnet( noLoginNet);
+            QHostAddress subnetIpV6 = QHostAddress( subnet.first.toIPv6Address());
+            int prefixOffs = (subnet.first.protocol() == QAbstractSocket::IPv4Protocol) ? 96 : 0;
+            int prefixV6   = subnet.second + prefixOffs;
+            if (remoteAddrV6.isInSubnet( subnetIpV6, prefixV6))
                 return false;
         }
     }
