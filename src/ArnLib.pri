@@ -3,7 +3,7 @@ isEmpty(ARNLIB_PRI_INCLUDED) {
 ARNLIB_PRI_INCLUDED = 1
 
 # Don't forget to change in Doxygen config
-ARNLIBVER = 3.1.1
+ARNLIBVER = 3.2.99
 
 DEFINES += ARNLIBVER=\\\"$${ARNLIBVER}\\\"
 
@@ -107,10 +107,6 @@ contains(ARN, scriptauto) {
     } else {
         ARN += scriptjs
     }
-
-    ARN += scriptcommon
-    QT += qml
-    DEFINES += ARNUSE_SCRIPTJS
 }
 
 
