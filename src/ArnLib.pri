@@ -49,7 +49,9 @@ RESOURCES += \
 
 contains(ARN, server) {
     ARN += client
-    ARN += scriptauto
+    !contains(ARN, script | scriptjs) {
+        ARN += scriptauto
+    }
     QT += sql
     SOURCES += \
         $$PWD/ArnServer.cpp \

@@ -62,7 +62,7 @@ private:
 #else
   #include <QRegExp>
   #include <QMutex>
-  #if QT_VERSION >= 0x050000
+  #if (QT_VERSION >= 0x050000) && defined (QT_GUI_LIB)
     #include <QRegExpValidator>
   #endif
   #define ARN_RegExp   QRegExp
