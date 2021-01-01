@@ -158,11 +158,14 @@ bool  ArnScriptJobB::evaluateScript( const QByteArray& script, const QString& id
     QList<QByteArray>  nameList = _configObj->dynamicPropertyNames();
     foreach (QByteArray name, nameList) {
         conf += sep;
+        name.replace(".", "_");
         conf += name + ": \"" + _configObj->property( name.constData()).toString().toUtf8() + "\"" ;
         sep = ", ";
     }
     conf += "};";
     stat = _arnScr->evaluate( conf, idName, "Config");
+    if (!stat)
+        errorLog( "Config-script: " + conf );
 #endif
     if (stat) {
         stat = _arnScr->evaluate( script, idName);
