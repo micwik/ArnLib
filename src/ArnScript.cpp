@@ -225,6 +225,7 @@ ArnItemJs::ArnItemJs( QObject* parent)
 ArnItemJs::ArnItemJs( const QString& path, QObject* parent)
     : ArnItem( path, parent)
 {
+    _path = path;
     init();
 }
 
@@ -232,6 +233,7 @@ ArnItemJs::ArnItemJs( const QString& path, QObject* parent)
 ArnItemJs::ArnItemJs( const QJSValue& itemTemplate, const QString& path, QObject* parent)
     : ArnItem( arnItemFromJsValue( itemTemplate, *this), path, parent)
 {
+    _path = path;
     init();
 }
 
