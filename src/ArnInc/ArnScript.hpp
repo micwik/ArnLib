@@ -151,8 +151,8 @@ private:
     const ArnItem& arnItemFromJsValue( const QJSValue& jsValue, QObject& defParent);
 
     QString  _path;
-    int  _variantType;
-    bool  _useUuid;
+    int  _variantType = 0;
+    bool  _useUuid    = false;
 };
 
 
