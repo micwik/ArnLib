@@ -144,10 +144,11 @@ void  ArnDependOffer::requestReceived( QByteArray req)
 ArnDependPrivate::ArnDependPrivate()
 {
     QUuid  uuid = QUuid::createUuid();
-    _uuid = uuid.toString();
-    _started = false;
+    _uuid       = uuid.toString().toLatin1();  // Don't change after this assign
+    _pipeRegx   = ARN_RegExp( ARN_RegExp::escape( QString::fromLatin1( _uuid)));
+    _started    = false;
     _timerEchoRefresh = new QTimer;
-    _timerEchoRefresh->setInterval(10000);
+    _timerEchoRefresh->setInterval(2000);
 }
 
 
@@ -195,7 +196,6 @@ ArnDepend::DepSlot*  ArnDepend::setupDepSlot( const QString& serviceName)
     QString  basePath = QString( ArnDependPath) + serviceName + "/";
     DepSlot*  slot = new DepSlot;
 
-    slot->arnEchoPipe.setPipeMode();
     slot->serviceName = serviceName;
     slot->arnEchoPipe.open(   basePath + "echoPipe");
     slot->arnStateName.open(  basePath + "stateName");
@@ -242,7 +242,7 @@ void  ArnDepend::startMonitor()
 
     // Connect & check all depency slots
     foreach( DepSlot* slot, d->_depTab) {
-        connect( &slot->arnEchoPipe, SIGNAL(changed(QString)), this, SLOT(echoCheck(QString)));
+        connect( &slot->arnEchoPipe, SIGNAL(changed(QByteArray)), this, SLOT(echoCheck(QByteArray)));
         echoCheck("", slot);
     }
     d->_started = true;
@@ -253,23 +253,24 @@ void  ArnDepend::echoRefresh()
 {
     Q_D(ArnDepend);
 
-    ArnM::errorLog( QString(tr("Lost echo, doing refresh for DependEchoCheck monitor=")) + d->_name,
-                        ArnError::Warning);
+    // ArnM::errorLog( QString(tr("Lost echo, doing refresh for DependEchoCheck monitor=")) + d->_name,
+    //                     ArnError::Warning);
     foreach( DepSlot* slot, d->_depTab) {
         echoCheck("", slot);
     }
-    d->_timerEchoRefresh->stop();
 }
 
 
-void  ArnDepend::echoCheck( const QString& echo, DepSlot* slot)
+void  ArnDepend::echoCheck( const QByteArray& echo, DepSlot* slot)
 {
     Q_D(ArnDepend);
 
+    d->_timerEchoRefresh->start();  // Keep checking until finished
+
     if (Arn::debugDepend)  qDebug() << "echoCheck: monitorName=" << d->_name;
     if (slot == 0) {
-        ArnItem* arnItem = qobject_cast<ArnItem*>( sender());
-        if (arnItem)  slot = static_cast<DepSlot*>( arnItem->reference());
+        ArnPipe* arnPipe = qobject_cast<ArnPipe*>( sender());
+        if (arnPipe)  slot = static_cast<DepSlot*>( arnPipe->reference());
     }
     if (slot == 0) {
         ArnM::errorLog( QString(tr("Can't get slot for DependEchoCheck monitor=")) + d->_name,
@@ -280,14 +281,11 @@ void  ArnDepend::echoCheck( const QString& echo, DepSlot* slot)
 
     if (echo.isEmpty()) {
         if (Arn::debugDepend)  qDebug() << "echoCheck: Send request monitorName=" << d->_name << " req=" << d->_uuid;
-        slot->arnEchoPipe = d->_uuid;  // Dependency request
+        slot->arnEchoPipe.setValueOverwrite( d->_uuid, d->_pipeRegx);  // Dependency request
     }
-    else {
-        d->_timerEchoRefresh->start();  // Only when getting echo, to avoid fillup during disconnect
-    }
-    if (echo == d->_uuid) {  // Dependency echo ok
+    else if (echo == d->_uuid) {  // Dependency echo ok
         slot->isEchoOk = true;
-        disconnect( &slot->arnEchoPipe,   SIGNAL(changed(QString)), this, SLOT(echoCheck(QString)));  // Avoid more signals
+        disconnect( &slot->arnEchoPipe,   SIGNAL(changed(QByteArray)), this, SLOT(echoCheck(QByteArray)));  // Avoid more signals
         if (slot->useStateCheck) {  // Go on with state check
             connect( &slot->arnStateId,   SIGNAL(changed()), this, SLOT(stateCheck()));
             connect( &slot->arnStateName, SIGNAL(changed()), this, SLOT(stateCheck()));

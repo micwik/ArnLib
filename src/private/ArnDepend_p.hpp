@@ -32,6 +32,7 @@
 #ifndef ARNDEPEND_P_HPP
 #define ARNDEPEND_P_HPP
 
+#include "ArnInc/ArnPipe.hpp"
 #include "ArnInc/ArnItem.hpp"
 #include <QList>
 
@@ -47,7 +48,7 @@ struct ArnDependSlot
     bool  useStateCheck;
     bool  isEchoOk;
     bool  isStateOk;
-    ArnItem  arnEchoPipe;
+    ArnPipe  arnEchoPipe;
     ArnItem  arnStateName;
     ArnItem  arnStateId;
     ArnDependSlot() {
@@ -84,7 +85,9 @@ public:
 
 private:
     QList<ArnDependSlot*>  _depTab;
-    QString  _uuid;
+    QByteArray  _uuid;
+    ARN_RegExp  _pipeRegx;
+
     QString  _name;
     bool  _started;
     QTimer*  _timerEchoRefresh;

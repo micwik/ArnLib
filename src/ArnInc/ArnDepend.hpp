@@ -62,7 +62,7 @@ class ARNLIBSHARED_EXPORT ArnDependOffer : public QObject
     Q_DECLARE_PRIVATE(ArnDependOffer)
 
 public:
-    explicit ArnDependOffer( QObject* parent = 0);
+    explicit ArnDependOffer( QObject* parent = arnNullptr);
     ~ArnDependOffer();
 
     //! Advertise an available _service_
@@ -137,7 +137,7 @@ class ARNLIBSHARED_EXPORT ArnDepend : public QObject
 public:
     typedef ArnDependSlot DepSlot;
 
-    explicit ArnDepend( QObject* parent = 0);
+    explicit ArnDepend( QObject* parent = arnNullptr);
     ~ArnDepend();
 
     //! Add a dependency for a _service_
@@ -172,9 +172,9 @@ protected:
 
 private slots:
     void  echoRefresh();
-    void  echoCheck( const QString& echo, DepSlot* slot = 0);
-    void  stateCheck( DepSlot* slot = 0);
-    void  deleteSlot( void* slot = 0);
+    void  echoCheck( const QByteArray& echo, DepSlot* slot = arnNullptr);
+    void  stateCheck( DepSlot* slot = arnNullptr);
+    void  deleteSlot( void* slot = arnNullptr);
 
 private:
     void  init();
