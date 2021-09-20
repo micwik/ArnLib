@@ -365,6 +365,15 @@ const char*  EnumTxt::name()  const
 }
 
 
+int Arn::EnumTxt::enumCount()  const
+{
+    if (_metaObj.enumeratorCount() < 1)  return 0;
+
+    QMetaEnum  metaEnum = _metaObj.enumerator(0);
+    return metaEnum.keyCount();
+}
+
+
 void  EnumTxt::setupFromMetaObject()
 {
     if (_metaObj.enumeratorCount() < 1)  return;

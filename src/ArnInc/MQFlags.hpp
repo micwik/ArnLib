@@ -294,6 +294,14 @@ public:
      */
     const char*  name()  const;
 
+    //! returns number of enumerators in the enum (class)
+    /*! Example
+     *  > qDebug() << ConnectStatT::txt().enumCount();
+     *  wiil print: 5
+     *  \return the count of enumerators.
+     */
+    int  enumCount()  const;
+
     //! Copies missing enum texts from one namespace to another
     /*! The standard 0 namespace contains all enum texts as defined and can not be altered.
      *  All the other wanted namespaces can have customized enum texts, but then there
