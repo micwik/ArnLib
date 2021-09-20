@@ -464,13 +464,12 @@ public:
     void  setValue( quint64 value, int ignoreSame = Arn::SameValue::DefaultAction)
     {ArnItemB::setValue( value, ignoreSame);}
 
-public slots:
     //! Assign an _integer_ to an _Arn Data Object_
     /*! \param[in] value to be assigned
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( int value, int ignoreSame = Arn::SameValue::DefaultAction)
+    void  setValue( int value, int ignoreSame)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign an _ARNREAL_ to an _Arn Data Object_
@@ -479,9 +478,9 @@ public slots:
      *  \see setIgnoreSameValue()
      */
 #ifdef ARNREAL_FLOAT
-    void  setValue( float value, int ignoreSame = Arn::SameValue::DefaultAction)
+    void  setValue( float value, int ignoreSame)
 #else
-    void  setValue( double value, int ignoreSame = Arn::SameValue::DefaultAction)
+    void  setValue( double value, int ignoreSame)
 #endif
     {ArnItemB::setValue( value, ignoreSame);}
 
@@ -490,7 +489,7 @@ public slots:
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( bool value, int ignoreSame = Arn::SameValue::DefaultAction)
+    void  setValue( bool value, int ignoreSame)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _QString_ to an _Arn Data Object_
@@ -498,7 +497,7 @@ public slots:
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const QString& value, int ignoreSame = Arn::SameValue::DefaultAction)
+    void  setValue( const QString& value, int ignoreSame)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _QByteArray_ to an _Arn Data Object_
@@ -506,7 +505,7 @@ public slots:
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const QByteArray& value, int ignoreSame = Arn::SameValue::DefaultAction)
+    void  setValue( const QByteArray& value, int ignoreSame)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _QVariant_ to an _Arn Data Object_
@@ -514,7 +513,7 @@ public slots:
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const QVariant& value, int ignoreSame = Arn::SameValue::DefaultAction)
+    void  setValue( const QVariant& value, int ignoreSame)
     {ArnItemB::setValue( value, ignoreSame);}
 
     //! Assign a _char*_ to an _Arn Data Object_
@@ -522,8 +521,62 @@ public slots:
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
      *  \see setIgnoreSameValue()
      */
-    void  setValue( const char* value, int ignoreSame = Arn::SameValue::DefaultAction)
+    void  setValue( const char* value, int ignoreSame)
     {ArnItemB::setValue( value, ignoreSame);}
+
+public slots:
+    //! Assign an _integer_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \see setIgnoreSameValue()
+     */
+    void  setValue( int value)
+    {ArnItemB::setValue( value, Arn::SameValue::DefaultAction);}
+
+    //! Assign an _ARNREAL_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \see setIgnoreSameValue()
+     */
+#ifdef ARNREAL_FLOAT
+    void  setValue( float value)
+#else
+    void  setValue( double value)
+#endif
+    {ArnItemB::setValue( value, Arn::SameValue::DefaultAction);}
+
+    //! Assign a _bool_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \see setIgnoreSameValue()
+     */
+    void  setValue( bool value)
+    {ArnItemB::setValue( value, Arn::SameValue::DefaultAction);}
+
+    //! Assign a _QString_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \see setIgnoreSameValue()
+     */
+    void  setValue( const QString& value)
+    {ArnItemB::setValue( value, Arn::SameValue::DefaultAction);}
+
+    //! Assign a _QByteArray_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \see setIgnoreSameValue()
+     */
+    void  setValue( const QByteArray& value)
+    {ArnItemB::setValue( value, Arn::SameValue::DefaultAction);}
+
+    //! Assign a _QVariant_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \see setIgnoreSameValue()
+     */
+    void  setValue( const QVariant& value)
+    {ArnItemB::setValue( value, Arn::SameValue::DefaultAction);}
+
+    //! Assign a _char*_ to an _Arn Data Object_
+    /*! \param[in] value to be assigned
+     *  \see setIgnoreSameValue()
+     */
+    void  setValue( const char* value)
+    {ArnItemB::setValue( value, Arn::SameValue::DefaultAction);}
 
     //! Toggle the _bool_ at the _Arn Data Object_
     /*! The _Arn Data Object_ is first converted to a _bool_, then the toggled value
