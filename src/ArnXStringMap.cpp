@@ -606,7 +606,7 @@ QStringList  XStringMap::values( const char* keyPrefix)  const
 }
 
 
-MQVariantMap XStringMap::toVariantMap() const
+MQVariantMap XStringMap::toVariantMap( bool useStringVal)  const
 {
     MQVariantMap  retMap;
 
@@ -614,7 +614,8 @@ MQVariantMap XStringMap::toVariantMap() const
         const QByteArray&  key = _keyList.at(i);
         const QByteArray&  value = _valList.at(i);
         retMap.insert( QString::fromUtf8( key.constData(), key.size()),
-                       QVariant( value));
+                            useStringVal ? QVariant( QString::fromUtf8( value))
+                                         : QVariant( value));
     }
     return retMap;
 }

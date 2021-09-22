@@ -166,7 +166,7 @@ public:
     void  setEmptyKeysToValue();
     QStringList  keys()  const;
     QStringList  values( const char* keyPrefix = 0)  const;
-    MQVariantMap  toVariantMap()  const;
+    MQVariantMap  toVariantMap( bool useStringVal)  const;
 
     static void  stringCode( QByteArray& dst, const QByteArray& src);
     static void  stringDecode( QByteArray& dst, const QByteArray& src);

@@ -35,6 +35,7 @@
 #include "ArnInc/ArnInterface.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/ArnLib.hpp"
+#include "ArnInc/XStringMap.hpp"
 #include <QTimerEvent>
 #include <QThread>
 #include <QDebug>
@@ -431,6 +432,13 @@ void  ArnSapiQml::componentComplete()
 ///////// QmlMSys
 
 namespace Arn {
+
+QVariantMap QmlMSys::xstringToMap( const QString& xstring)
+{
+    XStringMap xsm( xstring.toUtf8());
+    return xsm.toVariantMap( true);
+}
+
 
 QmlMSys::QmlMSys( QObject* parent)
     : QObject( parent)

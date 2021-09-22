@@ -39,6 +39,7 @@
 #include "ArnRpc.hpp"
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
+#include <QVariantMap>
 
 #if QT_VERSION >= 0x050000
 #  include <QtQml>
@@ -603,7 +604,6 @@ private:
 };
 
 
-//! \cond ADV
 namespace Arn {
 
 class QmlMSys : public QObject
@@ -613,13 +613,20 @@ class QmlMSys : public QObject
 public:
     Q_PROPERTY( int quickTypeRun  READ quickTypeRun)
 
+public slots:
+    QVariantMap xstringToMap( const QString& xstring);
+
+//! \cond ADV
+public:
     explicit QmlMSys( QObject* parent = 0);
 
     int  quickTypeRun();
+//! \endcond
 };
 }
 
 
+//! \cond ADV
 class ArnNetworkReply : public QNetworkReply
 {
     Q_OBJECT
