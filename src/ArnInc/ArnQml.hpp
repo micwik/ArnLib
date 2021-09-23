@@ -615,6 +615,7 @@ public:
 
 public slots:
     QVariantMap xstringToMap( const QString& xstring);
+    QVariantMap xstringToMap( const QString& xstring, const QString& skipKeyList, const QString& skipValList);
 
 //! \cond ADV
 public:

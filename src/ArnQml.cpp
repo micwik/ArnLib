@@ -440,6 +440,26 @@ QVariantMap QmlMSys::xstringToMap( const QString& xstring)
 }
 
 
+QVariantMap QmlMSys::xstringToMap( const QString& xstring, const QString& skipKeyList, const QString& skipValList)
+{
+    QStringList skipKeys = skipKeyList.split( ",");
+    QStringList skipVals = skipValList.split( ",");
+    XStringMap xsm( xstring.toUtf8());
+    QVariantMap map( xsm.toVariantMap( true));
+
+    QVariantMap::iterator  i = map.begin();
+    while (i != map.end()) {
+        if (skipKeys.contains( i.key()) || skipVals.contains( i.value().toString())) {
+            i = map.erase(i);
+        }
+        else {
+            ++i;
+        }
+    }
+    return map;
+}
+
+
 QmlMSys::QmlMSys( QObject* parent)
     : QObject( parent)
 {
