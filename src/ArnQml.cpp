@@ -460,6 +460,27 @@ QVariantMap QmlMSys::xstringToMap( const QString& xstring, const QString& skipKe
 }
 
 
+QVariantMap QmlMSys::xstringToEnum( const QString& xstring )
+{
+    XStringMap xsm( xstring.toUtf8() );
+    QVariantMap  retMap;
+
+    for (int i = 0; i < xsm.size(); ++i) {
+        int enumValue = 0;
+        QByteArray key = xsm.key(i);
+        if (key.startsWith( "B" )) {
+            enumValue = 1 << key.mid( 1 ).toInt();
+        }
+        else {
+            enumValue = key.toInt();
+        }
+        QString enumerator = xsm.valueString(i);
+        retMap.insert( enumerator, QVariant( enumValue ) );
+    }
+    return retMap;
+}
+
+
 QmlMSys::QmlMSys( QObject* parent)
     : QObject( parent)
 {
