@@ -37,6 +37,7 @@
 #include "ArnItem.hpp"
 #include "ArnMonitor.hpp"
 #include "ArnRpc.hpp"
+#include "XStringMap.hpp"
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QVariantMap>
@@ -605,6 +606,103 @@ private:
 
 
 namespace Arn {
+
+class  XStringMapQml : public QObject, public QML_PARSER_STATUS, public XStringMap
+{
+    Q_OBJECT
+
+#ifdef QML_Qt4
+    Q_INTERFACES( QDeclarativeParserStatus)
+#else
+    Q_INTERFACES( QQmlParserStatus)
+#endif
+
+    //! The map serialized as xstring
+    Q_PROPERTY( QString xstring      READ toXStringString    WRITE fromXString         NOTIFY dummyNotifier)
+    //! Number of items
+    Q_PROPERTY( int size             READ size                                         NOTIFY dummyNotifier)
+
+    // XStringMap&  addNum( const QString& key, int val);
+    // XStringMap&  addNum( const QString& key, uint val);
+    // XStringMap&  addNum( const QString& key, double val, int precision = -1);
+    // XStringMap&  operator+=( const XStringMap& other);
+    // XStringMap&  operator+=( const QVariantMap& other);
+    // QByteArray  info();
+
+public slots:
+    //! Clear and free mem
+    /*!
+    */
+    void  clear()
+    {XStringMap::clear( true);}
+
+    int  indexOf( const QString& key, int from = 0)  const
+    {return XStringMap::indexOf( key, from);}
+
+    int  indexOfValue( const QString& value, int from = 0)  const
+    {return XStringMap::indexOfValue( value, from);}
+
+    QObject*  add( const QString& key, const QString& val)
+    {XStringMap::add( key, val); return this;}
+
+    QObject*  add( QObject* other);
+
+    QObject*  set( int i, const QString& val)
+    {XStringMap::set( i, val); return this;}
+
+    QObject*  set( const QString& key, const QString& val)
+    {XStringMap::set( key, val); return this;}
+
+    QString  key( int i, const QString& def = QString())  const
+    {return XStringMap::keyString( i, def);}
+
+    QString  key( const QString& value, const QString& def = QString())  const
+    {return XStringMap::keyString( value, def);}
+
+    QString  value( int i, const QString& def = QString())  const
+    {return XStringMap::valueString( i, def);}
+
+    QString  value( const QString& key, const QString& def = QString())  const
+    {return XStringMap::valueString( key, def);}
+
+    QObject*  remove( int index)
+    {XStringMap::remove( index); return this;}
+
+    QObject*  remove( const QString& key)
+    {XStringMap::remove( key); return this;}
+
+    QObject*  removeValue( const QString& val)
+    {XStringMap::removeValue( val); return this;}
+
+    void  setEmptyKeysToValue()
+    {XStringMap::setEmptyKeysToValue();}
+
+    QStringList  keys()  const
+    {return XStringMap::keys();}
+
+    QStringList  values()  const
+    {return XStringMap::values();}
+
+    QVariantMap  toMap()  const
+    {return XStringMap::toVariantMap( true);}
+
+//! \cond ADV
+public:
+    explicit XStringMapQml( QObject* parent = 0);
+
+    virtual void  classBegin();
+    virtual void  componentComplete();
+
+signals:
+    void  dummyNotifier();
+
+protected:
+//! \endcond
+
+private:
+    bool  _isCompleted;
+};
+
 
 class QmlMSys : public QObject
 {

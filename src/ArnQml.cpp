@@ -88,6 +88,7 @@ void  ArnQml::setup( QML_ENGINE* qmlEngine, ArnQml::UseFlags flags)
         qmlRegisterType<ArnItemQml>(   "ArnLib", 1, 0, "ArnItem");
         qmlRegisterType<ArnMonitorQml>("ArnLib", 1, 0, "ArnMonitor");
         qmlRegisterType<ArnSapiQml>(   "ArnLib", 1, 0, "ArnSapi");
+        qmlRegisterType<XStringMapQml>("ArnLib", 1, 0, "XStringMap");
 #ifdef QML_Qt4
         qmlRegisterType<ArnInterface>( "ArnLib", 1, 0, "Arn");
 #else
@@ -429,6 +430,37 @@ void  ArnSapiQml::componentComplete()
 
 
 
+///////// XStringMapQml
+
+XStringMapQml::XStringMapQml( QObject* parent)
+    : QObject( parent)
+{
+    _isCompleted = false;
+}
+
+
+QObject* XStringMapQml::add( QObject* other)
+{
+    XStringMapQml* xstringMapQml = qobject_cast<XStringMapQml*>( other);
+    if (xstringMapQml) {
+        XStringMap::add( *xstringMapQml);
+    }
+    return this;
+}
+
+
+void XStringMapQml::classBegin()
+{
+}
+
+
+void XStringMapQml::componentComplete()
+{
+    _isCompleted = true;
+}
+
+
+
 ///////// QmlMSys
 
 namespace Arn {
@@ -491,6 +523,7 @@ int QmlMSys::quickTypeRun()
 {
     return QML_QUICK_TYPE;
 }
+
 }
 
 

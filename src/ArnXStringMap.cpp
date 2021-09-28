@@ -347,6 +347,12 @@ XStringMap&  XStringMap::set( int i, const QByteArray& val)
 }
 
 
+XStringMap&  XStringMap::set( int i, const QString& val)
+{
+    set( i, val.toUtf8());
+}
+
+
 XStringMap&  XStringMap::set( const char* key, const QByteArray& val)
 {
     int  i = indexOf( key);
@@ -569,6 +575,18 @@ XStringMap&  XStringMap::remove( const QString& key)
 }
 
 
+XStringMap&  XStringMap::removeValue( const QByteArray& val)
+{
+    return remove( indexOfValue( val));
+}
+
+
+XStringMap&  XStringMap::removeValue( const QString& val)
+{
+    return remove( indexOfValue( val.toUtf8()));
+}
+
+
 void  XStringMap::setEmptyKeysToValue()
 {
     for (int i = 0; i < _size; ++i) {
@@ -641,6 +659,13 @@ QByteArray  XStringMap::toXString()  const
 }
 
 
+QString  XStringMap::toXStringString()  const
+{
+    QByteArray xstr = toXString();
+    return QString::fromUtf8( xstr.constData(), xstr.size());
+}
+
+
 bool  XStringMap::fromXString( const QByteArray& inXString, int size)
 {
     if (size < 0  ||  size > inXString.size()) {
@@ -683,6 +708,12 @@ bool  XStringMap::fromXString( const QByteArray& inXString, int size)
         add( key, val);
     }
     return true;
+}
+
+
+bool XStringMap::fromXString( const QString& inXString)
+{
+    return fromXString( inXString.toUtf8());
 }
 
 

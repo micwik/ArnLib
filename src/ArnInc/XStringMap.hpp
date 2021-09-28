@@ -129,6 +129,7 @@ public:
     XStringMap&  addValues( const QStringList& stringList);
 
     XStringMap&  set( int i, const QByteArray& val);
+    XStringMap&  set( int i, const QString& val);
     XStringMap&  set( const char* key, const QByteArray& val);
     XStringMap&  set( const char* key, const char* val);
     XStringMap&  set( const QByteArray& key, const QByteArray& val);
@@ -159,9 +160,13 @@ public:
     XStringMap&  remove( const char* key);
     XStringMap&  remove( const QByteArray& key);
     XStringMap&  remove( const QString& key);
+    XStringMap&  removeValue( const QByteArray& val);
+    XStringMap&  removeValue( const QString& val);
 
     QByteArray  toXString()  const;
+    QString  toXStringString()  const;
     bool  fromXString( const QByteArray& inXString, int size=-1);
+    bool  fromXString( const QString& inXString);
 
     void  setEmptyKeysToValue();
     QStringList  keys()  const;
