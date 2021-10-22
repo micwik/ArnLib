@@ -336,9 +336,9 @@ private:
         uint  _enumVal;
         quint16  _nameSpace;
         bool  _isFlag;
+        bool  _isSingleBit;  // Only for flags
 
-        EnumTxtKey( uint enumVal, quint16 nameSpace, bool isFlag)
-          {_enumVal = enumVal;  _nameSpace = nameSpace;  _isFlag = isFlag;}
+        EnumTxtKey( uint enumVal, quint16 nameSpace, bool isFlag);
         bool  operator <( const EnumTxtKey& other)  const;
     };
 
