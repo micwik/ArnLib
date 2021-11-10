@@ -4,6 +4,8 @@
 
 PROJECT = ArnLib
 
+QMAKE_CXXFLAGS += "-Wno-deprecated-declarations -Wno-deprecated-copy"
+
 # ARN += core       # Level 1: Basic Arn functionality without any tcp and syncing
 # ARN += client     # Level 2: Client TCP functionality with sync etc
 # ARN += server     # Level 3: Server TCP functionality with persistence etc

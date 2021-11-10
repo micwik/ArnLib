@@ -349,7 +349,7 @@ XStringMap&  XStringMap::set( int i, const QByteArray& val)
 
 XStringMap&  XStringMap::set( int i, const QString& val)
 {
-    set( i, val.toUtf8());
+    return set( i, val.toUtf8());
 }
 
 
