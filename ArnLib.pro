@@ -4,8 +4,6 @@
 
 PROJECT = ArnLib
 
-QMAKE_CXXFLAGS += "-Wno-deprecated-declarations -Wno-deprecated-copy"
-
 # ARN += core       # Level 1: Basic Arn functionality without any tcp and syncing
 # ARN += client     # Level 2: Client TCP functionality with sync etc
 # ARN += server     # Level 3: Server TCP functionality with persistence etc
@@ -26,7 +24,7 @@ QT -= gui
 # Usage of float as real type, default is double. Must be same in application pro-file.
 # DEFINES += ARNREAL_FLOAT
 
-QMAKE_CXXFLAGS_WARN_ON = -Wall -Wno-deprecated-declarations
+QMAKE_CXXFLAGS_WARN_ON = -Wall -Wno-deprecated-declarations -Wno-deprecated-copy
 
 include(src/ArnLib.pri)
 

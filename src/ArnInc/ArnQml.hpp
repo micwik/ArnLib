@@ -683,7 +683,7 @@ public slots:
     QStringList  values()  const
     {return XStringMap::values();}
 
-    QVariantMap  toMap()  const
+    MQVariantMap  toMap()  const
     {return XStringMap::toVariantMap( true);}
 
 //! \cond ADV
