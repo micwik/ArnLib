@@ -465,21 +465,21 @@ void XStringMapQml::componentComplete()
 
 namespace Arn {
 
-QVariantMap QmlMSys::xstringToMap( const QString& xstring)
+MQVariantMap QmlMSys::xstringToMap( const QString& xstring)
 {
     XStringMap xsm( xstring.toUtf8());
     return xsm.toVariantMap( true);
 }
 
 
-QVariantMap QmlMSys::xstringToMap( const QString& xstring, const QString& skipKeyList, const QString& skipValList)
+MQVariantMap QmlMSys::xstringToMap( const QString& xstring, const QString& skipKeyList, const QString& skipValList)
 {
     QStringList skipKeys = skipKeyList.split( ",");
     QStringList skipVals = skipValList.split( ",");
     XStringMap xsm( xstring.toUtf8());
-    QVariantMap map( xsm.toVariantMap( true));
+    MQVariantMap map( xsm.toVariantMap( true));
 
-    QVariantMap::iterator  i = map.begin();
+    MQVariantMap::iterator  i = map.begin();
     while (i != map.end()) {
         if (skipKeys.contains( i.key()) || skipVals.contains( i.value().toString())) {
             i = map.erase(i);
@@ -492,10 +492,10 @@ QVariantMap QmlMSys::xstringToMap( const QString& xstring, const QString& skipKe
 }
 
 
-QVariantMap QmlMSys::xstringToEnum( const QString& xstring )
+MQVariantMap QmlMSys::xstringToEnum( const QString& xstring )
 {
     XStringMap xsm( xstring.toUtf8() );
-    QVariantMap  retMap;
+    MQVariantMap  retMap;
 
     for (int i = 0; i < xsm.size(); ++i) {
         int enumValue = 0;

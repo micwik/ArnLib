@@ -36,8 +36,10 @@
 
 #if QT_VERSION >= 0x060000
   #include <QRegularExpression>
-  #include <QRegularExpressionValidator>
   #include <QRecursiveMutex>
+  #if defined (QT_GUI_LIB)
+    #include <QRegularExpressionValidator>
+  #endif
   #define ARN_RegExp   ArnRegExp
   #define ARN_RegExpValidator   QRegularExpressionValidator
   #define ARN_ToRegExp  toRegularExpression
