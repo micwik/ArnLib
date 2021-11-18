@@ -30,7 +30,8 @@ SOURCES += \
     $$PWD/Arn.cpp \
     $$PWD/ArnLib.cpp \
     $$PWD/MQFlags.cpp \
-    $$PWD/ArnCompat.cpp
+    $$PWD/ArnCompat.cpp \
+    $$PWD/ArnMath.cpp
 
 HEADERS += \
     $$PWD/ArnInc/ArnLib_global.hpp \
@@ -39,6 +40,7 @@ HEADERS += \
     $$PWD/ArnInc/Arn.hpp \
     $$PWD/ArnInc/ArnLib.hpp \
     $$PWD/ArnInc/MQFlags.hpp \
+    $$PWD/ArnInc/Math.hpp \
     $$PWD/ArnInc/ArnCompat.hpp
 
 RESOURCES += \
