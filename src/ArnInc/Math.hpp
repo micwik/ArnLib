@@ -42,8 +42,41 @@
 #ifndef ARN_MATH_H
 #define ARN_MATH_H
 
+#include <QtGlobal>
+
+
 namespace Arn
 {
+    int  _mod_i( int x, int y);
+    qlonglong  _mod_ll( qlonglong x, qlonglong y);
+    int  _log2_u( uint x);
+    int  _log2_ull( qulonglong x);
+
+    template <typename T>
+    inline T mod( T x, T y)
+    {
+        return (sizeof(T) == sizeof(qlonglong)) ? T( _mod_ll( qlonglong( x), qlonglong( y)))
+                                                : T( _mod_i( int( x), int( y)));
+    }
+
+    template <typename T>
+    T  circVal( T x, T lo, T hi)
+    {
+        return mod( x - lo, hi - lo) + lo;
+    }
+
+    template <typename T>
+    bool isPower2( T x)
+    {
+        return x && ((x & (x - 1)) == 0);
+    }
+
+    template <typename T>
+    inline int log2( T x)
+    {
+        return (sizeof(T) == sizeof(qulonglong)) ? _log2_ull( qulonglong( x)) : _log2_u( uint( x));
+    }
+
     template <typename T>
     T minLim( const T& x, const T& lim)
     {
@@ -61,9 +94,6 @@ namespace Arn
     {
         return x < min ? min : (x > max ? max : x);
     }
-
-    int  mod( int x, int y);
-    int  circVal( int x, int lo, int hi);
 }
 
 #endif // ARN_MATH_H

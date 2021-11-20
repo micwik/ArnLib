@@ -42,16 +42,68 @@
 #include "ArnInc/Math.hpp"
 
 
-int  Arn::mod( int x, int y)
+namespace Arn {
+
+//// Helper special
+template <typename T>
+static inline T _modGeneric( T x, T y)
 {
-    int  remainder = x % y;
+    T  remainder = x % y;
     if (((x >= 0) && (y >= 0)) || ((x <= 0) && (y <= 0)))
         return remainder;
     return remainder == 0 ? 0 : remainder + y;
 }
 
 
-int  Arn::circVal( int x, int lo, int hi)
+template <typename T>
+static inline int _log2Generic( T x)
 {
-    return Arn::mod( x - lo, hi - lo) + lo;
+    uint bits = sizeof(T) * 4;
+    uint n = 0;
+    while (x > 1) {
+        if (x >> bits) {
+            x >>= bits;
+            n += bits;
+        }
+        bits >>= 1;
+    }
+    return int( n);
+}
+
+
+int  _mod_i( int x, int y)
+{
+    return _modGeneric( x, y);
+}
+
+
+qlonglong  _mod_ll( qlonglong x, qlonglong y)
+{
+    return _modGeneric( x, y);
+}
+
+
+int  _log2_u( uint x)
+{
+    if (x == 0)  return -1;
+
+#ifdef __GNUC__
+    return (sizeof(uint) * 8) - 1 - __builtin_clz( x);
+#else
+    return _log2Generic( x);
+#endif
+}
+
+
+int  _log2_ull( qulonglong x)
+{
+    if (x == 0)  return -1;
+
+#ifdef __GNUC__
+    return (sizeof(qulonglong) * 8) - 1 - __builtin_clzll( x);
+#else
+    return _log2Generic( x);
+#endif
+}
+
 }
