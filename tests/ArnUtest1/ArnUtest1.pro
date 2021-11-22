@@ -9,9 +9,9 @@ CONFIG += ArnLibCompile
 # Usage of internal mDNS code (no external dependency)
 # CONFIG += mDnsIntern
 
-QT       += testlib
-
 QT       -= gui
+QT       += testlib
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 TARGET = ArnUtest1
 CONFIG   += console
@@ -19,10 +19,16 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-greaterThan(QT_MAJOR_VERSION, 4) {
-    ARNLIB = Arn5
+QMAKE_CXXFLAGS_WARN_ON = -Wall -Wno-deprecated-declarations -Wno-deprecated-copy
+
+greaterThan(QT_MAJOR_VERSION, 5) {
+    ARNLIB = Arn6
 } else {
-    ARNLIB = Arn4
+    greaterThan(QT_MAJOR_VERSION, 4) {
+        ARNLIB = Arn5
+    } else {
+        ARNLIB = Arn4
+    }
 }
 
 ArnLibCompile {

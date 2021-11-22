@@ -1,1 +1,4 @@
 ArnUtest1
+moc_*
+*.moc
+qrc_*

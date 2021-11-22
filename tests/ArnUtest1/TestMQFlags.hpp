@@ -1,4 +1,4 @@
-#ifndef TESTMQFLAGS_HPP
+﻿#ifndef TESTMQFLAGS_HPP
 #define TESTMQFLAGS_HPP
 
 #include <ArnInc/MQFlags.hpp>
@@ -21,9 +21,7 @@ public:
     };
     MQ_DECLARE_FLAGSTXT( AllowClassT)
 
-
     enum NS {NsEnum, NsHuman};
-
     MQ_DECLARE_ENUM_NSTXT(
         { NsHuman, Read,   "Allow Read" },
         { NsHuman, Delete, "Allow Delete" }
@@ -48,7 +46,6 @@ public:
     MQ_DECLARE_ENUMTXT( DataTypeT)
 
     enum NS {NsEnum, NsHuman};
-
     MQ_DECLARE_ENUM_NSTXT(
         { NsHuman, ByteArray, "Bytes type" },
         { NsHuman, Variant,   "Variable type" }
@@ -81,6 +78,62 @@ public:
     )
 };
 }
+
+class AbsPosT {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        None = 0x00,
+        Apa  = 0x10,
+        Bepa = 0x40,
+        Cepa = 0x50
+    };
+    MQ_DECLARE_ENUMTXT( AbsPosT)
+
+    enum NS {NsEnum, NsHuman};
+    MQ_DECLARE_ENUM_NSTXT(
+        { NsHuman, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }
+    )
+};
+
+class SubEClassT {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        None    = 0x000,
+        Flag1   = 0x001,
+        DTypeB0 = 0x002,
+        DTypeB1 = 0x004,
+        DTypeB2 = 0x008,
+        APosB0  = 0x010,
+        Flag2   = 0x020,
+        APosB1  = 0x040,
+        Flag3   = 0x100,
+        //! SubEnum DataType
+        DType   = DTypeB0 | DTypeB1 | DTypeB2,
+        APos    = APosB0 | APosB1,
+        //! Convenience, all flags
+        FlagAll = Flag1 | Flag2 | Flag3
+    };
+    MQ_DECLARE_FLAGSTXT( SubEClassT)
+
+    MQ_DECLARE_SUBETXT(
+        MQ_SUBETXT_ADD_RELDEF( DataTypeT, DType, DTypeB0),
+        MQ_SUBETXT_ADD_ABSDEF( AbsPosT, APos)
+    )
+    MQ_SUBETXT_ADD_RELOP( DataTypeT, DType, DTypeB0)
+    MQ_SUBETXT_ADD_ABSOP( AbsPosT, APos)
+
+    enum NS {NsEnum, NsHuman};
+    MQ_DECLARE_ENUM_NSTXT(
+        { NsHuman, Flag1, "Flag nr1" },
+        { NsHuman, DType, "The data type" },
+        { NsHuman, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }
+    )
+};
+MQ_DECLARE_OPERATORS_FOR_FLAGS( SubEClassT)
 
 class UsageT {
 public:

@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2019 Michael Wiklund.
+// Copyright (C) 2010-2021 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -41,6 +41,7 @@
 
 #include "ArnInc/MQFlags.hpp"
 #include <ArnInc/XStringMap.hpp>
+#include <ArnInc/Math.hpp>
 #include <QMetaType>
 #include <QMetaObject>
 #include <QMetaEnum>
@@ -50,21 +51,25 @@
 
 namespace Arn {
 
-bool  isPower2( uint x)
+EnumTxt::SubEnumEntry::SubEnumEntry( const EnumTxt& subEnum, uint bitMask, uint factor)
 {
-    return x && ((x & (x - 1)) == 0);
+    _subEnum = &subEnum;
+    _bitMask = bitMask;
+    _bitPos  = log2( factor | 1);
 }
 
 
-EnumTxt::EnumTxt( const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* initTxt,
+EnumTxt::EnumTxt( const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* initTxt, const _InitSubEnum* initSubEnum,
                   const char* name)
     : _metaObj( metaObj)
 {
-    _txtStore = 0;
-    _isFlag   = isFlag;
-    _name     = name;
+    _txtStore   = arnNullptr;
+    _subEnumTab = arnNullptr;
+    _isFlag     = isFlag;
+    _name       = name;
     setupFromMetaObject();
     setupTxt( initTxt);
+    setupSubEnum( initSubEnum);
 }
 
 
@@ -113,31 +118,59 @@ QString  EnumTxt::getTxtString( int enumVal, quint16 nameSpace)  const
 }
 
 
-int  EnumTxt::getEnumVal( const char* txt, int defaultVal, quint16 nameSpace)
+int  EnumTxt::getEnumVal( const char* txt, int defaultVal, quint16 nameSpace, bool* isFound)  const
 {
     EnumTxtKey  keyStart( _isFlag ? 1        : uint(INT_MIN), nameSpace, _isFlag);
     EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : uint(INT_MAX), nameSpace, _isFlag);
 
-    QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
+    QMap<EnumTxtKey,const char*>::const_iterator  i = _enumTxtTab.lowerBound( keyStart);
     while (i != _enumTxtTab.end()) {
         const EnumTxtKey&  keyStored = i.key();
         if (keyStop < keyStored)  break;
 
-        if (qstrcmp( i.value(), txt) == 0)  return int(keyStored._enumVal);  // Matching txt
+        if (qstrcmp( i.value(), txt) == 0) {
+            if (isFound)  *isFound = true;
+            return int(keyStored._enumVal);  // Matching txt
+        }
         ++i;
     }
 
+    if (isFound)  *isFound = false;
     return defaultVal;  // Not found
 }
 
 
-int  EnumTxt::getEnumVal( const QString& txt, int defaultVal, quint16 nameSpace)
+int  EnumTxt::getEnumVal( const QString& txt, int defaultVal, quint16 nameSpace, bool* isFound)  const
 {
-    return getEnumVal( txt.toUtf8().constData(), defaultVal, nameSpace);
+    return getEnumVal( txt.toUtf8().constData(), defaultVal, nameSpace, isFound);
 }
 
 
-void  EnumTxt::addBitSet( XStringMap& xsm, quint16 nameSpace, bool neverHumanize)
+bool EnumTxt::getSubEnumVal( const char* txt, int& subEnumVal, uint& bitMask, quint16 nameSpace)  const
+{
+    if (_subEnumTab) {
+        foreach (const SubEnumEntry& entry, *_subEnumTab) {
+            bool isFound = false;
+            int enumVal = entry._subEnum->getEnumVal( txt, -1, nameSpace, &isFound);
+            if (isFound) {
+                subEnumVal = enumVal << entry._bitPos;
+                bitMask    = entry._bitMask;
+                return true;
+            }
+        }
+    }
+
+    return false;  // Not found
+}
+
+
+bool EnumTxt::getSubEnumVal( const QString& txt, int& subEnumVal, uint& bitMask, quint16 nameSpace) const
+{
+    return getSubEnumVal( txt.toUtf8().constData(), subEnumVal, bitMask, nameSpace);
+}
+
+
+void  EnumTxt::addBitSet( XStringMap& xsm, quint16 nameSpace, bool neverHumanize)  const
 {
     if (!_isFlag)  return;  // Only for flags
 
@@ -145,20 +178,22 @@ void  EnumTxt::addBitSet( XStringMap& xsm, quint16 nameSpace, bool neverHumanize
     EnumTxtKey  keyStop( UINT_MAX, nameSpace, _isFlag);
     uint  bitNum = 0;
 
-    QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
-    while (i != _enumTxtTab.end()) {
+    QMap<EnumTxtKey,const char*>::const_iterator  i = _enumTxtTab.lowerBound( keyStart);
+    for (; i != _enumTxtTab.end(); ++i) {
         const EnumTxtKey&  keyStored = i.key();
         if (keyStop < keyStored)  break;
 
         uint  enumValStored = keyStored._enumVal;
+        if (_subEnumMask & enumValStored)  // This is part of subEnum
+            continue;
+
         QByteArray enumValTxt;
         if (keyStored._isSingleBit) {
-            while (uint(1 << bitNum) < enumValStored)
-                ++bitNum;
+            bitNum     = log2( enumValStored);
             enumValTxt = "B" + QByteArray::number( bitNum);
         }
         else {
-            enumValTxt = QByteArray::number( enumValStored);
+            enumValTxt = numStr( enumValStored);
         }
 
         QByteArray  enumTxt;
@@ -170,12 +205,31 @@ void  EnumTxt::addBitSet( XStringMap& xsm, quint16 nameSpace, bool neverHumanize
         }
 
         xsm.add( enumValTxt, enumTxt);
-        ++i;
+    }
+
+    if (_subEnumTab) {
+        XStringMap xsmSub;
+        int subEnumIdx = 0;
+        foreach (const SubEnumEntry& entry, *_subEnumTab) {
+            uint bitMask = entry._bitMask;
+            QByteArray enumValTxt = "SE" + QByteArray::number( subEnumIdx) + ":" + numStr( bitMask);
+            QByteArray enumTxt    = getTxt( bitMask, nameSpace);
+            xsm.add( enumValTxt, enumTxt);
+
+            xsmSub.clear();
+            entry._subEnum->addEnumSet( xsmSub, nameSpace, neverHumanize);
+            for (int i = 0; i < xsmSub.size(); ++i) {
+                uint enumVal = (xsmSub.keyRef( i).toInt() << entry._bitPos) & bitMask;
+                enumValTxt = "E" + QByteArray::number( subEnumIdx) + ":" + numStr( enumVal);
+                xsm.add( enumValTxt, xsmSub.valueRef( i));
+            }
+            ++subEnumIdx;
+        }
     }
 }
 
 
-QString  EnumTxt::getBitSet( quint16 nameSpace, bool neverHumanize)
+QString  EnumTxt::getBitSet( quint16 nameSpace, bool neverHumanize)  const
 {
     if (!_isFlag)  return QString();  // Only for flags
 
@@ -185,7 +239,7 @@ QString  EnumTxt::getBitSet( quint16 nameSpace, bool neverHumanize)
 }
 
 
-QString  EnumTxt::flagsToString( int val, quint16 nameSpace)
+QString  EnumTxt::flagsToString( int val, quint16 nameSpace)  const
 {
     if (!_isFlag)  return QString();  // Only for flags
 
@@ -193,24 +247,33 @@ QString  EnumTxt::flagsToString( int val, quint16 nameSpace)
 }
 
 
-QStringList  EnumTxt::flagsToStringList( int val, quint16 nameSpace)
+QStringList  EnumTxt::flagsToStringList( int val, quint16 nameSpace)  const
 {
     if (!_isFlag)  return QStringList();  // Only for flags
 
     uint maxBitVal = (UINT_MAX >> 1) + 1;
-    EnumTxtKey  keyStart( 1,        nameSpace, _isFlag);
-    EnumTxtKey  keyStop( maxBitVal, nameSpace, _isFlag);
+    EnumTxtKey  keyStart( 1,        nameSpace, _isFlag);  // Zero is skipped
+    EnumTxtKey  keyStop( maxBitVal, nameSpace, _isFlag);  // Combined bits are skipped
     QStringList  retVal;
 
-    QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
-    while (i != _enumTxtTab.end()) {
+    QMap<EnumTxtKey,const char*>::const_iterator  i = _enumTxtTab.lowerBound( keyStart);
+    for (; i != _enumTxtTab.end(); ++i) {
         const EnumTxtKey&  keyStored = i.key();
         if (keyStop < keyStored)  break;
 
-        if (uint( val) & keyStored._enumVal) {
+        uint enumValStored = keyStored._enumVal;
+        if (_subEnumMask & enumValStored)
+            continue;
+
+        if (uint( val) & enumValStored) {
             retVal += QString::fromUtf8( i.value());
         }
-        ++i;
+    }
+    if (_subEnumTab) {
+        foreach (const SubEnumEntry& entry, *_subEnumTab) {
+            int subEnum = (uint( val) & entry._bitMask) >> entry._bitPos;
+            retVal += entry._subEnum->getTxt( subEnum, nameSpace);
+        }
     }
 
     return retVal;
@@ -235,25 +298,45 @@ int  EnumTxt::flagsFromStringList( const QStringList& flagStrings, quint16 nameS
     int  retVal = 0;
 
     QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
-    while (i != _enumTxtTab.end()) {
+    for (; i != _enumTxtTab.end(); ++i) {
         const EnumTxtKey&  keyStored = i.key();
         if (keyStop < keyStored)  break;
 
+        uint enumValStored = keyStored._enumVal;
+        if (_subEnumMask & enumValStored)
+            continue;
+
         if (flagStrings.contains( QString::fromUtf8( i.value())))
-            retVal |= keyStored._enumVal;
-        ++i;
+            retVal |= enumValStored;
+    }
+    if (_subEnumTab) {
+        foreach (const SubEnumEntry& entry, *_subEnumTab) {
+            EnumTxtKey  keyStart( uint(INT_MIN), nameSpace, false);
+            EnumTxtKey  keyStop(  uint(INT_MAX), nameSpace, false);
+            QMap<EnumTxtKey,const char*>::const_iterator  j = entry._subEnum->_enumTxtTab.lowerBound( keyStart);
+            for (; true; ++j) {
+                const EnumTxtKey&  keyStored = j.key();
+                if (keyStop < keyStored)  break;
+
+                if (flagStrings.contains( QString::fromUtf8( j.value()))) {
+                    retVal &= ~entry._bitMask;
+                    retVal |= (keyStored._enumVal << entry._bitPos) & entry._bitMask;
+                    break;
+                }
+            }
+        }
     }
 
     return retVal;
 }
 
 
-void  EnumTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace, bool neverHumanize)
+void  EnumTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace, bool neverHumanize)  const
 {
     EnumTxtKey  keyStart( _isFlag ? 1        : uint(INT_MIN), nameSpace, _isFlag);
     EnumTxtKey  keyStop(  _isFlag ? UINT_MAX : uint(INT_MAX), nameSpace, _isFlag);
 
-    QMap<EnumTxtKey,const char*>::iterator  i = _enumTxtTab.lowerBound( keyStart);
+    QMap<EnumTxtKey,const char*>::const_iterator  i = _enumTxtTab.lowerBound( keyStart);
     while (i != _enumTxtTab.end()) {
         const EnumTxtKey&  keyStored = i.key();
         if (keyStop < keyStored)  break;
@@ -272,11 +355,23 @@ void  EnumTxt::addEnumSet( XStringMap& xsm, quint16 nameSpace, bool neverHumaniz
 }
 
 
-QString  EnumTxt::getEnumSet( quint16 nameSpace, bool neverHumanize)
+QString  EnumTxt::getEnumSet( quint16 nameSpace, bool neverHumanize)  const
 {
     XStringMap  xsm;
     addEnumSet( xsm, nameSpace, neverHumanize);
     return QString::fromUtf8( xsm.toXString());
+}
+
+
+void EnumTxt::addSubEnum( const EnumTxt& subEnum, uint bitMask, uint factor)
+{
+    if (subEnum.isFlag())  return;  // Not allowed with flags as subEnum
+
+    if (!_subEnumTab)
+        _subEnumTab = new QList<SubEnumEntry>;
+    SubEnumEntry entry( subEnum, bitMask, factor);
+    *_subEnumTab += entry;
+    _subEnumMask |= bitMask;
 }
 
 
@@ -366,6 +461,30 @@ void  EnumTxt::setupTxt( const _InitEnumTxt* initTxt)
         else
             setMissingTxt( initTxt[i].ns, initTxt[i].enumVal);
     }
+}
+
+
+void EnumTxt::setupSubEnum( const _InitSubEnum* initSubEnum)
+{
+    if (!initSubEnum)  return;  // Nothing to setup
+
+    for (int i = 0; initSubEnum[i].enumTxtClass; ++i) {
+        addSubEnum( *initSubEnum[i].enumTxtClass, initSubEnum[i].mask, initSubEnum[i].factor);
+    }
+}
+
+
+QByteArray EnumTxt::numStr( uint num)
+{
+    if (num < 10)
+        return QByteArray::number( num);
+    else
+        return "0x" + QByteArray::number( num, 16);
+}
+
+bool EnumTxt::isFlag() const
+{
+    return _isFlag;
 }
 
 

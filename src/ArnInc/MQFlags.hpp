@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2019 Michael Wiklund.
+// Copyright (C) 2010-2021 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -42,13 +42,16 @@
 #ifndef MQFLAGS_HPP
 #define MQFLAGS_HPP
 
+#include "ArnLib_global.hpp"
 #include <QFlags>
 #include <QMap>
 #include <QStringList>
 #include <QObject>
+#include <QDebug>
 
 namespace Arn {
 class XStringMap;
+class EnumTxt;
 }
 
 struct QMetaObject;
@@ -56,14 +59,17 @@ struct QMetaObject;
 
 namespace Arn {
 
-bool  isPower2( uint x);
-
-
 typedef struct {
     int  ns;
     int  enumVal;
     const char*  enumTxt;
 } _InitEnumTxt;
+
+typedef struct {
+    EnumTxt*  enumTxtClass;
+    uint  mask;
+    uint  factor;
+} _InitSubEnum;
 
 
 //! Class Enum text.
@@ -118,7 +124,7 @@ public:
 class EnumTxt
 {
 public:
-    EnumTxt( const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* initTxt,
+    EnumTxt( const QMetaObject& metaObj, bool isFlag, const _InitEnumTxt* initTxt, const _InitSubEnum* initSubEnum,
              const char* name);
 
     void  setTxtRef( const char* txt, int enumVal, quint16 nameSpace);
@@ -170,20 +176,44 @@ public:
     /*! \param[in] txt is the enum text.
      *  \param[in] defaultVal is the returned value when txt is not found.
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \param[out] isFound returns status when pointer is none null.
      *  \return the enum value.
      *  \see setTxt();
      */
-    int  getEnumVal( const char* txt, int defaultVal = 0, quint16 nameSpace = 0);
+    int  getEnumVal( const char* txt, int defaultVal = 0, quint16 nameSpace = 0, bool* isFound = arnNullptr)  const;
 
     //! Returns the enum value for a text in a namespace.
     /*! \param[in] txt is the enum text.
      *  \param[in] defaultVal is the returned value when txt is not found.
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \param[out] isFound returns status when pointer is none null.
      *  \return the enum value.
      *  \see setTxt();
      *  \see setTxtString();
      */
-    int  getEnumVal( const QString& txt, int defaultVal = 0, quint16 nameSpace = 0);
+    int  getEnumVal( const QString& txt, int defaultVal = 0, quint16 nameSpace = 0, bool* isFound = arnNullptr)  const;
+
+    //! Returns the enum value and mask for a subEnum text in a namespace.
+    /*! \param[in] txt is the subEnum text.
+     *  \param[out] subEnumVal is the returned value when txt is found as a subEnum.
+     *  \param[out] bitMask is the returned value when txt is found as a subEnum.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \retval is true when txt is found as a subEnum.
+     *  \see setTxt();
+     *  \see setTxtString();
+     */
+    bool  getSubEnumVal( const char* txt, int& subEnumVal, uint& bitMask, quint16 nameSpace = 0)  const;
+
+    //! Returns the enum value and mask for a subEnum text in a namespace.
+    /*! \param[in] txt is the subEnum text.
+     *  \param[out] subEnumVal is the returned value when txt is found as a subEnum.
+     *  \param[out] bitMask is the returned value when txt is found as a subEnum.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \retval is true when txt is found as a subEnum.
+     *  \see setTxt();
+     *  \see setTxtString();
+     */
+    bool  getSubEnumVal( const QString& txt, int& subEnumVal, uint& bitMask, quint16 nameSpace = 0)  const;
 
     //! Adds bit set for enum flags to a XStringMap
     /*! <b>Example</b> \n \code
@@ -197,7 +227,7 @@ public:
      *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
      *  \see humanize()
      */
-    void  addBitSet( Arn::XStringMap& xsm, quint16 nameSpace = 0, bool neverHumanize = false);
+    void  addBitSet( Arn::XStringMap& xsm, quint16 nameSpace = 0, bool neverHumanize = false)  const;
 
     //! returns the bit set string for enum flags
     /*! Example
@@ -208,7 +238,7 @@ public:
      *  \return the bit set string.
      *  \see humanize()
      */
-    QString  getBitSet( quint16 nameSpace = 0, bool neverHumanize = false);
+    QString  getBitSet( quint16 nameSpace = 0, bool neverHumanize = false)  const;
 
     //! returns text string for enum flags
     /*! <b>Example</b> \n \code
@@ -221,7 +251,7 @@ public:
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
      *  \return the flags text string.
      */
-    QString  flagsToString( int val, quint16 nameSpace = 0);
+    QString  flagsToString( int val, quint16 nameSpace = 0)  const;
 
     //! returns string list for enum flags
     /*! <b>Example</b> \n \code
@@ -234,7 +264,7 @@ public:
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
      *  \return the flags string list.
      */
-    QStringList  flagsToStringList( int val, quint16 nameSpace = 0);
+    QStringList  flagsToStringList( int val, quint16 nameSpace = 0)  const;
 
     //! returns enum flags from string
     /*! <b>Example</b> \n \code
@@ -273,7 +303,7 @@ public:
      *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
      *  \see humanize()
      */
-    void  addEnumSet( Arn::XStringMap& xsm, quint16 nameSpace = 0, bool neverHumanize = false);
+    void  addEnumSet( Arn::XStringMap& xsm, quint16 nameSpace = 0, bool neverHumanize = false)  const;
 
     //! returns the enum set string
     /*! Example
@@ -284,7 +314,18 @@ public:
      *  \return the enum set string.
      *  \see humanize()
      */
-    QString  getEnumSet( quint16 nameSpace = 0, bool neverHumanize = false);
+    QString  getEnumSet( quint16 nameSpace = 0, bool neverHumanize = false)  const;
+
+    //! Adds an other EnumTxt as a subEnum to this flag EnumTxt
+    /*! <b>Example</b> \n \code
+     *  MyFlags::txt().addSubEnum( ConnectStatT::txt(), MyFlags::ConnStat, MyFlags::ConnStatB0);
+     *  \endcode
+     *  \param[in] subEnum is the other EnumTxt to be included as a subEnum.
+     *  \param[in] bitMask is used for selecting the subEnum among the flags.
+     *  \param[in] factor is multiplying the base enum before it is masked in as subEnum to flags.
+     *  \return the flags enum value.
+     */
+    void  addSubEnum( const EnumTxt& subEnum, uint bitMask, uint factor);
 
     //! returns the name of the enum (class)
     /*! Example
@@ -331,6 +372,11 @@ public:
      */
     static QString  humanize( const QString& txt);
 
+    //! Returns true if this is a flag usage.
+    /*! \retval is true when this is a flag, false when ordinary enum.
+     */
+    bool isFlag() const;
+
 private:
     struct EnumTxtKey {
         uint  _enumVal;
@@ -341,16 +387,26 @@ private:
         EnumTxtKey( uint enumVal, quint16 nameSpace, bool isFlag);
         bool  operator <( const EnumTxtKey& other)  const;
     };
+    struct SubEnumEntry {
+        const EnumTxt* _subEnum;
+        uint  _bitMask;
+        uchar  _bitPos;
+        SubEnumEntry( const EnumTxt& subEnum, uint bitMask, uint factor);
+    };
 
     void  setTxtRefAny( const char* txt, int enumVal, quint16 nameSpace);
     void  setupFromMetaObject();
     void  setupTxt( const _InitEnumTxt* initTxt);
+    void  setupSubEnum( const _InitSubEnum* initSubEnum);
+    static QByteArray numStr( uint num);
 
     const QMetaObject&  _metaObj;
     QMap<EnumTxtKey,const char*>  _enumTxtTab;
     QList<QByteArray>*  _txtStore;
-    bool  _isFlag;
+    QList<SubEnumEntry>*  _subEnumTab;
     const char*  _name;
+    uint _subEnumMask;
+    bool  _isFlag;
 };
 
 }
@@ -370,6 +426,7 @@ private:
     inline bool  is(E e)  const {return f.testFlag(e);} \
     inline bool  isAny(E e)  const {return ((f & e) != 0) && (e != 0 || f == 0 );} \
     inline FEStruct&  set(E e, bool v_ = true)  {f = v_ ? (f | e) : (f & ~e); return *this;} \
+    inline void  setBits(E e, int v_)  {f = (f & ~e) | E(v_);} \
     inline static FEStruct  fromInt( int v_)  {return FEStruct( F( v_));} \
     inline int  toInt()  const {return f;} \
     inline operator int()  const {return f;} \
@@ -378,9 +435,10 @@ private:
 
 #define MQ_DECLARE_FLAGSTXT( FEStruct) \
     MQ_DECLARE_FLAGS( FEStruct) \
-    static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( staticMetaObject, true, _setNs(0), \
+    static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( staticMetaObject, true, _setNs(0), _setSe(0), \
                                                           #FEStruct); return in;} \
-    inline static const Arn::_InitEnumTxt* _setNs( const Arn::_InitEnumTxt* ieTxt) {return ieTxt;} \
+    inline static const Arn::_InitEnumTxt* _setNs( const Arn::_InitEnumTxt* ieTxt)  {return ieTxt;} \
+    inline static const Arn::_InitSubEnum* _setSe( const Arn::_InitSubEnum* isEnum) {return isEnum;} \
     inline static const char*  name()  {return txt().name();} \
     inline QString  toString( quint16 nameSpace = 0)  const {return txt().flagsToString( f, nameSpace);} \
     inline static FEStruct  fromString( const QString& text, quint16 nameSpace = 0) \
@@ -390,10 +448,30 @@ private:
 #define MQ_DECLARE_FLAGS_NSTXT(...) \
     static const Arn::_InitEnumTxt* _setNs(int dummy) { \
         Q_UNUSED(dummy) \
-        static Arn::_InitEnumTxt  initTxt[] = { __VA_ARGS__ , { 0, 0, 0 }}; \
+        static Arn::_InitEnumTxt  initTxt[] = { __VA_ARGS__ , { 0, 0, arnNullptr }}; \
         return initTxt; \
     };
 
+#define MQ_DECLARE_SUBETXT(...) \
+    static const Arn::_InitSubEnum* _setSe( int dummy) { \
+        Q_UNUSED(dummy) \
+        static Arn::_InitSubEnum  initSubEnum[] = { __VA_ARGS__ , { arnNullptr, 0, 0 }}; \
+        return initSubEnum; \
+    };
+
+#define MQ_SUBETXT_ADD_RELDEF( EStruct, Mask, Factor) \
+    { &EStruct::txt(), Mask, Factor}
+
+#define MQ_SUBETXT_ADD_ABSDEF( EStruct, Mask) \
+    MQ_SUBETXT_ADD_RELDEF( EStruct, Mask, 1)
+
+#define MQ_SUBETXT_ADD_RELOP( EStruct, Mask, Factor) \
+    inline void setSubEnum( EStruct::E v_) { \
+        setBits( Mask, v_ * Factor); \
+    }
+
+#define MQ_SUBETXT_ADD_ABSOP( EStruct, Mask) \
+    MQ_SUBETXT_ADD_RELOP( EStruct, Mask, 1) \
 
 #define MQ_DECLARE_OPERATORS_FOR_FLAGS( FEStruct) \
     Q_DECLARE_OPERATORS_FOR_FLAGS( FEStruct::F)
@@ -411,7 +489,7 @@ private:
 
 #define MQ_DECLARE_ENUMTXT( EStruct) \
     MQ_DECLARE_ENUM( EStruct) \
-    static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( staticMetaObject, false, _setNs(0), \
+    static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( staticMetaObject, false, _setNs(0), arnNullptr, \
                                                           #EStruct); return in;} \
     inline static const Arn::_InitEnumTxt* _setNs( const Arn::_InitEnumTxt* ieTxt) {return ieTxt;} \
     inline static const char*  name()  {return txt().name();} \

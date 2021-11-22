@@ -500,12 +500,22 @@ MQVariantMap QmlMSys::xstringToEnum( const QString& xstring )
     for (int i = 0; i < xsm.size(); ++i) {
         int enumValue = 0;
         QByteArray key = xsm.key(i);
-        if (key.startsWith( "B" )) {
+        if (key.isEmpty())  continue;
+
+        QChar c( key.at( 0));
+        if (c == 'B' ) {
             enumValue = 1 << key.mid( 1 ).toInt();
         }
-        else {
-            enumValue = key.toInt();
+        else if (c.isDigit()) {
+            if (key.startsWith( "0x")) {
+                enumValue = key.toInt( nullptr, 16);
+            }
+            else {
+                enumValue = key.toInt();
+            }
         }
+        else  continue;
+
         QString enumerator = xsm.valueString(i);
         retMap.insert( enumerator, QVariant( enumValue ) );
     }
