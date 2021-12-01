@@ -113,6 +113,7 @@ public:
         Flag3   = 0x100,
         //! SubEnum DataType
         DType   = DTypeB0 | DTypeB1 | DTypeB2,
+        //! SubEnum AbsPos
         APos    = APosB0 | APosB1,
         //! Convenience, all flags
         FlagAll = Flag1 | Flag2 | Flag3

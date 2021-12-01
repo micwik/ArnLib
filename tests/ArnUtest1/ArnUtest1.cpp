@@ -112,7 +112,7 @@ void ArnUtest1::testMQFlagsText()
     // qDebug() << "AllowVal1: Create=" << allow.Create;
     QVERIFY( allow.Create == 4);
     // qDebug() << "AllowVal2: CreateTxt=" << allow.txt().getTxt( allow.Create);
-    QVERIFY( QString( allow.txt().getTxt( allow.Create)) == "Create");
+    QVERIFY( allow.txt().getTxtString( allow.Create) == "Create");
     allow.set( allow.Delete).set( allow.Read);
     // qDebug() << "AllowVal3: toString=" << allow.toString();
     QVERIFY( allow.toString() == "Read | Delete");
@@ -123,7 +123,7 @@ void ArnUtest1::testMQFlagsText()
     // qDebug() << "AllowVal BitSet(Human):" << allow2.txt().getBitSet( allow2.NsHuman);
     QVERIFY( allow2.txt().getBitSet( allow2.NsHuman) == "B0=Allow_Read B1=Write B2=Test_-_Create B3=Allow_Delete B4=Mode_chg 0=None 3=Read_write 0xff=All");
     // qDebug() << "AllowVal4: getTxt=" << allow2.txt().getTxt( allow2.Create, allow2.NsHuman);
-    QVERIFY( QString( allow2.txt().getTxt( allow2.Create, allow2.NsHuman)) == "Test - Create");
+    QVERIFY( allow2.txt().getTxtString( allow2.Create, allow2.NsHuman) == "Test - Create");
     allow2 = AllowClassT::fromString("Write | Read");
     // qDebug() << "AllowVal5: toString=" << allow2.toString();
     QVERIFY( allow2.toString() == "Read | Write");
@@ -154,7 +154,15 @@ void ArnUtest1::testMQFlagsText()
     data1.txt().setTxt("Int - test", data1.Int, data1.NsHuman);
     // qDebug() << "DataVal EnumSet(Human):" << data1.txt().getEnumSet( data1.NsHuman);
     QVERIFY( data1.txt().getEnumSet( data1.NsHuman) == "-2=Real 0=Null 1=Int_-_test 2=Double 3=Bytes_type 4=String 5=Variable_type");
-
+    QString enumSet1 = data1.txt().getEnumSet( data1.NsEnum, true);
+    Arn::EnumTxt etxt1;
+    etxt1.loadEnumSet( enumSet1);
+    // qDebug() << "DataVal EnumSet(Enum) loaded:" << etxt1.getEnumSet( 0, true);
+    QVERIFY( etxt1.getEnumSet( 0, true) == "-2=Real 0=Null 1=Int 2=Double 3=ByteArray 4=String 5=Variant");
+    Arn::EnumTxt etxt2;
+    etxt2.loadEnumSet( "1=One 0x2=Two 10=Ten 0xb=Eleven");
+    // qDebug() << "EnumSet(Enum) loaded:" << etxt2.getEnumSet( 0, true);
+    QVERIFY( etxt2.getEnumSet( 0, true) == "1=One 2=Two 10=Ten 11=Eleven");
     DataTypeT  data2;
     // qDebug() << "DataVal data2 EnumSet(Human):" << data2.txt().getEnumSet( data2.NsHuman);
     QVERIFY( data2.txt().getEnumSet( data2.NsHuman) == "-2=Real 0=Null 1=Int_-_test 2=Double 3=Bytes_type 4=String 5=Variable_type");
@@ -168,9 +176,12 @@ void ArnUtest1::testMQFlagsText()
     subE1.setSubEnum( DataTypeT::Variant);
     subE1.setSubEnum( AbsPosT::Cepa);
     // qDebug() << "SubEClassT subE1 BitSet(Human):" << subE1.txt().getBitSet( subE1.NsEnum, true);
-    QVERIFY( subE1.txt().getBitSet( subE1.NsEnum, true) == "B0=Flag1 B5=Flag2 B8=Flag3 0=None 0x121=FlagAll SE0:0xe=DType E0:0xc=Real E0:0=Null E0:2=Int E0:4=Double E0:6=ByteArray E0:8=String E0:0xa=Variant SE1:0x50=APos E1:0=None E1:0x10=Apa E1:0x40=Bepa E1:0x50=Cepa");
+    QVERIFY( subE1.txt().getBitSet( subE1.NsEnum, true) == "B0=Flag1 B5=Flag2 B8=Flag3 0=None 0x121=FlagAll SE0xe:B1=DType E0xc-=Real E0=Null E2=Int E4=Double E6=ByteArray E8=String E0xa=Variant SE0x50=APos E0=None E0x10=Apa E0x40=Bepa E0x50=Cepa");
     // qDebug() << "subE1: toString=" << subE1.toString();
     QVERIFY( subE1.toString() == "Flag2 | Variant | Cepa");
+    DataTypeT data3 = subE1.getSubEnum_DataTypeT();
+    // qDebug() << "data3 (from subE1): toString=" << data3.toString();
+    QVERIFY( data3.toString() == "Variant");
     int enumVal = 0;
     uint bitMask = 0;
     subE1.txt().getSubEnumVal( "Variant", enumVal, bitMask);
@@ -182,6 +193,20 @@ void ArnUtest1::testMQFlagsText()
     subE2 = SubEClassT::fromString( "Bepa | Flag3 | String");
     // qDebug() << "subE2: toString=" << subE2.toString();
     QVERIFY( subE2.toString() == "Flag3 | String | Bepa");
+    QString subEnumSet1 = subE1.txt().getBitSet( subE1.NsEnum, true);
+    Arn::EnumTxt subEtxt1( true);
+    subEtxt1.loadBitSet( subEnumSet1);
+    // qDebug() << "DataVal BitSet(Flags) loaded:" << subEtxt1.getBitSet( 0, true);
+    QVERIFY( subEtxt1.getBitSet( 0, true) == "B0=Flag1 B5=Flag2 B8=Flag3 0=None 0x121=FlagAll SE0xe:B1=DType E0xc-=Real E0=Null E2=Int E4=Double E6=ByteArray E8=String E0xa=Variant SE0x50=APos E0=None E0x10=Apa E0x40=Bepa E0x50=Cepa");
+    // qDebug() << "DataVal BitSet(Flags) loaded numSubEnum:" << subEtxt1.subEnumCount();
+    QVERIFY( subEtxt1.subEnumCount() == 2);
+    const Arn::EnumTxt* etxt1a = subEtxt1.subEnumAt( 0);
+    // qDebug() << "DataVal EnumSet(Enum):" << etxt1a->getEnumSet( 0, true);
+    QVERIFY( etxt1a->getEnumSet( 0, true) == "-2=Real 0=Null 1=Int 2=Double 3=ByteArray 4=String 5=Variant");
+    Arn::XStringMap xsm1;
+    SubEClassT::txt().addFlagsTo( xsm1, Arn::EnumTxt::IncludeMode::OnlySubEnumBits, 0, true);
+    // qDebug() << "SubEClassT AddFlagsTo(SubEnumBits):" << xsm1.toXString();
+    QVERIFY( xsm1.toXString() == "B1=DTypeB0 B2=DTypeB1 B3=DTypeB2 B4=APosB0 B6=APosB1 0xe=DType 0x50=APos");
 
     // qDebug() << "log2: 0 15 1<<34 -1:" << Arn::log2(0) << Arn::log2(char(15)) << Arn::log2(long(1l << 34)) << Arn::log2(qulonglong(-1ll));
 
