@@ -137,6 +137,8 @@ public:
     XStringMap&  set( const QByteArray& key, const QString& val);
     XStringMap&  set( const QString& key, const QString& val);
 
+    XStringMap&  setKey( int i, const QByteArray& key);
+
     const QByteArray&  keyRef( int i)  const;
     QByteArray  key( int i, const char* def = 0)  const;
     QByteArray  key( const QByteArray& value, const char* def = 0)  const;

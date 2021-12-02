@@ -395,6 +395,17 @@ XStringMap&  XStringMap::set( const QString& key, const QString& val)
 }
 
 
+XStringMap&  XStringMap::setKey( int i, const QByteArray& key)
+{
+    if ((i < 0) || (i >= _size))  return *this;  // Not valid index
+
+    _keyList[i].resize(0);  // Avoid Heap reallocation
+    _keyList[i] += key;
+
+    return *this;
+}
+
+
 const QByteArray&  XStringMap::keyRef( int i)  const
 {
     if ((i < 0) || (i >= _size))  return _nullValue;
