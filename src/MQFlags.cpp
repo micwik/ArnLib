@@ -538,35 +538,6 @@ void  EnumTxt::setupSubEnum( const _InitSubEnum* initSubEnum)
 }
 
 
-QByteArray  EnumTxt::numToStr( uint num)
-{
-    if (num < 10)
-        return QByteArray::number( num);
-    else
-        return "0x" + QByteArray::number( num, 16);
-}
-
-
-uint  EnumTxt::strToNum( const QByteArray& str)
-{
-    if (str.startsWith( "0x")) {
-        return str.mid( 2).toInt( nullptr, 16);
-    }
-    else {
-        return str.toInt();
-    }
-}
-
-
-uchar  EnumTxt::strToBitpos( const QByteArray& str)
-{
-    if (str.startsWith( "B")) {
-        return str.mid( 1).toInt();
-    }
-    return 0;
-}
-
-
 bool  EnumTxt::isFlag() const
 {
     return _isFlag;
@@ -601,6 +572,7 @@ void  EnumTxt::clear()
 bool  EnumTxt::loadEnumSet( const XStringMap& xsm, const QString& name)
 {
     if (_metaObj)  return false;  // Not allowed to load when setup via metaobj
+    bool retVal = true;  // Assusme ok
 
     clear();
     _isFlag = false;
@@ -608,10 +580,12 @@ bool  EnumTxt::loadEnumSet( const XStringMap& xsm, const QString& name)
     int  nKeys = xsm.size();
     for (int i = 0; i < nKeys; ++i) {
         const char*  txt = xsm.valueRef( i).constData();
-        int  enumVal     = strToNum( xsm.keyRef( i));
+        bool isOk = true;
+        int  enumVal     = strToNum( xsm.keyRef( i), &isOk);
+        retVal &= isOk;
         setTxt( txt, enumVal, 0);
     }
-    return true;
+    return retVal;
 }
 
 
@@ -624,6 +598,8 @@ bool  EnumTxt::loadEnumSet( const QString& xstr, const QString& name)
 bool  EnumTxt::loadBitSet( const XStringMap& xsm, const QString& name)
 {
     if (_metaObj)  return false;  // Not allowed to load when setup via metaobj
+    bool  retVal = true;  // Assusme ok
+    bool  isOk   = true;
 
     clear();
     _isFlag = true;
@@ -643,7 +619,8 @@ bool  EnumTxt::loadBitSet( const XStringMap& xsm, const QString& name)
                 int numLen = key.size() - 1;
                 bool isNeg = key.endsWith( '-');
                 numLen -= isNeg;
-                int enumVal = strToNum( key.mid( 1, numLen)) >> subePos;
+                int enumVal = strToNum( key.mid( 1, numLen), &isOk) >> subePos;
+                retVal &= isOk;
                 enumVal |= isNeg ? (-1 & ~(subeMask >> subePos)) : 0;
                 subEnumTxt->setTxt( itemTxt.constData(), enumVal, 0);
             }
@@ -654,24 +631,31 @@ bool  EnumTxt::loadBitSet( const XStringMap& xsm, const QString& name)
         }
 
         if (c == 'B' ) {
-            uint  enumValue = 1 << strToBitpos( key);
+            uint  enumValue = 1 << strToBitpos( key, &isOk);
+            retVal &= isOk;
             setTxt( itemTxt.constData(), enumValue, 0);
         }
         else if (c.isDigit()) {
-            uint  enumValue = strToNum( key);
+            uint  enumValue = strToNum( key, &isOk);
+            retVal &= isOk;
             setTxt( itemTxt.constData(), enumValue, 0);
         }
         else if (key.startsWith( "SE")) {
             QList<QByteArray>  seParts = key.mid( 2).split( ':');
-            subeMask = strToNum( seParts.at( 0));
-            subePos  = seParts.size() > 1 ? strToBitpos( seParts.at( 1)) : 0;
+            subeMask = strToNum( seParts.at( 0), &isOk);
+            retVal &= isOk;
+            subePos  = seParts.size() > 1 ? strToBitpos( seParts.at( 1), &isOk) : 0;
+            retVal &= isOk;
             setTxt( itemTxt.constData(), subeMask, 0);
             QString subEnumName = QString::fromUtf8( itemTxt.constData(), itemTxt.size());
             subEnumTxt = new EnumTxt( false, subEnumName);
         }
+        else {
+            retVal = false;
+        }
     }
 
-    return true;
+    return retVal;
 }
 
 
@@ -717,6 +701,36 @@ int  Arn::EnumTxt::enumCount()  const
 
     QMetaEnum  metaEnum = _metaObj->enumerator(0);
     return metaEnum.keyCount();
+}
+
+
+QByteArray  EnumTxt::numToStr( uint num)
+{
+    if (num < 10)
+        return QByteArray::number( num);
+    else
+        return "0x" + QByteArray::number( num, 16);
+}
+
+
+uint  EnumTxt::strToNum( const QByteArray& str, bool* isOk)
+{
+    if (str.startsWith( "0x")) {
+        return str.mid( 2).toInt( isOk, 16);
+    }
+    else {
+        return str.toInt( isOk);
+    }
+}
+
+
+uchar  EnumTxt::strToBitpos( const QByteArray& str, bool* isOk)
+{
+    if (str.startsWith( "B")) {
+        return str.mid( 1).toInt( isOk);
+    }
+    if (isOk)  *isOk = false;
+    return 0;
 }
 
 

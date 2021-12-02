@@ -685,6 +685,10 @@ public:
      */
     const EnumTxt*  subEnumAt( int idx)  const;
 
+    static QByteArray  numToStr( uint num);
+    static uint  strToNum( const QByteArray& str, bool* isOk = arnNullptr);
+    static uchar strToBitpos( const QByteArray& str, bool* isOk = arnNullptr);
+
 private:
     struct EnumTxtKey {
         uint  _enumVal;
@@ -708,9 +712,6 @@ private:
     void  setupFromMetaObject();
     void  setupTxt( const _InitEnumTxt* initTxt);
     void  setupSubEnum( const _InitSubEnum* initSubEnum);
-    static QByteArray  numToStr( uint num);
-    static uint  strToNum( const QByteArray& str);
-    static uchar strToBitpos( const QByteArray& str);
 
     const QMetaObject*  _metaObj;
     QMap<EnumTxtKey,const char*>  _enumTxtTab;
