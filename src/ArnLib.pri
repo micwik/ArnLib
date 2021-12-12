@@ -103,7 +103,7 @@ contains(ARN, client) {
 
 
 contains(ARN, scriptauto) {
-    lessThan(QT_MAJOR_VERSION, 5) {
+    lessThan(QT_MAJOR_VERSION, 5) || lessThan(QT_MINOR_VERSION, 14) {
         ARN += script
     } else {
         ARN += scriptjs
