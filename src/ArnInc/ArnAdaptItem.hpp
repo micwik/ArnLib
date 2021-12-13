@@ -506,6 +506,14 @@ public:
      */
     void  setValue( quint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
 
+    //! Assign an _integer_ to specified bits in an _Arn Data Object_
+    /*! \param[in] mask to specify bits that is affected
+     *  \param[in] value to be assigned to affected bits
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     */
+    void  setBits( int mask, int value, int ignoreSame = Arn::SameValue::DefaultAction);
+
     //! Get the mutex of this ArnAdaptItem
     /*! This can be used for atomic operations etc on the item.
      *  The item it self is thread safe without the application code is using this mutex.

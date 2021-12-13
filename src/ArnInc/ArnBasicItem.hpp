@@ -301,6 +301,16 @@ public:
      */
     bool  isSaveMode()  const;
 
+    //! Set this _Arn Data Object_ as _Atomic Operator Provider_
+    /*! The atomic operation is performed at this object
+     */
+    void  setAtomicOpProvider();
+
+    /*! \retval true if this is a _Atomic Operator Provider_
+     *  \see setAtomicOpProvider()
+     */
+    bool  isAtomicOpProvider()  const;
+
     //! Set client session _sync mode_ as _Master_ for this ArnItem
     /*! This ArnItem at client side is set as default generator of data.
      *  \pre This must be set before open().
@@ -489,6 +499,14 @@ public:
      *  \note Not native ARN datatype. ByteArray is assigned.
      */
     void  setValue( quint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
+
+    //! Assign an _integer_ to specified bits in an _Arn Data Object_
+    /*! \param[in] mask to specify bits that is affected
+     *  \param[in] value to be assigned to affected bits
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     */
+    void  setBits( int mask, int value, int ignoreSame = Arn::SameValue::DefaultAction);
 
     //! Get the thread affinity of this ArnBasicItem
     /*! The affinity (see QObject) is set when the ArnBasicItem is created and bound to an

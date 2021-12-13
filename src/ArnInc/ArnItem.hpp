@@ -524,6 +524,15 @@ public:
     void  setValue( const char* value, int ignoreSame)
     {ArnItemB::setValue( value, ignoreSame);}
 
+    //! Assign an _integer_ to specified bits in an _Arn Data Object_
+    /*! \param[in] mask to specify bits that is affected
+     *  \param[in] value to be assigned to affected bits
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     */
+    void  setBits( int mask, int value, int ignoreSame = Arn::SameValue::DefaultAction)
+    {ArnItemB::setBits( mask, value, ignoreSame);}
+
 public slots:
     //! Assign an _integer_ to an _Arn Data Object_
     /*! \param[in] value to be assigned

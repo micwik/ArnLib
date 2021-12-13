@@ -280,6 +280,16 @@ void  ArnItemB::setValue( quint64 value, int ignoreSame)
 }
 
 
+void ArnItemB::setBits(int mask, int value, int ignoreSame)
+{
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
+
+    ArnBasicItem::setBits( mask, value, ignoreSame);
+}
+
+
 void  ArnItemB::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
     Q_UNUSED(handleData);

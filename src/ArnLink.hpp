@@ -79,6 +79,8 @@ public:
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  setIgnoredValue( const ArnLinkHandle& handleData = ArnLinkHandle::null());
 
+    void  setBits( int mask, int value, int sendId = 0, bool useUncrossed = 0);
+
     int  toInt( bool* isOk = 0);
     ARNREAL  toReal( bool* isOk = 0);
     QString  toString( bool* isOk = 0);
@@ -101,6 +103,8 @@ public:
     bool  isPipeMode();
     void  setSaveMode( bool isSaveMode);
     bool  isSaveMode();
+    void  setAtomicOpProvider( bool isProvider);
+    bool  isAtomicOpProvider()  const;
     bool  isProvider()  const;
     bool  isThreaded()  const;
     bool  isRetired();
@@ -121,6 +125,7 @@ public:
     const ArnLinkList&  children()  const;
 
     QMutex*  getMutex()  const;
+
 
 protected:
     //// Will never be inherited, this section is separated for use by friend ArnM
@@ -144,6 +149,7 @@ protected:
 
 private:
     void  resetHave();
+    void  needInt( bool* isOk = arnNullptr);
     void  doValueChanged( int sendId, const QByteArray* valueData = 0,
                           const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  sendEventsInThread( ArnEvent* ev, const ArnCoreItemList& recipients);
@@ -171,6 +177,7 @@ private:
     bool  _hasBeenSetup : 1;
     bool  _isFolder : 1;
     bool  _isProvider : 1;
+    bool  _isAtomicOpProvider : 1;
 
     volatile bool  _isPipeMode : 1;
     volatile bool  _isSaveMode : 1;

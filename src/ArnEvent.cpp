@@ -224,6 +224,33 @@ ArnEvent*  ArnEvValueChange::makeHeapClone()
 }
 
 
+ArnEvAtomicOp::ArnEvAtomicOp( int op, const QVariant& arg1, const QVariant& arg2)
+    : ArnEvent( type())
+    , _op( Op::fromInt( op))
+    , _arg1( arg1)
+    , _arg2( arg2)
+{
+}
+
+
+ArnEvAtomicOp::~ArnEvAtomicOp()
+{
+}
+
+
+QEvent::Type  ArnEvAtomicOp::type()
+{
+    static int evType = baseType() + Idx::AtomicOp;
+
+    return Type( evType);
+}
+
+
+ArnEvent*  ArnEvAtomicOp::makeHeapClone()
+{
+    return (new ArnEvAtomicOp( _op, _arg1, _arg2))->copyOpt( this);
+}
+
 
 ArnEvLinkCreate::ArnEvLinkCreate( const QString& path, ArnLink* arnLink, bool isLastLink)
     : ArnEvent( type())

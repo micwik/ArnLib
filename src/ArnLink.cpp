@@ -114,6 +114,34 @@ void  ArnLink::resetHave()
 }
 
 
+void  ArnLink::needInt( bool* isOk)
+{
+    if (!_haveInt) {
+        bool  isOk2 = true;  // Default
+        switch (_type) {
+        case Arn::DataType::Real:
+            _val->valueInt = int( _val->valueReal);
+            break;
+        case Arn::DataType::String:
+            _val->valueInt = _val->valueString.toInt( &isOk2);
+            break;
+        case Arn::DataType::ByteArray:
+            _val->valueInt = _val->valueByteArray.toInt( &isOk2);
+            break;
+        case Arn::DataType::Variant:
+            _val->valueInt = _val->valueVariant.toInt( &isOk2);
+            break;
+        default:
+            _val->valueInt = 0;
+            isOk2 = false;
+        }
+        _haveInt = isOk2;
+        if (isOk)
+            *isOk = isOk2;
+    }
+}
+
+
 QString  ArnLink::objectName()  const
 {
     return _objectName;
@@ -389,6 +417,48 @@ void  ArnLink::setIgnoredValue( const ArnLinkHandle& handleData)
 }
 
 
+void ArnLink::setBits( int mask, int value, int sendId, bool useUncrossed)
+{
+    if (!_val)  return;
+    if (_twin && !useUncrossed)
+        return _twin->setBits( mask, value, sendId, true);
+
+    if (_twin) {    // support for bidirectional function
+        if (_isAtomicOpProvider && !_twin->_isAtomicOpProvider) {
+            return _twin->setBits( mask, value, sendId, true);  // Act as provider for setBits
+        }
+        if (!_twin->_isAtomicOpProvider) {
+            // qDebug() << "doSetBits: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
+            //            " path=" << linkPath() << " mask=" << mask << " value=" << value;
+            ArnEvAtomicOp  ev( ArnEvAtomicOp::Op::BitSet, mask, value);
+            sendArnEvent( &ev);
+            return;
+        }
+    }
+
+    if (_mutex)  _mutex->lock();
+    needInt();
+
+    resetHave();
+    int  newValue  = (_val->valueInt & ~mask) | (value & mask);
+    _val->valueInt = newValue;
+    _type          = Arn::DataType::Int;
+    _haveInt       = true;
+    ++_val->localUpdateCount;
+
+    if (_mutex)  _mutex->unlock();
+
+    if (_mutex && _isPipeMode) {
+        QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
+                                QByteArray::number( newValue);
+        doValueChanged( sendId, &valueData);
+    }
+    else {
+        doValueChanged( sendId);
+    }
+}
+
+
 int  ArnLink::toInt( bool* isOk)
 {
     if (isOk)
@@ -396,29 +466,7 @@ int  ArnLink::toInt( bool* isOk)
     if (!_val)  return 0;
     if (_mutex)  _mutex->lock();
 
-    if (!_haveInt) {
-        bool  isOk2 = true;  // Default
-        switch (_type) {
-        case Arn::DataType::Real:
-            _val->valueInt = int( _val->valueReal);
-            break;
-        case Arn::DataType::String:
-            _val->valueInt = _val->valueString.toInt( &isOk2);
-            break;
-        case Arn::DataType::ByteArray:
-            _val->valueInt = _val->valueByteArray.toInt( &isOk2);
-            break;
-        case Arn::DataType::Variant:
-            _val->valueInt = _val->valueVariant.toInt( &isOk2);
-            break;
-        default:
-            _val->valueInt = 0;
-            isOk2 = false;
-        }
-        _haveInt = isOk2;
-        if (isOk)
-            *isOk = isOk2;
-    }
+    needInt( isOk);
 
     if (_mutex) {
         int retVal = _val->valueInt;
@@ -790,6 +838,18 @@ bool  ArnLink::isSaveMode()
     bool  retVal = _isSaveMode;
     if (_mutex)  _mutex->unlock();
     return retVal;
+}
+
+
+void  ArnLink::setAtomicOpProvider( bool isProvider)
+{
+    _isAtomicOpProvider = isProvider;
+}
+
+
+bool  ArnLink::isAtomicOpProvider()  const
+{
+    return _isAtomicOpProvider;
 }
 
 

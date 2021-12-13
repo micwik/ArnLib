@@ -191,6 +191,14 @@ protected:
      */
     void  setValue( quint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
 
+    //! Assign an _integer_ to specified bits in an _Arn Data Object_
+    /*! \param[in] mask to specify bits that is affected
+     *  \param[in] value to be assigned to affected bits
+     *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setIgnoreSameValue()
+     */
+    void  setBits( int mask, int value, int ignoreSame = Arn::SameValue::DefaultAction);
+
     //! Control echo cancellation for this item
     /*! When an ArnObject is changed via this item, the changed() signal on this item
      *  can be blocked.

@@ -433,6 +433,32 @@ bool  ArnM::isLeaf( const QString& path)
 }
 
 
+void  ArnM::setAtomicOpProvider( const QString& path)
+{
+    if (Arn::isFolderPath( path))  return;
+
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
+
+    if (link) {
+        link->setAtomicOpProvider( true);
+        link->deref();
+    }
+}
+
+
+bool  ArnM::isAtomicOpProvider( const QString& path)
+{
+    if (Arn::isFolderPath( path))  return false;
+
+    ArnLink*  link = ArnM::link( path, Arn::LinkFlags::SilentError);
+
+    if (!link)  return false;
+    bool  retVal = link->isAtomicOpProvider();
+    link->deref();
+    return retVal;
+}
+
+
 void  ArnM::setValue( const QString& path, const QString& value)
 {
     ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);

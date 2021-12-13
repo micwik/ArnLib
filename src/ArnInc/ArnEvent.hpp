@@ -36,6 +36,7 @@
 #include "ArnInc/MQFlags.hpp"
 #include <QEvent>
 #include <QString>
+#include <QVariant>
 
 class ArnLink;
 class ArnLinkHandle;
@@ -50,6 +51,7 @@ public:
     enum E {
         QtEvent     = -1,
         ValueChange = 0,
+        AtomicOp,
         LinkCreate,
         ModeChange,
         Monitor,
@@ -60,6 +62,25 @@ public:
         N
     };
     MQ_DECLARE_ENUMTXT( ArnEventIdx)
+};
+
+class ArnAtomicOp {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        None = 0,
+        BitSet,
+        //! Max index
+        N
+    };
+    MQ_DECLARE_ENUMTXT( ArnAtomicOp)
+
+    enum NS {NsEnum, NsCom};
+    MQ_DECLARE_ENUM_NSTXT(
+        { NsCom, BitSet,    "bs" },
+        { NsCom, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }
+    )
 };
 
 
@@ -227,6 +248,33 @@ public:
 
     inline const ArnLinkHandle&  handleData()  const
     { return *_handleData;}
+};
+
+
+class ArnEvAtomicOp : public ArnEvent
+{
+public:
+    typedef ArnAtomicOp  Op;
+
+private:
+    Op  _op;
+    QVariant  _arg1;
+    QVariant  _arg2;
+
+public:
+    ArnEvAtomicOp( int op, const QVariant& arg1, const QVariant& arg2);
+    virtual  ~ArnEvAtomicOp();
+    static QEvent::Type  type();
+    virtual ArnEvent*  makeHeapClone();
+
+    inline const Op&  op()  const
+    { return _op;}
+
+    inline const QVariant&  arg1()  const
+    { return _arg1;}
+
+    inline const QVariant&  arg2()  const
+    { return _arg2;}
 };
 
 

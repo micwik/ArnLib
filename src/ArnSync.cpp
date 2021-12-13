@@ -556,6 +556,9 @@ void  ArnSync::doCommands()
     if (command == "flux") {
         stat = doCommandFlux();
     }
+    else if (command == "atomop") {
+        stat = doCommandAtomOp();
+    }
     else if (command == "event") {
         stat = doCommandEvent();
     }
@@ -991,6 +994,37 @@ uint  ArnSync::doCommandFlux()
         itemNet->setSyncFlux( true);  // Part of the initial sync process
         itemValueUpdater( ArnLinkHandle::null(), 0, itemNet);  // Make client send the current value to server
     }
+    return ArnError::Ok;
+}
+
+
+uint ArnSync::doCommandAtomOp()
+{
+    if (!_allow.is( _allow.Write))  return ArnError::OpNotAllowed;
+
+    uint       netId  = _commandMap.value("id").toUInt();
+    QByteArray  opStr = _commandMap.value("op");
+    QByteArray  a1Str = _commandMap.value("a1");
+    QByteArray  a2Str = _commandMap.value("a2");
+
+    ArnAtomicOp  op = ArnAtomicOp::fromInt(
+                ArnAtomicOp::txt().getEnumVal( opStr.constData(), ArnAtomicOp::None, ArnAtomicOp::NsCom));
+    ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+    if (!itemNet) {
+        // qDebug() << "doCommandAtomOp NotFound xs:" << _commandMap.toXString();
+        return ArnError::NotFound;
+    }
+    if (!itemNet->isAtomicOpProvider())  // This is not a provider, just skip it
+        return ArnError::Ok;
+
+    switch (op) {
+    case ArnAtomicOp::BitSet:
+        itemNet->setBits( a1Str.toInt(), a2Str.toInt());
+        break;
+    default:
+        return ArnError::Undef;
+    }
+
     return ArnError::Ok;
 }
 
@@ -1515,6 +1549,29 @@ void  ArnSync::eventToFluxQue( uint netId, int type, const QByteArray& data)
 }
 
 
+void  ArnSync::atomicOpToFluxQue( int op, const QVariant& arg1, const QVariant& arg2, const ArnItemNet* itemNet)
+{
+    if (!itemNet)  return;
+    if (!_isConnectStarted)  return;
+
+    const char*  opStr = ArnAtomicOp::txt().getTxt( op, ArnAtomicOp::NsCom);
+    FluxRec*  fluxRec = getFreeFluxRec();
+    _syncMap.clear();
+    _syncMap.add(ARNRECNAME, "atomop").add("id", QByteArray::number( itemNet->netId()));
+    _syncMap.add("op", opStr);
+    if (!arg1.isNull())
+        _syncMap.add("a1", arg1.toString());
+    if (!arg2.isNull())
+        _syncMap.add("a2", arg2.toString());
+    fluxRec->xString += _syncMap.toXString();
+    _fluxPipeQueue.enqueue( fluxRec);
+
+    if (!_isSending) {
+        sendNext();
+    }
+}
+
+
 void  ArnSync::destroyToFluxQue( ArnItemNet* itemNet)
 {
     if (itemNet->isDisable())  return;
@@ -1739,6 +1796,17 @@ void  ArnSync::customEvent( QEvent* ev)
             itemNet->setSaveFlux( e->handleData().flags().is( ArnLinkHandle::Flags::FromPersist));
         }
         itemValueUpdater( e->handleData(), e->valueData(), itemNet);
+        break;
+    }
+    case ArnEvent::Idx::AtomicOp:
+    {
+        ArnEvAtomicOp*  e = static_cast<ArnEvAtomicOp*>( ev);
+        ArnItemNet*  itemNet = static_cast<ArnItemNet*>( static_cast<ArnBasicItem*>( e->target()));
+        if (!itemNet)  break;  // No target, deleted/closed ...
+
+        // qDebug() << "ArnSync ArnEvAtomicOp: inItemPath=" << itemNet->path()
+        //          << " op=" << e->op().toString();
+        atomicOpToFluxQue( e->op(), e->arg1(), e->arg2(), itemNet);
         break;
     }
     case ArnEvent::Idx::ModeChange:

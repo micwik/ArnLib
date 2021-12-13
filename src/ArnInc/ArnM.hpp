@@ -189,6 +189,18 @@ public:
      */
     static bool  isLeaf( const QString& path);
 
+    //! Set this _Arn Data Object_ as _Atomic Operator Provider_
+    /*! The atomic operation is performed at this object
+     *  \param[in] path
+     */
+    static void  setAtomicOpProvider( const QString& path);
+
+    /*! \retval true if this is a _Atomic Operator Provider_
+     *  \param[in] path
+     *  \see setAtomicOpProvider()
+     */
+    static bool  isAtomicOpProvider( const QString& path);
+
     //! Assign an _integer_ to an _Arn Data Object_ at _path_
     /*! \param[in] path
      *  \param[in] value to be assigned

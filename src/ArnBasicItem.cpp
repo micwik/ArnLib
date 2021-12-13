@@ -366,6 +366,23 @@ bool  ArnBasicItem::isSaveMode()  const
 }
 
 
+void  ArnBasicItem::setAtomicOpProvider()
+{
+    if (!_link)  return;
+
+    _link->setAtomicOpProvider( true);
+    return;
+}
+
+
+bool  ArnBasicItem::isAtomicOpProvider()  const
+{
+    if (!_link)  return false;
+
+    return _link->isAtomicOpProvider();
+}
+
+
 ArnBasicItem&  ArnBasicItem::setMaster()
 {
     if (_link) {
@@ -1024,6 +1041,30 @@ void  ArnBasicItem::setValue( quint64 value, int ignoreSame)
     else {
         errorLog( QString("Assigning uint64:") + QString::number( qulonglong( value)),
                   ArnError::ItemNotOpen);
+    }
+}
+
+
+void  ArnBasicItem::setBits( int mask, int value, int ignoreSame)
+{
+    Q_D(ArnBasicItem);
+
+    bool  isIgnoreSame = (ignoreSame < 0) ? isIgnoreSameValue() : (ignoreSame != 0);  // TODO: mw bidir
+    if (_link) {
+        if (isIgnoreSame) {
+            ArnLink*  holderLink = _link->holderLink( d->_useUncrossed);
+            bool  isOk;
+            int  oldValue = holderLink->toInt( &isOk);
+            if ((((oldValue & ~mask) | (value & mask)) == oldValue) && isOk) {
+                holderLink->setIgnoredValue();
+                return;
+            }
+        }
+        _link->setBits( mask, value, d->_id, d->_useUncrossed);
+    }
+    else {
+        errorLog( QString("Assigning setBits: mask=") + QString::number( mask) +
+                  " value=" + QString::number( value), ArnError::ItemNotOpen);
     }
 }
 

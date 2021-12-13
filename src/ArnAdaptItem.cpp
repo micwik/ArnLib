@@ -615,6 +615,14 @@ void  ArnAdaptItem::setValue( quint64 value, int ignoreSame)
 }
 
 
+void  ArnAdaptItem::setBits( int mask, int value, int ignoreSame)
+{
+    Q_D(ArnAdaptItem);
+
+    MUTEX_CALL( ArnBasicItem::setBits( mask, value, ignoreSame))
+}
+
+
 ARN_RecursiveMutex& ArnAdaptItem::mutex()  const
 {
     Q_D(const ArnAdaptItem);

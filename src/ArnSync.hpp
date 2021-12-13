@@ -185,6 +185,7 @@ private:
     void  sendModeItem( ArnItemNet* itemNet);
     void  sendLogin( int seq, const Arn::XStringMap& xsMap);
     void  eventToFluxQue( uint netId, int type, const QByteArray& data);
+    void  atomicOpToFluxQue( int op, const QVariant& arg1, const QVariant& arg2, const ArnItemNet* itemNet);
     void  destroyToFluxQue( ArnItemNet* itemNet);
     void  removeItemNetRefs( ArnItemNet* itemNet);
     void  closeFinal();
@@ -199,6 +200,7 @@ private:
     uint  doCommandMode();
     uint  doCommandNoSync();
     uint  doCommandFlux();
+    uint  doCommandAtomOp();
     uint  doCommandEvent();
     uint  doCommandSet();
     uint  doCommandGet();
