@@ -71,6 +71,8 @@ public:
     enum E {
         None = 0,
         BitSet,
+        AddInt,
+        AddReal,
         //! Max index
         N
     };
@@ -79,6 +81,8 @@ public:
     enum NS {NsEnum, NsCom};
     MQ_DECLARE_ENUM_NSTXT(
         { NsCom, BitSet,    "bs" },
+        { NsCom, AddInt,    "+i" },
+        { NsCom, AddReal,   "+r" },
         { NsCom, MQ_NSTXT_FILL_MISSING_FROM( NsEnum) }
     )
 };

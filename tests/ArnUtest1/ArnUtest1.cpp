@@ -341,6 +341,13 @@ void ArnUtest1::testArnBasicItem2()
     QCOMPARE( arnT1b.toInt(), 0x55);
     arnT1b.setBits( 0xf0, 0xaa);
     QCOMPARE( arnT1a.toInt(), 0xa5);
+    // arnT1b.addValue( 10);
+    arnT1b += 10;
+    QCOMPARE( arnT1a.toInt(), 175);
+    arnT1a = 0.1;
+    //arnT1b.addValue( 0.2);
+    arnT1b += 0.2;
+    QCOMPARE( arnT1a.toReal(), 0.3);
 }
 
 

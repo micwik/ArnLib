@@ -1021,6 +1021,16 @@ uint ArnSync::doCommandAtomOp()
     case ArnAtomicOp::BitSet:
         itemNet->setBits( a1Str.toInt(), a2Str.toInt());
         break;
+    case ArnAtomicOp::AddInt:
+        itemNet->addValue( a1Str.toInt());
+        break;
+    case ArnAtomicOp::AddReal:
+#ifdef ARNREAL_FLOAT
+        itemNet->addValue( a1Str.toFloat());
+#else
+        itemNet->addValue( a1Str.toDouble());
+#endif
+        break;
     default:
         return ArnError::Undef;
     }

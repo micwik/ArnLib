@@ -191,13 +191,32 @@ protected:
      */
     void  setValue( quint64 value, int ignoreSame = Arn::SameValue::DefaultAction);
 
-    //! Assign an _integer_ to specified bits in an _Arn Data Object_
-    /*! \param[in] mask to specify bits that is affected
+    //! AtomicOp assign an _integer_ to specified bits in an _Arn Data Object_
+    /*! Operation is done atomicly.
+     *  If bidir, it can also be done remotely by an AtomicOpProvider
+     *  \param[in] mask to specify bits that is affected
      *  \param[in] value to be assigned to affected bits
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setAtomicOpProvider()
      *  \see setIgnoreSameValue()
      */
     void  setBits( int mask, int value, int ignoreSame = Arn::SameValue::DefaultAction);
+
+    //! AtomicOp adds an _integer_ to an _Arn Data Object_
+    /*! Operation is done atomicly.
+     *  If bidir, it can also be done remotely by an AtomicOpProvider
+     *  \param[in] value to be added to this _Arn Data Object_
+     *  \see setAtomicOpProvider()
+     */
+    void  addValue( int value);
+
+    //! AtomicOp adds an _ARNREAL_ to an _Arn Data Object_
+    /*! Operation is done atomicly.
+     *  If bidir, it can also be done remotely by an AtomicOpProvider
+     *  \param[in] value to be added to this _Arn Data Object_
+     *  \see setAtomicOpProvider()
+     */
+    void  addValue( ARNREAL value);
 
     //! Control echo cancellation for this item
     /*! When an ArnObject is changed via this item, the changed() signal on this item

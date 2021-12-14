@@ -80,6 +80,8 @@ public:
     void  setIgnoredValue( const ArnLinkHandle& handleData = ArnLinkHandle::null());
 
     void  setBits( int mask, int value, int sendId = 0, bool useUncrossed = 0);
+    void  addValue( int value, int sendId = 0, bool useUncrossed = 0);
+    void  addValue( ARNREAL value, int sendId = 0, bool useUncrossed = 0);
 
     int  toInt( bool* isOk = 0);
     ARNREAL  toReal( bool* isOk = 0);
@@ -150,6 +152,7 @@ protected:
 private:
     void  resetHave();
     void  needInt( bool* isOk = arnNullptr);
+    void  needReal( bool* isOk = arnNullptr);
     void  doValueChanged( int sendId, const QByteArray* valueData = 0,
                           const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  sendEventsInThread( ArnEvent* ev, const ArnCoreItemList& recipients);

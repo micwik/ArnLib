@@ -823,6 +823,20 @@ ArnBasicItem&  ArnBasicItem::operator=( const QVariant& val)
 }
 
 
+ArnBasicItem&  ArnBasicItem::operator+=( int val)
+{
+    this->addValue( val);
+    return *this;
+}
+
+
+ArnBasicItem&  ArnBasicItem::operator+=( ARNREAL val)
+{
+    this->addValue( val);
+    return *this;
+}
+
+
 void  ArnBasicItem::setValue( const ArnBasicItem& other, int ignoreSame)
 {
     ArnLink *link = other._link;
@@ -1063,8 +1077,34 @@ void  ArnBasicItem::setBits( int mask, int value, int ignoreSame)
         _link->setBits( mask, value, d->_id, d->_useUncrossed);
     }
     else {
-        errorLog( QString("Assigning setBits: mask=") + QString::number( mask) +
+        errorLog( QString("Op setBits: mask=") + QString::number( mask) +
                   " value=" + QString::number( value), ArnError::ItemNotOpen);
+    }
+}
+
+
+void  ArnBasicItem::addValue( int value)
+{
+    Q_D(ArnBasicItem);
+
+    if (_link) {
+        _link->addValue( value, d->_id, d->_useUncrossed);
+    }
+    else {
+        errorLog( QString("Op addValue<int>: value=") + QString::number( value), ArnError::ItemNotOpen);
+    }
+}
+
+
+void  ArnBasicItem::addValue( ARNREAL value)
+{
+    Q_D(ArnBasicItem);
+
+    if (_link) {
+        _link->addValue( value, d->_id, d->_useUncrossed);
+    }
+    else {
+        errorLog( QString("Op addValue<real>: value=") + QString::number( value), ArnError::ItemNotOpen);
     }
 }
 

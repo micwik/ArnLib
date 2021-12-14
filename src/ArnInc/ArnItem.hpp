@@ -429,6 +429,9 @@ public:
     ArnItem&  operator=( qint64 val);
     ArnItem&  operator=( quint64 val);
 
+    ArnItem&  operator+=( int val);
+    ArnItem&  operator+=( ARNREAL val);
+
     //! Assign the value of an other ArnItem to an _Arn Data Object_
     /*! \param[in] other is the ArnItem containing the value to assign
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
@@ -524,14 +527,35 @@ public:
     void  setValue( const char* value, int ignoreSame)
     {ArnItemB::setValue( value, ignoreSame);}
 
-    //! Assign an _integer_ to specified bits in an _Arn Data Object_
-    /*! \param[in] mask to specify bits that is affected
+    //! AtomicOp assign an _integer_ to specified bits in an _Arn Data Object_
+    /*! Operation is done atomicly.
+     *  If bidir, it can also be done remotely by an AtomicOpProvider
+     *  \param[in] mask to specify bits that is affected
      *  \param[in] value to be assigned to affected bits
      *  \param[in] ignoreSame can override default ignoreSameValue setting.
+     *  \see setAtomicOpProvider()
      *  \see setIgnoreSameValue()
      */
     void  setBits( int mask, int value, int ignoreSame = Arn::SameValue::DefaultAction)
     {ArnItemB::setBits( mask, value, ignoreSame);}
+
+    //! AtomicOp adds an _integer_ to an _Arn Data Object_
+    /*! Operation is done atomicly.
+     *  If bidir, it can also be done remotely by an AtomicOpProvider
+     *  \param[in] value to be added to this _Arn Data Object_
+     *  \see setAtomicOpProvider()
+     */
+    void  addValue( int value)
+    {ArnItemB::addValue( value);}
+
+    //! AtomicOp adds an _ARNREAL_ to an _Arn Data Object_
+    /*! Operation is done atomicly.
+     *  If bidir, it can also be done remotely by an AtomicOpProvider
+     *  \param[in] value to be added to this _Arn Data Object_
+     *  \see setAtomicOpProvider()
+     */
+    void  addValue( ARNREAL value)
+    {ArnItemB::addValue( value);}
 
 public slots:
     //! Assign an _integer_ to an _Arn Data Object_

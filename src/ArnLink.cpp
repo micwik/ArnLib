@@ -142,6 +142,46 @@ void  ArnLink::needInt( bool* isOk)
 }
 
 
+void  ArnLink::needReal( bool* isOk)
+{
+    if (!_haveReal) {
+        bool  isOk2 = true;  // Default
+        switch (_type) {
+        case Arn::DataType::Int:
+            _val->valueReal = (ARNREAL)_val->valueInt;
+            break;
+#if defined( ARNREAL_FLOAT)
+        case Arn::DataType::String:
+            _val->valueReal = _val->valueString.toFloat( &isOk2);
+            break;
+        case Arn::DataType::ByteArray:
+            _val->valueReal = _val->valueByteArray.toFloat( &isOk2);
+            break;
+        case Arn::DataType::Variant:
+            _val->valueReal = _val->valueVariant.toFloat( &isOk2);
+            break;
+#else
+        case Arn::DataType::String:
+            _val->valueReal = _val->valueString.toDouble( &isOk2);
+            break;
+        case Arn::DataType::ByteArray:
+            _val->valueReal = _val->valueByteArray.toDouble( &isOk2);
+            break;
+        case Arn::DataType::Variant:
+            _val->valueReal = _val->valueVariant.toDouble( &isOk2);
+            break;
+#endif
+        default:
+            _val->valueReal = 0.0;
+            isOk2 = false;
+        }
+        _haveReal = isOk2;
+        if (isOk)
+            *isOk = isOk2;
+    }
+}
+
+
 QString  ArnLink::objectName()  const
 {
     return _objectName;
@@ -459,6 +499,90 @@ void ArnLink::setBits( int mask, int value, int sendId, bool useUncrossed)
 }
 
 
+void ArnLink::addValue( int value, int sendId, bool useUncrossed)
+{
+    if (!_val)  return;
+    if (_twin && !useUncrossed)
+        return _twin->addValue( value, sendId, true);
+
+    if (_twin) {    // support for bidirectional function
+        if (_isAtomicOpProvider && !_twin->_isAtomicOpProvider) {
+            return _twin->addValue( value, sendId, true);  // Act as provider for addValue
+        }
+        if (!_twin->_isAtomicOpProvider) {
+            // qDebug() << "doAddValue: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
+            //            " path=" << linkPath() << " value=" << value;
+            ArnEvAtomicOp  ev( ArnEvAtomicOp::Op::AddInt, value, QVariant());
+            sendArnEvent( &ev);
+            return;
+        }
+    }
+
+    if (_mutex)  _mutex->lock();
+    needInt();
+
+    resetHave();
+    int  newValue  = _val->valueInt + value;
+    _val->valueInt = newValue;
+    _type          = Arn::DataType::Int;
+    _haveInt       = true;
+    ++_val->localUpdateCount;
+
+    if (_mutex)  _mutex->unlock();
+
+    if (_mutex && _isPipeMode) {
+        QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
+                                QByteArray::number( newValue);
+        doValueChanged( sendId, &valueData);
+    }
+    else {
+        doValueChanged( sendId);
+    }
+}
+
+
+void  ArnLink::addValue( ARNREAL value, int sendId, bool useUncrossed)
+{
+    if (!_val)  return;
+    if (_twin && !useUncrossed)
+        return _twin->addValue( value, sendId, true);
+
+    if (_twin) {    // support for bidirectional function
+        if (_isAtomicOpProvider && !_twin->_isAtomicOpProvider) {
+            return _twin->addValue( value, sendId, true);  // Act as provider for addValue
+        }
+        if (!_twin->_isAtomicOpProvider) {
+            // qDebug() << "doAddValue: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
+            //            " path=" << linkPath() << " value=" << value;
+            ArnEvAtomicOp  ev( ArnEvAtomicOp::Op::AddReal, value, QVariant());
+            sendArnEvent( &ev);
+            return;
+        }
+    }
+
+    if (_mutex)  _mutex->lock();
+    needReal();
+
+    resetHave();
+    ARNREAL  newValue = _val->valueReal + value;
+    _val->valueReal   = newValue;
+    _type             = Arn::DataType::Real;
+    _haveReal         = true;
+    ++_val->localUpdateCount;
+
+    if (_mutex)  _mutex->unlock();
+
+    if (_mutex && _isPipeMode) {
+        QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
+                                QByteArray::number( newValue);
+        doValueChanged( sendId, &valueData);
+    }
+    else {
+        doValueChanged( sendId);
+    }
+}
+
+
 int  ArnLink::toInt( bool* isOk)
 {
     if (isOk)
@@ -484,41 +608,7 @@ ARNREAL  ArnLink::toReal( bool* isOk)
     if (!_val)  return 0.0;
     if (_mutex)  _mutex->lock();
 
-    if (!_haveReal) {
-        bool  isOk2 = true;  // Default
-        switch (_type) {
-        case Arn::DataType::Int:
-            _val->valueReal = (ARNREAL)_val->valueInt;
-            break;
-#if defined( ARNREAL_FLOAT)
-        case Arn::DataType::String:
-            _val->valueReal = _val->valueString.toFloat( &isOk2);
-            break;
-        case Arn::DataType::ByteArray:
-            _val->valueReal = _val->valueByteArray.toFloat( &isOk2);
-            break;
-        case Arn::DataType::Variant:
-            _val->valueReal = _val->valueVariant.toFloat( &isOk2);
-            break;
-#else
-        case Arn::DataType::String:
-            _val->valueReal = _val->valueString.toDouble( &isOk2);
-            break;
-        case Arn::DataType::ByteArray:
-            _val->valueReal = _val->valueByteArray.toDouble( &isOk2);
-            break;
-        case Arn::DataType::Variant:
-            _val->valueReal = _val->valueVariant.toDouble( &isOk2);
-            break;
-#endif
-        default:
-            _val->valueReal = 0.0;
-            isOk2 = false;
-        }
-        _haveReal = isOk2;
-        if (isOk)
-            *isOk = isOk2;
-    }
+    needReal( isOk);
 
     if (_mutex) {
         ARNREAL retVal = _val->valueReal;

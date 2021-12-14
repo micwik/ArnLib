@@ -303,6 +303,20 @@ ArnItem&  ArnItem::operator=( const QVariant& val)
 }
 
 
+ArnItem&  ArnItem::operator+=( int val)
+{
+    this->addValue( val);
+    return *this;
+}
+
+
+ArnItem&  ArnItem::operator+=( ARNREAL val)
+{
+    this->addValue( val);
+    return *this;
+}
+
+
 void  ArnItem::toggleBool()
 {
     bool value = toBool();

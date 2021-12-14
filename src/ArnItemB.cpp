@@ -290,6 +290,26 @@ void ArnItemB::setBits(int mask, int value, int ignoreSame)
 }
 
 
+void  ArnItemB::addValue( int value)
+{
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
+
+    ArnBasicItem::addValue( value);
+}
+
+
+void  ArnItemB::addValue( ARNREAL value)
+{
+    Q_D(ArnItemB);
+
+    if (!d->_enableSetValue)  return;
+
+    ArnBasicItem::addValue( value);
+}
+
+
 void  ArnItemB::itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value)
 {
     Q_UNUSED(handleData);

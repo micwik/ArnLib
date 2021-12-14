@@ -527,6 +527,24 @@ ArnAdaptItem&  ArnAdaptItem::operator=( quint64 val)
 }
 
 
+ArnAdaptItem&  ArnAdaptItem::operator+=( int val)
+{
+    Q_D(ArnAdaptItem);
+
+    MUTEX_CALL( ArnBasicItem::addValue( val))
+    return *this;
+}
+
+
+ArnAdaptItem&  ArnAdaptItem::operator+=( ARNREAL val)
+{
+    Q_D(ArnAdaptItem);
+
+    MUTEX_CALL( ArnBasicItem::addValue( val))
+    return *this;
+}
+
+
 void  ArnAdaptItem::setValue( const ArnAdaptItem& other, int ignoreSame)
 {
     Q_D(ArnAdaptItem);
@@ -620,6 +638,22 @@ void  ArnAdaptItem::setBits( int mask, int value, int ignoreSame)
     Q_D(ArnAdaptItem);
 
     MUTEX_CALL( ArnBasicItem::setBits( mask, value, ignoreSame))
+}
+
+
+void  ArnAdaptItem::addValue( int value)
+{
+    Q_D(ArnAdaptItem);
+
+    MUTEX_CALL( ArnBasicItem::addValue( value))
+}
+
+
+void  ArnAdaptItem::addValue( ARNREAL value)
+{
+    Q_D(ArnAdaptItem);
+
+    MUTEX_CALL( ArnBasicItem::addValue( value))
 }
 
 
