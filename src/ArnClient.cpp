@@ -239,9 +239,13 @@ void  ArnClient::init()
              this, SLOT(onMessageReceived(int,QByteArray)));
     connect( d->_recTimer, SIGNAL(timeout()), this, SLOT(doRecTimeout()));
     connect( socket, SIGNAL(readyRead()), this, SLOT(doRecNotified()));
-
+#if (QT_VERSION >= QT_VERSION_CHECK( 5, 15, 0))
+    connect( socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
+             this, SLOT(doTcpError(QAbstractSocket::SocketError)));
+#else
     connect( socket, SIGNAL(error(QAbstractSocket::SocketError)),
              this, SLOT(doTcpError(QAbstractSocket::SocketError)));
+#endif
     connect( d->_connectTimer, SIGNAL(timeout()), this, SLOT(onConnectWaitDone()));
 }
 
