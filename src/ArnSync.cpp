@@ -45,7 +45,7 @@
 #include <QDebug>
 #include <limits.h>
 
-#define ARNSYNCVER  "3.0"
+#define ARNSYNCVER  "3.1"
 
 using Arn::XStringMap;
 
