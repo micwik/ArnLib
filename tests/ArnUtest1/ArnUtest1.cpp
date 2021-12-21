@@ -176,7 +176,7 @@ void ArnUtest1::testMQFlagsText()
     subE1.setSubEnum( DataTypeT::Variant);
     subE1.setSubEnum( AbsPosT::Cepa);
     // qDebug() << "SubEClassT subE1 BitSet(Human):" << subE1.txt().getBitSet( subE1.NsEnum, true);
-    QVERIFY( subE1.txt().getBitSet( subE1.NsEnum, true) == "B0=Flag1 B5=Flag2 B8=Flag3 0=None 0x121=FlagAll SE0xe:B1=DType E0xc-=Real E0=Null E2=Int E4=Double E6=ByteArray E8=String E0xa=Variant SE0x50=APos E0=None E0x10=Apa E0x40=Bepa E0x50=Cepa");
+    QVERIFY( subE1.txt().getBitSet( subE1.NsEnum, true) == "B0=Flag1 B5=Flag2 B8=Flag3 0=None 0x121=FlagAll SE0xe:B1=DType E6-=Real E0=Null E1=Int E2=Double E3=ByteArray E4=String E5=Variant SE0x50=APos E0=None E0x10=Apa E0x40=Bepa E0x50=Cepa");
     // qDebug() << "subE1: toString=" << subE1.toString();
     QVERIFY( subE1.toString() == "Flag2 | Variant | Cepa");
     DataTypeT data3 = subE1.getSubEnum_DataTypeT();
@@ -197,7 +197,7 @@ void ArnUtest1::testMQFlagsText()
     Arn::EnumTxt subEtxt1( true);
     subEtxt1.loadBitSet( subEnumSet1);
     // qDebug() << "DataVal BitSet(Flags) loaded:" << subEtxt1.getBitSet( 0, true);
-    QVERIFY( subEtxt1.getBitSet( 0, true) == "B0=Flag1 B5=Flag2 B8=Flag3 0=None 0x121=FlagAll SE0xe:B1=DType E0xc-=Real E0=Null E2=Int E4=Double E6=ByteArray E8=String E0xa=Variant SE0x50=APos E0=None E0x10=Apa E0x40=Bepa E0x50=Cepa");
+    QVERIFY( subEtxt1.getBitSet( 0, true) == "B0=Flag1 B5=Flag2 B8=Flag3 0=None 0x121=FlagAll SE0xe:B1=DType E6-=Real E0=Null E1=Int E2=Double E3=ByteArray E4=String E5=Variant SE0x50=APos E0=None E0x10=Apa E0x40=Bepa E0x50=Cepa");
     // qDebug() << "DataVal BitSet(Flags) loaded numSubEnum:" << subEtxt1.subEnumCount();
     QVERIFY( subEtxt1.subEnumCount() == 2);
     const Arn::EnumTxt* etxt1a = subEtxt1.subEnumAt( 0);

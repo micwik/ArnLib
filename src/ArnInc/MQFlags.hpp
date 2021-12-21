@@ -333,8 +333,9 @@ public:
      */
     int  getEnumVal( const QString& txt, int defaultVal = 0, quint16 nameSpace = 0, bool* isFound = arnNullptr)  const;
 
-    //! Returns the enum value and mask for a subEnum text in a namespace.
-    /*! <b>Example usage</b> \n \code
+    //! Returns the shifted enum value and the mask for a subEnum text in a namespace.
+    /*! The enum value returned is shifted (with factor) to directly fit the flags enum.
+     *  <b>Example usage</b> \n \code
      *  int  subEnumVal;
      *  uint  bitMask;
      *  AllowClassT::txt().getSubEnumVal( "Mid", subEnumVal, bitMask);
@@ -342,7 +343,7 @@ public:
      *  \endcode
      *  wiil print: 2 and 6
      *  \param[in] txt is the subEnum text.
-     *  \param[out] subEnumVal is the returned value when txt is found as a subEnum.
+     *  \param[out] subEnumVal is the returned shifted value when txt is found as a subEnum.
      *  \param[out] bitMask is the returned value when txt is found as a subEnum.
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
      *  \retval is true when txt is found as a subEnum.
@@ -351,8 +352,9 @@ public:
      */
     bool  getSubEnumVal( const char* txt, int& subEnumVal, uint& bitMask, quint16 nameSpace = 0)  const;
 
-    //! Returns the enum value and mask for a subEnum text in a namespace.
-    /*! <b>Example usage</b> \n \code
+    //! Returns the shifted enum value and the mask for a subEnum text in a namespace.
+    /*! The enum value returned is shifted (with factor) to directly fit the flags enum.
+     *  <b>Example usage</b> \n \code
      *  int  subEnumVal;
      *  uint  bitMask;
      *  AllowClassT::txt().getSubEnumVal( "High", subEnumVal, bitMask);
@@ -360,7 +362,7 @@ public:
      *  \endcode
      *  wiil print: 4 and 6
      *  \param[in] txt is the subEnum text.
-     *  \param[out] subEnumVal is the returned value when txt is found as a subEnum.
+     *  \param[out] subEnumVal is the returned shifted value when txt is found as a subEnum.
      *  \param[out] bitMask is the returned value when txt is found as a subEnum.
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
      *  \retval is true when txt is found as a subEnum.
@@ -393,7 +395,7 @@ public:
      *  AllowClassT::txt().addSubEnumTo( xsm, 0, true);
      *  \endcode
      *  wiil give xsm containing:
-     *  T=Test SE6:B1=AllowLev E0=Low E2=Mid E4=High
+     *  T=Test SE6:B1=AllowLev E0=Low E1=Mid E2=High
      *  \param[out] xsm is the XStringMap to be added to.
      *  \param[in] incMode specifies what to include (SingleBits / MultiBits / Both).
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
@@ -410,7 +412,7 @@ public:
      *  AllowClassT::txt().addBitSetTo( xsm, 0, true);
      *  \endcode
      *  wiil give xsm containing:
-     *  T=Test B0=Read B3=Create B4=Delete 0=None 0xff=All SE6:B1=AllowLev E0=Low E2=Mid E4=High
+     *  T=Test B0=Read B3=Create B4=Delete 0=None 0xff=All SE6:B1=AllowLev E0=Low E1=Mid E2=High
      *  \param[out] xsm is the XStringMap to be added to.
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
      *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
@@ -426,7 +428,7 @@ public:
     //! returns the bit set string for enum flags
     /*! Example
      *  > qDebug() << AllowClassT::txt().getBitSet();
-     *  wiil print: "B0=Read B3=Create B4=Delete 0=None 0xff=All SE6:B1=AllowLev E0=Low E2=Mid E4=High"
+     *  wiil print: "B0=Read B3=Create B4=Delete 0=None 0xff=All SE6:B1=AllowLev E0=Low E1=Mid E2=High"
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
      *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
      *  \return the bit set string.
@@ -626,7 +628,7 @@ public:
 
     //! Loads the instance by an bit set (flags) XStringMap
     /*! <b>Example output</b> \n \code
-     *  Arn::XStringMap  xsm( "B0=Read B3=Create 0=None SE6:B1=AllowLev E0=Low E2=Mid E4=High");
+     *  Arn::XStringMap  xsm( "B0=Read B3=Create 0=None SE6:B1=AllowLev E0=Low E1=Mid E2=High");
      *  Arn::EnumTxt  myFlags;
      *  myFlags.loadBitSet( xsm, "MyFlags");
      *  \endcode
@@ -638,7 +640,7 @@ public:
 
     //! Loads the instance by an bit set (flags) XString
     /*! <b>Example output</b> \n \code
-     *  QString  xstr( "B0=Read B3=Create 0=None SE6:B1=AllowLev E0=Low E2=Mid E4=High");
+     *  QString  xstr( "B0=Read B3=Create 0=None SE6:B1=AllowLev E0=Low E1=Mid E2=High");
      *  Arn::EnumTxt  myFlags;
      *  myFlags.loadBitSet( xstr, "MyFlags");
      *  \endcode
@@ -673,7 +675,7 @@ public:
 
     //! Returns a pointer to a SubEnum
     /*! <b>Example output</b> \n \code
-     *  QString  xstr( "B0=Read B3=Create 0=None SE6:B1=AllowLev E0=Low E2=Mid E4=High");
+     *  QString  xstr( "B0=Read B3=Create 0=None SE6:B1=AllowLev E0=Low E1=Mid E2=High");
      *  Arn::EnumTxt  myFlags;
      *  myFlags.loadBitSet( xstr, "MyFlags");
      *  const Arn::EnumTxt*  sube = myFlags.subEnumAt( 0);

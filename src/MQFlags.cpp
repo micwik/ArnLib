@@ -247,9 +247,9 @@ void  EnumTxt::addSubEnumTo( XStringMap& xsm, quint16 nameSpace, bool neverHuman
         xsmSub.clear();
         entry._subEnum->addEnumSetTo( xsmSub, nameSpace, neverHumanize);
         for (int i = 0; i < xsmSub.size(); ++i) {
-            int enumVal = xsmSub.keyRef( i).toInt();
-            uint subEnumVal = (enumVal << entry._bitPos) & bitMask;
-            enumValTxt = "E" + numToStr( subEnumVal) + (enumVal < 0 ? "-" : "");
+            int  enumVal = xsmSub.keyRef( i).toInt();
+            uint  enumValMasked = enumVal & (bitMask >> entry._bitPos);
+            enumValTxt = "E" + numToStr( enumValMasked) + (enumVal < 0 ? "-" : "");
             xsm.add( enumValTxt, xsmSub.valueRef( i));
         }
     }
@@ -619,7 +619,7 @@ bool  EnumTxt::loadBitSet( const XStringMap& xsm, const QString& name)
                 int numLen = key.size() - 1;
                 bool isNeg = key.endsWith( '-');
                 numLen -= isNeg;
-                int enumVal = strToNum( key.mid( 1, numLen), &isOk) >> subePos;
+                int enumVal = strToNum( key.mid( 1, numLen), &isOk);
                 retVal &= isOk;
                 enumVal |= isNeg ? (-1 & ~(subeMask >> subePos)) : 0;
                 subEnumTxt->setTxt( itemTxt.constData(), enumVal, 0);
