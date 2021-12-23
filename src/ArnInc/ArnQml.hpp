@@ -325,6 +325,9 @@ class  ArnItemQml : public ArnItem, public QML_PARSER_STATUS
     Q_PROPERTY( bool masterMode      READ isMaster           WRITE setMaster           NOTIFY dummyNotifier)
     //! See Arn::ObjectSyncMode::AutoDestroy
     Q_PROPERTY( bool autoDestroyMode READ isAutoDestroy      WRITE setAutoDestroy      NOTIFY dummyNotifier)
+    //! See ArnBasicItem::setAtomicOpProvider()
+    Q_PROPERTY( bool atomicOpProvider
+                                     READ isAtomicOpProvider WRITE setAtomicOpProvider NOTIFY dummyNotifier)
     //! See ArnItem::setIgnoreSameValue()
     Q_PROPERTY( bool ignoreSameValue READ isIgnoreSameValue  WRITE setIgnoreSameValue  NOTIFY dummyNotifier)
     //! See ArnItem::setDelay()
@@ -332,6 +335,28 @@ class  ArnItemQml : public ArnItem, public QML_PARSER_STATUS
     // Q_PROPERTY( bool smTemplate     READ isTemplate    WRITE setTemplate)
 
 public slots:
+    //! AtomicOp assign an _integer_ to specified bits in an _Arn Data Object_
+    /*! \see ArnItem::setBits()
+    */
+    void  setBits( int mask, int value)
+    {ArnItemB::setBits( mask, value);}
+
+    //! AtomicOp adds an _integer_ to an _Arn Data Object_
+    /*! \see ArnItem::addValue()
+    */
+    void  addIntNum( int value)
+    {ArnItemB::addValue( value);}
+
+    //! AtomicOp adds an _ARNREAL_ to an _Arn Data Object_
+    /*! \see ArnItem::addValue()
+    */
+#ifdef ARNREAL_FLOAT
+    void  addNum( float value)
+#else
+    void  addNum( double value)
+#endif
+    {ArnItemB::addValue( value);}
+
     //! Add _general mode_ settings for this _Arn Data Object_
     /*! \see ArnItem::addMode()
     */
@@ -365,6 +390,7 @@ public:
     void  setMaster( bool isMaster);
     void  setAutoDestroy( bool isAutoDestroy);
     void  setSaveMode( bool isSaveMode);
+    void  setAtomicOpProvider( bool isAtomicOpPv);
     // bool  isTemplate() const;
     // void  setTemplate( bool isTemplate);
 

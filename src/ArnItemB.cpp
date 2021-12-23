@@ -280,7 +280,7 @@ void  ArnItemB::setValue( quint64 value, int ignoreSame)
 }
 
 
-void ArnItemB::setBits(int mask, int value, int ignoreSame)
+void  ArnItemB::setBits( int mask, int value, int ignoreSame)
 {
     Q_D(ArnItemB);
 

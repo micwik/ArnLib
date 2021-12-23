@@ -334,6 +334,13 @@ void  ArnItemJs::setSaveMode( bool isSaveMode)
 }
 
 
+void  ArnItemJs::setAtomicOpProvider( bool isAtomicOpPv)
+{
+    if (isAtomicOpPv)
+        ArnItem::setAtomicOpProvider();
+}
+
+
 bool  ArnItemJs::useUuid()  const
 {
     return _useUuid;

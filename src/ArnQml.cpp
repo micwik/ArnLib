@@ -36,6 +36,7 @@
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include "ArnInc/XStringMap.hpp"
+#include "ArnInc/MQFlags.hpp"
 #include <QTimerEvent>
 #include <QThread>
 #include <QDebug>
@@ -238,6 +239,13 @@ void  ArnItemQml::setSaveMode( bool isSaveMode)
 {
     if (isSaveMode)
         ArnItem::setSaveMode();
+}
+
+
+void  ArnItemQml::setAtomicOpProvider( bool isAtomicOpPv)
+{
+    if (isAtomicOpPv)
+        ArnItem::setAtomicOpProvider();
 }
 
 
