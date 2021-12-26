@@ -290,10 +290,11 @@ public:
     //! Returns the text for a enum value in a namespace.
     /*! \param[in] enumVal is the referenced value.
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \param[out] isFound returns status when pointer is none null.
      *  \return the enum text.
      *  \see setTxt();
      */
-    const char*  getTxt( int enumVal, quint16 nameSpace = 0)  const;
+    const char*  getTxt( int enumVal, quint16 nameSpace = 0, bool* isFound = arnNullptr)  const;
 
     //! Set an additional text for an enum val in a namespace
     /*! \param[in] txt is the new enum text.
@@ -307,11 +308,12 @@ public:
     //! Returns the text for a enum value in a namespace.
     /*! \param[in] enumVal is the referenced value.
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \param[out] isFound returns status when pointer is none null.
      *  \return the enum text.
      *  \see setTxt();
      *  \see setTxtString();
      */
-    QString  getTxtString( int enumVal, quint16 nameSpace = 0)  const;
+    QString  getTxtString( int enumVal, quint16 nameSpace = 0, bool* isFound = arnNullptr)  const;
 
     //! Returns the enum value for a text in a namespace.
     /*! \param[in] txt is the enum text.

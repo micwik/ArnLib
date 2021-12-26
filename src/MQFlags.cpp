@@ -118,9 +118,12 @@ void  EnumTxt::setTxt( const char* txt, int enumVal, quint16 nameSpace)
 }
 
 
-const char*  EnumTxt::getTxt( int enumVal, quint16 nameSpace)  const
+const char*  EnumTxt::getTxt( int enumVal, quint16 nameSpace, bool* isFound)  const
 {
-    return _enumTxtTab.value( EnumTxtKey( enumVal, nameSpace, _isFlag), "");
+    const char*  txt = _enumTxtTab.value( EnumTxtKey( enumVal, nameSpace, _isFlag), arnNullptr);
+    if (isFound)
+        *isFound = (txt != arnNullptr);
+    return txt ? txt : "";
 }
 
 
@@ -130,9 +133,9 @@ void  EnumTxt::setTxtString( const QString& txt, int enumVal, quint16 nameSpace)
 }
 
 
-QString  EnumTxt::getTxtString( int enumVal, quint16 nameSpace)  const
+QString  EnumTxt::getTxtString( int enumVal, quint16 nameSpace, bool* isFound)  const
 {
-    return QString::fromUtf8( getTxt( enumVal, nameSpace));
+    return QString::fromUtf8( getTxt( enumVal, nameSpace, isFound));
 }
 
 
