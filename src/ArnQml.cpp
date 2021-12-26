@@ -473,33 +473,6 @@ void XStringMapQml::componentComplete()
 
 namespace Arn {
 
-MQVariantMap QmlMSys::xstringToMap( const QString& xstring)
-{
-    XStringMap xsm( xstring.toUtf8());
-    return xsm.toVariantMap( true);
-}
-
-
-MQVariantMap QmlMSys::xstringToMap( const QString& xstring, const QString& skipKeyList, const QString& skipValList)
-{
-    QStringList skipKeys = skipKeyList.split( ",");
-    QStringList skipVals = skipValList.split( ",");
-    XStringMap xsm( xstring.toUtf8());
-    MQVariantMap map( xsm.toVariantMap( true));
-
-    MQVariantMap::iterator  i = map.begin();
-    while (i != map.end()) {
-        if (skipKeys.contains( i.key()) || skipVals.contains( i.value().toString())) {
-            i = map.erase(i);
-        }
-        else {
-            ++i;
-        }
-    }
-    return map;
-}
-
-
 QVariantMap  QmlMSys::xstringToEnum( const QString& xstring)
 {
     EnumTxt  etxt;

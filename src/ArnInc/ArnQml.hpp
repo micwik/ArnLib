@@ -86,6 +86,7 @@ For information about available ArnLib components in Qml see:
 | ArnItem    | ArnItemQml    |
 | ArnMonitor | ArnMonitorQml |
 | ArnSapi    | ArnSapiQml    |
+| XStringMap | XStringMapQml |
 
 If the Qml code must run in both Quick1 (Qt4) and Quick2 (Qt5), following apply:
 Only Quick1 code will be able to run in both environments. When this code is run in Quick2
@@ -738,8 +739,6 @@ public:
     Q_PROPERTY( int quickTypeRun  READ quickTypeRun)
 
 public slots:
-    MQVariantMap  xstringToMap( const QString& xstring);
-    MQVariantMap  xstringToMap( const QString& xstring, const QString& skipKeyList, const QString& skipValList);
     QVariantMap  xstringToEnum( const QString& xstring);
 
 //! \cond ADV
