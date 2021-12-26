@@ -9,6 +9,7 @@
 #include <ArnInc/XStringMap.hpp>
 #include <ArnInc/ArnEvent.hpp>
 #include <ArnInc/ArnLib.hpp>
+#include <ArnInc/ArnQml.hpp>
 #include <QString>
 #include <QtTest>
 #include <QDebug>
@@ -51,6 +52,7 @@ private slots:
     void  testArnItemDestroy();
     void  testArnItemNet1();
     void  testArnMonitorLocal();
+    void  testArnQml1();
 
 private:
     ArnUtest1Sub*  _tsub;
@@ -462,6 +464,23 @@ void ArnUtest1::testArnMonitorLocal()
     ArnM::setValue("//Test/Mon/T2/value", 1);
     // qDebug() << "Monitor childs 2: path=" << _tsub->_path;
     QVERIFY( _tsub->_path == "//Test/Mon/T2/");
+}
+
+
+void ArnUtest1::testArnQml1()
+{
+    Arn::QmlMSys  qmlMSysys;
+    QString  xstr = "B0=Flag1 B5=Flag2 B8=Flag3 0=None 0x121=FlagAll SE0xe:B1=DType E6-=Real E0=Null E1=Int E2=Double E3=ByteArray E4=String E5=Variant SE0x50=APos E0=PNone E0x10=Apa E0x40=Bepa E0x50=Cepa";
+    QVariantMap map = qmlMSysys.xstringToEnum( xstr);
+    // qDebug() << "xstringToEnum QVarainMap: map=" << map;
+    QString str;
+    QVariantMap::const_iterator  i = map.begin();
+    while (i != map.end()) {
+        str += "(" + i.key() + "=" + i.value().toString() + ")";
+        ++i;
+    }
+    // qDebug() << "xstringToEnum serialized: str=" << str;
+    QVERIFY( str == "(APos=80)(Apa=16)(Bepa=64)(ByteArray=6)(Cepa=80)(DType=14)(Double=4)(Flag1=1)(Flag2=32)(Flag3=256)(FlagAll=289)(Int=2)(None=0)(Null=0)(PNone=0)(Real=12)(String=8)(Variant=10)");
 }
 
 

@@ -245,7 +245,8 @@ public:
             OnlySingle1Bits,
             OnlyMulti1Bits,  // Also include number 0 (no 1 bits at all)
             OnlySubEnumBits,
-            AnyButSubEnumBits
+            AnyButSubEnumBits,
+            Any
         };
         MQ_DECLARE_ENUM( IncludeMode)
     };
@@ -397,7 +398,6 @@ public:
      *  wiil give xsm containing:
      *  T=Test SE6:B1=AllowLev E0=Low E1=Mid E2=High
      *  \param[out] xsm is the XStringMap to be added to.
-     *  \param[in] incMode specifies what to include (SingleBits / MultiBits / Both).
      *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
      *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
      *  \see addBitSetTo()
@@ -435,6 +435,24 @@ public:
      *  \see humanize()
      */
     QString  getBitSet( quint16 nameSpace = 0, bool neverHumanize = false)  const;
+
+    //! Adds all sub enum plain and shifted to a XStringMap
+    /*! Also adds bitmask and name of the sub enum
+     *  All enums must have unique names
+     *  <b>Example</b> \n \code
+     *  Arn::XStringMap  xsm;
+     *  xsm.add("T", "Test");
+     *  AllowClassT::txt().addSubEnumPlainTo( xsm, 0, true);
+     *  \endcode
+     *  wiil give xsm containing:
+     *  T=Test 6=AllowLev 0=Low 2=Mid 4=High
+     *  \param[out] xsm is the XStringMap to be added to.
+     *  \param[in] nameSpace is the usage set for this enum, e.g human readable.
+     *  \param[in] neverHumanize if true never applies the enum text humanize algorithm.
+     *  \see addBitSetTo()
+     *  \see humanize()
+     */
+    void  addSubEnumPlainTo( Arn::XStringMap& xsm, quint16 nameSpace = 0, bool neverHumanize = false)  const;
 
     //! returns text string for enum flags
     /*! <b>Example</b> \n \code

@@ -500,29 +500,29 @@ MQVariantMap QmlMSys::xstringToMap( const QString& xstring, const QString& skipK
 }
 
 
-MQVariantMap QmlMSys::xstringToEnum( const QString& xstring )
+QVariantMap  QmlMSys::xstringToEnum( const QString& xstring)
 {
-    XStringMap xsm( xstring.toUtf8() );
-    MQVariantMap  retMap;
+    EnumTxt  etxt;
+    XStringMap xsm;
+    QVariantMap  retMap;
 
+    etxt.loadBitSet( xstring);
+    etxt.addFlagsTo( xsm, EnumTxt::IncludeMode::AnyButSubEnumBits, 0, true);
+    etxt.addSubEnumPlainTo( xsm, 0, true);
+
+    //// Convert all kind of numbering to plain integer
     for (int i = 0; i < xsm.size(); ++i) {
         int enumValue = 0;
         QByteArray key = xsm.key(i);
-        if (key.isEmpty())  continue;
-
-        QChar c( key.at( 0));
-        if (c == 'B' ) {
-            enumValue = 1 << key.mid( 1 ).toInt();
+        bool isOk = true;
+        uchar bitPos = EnumTxt::strToBitpos( key, &isOk);
+        if (isOk) {
+            enumValue = 1 << bitPos;
         }
-        else if (c.isDigit()) {
-            if (key.startsWith( "0x")) {
-                enumValue = key.toInt( nullptr, 16);
-            }
-            else {
-                enumValue = key.toInt();
-            }
+        else {
+            enumValue = EnumTxt::strToNum( key, &isOk);
         }
-        else  continue;
+        if (!isOk)  continue;
 
         QString enumerator = xsm.valueString(i);
         retMap.insert( enumerator, QVariant( enumValue ) );

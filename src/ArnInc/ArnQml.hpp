@@ -738,9 +738,9 @@ public:
     Q_PROPERTY( int quickTypeRun  READ quickTypeRun)
 
 public slots:
-    MQVariantMap xstringToMap( const QString& xstring);
-    MQVariantMap xstringToMap( const QString& xstring, const QString& skipKeyList, const QString& skipValList);
-    MQVariantMap xstringToEnum( const QString& xstring);
+    MQVariantMap  xstringToMap( const QString& xstring);
+    MQVariantMap  xstringToMap( const QString& xstring, const QString& skipKeyList, const QString& skipValList);
+    QVariantMap  xstringToEnum( const QString& xstring);
 
 //! \cond ADV
 public:

@@ -202,7 +202,7 @@ void  EnumTxt::addFlagsTo( XStringMap& xsm, const IncludeMode& incMode, quint16 
 
         uint  enumValStored = keyStored._enumVal;
         bool  isSubEnum = (_subEnumMask & enumValStored) != 0;
-        if (isSubEnum != (incMode == IncludeMode::OnlySubEnumBits)) {
+        if ((incMode != IncludeMode::Any) && (isSubEnum != (incMode == IncludeMode::OnlySubEnumBits))) {
             continue;
         }
 
@@ -248,7 +248,7 @@ void  EnumTxt::addSubEnumTo( XStringMap& xsm, quint16 nameSpace, bool neverHuman
         entry._subEnum->addEnumSetTo( xsmSub, nameSpace, neverHumanize);
         for (int i = 0; i < xsmSub.size(); ++i) {
             int  enumVal = xsmSub.keyRef( i).toInt();
-            uint  enumValMasked = enumVal & (bitMask >> entry._bitPos);
+            uint  enumValMasked = enumVal & (bitMask >> bitPos);
             enumValTxt = "E" + numToStr( enumValMasked) + (enumVal < 0 ? "-" : "");
             xsm.add( enumValTxt, xsmSub.valueRef( i));
         }
@@ -272,6 +272,30 @@ QString  EnumTxt::getBitSet( quint16 nameSpace, bool neverHumanize)  const
     XStringMap  xsm;
     addBitSetTo( xsm, nameSpace, neverHumanize);
     return QString::fromUtf8( xsm.toXString());
+}
+
+
+void  EnumTxt::addSubEnumPlainTo( XStringMap& xsm, quint16 nameSpace, bool neverHumanize)  const
+{
+    if (!_subEnumTab)  return;
+
+    XStringMap  xsmSub;
+    foreach (const SubEnumEntry& entry, *_subEnumTab) {
+        uint  bitMask = entry._bitMask;
+        uchar  bitPos = entry._bitPos;
+        QByteArray  enumValTxt = numToStr( bitMask);
+        QByteArray  subEnumName = getTxt( bitMask, nameSpace);
+        xsm.add( enumValTxt, subEnumName);
+
+        xsmSub.clear();
+        entry._subEnum->addEnumSetTo( xsmSub, nameSpace, neverHumanize);
+        for (int i = 0; i < xsmSub.size(); ++i) {
+            int  enumVal = xsmSub.keyRef( i).toInt();
+            uint  subEnumVal = (enumVal << bitPos) & bitMask;
+            enumValTxt = numToStr( subEnumVal);
+            xsm.add( enumValTxt, xsmSub.valueRef( i));
+        }
+    }
 }
 
 
