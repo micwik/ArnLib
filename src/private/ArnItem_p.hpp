@@ -57,7 +57,7 @@ private:
     ARNITEM_COUNTTYPE  _emitChangedByteArray;
     ARNITEM_COUNTTYPE  _emitChangedVariant;
 
-    bool  _isTemplate : 1;
+    bool  _isTemplate  : 1;
 };
 
 #endif // ARNITEM_P_HPP

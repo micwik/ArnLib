@@ -82,8 +82,8 @@ private:
 
 ArnItemPrivate::ArnItemPrivate()
 {
-    _delayTimer = 0;
-    _isTemplate = false;
+    _delayTimer  = 0;
+    _isTemplate  = false;
 
     _emitChanged          = 0;
     _emitChangedInt       = 0;

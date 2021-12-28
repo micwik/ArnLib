@@ -54,6 +54,7 @@ ArnBasicItemPrivate::ArnBasicItemPrivate()
 
     _useUncrossed    = false;
     _isStdEvHandler  = true;
+    _isAssigning     = false;
     _ignoreSameValue = ArnM::defaultIgnoreSameValue();
     _isOnlyEcho      = true;  // Nothing else yet ...
 
@@ -893,7 +894,9 @@ void  ArnBasicItem::setValue( int value, int ignoreSame)
                 return;
             }
         }
+        d->_isAssigning = true;
         _link->setValue( value, d->_id, d->_useUncrossed);
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Assigning int:") + QString::number( value),
@@ -916,7 +919,9 @@ void  ArnBasicItem::setValue( ARNREAL value, int ignoreSame)
                 return;
             }
         }
+        d->_isAssigning = true;
         _link->setValue( value, d->_id, d->_useUncrossed);
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Assigning ARNREAL:") + QString::number( value),
@@ -939,7 +944,9 @@ void  ArnBasicItem::setValue( bool value, int ignoreSame)
                 return;
             }
         }
+        d->_isAssigning = true;
         _link->setValue( value ? 1 : 0, d->_id, d->_useUncrossed);
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Assigning bool:") + QString::number( value),
@@ -962,7 +969,9 @@ void  ArnBasicItem::setValue( const QString& value, int ignoreSame)
                 return;
             }
         }
+        d->_isAssigning = true;
         _link->setValue( value, d->_id, d->_useUncrossed);
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Assigning string:") + value,
@@ -985,7 +994,9 @@ void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame)
                 return;
             }
         }
+        d->_isAssigning = true;
         _link->setValue( value, d->_id, d->_useUncrossed);
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Assigning bytearray:") + QString::fromUtf8( value.constData(), value.size()),
@@ -1008,7 +1019,9 @@ void  ArnBasicItem::setValue( const QVariant& value, int ignoreSame)
                 return;
             }
         }
+        d->_isAssigning = true;
         _link->setValue( value, d->_id, d->_useUncrossed);
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Assigning variant"),
@@ -1074,7 +1087,9 @@ void  ArnBasicItem::setBits( int mask, int value, int ignoreSame)
                 return;
             }
         }
+        d->_isAssigning = true;
         _link->setBits( mask, value, d->_id, d->_useUncrossed);
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Op setBits: mask=") + QString::number( mask) +
@@ -1088,7 +1103,9 @@ void  ArnBasicItem::addValue( int value)
     Q_D(ArnBasicItem);
 
     if (_link) {
+        d->_isAssigning = true;
         _link->addValue( value, d->_id, d->_useUncrossed);
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Op addValue<int>: value=") + QString::number( value), ArnError::ItemNotOpen);
@@ -1101,7 +1118,9 @@ void  ArnBasicItem::addValue( ARNREAL value)
     Q_D(ArnBasicItem);
 
     if (_link) {
+        d->_isAssigning = true;
         _link->addValue( value, d->_id, d->_useUncrossed);
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Op addValue<real>: value=") + QString::number( value), ArnError::ItemNotOpen);
@@ -1211,6 +1230,14 @@ bool ArnBasicItem::isUncrossed()  const
 }
 
 
+bool  ArnBasicItem::isAssigning()  const
+{
+    Q_D(const ArnBasicItem);
+
+    return d->_isAssigning;
+}
+
+
 void  ArnBasicItem::setForceKeep( bool fk)
 {
     setUncrossed( fk);
@@ -1251,12 +1278,15 @@ void  ArnBasicItem::setValue( const QByteArray& value, int ignoreSame, ArnLinkHa
                 }
             }
         }
+        d->_isAssigning = true;
         if (handleFlags.is( handleFlags.Text)) {
             handleFlags.set( handleFlags.Text, false);  // Text flag not needed anymore
             _link->setValue( valueTxt, d->_id, d->_useUncrossed, handleData);
         }
-        else
+        else {
             _link->setValue( value, d->_id, d->_useUncrossed, handleData);
+        }
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Assigning bytearray (ArnLinkHandle):") + QString::fromUtf8( value.constData(), value.size()),
@@ -1279,7 +1309,9 @@ void  ArnBasicItem::setValue( const QVariant& value, int ignoreSame, ArnLinkHand
                 return;
             }
         }
+        d->_isAssigning = true;
         _link->setValue( value, d->_id, d->_useUncrossed, handleData);
+        d->_isAssigning = false;
     }
     else {
         errorLog( QString("Assigning variant (ArnLinkHandle):"),

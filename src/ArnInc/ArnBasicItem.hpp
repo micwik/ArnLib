@@ -573,6 +573,8 @@ public:
      */
     bool  isUncrossed()  const;
 
+    bool  isAssigning()  const;
+
     //! \cond ADV
     bool  sendArnEventLink( ArnEvent* ev);
     void  sendArnEventItem( ArnEvent* ev, bool isAlienThread, bool isLocked = false);

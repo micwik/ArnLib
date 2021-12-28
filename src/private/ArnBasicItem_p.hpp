@@ -76,6 +76,7 @@ private:
     bool  _ignoreSameValue : 1;
     bool  _isOnlyEcho : 1;
     bool  _isStdEvHandler : 1;
+    bool  _isAssigning : 1;
 };
 
 #endif // ARNBASICITEM_P_HPP
