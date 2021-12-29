@@ -708,6 +708,17 @@ QString  EnumTxt::subEnumNameAt( int idx, quint16 nameSpace)  const
 }
 
 
+bool  EnumTxt::subEnumPropAt( int idx, uint& bitMask, uchar& bitPos)  const
+{
+    if (idx >= subEnumCount())  return false;
+
+    const SubEnumEntry&  entry = _subEnumTab->at( idx);
+    bitMask = entry._bitMask;
+    bitPos  = entry._bitPos;
+    return true;
+}
+
+
 const EnumTxt*  EnumTxt::subEnumAt( int idx)  const
 {
     if (idx >= subEnumCount())  return arnNullptr;

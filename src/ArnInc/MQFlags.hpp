@@ -693,6 +693,18 @@ public:
      */
     QString  subEnumNameAt( int idx, quint16 nameSpace = 0)  const;
 
+    //! Returns the properties of a SubEnum
+    /*! Example
+     *  > uint bitMask; uchar bitPos;
+     *  > qDebug() << AllowClassT::txt().subEnumNameAt( 0, bitMask, bitPos) << bitMask << bitPos;
+     *  wiil print: true 6 1
+     *  \param[in] idx is the index of the SubEnum.
+     *  \param[out] bitMask is the bitmask for the SubEnum.
+     *  \param[out] bitPos is the position for the starting bit of the SubEnum.
+     *  \retval returns true for inbound idx, otherwise false.
+     */
+    bool  subEnumPropAt( int idx, uint& bitMask, uchar& bitPos)  const;
+
     //! Returns a pointer to a SubEnum
     /*! <b>Example output</b> \n \code
      *  QString  xstr( "B0=Read B3=Create 0=None SE6:B1=AllowLev E0=Low E1=Mid E2=High");
