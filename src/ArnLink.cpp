@@ -460,20 +460,19 @@ void  ArnLink::setIgnoredValue( const ArnLinkHandle& handleData)
 void ArnLink::setBits( int mask, int value, int sendId, bool useUncrossed)
 {
     if (!_val)  return;
-    if (_twin && !useUncrossed)
-        return _twin->setBits( mask, value, sendId, true);
 
     if (_twin) {    // support for bidirectional function
-        if (_isAtomicOpProvider && !_twin->_isAtomicOpProvider) {
-            return _twin->setBits( mask, value, sendId, true);  // Act as provider for setBits
+        if (_isAtomicOpProvider && !_twin->_isAtomicOpProvider) {  // This twin is OpProvider
+            return _twin->setBits( mask, value, sendId, useUncrossed);  // Act as OpProvider for setBits
         }
-        if (!_twin->_isAtomicOpProvider) {
+        if (!_twin->_isAtomicOpProvider) {  // Neither twin is OpProvider, send out event
             // qDebug() << "doSetBits: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
             //            " path=" << linkPath() << " mask=" << mask << " value=" << value;
             ArnEvAtomicOp  ev( ArnEvAtomicOp::Op::BitSet, mask, value);
-            sendArnEvent( &ev);
+            _twin->sendArnEvent( &ev);
             return;
         }
+        // Other twin is OpProvider (or faulty both is)
     }
 
     if (_mutex)  _mutex->lock();
@@ -487,6 +486,10 @@ void ArnLink::setBits( int mask, int value, int sendId, bool useUncrossed)
     ++_val->localUpdateCount;
 
     if (_mutex)  _mutex->unlock();
+
+    if (_twin && !useUncrossed) {  // Update the OpProvider link before, as if it was requested there first
+        _twin->setValue( newValue, sendId, true);
+    }
 
     if (_mutex && _isPipeMode) {
         QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
@@ -502,20 +505,19 @@ void ArnLink::setBits( int mask, int value, int sendId, bool useUncrossed)
 void ArnLink::addValue( int value, int sendId, bool useUncrossed)
 {
     if (!_val)  return;
-    if (_twin && !useUncrossed)
-        return _twin->addValue( value, sendId, true);
 
     if (_twin) {    // support for bidirectional function
-        if (_isAtomicOpProvider && !_twin->_isAtomicOpProvider) {
-            return _twin->addValue( value, sendId, true);  // Act as provider for addValue
+        if (_isAtomicOpProvider && !_twin->_isAtomicOpProvider) {  // This twin is OpProvider
+            return _twin->addValue( value, sendId, useUncrossed);  // Act as provider for addValue
         }
-        if (!_twin->_isAtomicOpProvider) {
+        if (!_twin->_isAtomicOpProvider) {  // Neither twin is OpProvider, send out event
             // qDebug() << "doAddValue: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
             //            " path=" << linkPath() << " value=" << value;
             ArnEvAtomicOp  ev( ArnEvAtomicOp::Op::AddInt, value, QVariant());
-            sendArnEvent( &ev);
+            _twin->sendArnEvent( &ev);
             return;
         }
+        // Other twin is OpProvider (or faulty both is)
     }
 
     if (_mutex)  _mutex->lock();
@@ -529,6 +531,10 @@ void ArnLink::addValue( int value, int sendId, bool useUncrossed)
     ++_val->localUpdateCount;
 
     if (_mutex)  _mutex->unlock();
+
+    if (_twin && !useUncrossed) {  // Update the OpProvider link before, as if it was requested there first
+        _twin->setValue( newValue, sendId, true);
+    }
 
     if (_mutex && _isPipeMode) {
         QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
@@ -544,20 +550,19 @@ void ArnLink::addValue( int value, int sendId, bool useUncrossed)
 void  ArnLink::addValue( ARNREAL value, int sendId, bool useUncrossed)
 {
     if (!_val)  return;
-    if (_twin && !useUncrossed)
-        return _twin->addValue( value, sendId, true);
 
     if (_twin) {    // support for bidirectional function
-        if (_isAtomicOpProvider && !_twin->_isAtomicOpProvider) {
-            return _twin->addValue( value, sendId, true);  // Act as provider for addValue
+        if (_isAtomicOpProvider && !_twin->_isAtomicOpProvider) {  // This twin is OpProvider
+            return _twin->addValue( value, sendId, useUncrossed);  // Act as provider for addValue
         }
-        if (!_twin->_isAtomicOpProvider) {
+        if (!_twin->_isAtomicOpProvider) {  // Neither twin is OpProvider, send out event
             // qDebug() << "doAddValue: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
             //            " path=" << linkPath() << " value=" << value;
             ArnEvAtomicOp  ev( ArnEvAtomicOp::Op::AddReal, value, QVariant());
-            sendArnEvent( &ev);
+            _twin->sendArnEvent( &ev);
             return;
         }
+        // Other twin is OpProvider (or faulty both is)
     }
 
     if (_mutex)  _mutex->lock();
@@ -571,6 +576,10 @@ void  ArnLink::addValue( ARNREAL value, int sendId, bool useUncrossed)
     ++_val->localUpdateCount;
 
     if (_mutex)  _mutex->unlock();
+
+    if (_twin && !useUncrossed) {  // Update the OpProvider link before, as if it was requested there first
+        _twin->setValue( newValue, sendId, true);
+    }
 
     if (_mutex && _isPipeMode) {
         QByteArray  valueData = QByteArray( 1, char( Arn::ExportCode::String)) +
