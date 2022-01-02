@@ -573,6 +573,10 @@ public:
      */
     bool  isUncrossed()  const;
 
+    //! Tells if this ArnItem is assigned right now
+    /*! Typically used to stop endless recusion due to signal/slot direct call when assigned
+     * \retval true if beeing assigned right now.
+     */
     bool  isAssigning()  const;
 
     //! \cond ADV
