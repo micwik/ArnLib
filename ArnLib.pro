@@ -1,7 +1,3 @@
-# -------------------------------------------------
-# Project created by QtCreator 2010-08-10T13:51:16
-# -------------------------------------------------
-
 PROJECT = ArnLib
 
 # ARN += core       # Level 1: Basic Arn functionality without any tcp and syncing
@@ -36,7 +32,7 @@ include(src/ArnLib.pri)
 
 win32 {
 } else {
-DEFINES += DUMMY=\\\"$$system(rm build/ArnM.o)\\\"
+#DEFINES += DUMMY=\\\"$$system(rm build/ArnM.o)\\\"
 }
 
 greaterThan(QT_MAJOR_VERSION, 5) {
@@ -63,7 +59,6 @@ OTHER_FILES += \
     README.md \
     doc/Description.md \
     examples/Examples.txt \
-    ArnLib.pri \
     doc/Install.md \
     doc/Changelog_Todo.md
 
