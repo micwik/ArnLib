@@ -785,6 +785,7 @@ public slots:
     //! \cond ADV
 protected:
     bool  hasSetupAdvertise()  const;
+    void  setHostIpList( const QStringList& hostIpList);
 
     ArnDiscoverAdvertise( ArnDiscoverAdvertisePrivate& dd, QObject* parent);
     ArnDiscoverAdvertisePrivate* const  d_ptr;

@@ -43,6 +43,7 @@
 #include <QHostInfo>
 #include <QTimer>
 #include <QtEndian>
+#include <QDebug>
 
 using Arn::XStringMap;
 
@@ -212,7 +213,7 @@ bool  ArnZeroConfB::getTxtRecordMap( XStringMap& xsm)
     xsm.clear();
     QByteArray  txtRec = _txtRec;
     forever {
-        if (txtRec.isEmpty())  return true;  // No more params
+        if (txtRec.isEmpty())  break;  // No more params
         int parLen = quint8( txtRec.at(0));
         if (parLen > (txtRec.size() - 1))  return false;  // Too long parameter length
         QByteArray  par( txtRec.constData() + 1, parLen);
@@ -221,11 +222,14 @@ bool  ArnZeroConfB::getTxtRecordMap( XStringMap& xsm)
         int  eqPos = par.indexOf('=');
         xsm.add( par.mid(0, eqPos), par.mid( eqPos + 1));
     }
+    // qDebug() << "getTxtRecordMap:" << xsm.toXString();
+    return true;
 }
 
 
 void  ArnZeroConfB::setTxtRecordMap( const XStringMap& xsm)
 {
+    // qDebug() << "setTxtRecordMap:" << xsm.toXString();
     _txtRec.clear();
     for (int i = 0; i < xsm.size(); ++i) {
         QByteArray  txtPar = xsm.key(i) + "=" + xsm.value(i);

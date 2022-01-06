@@ -89,6 +89,7 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
     ArnM::loadFromDirRoot( Arn::pathDiscover + "help.xhtml", QDir( Arn::resourceArnRoot), Arn::Coding::Text);
 
     //// Publish static list of network interfaces in Arn
+    QStringList  hostIpList;
     int  i = 0;
     foreach (QNetworkInterface  interface, QNetworkInterface::allInterfaces()) {
         QNetworkInterface::InterfaceFlags  flags = interface.flags();
@@ -110,11 +111,16 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
             ArnM::setValue( path + "mask", mask);
             ArnM::setValue( path + "sysName", sysName);
             ArnM::setValue( path + "name", addr + "  [" + sysName + "]");
+
+            if (prot == QAbstractSocket::IPv4Protocol) {
+                   hostIpList += addr;
+            }
             ++i;
         }
     }
     
     // Setup advertise, but don't start yet, can be waiting for service name
+    ArnDiscoverAdvertise::setHostIpList( hostIpList);
     ArnDiscoverAdvertise::advertiseService( discoverType, service(), hostPort);
 }
 

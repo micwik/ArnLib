@@ -101,6 +101,7 @@ private:
     ArnZeroConfRegister*  _arnZCReg;
     QString  _service;
     QStringList  _groups;
+    QStringList  _hostIpList;
     Arn::XStringMap  _customProperties;
     bool  _hasSetupAdvertise;
     ArnDiscover::Type  _discoverType;

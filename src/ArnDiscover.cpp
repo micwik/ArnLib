@@ -611,6 +611,8 @@ void  ArnDiscoverBrowserB::onResolved( int id, const QByteArray& escFullDomain)
         ArnDiscoverInfo&  info = d->_activeServInfos[ index];
         XStringMap  xsmTxt;
         ds->getTxtRecordMap( xsmTxt);
+        if (xsmTxt.key( xsmTxt.size() - 1) == "protovers")  // Mitigate reversed order from ZeroConfig manipulation
+            xsmTxt.reverseOrder();
         QByteArray  servProp = xsmTxt.value("server");
         info.d_ptr->_type = servProp.isNull() ? ArnDiscover::Type::None
                                               : (servProp.toInt() ? ArnDiscover::Type::Server
@@ -805,13 +807,16 @@ void  ArnDiscoverAdvertise::advertiseService( ArnDiscover::Type discoverType, co
     d->_service      = serviceName;
 
     XStringMap  xsm;
-    xsm.add("protovers", "1.0");
+    xsm.add("protovers", "1.1");  // Should be first
     xsm.add("arnlibVers", XStringMap( ArnM::info()).value("Ver"));
     xsm.add("server", QByteArray::number( d->_discoverType == ArnDiscover::Type::Server));
     d->_arnZCReg->setSubTypes( d->_groups);
     d->_arnZCReg->addSubType( d->_discoverType == ArnDiscover::Type::Server ? "server" : "client");
     for (int i = 0; i < d->_groups.size(); ++i) {
         xsm.add("group", uint(i), d->_groups.at(i));
+    }
+    for (int i = 0; i < d->_hostIpList.size(); ++i) {
+        xsm.add("hostIp", uint(i), d->_hostIpList.at(i));
     }
     xsm += d->_customProperties;
 
@@ -882,6 +887,14 @@ bool  ArnDiscoverAdvertise::hasSetupAdvertise()  const
     Q_D(const ArnDiscoverAdvertise);
 
     return d->_hasSetupAdvertise;
+}
+
+
+void  ArnDiscoverAdvertise::setHostIpList( const QStringList& hostIpList)
+{
+    Q_D(ArnDiscoverAdvertise);
+
+    d->_hostIpList = hostIpList;
 }
 
 
