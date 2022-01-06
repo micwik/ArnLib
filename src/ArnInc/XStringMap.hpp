@@ -171,6 +171,7 @@ public:
     bool  fromXString( const QString& inXString);
 
     void  setEmptyKeysToValue();
+    void  reverseOrder();
     QStringList  keys()  const;
     QStringList  values( const char* keyPrefix = 0)  const;
     MQVariantMap  toVariantMap( bool useStringVal)  const;

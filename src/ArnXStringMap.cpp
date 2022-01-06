@@ -609,6 +609,27 @@ void  XStringMap::setEmptyKeysToValue()
 }
 
 
+void  XStringMap::reverseOrder()
+{
+    if (_size <= 1)  return;
+
+    QByteArray  key, val;
+    for (int i = 0; i < _size / 2; ++i) {
+        int  ir = _size - i - 1;
+        key = _keyList.at( i);
+        val = _valList.at( i);
+        _keyList[ i].resize( 0);
+        _valList[ i].resize( 0);
+        _keyList[ i] += _keyList.at( ir);
+        _valList[ i] += _valList.at( ir);
+        _keyList[ ir].resize( 0);
+        _valList[ ir].resize( 0);
+        _keyList[ ir] += key;
+        _valList[ ir] += val;
+    }
+}
+
+
 QStringList  XStringMap::keys()  const
 {
     QStringList  retList;
