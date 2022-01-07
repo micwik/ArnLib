@@ -35,6 +35,7 @@
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include <QHostInfo>
+#include <QNetworkInterface>
 #include <QTimer>
 
 using Arn::XStringMap;
@@ -314,6 +315,31 @@ void ArnDiscoverBrowserB::init()
              this, SLOT(onServiceAdded(int,QString,QString)));
     connect( d->_serviceBrowser, SIGNAL(serviceRemoved(int,QString,QString)),
              this, SLOT(onServiceRemoved(int,QString,QString)));
+
+    //// Make a list of subNets for network interfaces on this computer
+    foreach (QNetworkInterface  interface, QNetworkInterface::allInterfaces()) {
+        QNetworkInterface::InterfaceFlags  flags = interface.flags();
+        if (!flags.testFlag( QNetworkInterface::IsUp)
+        || flags.testFlag( QNetworkInterface::IsPointToPoint)
+        || flags.testFlag( QNetworkInterface::IsLoopBack))
+            continue;
+
+        foreach (QNetworkAddressEntry  entry, interface.addressEntries()) {
+            QAbstractSocket::NetworkLayerProtocol  prot = entry.ip().protocol();
+            if ((prot != QAbstractSocket::IPv4Protocol) && (prot != QAbstractSocket::IPv6Protocol))
+                continue;
+
+            int  prefixLen = entry.prefixLength();
+            if (prefixLen < 0) {
+                // This is a bug in some Qt for android, windows ...  (Not linux)
+                prefixLen = 24;
+                if (Arn::warningMDNS)  qWarning() << "Bad netmask: nif=" << interface.humanReadableName()
+                                                  << ", asume prefixLen=" << prefixLen;
+            }
+            ArnDiscoverBrowserBPrivate::SubNet  subNet( entry.ip(), prefixLen);
+            d->_localHostNetList += subNet;
+        }
+    }
 }
 
 
@@ -667,16 +693,45 @@ void  ArnDiscoverBrowserB::onLookuped( int id)
     if (Arn::debugDiscover)  qDebug() << "Lookuped host: name=" << hostName;
     int  index = d->_activeServIds.indexOf( id);
     if (index >= 0) {  // Service still exist
-        ArnDiscoverInfo&  info = d->_activeServInfos[ index];
-        info.d_ptr->_state = ArnDiscoverInfo::State::HostIp;
-        info.d_ptr->_hostIp = ds->hostAddr();
-        info.d_ptr->_resolvCode = ArnZeroConf::Error::Ok;  // MW: Ok?
+        ArnDiscoverInfo&  info    = d->_activeServInfos[ index];
+        info.d_ptr->_state        = ArnDiscoverInfo::State::HostIp;
+        info.d_ptr->_hostIpLookup = ds->hostAddr();
+        info.d_ptr->_hostIp       = info.d_ptr->_hostIpLookup;  // Prelimary
+        info.d_ptr->_resolvCode   = ArnZeroConf::Error::Ok;  // MW: Ok?
+        doHostIpLogic( info);
 
         emit infoUpdated( index, info.state());
     }
 
     ds->releaseLookup();
     ds->deleteLater();
+}
+
+
+void  ArnDiscoverBrowserB::doHostIpLogic( ArnDiscoverInfo& info)
+{
+    Q_D(ArnDiscoverBrowserB);
+
+    QList<QHostAddress>  remHostIpList;
+    remHostIpList += info.d_ptr->_hostIpLookup;  // Lookup Ip has first prio
+
+    XStringMap&  xsm = info.d_ptr->_properties;
+    for (uint i = 0; true; ++i) {
+        QString  hostIpTxt = xsm.valueString( "hostIp", i);
+        if (hostIpTxt.isNull())  break;
+        QHostAddress  hostIp( hostIpTxt);
+        if (hostIp.isNull())  continue;  // Not valid address
+
+        remHostIpList += hostIp;
+    }
+
+    foreach (const QHostAddress& remHostIp, remHostIpList) {
+        foreach ( const ArnDiscoverBrowserBPrivate::SubNet& subNet, d->_localHostNetList) {
+            if (remHostIp.isInSubnet( subNet)) {  // This remote host can be reached in a local net
+                info.d_ptr->_hostIp = remHostIp;  // Modify to use this address (can be same)
+            }
+        }
+    }
 }
 
 

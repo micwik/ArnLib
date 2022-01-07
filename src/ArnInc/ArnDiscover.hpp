@@ -427,6 +427,7 @@ private:
     int  newServiceInfo( int id, const QString& name, const QString& domain);
     void  removeServiceInfo( int index);
     void  doNextState( ArnDiscoverInfo& info);
+    void  doHostIpLogic( ArnDiscoverInfo& info);
 };
 
 

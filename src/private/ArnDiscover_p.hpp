@@ -56,6 +56,7 @@ private:
     QString  _domain;
     QString  _hostName;
     quint16  _hostPort;
+    QHostAddress  _hostIpLookup;
     QHostAddress  _hostIp;
     Arn::XStringMap  _properties;
     int  _resolvCode;
@@ -66,6 +67,8 @@ class ArnDiscoverBrowserBPrivate
 {
     friend class ArnDiscoverBrowserB;
 public:
+    typedef QPair<QHostAddress, int>  SubNet;
+
     ArnDiscoverBrowserBPrivate();
     virtual  ~ArnDiscoverBrowserBPrivate();
 
@@ -73,6 +76,7 @@ private:
     ArnZeroConfBrowser*  _serviceBrowser;
     QList<int>  _activeServIds;
     QList<ArnDiscoverInfo>  _activeServInfos;
+    QList<SubNet>  _localHostNetList;
     QString  _filter;
     ArnDiscoverInfo::State  _defaultStopState;
 };
