@@ -39,6 +39,7 @@ HEADERS += \
     $$PWD/ArnInc/ArnError.hpp \
     $$PWD/ArnInc/Arn.hpp \
     $$PWD/ArnInc/ArnLib.hpp \
+    $$PWD/ArnInc/MQFlagsBase.hpp \
     $$PWD/ArnInc/MQFlags.hpp \
     $$PWD/ArnInc/Math.hpp \
     $$PWD/ArnInc/ArnCompat.hpp

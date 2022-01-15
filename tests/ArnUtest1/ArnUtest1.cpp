@@ -270,6 +270,24 @@ void  ArnUtest1::testXStringMap()
     QVERIFY( xsm4.value("def") == " \ncba_");
     XStringMap xsm5( xsm3);
     QVERIFY( xsm5.toXString() == "= =_\\n=\\_ _\\nabc\\_ def=_\\ncba\\_");
+
+    XStringMap xsm6;
+    xsm6.setOptions( XStringMap::Options::NullTilde);
+    QByteArray b6Apa( "a~b\0c\0\0", 7);
+    xsm6.add( "apa", b6Apa);
+    QByteArray b6Xstr( xsm6.toXString());
+    // qDebug() << "XStringMap NullTilde: xstring=" << b6Xstr;
+    QVERIFY( b6Xstr == "apa=a~b^~c~~");
+    XStringMap xsm7( b6Xstr);
+    QByteArray b7Apa = xsm7.value( "apa");
+    QVERIFY( b7Apa == b6Apa);
+
+    xsm6.setOptions( XStringMap::Options::RepeatLen);
+    xsm6.clear();
+    xsm6.add( "apa", "abbcccdddd\n\n\n");
+    b6Xstr = xsm6.toXString();
+    // qDebug() << "XStringMap RepeatLen: xstring=" << b6Xstr;
+    QVERIFY( b6Xstr == "apa=abbc\\2d\\3\\n\\2");
 }
 
 

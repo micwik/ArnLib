@@ -43,6 +43,7 @@
 #include <QMetaType>
 #include <QDebug>
 #include <limits>
+#include <string.h>
 
 
 namespace Arn {
@@ -116,6 +117,18 @@ void XStringMap::squeeze()
     _valList.resize( _size);
     _keyList.squeeze();
     _valList.squeeze();
+}
+
+
+const XStringMap::Options&  XStringMap::options()  const
+{
+    return _options;
+}
+
+
+void  XStringMap::setOptions( const XStringMap::Options& newOptions)
+{
+    _options = newOptions;
 }
 
 
@@ -749,8 +762,11 @@ bool XStringMap::fromXString( const QString& inXString)
 }
 
 
-void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)
+void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
 {
+    bool  optRepeatLen = _options.is( Options::RepeatLen);
+    bool  optNullTilde = _options.is( Options::NullTilde);
+
     int  srcSize = src.size();
     const char*  srcP = src.constData();
 
@@ -758,10 +774,36 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)
     char*  dstStart = dst.data();
     char*  dstP = dstStart;
 
-    uchar c;
+    bool  actNullTilde = false;
+    qint16  lastChar   = -1;
+    uchar  sameCount   = 0;
+    uchar  srcChar;
     for (int i = 0; i < srcSize; ++i) {
-        c = uchar( *srcP++);
-        switch (c) {
+        srcChar = uchar( *srcP++);
+        if (optRepeatLen) {  // Optimize repeated chars
+            if (srcChar == lastChar) {
+                ++sameCount;
+                if ((sameCount < 9) && (i < srcSize - 1))  continue;
+                *dstP++ = '\\';
+                *dstP++ = '0' + sameCount;
+                sameCount = 0;
+                continue;
+            }
+            if (sameCount >= 1) {
+                if (sameCount >= 2) {
+                    *dstP++ = '\\';
+                    *dstP++ = '0' + sameCount;
+                }
+                else {  // Only 1 repeat, rewind last loop and redo
+                    srcChar  = lastChar;
+                    lastChar = -1;
+                    --srcP;
+                    --i;
+                }
+                sameCount = 0;
+            }
+        }
+        switch (srcChar) {
         case ' ':
             *dstP++ = '_';      // The coded string must not contain any ' '
             break;
@@ -777,6 +819,15 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)
             *dstP++ = '\\';
             *dstP++ = '^';
             break;
+        case '~':
+            if (actNullTilde) {
+                *dstP++ = '\\';
+                *dstP++ = '~';
+            }
+            else {
+                *dstP++ = '~';
+            }
+            break;
         case '\n':
             *dstP++ = '\\';
             *dstP++ = 'n';
@@ -786,61 +837,101 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)
             *dstP++ = 'r';
             break;
         case '\0':
-            *dstP++ = '\\';
-            *dstP++ = '0';
+            if (actNullTilde) {
+                *dstP++ = '~';      // Null is a common value, substitute with single char
+            }
+            else if (optNullTilde) {
+                *dstP++ = '^';      // Start the tilde substitution
+                *dstP++ = '~';
+                actNullTilde = true;
+            }
+            else {
+                *dstP++ = '\\';
+                *dstP++ = '0';
+            }
             break;
         default:
-            if (c < 32) {      // 0 .. 31  Special control-char
+            if (srcChar < 32) {      // 0 .. 31  Special control-char
                 *dstP++ = '^';
-                *dstP++ = char('A' + c - 1);
+                *dstP++ = char('A' + srcChar - 1);
             }
             else {             // Normal char (also UTF8 which is above 127)
-                *dstP++ = char(c);
+                *dstP++ = char(srcChar);
             }
         }
+        lastChar = srcChar;
     }
     dst.resize( int( dstP - dstStart));   // Set the real used size for coded string
 }
 
 
-void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)
+void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)  const
 {
     int  srcSize = src.size();
     const char*  srcP = src.constData();
 
-    dst.resize( srcSize);   // Max size of decoded string
+    dst.resize( srcSize * 5);   // Max size of decoded string. Worst for repeated chars like "A\9\9"
     char*  dstStart = dst.data();
     char*  dstP = dstStart;
 
-    bool  escapeFlag = false;
-    bool  ctrlFlag   = false;
-    uchar c;
+    bool  actNullTilde = false;
+    bool  escapeFlag   = false;
+    bool  ctrlFlag     = false;
+    qint16  lastChar = -1;
+    qint16  dstChar;
+    uchar  repeatCount;
+    uchar  srcChar;
     for (int i = 0; i < srcSize; ++i) {
-        c = uchar( *srcP++);
+        dstChar    = -1;
+        repeatCount = 1;
+        srcChar = uchar( *srcP++);
         if (escapeFlag) {
             escapeFlag = false;
-            switch (c) {
+            switch (srcChar) {
             case 'n':
-                *dstP++ = '\n';
+                dstChar = '\n';
                 break;
             case 'r':
-                *dstP++ = '\r';
+                dstChar = '\r';
                 break;
             case '0':
-                *dstP++ = '\0';
+                dstChar = '\0';
                 break;
             default:
-                *dstP++ = char(c);
+                if ((srcChar >= '1') && (srcChar <= '9')) {
+                    dstChar     = lastChar;
+                    repeatCount = srcChar - '0';
+                }
+                else {
+                    dstChar = srcChar;
+                }
             }
         }
         else if (ctrlFlag) {
             ctrlFlag = false;
-            *dstP++ = char( c - 'A' + 1);      // 0 .. 31  Special control-char
+            switch (srcChar) {
+            case '~':
+                dstChar = '\0';
+                actNullTilde = true;
+                break;
+            default:
+                if ((srcChar >= 'A') && (srcChar <= 'A' + 30)) {
+                    dstChar  = char( srcChar - 'A' + 1);      // 1 .. 31  Special control-char
+                }
+            }
         }
         else {
-            switch (c) {
+            switch (srcChar) {
             case '_':
-                *dstP++ = ' ';
+                dstChar = ' ';
+                break;
+            case '~':
+                if (actNullTilde) {
+                    dstChar = '\0';
+                }
+                else {
+                    dstChar = '~';
+                }
                 break;
             case '\\':
                 escapeFlag = true;
@@ -849,8 +940,14 @@ void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)
                 ctrlFlag = true;
                 break;
             default:        // Normal char (also UTF8 which is above 127)
-                *dstP++ = char(c);
+                dstChar = char(srcChar);
             }
+        }
+        if (dstChar >= 0) {
+            for (uchar i = 0; i < repeatCount; ++i) {
+                *dstP++ = char( dstChar);
+            }
+            lastChar = dstChar;
         }
     }
     dst.resize( int( dstP - dstStart));   // Set the real used size for decoded string

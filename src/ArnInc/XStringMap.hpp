@@ -43,6 +43,7 @@
 #define ARN_XSTRINGMAP_HPP
 
 #include "ArnLib_global.hpp"
+#include "MQFlagsBase.hpp"
 #include <QVector>
 #include <QByteArray>
 #include <QStringList>
@@ -53,6 +54,22 @@
 typedef QMultiMap<QString,QVariant> MQVariantMap;
 
 namespace Arn {
+
+class XStringMapOptions {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        None       = 0x00,
+        NullTilde  = 0x01,
+        RepeatLen  = 0x02,
+        //! Convenience
+        Supported  = 0x07
+    };
+    MQ_DECLARE_FLAGS( XStringMapOptions)
+};
+MQ_DECLARE_OPERATORS_FOR_FLAGS( XStringMapOptions)
+
 
 //! Container class with string representation for serialized data.
 /*!
@@ -85,6 +102,8 @@ This will print "XString: put id=level val=12"
 class ARNLIBSHARED_EXPORT XStringMap
 {
 public:
+    typedef XStringMapOptions  Options;
+
     XStringMap();
     /// Make shallow copy (Qt style)
     XStringMap( const XStringMap& other);
@@ -97,6 +116,8 @@ public:
     int  size()  const { return _size; }
     void  clear( bool freeMem = false);
     void  squeeze();
+    const Options&  options()  const;
+    void  setOptions( const Options& newOptions);
 
     int  indexOf( const char* key, int from = 0)  const;
     int  indexOf( const QByteArray& key, int from = 0)  const;
@@ -176,8 +197,8 @@ public:
     QStringList  values( const char* keyPrefix = 0)  const;
     MQVariantMap  toVariantMap( bool useStringVal)  const;
 
-    static void  stringCode( QByteArray& dst, const QByteArray& src);
-    static void  stringDecode( QByteArray& dst, const QByteArray& src);
+    void  stringCode( QByteArray& dst, const QByteArray& src)  const;
+    void  stringDecode( QByteArray& dst, const QByteArray& src)  const;
 
     inline void  append( const char* key, const QByteArray& val)
     {add( key, val);}
@@ -212,6 +233,7 @@ private:
     QVector<QByteArray>  _keyList;
     QVector<QByteArray>  _valList;
     int  _size;
+    Options _options;
     static QByteArray  _nullValue;
 };
 
