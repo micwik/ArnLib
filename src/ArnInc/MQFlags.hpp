@@ -43,7 +43,7 @@
 #define MQFLAGS_HPP
 
 #include "ArnLib_global.hpp"
-#include <QFlags>
+#include "MQFlagsBase.hpp"
 #include <QMap>
 #include <QStringList>
 #include <QObject>
@@ -53,23 +53,7 @@
 #define MQ_NSTXT_FILL_MISSING_FROM( FromNs)   FromNs, 0
 
 
-/// Flags
-#define MQ_DECLARE_FLAGS( FEStruct) \
-    Q_DECLARE_FLAGS(F, E) \
-    F  f; \
-    inline FEStruct(F v_ = F(QFlag(0))) : f( v_)  {setup(0);} \
-    inline FEStruct(E e_) : f( e_)  {setup(0);} \
-    inline static E  flagIf( bool test, E e)  {return test ? e : E(0);} \
-    inline bool  is(E e)  const {return f.testFlag(e);} \
-    inline bool  isAny(E e)  const {return ((f & e) != 0) && (e != 0 || f == 0 );} \
-    inline FEStruct&  set(E e, bool v_ = true)  {f = v_ ? (f | e) : (f & ~e); return *this;} \
-    inline void  setBits(E e, int v_)  {f = (f & ~e) | E(v_);} \
-    inline static FEStruct  fromInt( int v_)  {return FEStruct( F( v_));} \
-    inline int  toInt()  const {return f;} \
-    inline operator int()  const {return f;} \
-    inline bool  operator!()  const {return !f;} \
-    inline void  setup( char* dummy) {Q_UNUSED(dummy)}
-
+/// Flags text
 #define MQ_DECLARE_FLAGSTXT( FEStruct) \
     MQ_DECLARE_FLAGS( FEStruct) \
     static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( &staticMetaObject, true, _setNs(0), _setSe(0), \
@@ -113,20 +97,8 @@
 #define MQ_SUBETXT_ADD_ABSOP( EStruct, Mask) \
     MQ_SUBETXT_ADD_RELOP( EStruct, Mask, 1) \
 
-#define MQ_DECLARE_OPERATORS_FOR_FLAGS( FEStruct) \
-    Q_DECLARE_OPERATORS_FOR_FLAGS( FEStruct::F)
 
-
-/// Enums
-#define MQ_DECLARE_ENUM( EStruct) \
-    E  e; \
-    inline EStruct(E v_ = E(0)) : e( v_)  {setup(0);} \
-    inline static EStruct  fromInt( int v_)  {return EStruct( E( v_));} \
-    inline int  toInt()  const {return e;} \
-    inline operator int()  const {return e;} \
-    inline bool  operator!()  const {return !e;} \
-    inline void setup( char* dummy) {Q_UNUSED(dummy)}
-
+/// Enums text
 #define MQ_DECLARE_ENUMTXT( EStruct) \
     MQ_DECLARE_ENUM( EStruct) \
     static Arn::EnumTxt&  txt()  {static Arn::EnumTxt in( &staticMetaObject, false, _setNs(0), arnNullptr, \
