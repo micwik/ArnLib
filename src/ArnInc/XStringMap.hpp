@@ -63,6 +63,7 @@ public:
         None       = 0x00,
         NullTilde  = 0x01,
         RepeatLen  = 0x02,
+        Frame      = 0x04,
         //! Convenience
         Supported  = 0x07
     };
@@ -87,6 +88,8 @@ Following mapping is done when serialized to the XString:
 > General codes below 32: code 1 -> "^A",  code 2 -> "^B"  and so on to code 31  <Br>
 > code 32 (space) -> "_",  "_" -> "\\_",  "^" -> "\^",  "\" -> "\\"              <Br>
 
+Key must always be printable (char codes > 32). It must not contain " ", "=" or end with "|" char.
+
 The XString can be imported to the XStringMap. To get back stored values,
 XStringMap is Queried with the keys or by index.
 
@@ -94,7 +97,7 @@ XStringMap is Queried with the keys or by index.
     Arn::XStringMap xsm;
     xsm.add("", "put");
     xsm.add("id", "level");
-    xsm.add("val", QByteArray::number(12));
+    xsm.addNum("val", 12);
     qDebug() << "XString: " << xsm.toXString();
 \endcode
 This will print "XString: put id=level val=12"
@@ -234,6 +237,7 @@ private:
     QVector<QByteArray>  _valList;
     int  _size;
     Options _options;
+    mutable bool  _hasBinCode;
     static QByteArray  _nullValue;
 };
 

@@ -96,6 +96,7 @@ XStringMap&  XStringMap::operator=( const XStringMap& other)
 
 void  XStringMap::init()
 {
+    _hasBinCode = false;
     clear( true);
 }
 
@@ -686,6 +687,7 @@ MQVariantMap XStringMap::toVariantMap( bool useStringVal)  const
 
 QByteArray  XStringMap::toXString()  const
 {
+    bool optFrame = _options.is( Options::Frame);
     QByteArray  outXString;
     QByteArray  valCoded;
     for (int i = 0; i < _size; ++i) {
@@ -693,11 +695,24 @@ QByteArray  XStringMap::toXString()  const
             outXString += ' ';
         const QByteArray&  key = _keyList.at(i);
         const QByteArray&  val = _valList.at(i);
+        stringCode( valCoded, val);
+        if (optFrame && !_hasBinCode) {
+            QByteArray valLenTxt = QByteArray::number( val.size());
+            bool useFrame = valCoded.size() > val.size() + valLenTxt.size() + 4;
+            if (useFrame) {
+                outXString += key;
+                outXString += "|=";
+                outXString += valLenTxt;
+                outXString += '<';
+                outXString += val;
+                outXString += '>';
+                continue;
+            }
+        }
         if (!key.isEmpty() || val.isEmpty() || val.contains('=')) {
             outXString += key;
             outXString += '=';
         }
-        stringCode( valCoded, val);
         outXString += valCoded;
     }
     return outXString;
@@ -713,7 +728,7 @@ QString  XStringMap::toXStringString()  const
 
 bool  XStringMap::fromXString( const QByteArray& inXString, int size)
 {
-    if (size < 0  ||  size > inXString.size()) {
+    if ((size < 0) || (size > inXString.size())) {
         size = inXString.size();
     }
     clear();
@@ -725,6 +740,7 @@ bool  XStringMap::fromXString( const QByteArray& inXString, int size)
     QByteArray  valCoded;
 
     forever {
+        bool isFrame = false;
         if (startPos >= size) {     // if past end of line, finished
             break;
         }
@@ -734,21 +750,45 @@ bool  XStringMap::fromXString( const QByteArray& inXString, int size)
 
         // Start getting key
         key.resize(0);  // Default empty key
-        int  posEq = inXString.indexOf('=', startPos);
-        int  posSp = inXString.indexOf(' ', startPos);
-        if (posSp < 0  ||  posSp >= size) {
-            posSp = size; // last pos is set to end of string
+        int  posEq  = inXString.indexOf( '=', startPos);
+        int  posSep = inXString.indexOf( ' ', startPos);
+        if (posSep < 0  ||  posSep >= size) {
+            posSep = size; // last separator pos is set to end of string
         }
-        if ((posEq >= 0) && (posEq < posSp)) {  // Key found
-            key.append( inXString.constData() + startPos, posEq - startPos);
-            startPos = posEq + 1;     // past '='
+        if ((posEq >= 0) && (posEq < posSep)) {  // Key found
+            if ((posEq > startPos) && (inXString.at( posEq - 1) == '|')) {  // Framed value
+                isFrame = true;
+                int  posFrSt     = inXString.indexOf( '<', posEq + 1);
+                int  frameLen    = -1;
+                bool  frameLenOk = false;
+                if ((posFrSt > posEq) && (posFrSt < size - 1)) {
+                    frameLen = inXString.mid( posEq + 1, posFrSt - posEq - 1).toInt( &frameLenOk);
+                }
+                int  posFrEn = posFrSt + frameLen + 1;
+                if (frameLenOk && (posFrEn < size) && (inXString.at( posFrEn) == '>')) {
+                    key.append( inXString.constData() + startPos, posEq - startPos - 1);
+                    startPos = posFrSt + 1;  // past '<'
+                    posSep   = posFrEn + 1;  // past '>'
+                }
+                else  return false;  // Can't recover due to broken frame
+            }
+            else {
+                key.append( inXString.constData() + startPos, posEq - startPos);
+                startPos = posEq + 1;     // past '='
+            }
         }
 
         // Start getting value
-        valCoded.resize(0);
-        valCoded.append( inXString.constData() + startPos, posSp - startPos);
-        stringDecode( val, valCoded);
-        startPos = posSp + 1;     // past ' '
+        if (isFrame) {
+            val.resize(0);
+            val.append( inXString.constData() + startPos, posSep - startPos - 1);
+        }
+        else {
+            valCoded.resize(0);
+            valCoded.append( inXString.constData() + startPos, posSep - startPos);
+            stringDecode( val, valCoded);
+        }
+        startPos = posSep + 1;     // past separator ' '
 
         add( key, val);
     }
@@ -766,6 +806,7 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
 {
     bool  optRepeatLen = _options.is( Options::RepeatLen);
     bool  optNullTilde = _options.is( Options::NullTilde);
+    _hasBinCode = false;
 
     int  srcSize = src.size();
     const char*  srcP = src.constData();
@@ -831,10 +872,12 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
         case '\n':
             *dstP++ = '\\';
             *dstP++ = 'n';
+            _hasBinCode = true;
             break;
         case '\r':
             *dstP++ = '\\';
             *dstP++ = 'r';
+            _hasBinCode = true;
             break;
         case '\0':
             if (actNullTilde) {
@@ -849,11 +892,13 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
                 *dstP++ = '\\';
                 *dstP++ = '0';
             }
+            _hasBinCode = true;
             break;
         default:
             if (srcChar < 32) {      // 0 .. 31  Special control-char
                 *dstP++ = '^';
                 *dstP++ = char('A' + srcChar - 1);
+                _hasBinCode = true;
             }
             else {             // Normal char (also UTF8 which is above 127)
                 *dstP++ = char(srcChar);

@@ -284,10 +284,40 @@ void  ArnUtest1::testXStringMap()
 
     xsm6.setOptions( XStringMap::Options::RepeatLen);
     xsm6.clear();
-    xsm6.add( "apa", "abbcccdddd\n\n\n");
+    b6Apa = "abbcccdddd\n\n\n";
+    xsm6.add( "apa", b6Apa);
     b6Xstr = xsm6.toXString();
     // qDebug() << "XStringMap RepeatLen: xstring=" << b6Xstr;
     QVERIFY( b6Xstr == "apa=abbc\\2d\\3\\n\\2");
+    xsm7.fromXString( b6Xstr);
+    b7Apa = xsm7.value( "apa");
+    QVERIFY( b7Apa == b6Apa);
+
+    xsm6.setOptions( XStringMap::Options::Frame);
+    xsm6.clear();
+    b6Apa = "a_________b";
+    xsm6.add( "apa", b6Apa);
+    xsm6.add( "bepa", "a__b");
+    b6Xstr = xsm6.toXString();
+    // qDebug() << "XStringMap Frame: xstring=" << b6Xstr;
+    QVERIFY( b6Xstr == "apa|=11<a_________b> bepa=a\\_\\_b");
+    xsm6.clear();
+    xsm6.add( "cepa", b6Xstr);
+    xsm6.add( "depa", "d_________\ne");
+    b6Xstr = xsm6.toXString();
+    // qDebug() << "XStringMap Frame: xstring=" << b6Xstr;
+    QVERIFY( b6Xstr == "cepa|=32<apa|=11<a_________b> bepa=a\\_\\_b> depa=d\\_\\_\\_\\_\\_\\_\\_\\_\\_\\ne");
+    xsm7.fromXString( b6Xstr);
+    QByteArray b7Cepa = xsm7.value( "cepa");
+    // qDebug() << "XStringMap Frame: cepa=" << b7Cepa;
+    QVERIFY( b7Cepa == "apa|=11<a_________b> bepa=a\\_\\_b");
+    xsm7.fromXString( b7Cepa);
+    b7Apa = xsm7.value( "apa");
+    // qDebug() << "XStringMap Frame: apa=" << b7Apa;
+    QVERIFY( b7Apa == b6Apa);
+    QByteArray b7Bepa = xsm7.value( "bepa");
+    // qDebug() << "XStringMap Frame: bepa=" << b7Bepa;
+    QVERIFY( b7Bepa == "a__b");
 }
 
 
