@@ -292,6 +292,24 @@ void  ArnUtest1::testXStringMap()
     xsm7.fromXString( b6Xstr);
     b7Apa = xsm7.value( "apa");
     QVERIFY( b7Apa == b6Apa);
+    xsm6.clear();
+    b6Apa = "a___________b";
+    xsm6.add( "apa", b6Apa);
+    b6Xstr = xsm6.toXString();
+    // qDebug() << "XStringMap RepeatLen: xstring=" << b6Xstr;
+    QVERIFY( b6Xstr == "apa=a\\_\\9\\_b");
+    xsm7.fromXString( b6Xstr);
+    b7Apa = xsm7.value( "apa");
+    QVERIFY( b7Apa == b6Apa);
+    xsm6.clear();
+    b6Apa = "a____________b";
+    xsm6.add( "apa", b6Apa);
+    b6Xstr = xsm6.toXString();
+    // qDebug() << "XStringMap RepeatLen: xstring=" << b6Xstr;
+    QVERIFY( b6Xstr == "apa=a\\_\\9\\2b");
+    xsm7.fromXString( b6Xstr);
+    b7Apa = xsm7.value( "apa");
+    QVERIFY( b7Apa == b6Apa);
 
     xsm6.setOptions( XStringMap::Options::Frame);
     xsm6.clear();
