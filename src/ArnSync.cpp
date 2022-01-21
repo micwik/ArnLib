@@ -45,7 +45,7 @@
 #include <QDebug>
 #include <limits.h>
 
-#define ARNSYNCVER  "3.1"
+#define ARNSYNCVER  "4.0"
 
 using Arn::XStringMap;
 
@@ -491,6 +491,14 @@ void  ArnSync::setRemoteVer( const QByteArray& remVer)
     for (int i = 0; i < partsNum; ++i) {
         _remoteVer[i] = remVerParts.at(i).toUInt();
     }
+
+    XStringMap::Options  xop;
+    if (_remoteVer[0] >= 4) {
+        xop = xop.NullTilde | xop.RepeatLen | xop.Frame;
+    }
+    _commandMap.setOptions( xop);
+    _replyMap.setOptions( xop);
+    _syncMap.setOptions( xop);
 }
 
 
