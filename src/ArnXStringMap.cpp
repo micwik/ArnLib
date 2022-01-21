@@ -813,37 +813,51 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
 
     dst.resize( 2 * srcSize);   // Max size of coded string
     char*  dstStart = dst.data();
-    char*  dstP = dstStart;
+    char*  dstP     = dstStart;
+    char*  dstP0    = dstStart;
+    const char*  srcRepLim = arnNullptr;
 
     bool  actNullTilde = false;
     qint16  lastChar   = -1;
+    uchar  lastCharInc = 1;
     uchar  sameCount   = 0;
     uchar  srcChar;
     for (int i = 0; i < srcSize; ++i) {
         srcChar = uchar( *srcP++);
-        if (optRepeatLen) {  // Optimize repeated chars
+        if (optRepeatLen && (srcP >= srcRepLim)) {  // Optimize repeated chars
             if (srcChar == lastChar) {
                 ++sameCount;
                 if ((sameCount < 9) && (i < srcSize - 1))  continue;
-                *dstP++ = '\\';
-                *dstP++ = '0' + sameCount;
+                if (sameCount * lastCharInc > 2 ) {
+                    *dstP++ = '\\';
+                    *dstP++ = '0' + sameCount;
+                    sameCount = 0;
+                    continue;
+                }
+                else {  // Last in source, 1 or 2 same
+                    //srcRepLim = srcP;
+                    srcP     -= sameCount - 1;
+                    i        -= sameCount - 1;
+                }
                 sameCount = 0;
-                continue;
             }
-            if (sameCount >= 1) {
-                if (sameCount >= 2) {
+            else if (sameCount >= 1) {
+                if (sameCount * lastCharInc > 2 ) {
                     *dstP++ = '\\';
                     *dstP++ = '0' + sameCount;
                 }
                 else {  // Only 1 repeat, rewind last loop and redo
-                    srcChar  = lastChar;
-                    lastChar = -1;
-                    --srcP;
-                    --i;
+                    srcChar   = lastChar;
+                    lastChar  = -1;
+                    srcRepLim = srcP;
+                    srcP     -= sameCount;
+                    i        -= sameCount;
                 }
                 sameCount = 0;
             }
         }
+        dstP0 = dstP;
+
         switch (srcChar) {
         case ' ':
             *dstP++ = '_';      // The coded string must not contain any ' '
@@ -904,7 +918,8 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
                 *dstP++ = char(srcChar);
             }
         }
-        lastChar = srcChar;
+        lastChar    = srcChar;
+        lastCharInc = dstP - dstP0;
     }
     dst.resize( int( dstP - dstStart));   // Set the real used size for coded string
 }

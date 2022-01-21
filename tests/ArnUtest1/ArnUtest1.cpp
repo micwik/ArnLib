@@ -284,11 +284,11 @@ void  ArnUtest1::testXStringMap()
 
     xsm6.setOptions( XStringMap::Options::RepeatLen);
     xsm6.clear();
-    b6Apa = "abbcccdddd\n\n\n";
+    b6Apa = "abbcccdddd\n\n\neee";
     xsm6.add( "apa", b6Apa);
     b6Xstr = xsm6.toXString();
     // qDebug() << "XStringMap RepeatLen: xstring=" << b6Xstr;
-    QVERIFY( b6Xstr == "apa=abbc\\2d\\3\\n\\2");
+    QVERIFY( b6Xstr == "apa=abbcccd\\3\\n\\2eee");
     xsm7.fromXString( b6Xstr);
     b7Apa = xsm7.value( "apa");
     QVERIFY( b7Apa == b6Apa);
