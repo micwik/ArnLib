@@ -64,8 +64,9 @@ public:
         NullTilde  = 0x01,
         RepeatLen  = 0x02,
         Frame      = 0x04,
+        AnyKey     = 0x08,
         //! Convenience
-        Supported  = 0x07
+        Supported  = 0x0f
     };
     MQ_DECLARE_FLAGS( XStringMapOptions)
 };
@@ -238,6 +239,8 @@ private:
     int  _size;
     Options _options;
     mutable bool  _hasBinCode;
+    mutable bool  _hasChgCode;
+    mutable bool  _hasEqChar;
     static QByteArray  _nullValue;
 };
 

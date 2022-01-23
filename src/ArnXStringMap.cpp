@@ -687,20 +687,32 @@ MQVariantMap XStringMap::toVariantMap( bool useStringVal)  const
 
 QByteArray  XStringMap::toXString()  const
 {
-    bool optFrame = _options.is( Options::Frame);
+    bool  optFrame  = _options.is( Options::Frame);
+    bool  optAnyKey = _options.is( Options::AnyKey);
     QByteArray  outXString;
-    QByteArray  valCoded;
+    QByteArray  txtCoded;
     for (int i = 0; i < _size; ++i) {
         if (i > 0)
             outXString += ' ';
         const QByteArray&  key = _keyList.at(i);
         const QByteArray&  val = _valList.at(i);
-        stringCode( valCoded, val);
+        bool  useOrgKey = true;
+        if (optAnyKey) {
+            stringCode( txtCoded, key);
+            if (_hasChgCode) {
+                outXString += "^:";
+                outXString += txtCoded;
+                useOrgKey   = false;
+            }
+        }
+        if (useOrgKey) {
+            outXString += key;
+        }
+        stringCode( txtCoded, val);
         if (optFrame && !_hasBinCode) {
             QByteArray valLenTxt = QByteArray::number( val.size());
-            bool useFrame = valCoded.size() > val.size() + valLenTxt.size() + 4;
+            bool useFrame = txtCoded.size() > val.size() + valLenTxt.size() + 4;
             if (useFrame) {
-                outXString += key;
                 outXString += "|=";
                 outXString += valLenTxt;
                 outXString += '<';
@@ -709,11 +721,10 @@ QByteArray  XStringMap::toXString()  const
                 continue;
             }
         }
-        if (!key.isEmpty() || val.isEmpty() || val.contains('=')) {
-            outXString += key;
+        if (!key.isEmpty() || val.isEmpty() || _hasEqChar) {
             outXString += '=';
         }
-        outXString += valCoded;
+        outXString += txtCoded;
     }
     return outXString;
 }
@@ -737,7 +748,7 @@ bool  XStringMap::fromXString( const QByteArray& inXString, int size)
     int  startPos = 0;
     QByteArray  key;
     QByteArray  val;
-    QByteArray  valCoded;
+    QByteArray  txtCoded;
 
     forever {
         bool isFrame = false;
@@ -756,6 +767,8 @@ bool  XStringMap::fromXString( const QByteArray& inXString, int size)
             posSep = size; // last separator pos is set to end of string
         }
         if ((posEq >= 0) && (posEq < posSep)) {  // Key found
+            int  keyOrgStart = startPos;
+            int  keyOrgLen   = 0;
             if ((posEq > startPos) && (inXString.at( posEq - 1) == '|')) {  // Framed value
                 isFrame = true;
                 int  posFrSt     = inXString.indexOf( '<', posEq + 1);
@@ -766,15 +779,23 @@ bool  XStringMap::fromXString( const QByteArray& inXString, int size)
                 }
                 int  posFrEn = posFrSt + frameLen + 1;
                 if (frameLenOk && (posFrEn < size) && (inXString.at( posFrEn) == '>')) {
-                    key.append( inXString.constData() + startPos, posEq - startPos - 1);
-                    startPos = posFrSt + 1;  // past '<'
-                    posSep   = posFrEn + 1;  // past '>'
+                    keyOrgLen = posEq - startPos - 1;
+                    startPos  = posFrSt + 1;  // past '<'
+                    posSep    = posFrEn + 1;  // past '>'
                 }
                 else  return false;  // Can't recover due to broken frame
             }
             else {
-                key.append( inXString.constData() + startPos, posEq - startPos);
-                startPos = posEq + 1;     // past '='
+                keyOrgLen = posEq - startPos;
+                startPos  = posEq + 1;     // past '='
+            }
+            if ((keyOrgLen >= 2) && (inXString.at( keyOrgStart) == '^') && (inXString.at( keyOrgStart + 1) == ':')) {  // Coded key
+                txtCoded.resize(0);
+                txtCoded.append( inXString.constData() + keyOrgStart + 2, keyOrgLen - 2);
+                stringDecode( key, txtCoded);
+            }
+            else {
+                key.append( inXString.constData() + keyOrgStart, keyOrgLen);
             }
         }
 
@@ -784,9 +805,9 @@ bool  XStringMap::fromXString( const QByteArray& inXString, int size)
             val.append( inXString.constData() + startPos, posSep - startPos - 1);
         }
         else {
-            valCoded.resize(0);
-            valCoded.append( inXString.constData() + startPos, posSep - startPos);
-            stringDecode( val, valCoded);
+            txtCoded.resize(0);
+            txtCoded.append( inXString.constData() + startPos, posSep - startPos);
+            stringDecode( val, txtCoded);
         }
         startPos = posSep + 1;     // past separator ' '
 
@@ -806,7 +827,10 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
 {
     bool  optRepeatLen = _options.is( Options::RepeatLen);
     bool  optNullTilde = _options.is( Options::NullTilde);
+    bool  optAnyKey    = _options.is( Options::AnyKey);
     _hasBinCode = false;
+    _hasChgCode = false;
+    _hasEqChar  = false;
 
     int  srcSize = src.size();
     const char*  srcP = src.constData();
@@ -831,11 +855,11 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
                 if (sameCount * lastCharInc > 2 ) {
                     *dstP++ = '\\';
                     *dstP++ = '0' + sameCount;
+                    _hasChgCode = true;
                     sameCount = 0;
                     continue;
                 }
                 else {  // Last in source, 1 or 2 same
-                    //srcRepLim = srcP;
                     srcP     -= sameCount - 1;
                     i        -= sameCount - 1;
                 }
@@ -845,6 +869,7 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
                 if (sameCount * lastCharInc > 2 ) {
                     *dstP++ = '\\';
                     *dstP++ = '0' + sameCount;
+                    _hasChgCode = true;
                 }
                 else {  // Only 1 repeat, rewind last loop and redo
                     srcChar   = lastChar;
@@ -861,27 +886,43 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
         switch (srcChar) {
         case ' ':
             *dstP++ = '_';      // The coded string must not contain any ' '
+            _hasChgCode = true;
             break;
         case '_':
             *dstP++ = '\\';
             *dstP++ = '_';
+            _hasChgCode = true;
             break;
         case '\\':
             *dstP++ = '\\';
             *dstP++ = '\\';
+            _hasChgCode = true;
             break;
         case '^':
             *dstP++ = '\\';
             *dstP++ = '^';
+            _hasChgCode = true;
             break;
         case '~':
             if (actNullTilde) {
                 *dstP++ = '\\';
                 *dstP++ = '~';
+                _hasChgCode = true;
             }
             else {
                 *dstP++ = '~';
             }
+            break;
+        case '=':
+            if (optAnyKey) {
+                *dstP++ = '\\';
+                *dstP++ = ':';
+                _hasChgCode = true;
+            }
+            else {
+                *dstP++ = '=';
+            }
+            _hasEqChar = true;
             break;
         case '\n':
             *dstP++ = '\\';
@@ -922,6 +963,7 @@ void  XStringMap::stringCode( QByteArray& dst, const QByteArray& src)  const
         lastCharInc = dstP - dstP0;
     }
     dst.resize( int( dstP - dstStart));   // Set the real used size for coded string
+    _hasChgCode |= _hasBinCode;
 }
 
 
@@ -956,6 +998,9 @@ void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)  const
                 break;
             case '0':
                 dstChar = '\0';
+                break;
+            case ':':
+                dstChar = '=';
                 break;
             default:
                 if ((srcChar >= '1') && (srcChar <= '9')) {

@@ -315,27 +315,49 @@ void  ArnUtest1::testXStringMap()
     xsm6.clear();
     b6Apa = "a_________b";
     xsm6.add( "apa", b6Apa);
-    xsm6.add( "bepa", "a__b");
+    xsm6.add( "bepa", "a__=b");
     b6Xstr = xsm6.toXString();
     // qDebug() << "XStringMap Frame: xstring=" << b6Xstr;
-    QVERIFY( b6Xstr == "apa|=11<a_________b> bepa=a\\_\\_b");
+    QVERIFY( b6Xstr == "apa|=11<a_________b> bepa=a\\_\\_=b");
     xsm6.clear();
     xsm6.add( "cepa", b6Xstr);
     xsm6.add( "depa", "d_________\ne");
     b6Xstr = xsm6.toXString();
     // qDebug() << "XStringMap Frame: xstring=" << b6Xstr;
-    QVERIFY( b6Xstr == "cepa|=32<apa|=11<a_________b> bepa=a\\_\\_b> depa=d\\_\\_\\_\\_\\_\\_\\_\\_\\_\\ne");
+    QVERIFY( b6Xstr == "cepa|=33<apa|=11<a_________b> bepa=a\\_\\_=b> depa=d\\_\\_\\_\\_\\_\\_\\_\\_\\_\\ne");
     xsm7.fromXString( b6Xstr);
     QByteArray b7Cepa = xsm7.value( "cepa");
     // qDebug() << "XStringMap Frame: cepa=" << b7Cepa;
-    QVERIFY( b7Cepa == "apa|=11<a_________b> bepa=a\\_\\_b");
+    QVERIFY( b7Cepa == "apa|=11<a_________b> bepa=a\\_\\_=b");
     xsm7.fromXString( b7Cepa);
     b7Apa = xsm7.value( "apa");
     // qDebug() << "XStringMap Frame: apa=" << b7Apa;
     QVERIFY( b7Apa == b6Apa);
     QByteArray b7Bepa = xsm7.value( "bepa");
     // qDebug() << "XStringMap Frame: bepa=" << b7Bepa;
-    QVERIFY( b7Bepa == "a__b");
+    QVERIFY( b7Bepa == "a__=b");
+
+    xsm6.setOptions( XStringMap::Options::AnyKey);
+    xsm6.clear();
+    QByteArray b6Key = "^~\n\\a=b";
+    QByteArray b6Val = "c=d\\\n~^";
+    xsm6.add( b6Key, b6Val);
+    b6Xstr = xsm6.toXString();
+    // qDebug() << "XStringMap AnyKey: xstring=" << b6Xstr;
+    QVERIFY( b6Xstr == "^:\\^~\\n\\\\a\\:b=c\\:d\\\\\\n~\\^");
+    xsm7.fromXString( b6Xstr);
+    QByteArray b7Val = xsm7.value( b6Key);
+    QVERIFY( b7Val == b6Val);
+    xsm6.clear();
+    b6Key = "apa";
+    b6Val = "^~\n\\a=b";
+    xsm6.add( b6Key, b6Val);
+    b6Xstr = xsm6.toXString();
+    // qDebug() << "XStringMap AnyKey: xstring=" << b6Xstr;
+    QVERIFY( b6Xstr == "apa=\\^~\\n\\\\a\\:b");
+    xsm7.fromXString( b6Xstr);
+    b7Val = xsm7.value( b6Key);
+    QVERIFY( b7Val == b6Val);
 }
 
 
