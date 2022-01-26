@@ -20,6 +20,10 @@ QT -= gui
 # Usage of float as real type, default is double. Must be same in application pro-file.
 # DEFINES += ARNREAL_FLOAT
 
+win32 {
+    CONFIG += mDnsIntern
+}
+
 QMAKE_CXXFLAGS_WARN_ON = -Wall -Wno-deprecated-declarations -Wno-deprecated-copy
 
 include(src/ArnLib.pri)
