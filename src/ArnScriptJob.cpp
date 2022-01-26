@@ -59,7 +59,8 @@ ArnScriptJobB::ArnScriptJobB( int id, QObject* parent) :
     _watchDogTime   = 2000;  // ms
     _pollTime       = 2000;  // ms
 
-    _jobFactory = 0;
+    _jobFactory = arnNullptr;
+    _watchdog   = arnNullptr;
     _configObj  = new QObject( this);
     _arnScr     = new ArnScript( this);
     setPollTime( _pollTime);
@@ -96,7 +97,7 @@ void  ArnScriptJobB::setWatchDog( int time, bool persist)
     if (persist)
         _watchDogTime = wt;
 
-#if ARNUSE_SCRIPTJS
+#ifdef ARNUSE_SCRIPTJS
     _watchdog->setTime( wt);
 #else
     _watchdog->setTime( wt);
@@ -114,7 +115,7 @@ void  ArnScriptJobB::setPollTime( int time)
 {
     _pollTime = time;
 
-#if ARNUSE_SCRIPTJS
+#ifdef ARNUSE_SCRIPTJS
     // No support for this in QJSEngine
 #else
     _arnScr->engine().setProcessEventsInterval( _pollTime);
@@ -294,7 +295,7 @@ void  ArnScriptJobB::quit()
     _quitInProgress = true;
 
     ARN_JSENGINE& engine = _arnScr->engine();
-#if ARNUSE_SCRIPTJS
+#ifdef ARNUSE_SCRIPTJS
     Q_UNUSED(engine)
     engine.setInterrupted( true);
 #else
@@ -320,7 +321,7 @@ void  ArnScriptJobB::customEvent(QEvent *ev)
 
 void  ArnScriptJobB::doTimeoutAbort()
 {
-#if ARNUSE_SCRIPTJS
+#ifdef ARNUSE_SCRIPTJS
     // qDebug() << "Script timeout:";
     if (!_isStopped) {
         ARN_JSENGINE& engine = _arnScr->engine();
@@ -406,7 +407,7 @@ bool  ArnScriptJobFactory::setupInterface( const QString& id, QObject* interface
 {
     if (id.isEmpty() || (interface == 0))  return false;
 
-#if ARNUSE_SCRIPTJS
+#ifdef ARNUSE_SCRIPTJS
     ARN_JSVALUE  objScr = engine.newQObject( interface);
 #else
     QScriptValue  objScr = engine.newQObject( interface, QScriptEngine::QtOwnership,

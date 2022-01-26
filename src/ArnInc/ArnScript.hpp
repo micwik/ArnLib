@@ -39,7 +39,7 @@
 #include "ArnM.hpp"
 #include <QObject>
 
-#if ARNUSE_SCRIPTJS
+#ifdef ARNUSE_SCRIPTJS
   #include <QJSValue>
   #include "ArnMonitor.hpp"
   #include "ArnItem.hpp"

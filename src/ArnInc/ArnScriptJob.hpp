@@ -118,7 +118,7 @@ private:
     bool  _isRunning;
     bool  _quitInProgress;
     ArnScriptJobFactory*  _jobFactory;
-    ArnScriptWatchdog*  _watchdog = arnNullptr;
+    ArnScriptWatchdog*  _watchdog;
 };
 
 
