@@ -1045,7 +1045,7 @@ void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)  const
                 ctrlFlag = true;
                 break;
             default:        // Normal char (also UTF8 which is above 127)
-                dstChar = char(srcChar);
+                dstChar = srcChar;
             }
         }
         if (dstChar >= 0) {
