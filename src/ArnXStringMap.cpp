@@ -1021,7 +1021,7 @@ void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)  const
                 break;
             default:
                 if ((srcChar >= 'A') && (srcChar <= 'A' + 30)) {
-                    dstChar  = char( srcChar - 'A' + 1);      // 1 .. 31  Special control-char
+                    dstChar  = uchar( srcChar - 'A' + 1);      // 1 .. 31  Special control-char
                 }
             }
         }
@@ -1050,7 +1050,7 @@ void  XStringMap::stringDecode( QByteArray& dst, const QByteArray& src)  const
         }
         if (dstChar >= 0) {
             for (uchar i = 0; i < repeatCount; ++i) {
-                *dstP++ = char( dstChar);
+                *dstP++ = uchar( dstChar);
             }
             lastChar = dstChar;
         }
