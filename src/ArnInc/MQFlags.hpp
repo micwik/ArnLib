@@ -232,7 +232,7 @@ public:
      *  Arn::EnumTxt myFlags( true, "MyFlags");
      *  myFlags.loadBitSet( "B0=Flag1 B5=Flag2 0=None 0x21=FlagAll");
      *  \endcode
-     *  \param[in] flag is true when using Flags (bitSet), otherwise use plain Enums.
+     *  \param[in] isFlag is true when using Flags (bitSet), otherwise use plain Enums.
      *  \param[in] name is the name of these Enums / Flags.
      */
     explicit EnumTxt( bool isFlag = false, const QString& name = QString());
@@ -636,7 +636,7 @@ public:
      *  Arn::EnumTxt  myFlags;
      *  myFlags.loadBitSet( xstr, "MyFlags");
      *  \endcode
-     *  \param[in] xsm is the XStringMap containing the flags representation.
+     *  \param[in] xstr is the XString containing the flags representation.
      *  \param[in] name is the name of this flag collection.
      *  \retval returns true if successful.
      */
