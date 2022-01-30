@@ -5,7 +5,6 @@ Major
 -----
 * Script support for Sapi.
 * ArnObject Link to other ArnObject (like in a filesystem).
-* Add atomic operations in ArnItem for: "+=", "&=", "|=" and alike.
 * General access system with privileges at ArnObject level.
 * Add more examples.
 * Add Function tests.
@@ -19,6 +18,47 @@ Minor
 * Optimize data transfer with minimal copying.
 * Converter classes for ArnPipes to other streams (e.g UART, TCP etc).
 * Addition to login a system to "pair" ArnServer and ArnClient.
+
+Done in 4.0
+-----------
+* Adopted to Qt6
+  Now with core5compat and some other deprecated parts.
+* Added ArnCompat
+  This helps using same code for any Qt-version, relating to Arn based code.
+* Added support for QJSEngine.
+  Previous support for QScript still works when using Qt version before Qt6.
+  Also some compatibility is handled by ArnScript.
+* Added ArnScriptJobs general watchdog.
+  This is for QJSEngine but also backported to QScript.
+* Added demo for ArnScriptJobs in examples.
+* Added scriptauto to use in pro-file
+  This select QJSEngine or QScript depending on Qt-version. Prefered is QJSEngine.
+* Added hostIp-list to ArnDiscover advertise.
+  This can be seen as new properties in ArnBrowser during "Arn Discover".
+* Added ArnDiscover logic to also use "HostIp" property to select addr.
+  As MDns only can have 1 IP for a hostname, this helps chosing an connectable IP. 
+* Added SubEnum in MQFlags.
+  One or more Enums can be included in Flags as SubEnum.
+  This is also fully supported in text output, parse and XString-representation.
+* EnumTxt is now a general usable class.
+  It can be used in the application for dynamic handling of Enums, Flags and SubEnums.
+* Added XStringMap to QML.
+* Added support for Enum (from Arn set) in QML.
+* XStringMap has now options for minimizing length of XString.
+  This is backwards compatible and new formats are detected automaticly.
+  Options include: null-substitution (\0), repeted characters and a framing format.
+* ArnSync is using new XStringMap optimization.
+  This is backward compatible. SyncVersion is changed to 4.0.
+* XStringMap has new option AnyKey
+  When used, any key or value can be used, also binary blobs.
+* Added atomic operations in ArnItem for: "bitSet" and "+=".
+  Single items are local and bidir works remotely by enabling a included provider.
+* Added ArnMath
+  General math with templates and also some cpu-optimized
+  Includes: modulo, circleVal, isPower2, log2, minLim, maxLim, rangeLim
+* Added ArnBasicItem isAssigning().
+  This can be used to cancel echo.
+* Changed ArnDepend to be more robust and independent of ArnClient connection state.
 
 Done in 3.1
 -----------

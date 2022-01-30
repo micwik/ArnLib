@@ -89,7 +89,8 @@ Following mapping is done when serialized to the XString:
 > General codes below 32: code 1 -> "^A",  code 2 -> "^B"  and so on to code 31  <Br>
 > code 32 (space) -> "_",  "_" -> "\\_",  "^" -> "\^",  "\" -> "\\"              <Br>
 
-Key must always be printable (char codes > 32). It must not contain " ", "=" or end with "|" char.
+Key must be printable (char codes > 32). It must not contain " ", "=", "^" or "|" char.
+If this is not feasible, use option AnyKey.
 
 The XString can be imported to the XStringMap. To get back stored values,
 XStringMap is Queried with the keys or by index.

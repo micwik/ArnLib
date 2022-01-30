@@ -1,4 +1,4 @@
-    Copyright (C) 2010-2016 Michael Wiklund.
+    Copyright (C) 2010-2022 Michael Wiklund.
     All rights reserved.
     Contact: arnlib@wiklunden.se
 
@@ -49,7 +49,7 @@ This is similar to UPNP discovery of units.
 
 ## Main features
 
-* Based on Qt (4 & 5), multiple platform and OS support.
+* Based on Qt (4, 5 and 6), multiple platform and OS support.
 * Qt based Arn browser available. Allows you to access all data objects in a tree view (see ArnBrowser).
 * Web based Arn browser available, allowing you to use a standard web browser (see WebArnBrowser).
 
@@ -65,6 +65,8 @@ This is similar to UPNP discovery of units.
 * _Arn Data objects_ are thread-safe.
 
 * Native support for data validation and double direction pipes (streams).
+
+* Enums, Flags and SubEnunms in code available as text for output and parse.
 
 * Metrics of Arn available in Arn tree.
 
