@@ -271,13 +271,22 @@ void  ArnUtest1::testXStringMap()
     XStringMap xsm5( xsm3);
     QVERIFY( xsm5.toXString() == "= =_\\n=\\_ _\\nabc\\_ def=_\\ncba\\_");
 
+    xsm3.clear();
+    xsm3.add("apa", "aåäöb");
+    // qDebug() << "XStringMap åäö: xstring=" << xsm3.toXString();
+    QVERIFY( xsm3.toXString() == "apa=a\xC3\xA5\xC3\xA4\xC3\xB6""b");
+    xsm4.fromXString( xsm3.toXString());
+    // qDebug() << "XStringMap åäö QByteArray: apa=" << xsm4.value("apa");
+    // qDebug() << "XStringMap åäö QString: apa=" << xsm4.valueString("apa");
+    QVERIFY( xsm4.value("apa") == "aåäöb");
+
     XStringMap xsm6;
     xsm6.setOptions( XStringMap::Options::NullTilde);
-    QByteArray b6Apa( "a~b\0c\0\0", 7);
+    QByteArray b6Apa( "a~b\0c\0\0d~", 9);
     xsm6.add( "apa", b6Apa);
     QByteArray b6Xstr( xsm6.toXString());
     // qDebug() << "XStringMap NullTilde: xstring=" << b6Xstr;
-    QVERIFY( b6Xstr == "apa=a~b^~c~~");
+    QVERIFY( b6Xstr == "apa=a~b^~c~~d\\~");
     XStringMap xsm7( b6Xstr);
     QByteArray b7Apa = xsm7.value( "apa");
     QVERIFY( b7Apa == b6Apa);
