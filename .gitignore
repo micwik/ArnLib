@@ -19,6 +19,7 @@ doc/latex/
 doc/qthelp/
 
 # Qt-es
+arnlib_conf.pri
 *.pro.user
 *.pro.user.*
 *.log

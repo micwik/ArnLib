@@ -52,9 +52,6 @@ RESOURCES += \
 
 contains(ARN, server) {
     ARN += client
-    !contains(ARN, script | scriptjs) {
-        ARN += scriptauto
-    }
     QT += sql
     SOURCES += \
         $$PWD/ArnServer.cpp \
@@ -100,6 +97,11 @@ contains(ARN, client) {
         $$PWD/private/ArnRpc_p.hpp \
         $$PWD/private/ArnSapi_p.hpp \
         $$PWD/private/ArnMonitor_p.hpp
+}
+
+
+ArnRealFloat {
+    DEFINES += ARNREAL_FLOAT  # Use float as real type, default is double.
 }
 
 

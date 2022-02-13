@@ -1,0 +1,130 @@
+#### One time setup. Example in Linux
+# qmake-qt5 -set QMAKEFEATURES /usr/include/qtfeatures
+#
+#### Template for use in pro-file
+# ARN += core       # Level 1: Basic Arn functionality without any tcp and syncing
+# ARN += client     # Level 2: Client TCP functionality with sync etc
+# ARN += server     # Level 3: Server TCP functionality with persistence etc
+# ARN += scriptjs   # Java script support QT >= 5 (new QJSEngine)
+# ARN += script     # Java script support QT <= 5 (legacy QtScriptEngine)
+# ARN += scriptauto # Java script support depend on Qt version & ArnLib: scriptjs (prefered) or script
+# ARN += qml        # QML support
+# ARN += zeroconf   # Using part of Bonjour (R), Apple's (R) implementation of zero-configuration networking.
+# ARN += discover   # High level service discovery using <zeroconf> and optionally <server> for remote config.
+#
+# CONFIG += ArnLibCompile  # Compile ArnLib source into application. Be ware, breaks LGPL.
+# CONFIG += ArnRealFloat   # Use float as real type, default is double. Must be same in application & lib pro-file.
+# CONFIG += mDnsIntern     # Use internal mDNS code for zero-config (no external dependency)
+#
+# QMFEATURES=$$[QMAKEFEATURES]
+# isEmpty(QMFEATURES) {
+#     win32: QMAKEFEATURES *= $$PWD/../qtfeatures   # '*=' because of 3 passes under Windows
+#     else:  QMAKEFEATURES *= /usr/include/qtfeatures
+#     cache(QMAKEFEATURES, set transient super)
+# }
+# load(arnlib)      # Alt. 1) Load arnlib.prf here
+# CONFIG += arnlib  # Alt. 2) Load arnlib.prf after parsing project file
+#### End Template
+
+message(Feature ArnLib included.)
+
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
+
+greaterThan(QT_MAJOR_VERSION, 5) {
+    ARNLIB = Arn6
+} else {
+    greaterThan(QT_MAJOR_VERSION, 4) {
+        ARNLIB = Arn5
+    } else {
+        ARNLIB = Arn4
+    }
+}
+
+
+!mDnsIntern {
+    win32:CONFIG(release, debug|release): LIBS +=  -ldns_sd
+    else:win32:CONFIG(debug, debug|release): LIBS +=  -ldns_sd
+    else:unix: LIBS += -ldns_sd
+}
+
+
+ArnLibCompile {
+    include($$_PRO_FILE_PWD_/../ArnLib/src/ArnLib.pri)
+}
+else {
+
+exists(arnlib_conf.pri) {
+    message(Using ArnLib config.)
+    include(arnlib_conf.pri)
+}
+
+LIBS += -l$${ARNLIB}
+
+ArnRealFloat {
+    DEFINES += ARNREAL_FLOAT  # Use float as real type, default is double.
+}
+
+contains(ARN, server) {
+    ARN += client
+    QT += sql
+}
+
+
+contains(ARN, client) {
+    ARN += core
+    QT += network
+}
+
+
+contains(ARN, scriptauto) {
+    !contains(ARN, scriptjs) : !contains(ARN, script) {
+        lessThan(QT_MAJOR_VERSION, 5) | lessThan(QT_MAJOR_VERSION, 6):lessThan(QT_MINOR_VERSION, 14) {
+            ARN += script
+        } else {
+            ARN += scriptjs
+        }
+    }
+}
+
+
+contains(ARN, script) {
+    greaterThan(QT_MAJOR_VERSION, 5) {
+        error("script not available after QT5, use scriptjs")
+    }
+
+    QT += script
+}
+
+
+contains(ARN, scriptjs) {
+    lessThan(QT_MAJOR_VERSION, 5) {
+        error("scriptjs not available before QT5, use script")
+    }
+
+    QT += qml
+    DEFINES += ARNUSE_SCRIPTJS
+}
+
+
+contains(ARN, qml) {
+    greaterThan(QT_MAJOR_VERSION, 4) {
+        QT += qml quick
+    } else {
+        QT += declarative
+    }
+}
+
+
+contains(ARN, discover) {
+    ARN += zeroconf
+}
+
+
+contains(ARN, zeroconf) {
+    mDnsIntern {
+        DEFINES += MDNS_INTERN
+        DEFINES += MDNS_HAVE_LOOKUP
+    }
+}
+
+}  # ArnLibCompile
