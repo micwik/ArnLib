@@ -17,6 +17,7 @@
 doc/doxy_html/
 doc/latex/
 doc/qthelp/
+arnlib_local.pri
 
 # Qt-es
 arnlib_conf.pri

@@ -23,6 +23,7 @@ win32 {
 
 QMAKE_CXXFLAGS_WARN_ON = -Wall -Wno-deprecated-declarations -Wno-deprecated-copy
 
+exists(arnlib_local.pri): include(arnlib_local.pri)
 include(src/ArnLib.pri)
 
 !mDnsIntern {
