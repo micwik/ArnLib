@@ -65,7 +65,7 @@ public:
     //! Standard constructor of a closed handle
     /*! \param[in] parent
      */
-    ArnItemB( QObject* parent = 0);
+    ArnItemB( QObject* parent = arnNullptr);
 
     virtual  ~ArnItemB();
 
@@ -226,7 +226,7 @@ protected:
     void  setBlockEcho( bool blockEcho);
 
     //// To be reimplemented
-    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = arnNullptr);
     virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);

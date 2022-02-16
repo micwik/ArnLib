@@ -36,7 +36,7 @@
 ArnItemValvePrivate::ArnItemValvePrivate()
 {
     _switchValue = true;
-    _targetItem  = 0;
+    _targetItem  = arnNullptr;
 }
 
 

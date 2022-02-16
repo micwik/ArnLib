@@ -92,7 +92,7 @@ public:
         MQ_DECLARE_FLAGS( SwitchMode)
     };
 
-    explicit ArnItemValve( QObject* parent = 0);
+    explicit ArnItemValve( QObject* parent = arnNullptr);
 
     bool  setTarget( ArnItemB* targetItem, SwitchMode mode = SwitchMode::InOutStream);
 
@@ -163,7 +163,7 @@ signals:
 
     //! \cond ADV
 protected:
-    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = arnNullptr);
 
     ArnItemValve( ArnItemValvePrivate& dd, QObject* parent);
     //! \endcond

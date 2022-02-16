@@ -537,7 +537,7 @@ int  ArnDiscoverBrowserB::resolve( const QString& serviceName, bool forceUpdate)
         id = -1;  // Mark not found
     }
 
-    ArnDiscoverInfo*  info = 0;
+    ArnDiscoverInfo*  info = arnNullptr;
     int index = -1;
     if (id < 0) {  // Not found, resolve new service
         id = ArnZeroConfBrowser::getNextId();

@@ -354,65 +354,65 @@ public:
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    int  toInt( bool* isOk = 0)  const;
+    int  toInt( bool* isOk = arnNullptr)  const;
 
     /*! \return Convert _Arn Data Object_ to a _double_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    double  toDouble( bool* isOk = 0)  const;
+    double  toDouble( bool* isOk = arnNullptr)  const;
 
     /*! \return Convert _Arn Data Object_ to an _ARNREAL_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    ARNREAL  toReal( bool* isOk = 0)  const;
+    ARNREAL  toReal( bool* isOk = arnNullptr)  const;
 
     /*! \return Convert _Arn Data Object_ to a _QString_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    QString  toString( bool* isOk = 0)  const;
+    QString  toString( bool* isOk = arnNullptr)  const;
 
     /*! \return Convert _Arn Data Object_ to a _QByteArray_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    QByteArray  toByteArray( bool* isOk = 0)  const;
+    QByteArray  toByteArray( bool* isOk = arnNullptr)  const;
 
     /*! \return Convert _Arn Data Object_ to a _QVariant_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    QVariant  toVariant( bool* isOk = 0)  const;
+    QVariant  toVariant( bool* isOk = arnNullptr)  const;
 
     /*! \return Convert _Arn Data Object_ to a _bool_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from Int.
      */
-    bool  toBool( bool* isOk = 0)  const;
+    bool  toBool( bool* isOk = arnNullptr)  const;
 
     /*! \return Convert _Arn Data Object_ to an _unsigned int_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    uint  toUInt( bool* isOk = 0)  const;
+    uint  toUInt( bool* isOk = arnNullptr)  const;
 
     /*! \return Convert _Arn Data Object_ to an _int 64 bit_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    qint64  toInt64( bool* isOk = 0)  const;
+    qint64  toInt64( bool* isOk = arnNullptr)  const;
 
     /*! \return Convert _Arn Data Object_ to an _unsigned int 64 bit_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    quint64  toUInt64( bool* isOk = 0)  const;
+    quint64  toUInt64( bool* isOk = arnNullptr)  const;
 
     ArnBasicItem&  operator=( const ArnBasicItem& other);
     ArnBasicItem&  operator=( int val);
@@ -605,7 +605,7 @@ protected:
     void  setValue( const QVariant& value, int ignoreSame, ArnLinkHandle& handleData);
     void  arnImport( const QByteArray& data, int ignoreSame, ArnLinkHandle& handleData);
     QStringList  childItemsMain()  const;
-    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0)  const;
+    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = arnNullptr)  const;
 
     ArnBasicItem( ArnBasicItemPrivate& dd);
     //! \endcond

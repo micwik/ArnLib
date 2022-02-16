@@ -290,7 +290,7 @@ void  ArnServerRemoteSession::shutdown()
 
 ArnServerRemotePrivate::ArnServerRemotePrivate()
 {
-    _arnServer    = 0;
+    _arnServer    = arnNullptr;
     _sessionCount = 0;
     _sessionNum   = 0;
 }

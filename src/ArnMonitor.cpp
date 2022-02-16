@@ -45,9 +45,9 @@
 
 ArnMonitorPrivate::ArnMonitorPrivate()
 {
-    _arnClient    = 0;
-    _reference    = 0;
-    _localMonItem = 0;
+    _arnClient    = arnNullptr;
+    _reference    = arnNullptr;
+    _localMonItem = arnNullptr;
 }
 
 
@@ -149,7 +149,7 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
 
     if (d->_localMonItem) {
         delete d->_localMonItem;
-        d->_localMonItem = 0;
+        d->_localMonItem = arnNullptr;
     }
 
     if (d->_arnClient) {
@@ -184,7 +184,7 @@ bool  ArnMonitor::start( const QString& path, ArnClient* client)
     else {  // No client, do local monitor. 2 items used, "sensor" (ArnItemNet) and this ArnMonitor to same path.
         if (!open( d->_monitorPath))  return false;
 
-        d->_localMonItem = new ArnItemNet(0);
+        d->_localMonItem = new ArnItemNet( arnNullptr);
         if (!d->_localMonItem->open( d->_monitorPath)) {
             close();
             return false;

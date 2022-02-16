@@ -230,7 +230,7 @@ public:
      *  \param[in] value to be assigned
      *  \param[in] typeName to convert variant into, default no conversion
      */
-    static void  setValue( const QString& path, const QVariant& value, const char* typeName = 0);
+    static void  setValue( const QString& path, const QVariant& value, const char* typeName = arnNullptr);
 
     //! Assign a _char*_ to an _Arn Data Object_ at _path_
     /*! \param[in] path
@@ -264,7 +264,7 @@ public:
      */
     static bool  saveToFile( const QString& path, const QString& fileName, Arn::Coding coding);
 
-    static void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = 0);
+    static void  errorLog( QString errText, ArnError err = ArnError::Undef, void* reference = arnNullptr);
     static QString  errorSysName();
 
     //! Give information about this library

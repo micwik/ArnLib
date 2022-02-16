@@ -268,11 +268,11 @@ void  ArnDepend::echoCheck( const QByteArray& echo, DepSlot* slot)
     d->_timerEchoRefresh->start();  // Keep checking until finished
 
     if (Arn::debugDepend)  qDebug() << "echoCheck: monitorName=" << d->_name;
-    if (slot == 0) {
+    if (slot == arnNullptr) {
         ArnPipe* arnPipe = qobject_cast<ArnPipe*>( sender());
         if (arnPipe)  slot = static_cast<DepSlot*>( arnPipe->reference());
     }
-    if (slot == 0) {
+    if (slot == arnNullptr) {
         ArnM::errorLog( QString(tr("Can't get slot for DependEchoCheck monitor=")) + d->_name,
                             ArnError::Undef);
         return;
@@ -302,11 +302,11 @@ void  ArnDepend::stateCheck( DepSlot* slot)
 {
     Q_D(ArnDepend);
 
-    if (slot == 0) {
+    if (slot == arnNullptr) {
         ArnItem* arnItem = qobject_cast<ArnItem*>( sender());
         if (arnItem)  slot = static_cast<DepSlot*>( arnItem->reference());
     }
-    if (slot == 0) {
+    if (slot == arnNullptr) {
         ArnM::errorLog( QString(tr("Can't get slot for DependStateCheck monitor=")) + d->_name,
                             ArnError::Undef);
         return;

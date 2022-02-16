@@ -82,7 +82,7 @@ private:
 
 ArnItemPrivate::ArnItemPrivate()
 {
-    _delayTimer  = 0;
+    _delayTimer  = arnNullptr;
     _isTemplate  = false;
 
     _emitChanged          = 0;

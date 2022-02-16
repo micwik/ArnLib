@@ -39,6 +39,7 @@
 //
 
 #include "ArnMDns.hpp"
+#include "../ArnInc/ArnLib_global.hpp"
 #include "../ArnInc/ArnLib.hpp"
 #include <QEventLoop>
 #include <QSocketNotifier>
@@ -51,14 +52,14 @@
 ArnMDnsSockInfo::ArnMDnsSockInfo( QObject* parent)
     : QObject( parent)
 {
-    _udpSocket      = 0;
+    _udpSocket      = arnNullptr;
     _interfaceIndex = -1;
     _isUnicast      = false;
-    _mDnsInfo       = 0;
+    _mDnsInfo       = arnNullptr;
 }
 
 
-ArnMDns*  ArnMDns::_self(0);
+ArnMDns*  ArnMDns::_self( arnNullptr);
 int  ArnMDns::_refCount(0);
 
 mDNS mDNSStorage;
@@ -199,7 +200,7 @@ void  ArnMDns::addSocketInfo( ArnMDnsSockInfo* mdi)
 
 ArnMDnsSockInfo*  ArnMDns::socketInfo( int sd)
 {
-    return _self->_sockInfoMap.value( sd, 0);
+    return _self->_sockInfoMap.value( sd, arnNullptr);
 }
 
 

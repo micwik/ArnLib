@@ -166,17 +166,17 @@ public:
     XStringMap&  setKey( int i, const QByteArray& key);
 
     const QByteArray&  keyRef( int i)  const;
-    QByteArray  key( int i, const char* def = 0)  const;
-    QByteArray  key( const QByteArray& value, const char* def = 0)  const;
-    QByteArray  key( const QString& value, const char* def = 0)  const;
+    QByteArray  key( int i, const char* def = arnNullptr)  const;
+    QByteArray  key( const QByteArray& value, const char* def = arnNullptr)  const;
+    QByteArray  key( const QString& value, const char* def = arnNullptr)  const;
     QString  keyString( int i, const QString& def = QString())  const;
     QString  keyString( const QString& value, const QString& def = QString())  const;
 
     const QByteArray&  valueRef( int i)  const;
-    QByteArray  value( int i, const char* def = 0)  const;
-    QByteArray  value( const char* key, const char* def = 0)  const;
-    QByteArray  value( const char* keyPrefix, uint eNum, const char* def = 0)  const;
-    QByteArray  value( const QByteArray& key, const char* def = 0)  const;
+    QByteArray  value( int i, const char* def = arnNullptr)  const;
+    QByteArray  value( const char* key, const char* def = arnNullptr)  const;
+    QByteArray  value( const char* keyPrefix, uint eNum, const char* def = arnNullptr)  const;
+    QByteArray  value( const QByteArray& key, const char* def = arnNullptr)  const;
     QByteArray  value( const QByteArray& key, const QByteArray& def)  const;
     QString  valueString( int i, const QString& def = QString())  const;
     QString  valueString( const char* key, const QString& def = QString())  const;
@@ -199,7 +199,7 @@ public:
     void  setEmptyKeysToValue();
     void  reverseOrder();
     QStringList  keys()  const;
-    QStringList  values( const char* keyPrefix = 0)  const;
+    QStringList  values( const char* keyPrefix = arnNullptr)  const;
     MQVariantMap  toVariantMap( bool useStringVal)  const;
 
     void  stringCode( QByteArray& dst, const QByteArray& src)  const;

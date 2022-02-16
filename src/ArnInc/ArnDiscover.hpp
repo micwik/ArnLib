@@ -227,7 +227,7 @@ class ArnDiscoverBrowserB : public QObject
     Q_DECLARE_PRIVATE(ArnDiscoverBrowserB)
 
 public:
-    explicit ArnDiscoverBrowserB( QObject *parent = 0);
+    explicit ArnDiscoverBrowserB( QObject *parent = arnNullptr);
     ~ArnDiscoverBrowserB();
 
     //! Return the number of active discover services
@@ -478,7 +478,7 @@ class ArnDiscoverBrowser : public ArnDiscoverBrowserB
 {
     Q_OBJECT
 public:
-    explicit ArnDiscoverBrowser( QObject *parent = 0);
+    explicit ArnDiscoverBrowser( QObject *parent = arnNullptr);
 
     //! Return the status of the browsing
     /*! \retval true if browsing is started
@@ -559,7 +559,7 @@ class ArnDiscoverResolver : public ArnDiscoverBrowserB
     Q_DECLARE_PRIVATE(ArnDiscoverResolver)
 
 public:
-    explicit ArnDiscoverResolver( QObject *parent = 0);
+    explicit ArnDiscoverResolver( QObject *parent = arnNullptr);
 
     //! Return the default service name
     /*! This default service name will be used when resolve() is called with empty
@@ -648,7 +648,7 @@ public:
         MQ_DECLARE_FLAGS( State)
     };
 
-    explicit ArnDiscoverAdvertise( QObject *parent = 0);
+    explicit ArnDiscoverAdvertise( QObject *parent = arnNullptr);
     ~ArnDiscoverAdvertise();
 
     //! Return service discover groups used for filter browsing

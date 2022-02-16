@@ -59,7 +59,8 @@ class QTimer;
 class ARNLIBSHARED_EXPORT MQGenericArgument : public QGenericArgument
 {
 public:
-    inline  MQGenericArgument( const char* aName = 0, const char* aLabel = 0, const void* aData = 0)
+    inline  MQGenericArgument( const char* aName =  arnNullptr, const char* aLabel =  arnNullptr,
+                               const void* aData =  arnNullptr)
         : QGenericArgument( aName, aData), _label(aLabel) {}
     inline  MQGenericArgument( const QGenericArgument& qgenArg)
         : QGenericArgument( qgenArg), _label("") {}
@@ -168,7 +169,7 @@ public:
         MQ_DECLARE_FLAGS( Invoke)
     };
 
-    explicit  ArnRpc( QObject* parent = 0);
+    explicit  ArnRpc( QObject* parent = arnNullptr);
     ~ArnRpc();
 
     //! Get the path for the used _pipe_
@@ -426,7 +427,7 @@ private slots:
 
     //! \cond ADV
 protected:
-    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0);
+    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = arnNullptr);
 
     ArnRpc( ArnRpcPrivate& dd, QObject* parent);
     ArnRpcPrivate* const  d_ptr;
@@ -453,7 +454,7 @@ private:
         bool  isArgAlloc;
         ArgInfo() {
             typeId       = 0;
-            data         = 0;
+            data         = arnNullptr;
             hasName      = false;
             hasType      = false;
             dataAsArg    = false;

@@ -49,9 +49,9 @@
 
 ArnAdaptItemPrivate::ArnAdaptItemPrivate()
     : _mutex( ARN_ModeRecursiveMutex )
-    , _changedCB( 0 )
-    , _linkDestroyedCB( 0 )
-    , _arnEventCB( 0 )
+    , _changedCB( arnNullptr)
+    , _linkDestroyedCB( arnNullptr)
+    , _arnEventCB( arnNullptr)
 {
 }
 
@@ -818,7 +818,7 @@ void  ArnAdaptItem::arnEvent( QEvent* ev, bool isAlienThread)
                 (*(d->_linkDestroyedCB))( *target);
             }
             target->close();
-            e->setTarget(0);  // target is not available any more
+            e->setTarget( arnNullptr);  // target is not available any more
         }
         return;
     }

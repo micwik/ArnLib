@@ -83,7 +83,7 @@ void  ArnBasicItem::init()
 {
     Q_D(ArnBasicItem);
 
-    _link = 0;
+    _link = arnNullptr;
     d->_eventHandler = getThreadEventHandler();  // The common event handler for this thread
     addHeritage( ArnCoreItem::Heritage::BasicItem);
 }
@@ -164,12 +164,12 @@ void  ArnBasicItem::close()
     ArnM::changeRefCounter(-1);
 
     if (d->_pendingEvChain) {
-        d->_pendingEvChain->setTargetMutex(0);  // No mutex needed anymore
+        d->_pendingEvChain->setTargetMutex( arnNullptr);  // No mutex needed anymore
         d->_pendingEvChain->inhibitPendingChain();
     }
 
     _link->deref();
-    _link        = 0;
+    _link        = arnNullptr;
     d->_syncMode = Arn::ObjectSyncMode();
     d->_mode     = Arn::ObjectMode();
 }
@@ -183,7 +183,7 @@ void  ArnBasicItem::destroyLink( bool isGlobal)
 
 bool  ArnBasicItem::isOpen()  const
 {
-    return _link != 0;
+    return _link != arnNullptr;
 }
 
 
@@ -1135,7 +1135,7 @@ QThread*  ArnBasicItem::thread()  const
     if (d->_eventHandler)
         return d->_eventHandler->thread();
     else
-        return 0;  // MW: Ok?  or QThread::currentThread();
+        return arnNullptr;  // MW: Ok?  or QThread::currentThread();
 }
 
 
@@ -1157,7 +1157,7 @@ void  ArnBasicItem::sendArnEventItem( ArnEvent* ev, bool isAlienThread, bool isL
 
     ev->setTarget( this);
     if (isAlienThread) {
-        QMutex*  targetMutex = _link ? _link->getMutex() : 0;
+        QMutex*  targetMutex = _link ? _link->getMutex() : arnNullptr;
         if (!isLocked)  // Not locked yet, assign mutex for target locking
             ev->setTargetMutex( targetMutex);
 
@@ -1175,7 +1175,7 @@ void  ArnBasicItem::arnEvent( QEvent* ev, bool isAlienThread)
 {
     // Selected ArnEvent handler is called. Default is internal handler.
     // Selected handler must finish with ArnBasicItemEventHandler::defaultEvent( ev).
-    // Warning!!! This ArnBasicItem might get deleted (ev->target == 0).
+    // Warning!!! This ArnBasicItem might get deleted (ev->target == arnNullptr).
 
     Q_D(ArnBasicItem);
 
@@ -1389,7 +1389,7 @@ void  ArnBasicItemEventHandler::defaultEvent( QEvent* ev)
         if (!e->isBelow()) {
             if (Arn::debugLinkDestroy)  qDebug() << "BasicItem arnLinkDestroyed: path=" << target->path();
             target->close();
-            e->setTarget(0);  // target is not available any more
+            e->setTarget( arnNullptr);  // target is not available any more
         }
         return;
     }

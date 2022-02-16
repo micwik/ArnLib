@@ -90,7 +90,7 @@ ArnServerSession::ArnServerSession( QTcpSocket* socket, ArnServer* arnServer)
 
 void  ArnServerSession::shutdown()
 {
-    _arnNetSync = 0;  // Mark retired
+    _arnNetSync = arnNullptr;  // Mark retired
     _arnNetEar->close();
     deleteLater();
 }
@@ -182,7 +182,7 @@ ArnServerPrivate::ArnServerPrivate( ArnServer::Type serverType)
     _isDemandLogin   = false;
     _tcpServer       = new QTcpServer;
     _arnLogin        = new ArnSyncLogin;
-    _newSession      = 0;
+    _newSession      = arnNullptr;
     _serverType      = serverType;
     _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Legal/");
 }
@@ -423,7 +423,7 @@ void  ArnServer::tcpConnection()
     case Type::NetSync:
         d->_newSession = new ArnServerSession( socket, this);        
         emit newSession();
-        d->_newSession = 0;
+        d->_newSession = arnNullptr;
         break;
     }
 }

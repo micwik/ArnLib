@@ -78,21 +78,21 @@ public:
     //! Standard constructor of a closed handle
     /*! \param[in] parent
      */
-    ArnItem( QObject* parent = 0);
+    ArnItem( QObject* parent = arnNullptr);
 
     //! Construction of a handle to a path
     /*! \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
      *  \param[in] parent
      *  \see open()
      */
-    ArnItem( const QString& path, QObject* parent = 0);
+    ArnItem( const QString& path, QObject* parent = arnNullptr);
 
     //! Construction of a handle to a path with a template for _modes_
     /*! \param[in] itemTemplate The template for setting _modes_
      *  \param[in] path The _Arn Data Object_ path e.g. "//Measure/Water/Level/value"
      *  \param[in] parent
      */
-    ArnItem( const ArnItem& itemTemplate, const QString& path, QObject* parent = 0);
+    ArnItem( const ArnItem& itemTemplate, const QString& path, QObject* parent = arnNullptr);
 
     virtual  ~ArnItem();
 
@@ -349,49 +349,49 @@ public:
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    int  toInt( bool* isOk = 0)  const
+    int  toInt( bool* isOk = arnNullptr)  const
     {return ArnItemB::toInt( isOk);}
 
     /*! \return Convert _Arn Data Object_ to a _double_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    double  toDouble( bool* isOk = 0)  const
+    double  toDouble( bool* isOk = arnNullptr)  const
     {return ArnItemB::toDouble( isOk);}
 
     /*! \return Convert _Arn Data Object_ to an _ARNREAL_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    ARNREAL  toReal( bool* isOk = 0)  const
+    ARNREAL  toReal( bool* isOk = arnNullptr)  const
     {return ArnItemB::toReal( isOk);}
 
     /*! \return Convert _Arn Data Object_ to a _bool_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    bool  toBool( bool* isOk = 0)  const
+    bool  toBool( bool* isOk = arnNullptr)  const
     {return ArnItemB::toBool( isOk);}
 
     /*! \return Convert _Arn Data Object_ to a _QString_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    QString  toString( bool* isOk = 0)  const
+    QString  toString( bool* isOk = arnNullptr)  const
     {return ArnItemB::toString( isOk);}
 
     /*! \return Convert _Arn Data Object_ to a _QByteArray_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    QByteArray  toByteArray( bool* isOk = 0)  const
+    QByteArray  toByteArray( bool* isOk = arnNullptr)  const
     {return ArnItemB::toByteArray( isOk);}
 
     /*! \return Convert _Arn Data Object_ to a _QVariant_
      *  \param[out] isOk If not 0 when a conversion error occurs, *isOk is set to false,
      *                   otherwise *isOk is set to true.
      */
-    QVariant  toVariant( bool* isOk = 0)  const
+    QVariant  toVariant( bool* isOk = arnNullptr)  const
     {return ArnItemB::toVariant( isOk);}
 
     /*! \return Convert _Arn Data Object_ to an _unsigned int_
@@ -399,7 +399,7 @@ public:
      *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    uint  toUInt( bool* isOk = 0)  const
+    uint  toUInt( bool* isOk = arnNullptr)  const
     {return ArnItemB::toUInt( isOk);}
 
     /*! \return Convert _Arn Data Object_ to an _int 64 bit_
@@ -407,7 +407,7 @@ public:
      *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    qint64  toInt64( bool* isOk = 0)  const
+    qint64  toInt64( bool* isOk = arnNullptr)  const
     {return ArnItemB::toInt64( isOk);}
 
     /*! \return Convert _Arn Data Object_ to an _unsigned int 64 bit_
@@ -415,7 +415,7 @@ public:
      *                   otherwise *isOk is set to true.
      *  \note Not native ARN datatype. It's converted from ByteArray.
      */
-    quint64  toUInt64( bool* isOk = 0)  const
+    quint64  toUInt64( bool* isOk = arnNullptr)  const
     {return ArnItemB::toUInt64( isOk);}
 
     ArnItem&  operator=( const ArnItem& other);
@@ -688,7 +688,7 @@ signals:
 
     //! \cond ADV
 protected:
-    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = arnNullptr);
     virtual void  modeUpdate( Arn::ObjectMode mode, bool isSetup = false);
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);

@@ -125,7 +125,7 @@ class ARNLIBSHARED_EXPORT ArnServerRemote : public QObject
     Q_DECLARE_PRIVATE(ArnServerRemote)
 
 public:
-    explicit ArnServerRemote( QObject* parent = 0);
+    explicit ArnServerRemote( QObject* parent = arnNullptr);
     ~ArnServerRemote();
 
     //! Start making remote control objects for the ArnServer

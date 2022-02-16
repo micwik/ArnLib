@@ -117,7 +117,7 @@ public:
     { return _target;}
 
     void  setTarget( void* target);
-    void  setTargetPendingChain( ArnEvent** targetPendingChain = 0);
+    void  setTargetPendingChain( ArnEvent** targetPendingChain = arnNullptr);
     void  setTargetMutex( QMutex* targetMutex);
     void  inhibitPendingChain();
 

@@ -54,9 +54,9 @@ ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
     : QObject( parent)
 {
     _socket           = socket;  // Note: ArnSync does not own socket ...
-    _sessionHandler   = 0;
+    _sessionHandler   = arnNullptr;
     _toRemotePathCB   = &nullConvertPath;
-    _arnLogin         = 0;
+    _arnLogin         = arnNullptr;
     _isClientSide     = isClientSide;
     _state            = State::Init;
     _isSending        = false;
@@ -188,7 +188,7 @@ void  ArnSync::startNormalSync()
         if (isMasterStart && !isValueBlocked) {
             itemNet->resetEchoSeq();
             itemNet->setSyncFlux( true);
-            itemValueUpdater( ArnLinkHandle::null(), 0, itemNet);  // Make client send the current value to server
+            itemValueUpdater( ArnLinkHandle::null(), arnNullptr, itemNet);  // Make client send the current value to server
         }
     }
     setState( State::Normal);
@@ -348,21 +348,21 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
                             path + " remoteAllow=" + _remoteAllow.toString() +
                             " (" + QString::number(_remoteAllow.toInt()) + ")",
                             ArnError::OpNotAllowed);
-            return 0;
+            return arnNullptr;
         }
     }
 
     ArnItemNet*  itemNet = new ArnItemNet( _sessionHandler);
     if (!itemNet->open( path)) {
         delete itemNet;
-        return 0;
+        return arnNullptr;
     }
 
     uint  netId = itemNet->linkId(); // Use clients linkId as netID for this Item
     if (_itemNetMap.contains( netId)) {  // Item is already synced by this client
         if (isNewPtr) {  // Allow duplicate ref, indicate this is not new
             delete itemNet;
-            itemNet = _itemNetMap.value( netId, 0);
+            itemNet = _itemNetMap.value( netId, arnNullptr);
             itemNet->addSyncMode( syncMode, true);
             *isNewPtr = false;
             return itemNet;
@@ -370,7 +370,7 @@ ArnItemNet*  ArnSync::newNetItem( const QString& path,
         else { // Not allow duplicate ref, return error;
             qDebug() << "Arn netSync Item already synced: path=" << itemNet->path();
             delete itemNet;
-            return 0;
+            return arnNullptr;
         }
     }
     if (isNewPtr)
@@ -840,7 +840,7 @@ uint  ArnSync::doCommandSync()
 
     if (_itemNetMap.contains( netId)) {  // Item is already synced by this server session
         //// Remove old syncing item
-        ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+        ArnItemNet*  itemNet = _itemNetMap.value( netId, arnNullptr);
         qDebug() << "ArnSync CommandSync Item already synced: path=" << itemNet->path();
         removeItemNetRefs( itemNet);
         delete itemNet;
@@ -872,7 +872,7 @@ uint  ArnSync::doCommandSync()
         // Only send non blocked Value to non startMaster
         itemNet->setSyncFlux( true);
         itemNet->setSaveFlux( itemNet->isSaveMode());
-        itemValueUpdater( ArnLinkHandle::null(), 0, itemNet); // Make server send the current value to client
+        itemValueUpdater( ArnLinkHandle::null(), arnNullptr, itemNet); // Make server send the current value to client
     }
 
     return ArnError::Ok;
@@ -908,7 +908,7 @@ uint  ArnSync::doCommandMode()
     uint  netId = _commandMap.value("id").toUInt();
     QByteArray  data = _commandMap.value("data");
 
-    ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+    ArnItemNet*  itemNet = _itemNetMap.value( netId, arnNullptr);
     if (!itemNet) {
         return ArnError::NotFound;
     }
@@ -923,7 +923,7 @@ uint  ArnSync::doCommandNoSync()
     //// Single NoSync with id
     uint  netId = _commandMap.value("id").toUInt();
     if (netId) {
-        ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+        ArnItemNet*  itemNet = _itemNetMap.value( netId, arnNullptr);
         if (!itemNet) {  // Not existing item is ok, maybe destroyed before sync
             return ArnError::Ok;
         }
@@ -977,7 +977,7 @@ uint  ArnSync::doCommandFlux()
         handleData.add( ArnLinkHandle::SeqNo,
                         QVariant( seq.toInt()));
 
-    ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+    ArnItemNet*  itemNet = _itemNetMap.value( netId, arnNullptr);
     if (!itemNet) {
         return ArnError::NotFound;
     }
@@ -1000,7 +1000,7 @@ uint  ArnSync::doCommandFlux()
          && (itemNet->type() != Arn::DataType::Null)) {
         // Server only had Null, use Client non Null
         itemNet->setSyncFlux( true);  // Part of the initial sync process
-        itemValueUpdater( ArnLinkHandle::null(), 0, itemNet);  // Make client send the current value to server
+        itemValueUpdater( ArnLinkHandle::null(), arnNullptr, itemNet);  // Make client send the current value to server
     }
     return ArnError::Ok;
 }
@@ -1017,7 +1017,7 @@ uint ArnSync::doCommandAtomOp()
 
     ArnAtomicOp  op = ArnAtomicOp::fromInt(
                 ArnAtomicOp::txt().getEnumVal( opStr.constData(), ArnAtomicOp::None, ArnAtomicOp::NsCom));
-    ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+    ArnItemNet*  itemNet = _itemNetMap.value( netId, arnNullptr);
     if (!itemNet) {
         // qDebug() << "doCommandAtomOp NotFound xs:" << _commandMap.toXString();
         return ArnError::NotFound;
@@ -1058,7 +1058,7 @@ uint  ArnSync::doCommandEvent()
 
     int  type = ArnMonEventType::txt().getEnumVal( typeStr.constData(),
                                                    ArnMonEventType::None, ArnMonEventType::NsCom);
-    ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+    ArnItemNet*  itemNet = _itemNetMap.value( netId, arnNullptr);
     if (!itemNet) {
         if (type == ArnMonEventType::ItemDeleted)  return ArnError::Ok;  // Item already deleted
 
@@ -1155,7 +1155,7 @@ uint  ArnSync::doCommandDelete()
     uint  netId    = _commandMap.value("id", "0").toUInt();
 
     if (netId) {
-        ArnItemNet*  itemNet = _itemNetMap.value( netId, 0);
+        ArnItemNet*  itemNet = _itemNetMap.value( netId, arnNullptr);
         if (!itemNet) {  // Not existing item is ok, maybe destroyed before this
             return ArnError::Ok;
         }
@@ -1742,7 +1742,7 @@ void  ArnSync::sendFluxItem( const ArnItemNet* itemNet)
         return;
     }
 
-    send( makeFluxString( itemNet, ArnLinkHandle::null(), 0));
+    send( makeFluxString( itemNet, ArnLinkHandle::null(), arnNullptr));
 }
 
 
@@ -1869,7 +1869,7 @@ void  ArnSync::customEvent( QEvent* ev)
             removeItemNetRefs( itemNet);
             destroyToFluxQue( itemNet);  // This queue contains text not the itemNet
             delete itemNet;
-            e->setTarget(0);  // Target is now deleted
+            e->setTarget( arnNullptr);  // Target is now deleted
         }
         break;
     }

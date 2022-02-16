@@ -41,6 +41,7 @@
 #ifndef ARNMDNS_HPP
 #define ARNMDNS_HPP
 
+#include "../ArnInc/ArnLib_global.hpp"
 #include "mDNS/mDNSCore/mDNSEmbeddedAPI.h"
 #include "mDNS/mDNSQt/mDNSQt.h"
 #include <QTimer>
@@ -56,7 +57,7 @@ class ArnMDnsSockInfo : public QObject
 {
     Q_OBJECT
 public:
-    ArnMDnsSockInfo( QObject* parent = 0);
+    ArnMDnsSockInfo( QObject* parent = arnNullptr);
 
     QUdpSocket*  _udpSocket;
     PosixNetworkInterface*  _mDnsInfo;
@@ -89,7 +90,7 @@ private slots:
     void  socketDataReady();
 
 private:
-    explicit ArnMDns( QObject* parent = 0);
+    explicit ArnMDns( QObject* parent = arnNullptr);
     ~ArnMDns();
     int  setup();
     void  close();

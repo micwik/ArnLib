@@ -62,16 +62,16 @@ ArnLink::ArnLink( ArnLink *parent, const QString& name, Arn::LinkFlags flags)
 
     QString  name_ = Arn::convertBaseName( name, Arn::NameF());
 
-    _parent          = 0;
+    _parent          = arnNullptr;
     _objectName      = name_;
     _isFolder        = flags.is( flags.Folder);
     _isProvider      = name_.endsWith('!');
     _type            = Arn::DataType::Null;
-    _twin            = 0;
-    _subscribeTab    = 0;
-    _mutex           = 0;
+    _twin            = arnNullptr;
+    _subscribeTab    = arnNullptr;
+    _mutex           = arnNullptr;
     _children        = _isFolder ? new ArnLinkList : &nullArnLinkList;
-    _val             = _isFolder ? 0 : new ArnLinkValue;
+    _val             = _isFolder ? arnNullptr : new ArnLinkValue;
     _isPipeMode      = false;
     _isSaveMode      = false;
     _hasBeenSetup    = false;
@@ -95,12 +95,12 @@ ArnLink::~ArnLink()
         delete _subscribeTab;
 
     if (_twin) {
-        _twin->_twin = 0;  // points to this object
+        _twin->_twin = arnNullptr;  // points to this object
         delete _twin;
-        _twin = 0;
+        _twin = arnNullptr;
     }
 
-    setParent(0);
+    setParent( arnNullptr);
 }
 
 
@@ -216,7 +216,7 @@ const ArnLinkList&  ArnLink::children()  const
 void  ArnLink::doValueChanged( int sendId, const QByteArray* valueData,
                                const ArnLinkHandle& handleData)
 {
-    // qDebug() << "doValueChanged: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
+    // qDebug() << "doValueChanged: isThr=" << (_mutex != arnNullptr)  << " isPipe=" << _isPipeMode <<
     //             " path=" << linkPath() << " value=" << (valueData ? *valueData : toByteArray());
     ArnEvValueChange ev( sendId, valueData, handleData);
     sendArnEvent( &ev);
@@ -382,7 +382,7 @@ void  ArnLink::setValue( const QString& value, int sendId, bool useUncrossed,
         doValueChanged( sendId, &valueData, handleData);
     }
     else {
-        doValueChanged( sendId, 0, handleData);
+        doValueChanged( sendId, arnNullptr, handleData);
     }
 }
 
@@ -411,7 +411,7 @@ void  ArnLink::setValue( const QByteArray& value, int sendId, bool useUncrossed,
         doValueChanged( sendId, &valueData, handleData);
     }
     else {
-        doValueChanged( sendId, 0, handleData);
+        doValueChanged( sendId, arnNullptr, handleData);
     }
 }
 
@@ -441,7 +441,7 @@ void  ArnLink::setValue( const QVariant& value, int sendId, bool useUncrossed,
         doValueChanged( sendId, &valueData, handleData);
     }
     else {
-        doValueChanged( sendId, 0, handleData);
+        doValueChanged( sendId, arnNullptr, handleData);
     }
 }
 
@@ -466,7 +466,7 @@ void ArnLink::setBits( int mask, int value, int sendId, bool useUncrossed)
             return _twin->setBits( mask, value, sendId, useUncrossed);  // Act as OpProvider for setBits
         }
         if (!_twin->_isAtomicOpProvider) {  // Neither twin is OpProvider, send out event
-            // qDebug() << "doSetBits: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
+            // qDebug() << "doSetBits: isThr=" << (_mutex != arnNullptr)  << " isPipe=" << _isPipeMode <<
             //            " path=" << linkPath() << " mask=" << mask << " value=" << value;
             ArnEvAtomicOp  ev( ArnEvAtomicOp::Op::BitSet, mask, value);
             _twin->sendArnEvent( &ev);
@@ -511,7 +511,7 @@ void ArnLink::addValue( int value, int sendId, bool useUncrossed)
             return _twin->addValue( value, sendId, useUncrossed);  // Act as provider for addValue
         }
         if (!_twin->_isAtomicOpProvider) {  // Neither twin is OpProvider, send out event
-            // qDebug() << "doAddValue: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
+            // qDebug() << "doAddValue: isThr=" << (_mutex != arnNullptr)  << " isPipe=" << _isPipeMode <<
             //            " path=" << linkPath() << " value=" << value;
             ArnEvAtomicOp  ev( ArnEvAtomicOp::Op::AddInt, value, QVariant());
             _twin->sendArnEvent( &ev);
@@ -556,7 +556,7 @@ void  ArnLink::addValue( ARNREAL value, int sendId, bool useUncrossed)
             return _twin->addValue( value, sendId, useUncrossed);  // Act as provider for addValue
         }
         if (!_twin->_isAtomicOpProvider) {  // Neither twin is OpProvider, send out event
-            // qDebug() << "doAddValue: isThr=" << (_mutex != 0)  << " isPipe=" << _isPipeMode <<
+            // qDebug() << "doAddValue: isThr=" << (_mutex != arnNullptr)  << " isPipe=" << _isPipeMode <<
             //            " path=" << linkPath() << " value=" << value;
             ArnEvAtomicOp  ev( ArnEvAtomicOp::Op::AddReal, value, QVariant());
             _twin->sendArnEvent( &ev);
@@ -871,7 +871,7 @@ Arn::ObjectMode  ArnLink::getMode()
     Arn::ObjectMode  mode;
     if (_mutex)  _mutex->lock();
     mode.set( mode.Pipe, _isPipeMode);
-    mode.set( mode.BiDir, _twin != 0);
+    mode.set( mode.BiDir, _twin != arnNullptr);
     if (_mutex)  _mutex->unlock();
     mode.set( mode.Save, isSaveMode());
 
@@ -881,7 +881,7 @@ Arn::ObjectMode  ArnLink::getMode()
 
 bool  ArnLink::isBiDirMode()
 {
-    return _twin != 0;   // Having a twin is bidirectional mode
+    return _twin != arnNullptr;   // Having a twin is bidirectional mode
 }
 
 
@@ -960,7 +960,7 @@ bool  ArnLink::isProvider()  const
 
 bool  ArnLink::isThreaded()  const
 {
-    return _mutex != 0;
+    return _mutex != arnNullptr;
 }
 
 
@@ -998,7 +998,7 @@ QMutex*  ArnLink::getMutex()  const
 
 QObject*  ArnLink::arnM( QObject* inArnM)
 {
-    static QObject*  storeArnM = 0;
+    static QObject*  storeArnM = arnNullptr;
 
     if (!storeArnM && inArnM)
         storeArnM = inArnM;

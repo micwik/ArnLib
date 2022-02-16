@@ -113,7 +113,7 @@ class ARNLIBSHARED_EXPORT ArnZeroConfB : public QObject
 {
     Q_OBJECT
 public:
-    ArnZeroConfB( QObject* parent = 0);
+    ArnZeroConfB( QObject* parent = arnNullptr);
     virtual ~ArnZeroConfB();
 
     //! Returns the socket type for this Zero Config.
@@ -372,7 +372,7 @@ public:
     /*! The service name can be automatically generated based on the system's hostname.
      *  \param[in] parent
      */
-    ArnZeroConfRegister( QObject* parent = 0);
+    ArnZeroConfRegister( QObject* parent = arnNullptr);
 
     //! Constructor of an ArnZeroConfRegister object
     /*! All needed parameters for an "arn" service type, using standard arn-port at
@@ -381,7 +381,7 @@ public:
      *                         e.g. "My fantastic service".
      *  \param[in] parent
      */
-    ArnZeroConfRegister( const QString& serviceName, QObject* parent = 0);
+    ArnZeroConfRegister( const QString& serviceName, QObject* parent = arnNullptr);
 
     //! Constructor of an ArnZeroConfRegister object
     /*! All needed parameters for a service at this computer.
@@ -395,7 +395,7 @@ public:
      *  \param[in] parent
      */
     ArnZeroConfRegister( const QString& serviceName, const QString& serviceType, quint16 port,
-                         QObject* parent = 0);
+                         QObject* parent = arnNullptr);
 
     //! Destructor of an ArnZeroConfRegister object
     /*! If the service is registered, it will be unregistered.
@@ -621,7 +621,7 @@ public:
     //! Standard constructor of an ArnZeroConfResolv object
     /*! \param[in] parent
      */
-    ArnZeroConfResolve( QObject* parent = 0);
+    ArnZeroConfResolve( QObject* parent = arnNullptr);
 
     //! Constructor of an ArnZeroConfResolv object
     /*! All needed parameters for an "arn" service type.
@@ -629,7 +629,7 @@ public:
      *                         e.g. "My fantastic service".
      *  \param[in] parent
      */
-    ArnZeroConfResolve( const QString& serviceName, QObject* parent = 0);
+    ArnZeroConfResolve( const QString& serviceName, QObject* parent = arnNullptr);
 
     //! Constructor of an ArnZeroConfResolv object
     /*! All needed parameters for a service.
@@ -641,7 +641,7 @@ public:
      *  \param[in] serviceType the service type, e.g. "arn" or "_arn._tcp".
      *  \param[in] parent
      */
-    ArnZeroConfResolve( const QString& serviceName, const QString& serviceType, QObject* parent = 0);
+    ArnZeroConfResolve( const QString& serviceName, const QString& serviceType, QObject* parent = arnNullptr);
 
     //! Destructor of an ArnZeroConfResolv object
     /*! If the service is registered, it will be unregistered.
@@ -788,14 +788,14 @@ public:
     //! Standard constructor of an ArnZeroConfLookup object    
      /*! \param[in] parent
       */
-    ArnZeroConfLookup( QObject* parent = 0);
+    ArnZeroConfLookup( QObject* parent = arnNullptr);
 
     //! Constructor of an ArnZeroConfLookup object
     /*! All needed parameters for a lookup of a host.
      *  \param[in] hostName the name of the host.
      *  \param[in] parent
      */
-    ArnZeroConfLookup( const QString& hostName, QObject* parent = 0);
+    ArnZeroConfLookup( const QString& hostName, QObject* parent = arnNullptr);
 
     //! Destructor of an ArnZeroConfLookup object
     /*! If the lookup is ongoing, it will be released.
@@ -942,7 +942,7 @@ public:
     /*! All needed for browsing an "arn" service type.
      *  \param[in] parent
      */
-    ArnZeroConfBrowser( QObject* parent = 0);
+    ArnZeroConfBrowser( QObject* parent = arnNullptr);
 
     //! Constructor of an ArnZeroConfBrowser object
     /*! All needed parameters for browsing a service.
@@ -952,7 +952,7 @@ public:
      *  \param[in] serviceType the service type, e.g. "arn" or "_arn._tcp".
      *  \param[in] parent
      */
-    ArnZeroConfBrowser( const QString& serviceType, QObject* parent = 0);
+    ArnZeroConfBrowser( const QString& serviceType, QObject* parent = arnNullptr);
 
     //! Destructor of an ArnZeroConfBrowser object
     /*! If browsing is active, it will be stopped.

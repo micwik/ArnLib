@@ -32,6 +32,7 @@
 #ifndef ARNQMLMSYSTEM_HPP
 #define ARNQMLMSYSTEM_HPP
 
+#include "ArnLib_global.hpp"
 #include <QObject>
 
 
@@ -44,7 +45,7 @@ class QmlMFileIO : public QObject
 public:
     Q_PROPERTY( QString path  READ path  WRITE setPath  NOTIFY pathChanged)
 
-    explicit QmlMFileIO( QObject* parent = 0);
+    explicit QmlMFileIO( QObject* parent = arnNullptr);
 
     Q_INVOKABLE QString  read();
     Q_INVOKABLE bool  write( const QString& data);

@@ -69,25 +69,25 @@ public:
 
     ~ArnLink();
 
-    void  setValue( int value, int sendId = 0, bool useUncrossed = 0);
-    void  setValue( ARNREAL value, int sendId = 0, bool useUncrossed = 0);
-    void  setValue( const QString& value, int sendId = 0, bool useUncrossed = 0,
+    void  setValue( int value, int sendId = 0, bool useUncrossed = false);
+    void  setValue( ARNREAL value, int sendId = 0, bool useUncrossed = false);
+    void  setValue( const QString& value, int sendId = 0, bool useUncrossed = false,
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
-    void  setValue( const QByteArray& value, int sendId = 0, bool useUncrossed = 0,
+    void  setValue( const QByteArray& value, int sendId = 0, bool useUncrossed = false,
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
-    void  setValue( const QVariant& value, int sendId = 0, bool useUncrossed = 0,
+    void  setValue( const QVariant& value, int sendId = 0, bool useUncrossed = false,
                     const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  setIgnoredValue( const ArnLinkHandle& handleData = ArnLinkHandle::null());
 
-    void  setBits( int mask, int value, int sendId = 0, bool useUncrossed = 0);
-    void  addValue( int value, int sendId = 0, bool useUncrossed = 0);
-    void  addValue( ARNREAL value, int sendId = 0, bool useUncrossed = 0);
+    void  setBits( int mask, int value, int sendId = 0, bool useUncrossed = false);
+    void  addValue( int value, int sendId = 0, bool useUncrossed = false);
+    void  addValue( ARNREAL value, int sendId = 0, bool useUncrossed = false);
 
-    int  toInt( bool* isOk = 0);
-    ARNREAL  toReal( bool* isOk = 0);
-    QString  toString( bool* isOk = 0);
-    QByteArray  toByteArray( bool* isOk = 0);
-    QVariant  toVariant( bool* isOk = 0);
+    int  toInt( bool* isOk = arnNullptr);
+    ARNREAL  toReal( bool* isOk = arnNullptr);
+    QString  toString( bool* isOk = arnNullptr);
+    QByteArray  toByteArray( bool* isOk = arnNullptr);
+    QVariant  toVariant( bool* isOk = arnNullptr);
 
     Arn::DataType  type();
 
@@ -145,7 +145,7 @@ protected:
     void  setThreaded();  // Only used in main thread
     void  lock();
     void  unlock();
-    static QObject*  arnM( QObject* inArnM = 0);
+    static QObject*  arnM( QObject* inArnM = arnNullptr);
 
     ArnLink*  _twin;   // Used for bidirectional functionality
 
@@ -153,7 +153,7 @@ private:
     void  resetHave();
     void  needInt( bool* isOk = arnNullptr);
     void  needReal( bool* isOk = arnNullptr);
-    void  doValueChanged( int sendId, const QByteArray* valueData = 0,
+    void  doValueChanged( int sendId, const QByteArray* valueData = arnNullptr,
                           const ArnLinkHandle& handleData = ArnLinkHandle::null());
     void  sendEventsInThread( ArnEvent* ev, const ArnCoreItemList& recipients);
     void  sendEventsDirRoot( ArnEvent* ev, ArnLink* startLink);

@@ -87,12 +87,12 @@ ArnZeroConfB::ArnZeroConfB( QObject* parent)
 {
     _port        = Arn::defaultTcpPort;
     _iface       = 0;
-    _notifier    = 0;
+    _notifier    = arnNullptr;
     _state       = ArnZeroConf::State::None;
     _serviceType = "arn";
     _socketType  = QAbstractSocket::TcpSocket;
     _domain      = "local.";  // Default
-    _sdRef       = 0;
+    _sdRef       = arnNullptr;
 
 #ifndef MDNS_INTERN
     // In case using Avahi, stop stupid warnings about libdns_sd
@@ -478,7 +478,7 @@ void  ArnZeroConfRegister::releaseService()
 #ifndef MDNS_INTERN
         if (_notifier)  // Should always be non Null ...
             delete _notifier;
-        _notifier = 0;
+        _notifier = arnNullptr;
 #endif
         DNSServiceRefDeallocate( _sdRef);
         _state = ArnZeroConf::State::None;
@@ -596,7 +596,7 @@ void  ArnZeroConfResolve::resolve( bool forceMulticast)
                             ArnZeroConfIntern::resolveServiceCallback,
                             this);
     if (err != kDNSServiceErr_NoError) {
-        _sdRef = 0;
+        _sdRef = arnNullptr;
         _state.set( ArnZeroConf::State::Resolve, false);
         emit resolveError( _id, err);
     }
@@ -620,10 +620,10 @@ void  ArnZeroConfResolve::releaseResolve()
 #ifndef MDNS_INTERN
         if (_notifier)  // Should always be non Null ...
             delete _notifier;
-        _notifier = 0;
+        _notifier = arnNullptr;
 #endif
         DNSServiceRefDeallocate( _sdRef);
-        _sdRef = 0;
+        _sdRef = arnNullptr;
     }
     _state.set( ArnZeroConf::State::Resolve, false);
 }
@@ -764,7 +764,7 @@ void  ArnZeroConfLookup::lookup( bool forceMulticast)
                                 ArnZeroConfIntern::lookupHostCallback,
                                 this);
     if (err != kDNSServiceErr_NoError) {
-        _sdRef = 0;
+        _sdRef = arnNullptr;
         _state.set( ArnZeroConf::State::Lookup, false);
         emit lookupError( _id, err);
     }
@@ -789,10 +789,10 @@ void  ArnZeroConfLookup::releaseLookup()
 #ifndef MDNS_INTERN
         if (_notifier)  // Should always be non Null ...
             delete _notifier;
-        _notifier = 0;
+        _notifier = arnNullptr;
 #endif
         DNSServiceRefDeallocate( _sdRef);
-        _sdRef = 0;
+        _sdRef = arnNullptr;
 
     }
     _state.set( ArnZeroConf::State::Lookup, false);
@@ -991,7 +991,7 @@ void ArnZeroConfBrowser::stopBrowse()
 #ifndef MDNS_INTERN
         if (_notifier)  // Should always be non Null ...
             delete _notifier;
-        _notifier = 0;
+        _notifier = arnNullptr;
 #endif
         DNSServiceRefDeallocate( _sdRef);
     }

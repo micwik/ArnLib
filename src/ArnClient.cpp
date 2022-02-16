@@ -80,7 +80,7 @@ ArnClient*  ArnClientReg::get( const QString& id)
 {
     QMutexLocker  locker( &_mutex);
 
-    return _clientTab.value( id, 0);
+    return _clientTab.value( id, arnNullptr);
 }
 
 
@@ -122,7 +122,7 @@ ArnClientReg&  ArnClientReg::instance()
 
 ArnClientPrivate::ArnClientPrivate()
 {
-    _arnMountPoint   = 0;
+    _arnMountPoint   = arnNullptr;
     _isAutoConnect   = false;
     _isValidCredent  = false;
     _isClosed        = true;
@@ -136,7 +136,7 @@ ArnClientPrivate::ArnClientPrivate()
     resetConnectionFlags();
 
     _socket       = new QTcpSocket;
-    _arnNetSync   = new ArnSync( _socket, true, 0);
+    _arnNetSync   = new ArnSync( _socket, true,  arnNullptr);
     _arnNetSync->setClientSyncMode( _syncMode);
     _arnNetSync->start();
     _connectTimer = new QTimer;
@@ -748,7 +748,7 @@ ArnItemNet*  ArnClient::newNetItem( const QString& path, Arn::ObjectSyncMode syn
     else {  // Threaded - must be threadsafe
         ArnThreadComCaller  threadCom;
 
-        threadCom.p()->_retObj = 0;  // Just in case ...
+        threadCom.p()->_retObj = arnNullptr;  // Just in case ...
         if (Arn::debugThreading)  qDebug() << "newNetItem-thread: start path=" << path;
         QMetaObject::invokeMethod( this,
                                    "newNetItemProxy",

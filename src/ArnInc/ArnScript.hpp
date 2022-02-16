@@ -254,7 +254,7 @@ public slots:
 private slots:
 
 protected:
-    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0);
+    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = arnNullptr);
 
     ARN_JSENGINE*  _engine;
 
@@ -285,9 +285,9 @@ class ArnItemScr : public ArnItem
 {
     Q_OBJECT
 public:
-    ArnItemScr( QObject* parent = 0);
-    ArnItemScr( const QString& path, QObject* parent = 0);
-    ArnItemScr( const ArnItem& itemTemplate, const QString& path, QObject* parent = 0);
+    ArnItemScr( QObject* parent = arnNullptr);
+    ArnItemScr( const QString& path, QObject* parent = arnNullptr);
+    ArnItemScr( const ArnItem& itemTemplate, const QString& path, QObject* parent = arnNullptr);
     virtual  ~ArnItemScr();
 
     int  _defaultType;
@@ -320,7 +320,7 @@ class ARNLIBSHARED_EXPORT ArnItemProto : public QObject, public QScriptable
     Q_PROPERTY( bool smAutoDestroy  READ isAutoDestroy WRITE setAutoDestroy)
     Q_PROPERTY( bool smTemplate     READ isTemplate    WRITE setTemplate)
 public:
-    ArnItemProto( ArnScript* parent = 0);
+    ArnItemProto( ArnScript* parent = arnNullptr);
 
     QString  defaultType() const;
     void  setDefaultType( const QString& typeName);
@@ -356,7 +356,7 @@ public slots:
     void  reStart();
 
 public:
-    ArnMonitorProto( ArnScript* parent = 0);
+    ArnMonitorProto( ArnScript* parent = arnNullptr);
     void  setClientId( const QString& id);
     QString  clientId() const;
     void  setMonitorPath( const QString& name);
@@ -375,7 +375,7 @@ public slots:
     void  advertise( const QString& serviceName);
 
 public:
-    ArnDepOfferProto( ArnScript* parent = 0);
+    ArnDepOfferProto( ArnScript* parent = arnNullptr);
     void  setStateName( const QString& name);
     QString  stateName() const;
     void  setStateId( int id);
@@ -395,7 +395,7 @@ public slots:
     void  startMonitor();
 
 public:
-    ArnDepProto( ArnScript* parent = 0);
+    ArnDepProto( ArnScript* parent = arnNullptr);
 
     static QScriptValue  constructor( QScriptContext* context, QScriptEngine* engine);
 };
@@ -406,8 +406,8 @@ class ARNLIBSHARED_EXPORT ArnScript : public QObject
 {
     Q_OBJECT
 public:
-    explicit  ArnScript( QObject* parent = 0);
-    ArnScript( QScriptEngine* engine, QObject* parent = 0);
+    explicit  ArnScript( QObject* parent = arnNullptr);
+    ArnScript( QScriptEngine* engine, QObject* parent = arnNullptr);
     QScriptEngine&  engine()  const;
     void  addObject( const QString& id, QObject* obj);
 
@@ -430,7 +430,7 @@ private slots:
     void  doSignalException( const QScriptValue& exception);
 
 protected:
-    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = 0);
+    void  errorLog( const QString& errText, ArnError err = ArnError::Undef, void* reference = arnNullptr);
     static QScriptValue  printFunction( QScriptContext* context, QScriptEngine* engine);
 
     QScriptEngine*  _engine;

@@ -70,7 +70,7 @@ public:
     //! Standard constructor of a closed handle
     /*! \param[in] parent
      */
-    ArnPipe( QObject* parent = 0);
+    ArnPipe( QObject* parent = arnNullptr);
 
     //! Construction of a pipe handle to a _path_
     /*! The mode for this handle is set to Arn::ObjectMode::Pipe.
@@ -78,7 +78,7 @@ public:
      *  \param[in] parent
      *  \see open()
      */
-    ArnPipe( const QString& path, QObject* parent = 0);
+    ArnPipe( const QString& path, QObject* parent = arnNullptr);
 
     virtual  ~ArnPipe();
 
@@ -188,7 +188,7 @@ signals:
 
     //! \cond ADV
 protected:
-    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = arnNullptr);
 
     ArnPipe( ArnPipePrivate& dd, QObject* parent);
     //! \endcond

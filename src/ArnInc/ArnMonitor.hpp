@@ -68,14 +68,14 @@ class ARNLIBSHARED_EXPORT ArnMonitor : public ArnItemB
     Q_DECLARE_PRIVATE(ArnMonitor)
 
 public:
-    explicit  ArnMonitor( QObject* parent = 0);
+    explicit  ArnMonitor( QObject* parent = arnNullptr);
 
     //! Starts local monitoring
     /*! \param[in] path
      *  \param[in] parent
      *  \see start()
      */
-    ArnMonitor( const QString& path, QObject* parent = 0);
+    ArnMonitor( const QString& path, QObject* parent = arnNullptr);
 
     ~ArnMonitor();
 
@@ -110,7 +110,7 @@ public:
      *  \see start()
      *  \deprecated Use start() instead, _client_ parameter is changed.
      */
-    void  setMonitorPath( const QString& path, ArnClient* client = 0);
+    void  setMonitorPath( const QString& path, ArnClient* client = arnNullptr);
 
     //! Starts the monitoring
     /*! The monitor must normally be set at a [shared](\ref gen_shareArnobj) _path_ that is

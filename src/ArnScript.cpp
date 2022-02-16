@@ -79,7 +79,7 @@ ARN_JSENGINE&  ArnScript::engine()  const
 
 void ArnScript::addObject( const QString& id, QObject* obj)
 {
-    if ((id.isEmpty()) || (obj == 0))  return;
+    if ((id.isEmpty()) || (obj == arnNullptr))  return;
 
     if ((obj != this) && (!obj->parent()))
         obj->setParent( this);  // Reparent to this script handler
@@ -501,7 +501,7 @@ QScriptEngine&  ArnScript::engine()  const
 
 void  ArnScript::addObject( const QString& id, QObject* obj)
 {
-    if ((id.isEmpty()) || (obj == 0))  return;
+    if ((id.isEmpty()) || (obj == arnNullptr))  return;
 
     if ((obj != this) && (!obj->parent()))
         obj->setParent( this);  // Reparent to this script handler

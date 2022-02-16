@@ -75,7 +75,7 @@ QThread*  ArnCoreItem::thread()  const
     else if (heritage.is( Heritage::BasicItem)) {
         return static_cast<const ArnBasicItem*>(this)->thread();
     }
-    return 0;  // TODO:
+    return arnNullptr;  // TODO:
 }
 
 

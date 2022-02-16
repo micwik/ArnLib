@@ -180,9 +180,9 @@ ArnPersistPrivate::ArnPersistPrivate()
     _xsm           = new XStringMap;
     _sapiCommon    = new ArnPersistSapi;
     _vcs           = new ArnVcs;
-    _arnMountPoint = 0;
-    _query         = 0;
-    _depOffer      = 0;
+    _arnMountPoint = arnNullptr;
+    _query         = arnNullptr;
+    _depOffer      = arnNullptr;
 }
 
 ArnPersistPrivate::~ArnPersistPrivate()
@@ -251,7 +251,7 @@ void  ArnPersist::setVcs( ArnVcs* vcs)
 
     if (d->_vcs) {
         delete d->_vcs;
-        d->_vcs = 0;
+        d->_vcs = arnNullptr;
     }
     if (!vcs)  return;  // No use of VCS
 
@@ -297,7 +297,7 @@ ArnItemPersist*  ArnPersist::setupMandatory( const QString& path, bool isMandato
     Q_D(ArnPersist);
 
     ArnItemPersist::StoreType  st;
-    ArnItemPersist*  item = 0;
+    ArnItemPersist*  item = arnNullptr;
 
     if (isMandatory) {
         item = getPersistItem( path);
@@ -309,7 +309,7 @@ ArnItemPersist*  ArnPersist::setupMandatory( const QString& path, bool isMandato
     }
     else {
         uint  linkId = d->_pathPersistMap.value( path);
-        if (!linkId)  return 0;
+        if (!linkId)  return arnNullptr;
 
         item = d->_itemPersistMap.value( linkId);
         Q_ASSERT(item);

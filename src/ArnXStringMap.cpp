@@ -135,7 +135,7 @@ void  XStringMap::setOptions( const XStringMap::Options& newOptions)
 
 int  XStringMap::indexOf( const char* key, int from)  const
 {
-    if (key == 0)  return -1;  // Return Not found
+    if (key == arnNullptr)  return -1;  // Return Not found
 
     for (int i = from; i < _size; ++i) {
         if (_keyList.at(i) == key) {
@@ -198,7 +198,7 @@ int  XStringMap::maxEnumOf( const char* keyPrefix)  const
 
 XStringMap&  XStringMap::add( const char* key, const QByteArray& val)
 {
-    if (key == 0)  return *this;  // Not valid key
+    if (key == arnNullptr)  return *this;  // Not valid key
 
     checkSpace();
     _keyList[ _size].resize(0);     // Avoid Heap reallocation

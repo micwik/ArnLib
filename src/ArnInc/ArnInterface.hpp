@@ -90,7 +90,7 @@ public:
     Q_ENUMS( NameF)
 
 //! \cond ADV
-    explicit  ArnInterface( QObject* parent = 0) : QObject( parent) {}
+    explicit  ArnInterface( QObject* parent = arnNullptr) : QObject( parent) {}
 
     QString  info()                             {return QString::fromUtf8( ArnM::instance().info().constData());}
 //! \endcond

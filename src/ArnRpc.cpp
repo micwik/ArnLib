@@ -170,13 +170,13 @@ bool  ArnDynamicSignals::addSignal( QObject *sender, int signalId, const QByteAr
 
 ArnRpcPrivate::ArnRpcPrivate()
 {
-    _pipe                 = 0;
-    _receiver             = 0;
-    _receiverStorage      = 0;
-    _receiverMethodsParam = 0;
+    _pipe                 = arnNullptr;
+    _receiver             = arnNullptr;
+    _receiverStorage      = arnNullptr;
+    _receiverMethodsParam = arnNullptr;
     _convVariantPar       = false;
     _isIncludeSender      = false;
-    _dynamicSignals       = 0;
+    _dynamicSignals       = arnNullptr;
     _isHeartBeatOk        = true;
     _timerHeartBeatSend   = new QTimer;
     _timerHeartBeatCheck  = new QTimer;
@@ -237,7 +237,7 @@ bool  ArnRpc::open( const QString& pipePath)
 {
     Q_D(ArnRpc);
 
-    setPipe(0);  // Remove any existing pipe
+    setPipe( arnNullptr);  // Remove any existing pipe
 
     //// Make path allways in accordance with provider / requester mode
     QString  path = pipePath;
@@ -305,7 +305,7 @@ bool ArnRpc::setReceiver( QObject* receiver, bool useTrackRpcSender)
 
     d->_receiver = receiver;
     deleteReceiverMethodsParam();
-    d->_receiverStorage = 0;  // Default: don't need be able to track rpcSender
+    d->_receiverStorage = arnNullptr;  // Default: don't need be able to track rpcSender
     if (!receiver)  return stat;
 
     bool  isSameThread = receiver->thread() == this->thread();
@@ -474,7 +474,7 @@ ArnRpc*  ArnRpc::rpcSender()
 {
     Q_D(ArnRpc);
 
-    if (!d->_receiverStorage)  return 0;
+    if (!d->_receiverStorage)  return arnNullptr;
 
     return d->_receiverStorage->_rpcSender;
 }
@@ -482,10 +482,10 @@ ArnRpc*  ArnRpc::rpcSender()
 
 ArnRpc*  ArnRpc::rpcSender( QObject *receiver)
 {
-    if (!receiver)  return 0;
+    if (!receiver)  return arnNullptr;
 
     ArnRpcReceiverStorage*  recStore = receiver->findChild<ArnRpcReceiverStorage*>( RPC_STORAGE_NAME);
-    if (!recStore)  return 0;
+    if (!recStore)  return arnNullptr;
 
     return recStore->_rpcSender;
 }
@@ -782,7 +782,7 @@ void  ArnRpc::pipeInput( const QByteArray& data)
                                           argInfo[ int(argOrder[8])].arg,
                                           argInfo[ int(argOrder[9])].arg);
         if (d->_receiverStorage)
-            d->_receiverStorage->_rpcSender = 0;
+            d->_receiverStorage->_rpcSender = arnNullptr;
         if(!stat) {
             errorLog( QString(tr("Can't invoke method:")) + methodName.constData(),
                       ArnError::RpcReceiveError);
@@ -1126,7 +1126,7 @@ void ArnRpc::deleteReceiverMethodsParam()
     if (!d->_receiverMethodsParam)  return;  // Already done
 
     delete d->_receiverMethodsParam;
-    d->_receiverMethodsParam = 0;
+    d->_receiverMethodsParam = arnNullptr;
 }
 
 
@@ -1216,7 +1216,7 @@ bool  ArnRpc::importArgData( ArnRpc::ArgInfo& argInfo, const QByteArray& methodN
             return false;
         }
 
-        void*  argData = 0;
+        void*  argData = arnNullptr;
         if (useVarPar) {
             argData = new QVariant( varArg);
             argInfo.typeId = QMetaType::QVariant;
@@ -1437,7 +1437,7 @@ void  ArnRpc::destroyPipe()
 
     if (Arn::debugRPC)  qDebug() << "Rpc Destroy pipe: path=" << d->_pipe->path();
     emit pipeClosed();
-    setPipe(0);
+    setPipe( arnNullptr);
 }
 
 

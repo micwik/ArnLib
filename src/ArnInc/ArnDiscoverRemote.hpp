@@ -97,7 +97,7 @@ class ArnDiscoverRemote : public ArnDiscoverAdvertise
     Q_DECLARE_PRIVATE(ArnDiscoverRemote)
 
 public:
-    explicit ArnDiscoverRemote( QObject *parent = 0);
+    explicit ArnDiscoverRemote( QObject *parent = arnNullptr);
     ~ArnDiscoverRemote();
 
     //! Return the default service name

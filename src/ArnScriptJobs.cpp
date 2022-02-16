@@ -71,7 +71,7 @@ ArnScriptJobSingle::ArnScriptJobSingle( ArnScriptJobControl* jobConfig, ArnScrip
     _jobFactory     = jobFactory;
     _watchdogThread = watchdogThread;
     _scriptChanged  = false;
-    _job            = 0;
+    _job            = arnNullptr;
 
     newScriptJob();
     doScheduleRequest(0);

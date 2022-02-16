@@ -36,10 +36,10 @@
 
 ArnEvent::ArnEvent( QEvent::Type type)
     : QEvent( type)
-    , _target(0)
-    , _targetMutex(0)
-    , _targetNextPending(0)
-    , _targetPendingChain(0)
+    , _target( arnNullptr)
+    , _targetMutex( arnNullptr)
+    , _targetNextPending( arnNullptr)
+    , _targetPendingChain( arnNullptr)
 {
     Q_UNUSED(_spare)
 }
@@ -173,10 +173,10 @@ void  ArnEvent::inhibitPendingChain()
         ArnEvent*  ev = this;
         do {
             ArnEvent*  evNext = ev->_targetNextPending;
-            ev->_target              = 0;  // Inhibit event, i.e. it will be dropped when delivered
-            ev->_targetMutex         = 0;
-            *ev->_targetPendingChain = 0;
-            ev->_targetNextPending   = 0;
+            ev->_target              = arnNullptr;  // Inhibit event, i.e. it will be dropped when delivered
+            ev->_targetMutex         = arnNullptr;
+            *ev->_targetPendingChain = arnNullptr;
+            ev->_targetNextPending   = arnNullptr;
             ev = evNext;
         } while (ev);
     }
@@ -197,7 +197,7 @@ ArnEvValueChange::ArnEvValueChange( int sendId, const QByteArray* valueData, con
     if (_handleData && !_handleData->isNull())
         _handleData = new ArnLinkHandle( *_handleData);
     else
-        _handleData = 0;
+        _handleData = arnNullptr;
 }
 
 

@@ -118,7 +118,7 @@ mDNSexport mStatus mDNSPlatformSendUDP(const mDNS *const m, const void *const ms
     }
 #endif
 
-    ArnMDnsSockInfo*  mdi = 0;
+    ArnMDnsSockInfo*  mdi = arnNullptr;
     if (sendingsocket >= 0) {
         mdi = ArnMDns::socketInfo( sendingsocket);
         if (mdi) {
@@ -583,7 +583,7 @@ int  arnSetupInterfaceList( mDNS *const m)
         || flags.testFlag( QNetworkInterface::IsPointToPoint))
             continue;
 
-        PosixNetworkInterface*  firstMDnsIntf = 0;
+        PosixNetworkInterface*  firstMDnsIntf = arnNullptr;
         QList<QNetworkAddressEntry>  entries = interface.addressEntries();
         int  entriesLen = entries.size();
         for (int j = 0; j < entriesLen; ++j) {
@@ -621,7 +621,7 @@ int  arnSetupInterfaceList( mDNS *const m)
     // In the interim, we skip loopback interface only if we found at least one v4 interface to use
     // if ((m->HostInterfaces == NULL) && (firstLoopback != NULL))
     if (!foundIntV4 && firstLoopbackInterface.isValid()) {
-        PosixNetworkInterface*  mDnsIntf = 0;
+        PosixNetworkInterface*  mDnsIntf = arnNullptr;
         arnSetupOneInterface( m, firstLoopbackInterface, firstLoopbackEntry, &mDnsIntf);
     }
 

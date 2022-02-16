@@ -372,7 +372,7 @@ public slots:
 
 //! \cond ADV
 public:
-    explicit ArnItemQml( QObject* parent = 0);
+    explicit ArnItemQml( QObject* parent = arnNullptr);
 
     QString  variantType()  const;
     void  setVariantType( const QString& typeName);
@@ -408,7 +408,7 @@ signals:
     void  dummyNotifier();
 
 protected:
-    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = 0);
+    virtual void  itemUpdated( const ArnLinkHandle& handleData, const QByteArray* value = arnNullptr);
     virtual void  itemCreatedBelow( const QString& path);
     virtual void  itemModeChangedBelow( const QString& path, uint linkId, Arn::ObjectMode mode);
     virtual void  timerEvent( QTimerEvent* ev);
@@ -467,7 +467,7 @@ public slots:
 
 //! \cond ADV
 public:
-    explicit ArnMonitorQml( QObject* parent = 0);
+    explicit ArnMonitorQml( QObject* parent = arnNullptr);
 
     void  setClientId( const QString& id);
     QString  clientId() const;
@@ -605,7 +605,7 @@ public slots:
 
 //! \cond ADV
 public:
-    explicit ArnSapiQml( QObject* parent = 0);
+    explicit ArnSapiQml( QObject* parent = arnNullptr);
 
     void  setPipePath( const QString& path);
     QString  pipePath() const;
@@ -715,7 +715,7 @@ public slots:
 
 //! \cond ADV
 public:
-    explicit XStringMapQml( QObject* parent = 0);
+    explicit XStringMapQml( QObject* parent = arnNullptr);
 
     virtual void  classBegin();
     virtual void  componentComplete();
@@ -743,7 +743,7 @@ public slots:
 
 //! \cond ADV
 public:
-    explicit QmlMSys( QObject* parent = 0);
+    explicit QmlMSys( QObject* parent = arnNullptr);
 
     int  quickTypeRun();
 //! \endcond
@@ -756,7 +756,7 @@ class ArnNetworkReply : public QNetworkReply
 {
     Q_OBJECT
 public:
-    explicit ArnNetworkReply( QObject* parent = 0);
+    explicit ArnNetworkReply( QObject* parent = arnNullptr);
 
     void  setOperation( QNetworkAccessManager::Operation operation)
     { QNetworkReply::setOperation( operation);}
@@ -797,7 +797,7 @@ class ArnNetworkAccessManager : public QNetworkAccessManager
 {
     Q_OBJECT
 public:
-    explicit ArnNetworkAccessManager( QObject* parent = 0);
+    explicit ArnNetworkAccessManager( QObject* parent = arnNullptr);
 
 protected:
     virtual QNetworkReply*  createRequest( Operation op, const QNetworkRequest &request, QIODevice *outgoingData);

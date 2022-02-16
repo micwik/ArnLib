@@ -105,7 +105,7 @@ class ARNLIBSHARED_EXPORT ArnVcs : public QObject
     Q_OBJECT
 
 public:
-    explicit ArnVcs( QObject* parent = 0);
+    explicit ArnVcs( QObject* parent = arnNullptr);
     ~ArnVcs();
 
 signals:
@@ -171,7 +171,7 @@ class ARNLIBSHARED_EXPORT ArnPersist : public QObject
     Q_DECLARE_PRIVATE(ArnPersist)
 
 public:
-    explicit ArnPersist( QObject* parent = 0);
+    explicit ArnPersist( QObject* parent = arnNullptr);
     ~ArnPersist();
 
     //! Set the persistent enabled tree path
@@ -287,7 +287,7 @@ private:
     ArnItemPersist*  getPersistItem( const QString& path);
     ArnItemPersist*  setupMandatory( const QString& path, bool isMandatory);
     void  removeFilePersistItem( const QString& path);
-    void  getFileList( QStringList& flist, const QDir& dir, const QDir* baseDir = 0);
+    void  getFileList( QStringList& flist, const QDir& dir, const QDir* baseDir = arnNullptr);
     void  loadFile( const QString& relPath);
     void  doLoadMandatory();
     void  doLoadFiles();

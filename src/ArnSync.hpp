@@ -111,7 +111,7 @@ public:
 
     ArnItemNet*  newNetItem( const QString& path,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
-                             bool* isNewPtr = 0);
+                             bool* isNewPtr = arnNullptr);
     void  connectStarted();
     void  connected();
     void  close();

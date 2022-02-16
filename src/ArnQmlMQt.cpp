@@ -96,7 +96,7 @@ QObject*  QmlMQtObject::data_at( QML_LIST_PROPERTY<QObject>* prop, ARN_SIZETYPE 
     if ((index >= 0) && (index < that->children().count()))
         return that->children().at( index);
     else
-        return 0;
+        return arnNullptr;
 }
 
 
@@ -106,7 +106,7 @@ void  QmlMQtObject::data_clear(QML_LIST_PROPERTY<QObject>* prop)
     const QObjectList&  children = that->children();
     int  childCount = children.count();
     for (int index = 0; index < childCount; ++index)
-        children.at(0)->setParent(0);
+        children.at(0)->setParent( arnNullptr);
 }
 
 

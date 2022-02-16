@@ -131,7 +131,7 @@ int  ArnScriptJobB::pollTime()
 
 void  ArnScriptJobB::installInterface( const QString& id, QObject* obj)
 {
-    if ((id.isEmpty()) || (obj == 0))  return;
+    if ((id.isEmpty()) || (obj == arnNullptr))  return;
 
     if (obj != this)  obj->setParent( this);  // Reparent interface to this Job
     //MW: fix parrenting and delete failed install object
@@ -405,7 +405,7 @@ void  ArnScriptJobFactory::setupJsObj( const QString& id, const ARN_JSVALUE& jsO
 
 bool  ArnScriptJobFactory::setupInterface( const QString& id, QObject* interface, ARN_JSENGINE& engine)
 {
-    if (id.isEmpty() || (interface == 0))  return false;
+    if (id.isEmpty() || (interface == arnNullptr))  return false;
 
 #ifdef ARNUSE_SCRIPTJS
     ARN_JSVALUE  objScr = engine.newQObject( interface);

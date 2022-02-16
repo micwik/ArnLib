@@ -169,7 +169,7 @@ public:
         };
         MQ_DECLARE_ENUM( Type)
     };
-    explicit ArnScriptJobs( QObject* parent = 0);
+    explicit ArnScriptJobs( QObject* parent = arnNullptr);
     void  addJob( ArnScriptJobControl* jobConfig, int prio = 1);
     void  setFactory( ArnScriptJobFactory* jobFactory);
     void  start( Type type = Type::Cooperative);
@@ -194,9 +194,9 @@ private:
         {
             startPrio     = 1;
             curPrio       = 1;
-            thread        = 0;
-            jobConfig     = 0;
-            job           = 0;
+            thread        = arnNullptr;
+            jobConfig     = arnNullptr;
+            job           = arnNullptr;
             scriptChanged = false;
         }
     };

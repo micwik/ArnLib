@@ -68,7 +68,7 @@ class ChatSapi : public ArnSapi
 {
     Q_OBJECT
 public:
-    explicit ChatSapi( QObject* parent = 0) : ArnSapi( parent)  {}
+    explicit ChatSapi( QObject* parent = arnNullptr) : ArnSapi( parent)  {}
 
 signals:
 MQ_PUBLIC_ACCESS
@@ -118,7 +118,7 @@ class ARNLIBSHARED_EXPORT ArnSapi : public ArnRpc
     Q_DECLARE_PRIVATE(ArnSapi)
 
 public:
-    explicit  ArnSapi( QObject* parent = 0);
+    explicit  ArnSapi( QObject* parent = arnNullptr);
 
     //! Open a new Service API
     /*! The opened Sapi can be either the _provider_ side or the _requester_ side,
@@ -138,7 +138,7 @@ public:
      *  \see setDefaultPath()
      */
     bool  open( const QString& pipePath = QString(), Mode mode = Mode(),
-                const char* providerPrefix = 0, const char* requesterPrefix = 0);
+                const char* providerPrefix = arnNullptr, const char* requesterPrefix = arnNullptr);
 
     //! Make batch connection from this ArnSapi:s signals to another receivers slots/signals
     /*! Used when there is a specific pattern in the naming of the signals and slots.
@@ -184,7 +184,7 @@ public:
     QString  defaultPath()  const;
 
 protected:
-    ArnSapi( const QString& defaultPath, QObject* parent = 0);
+    ArnSapi( const QString& defaultPath, QObject* parent = arnNullptr);
 
     //! Set default path for the _pipe_ to be used
     /*! A provider path will always be converted to a non provider path.

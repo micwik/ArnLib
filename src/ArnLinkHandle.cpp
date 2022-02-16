@@ -44,7 +44,7 @@ using namespace Arn;
 void ArnLinkHandle::init()
 {
     _codes = Normal;
-    _data  = 0;
+    _data  = arnNullptr;
 }
 
 
@@ -66,7 +66,7 @@ ArnLinkHandle::ArnLinkHandle( const ArnLinkHandle& other)
     if (other._data)
         _data = new HandleData( *other._data);
     else
-        _data = 0;
+        _data = arnNullptr;
 }
 
 
@@ -94,7 +94,7 @@ const ArnLinkHandle&  ArnLinkHandle::null()
 
 const ArnLinkHandle* ArnLinkHandle::nullPtr()
 {
-    return static_cast<ArnLinkHandle*>(0);
+    return static_cast<ArnLinkHandle*>( arnNullptr);
 }
 
 

@@ -120,7 +120,7 @@ public:
     };
     typedef QList<HostAddrPort>  HostList;
 
-    explicit ArnClient(QObject *parent = 0);
+    explicit ArnClient(QObject *parent = arnNullptr);
     ~ArnClient();
 
     //! Clear the Arn connection list
@@ -446,7 +446,7 @@ public:
                               QString& localMountPath, QString& remoteMountPath);
     ArnItemNet*  newNetItem( const QString& path,
                              Arn::ObjectSyncMode syncMode = Arn::ObjectSyncMode::Normal,
-                             bool* isNewPtr = 0);
+                             bool* isNewPtr = arnNullptr);
     //! \endcond
 
 signals:
@@ -513,7 +513,7 @@ protected:
 
 private slots:
     void  newNetItemProxy( ArnThreadCom* threadCom,
-                           const QString& path, int syncMode = 0, void* isNewPtr = 0);
+                           const QString& path, int syncMode = 0, void* isNewPtr = arnNullptr);
     void  createNewItem( const QString& path);
     void  doCreateArnTree( const QString& path);
     void  doDestroyArnTree( const QString& path, bool isGlobal);
@@ -538,7 +538,7 @@ private:
 
         MountPointSlot()
         {
-            arnMountPoint = 0;
+            arnMountPoint = arnNullptr;
         }
     };
 

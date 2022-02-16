@@ -112,7 +112,7 @@ public:
     /*! \param[in] serverType For now only _NetSync_ is available.
      *  \param[in] parent
      */
-    ArnServer( Type serverType, QObject *parent = 0);
+    ArnServer( Type serverType, QObject *parent = arnNullptr);
 
     ~ArnServer();
 

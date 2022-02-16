@@ -65,7 +65,7 @@ class QmlMQtObject : public QObject, public QML_PARSER_STATUS
     Q_CLASSINFO("DefaultProperty", "data")
 
 public:
-    QmlMQtObject( QmlMQtObject* parent = 0);
+    QmlMQtObject( QmlMQtObject* parent = arnNullptr);
     virtual  ~QmlMQtObject();
 
     QmlMQtObject*  parentItem()  const;

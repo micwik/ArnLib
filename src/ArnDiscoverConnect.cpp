@@ -52,12 +52,12 @@ ArnDiscoverConnectorPrivate::ArnDiscoverConnectorPrivate()
     _resolveRefreshBlocked = false;
     _isResolved            = false;
     _externalClientConnect = false;
-    _resolveRefreshTime    = 0;
-    _resolver              = 0;
-    _arnDisHostService     = 0;
-    _arnDisHostServicePv   = 0;
-    _arnDisHostAddress     = 0;
-    _arnDisHostPort        = 0;
+    _resolveRefreshTime    = arnNullptr;
+    _resolver              = arnNullptr;
+    _arnDisHostService     = arnNullptr;
+    _arnDisHostServicePv   = arnNullptr;
+    _arnDisHostAddress     = arnNullptr;
+    _arnDisHostPort        = arnNullptr;
 }
 
 
@@ -118,7 +118,7 @@ void  ArnDiscoverConnector::setResolver( ArnDiscoverResolver* resolver)
 
     if (d->_resolver) {
         delete d->_resolver;
-        d->_resolver = 0;
+        d->_resolver = arnNullptr;
     }
     if (!resolver)  return;  // No use of resolver
 

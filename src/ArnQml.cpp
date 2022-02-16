@@ -45,7 +45,7 @@ using namespace Arn;
 
 
 ArnQml::ArnQml()
-    : QObject(0)
+    : QObject( arnNullptr)
 {
     _arnRootPath = "/";
     _arnNetworkAccessManagerFactory = new ArnNetworkAccessManagerFactory;

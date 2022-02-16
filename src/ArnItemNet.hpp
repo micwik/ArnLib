@@ -55,7 +55,7 @@ public:
     void  setModeString( const QByteArray& mode);
     QByteArray  getModeString()  const;
 
-    void  sendNewItemMonEvent( const QString& path, bool isOld = 0);
+    void  sendNewItemMonEvent( const QString& path, bool isOld = false);
     void  sendMonEvent( int type, const QByteArray& data = QByteArray(), bool isLocal = true);
     void  setBlockEcho( bool blockEcho);
     void  setDisable( bool disable = true);
@@ -131,7 +131,7 @@ class ArnItemNetEar : public ArnItem
 {
     Q_OBJECT
 public:
-    explicit ArnItemNetEar( QObject* parent = 0);
+    explicit ArnItemNetEar( QObject* parent = arnNullptr);
 
 signals:
     void  arnTreeCreated( const QString& path);

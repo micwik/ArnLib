@@ -135,16 +135,16 @@ ArnM::ArnM()
     _countFolder            = 0;
     _countLeaf              = 0;
     _countRef               = 0;
-    _countFolderLink        = 0;
-    _countLeafLink          = 0;
-    _countRefLink           = 0;
+    _countFolderLink        = arnNullptr;
+    _countLeafLink          = arnNullptr;
+    _countRefLink           = arnNullptr;
     _timerMetrics           = new QTimer( this);
 
     _defaultIgnoreSameValue = false;
     _skipLocalSysLoading    = false;
     _isThreadedApp          = false;
     _mainThread             = QThread::currentThread();
-    _root                   = new ArnLink( 0, "", Arn::LinkFlags::Folder);
+    _root                   = new ArnLink( arnNullptr, "", Arn::LinkFlags::Folder);
 
 #if QT_VERSION >= 0x050a00
 #else
@@ -157,7 +157,7 @@ ArnM::ArnM()
 
     //// Error setup
     _consoleError = true;
-    _errorLogger  = 0;
+    _errorLogger  = arnNullptr;
 
     _errTextTab.resize( ArnError::Err_N);
     _errTextTab[ ArnError::Ok]              = QString(tr("Ok"));
@@ -350,7 +350,7 @@ QStringList  ArnM::itemsMain( const ArnLink *parent)
     for (int i = 0; i < children.size(); i++) {
         ArnLink*  childLink = children.at(i);
 
-        if (childLink != 0) {
+        if (childLink != arnNullptr) {
             if (childLink->isFolder()) {
                 childnames << childLink->objectName() + "/";
             }
@@ -608,7 +608,7 @@ ArnLink*  ArnM::linkThread( const QString& path, Arn::LinkFlags flags, Arn::Obje
 
     ArnThreadComCaller  threadCom;
 
-    threadCom.p()->_retObj = 0;  // Just in case ...
+    threadCom.p()->_retObj = arnNullptr;  // Just in case ...
     if (Arn::debugThreading)  qDebug() << "link-thread: start path=" << path;
     QMetaObject::invokeMethod( &instance(),
                                "linkProxy",
@@ -650,8 +650,8 @@ ArnLink*  ArnM::linkMain( const QString& path, Arn::LinkFlags flags, Arn::Object
             growPath += "/";
 
         currentLink = ArnM::linkMain( growPath, currentLink, subPath, subFlags, syncMode);
-        if (currentLink == 0) {
-            return 0;
+        if (currentLink == arnNullptr) {
+            return arnNullptr;
         }
     }
 
@@ -668,7 +668,7 @@ ArnLink*  ArnM::linkMain( const QString& path, ArnLink *parent, const QString& n
             errorLog( QString(tr("Can't handle SubItem:")) + name,
                       ArnError::FolderNotOpen);
         }
-        return 0;
+        return arnNullptr;
     }
 
     QString  nameNorm = name;
@@ -680,7 +680,7 @@ ArnLink*  ArnM::linkMain( const QString& path, ArnLink *parent, const QString& n
     ArnLink*  child;
     child = getRawLink( parent, nameNorm, flags);
     if (!child) {   // Error getting link
-        return 0;
+        return arnNullptr;
     }
 
     if (!flags.is( flags.Folder)
@@ -698,7 +698,7 @@ ArnLink*  ArnM::linkMain( const QString& path, ArnLink *parent, const QString& n
 ArnLink*  ArnM::addTwin( const QString& path, ArnLink* link,
                          Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags)
 {
-    if (!link)  return 0;
+    if (!link)  return arnNullptr;
 
     if (isMainThread()) {
         ArnLink*  retLink = addTwinMain( path, link, syncMode, flags);
@@ -722,7 +722,7 @@ ArnLink*  ArnM::addTwinMain( const QString& path, ArnLink* link,
                              Arn::ObjectSyncMode syncMode, Arn::LinkFlags flags)
 {
     if (!link) {
-        return 0;
+        return arnNullptr;
     }
 
     if (!link->twinLink()) {  // This link has no twin, create one
@@ -767,19 +767,19 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
             errorLog( QString(tr("Can't handle SubItem:")) + name,
                       ArnError::FolderNotOpen);
         }
-        return 0;
+        return arnNullptr;
     }
     if (parent->isRetired()) {
         if (showErrors) {
             errorLog( QString(tr("parent:")) + parent->linkPath(),
                       ArnError::Retired);
         }
-        return 0;
+        return arnNullptr;
     }
 
     ArnLink *child = parent->findLink( name);
 
-    if (child == 0) {   // link not existing, create it ?
+    if (child == arnNullptr) {   // link not existing, create it ?
         if (!flags.is( flags.CreateAllowed)) {
             // Creating new items are not allowed
             if (showErrors) {
@@ -787,7 +787,7 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
                           QString(tr(" Item:")) + name,
                           ArnError::NotFound);
             }
-            return 0;
+            return arnNullptr;
         }
         if (name.isEmpty()  &&  !flags.is( flags.Folder)) {
             // Empty names only allowed for folders
@@ -795,7 +795,7 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
                 errorLog( QString(tr("Empty leaf name, Path:")) + parent->linkPath(),
                           ArnError::CreateError);
             }
-            return 0;
+            return arnNullptr;
         }
         if (name.endsWith("!!")) {
             // Invalid, must not have double '!' at end
@@ -803,7 +803,7 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
                 errorLog( QString(tr("Invalid name, Path:")) + parent->linkPath(),
                           ArnError::CreateError);
             }
-            return 0;
+            return arnNullptr;
         }
         // Create folders or items when needed
         child = new ArnLink( parent, name, flags);
@@ -818,7 +818,7 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
                 errorLog( QString(tr("child:")) + child->linkPath(),
                           ArnError::Retired);
             }
-            return 0;
+            return arnNullptr;
         }
         if (child->isFolder() != flags.is( flags.Folder)) {
             // There is already a link with this name, but it is of
@@ -833,7 +833,7 @@ ArnLink*  ArnM::getRawLink( ArnLink *parent, const QString& name, Arn::LinkFlags
                               ArnError::CreateError);
                 }
             }
-            return 0;
+            return arnNullptr;
         }
     }
     /// Make sure threaded flag is updated for the twins

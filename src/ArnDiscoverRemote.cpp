@@ -47,8 +47,8 @@
 ArnDiscoverRemotePrivate::ArnDiscoverRemotePrivate()
 {
     _servTimer             = new QTimer;
-    _arnInternalServer     = 0;
-    _arnDResolver          = 0;
+    _arnInternalServer     = arnNullptr;
+    _arnDResolver          = arnNullptr;
     _defaultService        = "Arn Default Service";
     _initialServiceTimeout = 0;
 }
