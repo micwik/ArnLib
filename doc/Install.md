@@ -14,7 +14,18 @@ build a certain project. A project file ends with the suffix "*.pro".
 Files that end with the suffix "*.pri" are included by the project 
 files and contain definitions, that are common for several project files.
 
-The first step is to edit the *.pri / *.pro files to adjust 
+To use a more automated config of ArnLib and related applications,
+the Qt Feature mechanism is used as default when available.
+To set the feature directory following can be executed once (in Linux):
+> qmake -set QMAKEFEATURES /usr/include/qtfeatures
+When possible arnlib.prf and arnlib_config.pri is installed in selected directory.
+Applications using ArnLib can now at best e.g. use:
+> ARN += client
+> CONFIG += arnlib
+And all needed config for ArnLib is automatically loaded.
+
+Local adaptions to ArnLib.pro can be put in the file arnlib_local.pri
+If needed edit the *.pri / *.pro files to adjust 
 them to your needs. Take care to select your deployment directories.
 <Br><Br>
 
@@ -149,12 +160,17 @@ for a regular Unix build.
 
 Using ArnLib    {#ins_usage}
 ============
-In the *.pro file of the application the below lines can be used.
+In ArnLib the arnlib.prf -file contains template lines that can be used in the *.pro file of the application.
 
 This will give a starting point for the configuration. It works well when using the same
 base directory for ArnLib as the application, e.g. basedir/ArnLib and basedir/myApp. In
 Unix-alike systems it's also needed to install the library files in a path known by the system,
 see a) Unix.
+
+When Qt Features is used (default), the applications using ArnLib can e.g. use:
+> ARN += client
+> CONFIG += arnlib
+And all needed config for ArnLib is automatically loaded.
 
 It's possible to include the ArnLib source in the application compiling by adding
 ArnLibCompile to CONFIG. The included part of the source can be selected by addings to ARN,
@@ -166,34 +182,6 @@ Michael Wiklund for other terms using the ArnLib.
 
 
 Internal mDNS (ZeroConfig) is selected by adding mDnsIntern to CONFIG.
-
-    CONFIG += ArnLibCompile
-    CONFIG += mDnsIntern
-
-    greaterThan(QT_MAJOR_VERSION, 4) {
-        ARNLIB = Arn5
-    } else {
-        ARNLIB = Arn4
-    }
-
-    ArnLibCompile {
-        #ARN += client
-        ARN += server
-        ARN += discover
-        include(../ArnLib/src/ArnLib.pri)
-        INCLUDEPATH += $$PWD/../ArnLib/src
-    } else {
-        win32: INCLUDEPATH += $$PWD/../ArnLib/src
-        win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/release/ -l$${ARNLIB}
-        else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ArnLib/debug/ -l$${ARNLIB}
-        else:unix: LIBS += -L$$OUT_PWD/../ArnLib/ -l$${ARNLIB}
-    }
-
-    !mDnsIntern {
-        win32:CONFIG(release, debug|release): LIBS +=  -ldns_sd
-        else:win32:CONFIG(debug, debug|release): LIBS +=  -ldns_sd
-        else:unix: LIBS += -ldns_sd
-    }
 
 If you don't use qmake you have to add the include path to find the ArnLib 
 headers to your compiler flags and the ArnLib library to your linker list.

@@ -53,6 +53,8 @@ ArnLibCompile {
 }
 else {
 
+win32: INCLUDEPATH += $$_PRO_FILE_PWD_/../include
+
 exists(arnlib_conf.pri) {
     message(Using ArnLib config.)
     include(arnlib_conf.pri)
