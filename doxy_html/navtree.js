@@ -1,116 +1,29 @@
-var NAVTREE =
-[
-  [ "ArnLib", "index.html", [
-    [ "README", "md__r_e_a_d_m_e.html", null ],
-    [ "ArnLib Changelog / Todo", "md_doc__changelog__todo.html", null ],
-    [ "General Description", "gen_page.html", [
-      [ "Arn Data Objects    ", "gen_page.html#gen_arnobj", [
-        [ "ArnItem access   ", "gen_page.html#gen_arnItem", null ],
-        [ "Modes    ", "gen_page.html#gen_arnobjModes", null ],
-        [ "Local    ", "gen_page.html#gen_localPath", null ],
-        [ "Naming conventions    ", "gen_page.html#gen_naming", null ],
-        [ "Bidirectional Arn Data Objects    ", "gen_page.html#gen_bidirArnobj", null ],
-        [ "Pipe Arn Data Objects    ", "gen_page.html#gen_pipeArnobj", [
-          [ "Pipe sequence check", "gen_page.html#gen_pipeSeqCheck", null ],
-          [ "Pipe anti congest", "gen_page.html#gen_pipeAntiCongest", null ]
-        ] ],
-        [ "Persistent Arn Data Objects    ", "gen_page.html#gen_persistArnobj", [
-          [ "Saving objects in files", "gen_page.html#gen_fileArnobj", null ]
-        ] ],
-        [ "Sharing Arn Data Objects    ", "gen_page.html#gen_shareArnobj", [
-          [ "Dynamic port", "gen_page.html#gen_dynamicPort", null ]
-        ] ],
-        [ "Sync rules    ", "gen_page.html#gen_syncRules", [
-          [ "Sync rules for Pipe", "gen_page.html#gen_syncRulesPipe", null ],
-          [ "ClientSyncMode", "gen_page.html#gen_syncRulesMode", null ]
-        ] ]
-      ] ],
-      [ "RPC and SAPI    ", "gen_page.html#gen_rpc", [
-        [ "RPC and SAPI method name overload    ", "gen_page.html#gen_rpcoverload", null ],
-        [ "RPC and SAPI communication format    ", "gen_page.html#gen_rpcformat", null ]
-      ] ],
-      [ "ZeroConfig    ", "gen_page.html#gen_zeroconf", [
-        [ "ZeroConfig definitions    ", "gen_page.html#gen_zeroconfDef", [
-          [ "Service name", "gen_page.html#gen_zeroconfServiceName", null ],
-          [ "Sub types", "gen_page.html#gen_zeroconfSubTypes", null ],
-          [ "Text record", "gen_page.html#gen_zeroconfTextRecord", null ]
-        ] ],
-        [ "Discover    ", "gen_page.html#gen_discover", null ],
-        [ "Discover remote    ", "gen_page.html#gen_discoverRemote", null ]
-      ] ],
-      [ "Application notations    ", "gen_page.html#gen_appnote", null ]
-    ] ],
-    [ "Installation and usage", "ins_page.html", [
-      [ "Introduction    ", "ins_page.html#ins_intro", null ],
-      [ "Documentation    ", "ins_page.html#ins_doc", null ],
-      [ "Building ArnLib    ", "ins_page.html#ins_build", [
-        [ "A) Unix    ", "ins_page.html#ins_buildUnix", null ],
-        [ "B) Win32/MSVC    ", "ins_page.html#ins_buildWin32Msvc", null ],
-        [ "C) Win32/MinGW    ", "ins_page.html#ins_buildWin32Mingw", null ],
-        [ "D) MacOSX    ", "ins_page.html#ins_buildMacosx", null ],
-        [ "E) Qt Embedded    ", "ins_page.html#ins_buildEmbedded", null ]
-      ] ],
-      [ "Using ArnLib    ", "ins_page.html#ins_usage", null ]
-    ] ],
-    [ "ArnLib Internals", "int_page.html", [
-      [ "ScriptJobs    ", "int_page.html#int_scriptjobs", null ],
-      [ "ArnMonitor    ", "int_page.html#int_arnmonitor", null ],
-      [ "Destroy    ", "int_page.html#int_destroy", null ]
-    ] ],
-    [ "Example Collection", "exampleindex.html", "exampleindex" ],
-    [ "Help descriptions", "help_disc_index.html", "help_disc_index" ],
-    [ "Deprecated List", "deprecated.html", null ],
-    [ "Namespaces", null, [
-      [ "Namespace List", "namespaces.html", "namespaces" ],
-      [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", null ],
-        [ "Functions", "namespacemembers_func.html", null ],
-        [ "Variables", "namespacemembers_vars.html", null ]
-      ] ]
-    ] ],
-    [ "Classes", null, [
-      [ "Class List", "annotated.html", "annotated" ],
-      [ "Class Index", "classes.html", null ],
-      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
-      [ "Class Members", "functions.html", [
-        [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ],
-        [ "Typedefs", "functions_type.html", null ],
-        [ "Enumerations", "functions_enum.html", null ],
-        [ "Enumerator", "functions_eval.html", null ],
-        [ "Properties", "functions_prop.html", null ],
-        [ "Related Functions", "functions_rela.html", null ]
-      ] ]
-    ] ],
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ],
-      [ "File Members", "globals.html", [
-        [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Typedefs", "globals_type.html", null ],
-        [ "Macros", "globals_defs.html", null ]
-      ] ]
-    ] ],
-    [ "Examples", "examples.html", "examples" ]
-  ] ]
-];
+/*
+ @licstart  The following is the entire license notice for the
+ JavaScript code in this file.
 
-var NAVTREEINDEX =
-[
-"_arn_8cpp.html",
-"_m_q_flags_8hpp.html#aa2cee9d1cb3c0c9f88905783dcb498cb",
-"class_arn_adapt_item.html#ace8431e39221dfae975b24e5cd0e62f5",
-"class_arn_discover_remote.html#a0c79190e45f240469478465599910397",
-"class_arn_item_qml.html#aa29aa2ec5f444a1b428aae2b1a92609e",
-"class_arn_server_session.html",
-"struct_arn_1_1_coding.html#a8ff97972cc5915dd4b4132de4a5b3163aa38b66c8fd42a93a992919ebdd2cd6d1"
-];
+ Copyright (C) 1997-2017 by Dimitri van Heesch
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+ @licend  The above is the entire license notice
+ for the JavaScript code in this file
+ */
 var navTreeSubIndices = new Array();
+var arrowDown = '&#9660;';
+var arrowRight = '&#9654;';
 
 function getData(varName)
 {
@@ -183,21 +96,21 @@ function cachedLink()
 
 function getScript(scriptName,func,show)
 {
-  var head = document.getElementsByTagName("head")[0]; 
+  var head = document.getElementsByTagName("head")[0];
   var script = document.createElement('script');
   script.id = scriptName;
   script.type = 'text/javascript';
-  script.onload = func; 
-  script.src = scriptName+'.js'; 
-  if ($.browser.msie && $.browser.version<=8) { 
+  script.onload = func;
+  script.src = scriptName+'.js';
+  if ($.browser.msie && $.browser.version<=8) {
     // script.onload does not work with older versions of IE
     script.onreadystatechange = function() {
-      if (script.readyState=='complete' || script.readyState=='loaded') { 
-        func(); if (show) showRoot(); 
+      if (script.readyState=='complete' || script.readyState=='loaded') {
+        func(); if (show) showRoot();
       }
     }
   }
-  head.appendChild(script); 
+  head.appendChild(script);
 }
 
 function createIndent(o,domNode,node,level)
@@ -206,18 +119,17 @@ function createIndent(o,domNode,node,level)
   var n = node;
   while (n.parentNode) { level++; n=n.parentNode; }
   if (node.childrenData) {
-    var imgNode = document.createElement("img");
+    var imgNode = document.createElement("span");
+    imgNode.className = 'arrow';
     imgNode.style.paddingLeft=(16*level).toString()+'px';
-    imgNode.width  = 16;
-    imgNode.height = 22;
-    imgNode.border = 0;
+    imgNode.innerHTML=arrowRight;
     node.plus_img = imgNode;
     node.expandToggle = document.createElement("a");
     node.expandToggle.href = "javascript:void(0)";
     node.expandToggle.onclick = function() {
       if (node.expanded) {
         $(node.getChildrenUL()).slideUp("fast");
-        node.plus_img.src = node.relpath+"ftv2pnode.png";
+        node.plus_img.innerHTML=arrowRight;
         node.expanded = false;
       } else {
         expandNode(o, node, false, false);
@@ -225,15 +137,13 @@ function createIndent(o,domNode,node,level)
     }
     node.expandToggle.appendChild(imgNode);
     domNode.appendChild(node.expandToggle);
-    imgNode.src = node.relpath+"ftv2pnode.png";
   } else {
     var span = document.createElement("span");
-    span.style.display = 'inline-block';
+    span.className = 'arrow';
     span.style.width   = 16*(level+1)+'px';
-    span.style.height  = '22px';
     span.innerHTML = '&#160;';
     domNode.appendChild(span);
-  } 
+  }
 }
 
 var animationInProgress = false;
@@ -307,7 +217,7 @@ function newNode(o, po, text, link, childrenData, lastNode)
       var aname = '#'+link.split('#')[1];
       var srcPage = stripPath(pathName());
       var targetPage = stripPath(link.split('#')[0]);
-      a.href = srcPage!=targetPage ? url : "javascript:void(0)"; 
+      a.href = srcPage!=targetPage ? url : "javascript:void(0)";
       a.onclick = function(){
         storeLink(link);
         if (!$(a).parent().parent().hasClass('selected'))
@@ -325,7 +235,7 @@ function newNode(o, po, text, link, childrenData, lastNode)
       a.onclick = function() { storeLink(link); }
     }
   } else {
-    if (childrenData != null) 
+    if (childrenData != null)
     {
       a.className = "nolink";
       a.href = "javascript:void(0)";
@@ -374,17 +284,13 @@ function expandNode(o, node, imm, showRoot)
     } else {
       if (!node.childrenVisited) {
         getNode(o, node);
-      } if (imm || ($.browser.msie && $.browser.version>8)) { 
+      } if (imm || ($.browser.msie && $.browser.version>8)) {
         // somehow slideDown jumps to the start of tree for IE9 :-(
         $(node.getChildrenUL()).show();
       } else {
         $(node.getChildrenUL()).slideDown("fast");
       }
-      if (node.isLast) {
-        node.plus_img.src = node.relpath+"ftv2mlastnode.png";
-      } else {
-        node.plus_img.src = node.relpath+"ftv2mnode.png";
-      }
+      node.plus_img.innerHTML = arrowDown;
       node.expanded = true;
     }
   }
@@ -453,11 +359,7 @@ function showNode(o, node, index, hash)
         getNode(o, node);
       }
       $(node.getChildrenUL()).css({'display':'block'});
-      if (node.isLast) {
-        node.plus_img.src = node.relpath+"ftv2mlastnode.png";
-      } else {
-        node.plus_img.src = node.relpath+"ftv2mnode.png";
-      }
+      node.plus_img.innerHTML = arrowDown;
       node.expanded = true;
       var n = node.children[o.breadcrumbs[index]];
       if (index+1<o.breadcrumbs.length) {
@@ -594,10 +496,9 @@ function initNavTree(toroot,relpath)
   o.node.relpath = relpath;
   o.node.expanded = false;
   o.node.isLast = true;
-  o.node.plus_img = document.createElement("img");
-  o.node.plus_img.src = relpath+"ftv2pnode.png";
-  o.node.plus_img.width = 16;
-  o.node.plus_img.height = 22;
+  o.node.plus_img = document.createElement("span");
+  o.node.plus_img.className = 'arrow';
+  o.node.plus_img.innerHTML = arrowRight;
 
   if (localStorageSupported()) {
     var navSync = $('#nav-sync');
@@ -636,4 +537,4 @@ function initNavTree(toroot,relpath)
      }
   })
 }
-
+/* @license-end */

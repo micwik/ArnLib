@@ -3,6 +3,7 @@ var class_arn_event_idx =
     [ "E", "class_arn_event_idx.html#aa3439ccc2489b839f69e1aad5555a20b", [
       [ "QtEvent", "class_arn_event_idx.html#aa3439ccc2489b839f69e1aad5555a20baeeb80fb5a2a48673cb1fa7145a92a49b", null ],
       [ "ValueChange", "class_arn_event_idx.html#aa3439ccc2489b839f69e1aad5555a20ba412315aed92fbdb674a627fe6000fe9c", null ],
+      [ "AtomicOp", "class_arn_event_idx.html#aa3439ccc2489b839f69e1aad5555a20ba9e64052678cc0246c78079e638cd2535", null ],
       [ "LinkCreate", "class_arn_event_idx.html#aa3439ccc2489b839f69e1aad5555a20bab75027f0571b8ccd902809d946ebae65", null ],
       [ "ModeChange", "class_arn_event_idx.html#aa3439ccc2489b839f69e1aad5555a20badcca0ab22245aa2e1664c6586f946018", null ],
       [ "Monitor", "class_arn_event_idx.html#aa3439ccc2489b839f69e1aad5555a20ba4f703de3e2a1892ab99d17e33dc1f3b3", null ],

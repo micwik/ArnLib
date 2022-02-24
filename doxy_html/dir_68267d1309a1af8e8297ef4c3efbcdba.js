@@ -7,6 +7,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "ArnClient.cpp", "_arn_client_8cpp.html", [
       [ "ArnClientReg", "class_arn_client_reg.html", "class_arn_client_reg" ]
     ] ],
+    [ "ArnCompat.cpp", "_arn_compat_8cpp.html", null ],
     [ "ArnCoreItem.cpp", "_arn_core_item_8cpp.html", null ],
     [ "ArnDepend.cpp", "_arn_depend_8cpp.html", "_arn_depend_8cpp" ],
     [ "ArnDiscover.cpp", "_arn_discover_8cpp.html", null ],
@@ -25,8 +26,9 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "ArnLink.hpp", "_arn_link_8hpp.html", "_arn_link_8hpp" ],
     [ "ArnLinkHandle.cpp", "_arn_link_handle_8cpp.html", null ],
     [ "ArnM.cpp", "_arn_m_8cpp.html", null ],
+    [ "ArnMath.cpp", "_arn_math_8cpp.html", "_arn_math_8cpp" ],
     [ "ArnMonitor.cpp", "_arn_monitor_8cpp.html", null ],
-    [ "ArnPersist.cpp", "_arn_persist_8cpp.html", "_arn_persist_8cpp" ],
+    [ "ArnPersist.cpp", "_arn_persist_8cpp.html", null ],
     [ "ArnPipe.cpp", "_arn_pipe_8cpp.html", null ],
     [ "ArnQml.cpp", "_arn_qml_8cpp.html", null ],
     [ "ArnQmlMQt.cpp", "_arn_qml_m_qt_8cpp.html", null ],
@@ -44,5 +46,5 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "ArnSyncLogin.hpp", "_arn_sync_login_8hpp.html", null ],
     [ "ArnXStringMap.cpp", "_arn_x_string_map_8cpp.html", null ],
     [ "ArnZeroConf.cpp", "_arn_zero_conf_8cpp.html", null ],
-    [ "MQFlags.cpp", "_m_q_flags_8cpp.html", "_m_q_flags_8cpp" ]
+    [ "MQFlags.cpp", "_m_q_flags_8cpp.html", null ]
 ];

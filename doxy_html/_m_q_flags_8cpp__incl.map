@@ -1,5 +1,7 @@
 <map id="src/MQFlags.cpp" name="src/MQFlags.cpp">
-<area shape="rect" id="node2" href="$_m_q_flags_8hpp.html" title="ArnInc/MQFlags.hpp" alt="" coords="143,80,286,107"/>
-<area shape="rect" id="node7" href="$_x_string_map_8hpp.html" title="ArnInc/XStringMap.hpp" alt="" coords="431,80,587,107"/>
-<area shape="rect" id="node8" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="385,155,511,181"/>
+<area shape="rect" id="node2" href="$_m_q_flags_8hpp.html" title="ArnInc/MQFlags.hpp" alt="" coords="682,80,825,107"/>
+<area shape="rect" id="node11" href="$_x_string_map_8hpp.html" title="ArnInc/XStringMap.hpp" alt="" coords="296,80,453,107"/>
+<area shape="rect" id="node15" href="$_math_8hpp.html" title="ArnInc/Math.hpp" alt="" coords="937,80,1055,107"/>
+<area shape="rect" id="node3" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="464,155,589,181"/>
+<area shape="rect" id="node5" href="$_m_q_flags_base_8hpp.html" title="MQFlagsBase.hpp" alt="" coords="309,155,440,181"/>
 </map>

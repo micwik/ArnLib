@@ -12,6 +12,7 @@ var dir_4d586402499cc8c8cfffbed14854e74f =
       [ "ArnClient", "class_arn_client.html", "class_arn_client" ],
       [ "HostAddrPort", "struct_arn_client_1_1_host_addr_port.html", "struct_arn_client_1_1_host_addr_port" ]
     ] ],
+    [ "ArnCompat.hpp", "_arn_compat_8hpp.html", "_arn_compat_8hpp" ],
     [ "ArnCoreItem.hpp", "_arn_core_item_8hpp.html", [
       [ "ArnCoreItem", "class_arn_core_item.html", "class_arn_core_item" ],
       [ "Heritage", "struct_arn_core_item_1_1_heritage.html", "struct_arn_core_item_1_1_heritage" ]
@@ -42,6 +43,7 @@ var dir_4d586402499cc8c8cfffbed14854e74f =
     ] ],
     [ "ArnEvent.hpp", "_arn_event_8hpp.html", [
       [ "ArnEventIdx", "class_arn_event_idx.html", "class_arn_event_idx" ],
+      [ "ArnAtomicOp", "class_arn_atomic_op.html", "class_arn_atomic_op" ],
       [ "ArnEvent", "class_arn_event.html", "class_arn_event" ],
       [ "ArnEvLinkCreate", "class_arn_ev_link_create.html", "class_arn_ev_link_create" ],
       [ "ArnEvModeChange", "class_arn_ev_mode_change.html", "class_arn_ev_mode_change" ],
@@ -49,6 +51,7 @@ var dir_4d586402499cc8c8cfffbed14854e74f =
       [ "ArnEvRetired", "class_arn_ev_retired.html", "class_arn_ev_retired" ],
       [ "ArnEvZeroRef", "class_arn_ev_zero_ref.html", "class_arn_ev_zero_ref" ],
       [ "ArnEvValueChange", "class_arn_ev_value_change.html", "class_arn_ev_value_change" ],
+      [ "ArnEvAtomicOp", "class_arn_ev_atomic_op.html", "class_arn_ev_atomic_op" ],
       [ "ArnEvRefChange", "class_arn_ev_ref_change.html", "class_arn_ev_ref_change" ]
     ] ],
     [ "ArnInterface.hpp", "_arn_interface_8hpp.html", [
@@ -90,9 +93,7 @@ var dir_4d586402499cc8c8cfffbed14854e74f =
     ] ],
     [ "ArnRpc.hpp", "_arn_rpc_8hpp.html", "_arn_rpc_8hpp" ],
     [ "ArnSapi.hpp", "_arn_sapi_8hpp.html", "_arn_sapi_8hpp" ],
-    [ "ArnScript.hpp", "_arn_script_8hpp.html", [
-      [ "ArnScript", "class_arn_script.html", "class_arn_script" ]
-    ] ],
+    [ "ArnScript.hpp", "_arn_script_8hpp.html", "_arn_script_8hpp" ],
     [ "ArnScriptJob.hpp", "_arn_script_job_8hpp.html", [
       [ "ArnScriptJob", "class_arn_script_job.html", "class_arn_script_job" ],
       [ "ArnScriptJobFactory", "class_arn_script_job_factory.html", "class_arn_script_job_factory" ],
@@ -113,6 +114,8 @@ var dir_4d586402499cc8c8cfffbed14854e74f =
       [ "ArnServerRemote", "class_arn_server_remote.html", "class_arn_server_remote" ]
     ] ],
     [ "ArnZeroConf.hpp", "_arn_zero_conf_8hpp.html", "_arn_zero_conf_8hpp" ],
+    [ "Math.hpp", "_math_8hpp.html", "_math_8hpp" ],
     [ "MQFlags.hpp", "_m_q_flags_8hpp.html", "_m_q_flags_8hpp" ],
+    [ "MQFlagsBase.hpp", "_m_q_flags_base_8hpp.html", "_m_q_flags_base_8hpp" ],
     [ "XStringMap.hpp", "_x_string_map_8hpp.html", "_x_string_map_8hpp" ]
 ];

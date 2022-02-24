@@ -1,7 +1,11 @@
 var class_arn_item_qml =
 [
+    [ "addIntNum", "class_arn_item_qml.html#a614fb6566f63d47273c7a65f100996d1", null ],
     [ "addMode", "class_arn_item_qml.html#ade56f1850b53a7f492111c04d3daaedd", null ],
-    [ "getMode", "class_arn_item_qml.html#a37418d7d0303d90918ccb05ce9e3eb03", null ],
+    [ "addNum", "class_arn_item_qml.html#ac39d33b0a74b27a7dd928401c2f74301", null ],
+    [ "getMode", "class_arn_item_qml.html#ae566d6c919f8a74e2f02cbdd9915d98e", null ],
+    [ "setBits", "class_arn_item_qml.html#aa39f5d30c431c59b73b6d19b8850ed50", null ],
+    [ "atomicOpProvider", "class_arn_item_qml.html#a446375c83a217957fb228add273c4cac", null ],
     [ "autoDestroyMode", "class_arn_item_qml.html#ae65519366d2ea64195382d3615e0659c", null ],
     [ "biDirMode", "class_arn_item_qml.html#a30b16737d99ea8c7286dbfa48fb31097", null ],
     [ "bytes", "class_arn_item_qml.html#a0bf1fbd1f5ffea29260f33fcef16af9e", null ],

@@ -1,11 +1,11 @@
 <map id="ArnBasicItem" name="ArnBasicItem">
-<area shape="rect" id="node3" href="$class_arn_adapt_item.html" title="! Non Qt and threadsafe handle for an Arn Data Object. " alt="" coords="54,155,157,181"/>
-<area shape="rect" id="node4" href="$class_arn_item_b.html" title="Base class handle for an Arn Data Object. " alt="" coords="181,155,257,181"/>
-<area shape="rect" id="node2" href="$class_arn_core_item.html" title="Core base class for the inherited ArnItem classes. " alt="" coords="113,5,210,32"/>
-<area shape="rect" id="node5" href="$class_arn_item.html" title="Handle for an Arn Data Object. " alt="" coords="17,229,84,256"/>
-<area shape="rect" id="node7" href="$class_arn_item_valve.html" title="Valve for controlling stream to/from an ArnItemB. " alt="" coords="109,229,211,256"/>
-<area shape="rect" id="node8" href="$class_arn_monitor.html" title="A client remote monitor to detect changes at server. " alt="" coords="235,229,322,256"/>
-<area shape="rect" id="node10" href="$class_arn_pipe.html" title="ArnItem specialized as a pipe. " alt="" coords="347,229,416,256"/>
-<area shape="rect" id="node6" href="$class_arn_item_qml.html" title="ARN Item QML. " alt="" coords="5,304,96,331"/>
-<area shape="rect" id="node9" href="$class_arn_monitor_qml.html" title="ARN Monitor QML. " alt="" coords="223,304,334,331"/>
+<area shape="rect" id="node3" href="$class_arn_adapt_item.html" title="! Non Qt and threadsafe handle for an Arn Data Object. " alt="" coords="51,155,153,181"/>
+<area shape="rect" id="node4" href="$class_arn_item_b.html" title="Base class handle for an Arn Data Object. " alt="" coords="178,155,255,181"/>
+<area shape="rect" id="node2" href="$class_arn_core_item.html" title="Core base class for the inherited ArnItem classes. " alt="" coords="111,5,207,32"/>
+<area shape="rect" id="node5" href="$class_arn_item.html" title="Handle for an Arn Data Object. " alt="" coords="17,229,85,256"/>
+<area shape="rect" id="node7" href="$class_arn_item_valve.html" title="Valve for controlling stream to/from an ArnItemB. " alt="" coords="110,229,209,256"/>
+<area shape="rect" id="node8" href="$class_arn_monitor.html" title="A client remote monitor to detect changes at server. " alt="" coords="233,229,318,256"/>
+<area shape="rect" id="node10" href="$class_arn_pipe.html" title="ArnItem specialized as a pipe. " alt="" coords="343,229,411,256"/>
+<area shape="rect" id="node6" href="$class_arn_item_qml.html" title="ARN Item QML. " alt="" coords="5,304,97,331"/>
+<area shape="rect" id="node9" href="$class_arn_monitor_qml.html" title="ARN Monitor QML. " alt="" coords="221,304,330,331"/>
 </map>

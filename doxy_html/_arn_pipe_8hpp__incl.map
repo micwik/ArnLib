@@ -1,10 +1,12 @@
 <map id="src/ArnInc/ArnPipe.hpp" name="src/ArnInc/ArnPipe.hpp">
-<area shape="rect" id="node2" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="813,379,940,405"/>
-<area shape="rect" id="node4" href="$_arn_item_b_8hpp.html" title="ArnItemB.hpp" alt="" coords="700,80,800,107"/>
-<area shape="rect" id="node5" href="$_arn_link_handle_8hpp.html" title="ArnLinkHandle.hpp" alt="" coords="25,229,158,256"/>
-<area shape="rect" id="node6" href="$_arn_8hpp.html" title="Arn.hpp" alt="" coords="265,304,331,331"/>
-<area shape="rect" id="node15" href="$_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="335,229,429,256"/>
-<area shape="rect" id="node16" href="$_arn_basic_item_8hpp.html" title="ArnBasicItem.hpp" alt="" coords="575,155,701,181"/>
-<area shape="rect" id="node7" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="331,379,433,405"/>
-<area shape="rect" id="node17" href="$_arn_core_item_8hpp.html" title="ArnCoreItem.hpp" alt="" coords="453,229,575,256"/>
+<area shape="rect" id="node2" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="631,453,756,480"/>
+<area shape="rect" id="node4" href="$_arn_item_b_8hpp.html" title="ArnItemB.hpp" alt="" coords="869,80,971,107"/>
+<area shape="rect" id="node22" href="$_arn_compat_8hpp.html" title="ArnCompat.hpp" alt="" coords="1229,80,1342,107"/>
+<area shape="rect" id="node5" href="$_arn_link_handle_8hpp.html" title="ArnLinkHandle.hpp" alt="" coords="726,229,858,256"/>
+<area shape="rect" id="node6" href="$_arn_8hpp.html" title="Arn.hpp" alt="" coords="483,304,549,331"/>
+<area shape="rect" id="node17" href="$_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="94,229,189,256"/>
+<area shape="rect" id="node18" href="$_arn_basic_item_8hpp.html" title="ArnBasicItem.hpp" alt="" coords="498,155,625,181"/>
+<area shape="rect" id="node7" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="307,379,407,405"/>
+<area shape="rect" id="node8" href="$_m_q_flags_base_8hpp.html" title="MQFlagsBase.hpp" alt="" coords="283,453,413,480"/>
+<area shape="rect" id="node19" href="$_arn_core_item_8hpp.html" title="ArnCoreItem.hpp" alt="" coords="377,229,498,256"/>
 </map>

@@ -15,6 +15,7 @@ var _arn_8cpp =
     [ "makePath", "_arn_8cpp.html#af7033a4ea5ac45c0bbc136000fd2ccca", null ],
     [ "parentPath", "_arn_8cpp.html#a0d02953cb790dcb2f29ed93b9e46886c", null ],
     [ "providerPathIf", "_arn_8cpp.html#a9c31f349046542217a13ccf6e3ec5bd4", null ],
+    [ "rand", "_arn_8cpp.html#ad332b26e532fb6c1d31fb8e78cc41ecb", null ],
     [ "twinPath", "_arn_8cpp.html#a4de17e4c5a7e225b5d0cbd974c3fd794", null ],
     [ "uuidPath", "_arn_8cpp.html#af28f68f3e50e85712f31210b2a53fa7a", null ],
     [ "pathDiscover", "_arn_8cpp.html#aac20bdfa60a3d566d6000e333724aa44", null ],

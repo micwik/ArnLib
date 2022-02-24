@@ -1,8 +1,10 @@
 <map id="src/ArnInc/ArnPersistSapi.hpp" name="src/ArnInc/ArnPersistSapi.hpp">
-<area shape="rect" id="node2" href="$_arn_sapi_8hpp.html" title="ArnSapi.hpp" alt="" coords="717,80,811,107"/>
-<area shape="rect" id="node3" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="679,304,806,331"/>
-<area shape="rect" id="node5" href="$_arn_rpc_8hpp.html" title="ArnRpc.hpp" alt="" coords="479,155,569,181"/>
-<area shape="rect" id="node6" href="$_arn_8hpp.html" title="Arn.hpp" alt="" coords="527,229,593,256"/>
-<area shape="rect" id="node7" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="439,304,540,331"/>
-<area shape="rect" id="node13" href="$_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="77,229,171,256"/>
+<area shape="rect" id="node2" href="$_arn_sapi_8hpp.html" title="ArnSapi.hpp" alt="" coords="814,80,908,107"/>
+<area shape="rect" id="node3" href="$_arn_lib__global_8hpp.html" title="ArnLib_global.hpp" alt="" coords="133,379,258,405"/>
+<area shape="rect" id="node5" href="$_arn_rpc_8hpp.html" title="ArnRpc.hpp" alt="" coords="506,155,597,181"/>
+<area shape="rect" id="node6" href="$_arn_8hpp.html" title="Arn.hpp" alt="" coords="624,229,690,256"/>
+<area shape="rect" id="node7" href="$_m_q_flags_8hpp.html" title="MQFlags.hpp" alt="" coords="502,304,602,331"/>
+<area shape="rect" id="node15" href="$_arn_error_8hpp.html" title="ArnError.hpp" alt="" coords="504,229,599,256"/>
+<area shape="rect" id="node16" href="$_arn_compat_8hpp.html" title="ArnCompat.hpp" alt="" coords="315,229,428,256"/>
+<area shape="rect" id="node8" href="$_m_q_flags_base_8hpp.html" title="MQFlagsBase.hpp" alt="" coords="489,379,620,405"/>
 </map>

@@ -5,6 +5,8 @@ var _arn_qml_8hpp =
     [ "ArnItemQml", "class_arn_item_qml.html", "class_arn_item_qml" ],
     [ "ArnMonitorQml", "class_arn_monitor_qml.html", "class_arn_monitor_qml" ],
     [ "ArnSapiQml", "class_arn_sapi_qml.html", "class_arn_sapi_qml" ],
+    [ "XStringMapQml", "class_arn_1_1_x_string_map_qml.html", "class_arn_1_1_x_string_map_qml" ],
+    [ "QmlMSys", "class_arn_1_1_qml_m_sys.html", "class_arn_1_1_qml_m_sys" ],
     [ "QML_ENGINE", "_arn_qml_8hpp.html#af2839d876ce8f948b14842965d0abfdb", null ],
     [ "QML_LIST_PROPERTY", "_arn_qml_8hpp.html#a6c677a436083936919a2d2d5af06469a", null ],
     [ "QML_NETACC_FACTORY", "_arn_qml_8hpp.html#a1238916089c4c81b2ff343ad087202f2", null ],
