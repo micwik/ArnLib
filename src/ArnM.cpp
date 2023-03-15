@@ -464,6 +464,7 @@ void  ArnM::setValue( const QString& path, const QString& value)
     ArnLink*  link = ArnM::link( path, Arn::LinkFlags::CreateAllowed);
 
     if (link) {
+        link->addSyncMode( Arn::ObjectSyncMode::Master);
         link->setValue( value);
         link->deref();
     }
