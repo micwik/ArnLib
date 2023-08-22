@@ -39,7 +39,7 @@
 #include "ArnInc/Arn.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include "ArnInc/ArnCompat.hpp"
-#include <QTcpSocket>
+#include <QSslSocket>
 #include <QString>
 #include <QStringList>
 #include <QDebug>
@@ -50,7 +50,7 @@
 using Arn::XStringMap;
 
 
-ArnSync::ArnSync( QTcpSocket *socket, bool isClientSide, QObject *parent)
+ArnSync::ArnSync( QSslSocket *socket, bool isClientSide, QObject *parent)
     : QObject( parent)
 {
     _socket           = socket;  // Note: ArnSync does not own socket ...

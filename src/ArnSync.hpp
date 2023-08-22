@@ -44,7 +44,7 @@
 
 #define ARNRECNAME  ""
 
-class QTcpSocket;
+class QSslSocket;
 class ArnSyncLogin;
 
 
@@ -79,6 +79,8 @@ public:
             FreePaths   = 1001,
             //! Parameters defining server and client (Agent, User, Location ...)
             WhoIAm      = 1002,
+            EncryptAsk  = 1003,
+            EncryptReq  = 1004,
             End                  // End marker
         };
         MQ_DECLARE_ENUM( InfoType)
@@ -99,7 +101,7 @@ public:
 
     typedef QString (*ConVertPathCB)(void* context, const QString& path);
 
-    ArnSync( QTcpSocket* socket, bool clientSide, QObject *parent);
+    ArnSync( QSslSocket* socket, bool clientSide, QObject *parent);
     ~ArnSync();
 
     void  setArnLogin( ArnSyncLogin* arnLogin);
@@ -213,7 +215,7 @@ private:
     uint  doCommandRVer();
     uint  doCommandLogin();
 
-    QTcpSocket*  _socket;
+    QSslSocket*  _socket;
     ArnSyncLogin* _arnLogin;
     void*  _sessionHandler;
     ConVertPathCB  _toRemotePathCB;
@@ -260,6 +262,8 @@ private:
     Arn::Allow  _allow;
     Arn::Allow  _remoteAllow;
     Arn::ClientSyncMode  _clientSyncMode;
+    Arn::EncryptPolicy  _encryptPol = Arn::EncryptPolicy::Refuse;
+    Arn::EncryptPolicy  _remoteEncryptPol = Arn::EncryptPolicy::Refuse;
 };
 //! \endcond
 

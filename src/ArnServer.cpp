@@ -37,8 +37,7 @@
 #include "ArnSync.hpp"
 #include "ArnSyncLogin.hpp"
 #include "ArnItemNet.hpp"
-#include <QTcpServer>
-#include <QTcpSocket>
+#include <QSslSocket>
 #include <QHostInfo>
 #include <QNetworkInterface>
 #include <QHostAddress>
@@ -48,7 +47,7 @@
 using Arn::XStringMap;
 
 
-ArnServerSession::ArnServerSession( QTcpSocket* socket, ArnServer* arnServer)
+ArnServerSession::ArnServerSession( QSslSocket* socket, ArnServer* arnServer)
     : QObject( arnServer)
 {
     QHostAddress  remoteAddr = socket->peerAddress();
@@ -128,7 +127,7 @@ void  ArnServerSession::doSyncStateChanged( int state)
 }
 
 
-QTcpSocket*  ArnServerSession::socket()  const
+QSslSocket*  ArnServerSession::socket()  const
 {
     return _socket;
 }
@@ -180,7 +179,7 @@ ArnServerPrivate::ArnServerPrivate( ArnServer::Type serverType)
 {
     _tcpServerActive = false;
     _isDemandLogin   = false;
-    _tcpServer       = new QTcpServer;
+    _sslServer       = new ArnSslServer;
     _arnLogin        = new ArnSyncLogin;
     _newSession      = arnNullptr;
     _serverType      = serverType;
@@ -190,9 +189,48 @@ ArnServerPrivate::ArnServerPrivate( ArnServer::Type serverType)
 
 ArnServerPrivate::~ArnServerPrivate()
 {
-    delete _tcpServer;
+    delete _sslServer;
     delete _arnLogin;
 }
+
+
+ArnSslServer::ArnSslServer()
+{
+}
+
+
+ArnSslServer::~ArnSslServer()
+{
+}
+
+
+void  ArnSslServer::incomingConnection( qintptr socketDescriptor)
+{
+    QSslSocket*  socket = new QSslSocket;
+    if (socket->setSocketDescriptor( socketDescriptor)) {
+        addPendingConnection( socket);
+    }
+    else {
+        delete socket;
+    }
+}
+
+
+QSslSocket*  ArnSslServer::nextPendingSslConnection()
+{
+    QTcpSocket*  socket = QTcpServer::nextPendingConnection();
+    if (!socket) {
+        ArnM::errorLog( QString(tr("Server socket is null")), ArnError::Undef);
+        return arnNullptr;
+    }
+
+    QSslSocket*  sslSocket = qobject_cast<QSslSocket*>( socket);
+    if (!sslSocket) {
+        ArnM::errorLog( QString(tr("Server socket is not ssl")), ArnError::Undef);
+    }
+    return sslSocket;
+}
+
 
 
 ArnServer::ArnServer( Type serverType, QObject *parent)
@@ -231,10 +269,10 @@ void  ArnServer::start( int port, QHostAddress listenAddr)
         }
     }
 
-    if (d->_tcpServer->listen( listenAddr, port)) {
+    if (d->_sslServer->listen( listenAddr, port)) {
         d->_tcpServerActive = true;
 
-        connect( d->_tcpServer, SIGNAL(newConnection()), this, SLOT(tcpConnection()));
+        connect( d->_sslServer, SIGNAL(newConnection()), this, SLOT(tcpConnection()));
     }
     else {
         ArnM::errorLog( QString(tr("Failed start Arn Server Port: ")) + QString::number( port),
@@ -247,7 +285,7 @@ int  ArnServer::port()
 {
     Q_D(ArnServer);
 
-    return d->_tcpServer->serverPort();
+    return d->_sslServer->serverPort();
 }
 
 
@@ -255,7 +293,7 @@ QHostAddress  ArnServer::listenAddress()
 {
     Q_D(ArnServer);
 
-    QHostAddress  addr = d->_tcpServer->serverAddress();
+    QHostAddress  addr = d->_sslServer->serverAddress();
     return addr;
 }
 
@@ -413,7 +451,11 @@ void  ArnServer::tcpConnection()
 {
     Q_D(ArnServer);
 
-    QTcpSocket*  socket = d->_tcpServer->nextPendingConnection();
+
+    QSslSocket*  socket = d->_sslServer->nextPendingSslConnection();
+    if (!socket) {  // Socket not ok
+        return;
+    }
     if (socket->peerPort() == 0) {  // Socket not connected ok
         socket->deleteLater();
         return;

@@ -35,7 +35,7 @@
 #include "ArnInc/ArnLib.hpp"
 #include "ArnSync.hpp"
 #include "ArnSyncLogin.hpp"
-#include <QTcpSocket>
+#include <QSslSocket>
 #include <QStringList>
 #include <QTimer>
 #include <QMap>
@@ -135,7 +135,7 @@ ArnClientPrivate::ArnClientPrivate()
     _syncMode        = ArnClient::SyncMode::StdAutoMaster;
     resetConnectionFlags();
 
-    _socket       = new QTcpSocket;
+    _socket       = new QSslSocket;
     _arnNetSync   = new ArnSync( _socket, true,  arnNullptr);
     _arnNetSync->setClientSyncMode( _syncMode);
     _arnNetSync->start();
@@ -225,7 +225,7 @@ void  ArnClient::init()
         d->_id = stdId;
 
     ArnSync*    arnSync = d->_arnNetSync;
-    QTcpSocket*  socket = d->_socket;
+    QSslSocket*  socket = d->_socket;
     arnSync->setSessionHandler( this);
     arnSync->setToRemotePathCB( &toRemotePathCB);
     connect( socket, SIGNAL(connected()), this, SLOT(doTcpConnected()));

@@ -47,16 +47,16 @@ class ArnSyncLogin;
 class ArnItemNetEar;
 class ArnServer;
 class QTcpServer;
-class QTcpSocket;
+class QSslSocket;
 
 
 class ArnServerSession : public QObject
 {
     Q_OBJECT
 public:
-    ArnServerSession( QTcpSocket* socket, ArnServer* arnServer);
+    ArnServerSession( QSslSocket* socket, ArnServer* arnServer);
 
-    QTcpSocket*  socket()  const;
+    QSslSocket*  socket()  const;
     Arn::XStringMap  remoteWhoIAm()  const;
     QString  loginUserName()  const;
     Arn::Allow  getAllow()  const;
@@ -75,7 +75,7 @@ private slots:
     void  doSyncStateChanged( int state);
 
 private:
-    QTcpSocket*  _socket;
+    QSslSocket*  _socket;
     ArnServer*  _arnServer;
     ArnSync*  _arnNetSync;
     ArnItemNetEar*  _arnNetEar;

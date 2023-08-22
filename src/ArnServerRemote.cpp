@@ -35,7 +35,7 @@
 #include "ArnSync.hpp"
 #include "ArnInc/ArnM.hpp"
 #include "ArnInc/Arn.hpp"
-#include <QTcpSocket>
+#include <QSslSocket>
 #include <QHostInfo>
 #include <QTimer>
 #include <QDateTime>
@@ -50,7 +50,7 @@ ArnServerRemoteSession::ArnServerRemoteSession( ArnServerSession* arnServerSessi
     _killCountdown    = 0;
     _pollCount        = 0;
 
-    QTcpSocket*  socket = _arnServerSession->socket();
+    QSslSocket*  socket = _arnServerSession->socket();
     QHostAddress  remAddr = socket->peerAddress();
     quint32  remAddrV4 = remAddr.toIPv4Address();
     if (remAddrV4)  // MW: TODO Check if this is ok for IPV6

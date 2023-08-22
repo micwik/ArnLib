@@ -33,6 +33,18 @@
 #define ARNSERVER_P_HPP
 
 #include "ArnInc/ArnServer.hpp"
+#include <QTcpServer>
+
+
+class ArnSslServer : public QTcpServer
+{
+public:
+    ArnSslServer();
+    ~ArnSslServer();
+
+    virtual void  incomingConnection( qintptr socketDescriptor);
+    QSslSocket*  nextPendingSslConnection();
+};
 
 
 class ArnServerPrivate
@@ -43,7 +55,7 @@ public:
     virtual ~ArnServerPrivate();
 
 private:
-    QTcpServer*  _tcpServer;
+    ArnSslServer*  _sslServer;
     ArnSyncLogin*  _arnLogin;
     ArnServerSession*  _newSession;
     QStringList  _freePathTab;

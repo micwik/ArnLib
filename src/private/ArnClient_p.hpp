@@ -36,7 +36,7 @@
 #include <QMutex>
 
 class ArnSync;
-class QTcpSocket;
+class QSslSocket;
 class QTimer;
 
 
@@ -58,7 +58,7 @@ private:
     int  _nextHost;
     int  _curPrio;
 
-    QTcpSocket*  _socket;
+    QSslSocket*  _socket;
     ArnSync*  _arnNetSync;
     QMutex  _mutex;
     QString  _arnHost;

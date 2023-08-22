@@ -166,6 +166,20 @@ struct ClientSyncMode {
     MQ_DECLARE_ENUM( ClientSyncMode)
 };
 
+//! Policy for encryption in ArnSync
+class EncryptPolicy {
+    Q_GADGET
+    Q_ENUMS(E)
+public:
+    enum E {
+        Refuse    = 0,
+        PreferNo  = 1,
+        PreferYes = 2,
+        MustHave  = 3
+    };
+    MQ_DECLARE_ENUMTXT( EncryptPolicy)
+};
+
 //! Link flags when accessing an _Arn Data Object_
 struct LinkFlags {
     enum E {
