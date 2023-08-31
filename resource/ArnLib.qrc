@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/ArnLib">
         <file>ArnRoot/Local/Sys/Discover/help.xhtml</file>
+        <file>ssl/ArnLib.cert.pem</file>
+        <file>ssl/ArnLib.key.pem</file>
+        <file>ssl/ArnLibCa.cert.pem</file>
     </qresource>
 </RCC>
