@@ -347,6 +347,20 @@ public:
      */
     void  setSyncMode( SyncMode syncMode);
 
+    //! Get the client demand for encryption (policy)
+    /*! \return the policy for encryption.
+     *  \see setEncryptPolicy()
+     */
+    Arn::EncryptPolicy  encryptPolicy()  const;
+
+    //! Set clients demand for encryption (policy)
+    /*! Sets the policy for use of encryption from  client perspective.
+     *  This must be used before connection is started.
+     *  Default is Arn::EncryptPolicyPreferNo.
+     *  \param[in] pol is the policy for encryption.
+     */
+    void  setEncryptPolicy( const Arn::EncryptPolicy& pol);
+
     //! Generate a hashed password from clear text password
     /*! \param[in] password is the clear text password.
      *  \return the hashed password, e.g "{A5ha62Aug}"
@@ -481,6 +495,7 @@ signals:
      *             2 = Client deny, server gave bad password (fake server?)
      *             3 = Client deny, server not support login
      *             4 = Client deny, server bad negotiate sequence
+     *             5 = Client deny, encryption policy not satisfied
      *  \see loginToArn()
      */
     void  loginRequired( int contextCode);

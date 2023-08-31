@@ -41,6 +41,7 @@
 #include <QByteArray>
 #include <QMap>
 #include <QQueue>
+#include <QSslError>
 
 #define ARNRECNAME  ""
 
@@ -70,7 +71,7 @@ public:
         MQ_DECLARE_ENUM( State)
     };
 
-    //! Internal Info type for exchange static (meta) info between ArnClient and ArnServer
+    //! Internal Info type for exchange static init (meta) info between ArnClient and ArnServer
     //! Public Info type (in Arn.hpp) takes enums from 0 to max 999
     struct InfoType {
         enum  E {
@@ -79,15 +80,15 @@ public:
             FreePaths   = 1001,
             //! Parameters defining server and client (Agent, User, Location ...)
             WhoIAm      = 1002,
-            EncryptAsk  = 1003,
-            EncryptReq  = 1004,
+            EncryptAsk  = 1101,
+            EncryptReq  = 1102,
+            EncryptRdy  = 1103,  // Encrypt ready marker
             End                  // End marker
         };
         MQ_DECLARE_ENUM( InfoType)
     };
 
-    //! Internal Info type for exchange static (meta) info between ArnClient and ArnServer
-    //! Public Info type (in Arn.hpp) takes enums from 0 to max 999
+    //! Internal MessageType for exchange special data/commands between ArnClient and ArnServer
     struct MessageType {
         enum  E {
             KillRequest      = 1001,
@@ -134,6 +135,8 @@ public:
     static void  doChildsToEvent( ArnItemNet* itemNet);
 
     void  setClientSyncMode( Arn::ClientSyncMode clientSyncMode);
+    Arn::EncryptPolicy  encryptPolicy()  const;
+    void  setEncryptPolicy( const Arn::EncryptPolicy& pol);
     void  setSessionHandler( void* sessionHandler);
     void  setToRemotePathCB( ConVertPathCB toRemotePathCB);
     static QString  nullConvertPath( void* context, const QString& path);
@@ -157,6 +160,10 @@ protected:
     virtual void  customEvent( QEvent* ev);
 
 private slots:
+    void  onEncrypted();
+    void  onSslErrors( const QList<QSslError>& errors);
+    void  doStartServerEncryption();
+    void  doStartClientEncryption();
     void  disConnected();
     void  socketInput();
     void  doLoginSeq0End();
@@ -196,6 +203,7 @@ private:
     void  setRemoteVer( const QByteArray& remVer);
     void  setState( State state);
     bool  isFreePath( const QString& path)  const;
+    int  checkEncryptPolicy()  const;
 
     void  doCommands();
     uint  doCommandSync();
@@ -249,6 +257,7 @@ private:
     bool  _isClosed;
     bool  _isClientSide;      // True if this is the client side of the connection
     bool  _isDemandLogin;
+    bool  _needEncrypted;
     uint  _remoteVer[2];
     int  _loginNextSeq;
     int  _loginReqCode;
@@ -262,8 +271,8 @@ private:
     Arn::Allow  _allow;
     Arn::Allow  _remoteAllow;
     Arn::ClientSyncMode  _clientSyncMode;
-    Arn::EncryptPolicy  _encryptPol = Arn::EncryptPolicy::Refuse;
-    Arn::EncryptPolicy  _remoteEncryptPol = Arn::EncryptPolicy::Refuse;
+    Arn::EncryptPolicy  _encryptPol;
+    Arn::EncryptPolicy  _remoteEncryptPol;
 };
 //! \endcond
 

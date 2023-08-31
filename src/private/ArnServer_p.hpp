@@ -35,6 +35,12 @@
 #include "ArnInc/ArnServer.hpp"
 #include <QTcpServer>
 
+#if QT_VERSION >= 0x050000
+  #define ARNSOCKD  qintptr
+#else
+  #define ARNSOCKD  int
+#endif
+
 
 class ArnSslServer : public QTcpServer
 {
@@ -42,7 +48,7 @@ public:
     ArnSslServer();
     ~ArnSslServer();
 
-    virtual void  incomingConnection( qintptr socketDescriptor);
+    virtual void  incomingConnection( ARNSOCKD socketDescriptor);
     QSslSocket*  nextPendingSslConnection();
 };
 
@@ -64,6 +70,7 @@ private:
     bool  _tcpServerActive;
     ArnServer::Type  _serverType;
     bool  _isDemandLogin;
+    Arn::EncryptPolicy  _encryptPol;
 };
 
 #endif // ARNSERVER_P_HPP

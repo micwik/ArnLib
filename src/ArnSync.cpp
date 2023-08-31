@@ -39,13 +39,18 @@
 #include "ArnInc/Arn.hpp"
 #include "ArnInc/ArnLib.hpp"
 #include "ArnInc/ArnCompat.hpp"
+
 #include <QSslSocket>
+#include <QSslConfiguration>
+#include <QSslKey>
+#include <QFile>
+
 #include <QString>
 #include <QStringList>
 #include <QDebug>
 #include <limits.h>
 
-#define ARNSYNCVER  "4.0"
+#define ARNSYNCVER  "5.0"
 
 using Arn::XStringMap;
 
@@ -66,6 +71,7 @@ ArnSync::ArnSync( QSslSocket *socket, bool isClientSide, QObject *parent)
     _isConnectStarted = !isClientSide;  // Server start as connection started
     _isConnected      = false;
     _isDemandLogin    = false;
+    _needEncrypted    = false;
     _remoteVer[0]     = 1;  // Default version 1.0
     _remoteVer[1]     = 0;
     _loginReqCode     = 0;
@@ -75,6 +81,8 @@ ArnSync::ArnSync( QSslSocket *socket, bool isClientSide, QObject *parent)
     _trafficIn        = 0;
     _trafficOut       = 0;
     _clientSyncMode   = Arn::ClientSyncMode::Invalid;
+    _encryptPol       = Arn::EncryptPolicy::PreferNo;
+    _remoteEncryptPol = Arn::EncryptPolicy::Refuse;  // Default legacy, encryption not available remote
     _allow            = _isClientSide ? Arn::Allow::All : Arn::Allow::None;
     _remoteAllow      = Arn::Allow::None;
     _freePathTab     += Arn::fullPath( Arn::pathLocalSys + "Legal/");
@@ -98,6 +106,44 @@ void  ArnSync::setArnLogin( ArnSyncLogin* arnLogin)
 
 void  ArnSync::start()
 {
+    QString  fileBase = Arn::resourceArnLib + "ssl/";
+    QFile  file;
+    file.setFileName( fileBase + "ArnLib.cert.pem");
+    if (!file.open( QIODevice::ReadOnly | QIODevice::Text)) qCritical() << "Can't open SSL Cert-file";
+    QSslCertificate  cert( file.readAll(), QSsl::Pem);
+    file.close();
+    file.setFileName( fileBase + "ArnLib.key.pem");
+    if (!file.open( QIODevice::ReadOnly | QIODevice::Text)) qCritical() << "Can't open SSL Key-file";
+    QSslKey  key( file.readAll(), QSsl::Rsa, QSsl::Pem);
+    file.close();
+    file.setFileName( fileBase + "ArnLibCa.cert.pem");
+    if (!file.open( QIODevice::ReadOnly | QIODevice::Text)) qCritical() << "Can't open SSL CA-Cert-file";
+    QSslCertificate  caCert( file.readAll(), QSsl::Pem);
+    file.close();
+
+    QSslConfiguration sslConfiguration = _socket->sslConfiguration();
+    sslConfiguration.setPeerVerifyMode( QSslSocket::VerifyNone);
+    sslConfiguration.setLocalCertificate( cert); // set domain cert
+    sslConfiguration.setPrivateKey( key); // set domain key
+    sslConfiguration.setProtocol( QSsl::AnyProtocol);
+    sslConfiguration.setCaCertificates(QList<QSslCertificate>() << caCert); // add ca cert
+    _socket->setSslConfiguration( sslConfiguration);
+
+    // qDebug() << "sslLibraryBuildVersion: " << _socket->sslLibraryBuildVersionString();
+    // qDebug() << "sslLibraryVersion: " << _socket->sslLibraryVersionString();
+
+    connect( _socket, SIGNAL(encrypted()), this, SLOT(onEncrypted()));
+    connect( _socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(onSslErrors(const QList<QSslError> &)));
+#if 0
+    // connect( _socket, &QSslSocket::encrypted, this, &ArnSync::onEncrypted);
+    // connect( _socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors), this, &ArnSync::onSslErrors);
+    connect( _socket, &QSslSocket::peerVerifyError, this, []( const QSslError& error) {
+        qDebug() << "onPeerVerifyError: " << error.errorString();
+    });
+    connect( _socket, &QAbstractSocket::errorOccurred, this, []( QAbstractSocket::SocketError socketError) {
+        qDebug() << "onErrorOccurred: error=" << int(socketError);
+    });
+#endif
     connect( _socket, SIGNAL(disconnected()), this, SLOT(disConnected()));
     connect( _socket, SIGNAL(readyRead()), this, SLOT(socketInput()));
     connect( _socket, SIGNAL(bytesWritten(qint64)), this, SLOT(sendNext()));
@@ -398,6 +444,19 @@ void  ArnSync::setClientSyncMode( Arn::ClientSyncMode clientSyncMode)
 }
 
 
+Arn::EncryptPolicy  ArnSync::encryptPolicy()  const
+{
+    return _encryptPol;
+}
+
+
+void ArnSync::setEncryptPolicy( const Arn::EncryptPolicy& pol)
+{
+    _encryptPol    = pol;
+    _needEncrypted = _encryptPol == Arn::EncryptPolicy::MustHave;
+}
+
+
 void  ArnSync::setSessionHandler( void* sessionHandler)
 {
     _sessionHandler = sessionHandler;
@@ -444,6 +503,7 @@ Arn::Allow  ArnSync::getAllow()  const
 
 void  ArnSync::close()
 {
+    // qDebug() << "close:";
     _isConnectStarted = false;
 
     if (_isClosed)  return;
@@ -458,6 +518,7 @@ void  ArnSync::close()
 
 void  ArnSync::closeFinal()
 {
+    // qDebug() << "closeFinal:";
     sendExit();
     _socket->disconnectFromHost();
     _isConnected = false;
@@ -520,6 +581,21 @@ bool  ArnSync::isFreePath( const QString& path)  const
 }
 
 
+int  ArnSync::checkEncryptPolicy()  const
+{
+    if ((_encryptPol == Arn::EncryptPolicy::MustHave) && (_remoteEncryptPol == Arn::EncryptPolicy::Refuse))
+        return -1;  // Encryption disagree
+    if ((_encryptPol == Arn::EncryptPolicy::Refuse) && (_remoteEncryptPol == Arn::EncryptPolicy::MustHave))
+        return -1;  // Encryption disagree
+    if ((_encryptPol == Arn::EncryptPolicy::MustHave) || (_remoteEncryptPol == Arn::EncryptPolicy::MustHave))
+        return 1;   // Use encryption
+    if ((_encryptPol == Arn::EncryptPolicy::PreferYes) && (_remoteEncryptPol == Arn::EncryptPolicy::PreferYes))
+        return 1;  // Use encryption
+
+    return 0;  // Not use encryption
+}
+
+
 void  ArnSync::socketInput()
 {
     _dataReadBuf.resize( int(_socket->bytesAvailable()));
@@ -560,70 +636,83 @@ void  ArnSync::doCommands()
     uint stat = ArnError::Ok;
     QByteArray command = _commandMap.value(0);
 
-    /// Received commands
-    if (command == "flux") {
-        stat = doCommandFlux();
+    if (_needEncrypted && !_socket->isEncrypted()) {
+        if ((command != "ver") && (command != "Rver") && (command != "info") && (command != "Rinfo")
+        &&  (command != "exit")) {
+            stat = ArnError::NeedEncrypted;
+        }
     }
-    else if (command == "atomop") {
-        stat = doCommandAtomOp();
-    }
-    else if (command == "event") {
-        stat = doCommandEvent();
-    }
-    else if (command == "get") {
-        stat = doCommandGet();
-    }
-    else if (command == "set") {
-        stat = doCommandSet();
-    }
-    else if (command == "sync") {
-        stat = doCommandSync();
-    }
-    else if (command == "mode") {
-        stat = doCommandMode();
-    }
-    else if (command == "nosync") {
-        stat = doCommandNoSync();
-    }
-    else if (command == "destroy") {  // Legacy: Obsolete, will be phased out
-        stat = doCommandDelete();
-    }
-    else if (command == "delete") {
-        stat = doCommandDelete();
-    }
-    else if (command == "message") {
-        stat = doCommandMessage();
-    }
-    else if (command == "ls") {
-        stat = doCommandLs();
-    }
-    else if (command == "info") {
-        stat = doCommandInfo();
-    }
-    else if (command == "Rinfo") {
-        stat = doCommandRInfo();
-    }
-    else if (command == "ver") {
-        stat = doCommandVer();
-    }
-    else if (command == "Rver") {
-        stat = doCommandRVer();
-    }
-    else if (command == "login") {
-        stat = doCommandLogin();
-    }
-    else if (command == "exit") {
-        _socket->disconnectFromHost();
-    }
-    /// Error for Server or Client
-    else if (command == "err") {
-        qDebug() << "REC-ERR: |" << _commandMap.toXString() << "|";
-    }
-    else if (command.startsWith('R'));  // No error on unhandled R-commands
-    else {
-        stat = ArnError::RecUnknown;
-        _replyMap.add(ARNRECNAME, "err");
-        _replyMap.add("data", QByteArray("Unknown record:") + command);
+
+    if (stat == ArnError::Ok) {
+        /// Received commands
+        if (command == "flux") {
+            stat = doCommandFlux();
+        }
+        else if (command == "atomop") {
+            stat = doCommandAtomOp();
+        }
+        else if (command == "event") {
+            stat = doCommandEvent();
+        }
+        else if (command == "get") {
+            stat = doCommandGet();
+        }
+        else if (command == "set") {
+            stat = doCommandSet();
+        }
+        else if (command == "sync") {
+            stat = doCommandSync();
+        }
+        else if (command == "mode") {
+            stat = doCommandMode();
+        }
+        else if (command == "nosync") {
+            stat = doCommandNoSync();
+        }
+        else if (command == "destroy") {  // Legacy: Obsolete, will be phased out
+            stat = doCommandDelete();
+        }
+        else if (command == "delete") {
+            stat = doCommandDelete();
+        }
+        else if (command == "message") {
+            stat = doCommandMessage();
+        }
+        else if (command == "ls") {
+            stat = doCommandLs();
+        }
+        else if (command == "info") {
+            stat = doCommandInfo();
+        }
+        else if (command == "Rinfo") {
+            stat = doCommandRInfo();
+        }
+        else if (command == "ver") {
+            stat = doCommandVer();
+        }
+        else if (command == "Rver") {
+            stat = doCommandRVer();
+        }
+        else if (command == "login") {
+            stat = doCommandLogin();
+        }
+        else if (command == "exit") {
+            _socket->disconnectFromHost();
+        }
+        /// Error for Server or Client
+        else if (command == "err") {
+            qDebug() << "REC-ERR: |" << _commandMap.toXString() << "|";
+        }
+        else if (command.startsWith('R'));  // No error on unhandled R-commands
+        else {
+            stat = ArnError::RecUnknown;
+            _replyMap.add(ARNRECNAME, "err");
+            _replyMap.add("data", QByteArray("Unknown record:") + command);
+        }
+
+        if (command.startsWith('R')) {  // Forward all R-commands
+            emit replyRecord( _commandMap);
+        }
     }
 
     if ((_replyMap.size() == 0) && (stat != ArnError::Ok)) {
@@ -634,10 +723,6 @@ void  ArnSync::doCommands()
 
     if (_replyMap.size()) {
         _replyMap.add("stat", QByteArray::number( stat));
-    }
-
-    if (command.startsWith('R')) {  // Forward all R-commands
-        emit replyRecord( _commandMap);
     }
 }
 
@@ -1203,6 +1288,25 @@ uint  ArnSync::doCommandInfo()
         xmOut.add( _customMap);
         break;
     //// Internal info types
+    case InfoType::EncryptAsk: {
+        _remoteEncryptPol = Arn::EncryptPolicy::fromInt( xmIn.value("encryptPol").toInt());
+        xmOut.addNum("encryptPol", _encryptPol.toInt());
+        int chPol = checkEncryptPolicy();
+        if (chPol >= 0) {  // Encryption policy satisfied
+            _needEncrypted = chPol > 0;
+        }
+        break;
+    }
+    case InfoType::EncryptReq: {
+        bool clientEncrypt = xmIn.value("encrypt").toInt() != 0;
+        xmOut.addNum("encrypt", _needEncrypted);
+
+        if (clientEncrypt && _needEncrypted) {  // Encryption accepted by server & client
+            // qDebug() << "Starting server encryption soon";
+            QTimer::singleShot( 0, this, SLOT(doStartServerEncryption()));
+        }
+        break;
+    }
     case InfoType::FreePaths:
         xmOut.addValues( _freePathTab);
         break;
@@ -1248,7 +1352,11 @@ uint  ArnSync::doCommandVer()
     //// Server
     if (_state == State::Init) {
         setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
-        if (_remoteVer[0] >= 2)
+        if (_needEncrypted && (_remoteVer[0] < 5)) {  // Client can't handle needed encryption
+            sendMessage( MessageType::ChatPrio, "ArnServer deny, encryption policy not satisfied");
+            sendMessage( MessageType::KillRequest);  // Request client to disconnect
+        }
+        else if (_remoteVer[0] >= 2)
             setState( State::Login);
         else
             setState( State::Normal);  // Just in case, this should not be reached ...
@@ -1326,9 +1434,11 @@ void  ArnSync::connected()
 {
     if (!_isClientSide)  return;  // Only client side
 
-    _isClosed    = false;
-    _isConnected = true;
-    _remoteAllow = Arn::Allow::None;
+    _isClosed         = false;
+    _isConnected      = true;
+    _remoteAllow      = Arn::Allow::None;
+    _remoteEncryptPol = Arn::EncryptPolicy::Refuse;  // Default legacy, encryption not available remote
+    _needEncrypted    = false;
 
     setState( State::Version);
     XStringMap  xsm;
@@ -1337,8 +1447,43 @@ void  ArnSync::connected()
 }
 
 
+void  ArnSync::onEncrypted()
+{
+    // qDebug() << "OnEncrypted";
+    if (_isClientSide) {
+        doInfoInternal( InfoType::EncryptRdy);
+    }
+}
+
+
+void ArnSync::onSslErrors( const QList<QSslError>& errors)
+{
+    // qDebug() << "OnSslErrors: len=" << errors.size();
+    for ( auto err : errors) {
+        if (err.error() != QSslError::HostNameMismatch) {
+            qDebug() << "SslError: " << int(err.error()) << err.errorString();
+        }
+    }
+}
+
+
+void  ArnSync::doStartServerEncryption()
+{
+    // qDebug() << "Starting server encryption prot=" << _socket->protocol();
+    _socket->startServerEncryption();
+}
+
+
+void  ArnSync::doStartClientEncryption()
+{
+    // qDebug() << "Starting client encryption prot=" << _socket->protocol();
+    _socket->startClientEncryption();
+}
+
+
 void  ArnSync::disConnected()
 {
+    // qDebug() << "Disconnected";
     _isConnected = false;
     _isSending   = false;
 
@@ -1439,23 +1584,74 @@ void  ArnSync::doArnMonEvent( int type, const QByteArray& data, bool isLocal, Ar
 
 void  ArnSync::doInfoInternal( int infoType, const QByteArray& data)
 {
+    //// Only client
     XStringMap  xmIn( data);
-    // XStringMap  xmOut;  // Tobe used later
+    XStringMap  xmOut;  // Tobe used later
 
     if (infoType != _curInfoType) {  // Not ok sequence
-        emit loginRequired(4);
+        // qDebug() << "doInfoInternal: Not ok sequence, infoType is=" << infoType << "be=" << _curInfoType;
+        emit loginRequired(4);  // Client deny, server bad negotiate sequence
         return;
     }
 
     switch (infoType) {
-    case InfoType::Start:
+    case InfoType::Start:  // Starting point after versions has exchanged
+        if (_remoteVer[0] >= 5) {
+            setState( State::Info);
+            _curInfoType = InfoType::EncryptAsk;
+            xmOut.addNum("encryptPol", _encryptPol.toInt());
+            sendInfo( _curInfoType, xmOut.toXString());
+        }
+        else {
+            int chPol = checkEncryptPolicy();
+            if (chPol >= 0) {  // Encryption policy satisfied
+                _curInfoType = InfoType::FreePaths;
+                sendInfo( _curInfoType);
+            }
+            else {  // Encryption policy not satisfied
+                emit loginRequired(5);  // Client deny, encryption policy not satisfied
+            }
+        }
+        break;
+    case InfoType::EncryptAsk: {
+        _remoteEncryptPol = Arn::EncryptPolicy::fromInt( xmIn.value("encryptPol").toInt());
+        int chPol = checkEncryptPolicy();
+        if (chPol >= 0) {  // Encryption policy satisfied
+            _needEncrypted = chPol > 0;
+            if (_needEncrypted) {
+                _curInfoType = InfoType::EncryptReq;
+                xmOut.addNum( "encrypt", 1);
+                sendInfo( _curInfoType, xmOut.toXString());
+            }
+            else {
+                _curInfoType = InfoType::FreePaths;
+                sendInfo( _curInfoType);
+            }
+        }
+        else {  // Encryption policy not satisfied
+            emit loginRequired(5);  // Client deny, encryption policy not satisfied
+        }
+        break;
+    }
+    case InfoType::EncryptReq: {
+        bool serverEncrypt = xmIn.value( "encrypt").toInt() != 0;
+        if (serverEncrypt && _needEncrypted) {  // Encryption accepted by server & client
+            _curInfoType = InfoType::EncryptRdy;
+            doStartClientEncryption();
+        }
+        else {  // Encryption not accepted by server or logic mismatch
+            emit loginRequired(5);  // Client deny, server not accepting encrypt
+        }
+        break;
+    }
+    case InfoType::EncryptRdy:  // Starting point after encryption is active
         _curInfoType = InfoType::FreePaths;
-        sendInfo( InfoType::FreePaths);
+        sendInfo( _curInfoType);
         break;
     case InfoType::FreePaths:
         _freePathTab = xmIn.values();
         _curInfoType = InfoType::WhoIAm;
-        sendInfo( InfoType::WhoIAm, _whoIAm);
+        sendInfo( _curInfoType, _whoIAm);
         break;
     case InfoType::WhoIAm:
         _remoteWhoIAm = data;

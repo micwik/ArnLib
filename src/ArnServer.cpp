@@ -63,6 +63,7 @@ ArnServerSession::ArnServerSession( QSslSocket* socket, ArnServer* arnServer)
     _arnNetSync->setArnLogin( _arnServer->arnLogin());
     _arnNetSync->setDemandLogin( _arnServer->isDemandLogin()
                               && _arnServer->isDemandLoginNet( remoteAddr));
+    _arnNetSync->setEncryptPolicy( _arnServer->encryptPolicy());
     // qDebug() << "ArnServerNetSync new session: remoteAddr=" << remoteAddr.toString()
     //          << "isDemandLoginNet=" << _arnServer->isDemandLoginNet( remoteAddr);
     _arnNetSync->start();
@@ -184,6 +185,7 @@ ArnServerPrivate::ArnServerPrivate( ArnServer::Type serverType)
     _newSession      = arnNullptr;
     _serverType      = serverType;
     _freePathTab    += Arn::fullPath( Arn::pathLocalSys + "Legal/");
+    _encryptPol      = Arn::EncryptPolicy::PreferNo;
 }
 
 
@@ -204,7 +206,7 @@ ArnSslServer::~ArnSslServer()
 }
 
 
-void  ArnSslServer::incomingConnection( qintptr socketDescriptor)
+void  ArnSslServer::incomingConnection( ARNSOCKD socketDescriptor)
 {
     QSslSocket*  socket = new QSslSocket;
     if (socket->setSocketDescriptor( socketDescriptor)) {
@@ -398,7 +400,23 @@ bool  ArnServer::isDemandLoginNet( const QHostAddress& remoteAddr)  const
 }
 
 
-void ArnServer::addFreePath(const QString& path)
+void  ArnServer::setEncryptPolicy( const Arn::EncryptPolicy& pol)
+{
+    Q_D(ArnServer);
+
+    d->_encryptPol = pol;
+}
+
+
+Arn::EncryptPolicy  ArnServer::encryptPolicy()  const
+{
+    Q_D(const ArnServer);
+
+    return d->_encryptPol;
+}
+
+
+void  ArnServer::addFreePath( const QString& path)
 {
     Q_D(ArnServer);
 

@@ -76,6 +76,8 @@ This is similar to UPNP discovery of units.
 different computers. This division of program modules can be changed and is transparent
 to usage of ArnLib.
 
+* TCP connection can be SSL-encrypted.
+
 * Support for temporary session data objects.
 Optional auto-delete of objects when tcp/ip closes and unique uuid names.
 

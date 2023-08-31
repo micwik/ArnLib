@@ -554,6 +554,23 @@ void  ArnClient::setSyncMode( ArnClient::SyncMode syncMode)
 }
 
 
+Arn::EncryptPolicy  ArnClient::encryptPolicy()  const
+{
+    Q_D(const ArnClient);
+
+    return d->_arnNetSync->encryptPolicy();
+}
+
+
+void  ArnClient::setEncryptPolicy( const Arn::EncryptPolicy& pol)
+{
+    Q_D(ArnClient);
+    if (d->_isClosed) {  // Must not have started connection ...
+        d->_arnNetSync->setEncryptPolicy( pol);
+    }
+}
+
+
 QString  ArnClient::passwordHash( const QString& password)
 {
     return ArnSyncLogin::passwordHash( password);

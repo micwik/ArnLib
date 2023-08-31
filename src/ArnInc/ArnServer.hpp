@@ -187,6 +187,20 @@ public:
      */
     bool  isDemandLoginNet( const QHostAddress& remoteAddr)  const;
 
+    //! Set the server demand for encryption (policy)
+    /*! Sets the policy for use of encryption from  server perspective.
+     *  This must be used before connection is started.
+     *  Default is Arn::EncryptPolicyPreferNo.
+     *  \param[in] pol is the policy for encryption.
+     */
+    void  setEncryptPolicy( const Arn::EncryptPolicy& pol);
+
+    //! Get the server demand for encryption (policy)
+    /*! \return the policy for encryption.
+     *  \see setEncryptPolicy()
+     */
+    Arn::EncryptPolicy  encryptPolicy()  const;
+
     //! Add a new "freePath"
     /*! A freePath can be used even if not logged in to an ArnServer that demands login.
      *  Also all children below freePath is free to use. Usage is restricted to read

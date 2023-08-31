@@ -19,6 +19,11 @@ Minor
 * Converter classes for ArnPipes to other streams (e.g UART, TCP etc).
 * Addition to login a system to "pair" ArnServer and ArnClient.
 
+Done in 4.1
+-----------
+* Added optional SSL-enryption
+* SyncVersion is changed to 5.0.
+
 Done in 4.0
 -----------
 * Adopted to Qt6

@@ -65,6 +65,7 @@ public:
         LoginBad,
         RecNotExpected,
         OpNotAllowed,
+        NeedEncrypted,
         Err_N   // Last (number of error codes)
     };
     MQ_DECLARE_ENUMTXT( ArnError)
