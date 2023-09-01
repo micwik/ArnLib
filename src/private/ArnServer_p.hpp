@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -35,7 +35,7 @@
 #include "ArnInc/ArnServer.hpp"
 #include <QTcpServer>
 
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)
   #define ARNSOCKD  qintptr
 #else
   #define ARNSOCKD  int

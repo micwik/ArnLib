@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -434,7 +434,7 @@ Q_DECLARE_METATYPE(ArnDepend*)
 void  ArnItemScr::init()
 {
     _defaultType = 0;
-#if QT_VERSION >= 0x050200
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 2, 0)
     QObject::connect( this, static_cast<void(ArnItem::*)(void)>(&ArnItem::changed),
                       this, static_cast<void(ArnItemScr::*)(void)>(&ArnItemScr::changedVoid));
     QObject::connect( this, static_cast<void(ArnItem::*)(ARNREAL)>(&ArnItem::changed),

@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -427,7 +427,7 @@ int SetupSocket(int addrFam, mDNSIPPort port, int interfaceIndex, int *sktPtr)
     QHostAddress  mcgAddress;
     if (addrFam == mDNSAddrType_IPv4) {
         mcgAddress = ArnMDns::fromMDNSAddr( AllDNSLinkGroup_v4);
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)
         anyAddress = QHostAddress::AnyIPv4;
 #else
         anyAddress = QHostAddress::Any;
@@ -680,7 +680,7 @@ mDNSexport mStatus  mDNSPlatformInit( mDNS *const m)
     int err = 0;
     Q_ASSERT(m);
 
-#if QT_VERSION >= 0x050a00
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0)
 #else
     qsrand( uint(QDateTime::currentMSecsSinceEpoch()));
 #endif

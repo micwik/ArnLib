@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -146,7 +146,7 @@ ArnM::ArnM()
     _mainThread             = QThread::currentThread();
     _root                   = new ArnLink( arnNullptr, "", Arn::LinkFlags::Folder);
 
-#if QT_VERSION >= 0x050a00
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0)
 #else
     qsrand( uint(QDateTime::currentMSecsSinceEpoch()));
 #endif

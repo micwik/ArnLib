@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -34,7 +34,7 @@
 
 #include "ArnInc/ArnLib_global.hpp"
 
-#if QT_VERSION >= 0x060000
+#if QT_VERSION >= QT_VERSION_CHECK( 6, 0, 0)
   #include <QRegularExpression>
   #include <QRecursiveMutex>
   #if defined (QT_GUI_LIB)
@@ -64,7 +64,7 @@ private:
 #else
   #include <QRegExp>
   #include <QMutex>
-  #if (QT_VERSION >= 0x050000) && defined (QT_GUI_LIB)
+  #if (QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)) && defined (QT_GUI_LIB)
     #include <QRegExpValidator>
   #endif
   #define ARN_RegExp   QRegExp

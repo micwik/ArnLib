@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -705,7 +705,7 @@ private:
     void  init();
     void  doItemUpdate( const ArnLinkHandle& handleData);
 
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)
     void  connectNotify( const QMetaMethod & signal);
     void  disconnectNotify( const QMetaMethod & signal);
     static QMetaMethod  _metaSignalChanged;

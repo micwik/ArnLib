@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -568,7 +568,7 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
                               ArnError::Undef);
                     return;
                 }
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)
                 void*  valData = QMetaType::create( type);
 #else
                 void*  valData = QMetaType::construct( type);
@@ -577,7 +577,7 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
                 QDataStream  stream( data);
                 stream.setVersion( DATASTREAM_VER);
                 stream.skipRawData( sepPos + 1);
-#if QT_VERSION >= 0x060000
+#if QT_VERSION >= QT_VERSION_CHECK( 6, 0, 0)
                 QMetaType mt( type);
                 bool isOk = mt.load( stream, valData);
 #else
@@ -590,7 +590,7 @@ void  ArnBasicItem::arnImport( const QByteArray& data, int ignoreSame, ArnLinkHa
                     return;
                 }
 
-#if QT_VERSION >= 0x060000
+#if QT_VERSION >= QT_VERSION_CHECK( 6, 0, 0)
                 QVariant  value( mt, valData);
 #else
                 QVariant  value( type, valData);

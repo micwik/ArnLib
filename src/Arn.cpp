@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -34,7 +34,7 @@
 #include "ArnInc/ArnCompat.hpp"
 #include <QUuid>
 #include <QStringList>
-#if QT_VERSION >= 0x050a00
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0)
   #include <QRandomGenerator>
 #endif
 
@@ -258,7 +258,7 @@ bool  isNullPtr( const void* ptr)
 
 uint rand()
 {
-#if QT_VERSION >= 0x050a00
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0)
     if (sizeof(uint) >= sizeof(quint64))
         return  QRandomGenerator::global()->generate64();
     else

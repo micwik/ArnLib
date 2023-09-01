@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -39,7 +39,7 @@
 #include <QDebug>
 
 
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)
 //// Store meta methods for the "changed..." signals, used later for comparison
 QMetaMethod  ArnItem::_metaSignalChanged(
         QMetaMethod::fromSignal( static_cast<void (ArnItem::*)()>(&ArnItem::changed)));
@@ -325,7 +325,7 @@ void  ArnItem::toggleBool()
 }
 
 
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)
 
 void  ArnItem::connectNotify( const QMetaMethod &signal)
 {

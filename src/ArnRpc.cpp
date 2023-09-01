@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -585,7 +585,7 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
     //// Get arg type info
     QByteArray  typeName = arg.name();
 
-#if QT_VERSION >= 0x060000
+#if QT_VERSION >= QT_VERSION_CHECK( 6, 0, 0)
     QMetaType mType = QMetaType::fromName( typeName);
     int  type = mType.id();
 #else
@@ -606,7 +606,7 @@ bool  ArnRpc::xsmAddArg( XStringMap& xsm, const MQGenericArgument& arg, uint ind
     QByteArray  argDataDump;
     QStringList  argDataList;
     bool  isBinaryType = false;
-#if QT_VERSION >= 0x060000
+#if QT_VERSION >= QT_VERSION_CHECK( 6, 0, 0)
     QVariant  varArg( mType, arg.data());
 #else
     QVariant  varArg( type, arg.data());
@@ -986,7 +986,7 @@ bool  ArnRpc::argLogic( ArgInfo* argInfo, char* argOrder, int& argc, const QByte
             aiSlot.name   = parNames.at( parIndex);
             aiSlot.qtType = parTypes.at( parIndex);
             aiSlot.typeId = QMetaType::type( aiSlot.qtType.constData());
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)
             aiSlot.data   = QMetaType::create( aiSlot.typeId);
 #else
             aiSlot.data   = QMetaType::construct( aiSlot.typeId);
@@ -1189,7 +1189,7 @@ bool  ArnRpc::importArgData( ArnRpc::ArgInfo& argInfo, const QByteArray& methodN
                       ArnError::RpcReceiveError);
             return false;
         }
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)
         void*  argData = QMetaType::create( argInfo.typeId);
 #else
         void*  argData = QMetaType::construct( argInfo.typeId);
@@ -1223,7 +1223,7 @@ bool  ArnRpc::importArgData( ArnRpc::ArgInfo& argInfo, const QByteArray& methodN
             argInfo.qtType = "QVariant";
         }
         else {
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)
             argData = QMetaType::create( argInfo.typeId, varArg.constData());
 #else
             argData = QMetaType::construct( argInfo.typeId, varArg.constData());
@@ -1564,7 +1564,7 @@ void  ArnRpc::batchConnect( const QObject *sender, const ARN_RegExp& rgx,
 
 QByteArray  ArnRpc::methodSignature( const QMetaMethod &method)
 {
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0)
     return method.methodSignature();
 #else
     return QByteArray( method.signature());

@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2022 Michael Wiklund.
+// Copyright (C) 2010-2023 Michael Wiklund.
 // All rights reserved.
 // Contact: arnlib@wiklunden.se
 //
@@ -32,7 +32,7 @@
 #include "ArnInc/ArnCompat.hpp"
 
 
-#if QT_VERSION >= 0x060000
+#if QT_VERSION >= QT_VERSION_CHECK( 6, 0, 0)
 
 ArnRegExp::ArnRegExp()
 {
