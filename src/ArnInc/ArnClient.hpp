@@ -358,6 +358,8 @@ public:
      *  This must be used before connection is started.
      *  Default is Arn::EncryptPolicyPreferNo.
      *  \param[in] pol is the policy for encryption.
+     *  \see encryptPolicy()
+     *  \see isEncrypted()
      */
     void  setEncryptPolicy( const Arn::EncryptPolicy& pol);
 
@@ -424,6 +426,13 @@ public:
      *  \see connectionStatusChanged()
      */
     bool  isReConnect()  const;
+
+    //! Is current Arn Connection encrypted
+    /*! Typically used in connected state to check if TCP is SSL encrypted.
+     *  \retval true if encrypted.
+     *  \see setEncryptPolicy()
+     */
+    bool  isEncrypted()  const;
 
     //! Send chat message to server
     /*! This is used for a chat session between client and server.

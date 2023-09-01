@@ -617,6 +617,14 @@ bool  ArnClient::isReConnect()  const
 }
 
 
+bool  ArnClient::isEncrypted()  const
+{
+    Q_D(const ArnClient);
+
+    return d->_socket->isEncrypted();
+}
+
+
 int ArnClient::curPrio()  const
 {
     Q_D(const ArnClient);
