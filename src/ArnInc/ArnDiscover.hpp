@@ -32,6 +32,7 @@
 #ifndef ARNDISCOVER_HPP
 #define ARNDISCOVER_HPP
 
+#include "Arn.hpp"
 #include "XStringMap.hpp"
 #include "MQFlags.hpp"
 #include <QHostAddress>
@@ -787,6 +788,7 @@ public slots:
 protected:
     bool  hasSetupAdvertise()  const;
     void  setHostIpList( const QStringList& hostIpList);
+    void  setEncryptPolicy( Arn::EncryptPolicy pol);
 
     ArnDiscoverAdvertise( ArnDiscoverAdvertisePrivate& dd, QObject* parent);
     ArnDiscoverAdvertisePrivate* const  d_ptr;

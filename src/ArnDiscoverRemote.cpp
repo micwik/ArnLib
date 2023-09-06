@@ -121,6 +121,7 @@ void  ArnDiscoverRemote::startUseServer( ArnServer* arnServer, ArnDiscover::Type
     
     // Setup advertise, but don't start yet, can be waiting for service name
     ArnDiscoverAdvertise::setHostIpList( hostIpList);
+    ArnDiscoverAdvertise::setEncryptPolicy( arnServer->encryptPolicy());
     ArnDiscoverAdvertise::advertiseService( discoverType, service(), hostPort);
 }
 

@@ -106,6 +106,7 @@ private:
     QString  _service;
     QStringList  _groups;
     QStringList  _hostIpList;
+    int  _encryptPolicy;
     Arn::XStringMap  _customProperties;
     bool  _hasSetupAdvertise;
     ArnDiscover::Type  _discoverType;

@@ -813,6 +813,7 @@ void  ArnDiscoverBrowserB::doNextState( ArnDiscoverInfo& info)
 ArnDiscoverAdvertisePrivate::ArnDiscoverAdvertisePrivate()
 {
     _hasSetupAdvertise = false;
+    _encryptPolicy     = -1;  // Mark as undefined
     _arnZCReg          = new ArnZeroConfRegister;
 }
 
@@ -872,6 +873,9 @@ void  ArnDiscoverAdvertise::advertiseService( ArnDiscover::Type discoverType, co
     }
     for (int i = 0; i < d->_hostIpList.size(); ++i) {
         xsm.add("hostIp", uint(i), d->_hostIpList.at(i));
+    }
+    if (d->_encryptPolicy >= 0) {
+        xsm.add("encryptPolicy", Arn::EncryptPolicy::fromInt( d->_encryptPolicy).toString());
     }
     xsm += d->_customProperties;
 
@@ -950,6 +954,14 @@ void  ArnDiscoverAdvertise::setHostIpList( const QStringList& hostIpList)
     Q_D(ArnDiscoverAdvertise);
 
     d->_hostIpList = hostIpList;
+}
+
+
+void  ArnDiscoverAdvertise::setEncryptPolicy( Arn::EncryptPolicy pol)
+{
+    Q_D(ArnDiscoverAdvertise);
+
+    d->_encryptPolicy = pol.toInt();
 }
 
 
