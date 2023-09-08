@@ -44,6 +44,7 @@
 #include <QSslError>
 
 #define ARNRECNAME  ""
+#define MAX_BIG_INT  ( INT_MAX/2 )  // TODO: check if this can cause an over/underflow
 
 class QSslSocket;
 class ArnSyncLogin;
@@ -200,7 +201,7 @@ private:
     void  closeFinal();
     void  clearNonPipeQueues();
     void  clearAllQueues();
-    void  setRemoteVer( const QByteArray& remVer);
+    void  setRemoteVerOnce( const QByteArray& remVer);
     void  setState( State state);
     bool  isFreePath( const QString& path)  const;
     int  checkEncryptPolicy()  const;

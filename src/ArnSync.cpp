@@ -72,7 +72,7 @@ ArnSync::ArnSync( QSslSocket *socket, bool isClientSide, QObject *parent)
     _isConnected      = false;
     _isDemandLogin    = false;
     _needEncrypted    = false;
-    _remoteVer[0]     = 1;  // Default version 1.0
+    _remoteVer[0]     = 0;  // Mark not set
     _remoteVer[1]     = 0;
     _loginReqCode     = 0;
     _loginNextSeq     = 0;
@@ -542,8 +542,9 @@ void  ArnSync::clearAllQueues()
 }
 
 
-void  ArnSync::setRemoteVer( const QByteArray& remVer)
+void  ArnSync::setRemoteVerOnce( const QByteArray& remVer)
 {
+    if (_remoteVer[0] != 0)  return;  // Already set
     if (remVer.isEmpty())  return;
 
     _remoteVer[1] = 0;  // Default
@@ -1350,19 +1351,16 @@ uint  ArnSync::doCommandVer()
     if (_isClientSide)  return ArnError::RecNotExpected;
 
     //// Server
-    if (_state == State::Init) {
-        setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
-        if (_needEncrypted && (_remoteVer[0] < 5)) {  // Client can't handle needed encryption
-            sendMessage( MessageType::ChatPrio, "ArnServer deny, encryption policy not satisfied");
-            sendMessage( MessageType::KillRequest);  // Request client to disconnect
-        }
-        else if (_remoteVer[0] >= 2)
+    setRemoteVerOnce( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
+    if (_needEncrypted && (_remoteVer[0] < 5)) {  // Client can't handle needed encryption
+        sendMessage( MessageType::ChatPrio, "ArnServer deny, encryption policy not satisfied");
+        sendMessage( MessageType::KillRequest);  // Request client to disconnect
+    }
+    else if (_state == State::Init) {
+        if (_remoteVer[0] >= 2)
             setState( State::Login);
         else
             setState( State::Normal);  // Just in case, this should not be reached ...
-    }
-    else {
-        setRemoteVer( _commandMap.value("ver", ""));  // ver key optional, used for setting remoteVer
     }
 
     _replyMap.add(ARNRECNAME, "Rver").add("type", "ArnNetSync").add("ver", ARNSYNCVER);
@@ -1376,7 +1374,7 @@ uint  ArnSync::doCommandRVer()
 
     //// Client
     if (_state == State::Version) {
-        setRemoteVer( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
+        setRemoteVerOnce( _commandMap.value("ver", "1.0"));  // ver key only after version 1.0
         if (_remoteVer[0] >= 2) {
             setState( State::Info);
             _curInfoType = InfoType::Start;
@@ -1436,6 +1434,8 @@ void  ArnSync::connected()
 
     _isClosed         = false;
     _isConnected      = true;
+    _remoteVer[0]     = 0;  // Mark not set
+    _remoteVer[1]     = 0;
     _remoteAllow      = Arn::Allow::None;
     _remoteEncryptPol = Arn::EncryptPolicy::Refuse;  // Default legacy, encryption not available remote
     _needEncrypted    = false;
@@ -1872,12 +1872,12 @@ void  ArnSync::sendNext()
         _isSending = true;
     }
     else {  // Flux queues - send entity with lowest queue number
-        int  itemQueueNum = _fluxItemQueue.isEmpty() ? _queueNumDone + INT_MAX : _fluxItemQueue.head()->queueNum();
-        int  pipeQueueNum = _fluxPipeQueue.isEmpty() ? _queueNumDone + INT_MAX : _fluxPipeQueue.head()->queueNum;
+        int  itemQueueNum = _fluxItemQueue.isEmpty() ? _queueNumDone + MAX_BIG_INT : _fluxItemQueue.head()->queueNum();
+        int  pipeQueueNum = _fluxPipeQueue.isEmpty() ? _queueNumDone + MAX_BIG_INT : _fluxPipeQueue.head()->queueNum;
         int  itemQueueRel = itemQueueNum - _queueNumDone;
         int  pipeQueueRel = pipeQueueNum - _queueNumDone;
 
-        if ((itemQueueRel < INT_MAX) || (pipeQueueRel < INT_MAX)) { // At least 1 flux queue not empty
+        if ((itemQueueRel < MAX_BIG_INT) || (pipeQueueRel < MAX_BIG_INT)) { // At least 1 flux queue not empty
             if (itemQueueRel < pipeQueueRel) {  // Item flux queue
                 _queueNumDone = itemQueueNum;
 
